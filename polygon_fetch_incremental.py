@@ -69,8 +69,9 @@ def main():
         to_concat.append(pd.concat(parts, ignore_index=True))
     final = pd.concat(to_concat, ignore_index=True) if to_concat else cache
     final = final.drop_duplicates(["Ticker","date"]).sort_values(["Ticker","date"])
+
+    # ✅ Spara ENDAST i parquet (ingen gigantisk Excel längre)
     final.to_parquet(CACHE, index=False)
-    final.to_excel("momentum_data.xlsx", index=False)
 
 if __name__ == "__main__":
     main()
