@@ -6,19 +6,26 @@ from pathlib import Path
 
 TEMPLATE = Path("Momentum_template.xlsx")   # Din mall med ALLA flikar
 OUTPUT   = Path("Momentum.xlsx")            # Filen som byggs/skickas
-INPUT    = Path("momentum_data.xlsx")       # Prisdata från fetch-steget
+CACHE    = Path("cache.parquet")            # Full historik lagras här
 
 CALC_SHEET = "Calc"
 HOLD_SHEET = "Holdings"
+WINDOW_DAYS = 320  # ~15-16 mån, räcker för SMA200 + 12m retur och håller Excel < 1,048,576 rader
 
 def compute(df):
     df = df.copy()
     df["date"] = pd.to_datetime(df["date"])
     df = df.sort_values(["Ticker","date"])
+
+    # Begränsa till senaste WINDOW_DAYS handelsdagar per ticker
+    def clip_last_n(g):
+        return g.tail(WINDOW_DAYS)
+    df = df.groupby("Ticker", group_keys=False).apply(clip_last_n)
+
     def per_t(g):
         g = g.sort_values("date")
-        g["SMA50"]  = g["Close"].rolling(50, min_periods=10).mean()
-        g["SMA200"] = g["Close"].rolling(200, min_periods=20).mean()
+        g["SMA50"]  = g["Close"].rolling(50, min_periods=50).mean()
+        g["SMA200"] = g["Close"].rolling(200, min_periods=200).mean()
         def pct(d): return g["Close"].pct_change(d)
         g["Ret1m"]  = pct(21)
         g["Ret3m"]  = pct(63)
@@ -30,7 +37,9 @@ def compute(df):
         g["Signal"]     = np.where(g["TrendOK"] & g["MomentumOK"], "HÅLL", "SÄLJ")
         g["KÖP?"]       = (g["TrendOK"] & g["MomentumOK"]).astype(int)
         return g
-    return df.groupby("Ticker", group_keys=False).apply(per_t)
+
+    df = df.groupby("Ticker", group_keys=False).apply(per_t)
+    return df
 
 def holdings_view(df):
     latest = df.sort_values("date").groupby("Ticker").tail(1).reset_index(drop=True)
@@ -51,7 +60,7 @@ def write_into_template(calc_df: pd.DataFrame, hold_df: pd.DataFrame):
     for sheet_name in [CALC_SHEET, HOLD_SHEET]:
         if sheet_name in wb.sheetnames:
             ws = wb[sheet_name]
-            ws.delete_rows(1, ws.max_row)  # rensa allt innehåll, behåll fliken
+            ws.delete_rows(1, ws.max_row)
         else:
             wb.create_sheet(sheet_name)
     wb.save(OUTPUT)
@@ -61,7 +70,8 @@ def write_into_template(calc_df: pd.DataFrame, hold_df: pd.DataFrame):
         hold_df.to_excel(xw, sheet_name=HOLD_SHEET, index=False)
 
 def main():
-    raw = pd.read_excel(INPUT)
+    # Läs från parquet (stor & snabb), inte Excel
+    raw = pd.read_parquet(CACHE)
     ind = compute(raw)
     hold = holdings_view(ind)
     write_into_template(ind, hold)
