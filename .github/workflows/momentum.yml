@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -39,42 +38,76 @@ jobs:
           from openpyxl import load_workbook
           from openpyxl.styles import PatternFill
           from openpyxl.worksheet.worksheet import Worksheet
+          from openpyxl.utils import get_column_letter
 
           xlsx = "Momentum.xlsx"
           wb = load_workbook(xlsx)
 
-          # ---------- A) Holdings: ta bort färg + visa OK/KÖP ----------
+          # A) Holdings – ta bort färg + 1/0 -> OK/KÖP
           if "Holdings" in wb.sheetnames:
               ws: Worksheet = wb["Holdings"]
-
-              # 1) Ta bort villkorsstyrd formatering
               try:
                   ws.conditional_formatting._cf_rules.clear()
               except Exception:
                   ws.conditional_formatting = type(ws.conditional_formatting)()
-
-              # 2) Ta bort cellfärger
               for row in ws.iter_rows():
                   for c in row:
                       if c.fill is not None:
                           c.fill = PatternFill(fill_type=None)
-
-              # 3) 1/0 -> OK/KÖP via number format (behåller formler)
               header_row = 1
-              headers = { (cell.value or "").strip(): cell.column for cell in ws[header_row] if cell.value }
-              def apply_fmt(col_name, fmt):
-                  if col_name in headers:
-                      col = headers[col_name]
+              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
+              def apply_fmt(name, fmt):
+                  if name in headers:
+                      col = headers[name]
                       for r in range(header_row+1, ws.max_row+1):
                           ws.cell(row=r, column=col).number_format = fmt
-
               ok_fmt  = '[=1]"OK";[=0]"";General'
               kop_fmt = '[=1]"KÖP";[=0]"";General'
-              for name in ("FundOK","TrendOK","MomentumOK"):
-                  apply_fmt(name, ok_fmt)
+              for k in ("FundOK","TrendOK","MomentumOK"):
+                  apply_fmt(k, ok_fmt)
               apply_fmt("KÖP?", kop_fmt)
 
-          # ---------- B
+          # B) Calc – procent/decimal + kolumnbredd
+          if "Calc" in wb.sheetnames:
+              ws: Worksheet = wb["Calc"]
+              header_row = 1
+              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
+              def fmt_cols(cols, fmt):
+                  for name in cols:
+                      if name in headers:
+                          col = headers[name]
+                          for r in range(header_row+1, ws.max_row+1):
+                              ws.cell(row=r, column=col).number_format = fmt
+              fmt_cols(["Price_0","Price_1m","Price_3m","Price_6m","Price_12m","SMA50","SMA200","Score_MOMO"], "0.00")
+              fmt_cols(["Ret1m","Ret3m","Ret6m","Ret12m"], "0.00%")
+              widths = {"Ticker":12,"Price_0":9,"Price_1m":9,"Price_3m":9,"Price_6m":9,"Price_12m":10,
+                        "SMA50":9,"SMA200":9,"Ret1m":9,"Ret3m":9,"Ret6m":9,"Ret12m":10,"Score_MOMO":11}
+              for name,w in widths.items():
+                  if name in headers:
+                      ws.column_dimensions[get_column_letter(headers[name])].width = w
+
+          # C) BuyNow – procent/decimal + kolumnbredd
+          if "BuyNow" in wb.sheetnames:
+              ws: Worksheet = wb["BuyNow"]
+              header_row = 1
+              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
+              def fmt_cols(cols, fmt):
+                  for name in cols:
+                      if name in headers:
+                          col = headers[name]
+                          for r in range(header_row+1, ws.max_row+1):
+                              ws.cell(row=r, column=col).number_format = fmt
+              fmt_cols(["Price_0","Price_1m","Price_3m","Price_6m","Price_12m","SMA50","SMA200","Score_MOMO"], "0.00")
+              fmt_cols(["Ret1m","Ret3m","Ret6m","Ret12m"], "0.00%")
+              widths = {"Rank":6,"Ticker":12,"Price_0":9,"Price_1m":9,"Price_3m":9,"Price_6m":9,"Price_12m":10,
+                        "SMA50":9,"SMA200":9,"Ret1m":9,"Ret3m":9,"Ret6m":9,"Ret12m":10,"Score_MOMO":11}
+              for name,w in widths.items():
+                  if name in headers:
+                      ws.column_dimensions[get_column_letter(headers[name])].width = w
+
+          wb.save(xlsx)
+          PY
+
       - name: Upload Momentum.xlsx
         uses: actions/upload-artifact@v4
         with:
