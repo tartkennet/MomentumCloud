@@ -1,55 +1,50 @@
 name: Momentum Daily
 
 on:
+  workflow_dispatch:        # Gör att du kan köra manuellt via "Run workflow"
   schedule:
-    - cron: "0 4 * * 1-5"   # 04:00 UTC = 06:00 Stockholm (vardagar)
-  workflow_dispatch:
+    - cron: "0 4 * * 1-5"   # 04:00 UTC = 06:00 svensk tid (vardagar)
 
 jobs:
-  run:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Setup Python
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install pandas numpy openpyxl pyarrow
 
-      - name: Fetch incremental
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-          
-                   - name: Debug – list sheets in template (before build)
+      - name: Debug – list sheets in template (before build)
         run: |
-          python - << 'PY'
+          python - <<'PY'
           from openpyxl import load_workbook
-          import os
-          print("CWD:", os.getcwd())
           wb = load_workbook("Momentum_template.xlsx")
           print("TEMPLATE sheets:", wb.sheetnames)
           PY
- run: python polygon_fetch_incremental.py
 
       - name: Build Momentum.xlsx
-            - name: Debug – list sheets in output (after build)
         run: |
-          python - << 'PY'
+          python momentum_master.py
+
+      - name: Debug – list sheets in output (after build)
+        run: |
+          python - <<'PY'
           from openpyxl import load_workbook
           wb = load_workbook("Momentum.xlsx")
           print("OUTPUT sheets:", wb.sheetnames)
           PY
 
-        run: python momentum_master.py
-
-      - name: Upload artifact (backup)
+      - name: Upload artifact (Momentum.xlsx)
         uses: actions/upload-artifact@v4
         with:
-          name: Momentum.xlsx
+          name: Momentum
           path: Momentum.xlsx
-          if-no-files-found: error
