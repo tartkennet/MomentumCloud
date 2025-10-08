@@ -3,7 +3,7 @@ name: Momentum Daily
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 4 * * 1-5"   # 04:00 UTC = 06:00 svensk tid (vardagar)
+    - cron: "0 4 * * 1-5"   # 06:00 svensk tid (vardagar)
 
 jobs:
   build:
@@ -29,28 +29,49 @@ jobs:
         run: |
           python polygon_fetch_incremental.py
 
-      - name: Debug – list sheets in template (before build)
-        run: |
-          python - <<'PY'
-          from openpyxl import load_workbook
-          wb = load_workbook("Momentum_template.xlsx")
-          print("TEMPLATE sheets:", wb.sheetnames)
-          PY
-
       - name: Build Momentum.xlsx
         run: |
           python momentum_master.py
 
-      - name: Debug – list sheets in output (after build)
+      - name: Post-process sheets (Holdings OK/KÖP + format Calc/BuyNow)
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
-          wb = load_workbook("Momentum.xlsx")
-          print("OUTPUT sheets:", wb.sheetnames)
-          PY
+          from openpyxl.styles import PatternFill
+          from openpyxl.worksheet.worksheet import Worksheet
 
-      - name: Upload artifact (Momentum.xlsx)
-        uses: actions/upload-artifact@v4
-        with:
-          name: Momentum
-          path: Momentum.xlsx
+          xlsx = "Momentum.xlsx"
+          wb = load_workbook(xlsx)
+
+          # ---------- A) Holdings: ta bort färg + visa OK/KÖP ----------
+          if "Holdings" in wb.sheetnames:
+              ws: Worksheet = wb["Holdings"]
+
+              # 1) Ta bort villkorsstyrd formatering
+              try:
+                  ws.conditional_formatting._cf_rules.clear()
+              except Exception:
+                  ws.conditional_formatting = type(ws.conditional_formatting)()
+
+              # 2) Ta bort cellfärger
+              for row in ws.iter_rows():
+                  for c in row:
+                      if c.fill is not None:
+                          c.fill = PatternFill(fill_type=None)
+
+              # 3) 1/0 -> OK/KÖP via number format (behåller formler)
+              header_row = 1
+              headers = { (cell.value or "").strip(): cell.column for cell in ws[header_row] if cell.value }
+              def apply_fmt(col_name, fmt):
+                  if col_name in headers:
+                      col = headers[col_name]
+                      for r in range(header_row+1, ws.max_row+1):
+                          ws.cell(row=r, column=col).number_format = fmt
+
+              ok_fmt  = '[=1]"OK";[=0]"";General'
+              kop_fmt = '[=1]"KÖP";[=0]"";General'
+              for name in ("FundOK","TrendOK","MomentumOK"):
+                  apply_fmt(name, ok_fmt)
+              apply_fmt("KÖP?", kop_fmt)
+
+          # ---------- B
