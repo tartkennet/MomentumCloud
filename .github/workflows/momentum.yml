@@ -75,3 +75,8 @@ jobs:
               apply_fmt("KÖP?", kop_fmt)
 
           # ---------- B
+      - name: Upload Momentum.xlsx
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum
+          path: Momentum.xlsx
