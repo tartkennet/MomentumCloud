@@ -24,9 +24,27 @@ jobs:
       - name: Fetch incremental
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python polygon_fetch_incremental.py
+          
+                   - name: Debug – list sheets in template (before build)
+        run: |
+          python - << 'PY'
+          from openpyxl import load_workbook
+          import os
+          print("CWD:", os.getcwd())
+          wb = load_workbook("Momentum_template.xlsx")
+          print("TEMPLATE sheets:", wb.sheetnames)
+          PY
+ run: python polygon_fetch_incremental.py
 
       - name: Build Momentum.xlsx
+            - name: Debug – list sheets in output (after build)
+        run: |
+          python - << 'PY'
+          from openpyxl import load_workbook
+          wb = load_workbook("Momentum.xlsx")
+          print("OUTPUT sheets:", wb.sheetnames)
+          PY
+
         run: python momentum_master.py
 
       - name: Upload artifact (backup)
