@@ -29,16 +29,6 @@ jobs:
       - name: Build Momentum.xlsx
         run: python momentum_master.py
 
-      - name: Email the file
-        env:
-          SMTP_HOST:   ${{ secrets.SMTP_HOST }}
-          SMTP_PORT:   ${{ secrets.SMTP_PORT }}
-          SMTP_USER:   ${{ secrets.SMTP_USER }}
-          SMTP_PASS:   ${{ secrets.SMTP_PASS }}
-          TO_EMAIL:    ${{ secrets.TO_EMAIL }}
-          FROM_EMAIL:  ${{ secrets.FROM_EMAIL }}
-        run: python send_email.py
-
       - name: Upload artifact (backup)
         uses: actions/upload-artifact@v4
         with:
