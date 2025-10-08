@@ -1,8 +1,15 @@
 import pandas as pd
 import numpy as np
+from openpyxl import load_workbook
+import shutil
+from pathlib import Path
 
-INPUT = "momentum_data.xlsx"
-OUTPUT = "Momentum.xlsx"
+TEMPLATE = Path("Momentum_template.xlsx")   # Din mall med ALLA flikar
+OUTPUT   = Path("Momentum.xlsx")            # Filen som byggs/skickas
+INPUT    = Path("momentum_data.xlsx")       # Prisdata från fetch-steget
+
+CALC_SHEET = "Calc"
+HOLD_SHEET = "Holdings"
 
 def compute(df):
     df = df.copy()
@@ -35,13 +42,29 @@ def holdings_view(df):
     latest = latest.sort_values("Ret6m", ascending=False)
     return latest
 
+def write_into_template(calc_df: pd.DataFrame, hold_df: pd.DataFrame):
+    if not TEMPLATE.exists():
+        raise FileNotFoundError("Saknar Momentum_template.xlsx i repo-rooten.")
+    shutil.copyfile(TEMPLATE, OUTPUT)
+
+    wb = load_workbook(OUTPUT)
+    for sheet_name in [CALC_SHEET, HOLD_SHEET]:
+        if sheet_name in wb.sheetnames:
+            ws = wb[sheet_name]
+            ws.delete_rows(1, ws.max_row)  # rensa allt innehåll, behåll fliken
+        else:
+            wb.create_sheet(sheet_name)
+    wb.save(OUTPUT)
+
+    with pd.ExcelWriter(OUTPUT, engine="openpyxl", mode="a", if_sheet_exists="overlay") as xw:
+        calc_df.to_excel(xw, sheet_name=CALC_SHEET, index=False)
+        hold_df.to_excel(xw, sheet_name=HOLD_SHEET, index=False)
+
 def main():
     raw = pd.read_excel(INPUT)
     ind = compute(raw)
     hold = holdings_view(ind)
-    with pd.ExcelWriter(OUTPUT, engine="openpyxl") as xw:
-        ind.to_excel(xw, sheet_name="Calc", index=False)
-        hold.to_excel(xw, sheet_name="Holdings", index=False)
+    write_into_template(ind, hold)
 
 if __name__ == "__main__":
     main()
