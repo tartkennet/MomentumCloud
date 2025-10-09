@@ -32,8 +32,7 @@ jobs:
         run: |
           python momentum_master.py
 
-      # === Skriv endast AUTO-flikar in i din mall + fixa %/decimaler i BuyNow ===
-      - name: Merge into template + format
+      - name: Merge data into your template
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
@@ -48,7 +47,7 @@ jobs:
           if not TEMPLATE.exists():
               raise FileNotFoundError("Hittar inte 'Momentum mall fil.xlsx'.")
 
-          auto_tabs = ["Universe","Calc","BuyNow","EarlyCandidates"]
+          auto_tabs = ["Universe", "Calc", "BuyNow", "EarlyCandidates"]
           dfs = {}
           with pd.ExcelFile(RAW) as x:
               for sh in auto_tabs:
@@ -73,13 +72,13 @@ jobs:
               ws = wb[sh]
 
               if sh=="BuyNow" and not df.empty:
-                  # Fix procentkolumner
+                  # Procentkolumner
                   for col in [c for c in df.columns if str(c).startswith("Ret_")]:
                       if pd.api.types.is_numeric_dtype(df[col]):
                           s=df[col].dropna().astype(float)
                           if not s.empty and s.median()>5: df[col]=df[col]/100
                           df[col]=df[col].round(4)
-                  # Övriga numeriska till 2 decimaler
+                  # Övriga numeriska
                   for col in df.columns:
                       if not str(col).startswith("Ret_") and pd.api.types.is_numeric_dtype(df[col]):
                           df[col]=df[col].round(2)
@@ -101,8 +100,7 @@ jobs:
           wb.save(OUT)
           PY
 
-      # === Filtrera BuyNow (trend + momentum) + beräkna QtyToBuy ===
-      - name: Filter and add QtyToBuy
+      - name: Apply filters and add QtyToBuy
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
@@ -110,40 +108,41 @@ jobs:
 
           xlsx="Momentum.xlsx"
           wb=load_workbook(xlsx)
-
           if "BuyNow" not in wb.sheetnames:
               wb.save(xlsx); exit()
-          ws=wb["BuyNow"]
 
-          # --- 1. Filtrera bort svaga (Price_0<SMA200, Ret_3m<=0, Ret_6m<=0, AvgVol<500k) ---
+          ws=wb["BuyNow"]
           headers={ (c.value or "").strip():c.column for c in ws[1] if c.value }
           def col(n): return headers.get(n)
-          c_price,c_sma200,c_r3,c_r6,c_vol=[col(x) for x in ("Price_0","SMA200","Ret_3m","Ret_6m","AvgVol")]
+          c_price=col("Price_0"); c_sma200=col("SMA200")
+          c_r3=col("Ret_3m"); c_r6=col("Ret_6m"); c_vol=col("AvgVol")
 
+          # --- mild filter ---
           for r in range(ws.max_row,1,-1):
               try:
                   p=float(ws.cell(r,c_price).value)
                   s=float(ws.cell(r,c_sma200).value)
-                  r3=float(ws.cell(r,c_r3).value)
                   r6=float(ws.cell(r,c_r6).value)
-                  ok=(p>s) and (r3>0) and (r6>0)
+                  ok=(p>s) and (r6>0)
+                  if c_r3:
+                      r3=float(ws.cell(r,c_r3).value)
+                      ok=ok and (r3>0)
                   if c_vol:
                       v=ws.cell(r,c_vol).value
-                      if v: ok=ok and (float(v)>=500000)
+                      if v: ok=ok and (float(v)>=300000)
               except: ok=False
               if not ok: ws.delete_rows(r,1)
 
-          # --- 2. Läs kapital från Parametrar ---
+          # --- qty from Parametrar ---
           capital=None
           if "Parametrar" in wb.sheetnames:
               ps=wb["Parametrar"]
               for r in ps.iter_rows(values_only=True):
-                  if not r[0]: continue
+                  if not r or not r[0]: continue
                   if str(r[0]).strip().lower().startswith("kapital"):
                       try: capital=float(r[1]); break
                       except: pass
 
-          # --- 3. Lägg till QtyToBuy ---
           if capital and capital>0:
               hdrs=[(c.value or "").strip() for c in ws[1]]
               if "QtyToBuy" not in hdrs:
@@ -151,11 +150,8 @@ jobs:
                   c_qty=len(hdrs)+1
               else:
                   c_qty=hdrs.index("QtyToBuy")+1
-
               n=max(1,ws.max_row-1)
               per_stock=capital/n
-              c_price=headers.get("Price_0")
-
               if c_price:
                   for r in range(2,ws.max_row+1):
                       price=ws.cell(r,c_price).value
