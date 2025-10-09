@@ -1,4 +1,4 @@
-# momentum_master.py — QtyToBuy med debug: skriver Debug_Qty-flik som visar alla led i beräkningen
+# momentum_master.py — Portföljvärde (Parametrar!B1), auto-USDSEK, QtyToBuy för topp-10
 import os, sys, re
 import numpy as np
 import pandas as pd
@@ -15,22 +15,16 @@ def log(m): print(m, flush=True)
 def fail(m): print(f"Error: {m}", file=sys.stderr, flush=True); sys.exit(1)
 
 def to_num_series(s: pd.Series) -> pd.Series:
-    if s.dtype.kind in "biufc": return pd.to_numeric(s, errors="coerce")
-    x = s.astype(str).str.strip()
+    if getattr(s, "dtype", None) is not None and s.dtype.kind in "biufc":
+        return pd.to_numeric(s, errors="coerce")
+    x = pd.Series(s, dtype="object").astype(str).str.strip()
     x = x.str.replace("%","",regex=False).str.replace("\u00A0","",regex=False).str.replace(" ","",regex=False)
     x = x.str.replace(",",".",regex=False)
     return pd.to_numeric(x, errors="coerce")
 
-def parse_float(v):
-    try: return float(str(v).replace("\u00A0","").replace(" ","").replace(",","."))
-    except: return None
-
-# ---------- 1) Läs Calc ----------
+# ---------- Läs Calc ----------
 if not os.path.exists(MALL_PATH): fail(f"Mallen saknas: {MALL_PATH}")
-try:
-    calc = pd.read_excel(MALL_PATH, sheet_name="Calc")
-except Exception as e:
-    fail(f"Kunde inte läsa fliken 'Calc': {e}")
+calc = pd.read_excel(MALL_PATH, sheet_name="Calc")
 
 for must in ["Ticker","Price_0","SMA200"]:
     if must not in calc.columns: fail(f"Saknar kolumn i Calc: '{must}'")
@@ -39,31 +33,30 @@ work = pd.DataFrame({"Ticker": calc["Ticker"].astype(str)})
 work["Price"]  = to_num_series(calc["Price_0"])
 work["SMA200"] = to_num_series(calc["SMA200"])
 
-def safe_ret(p0, p_back):
-    p0 = to_num_series(p0); p_back = to_num_series(p_back); return (p0/p_back) - 1.0
+def safe_ret(p0,pb):
+    p0 = to_num_series(p0); pb = to_num_series(pb); return (p0/pb)-1.0
 if "Price_1m"  in calc.columns: work["Ret_1m"]  = safe_ret(calc["Price_0"], calc["Price_1m"])
 if "Price_3m"  in calc.columns: work["Ret_3m"]  = safe_ret(calc["Price_0"], calc["Price_3m"])
 if "Price_6m"  in calc.columns: work["Ret_6m"]  = safe_ret(calc["Price_0"], calc["Price_6m"])
 if "Price_12m" in calc.columns: work["Ret_12m"] = safe_ret(calc["Price_0"], calc["Price_12m"])
 
+# Rangkolumn
 rank_col = None
 for c in ["Score_MOMO","ScoreAdj","Score","MomentumScore","Ret_6m","Ret_3m"]:
-    if c in calc.columns:
-        work[c] = to_num_series(calc[c]); rank_col = c; break
-if rank_col is None: rank_col = "Price"
+    if c in calc.columns: work[c]=to_num_series(calc[c]); rank_col=c; break
+if rank_col is None: rank_col="Price"
 
-# ---------- 2) Filter + exkludering ----------
-excl_set = {t.upper() for t in EXCLUDE_TICKERS}
-excl_mask = work["Ticker"].str.upper().isin(excl_set)
+# ---------- Filter + exkludering ----------
+excl = work["Ticker"].str.upper().isin({t.upper() for t in EXCLUDE_TICKERS})
 flt = (work["Price"] > work["SMA200"].replace({np.nan: np.inf}))
 for rc in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
     if rc in work.columns: flt &= (work[rc].fillna(-1) > 0)
 
-cand = work.loc[flt & (~excl_mask)].dropna(subset=["Ticker"]).copy()
-top = cand.sort_values(rank_col, ascending=False).head(15).copy()
+cand = work.loc[flt & ~excl].dropna(subset=["Ticker"]).copy()
+top  = cand.sort_values(rank_col, ascending=False).head(15)
 need = 15 - len(top)
-if need > 0:
-    fill = (work["Price"] > work["SMA200"].replace({np.nan: np.inf})) & (~excl_mask)
+if need>0:
+    fill = (work["Price"] > work["SMA200"].replace({np.nan: np.inf})) & ~excl
     for rc in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
         if rc in work.columns: fill &= (work[rc].fillna(-1) >= 0)
     filler = work.loc[fill & (~work["Ticker"].isin(top["Ticker"]))].sort_values(rank_col, ascending=False).head(need)
@@ -75,110 +68,86 @@ buy_now = buy_now.drop_duplicates(subset=["Ticker"]).head(15).copy()
 buy_now.insert(0,"BuyRank", np.arange(1, len(buy_now)+1))
 buy_now["BuyFlag"] = buy_now["BuyRank"] <= 10
 
-# ---------- 3) Läs Kapital robust (skannar hela arket) ----------
-def read_capital_from_params_anywhere(xlsx_path) -> float | None:
+# ---------- Portföljvärde (SEK) från Parametrar!B1 ----------
+try:
+    # exakt cell B1
+    port_df = pd.read_excel(MALL_PATH, sheet_name="Parametrar", header=None)
+    portfolio_value = port_df.iat[0,1]  # B1
     try:
-        df = pd.read_excel(xlsx_path, sheet_name="Parametrar", header=None)
-    except Exception:
-        return None
-    # Sök celler som innehåller "kapital att handla för" (bortse från å/ä/ö och mellanslag)
-    def norm(s):
-        s = str(s).strip().lower()
-        s = s.replace("å","a").replace("ä","a").replace("ö","o")
-        return re.sub(r"\s+","", s)
-    target = "kapitalatthandlafor"
-    for r in range(df.shape[0]):
-        for c in range(df.shape[1]):
-            key = df.iat[r, c]
-            if key is None or str(key).strip()=="":
-                continue
-            if norm(key) == target:
-                # hämta första numeriska värde i samma rad men till höger om nyckeln
-                row_vals = [parse_float(df.iat[r, cc]) for cc in range(c+1, df.shape[1])]
-                row_vals = [v for v in row_vals if v is not None]
-                if row_vals:
-                    return row_vals[0]
-    return None
+        portfolio_value = float(str(portfolio_value).replace("\u00A0","").replace(" ","").replace(",","."))
+    except:
+        portfolio_value = 0.0
+except Exception:
+    portfolio_value = 0.0
 
-capital = read_capital_from_params_anywhere(MALL_PATH)
-if capital is None and os.path.exists(OUT_PATH):
-    capital = read_capital_from_params_anywhere(OUT_PATH)
-if capital is None:
-    capital = 0.0
-log(f"[INFO] Kapital (SEK) hittat: {capital}")
+log(f"[INFO] Portföljvärde(SEK) = {portfolio_value}")
 
-# ---------- 4) USDSEK från Polygon (auto) ----------
-def fetch_usdsek_polygon(default=11.0):
-    api_key = os.getenv("POLYGON_API_KEY", "").strip()
-    if not api_key:
+# ---------- USDSEK från Polygon ----------
+def fetch_usdsek(default=11.0):
+    api = os.getenv("POLYGON_API_KEY","").strip()
+    if not api:
         log("[WARN] POLYGON_API_KEY saknas – använder fallback USDSEK.")
-        return default, "fallback"
+        return default,"fallback"
     try:
-        url = f"https://api.polygon.io/v2/aggs/ticker/C:USDSEK/prev?adjusted=true&apiKey={api_key}"
-        r = requests.get(url, timeout=15); r.raise_for_status()
-        data = r.json()
-        close = float(data["results"][0]["c"])
-        if close <= 0: raise ValueError("USDSEK close <= 0")
-        return close, "polygon"
+        url=f"https://api.polygon.io/v2/aggs/ticker/C:USDSEK/prev?adjusted=true&apiKey={api}"
+        r=requests.get(url,timeout=15); r.raise_for_status()
+        close=float(r.json()["results"][0]["c"])
+        if close<=0: raise ValueError("USDSEK<=0")
+        return close,"polygon"
     except Exception as e:
-        log(f"[WARN] USDSEK från Polygon misslyckades ({e}) – fallback {default}.")
-        return default, "fallback"
+        log(f"[WARN] USDSEK misslyckades ({e}) – fallback {default}.")
+        return default,"fallback"
 
-usdsek, usdsek_source = fetch_usdsek_polygon(default=11.0)
-log(f"[INFO] USDSEK = {usdsek} (källa: {usdsek_source})")
+usdsek,src = fetch_usdsek(11.0)
+log(f"[INFO] USDSEK = {usdsek} ({src})")
 
-# ---------- 5) QtyToBuy ----------
-per_ticker_budget_sek = (capital/10.0) if capital and capital>0 else 0.0
+# ---------- QtyToBuy för topp-10 ----------
+per_ticker_budget_sek = (portfolio_value/10.0) if portfolio_value and portfolio_value>0 else 0.0
 buy_now["QtyToBuy"] = 0
-if per_ticker_budget_sek > 0 and usdsek > 0:
-    mask10 = buy_now["BuyRank"] <= 10
-    price_usd = buy_now.loc[mask10,"Price"]
-    price_sek = price_usd * usdsek
-    qty_raw = per_ticker_budget_sek / price_sek.replace(0,np.nan)
-    qty = np.floor(qty_raw).fillna(0).astype(int)
-    buy_now.loc[mask10,"QtyToBuy"] = qty
-
-    # Debug exempel på första raden i topp10
-    if mask10.any():
-        first = buy_now[mask10].iloc[0]
-        log(f"[DBG] Exempel qty: ticker={first['Ticker']}, PriceUSD={first['Price']}, PriceSEK={first['Price']*usdsek:.2f}, "
-            f"BudgetSEK={per_ticker_budget_sek}, Qty={int(first['QtyToBuy'])}")
+if per_ticker_budget_sek>0 and usdsek>0:
+    m = buy_now["BuyRank"]<=10
+    price_sek = buy_now.loc[m,"Price"] * usdsek
+    qty = np.floor(per_ticker_budget_sek / price_sek.replace(0,np.nan)).fillna(0).astype(int)
+    buy_now.loc[m,"QtyToBuy"] = qty
+    if m.any():
+        f = buy_now[m].iloc[0]
+        log(f"[DBG] Exempel: {f['Ticker']} PriceUSD={f['Price']}, PriceSEK={f['Price']*usdsek:.2f}, "
+            f"BudgetSEK={per_ticker_budget_sek}, Qty={int(f['QtyToBuy'])}")
 else:
-    log("[WARN] per_ticker_budget_sek eller usdsek <= 0 → QtyToBuy blir 0")
+    log("[WARN] Portföljvärde eller USDSEK = 0 → QtyToBuy blir 0")
 
-# ---------- 6) Export-DF ----------
+# ---------- Export & skriv BuyNow EFTER Calc ----------
 export_df = buy_now.copy()
 # runda övriga numeriska till 2 dec (ej QtyToBuy/Ret_*)
 num_cols = export_df.select_dtypes(include=[np.number]).columns.tolist()
 for col in num_cols:
     if col not in ["QtyToBuy","Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
-        export_df[col] = export_df[col].round(2)
+        export_df[col]=export_df[col].round(2)
 export_df = export_df.sort_values("BuyRank").reset_index(drop=True)
 
-# ---------- 7) Kopiera mall, skriv BuyNow EFTER Calc + Debug_Qty + USDSEK i Parametrar ----------
 copyfile(MALL_PATH, OUT_PATH)
 wb = load_workbook(OUT_PATH)
 
 # BuyNow efter Calc
 if "BuyNow" in wb.sheetnames: wb.remove(wb["BuyNow"])
-if "Calc" not in wb.sheetnames: fail("Fliken 'Calc' saknas i utfilen.")
+if "Calc" not in wb.sheetnames: fail("Calc saknas i utfilen.")
 calc_idx = wb.sheetnames.index("Calc")
-ws_bn = wb.create_sheet("BuyNow", index=calc_idx+1)
+ws = wb.create_sheet("BuyNow", index=calc_idx+1)
 
 # skriv BuyNow
-headers = list(export_df.columns)
-for j,h in enumerate(headers, start=1): ws_bn.cell(row=1, column=j, value=h)
+headers=list(export_df.columns)
+for j,h in enumerate(headers,1): ws.cell(row=1,column=j,value=h)
 for i,row in export_df.iterrows():
-    for j,h in enumerate(headers, start=1):
-        ws_bn.cell(row=i+2, column=j, value=row[h])
+    for j,h in enumerate(headers,1):
+        ws.cell(row=i+2,column=j,value=row[h])
 
 # format
-hdr = {h:i+1 for i,h in enumerate(headers)}
+hdr={h:i+1 for i,h in enumerate(headers)}
 def fmt(col, fmt):
     if col not in hdr: return
     c = hdr[col]
-    for r in range(2, ws_bn.max_row+1):
-        ws_bn.cell(row=r, column=c).number_format = fmt
+    for r in range(2, ws.max_row+1):
+        ws.cell(row=r, column=c).number_format = fmt
 
 for c in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
     fmt(c, "0.00%")
@@ -186,68 +155,29 @@ if "QtyToBuy" in hdr: fmt("QtyToBuy","0")
 for name in headers:
     if name not in {"Ret_1m","Ret_3m","Ret_6m","Ret_12m","QtyToBuy"}:
         c = hdr[name]
-        for r in range(2, ws_bn.max_row+1):
-            cell = ws_bn.cell(row=r, column=c)
+        for r in range(2, ws.max_row+1):
+            cell = ws.cell(row=r, column=c)
             if isinstance(cell.value, (int, float)):
                 cell.number_format = "0.00"
 
-# Debug_Qty-flik
-if "Debug_Qty" in wb.sheetnames: wb.remove(wb["Debug_Qty"])
-ws_dbg = wb.create_sheet("Debug_Qty", index=calc_idx+2)
-
-# Bygg debug-data
-mask10 = buy_now["BuyRank"] <= 10
-dbg = pd.DataFrame({
-    "Ticker": buy_now["Ticker"],
-    "BuyRank": buy_now["BuyRank"],
-    "PriceUSD": buy_now["Price"],
-})
-dbg["USDSEK"] = usdsek
-dbg["PriceSEK"] = dbg["PriceUSD"] * usdsek
-dbg["CapitalSEK_total"] = capital
-dbg["PerTickerBudgetSEK"] = per_ticker_budget_sek
-dbg["EligibleTop10"] = mask10
-dbg["QtyRaw"] = np.where(mask10, (per_ticker_budget_sek / dbg["PriceSEK"].replace(0,np.nan)), np.nan)
-dbg["QtyToBuy"] = buy_now["QtyToBuy"]
-
-# skriv debug
-dbg_cols = list(dbg.columns)
-for j,h in enumerate(dbg_cols, start=1): ws_dbg.cell(row=1, column=j, value=h)
-for i,row in dbg.iterrows():
-    for j,h in enumerate(dbg_cols, start=1):
-        ws_dbg.cell(row=i+2, column=j, value=row[h])
-
-# skriv/uppdatera USDSEK i Parametrar (OUT)
+# lägg även in USDSEK i Parametrar (OUT) för spårbarhet
 if "Parametrar" in wb.sheetnames:
     ws_p = wb["Parametrar"]
-else:
-    ws_p = wb.create_sheet("Parametrar")
-def find_row_for_key(sheet, key_name: str):
-    tgt = key_name.strip().lower()
-    for r in range(1, sheet.max_row+1):
-        k = sheet.cell(row=r, column=1).value
-        if k is None: continue
-        if str(k).strip().lower() == tgt:
-            return r
-    return None
-row = find_row_for_key(ws_p, "USDSEK")
-if row is None:
-    row = ws_p.max_row + 1 if ws_p.max_row >= 1 else 1
-    ws_p.cell(row=row, column=1, value="USDSEK")
-ws_p.cell(row=row, column=2, value=float(usdsek))
+    try:
+        ws_p.cell(row=1, column=1, value="Portföljvärde")  # bevara etiketten
+        ws_p.cell(row=1, column=2, value=float(portfolio_value))
+    except: pass
+    # skriv/uppdatera USDSEK på rad 2
+    ws_p.cell(row=2, column=1, value="USDSEK")
+    ws_p.cell(row=2, column=2, value=float(usdsek))
 
-# enkel autofit columns (BuyNow + Debug_Qty)
-def autofit(ws):
-    for col in range(1, ws.max_column+1):
-        maxlen = 0
-        for r in range(1, ws.max_row+1):
-            v = ws.cell(row=r, column=col).value
-            if v is None: continue
-            l = len(str(v))
-            if l > maxlen: maxlen = l
-        ws.column_dimensions[get_column_letter(col)].width = min(maxlen+2, 50)
-
-autofit(ws_bn); autofit(ws_dbg)
+# enkel autofit
+for col_idx,name in enumerate(headers, start=1):
+    maxlen = len(str(name))
+    for r in range(2, ws.max_row+1):
+        v = ws.cell(row=r, column=col_idx).value
+        if v is not None: maxlen = max(maxlen, len(str(v)))
+    ws.column_dimensions[get_column_letter(col_idx)].width = min(maxlen+2, 50)
 
 wb.save(OUT_PATH)
-log("[OK] Momentum.xlsx uppdaterad — BuyNow efter Calc, QtyToBuy beräknad, Debug_Qty skapad.")
+log("[OK] Momentum.xlsx uppdaterad — Portföljvärde från Parametrar!B1, QtyToBuy ifyllt för topp-10.")
