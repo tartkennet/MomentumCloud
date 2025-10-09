@@ -1,168 +1,113 @@
-name: Momentum Daily
+import numpy as np
+import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 4 * * 1-5"   # 06:00 svensk tid (vardagar)
+# === BUY NOW ===
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+# 1️⃣ Konvertera numeriska kolumner till float
+for c in ["Price", "SMA200", "Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
+    if c in base.columns:
+        base[c] = pd.to_numeric(base[c], errors="coerce")
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+# 2️⃣ Säkerställ att returer är i decimalform
+for c in ["Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
+    if c in base.columns:
+        base[c] = base[c].where(base[c].abs() <= 1, base[c] / 100.0)
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pandas numpy openpyxl pyarrow requests
+# 3️⃣ Momentum-filter (utan volymkrav)
+flt_core = (
+    (base["Price"] > base["SMA200"].fillna(np.inf)) &
+    (base["Ret_3m"].fillna(-1) > 0) &
+    (base["Ret_6m"].fillna(-1) > 0)
+)
+cand = base.loc[flt_core].copy()
 
-      - name: Fetch incremental (create/extend cache.parquet)
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: |
-          python polygon_fetch_incremental.py
+# 4️⃣ Rangordna på ScoreAdj (eller Score, MomentumScore, Ret_6m)
+rank_cols = [c for c in ["ScoreAdj", "Score", "MomentumScore", "Ret_6m"] if c in base.columns]
+rank_col = rank_cols[0]
+top_core = cand.sort_values(rank_col, ascending=False).head(15).copy()
 
-      - name: Build raw Momentum.xlsx (all sheets)
-        run: |
-          python momentum_master.py
+# 5️⃣ Fyll upp till 15 om färre
+need = 15 - len(top_core)
+if need > 0:
+    trend = base.loc[(base["Price"] > base["SMA200"].fillna(np.inf))].copy()
+    trend = trend[~trend["Ticker"].isin(top_core["Ticker"])]
+    filler = trend.sort_values(rank_col, ascending=False).head(need)
+    buy_now_df = pd.concat([top_core, filler], ignore_index=True)
+else:
+    buy_now_df = top_core
 
-      - name: Merge data into your template
-        run: |
-          python - <<'PY'
-          from openpyxl import load_workbook
-          from openpyxl.utils import get_column_letter
-          import pandas as pd, math
-          from pathlib import Path
+buy_now_df = buy_now_df.dropna(subset=["Ticker"]).drop_duplicates(subset=["Ticker"]).head(15).copy()
 
-          RAW = Path("Momentum.xlsx")
-          TEMPLATE = Path("Momentum mall fil.xlsx")
-          OUT = Path("Momentum.xlsx")
+# 6️⃣ BuyRank / BuyFlag
+buy_now_df.insert(0, "BuyRank", np.arange(1, len(buy_now_df) + 1))
+buy_now_df["BuyFlag"] = buy_now_df["BuyRank"] <= 10
 
-          if not TEMPLATE.exists():
-              raise FileNotFoundError("Hittar inte 'Momentum mall fil.xlsx'.")
+# 7️⃣ Läs Kapital från Parametrar
+def load_params_dict():
+    try:
+        dfp = pd.read_excel(mall_path, sheet_name="Parametrar")
+        kv = dfp.iloc[:, :2].copy()
+        kv.columns = ["key", "value"]
+        kv["key_norm"] = kv["key"].astype(str).str.strip().str.lower()
+        return dict(zip(kv["key_norm"], kv["value"]))
+    except Exception:
+        return {}
 
-          auto_tabs = ["Universe", "Calc", "BuyNow", "EarlyCandidates"]
-          dfs = {}
-          with pd.ExcelFile(RAW) as x:
-              for sh in auto_tabs:
-                  try:
-                      dfs[sh] = pd.read_excel(x, sheet_name=sh)
-                  except:
-                      dfs[sh] = pd.DataFrame()
+params = load_params_dict()
+capital = 0.0
+for k in ["kapital att handla för", "kapital", "kapital_att_handla_for"]:
+    if k in params:
+        try:
+            capital = float(params[k])
+            break
+        except Exception:
+            pass
 
-          wb = load_workbook(TEMPLATE)
+per_ticker_budget = (capital / 10.0) if capital > 0 else 0.0
 
-          def write_df(ws, df):
-              ws.delete_rows(2, ws.max_row)
-              for j,c in enumerate(df.columns,start=1):
-                  ws.cell(row=1,column=j).value=c
-              for i,row in enumerate(df.itertuples(index=False),start=2):
-                  for j,val in enumerate(row,start=1):
-                      ws.cell(row=i,column=j).value=None if (isinstance(val,float) and math.isnan(val)) else val
+# 8️⃣ QtyToBuy endast för topp 10
+buy_now_df["QtyToBuy"] = 0
+if "Price" in buy_now_df.columns and per_ticker_budget > 0:
+    mask_top10 = buy_now_df["BuyRank"] <= 10
+    buy_now_df.loc[mask_top10, "QtyToBuy"] = np.floor(
+        per_ticker_budget / buy_now_df.loc[mask_top10, "Price"].replace(0, np.nan)
+    ).fillna(0).astype(int)
 
-          for sh,df in dfs.items():
-              if sh not in wb.sheetnames:
-                  wb.create_sheet(sh)
-              ws = wb[sh]
+# 9️⃣ Ret_1m–Ret_12m till procent med två decimaler
+for c in ["Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
+    if c in buy_now_df.columns:
+        buy_now_df[c] = (buy_now_df[c] * 100).round(2)
 
-              if sh=="BuyNow" and not df.empty:
-                  # Procentkolumner
-                  for col in [c for c in df.columns if str(c).startswith("Ret_")]:
-                      if pd.api.types.is_numeric_dtype(df[col]):
-                          s=df[col].dropna().astype(float)
-                          if not s.empty and s.median()>5: df[col]=df[col]/100
-                          df[col]=df[col].round(4)
-                  # Övriga numeriska
-                  for col in df.columns:
-                      if not str(col).startswith("Ret_") and pd.api.types.is_numeric_dtype(df[col]):
-                          df[col]=df[col].round(2)
+# 🔟 Runda alla numeriska kolumner till två decimaler
+num_cols = buy_now_df.select_dtypes(include=[np.number]).columns
+buy_now_df[num_cols] = buy_now_df[num_cols].round(2)
 
-              write_df(ws,df)
+# 🔁 Sortera på BuyRank 1–15
+buy_now_df = buy_now_df.sort_values("BuyRank").reset_index(drop=True)
 
-              if sh=="BuyNow" and not df.empty:
-                  headers={ (ws.cell(row=1,column=j).value or ""):j for j in range(1,ws.max_column+1)}
-                  for name,j in headers.items():
-                      for r in range(2,ws.max_row+1):
-                          cell=ws.cell(row=r,column=j)
-                          if str(name).startswith("Ret_"): cell.number_format="0.00%"
-                          elif isinstance(cell.value,(int,float)): cell.number_format="0.00"
-                  for name,j in headers.items():
-                      l=get_column_letter(j)
-                      if ws.column_dimensions[l].width in (None,0):
-                          ws.column_dimensions[l].width=max(9,min(25,len(str(name))+2))
+# 1️⃣1️⃣ Skriv BuyNow till Excel (Universe lämnas orörd)
+with pd.ExcelWriter(out_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as xw:
+    buy_now_df.to_excel(xw, sheet_name="BuyNow", index=False)
 
-          wb.save(OUT)
-          PY
+# 1️⃣2️⃣ Formatera i Excel: procent och två decimaler
+wb = load_workbook(out_path)
+ws = wb["BuyNow"]
 
-      - name: Apply filters and add QtyToBuy
-        run: |
-          python - <<'PY'
-          from openpyxl import load_workbook
-          from math import floor
+headers = [cell.value for cell in ws[1]]
+for c in ["Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
+    if c in headers:
+        col_idx = headers.index(c) + 1
+        for row in ws.iter_rows(min_row=2, min_col=col_idx, max_col=col_idx):
+            for cell in row:
+                cell.number_format = "0.00%"
 
-          xlsx="Momentum.xlsx"
-          wb=load_workbook(xlsx)
-          if "BuyNow" not in wb.sheetnames:
-              wb.save(xlsx); exit()
+for idx, name in enumerate(headers, start=1):
+    if name not in ["Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
+        for row in ws.iter_rows(min_row=2, min_col=idx, max_col=idx):
+            for cell in row:
+                if isinstance(cell.value, (int, float)):
+                    cell.number_format = "0.00"
 
-          ws=wb["BuyNow"]
-          headers={ (c.value or "").strip():c.column for c in ws[1] if c.value }
-          def col(n): return headers.get(n)
-          c_price=col("Price_0"); c_sma200=col("SMA200")
-          c_r3=col("Ret_3m"); c_r6=col("Ret_6m"); c_vol=col("AvgVol")
-
-          # --- mild filter ---
-          for r in range(ws.max_row,1,-1):
-              try:
-                  p=float(ws.cell(r,c_price).value)
-                  s=float(ws.cell(r,c_sma200).value)
-                  r6=float(ws.cell(r,c_r6).value)
-                  ok=(p>s) and (r6>0)
-                  if c_r3:
-                      r3=float(ws.cell(r,c_r3).value)
-                      ok=ok and (r3>0)
-                  if c_vol:
-                      v=ws.cell(r,c_vol).value
-                      if v: ok=ok and (float(v)>=300000)
-              except: ok=False
-              if not ok: ws.delete_rows(r,1)
-
-          # --- qty from Parametrar ---
-          capital=None
-          if "Parametrar" in wb.sheetnames:
-              ps=wb["Parametrar"]
-              for r in ps.iter_rows(values_only=True):
-                  if not r or not r[0]: continue
-                  if str(r[0]).strip().lower().startswith("kapital"):
-                      try: capital=float(r[1]); break
-                      except: pass
-
-          if capital and capital>0:
-              hdrs=[(c.value or "").strip() for c in ws[1]]
-              if "QtyToBuy" not in hdrs:
-                  ws.cell(1,len(hdrs)+1).value="QtyToBuy"
-                  c_qty=len(hdrs)+1
-              else:
-                  c_qty=hdrs.index("QtyToBuy")+1
-              n=max(1,ws.max_row-1)
-              per_stock=capital/n
-              if c_price:
-                  for r in range(2,ws.max_row+1):
-                      price=ws.cell(r,c_price).value
-                      try: ws.cell(r,c_qty).value=floor(per_stock/float(price))
-                      except: ws.cell(r,c_qty).value=None
-
-          wb.save(xlsx)
-          PY
-
-      - name: Upload Momentum.xlsx
-        uses: actions/upload-artifact@v4
-        with:
-          name: Momentum
-          path: Momentum.xlsx
+wb.save(out_path)
