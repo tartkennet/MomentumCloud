@@ -1,5 +1,5 @@
-# momentum_master.py — Portföljvärde (Parametrar!B1), auto-USDSEK, QtyToBuy för topp-10
-import os, sys, re
+# momentum_master.py — bygger BuyNow + skriver JSON till public/data/buynow.json
+import os, sys, re, json
 import numpy as np
 import pandas as pd
 from shutil import copyfile
@@ -9,6 +9,8 @@ import requests
 
 MALL_PATH = "Momentum mall fil.xlsx"
 OUT_PATH  = "Momentum.xlsx"
+JSON_DIR  = "public/data"
+JSON_PATH = os.path.join(JSON_DIR, "buynow.json")
 EXCLUDE_TICKERS = {"WOLF"}  # blocklista
 
 def log(m): print(m, flush=True)
@@ -70,7 +72,6 @@ buy_now["BuyFlag"] = buy_now["BuyRank"] <= 10
 
 # ---------- Portföljvärde (SEK) från Parametrar!B1 ----------
 try:
-    # exakt cell B1
     port_df = pd.read_excel(MALL_PATH, sheet_name="Parametrar", header=None)
     portfolio_value = port_df.iat[0,1]  # B1
     try:
@@ -79,7 +80,6 @@ try:
         portfolio_value = 0.0
 except Exception:
     portfolio_value = 0.0
-
 log(f"[INFO] Portföljvärde(SEK) = {portfolio_value}")
 
 # ---------- USDSEK från Polygon ----------
@@ -109,10 +109,6 @@ if per_ticker_budget_sek>0 and usdsek>0:
     price_sek = buy_now.loc[m,"Price"] * usdsek
     qty = np.floor(per_ticker_budget_sek / price_sek.replace(0,np.nan)).fillna(0).astype(int)
     buy_now.loc[m,"QtyToBuy"] = qty
-    if m.any():
-        f = buy_now[m].iloc[0]
-        log(f"[DBG] Exempel: {f['Ticker']} PriceUSD={f['Price']}, PriceSEK={f['Price']*usdsek:.2f}, "
-            f"BudgetSEK={per_ticker_budget_sek}, Qty={int(f['QtyToBuy'])}")
 else:
     log("[WARN] Portföljvärde eller USDSEK = 0 → QtyToBuy blir 0")
 
@@ -125,32 +121,28 @@ for col in num_cols:
         export_df[col]=export_df[col].round(2)
 export_df = export_df.sort_values("BuyRank").reset_index(drop=True)
 
+# Skriv Excel
 copyfile(MALL_PATH, OUT_PATH)
 wb = load_workbook(OUT_PATH)
 
-# BuyNow efter Calc
 if "BuyNow" in wb.sheetnames: wb.remove(wb["BuyNow"])
 if "Calc" not in wb.sheetnames: fail("Calc saknas i utfilen.")
 calc_idx = wb.sheetnames.index("Calc")
 ws = wb.create_sheet("BuyNow", index=calc_idx+1)
 
-# skriv BuyNow
 headers=list(export_df.columns)
 for j,h in enumerate(headers,1): ws.cell(row=1,column=j,value=h)
 for i,row in export_df.iterrows():
     for j,h in enumerate(headers,1):
         ws.cell(row=i+2,column=j,value=row[h])
 
-# format
 hdr={h:i+1 for i,h in enumerate(headers)}
 def fmt(col, fmt):
     if col not in hdr: return
     c = hdr[col]
     for r in range(2, ws.max_row+1):
         ws.cell(row=r, column=c).number_format = fmt
-
-for c in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
-    fmt(c, "0.00%")
+for c in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]: fmt(c, "0.00%")
 if "QtyToBuy" in hdr: fmt("QtyToBuy","0")
 for name in headers:
     if name not in {"Ret_1m","Ret_3m","Ret_6m","Ret_12m","QtyToBuy"}:
@@ -159,25 +151,14 @@ for name in headers:
             cell = ws.cell(row=r, column=c)
             if isinstance(cell.value, (int, float)):
                 cell.number_format = "0.00"
-
-# lägg även in USDSEK i Parametrar (OUT) för spårbarhet
-if "Parametrar" in wb.sheetnames:
-    ws_p = wb["Parametrar"]
-    try:
-        ws_p.cell(row=1, column=1, value="Portföljvärde")  # bevara etiketten
-        ws_p.cell(row=1, column=2, value=float(portfolio_value))
-    except: pass
-    # skriv/uppdatera USDSEK på rad 2
-    ws_p.cell(row=2, column=1, value="USDSEK")
-    ws_p.cell(row=2, column=2, value=float(usdsek))
-
-# enkel autofit
-for col_idx,name in enumerate(headers, start=1):
-    maxlen = len(str(name))
-    for r in range(2, ws.max_row+1):
-        v = ws.cell(row=r, column=col_idx).value
-        if v is not None: maxlen = max(maxlen, len(str(v)))
-    ws.column_dimensions[get_column_letter(col_idx)].width = min(maxlen+2, 50)
-
 wb.save(OUT_PATH)
-log("[OK] Momentum.xlsx uppdaterad — Portföljvärde från Parametrar!B1, QtyToBuy ifyllt för topp-10.")
+
+# ---------- Skriv JSON för Lovable ----------
+os.makedirs(JSON_DIR, exist_ok=True)
+# Ret_* sparas som DECIMALER (0.1234); QtyToBuy heltal
+export_for_json = export_df.copy()
+json_records = export_for_json.to_dict(orient="records")
+with open(JSON_PATH, "w", encoding="utf-8") as f:
+    json.dump({"updated_at": pd.Timestamp.utcnow().isoformat(), "rows": json_records}, f, ensure_ascii=False)
+
+log(f"[OK] Momentum.xlsx & {JSON_PATH} skapade.")
