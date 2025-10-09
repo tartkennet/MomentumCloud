@@ -28,85 +28,68 @@ jobs:
         run: |
           python polygon_fetch_incremental.py
 
-      - name: Build Momentum.xlsx
+      - name: Build raw Momentum.xlsx (all sheets)
         run: |
           python momentum_master.py
 
-      - name: Post-process sheets (Holdings OK/KÖP + format Calc/BuyNow)
+      # --------- NYTT: slå ihop med din mall och skriv bara automationsflikarna ---------
+      - name: Merge into your template (keep manual sheets)
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
-          from openpyxl.styles import PatternFill
-          from openpyxl.worksheet.worksheet import Worksheet
           from openpyxl.utils import get_column_letter
+          import pandas as pd
+          from pathlib import Path
 
-          xlsx = "Momentum.xlsx"
-          wb = load_workbook(xlsx)
+          RAW = Path("Momentum.xlsx")                       # filen som byggts
+          TEMPLATE = Path("Momentum mall fil.xlsx")         # DIN mallfil i repot (med dina färger/format)
+          OUT = Path("Momentum.xlsx")                       # vi skriver tillbaka hit
 
-          # A) Holdings – ta bort färg + 1/0 -> OK/KÖP
-          if "Holdings" in wb.sheetnames:
-              ws: Worksheet = wb["Holdings"]
-              try:
-                  ws.conditional_formatting._cf_rules.clear()
-              except Exception:
-                  ws.conditional_formatting = type(ws.conditional_formatting)()
-              for row in ws.iter_rows():
-                  for c in row:
-                      if c.fill is not None:
-                          c.fill = PatternFill(fill_type=None)
-              header_row = 1
-              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
-              def apply_fmt(name, fmt):
-                  if name in headers:
-                      col = headers[name]
-                      for r in range(header_row+1, ws.max_row+1):
-                          ws.cell(row=r, column=col).number_format = fmt
-              ok_fmt  = '[=1]"OK";[=0]"";General'
-              kop_fmt = '[=1]"KÖP";[=0]"";General'
-              for k in ("FundOK","TrendOK","MomentumOK"):
-                  apply_fmt(k, ok_fmt)
-              apply_fmt("KÖP?", kop_fmt)
+          if not TEMPLATE.exists():
+              raise FileNotFoundError("Hittar inte 'Momentum mall fil.xlsx' i repo-roten.")
 
-          # B) Calc – procent/decimal + kolumnbredd
-          if "Calc" in wb.sheetnames:
-              ws: Worksheet = wb["Calc"]
-              header_row = 1
-              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
-              def fmt_cols(cols, fmt):
-                  for name in cols:
-                      if name in headers:
-                          col = headers[name]
-                          for r in range(header_row+1, ws.max_row+1):
-                              ws.cell(row=r, column=col).number_format = fmt
-              fmt_cols(["Price_0","Price_1m","Price_3m","Price_6m","Price_12m","SMA50","SMA200","Score_MOMO"], "0.00")
-              fmt_cols(["Ret1m","Ret3m","Ret6m","Ret12m"], "0.00%")
-              widths = {"Ticker":12,"Price_0":9,"Price_1m":9,"Price_3m":9,"Price_6m":9,"Price_12m":10,
-                        "SMA50":9,"SMA200":9,"Ret1m":9,"Ret3m":9,"Ret6m":9,"Ret12m":10,"Score_MOMO":11}
-              for name,w in widths.items():
-                  if name in headers:
-                      ws.column_dimensions[get_column_letter(headers[name])].width = w
+          # Läs data från de automationsflikar som ska skrivas om
+          auto_tabs = ["Universe","Calc","BuyNow","EarlyCandidates"]
+          dfs = {}
+          with pd.ExcelFile(RAW) as x:
+              for sh in auto_tabs:
+                  try:
+                      dfs[sh] = pd.read_excel(x, sheet_name=sh)
+                  except Exception:
+                      dfs[sh] = pd.DataFrame()
 
-          # C) BuyNow – procent/decimal + kolumnbredd
-          if "BuyNow" in wb.sheetnames:
-              ws: Worksheet = wb["BuyNow"]
-              header_row = 1
-              headers = { (c.value or "").strip(): c.column for c in ws[header_row] if c.value }
-              def fmt_cols(cols, fmt):
-                  for name in cols:
-                      if name in headers:
-                          col = headers[name]
-                          for r in range(header_row+1, ws.max_row+1):
-                              ws.cell(row=r, column=col).number_format = fmt
-              fmt_cols(["Price_0","Price_1m","Price_3m","Price_6m","Price_12m","SMA50","SMA200","Score_MOMO"], "0.00")
-              fmt_cols(["Ret1m","Ret3m","Ret6m","Ret12m"], "0.00%")
-              widths = {"Rank":6,"Ticker":12,"Price_0":9,"Price_1m":9,"Price_3m":9,"Price_6m":9,"Price_12m":10,
-                        "SMA50":9,"SMA200":9,"Ret1m":9,"Ret3m":9,"Ret6m":9,"Ret12m":10,"Score_MOMO":11}
-              for name,w in widths.items():
-                  if name in headers:
-                      ws.column_dimensions[get_column_letter(headers[name])].width = w
+          # Öppna din mall och skriv IN bara auto-flikarna, behåll allt annat
+          wb = load_workbook(TEMPLATE)
 
-          wb.save(xlsx)
+          for sh, df in dfs.items():
+              if sh in wb.sheetnames:
+                  ws = wb[sh]
+              else:
+                  ws = wb.create_sheet(sh)
+
+              # Rensa rader under rubrik (behåll rubrikradens format)
+              ws.delete_rows(2, ws.max_row)
+
+              # Skriv rubriker (A1..)
+              ws.cell(row=1, column=1).value = df.columns[0] if len(df.columns)>0 else "Ticker"
+              for j, col in enumerate(df.columns, start=1):
+                  ws.cell(row=1, column=j).value = col
+
+              # Skriv värden rad/kolumn, bibehåller cellformat som finns
+              for i, row in enumerate(df.itertuples(index=False), start=2):
+                  for j, val in enumerate(row, start=1):
+                      ws.cell(row=i, column=j).value = val
+
+              # (Valfritt) auto-bredd om kolumnen saknar width i mallen
+              for j, col in enumerate(df.columns, start=1):
+                  letter = get_column_letter(j)
+                  if ws.column_dimensions[letter].width in (None, 0):
+                      ws.column_dimensions[letter].width = max(9, min(30, len(str(col))+2))
+
+          # Spara som slutfil (skriver alltså över RAW med din mall + nya auto-flikar)
+          wb.save(OUT)
           PY
+      # -------------------------------------------------------------------------------
 
       - name: Upload Momentum.xlsx
         uses: actions/upload-artifact@v4
