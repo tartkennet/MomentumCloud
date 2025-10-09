@@ -32,64 +32,111 @@ jobs:
         run: |
           python momentum_master.py
 
-      # --------- NYTT: slå ihop med din mall och skriv bara automationsflikarna ---------
-      - name: Merge into your template (keep manual sheets)
+      # === Skriv endast AUTO-flikar in i din mall + fixa procent/decimaler i BuyNow ===
+      - name: Merge into your template (keep manual sheets + fix BuyNow percentages)
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
           from openpyxl.utils import get_column_letter
           import pandas as pd
           from pathlib import Path
+          import math
 
-          RAW = Path("Momentum.xlsx")                       # filen som byggts
-          TEMPLATE = Path("Momentum mall fil.xlsx")         # DIN mallfil i repot (med dina färger/format)
-          OUT = Path("Momentum.xlsx")                       # vi skriver tillbaka hit
+          RAW = Path("Momentum.xlsx")                 # rå fil från momentum_master.py
+          TEMPLATE = Path("Momentum mall fil.xlsx")   # DIN mallfil i repo-roten
+          OUT = Path("Momentum.xlsx")                 # slutfil
 
           if not TEMPLATE.exists():
               raise FileNotFoundError("Hittar inte 'Momentum mall fil.xlsx' i repo-roten.")
 
-          # Läs data från de automationsflikar som ska skrivas om
-          auto_tabs = ["Universe","Calc","BuyNow","EarlyCandidates"]
+          # Flikar som uppdateras automatiskt
+          auto_tabs = ["Universe", "Calc", "BuyNow", "EarlyCandidates"]
+
+          # Läs rå-data för auto-flikarna
           dfs = {}
           with pd.ExcelFile(RAW) as x:
               for sh in auto_tabs:
                   try:
-                      dfs[sh] = pd.read_excel(x, sheet_name=sh)
+                      df = pd.read_excel(x, sheet_name=sh)
                   except Exception:
-                      dfs[sh] = pd.DataFrame()
+                      df = pd.DataFrame()
+                  dfs[sh] = df
 
-          # Öppna din mall och skriv IN bara auto-flikarna, behåll allt annat
+          # Öppna din mall
           wb = load_workbook(TEMPLATE)
 
-          for sh, df in dfs.items():
-              if sh in wb.sheetnames:
-                  ws = wb[sh]
-              else:
-                  ws = wb.create_sheet(sh)
-
-              # Rensa rader under rubrik (behåll rubrikradens format)
+          # Hjälpare
+          def write_df(ws, df: pd.DataFrame):
+              # rensa gamla rader (behåll rubrikradens format)
               ws.delete_rows(2, ws.max_row)
-
-              # Skriv rubriker (A1..)
-              ws.cell(row=1, column=1).value = df.columns[0] if len(df.columns)>0 else "Ticker"
+              # rubriker
               for j, col in enumerate(df.columns, start=1):
                   ws.cell(row=1, column=j).value = col
-
-              # Skriv värden rad/kolumn, bibehåller cellformat som finns
+              # värden
               for i, row in enumerate(df.itertuples(index=False), start=2):
                   for j, val in enumerate(row, start=1):
-                      ws.cell(row=i, column=j).value = val
+                      ws.cell(row=i, column=j).value = (None if (isinstance(val, float) and math.isnan(val)) else val)
 
-              # (Valfritt) auto-bredd om kolumnen saknar width i mallen
-              for j, col in enumerate(df.columns, start=1):
-                  letter = get_column_letter(j)
-                  if ws.column_dimensions[letter].width in (None, 0):
-                      ws.column_dimensions[letter].width = max(9, min(30, len(str(col))+2))
+          # Skriv alla auto-flikar
+          for sh, df in dfs.items():
+              if sh not in wb.sheetnames:
+                  wb.create_sheet(sh)
+              ws = wb[sh]
+              # Specialbehandling av BuyNow innan skrivning: fixa procent och decimaler
+              if sh == "BuyNow" and not df.empty:
+                  # Dela Ret_-kolumner med 100 om de ser ut som heltals-procent
+                  for col in [c for c in df.columns if str(c).startswith("Ret_")]:
+                      if pd.api.types.is_numeric_dtype(df[col]):
+                          # enkel heuristik: median > 5 => troligen 5% uttryckt som 5
+                          sample = df[col].dropna().astype(float)
+                          if not sample.empty and sample.median() > 5:
+                              df[col] = df[col].astype(float) / 100.0
+                          # runda procentvärden till 4 decimaler (ger 2 decimals i %)
+                          df[col] = df[col].astype(float).round(4)
+                  # Övriga numeriska kolumner till 2 decimaler
+                  for col in df.columns:
+                      if str(col).startswith("Ret_"):
+                          continue
+                      if pd.api.types.is_numeric_dtype(df[col]):
+                          df[col] = df[col].astype(float).round(2)
 
-          # Spara som slutfil (skriver alltså över RAW med din mall + nya auto-flikar)
+              # Calc/Universe/Early: runda övriga numeriska kolumner till 2 decimaler
+              if sh in ("Calc", "Universe", "EarlyCandidates") and not df.empty:
+                  for col in df.columns:
+                      if pd.api.types.is_numeric_dtype(df[col]):
+                          if str(col).startswith("Ret_"):
+                              # returer här är redan i 0–1; runda till 4 decimals (→ 2 i %)
+                              df[col] = df[col].astype(float).round(4)
+                          else:
+                              df[col] = df[col].astype(float).round(2)
+
+              # Skriv till bladet
+              write_df(ws, df)
+
+              # Formatera BuyNow: procent + talformat + vettig kolumnbredd
+              if sh == "BuyNow" and not df.empty:
+                  headers = { (ws.cell(row=1, column=j).value or ""): j for j in range(1, ws.max_column+1) }
+                  # Procent-format för Ret_-kolumner
+                  for name, j in list(headers.items()):
+                      if str(name).startswith("Ret_"):
+                          for r in range(2, ws.max_row+1):
+                              ws.cell(row=r, column=j).number_format = "0.00%"
+                      else:
+                          # övriga numeriska: 0.00
+                          # (vi sätter format bara om cellen verkligen är numerisk)
+                          for r in range(2, ws.max_row+1):
+                              cell = ws.cell(row=r, column=j)
+                              if isinstance(cell.value, (int, float)):
+                                  ws.cell(row=r, column=j).number_format = "0.00"
+                  # Kolumnbredder (behåll mallens om de redan är satta)
+                  for name, j in headers.items():
+                      letter = get_column_letter(j)
+                      if ws.column_dimensions[letter].width in (None, 0):
+                          ws.column_dimensions[letter].width = max(9, min(25, len(str(name))+2))
+
+          # Spara som slutfil
           wb.save(OUT)
           PY
-      # -------------------------------------------------------------------------------
 
       - name: Upload Momentum.xlsx
         uses: actions/upload-artifact@v4
