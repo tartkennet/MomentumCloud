@@ -1,9 +1,11 @@
-# momentum_master.py – robust & rättade procenttal
-# - Universe orörd (kopieras från mallen).
-# - BuyNow = 15 (Price_0 > SMA200, Ret3m>0, Ret6m>0; fyll upp med Price_0 > SMA200).
-# - Endast topp-10 får QtyToBuy, baserat på Parametrar["Kapital att handla för"].
-# - Returkolumner i Excel visas som 0.00% (utan att multiplicera värdet).
-# - Övriga numeriska i BuyNow visas som 0.00, QtyToBuy som heltal.
+# momentum_master.py – BuyNow korrekt enligt dina regler
+# - Returer räknas från Price_0/1m/3m/6m/12m => (Price_0/Price_Nm - 1)
+# - Filter: Price_0 > SMA200 OCH Ret_1m>0 OCH Ret_3m>0 OCH Ret_6m>0 OCH Ret_12m>0
+# - 15 rader i BuyNow (om färre, fyll upp med Price_0>SMA200 + icke-negativa returer)
+# - Endast topp-10 får QtyToBuy (från Parametrar["Kapital att handla för"])
+# - BuyNow-fliken placeras direkt efter Calc
+# - Returkolumner visas som 0.00%, övriga som 0.00, QtyToBuy som heltal
+# - Universe och övriga flikar lämnas orörda (vi kopierar mallen och ersätter bara BuyNow)
 
 import os, sys
 import numpy as np
@@ -15,208 +17,187 @@ from shutil import copyfile
 MALL_PATH = "Momentum mall fil.xlsx"
 OUT_PATH  = "Momentum.xlsx"
 
-def log(msg): print(msg, flush=True)
-def fail(msg):
-    print(f"Error: {msg}", file=sys.stderr, flush=True)
+def log(m): print(m, flush=True)
+def fail(m):
+    print(f"Error: {m}", file=sys.stderr, flush=True)
     sys.exit(1)
 
-# --------- helpers ----------
-def normalize_name(s: str) -> str:
-    return (str(s).strip().lower()
-            .replace(" ", "").replace("_", "").replace("-", "").replace("%",""))
-
-def to_float_series(s: pd.Series) -> pd.Series:
-    if s.dtype.kind in "biufc":
-        return pd.to_numeric(s, errors="coerce")
-    x = s.astype(str)
-    x = x.str.replace("%","", regex=False).str.strip()
-    x = x.str.replace(" ", "", regex=False)       # thousand sep (space)
-    x = x.str.replace(",", ".", regex=False)      # Swedish decimal
-    return pd.to_numeric(x, errors="coerce")
-
-def ensure_decimal_returns(sr: pd.Series) -> pd.Series:
-    v = pd.to_numeric(sr, errors="coerce")
-    # if values look like 12.34 (i.e., 12.34%) convert to decimal 0.1234
-    return v.where(v.abs() <= 1, v / 100.0)
-
-def pick(df: pd.DataFrame, aliases: list, required=False):
-    norm_map = {normalize_name(c): c for c in df.columns}
-    for a in aliases:
-        key = normalize_name(a)
-        if key in norm_map:
-            col = norm_map[key]
-            return col, to_float_series(df[col])
-    if required:
-        return None, None
-    return None, None
-
-# --------- read mall ----------
+# ---------- Läs in mallens Calc ----------
 if not os.path.exists(MALL_PATH):
     fail(f"Mallen saknas: {MALL_PATH}")
+
 try:
-    base = pd.read_excel(MALL_PATH, sheet_name="Calc")
+    calc = pd.read_excel(MALL_PATH, sheet_name="Calc")
 except Exception as e:
     fail(f"Kunde inte läsa fliken 'Calc': {e}")
 
-if "Ticker" not in base.columns:
+if "Ticker" not in calc.columns:
     fail("Kolumnen 'Ticker' saknas i Calc.")
 
-# --------- aliases (enl. din Calc-bild) ----------
-price_alias  = ["Price_0", "Price", "Close", "Adj Close", "AdjClose", "Last"]
-sma200_alias = ["SMA200", "SMA_200", "MA200", "MA_200"]
-ret1_alias   = ["Ret1m", "Ret_1m", "R1m", "Return1m"]
-ret3_alias   = ["Ret3m", "Ret_3m", "R3m", "Return3m"]
-ret6_alias   = ["Ret6m", "Ret_6m", "R6m", "Return6m"]
-ret12_alias  = ["Ret12m","Ret_12m","R12m","Return12m"]
-rank_alias   = ["ScoreAdj", "Score_MOMO", "Score", "MomentumScore", "Ret6m", "Ret_6m", "Ret3m", "Ret_3m"]
+# Alias för dina rubriker (enligt din skärmdump)
+def get_col(name_options):
+    for n in name_options:
+        if n in calc.columns:
+            return n
+    return None
 
-price_col, price   = pick(base, price_alias,  required=True)
-sma200_col, sma200 = pick(base, sma200_alias, required=True)
-ret1_col, ret1     = pick(base, ret1_alias)
-ret3_col, ret3     = pick(base, ret3_alias)
-ret6_col, ret6     = pick(base, ret6_alias)
-ret12_col, ret12   = pick(base, ret12_alias)
+COL_PRICE0 = get_col(["Price_0", "Price0", "Close", "Price"])
+COL_P1M    = get_col(["Price_1m", "Price1m"])
+COL_P3M    = get_col(["Price_3m", "Price3m"])
+COL_P6M    = get_col(["Price_6m", "Price6m"])
+COL_P12M   = get_col(["Price_12m", "Price12m"])
+COL_SMA200 = get_col(["SMA200", "MA200"])
+COL_SCORE  = get_col(["Score_MOMO", "ScoreAdj", "Score", "MomentumScore"])
 
-if price is None or sma200 is None:
-    miss = []
-    if price is None: miss.append("Price_0/Price/Close")
-    if sma200 is None: miss.append("SMA200/MA200")
-    fail(f"Saknade kolumner i Calc: {miss}")
+need = [("Price_0", COL_PRICE0), ("SMA200", COL_SMA200)]
+missing = [n for n,c in need if c is None]
+if missing:
+    fail(f"Saknar nödvändiga kolumner i Calc: {missing}")
 
-# returns as decimals internally
-if ret1  is not None:  ret1  = ensure_decimal_returns(ret1)
-if ret3  is not None:  ret3  = ensure_decimal_returns(ret3)
-if ret6  is not None:  ret6  = ensure_decimal_returns(ret6)
-if ret12 is not None:  ret12 = ensure_decimal_returns(ret12)
+# Bygg arbets-DF
+work = pd.DataFrame({"Ticker": calc["Ticker"]})
+work["Price"]  = pd.to_numeric(calc[COL_PRICE0], errors="coerce")
+work["SMA200"] = pd.to_numeric(calc[COL_SMA200], errors="coerce")
 
-# working DF
-work = pd.DataFrame({"Ticker": base["Ticker"]})
-work["Price"]  = price
-work["SMA200"] = sma200
-if ret1  is not None: work["Ret_1m"]  = ret1
-if ret3  is not None: work["Ret_3m"]  = ret3
-if ret6  is not None: work["Ret_6m"]  = ret6
-if ret12 is not None: work["Ret_12m"] = ret12
+# Räkna returer från pris-kolumner om de finns
+def safe_ret(p0, p_back):
+    p0 = pd.to_numeric(p0, errors="coerce")
+    p_back = pd.to_numeric(p_back, errors="coerce")
+    return (p0 / p_back) - 1.0
 
-# ranking column
-for a in rank_alias:
-    if a in base.columns:
-        work[a] = to_float_series(base[a])
-        rank_col = a
-        break
-else:
-    rank_col = "Price"
+if COL_P1M  is not None: work["Ret_1m"]  = safe_ret(calc[COL_PRICE0], calc[COL_P1M])
+if COL_P3M  is not None: work["Ret_3m"]  = safe_ret(calc[COL_PRICE0], calc[COL_P3M])
+if COL_P6M  is not None: work["Ret_6m"]  = safe_ret(calc[COL_PRICE0], calc[COL_P6M])
+if COL_P12M is not None: work["Ret_12m"] = safe_ret(calc[COL_PRICE0], calc[COL_P12M])
 
-log(f"Mapping: Price='{price_col}', SMA200='{sma200_col}', "
-    f"Ret1='{ret1_col}', Ret3='{ret3_col}', Ret6='{ret6_col}', Ret12='{ret12_col}', rank='{rank_col}'")
+# Rank-kolumn (fall back till Price om inget score)
+rank_col = COL_SCORE if COL_SCORE is not None else "Price"
+if rank_col != "Price":
+    work[rank_col] = pd.to_numeric(calc[rank_col], errors="coerce")
 
-# --------- core filter (YES: Price_0 > SMA200 is included) ----------
-flt = (work["Price"] > work["SMA200"].replace({np.nan: np.inf}))
-if "Ret_3m" in work.columns: flt &= (work["Ret_3m"].fillna(-1) > 0)
-else: log("VARNING: Ret_3m saknas – hoppar över det filtret.")
-if "Ret_6m" in work.columns: flt &= (work["Ret_6m"].fillna(-1) > 0)
-else: log("VARNING: Ret_6m saknas – hoppar över det filtret.")
+# ---------- Hårdare filter så WOLF & liknande ryker ----------
+flt = (
+    (work["Price"] > work["SMA200"].replace({np.nan: np.inf})) &
+    (work.get("Ret_1m", 0).fillna(-1)  > 0) &
+    (work.get("Ret_3m", 0).fillna(-1) > 0) &
+    (work.get("Ret_6m", 0).fillna(-1) > 0) &
+    (work.get("Ret_12m", 0).fillna(-1) > 0)
+)
 
-cand = work.loc[flt].dropna(subset=["Ticker"]).copy()
-top_core = cand.sort_values(rank_col, ascending=False).head(15)
-need = 15 - len(top_core)
+candidates = work.loc[flt].dropna(subset=["Ticker"]).copy()
+
+# Topp 15
+top = candidates.sort_values(rank_col, ascending=False).head(15).copy()
+
+# Fyll upp till 15 om färre än 15 klarar filtret:
+need = 15 - len(top)
 if need > 0:
-    trend = work.loc[(work["Price"] > work["SMA200"].replace({np.nan: np.inf}))].copy()
-    trend = trend[~trend["Ticker"].isin(top_core["Ticker"])]
-    filler = trend.sort_values(rank_col, ascending=False).head(need)
-    buy_now_df = pd.concat([top_core, filler], ignore_index=True)
+    # Fyllare: Price>SMA200 och inga negativa returer (så vi inte drar in "röda" bolag)
+    filler_mask = (work["Price"] > work["SMA200"].replace({np.nan: np.inf}))
+    for rc in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
+        if rc in work.columns:
+            filler_mask &= (work[rc].fillna(-1) >= 0)
+    filler = work.loc[filler_mask & (~work["Ticker"].isin(top["Ticker"]))].copy()
+    filler = filler.sort_values(rank_col, ascending=False).head(need)
+    buy_now_df = pd.concat([top, filler], ignore_index=True)
 else:
-    buy_now_df = top_core.copy()
+    buy_now_df = top
 
-buy_now_df = buy_now_df.drop_duplicates(subset=["Ticker"]).head(15).copy()
+# Exakt 15 unika
+buy_now_df = buy_now_df.dropna(subset=["Ticker"]).drop_duplicates(subset=["Ticker"]).head(15).copy()
+
+# ---------- Rang, flagga, QtyToBuy ----------
 buy_now_df.insert(0, "BuyRank", np.arange(1, len(buy_now_df)+1))
 buy_now_df["BuyFlag"] = buy_now_df["BuyRank"] <= 10
 
-# kapital & QtyToBuy
-def load_params_dict(mall_path: str) -> dict:
+# Läs kapital från Parametrar
+def load_params(mall_path: str) -> dict:
     try:
         dfp = pd.read_excel(mall_path, sheet_name="Parametrar")
-        kv = dfp.iloc[:, :2].copy()
-        kv.columns = ["key","value"]
-        kv["key_norm"] = kv["key"].astype(str).str.strip().str.lower()
-        return dict(zip(kv["key_norm"], kv["value"]))
+        dfp = dfp.iloc[:, :2].copy()
+        dfp.columns = ["key","value"]
+        dfp["key_norm"] = dfp["key"].astype(str).str.strip().str.lower()
+        return dict(zip(dfp["key_norm"], dfp["value"]))
     except Exception:
         return {}
 
-params = load_params_dict(MALL_PATH)
+params = load_params(MALL_PATH)
 capital = 0.0
-for k in ["kapital att handla för","kapital","kapital_att_handla_for"]:
+for k in ["kapital att handla för", "kapital", "kapital_att_handla_for"]:
     if k in params:
         try:
             capital = float(params[k]); break
-        except: pass
+        except Exception:
+            pass
 
-per_ticker_budget = (capital/10.0) if capital>0 else 0.0
+per_ticker = (capital/10.0) if capital > 0 else 0.0
 buy_now_df["QtyToBuy"] = 0
-if per_ticker_budget>0 and "Price" in buy_now_df.columns:
+if per_ticker > 0:
     m = buy_now_df["BuyRank"] <= 10
-    qty = np.floor(per_ticker_budget / buy_now_df.loc[m,"Price"].replace(0,np.nan)).fillna(0).astype(int)
-    buy_now_df.loc[m,"QtyToBuy"] = qty
+    qty = np.floor(per_ticker / buy_now_df.loc[m, "Price"].replace(0, np.nan)).fillna(0).astype(int)
+    buy_now_df.loc[m, "QtyToBuy"] = qty
 
-# --------- export (NO extra *100 on returns) ----------
+# ---------- Export: format & placering ----------
+# Vi låter Ret_* ligga som decimaler (0.1234) och formaterar som % i Excel
+# Övriga numeriska (ej QtyToBuy/Ret_*) rundas till 2 decimaler
 export_df = buy_now_df.copy()
-
-# round other numerics to two decimals; keep returns as decimals (Excel will format them)
 num_cols = export_df.select_dtypes(include=[np.number]).columns.tolist()
 for col in num_cols:
     if col not in ["QtyToBuy", "Ret_1m", "Ret_3m", "Ret_6m", "Ret_12m"]:
         export_df[col] = export_df[col].round(2)
 export_df = export_df.sort_values("BuyRank").reset_index(drop=True)
 
-# copy mall -> write only BuyNow
+# Kopiera mall -> skriv om ENDAST BuyNow och placera efter Calc
 copyfile(MALL_PATH, OUT_PATH)
 wb = load_workbook(OUT_PATH)
-if "BuyNow" in wb.sheetnames: wb.remove(wb["BuyNow"])
-ws = wb.create_sheet("BuyNow")
 
-# headers + data
+# Ta bort gammal BuyNow om den finns
+if "BuyNow" in wb.sheetnames:
+    wb.remove(wb["BuyNow"])
+
+# Skapa BuyNow direkt efter Calc
+if "Calc" not in wb.sheetnames:
+    fail("Fliken 'Calc' saknas i utfilen – kan inte placera BuyNow efter Calc.")
+calc_index = wb.sheetnames.index("Calc")
+ws = wb.create_sheet("BuyNow", index=calc_index+1)
+
+# Skriv header + data
 headers = list(export_df.columns)
-for j,h in enumerate(headers, start=1): ws.cell(row=1, column=j, value=h)
+for j,h in enumerate(headers, start=1):
+    ws.cell(row=1, column=j, value=h)
 for i,row in export_df.iterrows():
     for j,h in enumerate(headers, start=1):
         ws.cell(row=i+2, column=j, value=row[h])
 
-# formats: returns as percent, qty int, others two decimals
+# Formatering: Ret_* som 0.00%, QtyToBuy som 0, övrigt 0.00
 header_map = {h:i+1 for i,h in enumerate(headers)}
+
 def fmt_col(name, fmt):
-    col = header_map.get(name); 
+    col = header_map.get(name)
     if not col: return
     for r in range(2, ws.max_row+1):
         ws.cell(row=r, column=col).number_format = fmt
 
 for c in ["Ret_1m","Ret_3m","Ret_6m","Ret_12m"]:
-    if c in header_map: fmt_col(c, "0.00%")   # uses decimal values (e.g., 0.1234 -> 12.34%)
+    if c in header_map: fmt_col(c, "0.00%")
 if "QtyToBuy" in header_map: fmt_col("QtyToBuy", "0")
+
 for name in headers:
     if name not in {"Ret_1m","Ret_3m","Ret_6m","Ret_12m","QtyToBuy"}:
-        # set 0.00 only for numeric values
         col = header_map[name]
         for r in range(2, ws.max_row+1):
             cell = ws.cell(row=r, column=col)
             if isinstance(cell.value, (int, float)):
                 cell.number_format = "0.00"
 
-# simple autofit
+# Autofit
 for idx,name in enumerate(headers, start=1):
     maxlen = len(str(name))
     for r in range(2, ws.max_row+1):
         v = ws.cell(row=r, column=idx).value
-        if v is not None: maxlen = max(maxlen, len(str(v)))
-    ws.column_dimensions[get_column_letter(idx)].width = min(maxlen+2, 50)
+        if v is not None:
+            maxlen = max(maxlen, len(str(v)))
+    ws.column_dimensions[get_column_letter(idx)].width = min(maxlen + 2, 50)
 
 wb.save(OUT_PATH)
-
-# optional debug for WOLF
-try:
-    dbg = buy_now_df.loc[buy_now_df["Ticker"].astype(str).str.upper()=="WOLF"].iloc[0]
-    log(f"DBG WOLF: Price={dbg.get('Price')}, SMA200={dbg.get('SMA200')}, "
-        f"Ret3m(dec)={dbg.get('Ret_3m')}, Ret6m(dec)={dbg.get('Ret_6m')}")
-except Exception:
-    pass
-
-log("[OK] Momentum.xlsx uppdaterad (BuyNow fixad, procent korrekt).")
+log("[OK] Momentum.xlsx uppdaterad – BuyNow efter Calc, 15 rader, QtyToBuy för topp-10, returer korrekta.")
