@@ -3,14 +3,13 @@ name: Momentum Cloud
 on:
   workflow_dispatch: {}
   schedule:
-    # Kör 06:00 svensk tid på vardagar.
-    # Mar–Oct (CEST): 04:00 UTC  => 06:00 lokal tid
+    # Mar–Oct (CEST): 04:00 UTC  => 06:00 svensk tid
     - cron: '0 4 * 3-10 1-5'
-    # Nov–Feb (CET):  05:00 UTC  => 06:00 lokal tid
+    # Nov–Feb (CET):  05:00 UTC  => 06:00 svensk tid
     - cron: '0 5 * 11-12,1-2 1-5'
 
 permissions:
-  contents: read
+  contents: write  # <— behövs för commit & push
 
 concurrency:
   group: momentum-cloud
@@ -26,27 +25,37 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # låt GITHUB_TOKEN vara konfigurerad för push
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies (optional)
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
+          pip install pandas openpyxl requests numpy
 
       - name: Run momentum_master.py
         run: |
           set -e
           python momentum_master.py
 
-      - name: Verify output exists
+      - name: Verify outputs
         run: |
           test -f Momentum.xlsx || (echo "Momentum.xlsx saknas" && exit 1)
+          test -f public/data/buynow.json || (echo "public/data/buynow.json saknas" && exit 1)
+
+      - name: Commit & push JSON
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/buynow.json
+          # bara commit om ändrad
+          git diff --cached --quiet || git commit -m "chore: update buynow.json from workflow"
+          git push
 
       - name: Upload artifact (Momentum.xlsx)
         uses: actions/upload-artifact@v4
