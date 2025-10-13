@@ -1,14 +1,12 @@
 # momentum_master_v2.py
-# Steg A:
+# Steg A fixad:
 # - Backup av mallen till backups/Momentum_mall_YYYYMMDD.xlsx
-# - Bygger BuyNow som tidigare
-# - Läser Trades (svenska rubriker), bygger:
-#     * Holdings = öppna rader (Date Out tom)
-#     * Realized = stängda rader (Date Out ifylld)
-# - Skriver Review_KPI (live portfölj % baserat på Parametrar!B1)
+# - BuyNow utan tomrader + smalare kolumnbredder
+# - Holdings = öppna trades (Date Out tom), Realized = stängda trades (Date Out ifylld, även om datum ej parsas)
+# - Review_KPI (live portfölj % baserat på Parametrar!B1)
 # - Universe/Calc/övrigt lämnas i fred
 
-import os, sys, re, json, datetime
+import os, sys, datetime
 import numpy as np
 import pandas as pd
 from shutil import copyfile
@@ -35,6 +33,19 @@ def to_num_series(s: pd.Series) -> pd.Series:
 def parse_float(v):
     try: return float(str(v).replace("\u00A0","").replace(" ","").replace(",","."))
     except: return None
+
+def set_nice_widths(ws, default=12, narrow_pct_cols=None):
+    """Ge förnuftiga standardbredder (inte jättelång auto-fit)."""
+    if narrow_pct_cols is None: narrow_pct_cols = []
+    # sätt bredd baserat på headernamn
+    for i, cell in enumerate(ws[1], start=1):  # header row
+        header = str(cell.value or "")
+        width = default
+        if header in narrow_pct_cols or header.startswith("Ret"):
+            width = 10
+        if header in ("Ticker","Orsak","Signal"):
+            width = 14
+        ws.column_dimensions[get_column_letter(i)].width = width
 
 # ---------- 0) Backup ----------
 os.makedirs(BACKUP_DIR, exist_ok=True)
@@ -126,7 +137,7 @@ if per_ticker_budget_sek>0 and usdsek>0:
     qty = np.floor(per_ticker_budget_sek / price_sek.replace(0,np.nan)).fillna(0).astype(int)
     buy_now.loc[m,"QtyToBuy"] = qty
 
-# ---------- 5) Läs Trades (svenska rubriker) ----------
+# ---------- 5) Läs Trades (svenska rubriker, robust Date Out) ----------
 xl = pd.ExcelFile(MALL_PATH)
 if "Trades" in xl.sheet_names:
     tr_raw = pd.read_excel(MALL_PATH, sheet_name="Trades")
@@ -158,6 +169,10 @@ if not tr_raw.empty:
         log("[WARN] Trades saknar obligatoriska kolumner — hoppar över Holdings/Realized.")
         trades = pd.DataFrame()
     else:
+        # robust DateOut: använd både parsed och raw för att avgöra stängda
+        out_raw = tr_raw[col_out].astype(str) if col_out else pd.Series([], dtype=str)
+        date_out_parsed = pd.to_datetime(tr_raw[col_out], errors="coerce") if col_out else pd.NaT
+
         trades = pd.DataFrame({
             "DateIn": pd.to_datetime(tr_raw[col_in], errors="coerce"),
             "Ticker": tr_raw[col_tkr].astype(str).str.upper().str.strip(),
@@ -166,31 +181,33 @@ if not tr_raw.empty:
             "StopAtEntry": tr_raw[col_stop] if col_stop else np.nan,
             "FXin": to_num_series(tr_raw[col_fx_in]).fillna(usdsek),
             "FeeIn": to_num_series(tr_raw[col_feein]).fillna(0.0) if col_feein else 0.0,
-            "DateOut": pd.to_datetime(tr_raw[col_out], errors="coerce") if col_out else pd.NaT,
+            "DateOut": date_out_parsed,
+            "DateOut_raw": out_raw if col_out else "",
             "ExitUSD": to_num_series(tr_raw[col_xusd]).fillna(0.0) if col_xusd else 0.0,
             "FXout": to_num_series(tr_raw[col_fx_ex]).fillna(usdsek) if col_fx_ex else usdsek,
             "FeeOut": to_num_series(tr_raw[col_feeex]).fillna(0.0) if col_feeex else 0.0,
-        }).dropna(subset=["DateIn","Ticker"])
-        trades = trades.sort_values(["DateIn","Ticker"]).reset_index(drop=True)
+        }).dropna(subset=["DateIn","Ticker"]).sort_values(["DateIn","Ticker"]).reset_index(drop=True)
 
-# ---------- 6) Bygg Holdings (öppna trades) & Realized (stängda) ----------
+# ---------- 6) Bygg Holdings (öppna) & Realized (stängda) ----------
 holdings_df = None
 realized_df = None
 
 if not trades.empty:
-    # öppna = DateOut är NaT eller tom
-    open_mask = trades["DateOut"].isna()
+    # stängd om DateOut är parsad ELLER om rå cellen inte är tom
+    is_closed = (~trades["DateOut"].isna()) | (trades.get("DateOut_raw","").astype(str).str.strip() != "")
+    open_mask = ~is_closed
+
     open_tr = trades.loc[open_mask].copy()
     closed  = trades.loc[~open_mask].copy()
 
-    # map för snabba lookup från Calc/Work
+    # lookups från Calc/Work
     price_now = dict(zip(work["Ticker"], work["Price"]))
     ret1 = dict(zip(work["Ticker"], work.get("Ret_1m", pd.Series(dtype=float))))
     ret3 = dict(zip(work["Ticker"], work.get("Ret_3m", pd.Series(dtype=float))))
     ret6 = dict(zip(work["Ticker"], work.get("Ret_6m", pd.Series(dtype=float))))
     ret12= dict(zip(work["Ticker"], work.get("Ret_12m", pd.Series(dtype=float))))
 
-    # Holdings radas 1:1 med öppna rader i Trades (ingen aggregering)
+    # Holdings: en rad per öppen trade
     rows = []
     for _, r in open_tr.iterrows():
         tkr = r["Ticker"]
@@ -217,7 +234,7 @@ if not trades.empty:
             "Ret3m": ret3.get(tkr, np.nan),
             "Ret6m": ret6.get(tkr, np.nan),
             "Ret12m":ret12.get(tkr, np.nan),
-            # placeholders (lämna tomt)
+            # tomma fält för ev. manuell/anpassad logik
             "Score": "",
             "FundOK": "",
             "TrendOK": "",
@@ -232,15 +249,22 @@ if not trades.empty:
     rows_c = []
     for _, r in closed.iterrows():
         tkr = r["Ticker"]
-        qty = int(r["Qty"])  # normalt positivt antal även vid sälj (i din flik tar du ut med Exit)
+        qty = int(r["Qty"])  # positivt antal i din trades-tabell
         entry_tot = qty * float(r["EntryUSD"]) * float(r["FXin"]) + float(r["FeeIn"])
         exit_tot  = qty * float(r["ExitUSD"])  * float(r["FXout"]) + float(r["FeeOut"])
         pnl = exit_tot - entry_tot
         pnl_pct = pnl/entry_tot if entry_tot>0 else 0.0
-        month = (r["DateOut"].to_pydatetime() if pd.notna(r["DateOut"]) else r["DateIn"].to_pydatetime()).strftime("%Y-%m")
+        # försök ta parsed, annars behåll rå sträng
+        if pd.notna(r["DateOut"]):
+            date_out_str = r["DateOut"].date().isoformat()
+            month = r["DateOut"].strftime("%Y-%m")
+        else:
+            raw = str(r.get("DateOut_raw","")).strip()
+            date_out_str = raw
+            month = (r["DateIn"].to_pydatetime()).strftime("%Y-%m")
         rows_c.append({
             "Date In": r["DateIn"].date().isoformat(),
-            "Date Out": r["DateOut"].date().isoformat() if pd.notna(r["DateOut"]) else "",
+            "Date Out": date_out_str,
             "Ticker": tkr,
             "Qty": qty,
             "Entry SEK (tot)": round(entry_tot,2),
@@ -262,7 +286,7 @@ if "Calc" not in wb.sheetnames: fail("Calc saknas i utfilen.")
 calc_idx = wb.sheetnames.index("Calc")
 ws_bn = wb.create_sheet("BuyNow", index=calc_idx+1)
 
-bn = buy_now.copy()
+bn = buy_now.sort_values("BuyRank").reset_index(drop=True).copy()  # <-- viktiga fixen mot tomrader
 # runda 2 dec (utom Ret_*, Qty)
 num_cols = bn.select_dtypes(include=[np.number]).columns.tolist()
 for c in num_cols:
@@ -273,6 +297,7 @@ for j,h in enumerate(headers,1): ws_bn.cell(row=1,column=j,value=h)
 for i,row in bn.iterrows():
     for j,h in enumerate(headers,1):
         ws_bn.cell(row=i+2,column=j,value=row[h])
+# format
 hdr = {h:i+1 for i,h in enumerate(headers)}
 def fmt(ws, col, fmt):
     if col not in hdr: return
@@ -288,6 +313,8 @@ for name in headers:
             cell = ws_bn.cell(row=r, column=c)
             if isinstance(cell.value, (int,float)):
                 cell.number_format = "0.00"
+# snygga bredder
+set_nice_widths(ws_bn, default=12, narrow_pct_cols=["P&L %"])
 
 # --- Holdings ---
 if holdings_df is not None:
@@ -310,7 +337,8 @@ if holdings_df is not None:
     ws_h.cell(row=rtot, column=1, value="Totalt")
     ws_h.cell(row=rtot, column=7, value=round(total_value,2))
     ws_h.cell(row=rtot, column=8, value=round(total_pnl,2))
-    pct = (total_pnl / (sum(holdings_df["Entry SEK (tot)"]) or 1.0)) if not holdings_df.empty else 0.0
+    denom = float(holdings_df["Entry SEK (tot)"].sum()) if not holdings_df.empty else 1.0
+    pct = (total_pnl / denom) if denom>0 else 0.0
     ws_h.cell(row=rtot, column=9, value=pct)
 
     # format
@@ -321,10 +349,10 @@ if holdings_df is not None:
             ws_h.cell(row=r, column=c).number_format = fmt
     for nm in ["Entry SEK (tot)","Value SEK","P&L SEK","Price now"]:
         f_h(nm, "0.00")
-    for nm in ["FX now"]:
-        f_h(nm, "0.00")
+    f_h("FX now", "0.00")
     for nm in ["P&L %","Ret1m","Ret3m","Ret6m","Ret12m"]:
         f_h(nm, "0.00%")
+    set_nice_widths(ws_h, default=12, narrow_pct_cols=["P&L %","Ret1m","Ret3m","Ret6m","Ret12m"])
 
 # --- Realized ---
 if realized_df is not None:
@@ -345,6 +373,7 @@ if realized_df is not None:
     for nm in ["Entry SEK (tot)","Exit SEK (tot)","Fees SEK (sum)","Realized P&L SEK"]:
         f_r(nm, "0.00")
     f_r("Realized P&L %","0.00%")
+    set_nice_widths(ws_r, default=12, narrow_pct_cols=["Realized P&L %"])
 
 # --- Review_KPI ---
 if "Review_KPI" in wb.sheetnames: wb.remove(wb["Review_KPI"])
@@ -377,19 +406,5 @@ ws_k.cell(row=1, column=2).number_format = "0.00%"
 for r in [2,3,4,5,6]:
     ws_k.cell(row=r, column=2).number_format = "0.00"
 
-# Autofit
-def autofit(ws):
-    for c in range(1, ws.max_column+1):
-        m = 0
-        for r in range(1, ws.max_row+1):
-            v = ws.cell(row=r, column=c).value
-            if v is None: continue
-            m = max(m, len(str(v)))
-        ws.column_dimensions[get_column_letter(c)].width = min(m+2, 50)
-
-for name in ["BuyNow","Holdings","Realized","Review_KPI"]:
-    if name in wb.sheetnames:
-        autofit(wb[name])
-
 wb.save(OUT_PATH)
-log("[OK] Momentum.xlsx uppdaterad — BuyNow + Holdings + Realized + Review_KPI.")
+log("[OK] Momentum.xlsx uppdaterad — BuyNow (fix), Holdings, Realized, Review_KPI.")
