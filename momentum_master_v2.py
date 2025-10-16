@@ -285,6 +285,8 @@ def main():
     write_dataframe_to_sheet(wb, "Metrics", df_metrics)
 
     save_wb(wb, Path(OUTPUT_FILE))
+    print("[DEBUG] Save done", flush=True)
+
     log("[OK] Momentum.xlsx uppdaterad — BuyNow, Trades P&L (N/O), Holdings, Realized, Review_KPI, Review & Metrics.")
 
 if __name__ == "__main__":
