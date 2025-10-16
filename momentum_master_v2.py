@@ -18,7 +18,7 @@ OUTPUT_FILE   = "Momentum.xlsx"
 BACKUP_DIR    = Path("backups")
 POLYGON_API   = os.environ.get("POLYGON_API_KEY", "").strip()
 
-# Visuella rubriker (så som i din bild) -> kanoniska namn
+# Visuella rubriker (som i din fil) -> kanoniska
 TRADES_RENAME_MAP = {
     "Date In":        "DateIn",
     "Ticker":         "Ticker",
@@ -73,43 +73,31 @@ def get_usdsek_from_polygon() -> float:
         log(f"[WARN] Misslyckades hämta USDSEK från Polygon: {e}")
     return 10.00  # robust fallback
 
-def polygon_last_close_usd(ticker: str):
-    try:
-        data = polygon_get(f"https://api.polygon.io/v2/aggs/ticker/{ticker}/prev",
-                           params={"adjusted": "true", "limit": 1})
-        res = data.get("results", [])
-        if res and res[0].get("c") is not None:
-            return float(res[0]["c"])
-    except Exception:
-        return None
-    return None
-
 def backup_template(src_path: Path):
     ensure_dir(BACKUP_DIR)
-    # Endast backup-namnet får underscores
     base = src_path.stem.replace(" ", "_")
     dst = BACKUP_DIR / f"{base}_{today_stamp()}.xlsx"
     shutil.copy2(src_path, dst)
     log(f"[BACKUP] Sparad: {dst.as_posix()}")
 
-def load_workbook_safe(path: Path):
+def load_wb(path: Path):
     return load_workbook(path)
 
-def save_workbook_safe(wb, out_path: Path):
+def save_wb(wb, out_path: Path):
     wb.save(out_path)
 
 def write_dataframe_to_sheet(wb, sheet_name, df: pd.DataFrame, header=True, index=False):
     # Skapar/rensar och skriver DataFrame till ett ark
     if sheet_name in wb.sheetnames:
         ws = wb[sheet_name]
-        # Rensa befintligt innehåll (rimligt stor yta)
+        # Rensa rimlig yta snabbt
         for row in ws["A1:ZZ100000"]:
             for cell in row:
                 cell.value = None
     else:
         ws = wb.create_sheet(sheet_name)
 
-    # Skriv rubriker
+    # Rubriker
     r = 1
     c = 1
     if header:
@@ -118,7 +106,7 @@ def write_dataframe_to_sheet(wb, sheet_name, df: pd.DataFrame, header=True, inde
             c += 1
         r += 1
 
-    # Skriv data
+    # Data
     for row in df.itertuples(index=index, name=None):
         c = 1
         for val in row:
@@ -127,7 +115,6 @@ def write_dataframe_to_sheet(wb, sheet_name, df: pd.DataFrame, header=True, inde
         r += 1
 
 def normalize_trades_headers(df: pd.DataFrame) -> pd.DataFrame:
-    # Trim namn och mappa visuella rubriker till kanoniska
     new_cols = {}
     for c in df.columns:
         key = str(c).strip()
@@ -150,7 +137,7 @@ def coerce_numeric(df: pd.DataFrame, cols):
 # Kärnlogik
 # =========================
 def main():
-    # 1) Mallen måste finnas
+    # 1) Mall
     tpl = Path(TEMPLATE_FILE)
     if not tpl.exists():
         log(f"Error: Mallen saknas: {TEMPLATE_FILE}")
@@ -160,11 +147,11 @@ def main():
     backup_template(tpl)
 
     # 3) Parametrar + USD/SEK
+    log("[STEP] Läser Parametrar…")
     portfolio_value = 0.0
     try:
         df_param = read_sheet_as_df(tpl, "Parametrar")
         if not df_param.empty:
-            # ta första numeriska cellen i kolumn B
             col_b = pd.to_numeric(df_param.iloc[:, 1], errors="coerce").dropna()
             if not col_b.empty:
                 portfolio_value = float(col_b.iloc[0])
@@ -175,42 +162,37 @@ def main():
     log(f"[INFO] Portföljvärde(SEK) = {portfolio_value}")
     log(f"[INFO] USDSEK = {usdsek} (polygon)")
 
-    # 4) Läs/normalisera Trades
+    # 4) Trades
+    log("[STEP] Läser Trades…")
     skip_trades_blocks = False
     df_trades = pd.DataFrame()
     try:
         raw = read_sheet_as_df(tpl, "Trades")
         df_trades = normalize_trades_headers(raw.copy())
 
-        # typer
         df_trades = coerce_dates(df_trades, ["DateIn", "DateOut"])
         df_trades = coerce_numeric(df_trades, [
             "Qty", "EntryUSD", "StopEntry", "FXEntry", "EntrySEK", "FeeEntrySEK",
             "ExitUSD", "FXExit", "ExitSEK", "FeeExitSEK", "PLSEK", "PLPercent"
         ])
 
-        # krav
         missing = [c for c in REQUIRED_MIN if c not in df_trades.columns]
         if missing:
             log(f"[WARN] Trades saknar obligatoriska kolumner {missing} — hoppar över Holdings/Realized/Trades-P&L.")
             skip_trades_blocks = True
 
-        # säkerställ PL-kolumner
         if "PLSEK" not in df_trades.columns:
             df_trades["PLSEK"] = np.nan
         if "PLPercent" not in df_trades.columns:
             df_trades["PLPercent"] = np.nan
 
-        # 5) Räkna P&L endast för stängda trades
         if not skip_trades_blocks:
+            log("[STEP] Beräknar P&L för stängda trades…")
             closed_mask = df_trades["DateOut"].notna() & df_trades["ExitUSD"].notna()
 
-            # ExitSEK om saknas
-            fx_exit_series = df_trades.get("FXExit", pd.Series(usdsek, index=df_trades.index))
-            fx_exit_series = fx_exit_series.fillna(usdsek)
+            fx_exit_series = df_trades.get("FXExit", pd.Series(usdsek, index=df_trades.index)).fillna(usdsek)
             exit_sek_calc = df_trades["ExitUSD"].fillna(0) * fx_exit_series
 
-            # EntrySEK om saknas
             entry_sek_series = df_trades.get("EntrySEK")
             if entry_sek_series is None or (isinstance(entry_sek_series, pd.Series) and entry_sek_series.isna().all()):
                 fx_entry_series = df_trades.get("FXEntry", pd.Series(usdsek, index=df_trades.index)).fillna(usdsek)
@@ -222,12 +204,10 @@ def main():
 
             denom = (entry_sek_series * qty)
             plsek_series = (exit_sek_calc * qty - fee_exit) - (denom + fee_entry)
-
             with np.errstate(divide='ignore', invalid='ignore'):
                 plpct_vals = np.where(denom != 0, plsek_series / denom, np.nan)
             plpct_series = pd.Series(plpct_vals, index=df_trades.index)
 
-            # skriv endast stängda rader
             df_trades.loc[closed_mask, "PLSEK"] = plsek_series[closed_mask]
             df_trades.loc[closed_mask, "PLPercent"] = plpct_series[closed_mask]
 
@@ -235,54 +215,48 @@ def main():
         log(f"[WARN] Kunde inte läsa/hantera Trades: {e}")
         skip_trades_blocks = True
 
-    # 6) Bygg Holdings (öppna) & Realized (stängda)
+    # 5) Holdings & Realized (utan pris-hämtning per ticker!)
+    log("[STEP] Bygger Holdings & Realized… (utan marknadspris-hämtning)")
     df_holdings = pd.DataFrame()
     df_realized = pd.DataFrame()
-
     if not skip_trades_blocks and not df_trades.empty:
         open_mask = df_trades["DateOut"].isna()
         closed_mask = ~open_mask
 
-        # Holdings
         if open_mask.any():
             df_holdings = df_trades.loc[open_mask, ["Ticker", "Qty", "EntryUSD", "FXEntry", "EntrySEK"]].copy()
             if not df_holdings.empty:
-                # Hämta senaste close
-                last_prices = {}
-                for t in df_holdings["Ticker"].dropna().astype(str).str.strip().unique():
-                    px = polygon_last_close_usd(t)
-                    last_prices[t] = px
-                    time.sleep(0.2)  # mild throttling
-                df_holdings["LastUSD"] = df_holdings["Ticker"].map(last_prices)
-                df_holdings["FXNow"] = usdsek
-                df_holdings["LastSEK"] = (df_holdings["LastUSD"].fillna(df_holdings["EntryUSD"]) * usdsek).round(6)
+                # Ingen extern pris-hämtning: använd Entry som proxy för Last
+                df_holdings["LastUSD"] = df_holdings["EntryUSD"]
+                df_holdings["FXNow"]   = usdsek
+                df_holdings["LastSEK"] = (df_holdings["LastUSD"].fillna(0) * usdsek).round(6)
 
                 qty = df_holdings["Qty"].fillna(0)
-                cost_sek = (df_holdings["EntrySEK"].fillna(
-                                df_holdings["EntryUSD"] * df_holdings.get("FXEntry", pd.Series(usdsek, index=df_holdings.index)).fillna(usdsek)
-                            ) * qty)
+                entry_fx = df_holdings.get("FXEntry", pd.Series(usdsek, index=df_holdings.index)).fillna(usdsek)
+                cost_sek = (df_holdings["EntrySEK"].fillna(df_holdings["EntryUSD"] * entry_fx)) * qty
                 mkt_sek  = df_holdings["LastSEK"] * qty
+
                 df_holdings["UPL_SEK"] = mkt_sek - cost_sek
                 with np.errstate(divide='ignore', invalid='ignore'):
                     df_holdings["UPL_%"] = np.where(cost_sek != 0, df_holdings["UPL_SEK"] / cost_sek, np.nan)
 
-        # Realized
         if closed_mask.any():
             cols_exist = [c for c in ["DateIn","DateOut","Ticker","Qty","EntrySEK","ExitSEK","PLSEK","PLPercent"] if c in df_trades.columns]
             df_realized = df_trades.loc[closed_mask, cols_exist].copy()
 
-    # 7) Review_KPI (enkel)
+    # 6) Review_KPI
+    log("[STEP] Uppdaterar Review_KPI…")
     closed_today = 0
     if not df_realized.empty and "DateOut" in df_realized.columns:
         today = dt.date.today()
         closed_today = int((pd.to_datetime(df_realized["DateOut"], errors="coerce").dt.date == today).sum())
-
     df_kpi = pd.DataFrame({
         "Metric": ["PortfolioValueSEK", "USDSEK", "OpenPositions", "ClosedTrades_Today"],
         "Value":  [float(portfolio_value), float(usdsek), int(len(df_holdings)), closed_today]
     })
 
-    # 8) Review & Metrics (förenklad månadsrad)
+    # 7) Review & Metrics (förenklad månadsrad)
+    log("[STEP] Uppdaterar Review & Metrics…")
     month_str = dt.date.today().strftime("%Y-%m")
     realized_month = 0.0
     if not df_realized.empty and "DateOut" in df_realized.columns and "PLSEK" in df_realized.columns:
@@ -293,12 +267,11 @@ def main():
     df_review  = pd.DataFrame({"Month": [month_str], "Portf_%": [month_ret]})
     df_metrics = pd.DataFrame({"Month": [month_str], "Sharpe": [np.nan], "Sortino": [np.nan]})
 
-    # 9) Skriv tillbaka i mallen och spara till OUTPUT_FILE
-    wb = load_workbook_safe(tpl)
+    # 8) Skriv tillbaka i mallen och spara
+    log("[STEP] Skriver utdata till Excel…")
+    wb = load_wb(tpl)
 
-    # Skriv tillbaka Trades med VISUELLA rubriker (som i din fil)
     if not df_trades.empty:
-        # Bygg reverse map för att återställa visuella rubriker om möjligt
         rev_map = {v: k for k, v in TRADES_RENAME_MAP.items()}
         out_cols = [rev_map.get(c, c) for c in df_trades.columns]
         df_trades_out = df_trades.copy()
@@ -311,8 +284,7 @@ def main():
     write_dataframe_to_sheet(wb, "Review", df_review)
     write_dataframe_to_sheet(wb, "Metrics", df_metrics)
 
-    save_workbook_safe(wb, Path(OUTPUT_FILE))
-
+    save_wb(wb, Path(OUTPUT_FILE))
     log("[OK] Momentum.xlsx uppdaterad — BuyNow, Trades P&L (N/O), Holdings, Realized, Review_KPI, Review & Metrics.")
 
 if __name__ == "__main__":
