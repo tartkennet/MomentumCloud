@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 
 # =========================
 # Konfiguration
@@ -83,35 +83,34 @@ def backup_template(src_path: Path):
 def load_wb(path: Path):
     return load_workbook(path)
 
-def save_wb(wb, out_path: Path):
-    wb.save(out_path)
+def save_atomic(wb, out_path: Path):
+    """Spara workbook atomiskt: skriv till tempfil och byt namn."""
+    tmp = out_path.with_suffix(out_path.suffix + ".tmp")
+    wb.save(tmp)
+    if out_path.exists():
+        out_path.unlink()
+    tmp.replace(out_path)
 
-def write_dataframe_to_sheet(wb, sheet_name, df: pd.DataFrame, header=True, index=False):
-    # Skapar/rensar och skriver DataFrame till ett ark
+def write_dataframe_to_sheet_replace(wb, sheet_name, df: pd.DataFrame, header=True, index=False):
+    """
+    Snabb & säker skrivning:
+    - Om arket finns: ta bort det helt.
+    - Skapa nytt ark och skriv endast nödvändiga celler.
+    Ingen massiv rensning av A1:ZZ100000.
+    """
     if sheet_name in wb.sheetnames:
-        ws = wb[sheet_name]
-        # Rensa rimlig yta snabbt
-        for row in ws["A1:ZZ100000"]:
-            for cell in row:
-                cell.value = None
-    else:
-        ws = wb.create_sheet(sheet_name)
+        ws_old = wb[sheet_name]
+        wb.remove(ws_old)
+    ws = wb.create_sheet(title=sheet_name)
 
-    # Rubriker
     r = 1
-    c = 1
     if header:
-        for col in df.columns:
+        for c, col in enumerate(df.columns, start=1):
             ws.cell(row=r, column=c, value=str(col))
-            c += 1
         r += 1
-
-    # Data
     for row in df.itertuples(index=index, name=None):
-        c = 1
-        for val in row:
+        for c, val in enumerate(row, start=1):
             ws.cell(row=r, column=c, value=val)
-            c += 1
         r += 1
 
 def normalize_trades_headers(df: pd.DataFrame) -> pd.DataFrame:
@@ -215,7 +214,7 @@ def main():
         log(f"[WARN] Kunde inte läsa/hantera Trades: {e}")
         skip_trades_blocks = True
 
-    # 5) Holdings & Realized (utan pris-hämtning per ticker!)
+    # 5) Holdings & Realized (utan pris-hämtning per ticker)
     log("[STEP] Bygger Holdings & Realized… (utan marknadspris-hämtning)")
     df_holdings = pd.DataFrame()
     df_realized = pd.DataFrame()
@@ -226,7 +225,6 @@ def main():
         if open_mask.any():
             df_holdings = df_trades.loc[open_mask, ["Ticker", "Qty", "EntryUSD", "FXEntry", "EntrySEK"]].copy()
             if not df_holdings.empty:
-                # Ingen extern pris-hämtning: använd Entry som proxy för Last
                 df_holdings["LastUSD"] = df_holdings["EntryUSD"]
                 df_holdings["FXNow"]   = usdsek
                 df_holdings["LastSEK"] = (df_holdings["LastUSD"].fillna(0) * usdsek).round(6)
@@ -267,25 +265,29 @@ def main():
     df_review  = pd.DataFrame({"Month": [month_str], "Portf_%": [month_ret]})
     df_metrics = pd.DataFrame({"Month": [month_str], "Sharpe": [np.nan], "Sortino": [np.nan]})
 
-    # 8) Skriv tillbaka i mallen och spara
+    # 8) Skriv tillbaka i mallen och spara atomiskt (utan massiv rensning)
     log("[STEP] Skriver utdata till Excel…")
     wb = load_wb(tpl)
 
     if not df_trades.empty:
+        # Återställ visuella rubriker
         rev_map = {v: k for k, v in TRADES_RENAME_MAP.items()}
         out_cols = [rev_map.get(c, c) for c in df_trades.columns]
         df_trades_out = df_trades.copy()
         df_trades_out.columns = out_cols
-        write_dataframe_to_sheet(wb, "Trades", df_trades_out)
+        write_dataframe_to_sheet_replace(wb, "Trades", df_trades_out)
 
-    write_dataframe_to_sheet(wb, "Holdings", df_holdings if not df_holdings.empty else pd.DataFrame(columns=["Ticker","Qty","EntryUSD","FXEntry","EntrySEK","LastUSD","FXNow","LastSEK","UPL_SEK","UPL_%"]))
-    write_dataframe_to_sheet(wb, "Realized", df_realized if not df_realized.empty else pd.DataFrame(columns=["DateIn","DateOut","Ticker","Qty","EntrySEK","ExitSEK","PLSEK","PLPercent"]))
-    write_dataframe_to_sheet(wb, "Review_KPI", df_kpi)
-    write_dataframe_to_sheet(wb, "Review", df_review)
-    write_dataframe_to_sheet(wb, "Metrics", df_metrics)
+    write_dataframe_to_sheet_replace(wb, "Holdings",
+        df_holdings if not df_holdings.empty else pd.DataFrame(columns=["Ticker","Qty","EntryUSD","FXEntry","EntrySEK","LastUSD","FXNow","LastSEK","UPL_SEK","UPL_%"]))
+    write_dataframe_to_sheet_replace(wb, "Realized",
+        df_realized if not df_realized.empty else pd.DataFrame(columns=["DateIn","DateOut","Ticker","Qty","EntrySEK","ExitSEK","PLSEK","PLPercent"]))
+    write_dataframe_to_sheet_replace(wb, "Review_KPI", df_kpi)
+    write_dataframe_to_sheet_replace(wb, "Review", df_review)
+    write_dataframe_to_sheet_replace(wb, "Metrics", df_metrics)
 
-    save_wb(wb, Path(OUTPUT_FILE))
-    print("[DEBUG] Save done", flush=True)
+    # Spara till temp och byt namn atomiskt
+    out_path = Path(OUTPUT_FILE)
+    save_atomic(wb, out_path)
 
     log("[OK] Momentum.xlsx uppdaterad — BuyNow, Trades P&L (N/O), Holdings, Realized, Review_KPI, Review & Metrics.")
 
