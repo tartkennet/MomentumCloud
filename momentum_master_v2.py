@@ -19,7 +19,6 @@ OUTPUT_FILE   = "Momentum.xlsx"
 BACKUP_DIR    = Path("backups")
 POLYGON_API   = os.environ.get("POLYGON_API_KEY", "").strip()
 
-# Mappning: dina rubriker i Trades -> interna namn
 TRADES_RENAME_MAP = {
     "Date In":        "DateIn",
     "Ticker":         "Ticker",
@@ -127,13 +126,17 @@ def coerce_numeric(df: pd.DataFrame, cols):
 def header_map(ws):
     return { (ws.cell(row=1, column=ci).value or "").strip(): ci for ci in range(1, ws.max_column+1) }
 
-def find_last_data_row(ws, key_col_index):
-    # hitta sista rad med något innehåll i nyckelkolumnen
+def find_last_data_row(ws, key_cols):
+    """Returnera sista rad som innehåller data i någon av nyckelkolumnerna."""
     maxrow = ws.max_row
     last = 1
     for r in range(2, maxrow+1):
-        v = ws.cell(row=r, column=key_col_index).value
-        if v not in (None, "", "False", "FALSKT"):
+        hit = False
+        for ci in key_cols:
+            if ci and (ws.cell(row=r, column=ci).value not in (None, "", "False", "FALSKT")):
+                hit = True
+                break
+        if hit:
             last = r
     return last
 
@@ -173,10 +176,9 @@ def main():
     log(f"[INFO] Portföljvärde(SEK) = {portfolio_value}")
     log(f"[INFO] USDSEK = {usdsek} (polygon)")
 
-    # 3) Läs/beräkna Trades (utan att radera arket)
+    # 3) Trades -> DataFrame
     log("[STEP] Läser Trades…")
     skip_trades_blocks = False
-    df_trades = pd.DataFrame()
     try:
         raw = read_sheet_as_df(tpl, "Trades")
         df_trades = normalize_trades_headers(raw.copy())
@@ -186,10 +188,11 @@ def main():
             "ExitUSD","FXExit","ExitSEK","FeeExitSEK","PLSEK","PLPercent"
         ])
 
-        # Trimma bort rader som bara är FALSKT/False/None
-        def valid_row(s):
-            return bool(str(s.get("Ticker", "")).strip()) or pd.notna(s.get("DateIn", np.nan))
-        df_trades = df_trades[df_trades.apply(valid_row, axis=1)].copy()
+        # Trimma bort rena skräprader
+        df_trades = df_trades[~(
+            (df_trades.get("Ticker","").astype(str).str.strip().isin(["", "False", "FALSKT"])) &
+            (df_trades.get("DateIn").isna())
+        )].copy()
 
         missing = [c for c in REQUIRED_MIN if c not in df_trades.columns]
         if missing:
@@ -198,7 +201,6 @@ def main():
 
         if not skip_trades_blocks:
             log("[STEP] Beräknar P&L (totalbelopp) för stängda trades…")
-            # Entry/Exit SEK tolkas som TOTALER. Räkna upp om de saknas.
             if "EntrySEK" not in df_trades or df_trades["EntrySEK"].isna().all():
                 entry_fx = df_trades.get("FXEntry", pd.Series(usdsek, index=df_trades.index)).fillna(usdsek)
                 df_trades["EntrySEK"] = df_trades["EntryUSD"].fillna(0) * entry_fx * df_trades["Qty"].fillna(0)
@@ -220,26 +222,26 @@ def main():
     except Exception as e:
         log(f"[WARN] Kunde inte läsa/hantera Trades: {e}")
         skip_trades_blocks = True
+        df_trades = pd.DataFrame()
 
-    # 4) Öppna arbetsbok för cellvisa uppdateringar (behåll layout)
+    # 4) Öppna arbetsboken för cellvisa uppdateringar
     wb = load_workbook(tpl)
 
-    # 4a) Uppdatera Trades i befintligt ark (skriv bara kol N/O + formatering + rensa svans)
+    # 4a) Trades: skriv P&L + formatering + rensa FALSKT-rader
     if "Trades" in wb.sheetnames and not df_trades.empty:
         wsT = wb["Trades"]
         headers = header_map(wsT)
-
-        # Kolumnindex för N/O (P&L SEK / P&L %)
         col_pl_sek = headers.get("P&L SEK")
         col_pl_pct = headers.get("P&L %")
         col_date_in = headers.get("Date In")
         col_date_out = headers.get("Date Out")
         col_ticker = headers.get("Ticker")
 
-        # Sista datarad = sista rad med Ticker/Date In
-        last_row = find_last_data_row(wsT, col_ticker or 1)
+        # Bestäm sista datarad baserat på Date In / Ticker / Qty
+        key_cols = [col_ticker or 1, col_date_in or 1]
+        last_row = find_last_data_row(wsT, key_cols)
 
-        # Skriv P&L endast inom dataområdet
+        # Skriv P&L-fält rad 2..last_row
         if col_pl_sek and "PLSEK" in df_trades:
             for i, val in enumerate(df_trades["PLSEK"].fillna(""), start=2):
                 if i > last_row: break
@@ -249,13 +251,11 @@ def main():
                 if i > last_row: break
                 wsT.cell(row=i, column=col_pl_pct, value=float(val) if val != "" else None)
 
-        # Formatera datumkolumner bredare
+        # Formatering: datum + N/O
         if col_date_in:
             wsT.column_dimensions[get_column_letter(col_date_in)].width = 14
         if col_date_out:
             wsT.column_dimensions[get_column_letter(col_date_out)].width = 14
-
-        # Format för P&L-kolumner
         if col_pl_sek:
             for r in range(2, last_row+1):
                 wsT.cell(row=r, column=col_pl_sek).number_format = "#,##0.00"
@@ -263,19 +263,21 @@ def main():
             for r in range(2, last_row+1):
                 wsT.cell(row=r, column=col_pl_pct).number_format = "0.00%"
 
-        # Ta bort svansrader som bara innehåller FALSKT/False i Date In
-        # (utan att röra rader med riktig data)
-        # Hitta första rad efter sista data och rensa synliga booleans i A:
+        # Ta bort (radera) rader under last_row som är FALSKT/False i Date In
         if col_date_in:
             r = last_row + 1
-            while r <= wsT.max_row:
+            # säkerhetsgräns så vi inte loopar för mycket
+            guard = 0
+            while r <= wsT.max_row and guard < 2000:
                 v = wsT.cell(row=r, column=col_date_in).value
-                if v in ("FALSKT", "False"):
-                    for c in range(1, wsT.max_column+1):
-                        wsT.cell(row=r, column=c, value=None)
+                if v in ("FALSKT", "False", False):
+                    wsT.delete_rows(r, 1)
+                    # efter delete stannar vi kvar på samma r för att kontrollera nästa som flyttats upp
+                    continue
+                guard += 1
                 r += 1
 
-    # 4b) Uppdatera befintligt Holdings-ark: skriv bara Market SEK / P&L SEK / P&L % om de finns
+    # 4b) Holdings: ersätt datarader med öppna trades (DateOut tom)
     if "Holdings" in wb.sheetnames and not skip_trades_blocks and not df_trades.empty:
         wsH = wb["Holdings"]
         hmap = header_map(wsH)
@@ -286,79 +288,63 @@ def main():
         col_plsek_h  = hmap.get("P&L SEK") or hmap.get("P/L SEK")
         col_plpct_h  = hmap.get("P&L %")  or hmap.get("P/L %")
 
+        # Om nödvändiga kolumner finns, bygg om tabellen från öppna trades
         if col_ticker_h and col_entrysek:
-            # öppna positioner ur Trades
             open_mask = df_trades["DateOut"].isna()
             base = df_trades.loc[open_mask, ["Ticker","Qty","EntrySEK","EntryUSD"]].copy()
             base["Ticker"] = base["Ticker"].astype(str).str.strip()
-            uniq = base["Ticker"].dropna().unique().tolist()[:40]
+            base = base[base["Ticker"] != ""]
+            uniq = base["Ticker"].dropna().unique().tolist()[:60]
             last_map = last_close_usd_fast(uniq, per_call_timeout=3, total_budget_s=12)
 
-            # bygg upp en snabb sök: ticker -> rad i Holdings
-            last_row_h = find_last_data_row(wsH, col_ticker_h)
-            ticker_to_row = {}
-            for r in range(2, last_row_h+1):
-                t = wsH.cell(row=r, column=col_ticker_h).value
-                if t:
-                    ticker_to_row[str(t).strip()] = r
+            # Rensa alla datarader under header (behåll rubrikerna)
+            # hitta sista nuvarande datarad och ta bort allt under rad 2
+            current_last = find_last_data_row(wsH, [col_ticker_h])
+            if current_last >= 2:
+                wsH.delete_rows(2, current_last - 1)
 
-            # uppdatera rader som finns; skapa nya rader om nödvändigt (i slutet)
-            write_row = last_row_h + 1
+            # Skriv nya rader från rad 2
+            r = 2
             for _, row in base.iterrows():
                 t = str(row["Ticker"]).strip()
-                if not t:
-                    continue
-                r = ticker_to_row.get(t)
-                if r is None:
-                    r = write_row
-                    write_row += 1
-                    wsH.cell(row=r, column=col_ticker_h, value=t)
-                    if col_qty_h:
-                        wsH.cell(row=r, column=col_qty_h, value=float(row.get("Qty") or 0))
-
                 qty = float(row.get("Qty") or 0)
                 entry_total = float(row.get("EntrySEK") or 0.0)
-
-                # Market SEK = (last_close_usd eller EntryUSD) * USDSEK * Qty
                 last_usd = last_map.get(t)
                 entry_usd = float(row.get("EntryUSD") or 0.0)
                 px_usd = last_usd if last_usd is not None else entry_usd
-                market_total = px_usd * usdsek * qty
+                market_total = px_usd * usdsek * qty if qty and px_usd else None
+                pl_sek = (market_total - entry_total) if (market_total is not None) else None
+                pl_pct = (pl_sek / entry_total) if (pl_sek is not None and entry_total) else None
 
-                if col_marksek:
-                    wsH.cell(row=r, column=col_marksek, value=market_total if market_total else None)
-                if col_plsek_h:
-                    wsH.cell(row=r, column=col_plsek_h, value=(market_total - entry_total) if entry_total else None)
-                if col_plpct_h:
-                    wsH.cell(row=r, column=col_plpct_h,
-                             value=((market_total - entry_total)/entry_total) if entry_total else None)
+                if col_ticker_h: wsH.cell(row=r, column=col_ticker_h, value=t)
+                if col_qty_h:    wsH.cell(row=r, column=col_qty_h, value=qty if qty else None)
+                if col_entrysek: wsH.cell(row=r, column=col_entrysek, value=entry_total if entry_total else None)
+                if col_marksek:  wsH.cell(row=r, column=col_marksek, value=market_total if market_total else None)
+                if col_plsek_h:  wsH.cell(row=r, column=col_plsek_h, value=pl_sek if pl_sek is not None else None)
+                if col_plpct_h:  wsH.cell(row=r, column=col_plpct_h, value=pl_pct if pl_pct is not None else None)
+                r += 1
 
-            # Formatera siffror (endast i dataområdet vi rört)
-            end_r = max(last_row_h, write_row-1)
+            end_r = r - 1
+            # Formatera siffror i de kolumner som finns
             if col_marksek:
-                for r in range(2, end_r+1):
-                    wsH.cell(row=r, column=col_marksek).number_format = "#,##0.00"
+                for rr in range(2, end_r+1):
+                    wsH.cell(row=rr, column=col_marksek).number_format = "#,##0.00"
             if col_plsek_h:
-                for r in range(2, end_r+1):
-                    wsH.cell(row=r, column=col_plsek_h).number_format = "#,##0.00"
+                for rr in range(2, end_r+1):
+                    wsH.cell(row=rr, column=col_plsek_h).number_format = "#,##0.00"
             if col_plpct_h:
-                for r in range(2, end_r+1):
-                    wsH.cell(row=r, column=col_plpct_h).number_format = "0.00%"
+                for rr in range(2, end_r+1):
+                    wsH.cell(row=rr, column=col_plpct_h).number_format = "0.00%"
 
     # 4c) Realized – bredda datumkolumner
     if "Realized" in wb.sheetnames:
         wsR = wb["Realized"]
         hR = header_map(wsR)
-        if "DateIn" in hR:
-            wsR.column_dimensions[get_column_letter(hR["DateIn"])].width = 14
-        if "DateOut" in hR:
-            wsR.column_dimensions[get_column_letter(hR["DateOut"])].width = 14
-        if "Date In" in hR:
-            wsR.column_dimensions[get_column_letter(hR["Date In"])].width = 14
-        if "Date Out" in hR:
-            wsR.column_dimensions[get_column_letter(hR["Date Out"])].width = 14
+        for key in ("DateIn","Date Out","Date Out","Date In"):
+            if key in hR:
+                wsR.column_dimensions[get_column_letter(hR[key])].width = 14
 
-    # 5) Flikordning: BuyNow -> Trades -> Holdings -> resten
+    # 5) Flikordning
     try:
         reorder_after(wb, "Trades", "BuyNow")
         reorder_after(wb, "Holdings", "Trades")
@@ -368,7 +354,7 @@ def main():
     # 6) Spara
     log("[STEP] Skriver utdata till Excel…")
     save_atomic(wb, Path(OUTPUT_FILE))
-    log("[OK] Momentum.xlsx uppdaterad — BuyNow, Trades P&L (N/O), Holdings, Realized (format), Review_KPI/Review/Metrics orörda.")
+    log("[OK] Momentum.xlsx uppdaterad — Trades P&L fixad, FALSKT-rader raderade, Holdings = öppna trades, övriga flikar orörda.")
 
 if __name__ == "__main__":
     main()
