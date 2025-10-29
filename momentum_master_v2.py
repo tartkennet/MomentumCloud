@@ -13,22 +13,19 @@ from openpyxl.utils import get_column_letter
 # =========================
 # Konfiguration
 # =========================
-TEMPLATE_FILE = "Momentum mall fil.xlsx"   # din mall i repo
-OUTPUT_FILE   = "Momentum.xlsx"            # fil som genereras i run
+TEMPLATE_FILE = "Momentum mall fil.xlsx"
+OUTPUT_FILE   = "Momentum.xlsx"
 BACKUP_DIR    = Path("backups")
 POLYGON_API   = os.environ.get("POLYGON_API_KEY", "").strip()
 
 # =========================
 # Hjälpfunktioner
 # =========================
-def log(msg): 
-    print(msg, flush=True)
+def log(msg): print(msg, flush=True)
 
-def today_stamp(): 
-    return dt.datetime.now().strftime("%Y%m%d")
+def today_stamp(): return dt.datetime.now().strftime("%Y%m%d")
 
-def ensure_dir(p: Path):
-    p.mkdir(parents=True, exist_ok=True)
+def ensure_dir(p: Path): p.mkdir(parents=True, exist_ok=True)
 
 def backup_template(src: Path):
     ensure_dir(BACKUP_DIR)
@@ -42,8 +39,7 @@ def read_df(path: Path, sheet: str) -> pd.DataFrame:
 def polygon_get(url, params=None, timeout_s=5):
     if not POLYGON_API:
         raise RuntimeError("POLYGON_API_KEY saknas i repository secrets.")
-    q = dict(params or {})
-    q["apiKey"] = POLYGON_API
+    q = dict(params or {}); q["apiKey"] = POLYGON_API
     r = requests.get(url, params=q, timeout=timeout_s)
     r.raise_for_status()
     return r.json()
@@ -51,7 +47,7 @@ def polygon_get(url, params=None, timeout_s=5):
 def get_usdsek() -> float:
     try:
         data = polygon_get("https://api.polygon.io/v2/aggs/ticker/C:USDSEK/prev",
-                           {"adjusted": "true", "limit": 1}, 5)
+                           {"adjusted":"true","limit":1}, 5)
         res = data.get("results", [])
         if res and res[0].get("c") is not None:
             return float(res[0]["c"])
@@ -63,193 +59,175 @@ def header_map(ws):
     return {(ws.cell(1, ci).value or "").strip(): ci for ci in range(1, ws.max_column+1)}
 
 def write_buynow_sheet(wb, df_out: pd.DataFrame):
-    # Ta bort gammal BuyNow och skapa ny
+    # ersätt BuyNow
     if "BuyNow" in wb.sheetnames:
         wb.remove(wb["BuyNow"])
     ws = wb.create_sheet("BuyNow")
-
-    # Skriv rubriker
     headers = list(df_out.columns)
     for c, h in enumerate(headers, start=1):
         ws.cell(1, c, h)
-
-    # Skriv rader
     for r_idx, row in enumerate(df_out.itertuples(index=False, name=None), start=2):
         for c_idx, val in enumerate(row, start=1):
             ws.cell(r_idx, c_idx, val)
-
-    # Formatering
-    hmap = header_map(ws)
+    # format
+    h = header_map(ws)
     for nm in ("FX",):
-        if nm in hmap:
-            col = hmap[nm]
-            for r in range(2, ws.max_row+1):
-                ws.cell(r, col).number_format = "0.0000"
-    for nm in ("Price USD", "Price SEK", "Position SEK"):
-        if nm in hmap:
-            col = hmap[nm]
-            for r in range(2, ws.max_row+1):
-                ws.cell(r, col).number_format = "#,##0.00"
-    if "Qty" in hmap:
-        col = hmap["Qty"]
-        for r in range(2, ws.max_row+1):
-            ws.cell(r, col).number_format = "0"
-
-    # Kolumnbredder
+        if nm in h:
+            c = h[nm]
+            for r in range(2, ws.max_row+1): ws.cell(r, c).number_format = "0.0000"
+    for nm in ("Price USD","Price SEK","Position SEK"):
+        if nm in h:
+            c = h[nm]
+            for r in range(2, ws.max_row+1): ws.cell(r, c).number_format = "#,##0.00"
+    if "Qty" in h:
+        c = h["Qty"]
+        for r in range(2, ws.max_row+1): ws.cell(r, c).number_format = "0"
     for i in range(1, len(headers)+1):
         ws.column_dimensions[get_column_letter(i)].width = 14
+    # flytta först
+    names = wb.sheetnames[:]
+    names.remove("BuyNow"); names.insert(0,"BuyNow")
+    wb._sheets = [wb[n] for n in names]
 
 def save_atomic(wb, out_path: Path):
     tmp = out_path.with_suffix(out_path.suffix + ".tmp")
     wb.save(tmp)
-    if out_path.exists():
-        out_path.unlink()
+    if out_path.exists(): out_path.unlink()
     tmp.replace(out_path)
 
 # =========================
-# Huvudflöde: Bygg förbättrad BuyNow
+# Huvudflöde
 # =========================
 def main():
     tpl = Path(TEMPLATE_FILE)
     if not tpl.exists():
-        log(f"Error: Mallen saknas: {TEMPLATE_FILE}")
-        sys.exit(1)
-
+        log(f"Error: Mallen saknas: {TEMPLATE_FILE}"); sys.exit(1)
     backup_template(tpl)
 
-    # --- Läs Parametrar (portföljvärde i B1) ---
+    # Parametrar
     portfolio_value = 0.0
     try:
         dfp = read_df(tpl, "Parametrar")
-        col_b = pd.to_numeric(dfp.iloc[:, 1], errors="coerce").dropna()
-        if not col_b.empty:
-            portfolio_value = float(col_b.iloc[0])
-    except Exception:
-        pass
+        col_b = pd.to_numeric(dfp.iloc[:,1], errors="coerce").dropna()
+        if not col_b.empty: portfolio_value = float(col_b.iloc[0])
+    except Exception: pass
     log(f"[INFO] Portföljvärde(SEK) = {portfolio_value:.2f}")
 
-    # --- Läs EarlyCandidates ---
+    # EarlyCandidates
     try:
         ec = read_df(tpl, "EarlyCandidates")
     except Exception as e:
-        log(f"[ERROR] Kunde inte läsa EarlyCandidates: {e}")
-        sys.exit(1)
+        log(f"[ERROR] Kunde inte läsa EarlyCandidates: {e}"); sys.exit(1)
 
-    # Normalisera kolumnnamn (utan att ändra Excel)
     cols = {str(c).strip(): c for c in ec.columns}
-    def col(name): return cols.get(name, name)
-
-    required = ["Ticker", "Price_0", "Score_MOMO"]
-    for r in required:
-        if r not in cols:
-            log(f"[ERROR] EarlyCandidates saknar kolumnen '{r}'.")
-            sys.exit(1)
+    need = ["Ticker","Price_0","Score_MOMO"]
+    for k in need:
+        if k not in cols:
+            log(f"[ERROR] EarlyCandidates saknar '{k}'"); sys.exit(1)
 
     df = ec[[cols["Ticker"], cols["Price_0"], cols["Score_MOMO"]]].copy()
-    df.columns = ["Ticker", "Price_0", "Score_MOMO"]
+    df.columns = ["Ticker","Price_0","Score_MOMO"]
 
-    # Valfria kolumner
-    has_sma50  = "SMA50" in cols
-    has_sma200 = "SMA200" in cols
-    has_ret1   = "Ret1m" in cols
-    has_ret3   = "Ret3m" in cols
+    # valfria
+    has = {name: (name in cols) for name in ["SMA50","SMA200","Ret1m","Ret3m","Price_1m","Price_3m"]}
+    for name in ["SMA50","SMA200","Ret1m","Ret3m","Price_1m","Price_3m"]:
+        if has[name]:
+            df[name] = pd.to_numeric(ec[cols[name]], errors="coerce")
+        else:
+            df[name] = np.nan
 
-    if has_sma50:
-        df["SMA50"] = pd.to_numeric(ec[cols["SMA50"]], errors="coerce")
-    if has_sma200:
-        df["SMA200"] = pd.to_numeric(ec[cols["SMA200"]], errors="coerce")
-    if has_ret1:
-        df["Ret1m"] = pd.to_numeric(ec[cols["Ret1m"]], errors="coerce")
-    else:
-        df["Ret1m"] = np.nan
-    if has_ret3:
-        df["Ret3m"] = pd.to_numeric(ec[cols["Ret3m"]], errors="coerce")
-    else:
-        df["Ret3m"] = np.nan
-
-    # Numerik
+    # städa
     df["Price_0"]    = pd.to_numeric(df["Price_0"], errors="coerce")
     df["Score_MOMO"] = pd.to_numeric(df["Score_MOMO"], errors="coerce")
-    df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=["Ticker", "Price_0", "Score_MOMO"])
+    df = df.replace([np.inf,-np.inf], np.nan).dropna(subset=["Ticker","Price_0","Score_MOMO"])
     df = df[df["Price_0"] > 0]
 
-    # MomentumAccel = Ret1m - Ret3m (om båda finns, annars 0)
+    # Acceleration
     df["MomentumAccel"] = np.where(df[["Ret1m","Ret3m"]].notna().all(axis=1),
-                                   df["Ret1m"].fillna(0) - df["Ret3m"].fillna(0),
-                                   0.0)
+                                   df["Ret1m"].fillna(0) - df["Ret3m"].fillna(0), 0.0)
 
-    # --------- FILTRERING (undvik “för långt sprungna”) ----------
-    mask = pd.Series(True, index=df.index)
+    # ---- SIGNALER ----
+    fresh_break = (
+        (df["Price_0"] > df[["Price_1m","Price_3m"]].max(axis=1, skipna=True)) &
+        (df["Ret1m"].fillna(0) > 0)
+    )
 
-    # Kräv Price_0 > SMA50 (om finns)
-    if has_sma50:
-        mask &= (df["Price_0"] > df["SMA50"])
-        # Uteslut extremt utsträckt: Price_0 > 1.5 * SMA50
-        mask &= (df["Price_0"] <= 1.5 * df["SMA50"])
+    early_trend = (
+        (df["Price_0"] > df["SMA50"]) &
+        (df["SMA50"] >= 0.95 * df["SMA200"])
+    )
 
-    # Övre trendbegränsning relativt SMA200 (om finns): Price_0 < 1.2 * SMA200
-    if has_sma200:
-        mask &= (df["Price_0"] < 1.2 * df["SMA200"])
+    pullback_ok = (
+        (df["Price_0"] > df["SMA50"]) &
+        (df["Ret3m"].fillna(0) > 0) &
+        (df["Ret1m"].fillna(0).between(-5, 10))
+    )
 
-    # Ret1m ska vara positivt om kolumn finns
-    if has_ret1:
-        mask &= (df["Ret1m"] > 0)
+    df["Sig_FreshBreak"] = fresh_break.fillna(False)
+    df["Sig_EarlyTrend"] = early_trend.fillna(False)
+    df["Sig_PullbackOK"] = pullback_ok.fillna(False)
+    df["HasSignal"] = df[["Sig_FreshBreak","Sig_EarlyTrend","Sig_PullbackOK"]].any(axis=1)
+
+    # ---- Uteslut översträckta / svaga ----
+    too_far_50   = (df["Price_0"] > 1.5 * df["SMA50"])
+    too_far_200  = (df["Price_0"] > 1.25 * df["SMA200"])
+    weak_1m      = (df["Ret1m"] < -5)
+
+    mask = df["HasSignal"]
+    if has["SMA50"]:  mask &= ~too_far_50.fillna(False)
+    if has["SMA200"]: mask &= ~too_far_200.fillna(False)
+    if has["Ret1m"]:  mask &= ~weak_1m.fillna(False)
 
     filtered = df.loc[mask].copy()
     if filtered.empty:
-        log("[WARN] Alla kandidater filtrerades bort — använder ofiltrerad lista tillfälligt.")
+        log("[WARN] Inga träffar på nya signaler – faller tillbaka till lättare filter (Price_0 > SMA50 & Ret1m>0).")
+        fallback = (df["Price_0"] > df["SMA50"]) & (df["Ret1m"].fillna(0) > 0)
+        filtered = df.loc[fallback.fillna(False)].copy()
+    if filtered.empty:
+        log("[WARN] Fallback tom – använder ofiltrerad lista tillfälligt.")
         filtered = df.copy()
 
-    # --------- RANKNING ----------
-    filtered["RankScore"] = 0.6 * filtered["Score_MOMO"].fillna(0) + 0.4 * filtered["MomentumAccel"].fillna(0)
+    # ---- RANKNING ----
+    filtered["RankScore"] = (
+        0.5*filtered["MomentumAccel"].fillna(0) +
+        0.3*filtered["Ret3m"].fillna(0) +
+        0.2*filtered["Score_MOMO"].fillna(0)
+    )
     filtered = filtered.sort_values("RankScore", ascending=False).head(15).reset_index(drop=True)
     filtered["Rank"] = filtered.index + 1
 
-    # --------- PRIS/VALUTA & QTY ----------
+    # ---- PRIS/FX & QTY ----
     usdsek = get_usdsek()
     log(f"[INFO] USDSEK = {usdsek:.5f}")
-
-    TARGET_POSITIONS = 10  # lika vikt
-    target_per_pos_sek = portfolio_value / TARGET_POSITIONS if portfolio_value > 0 else 0.0
+    target_pos = 10
+    per_pos_sek = portfolio_value/target_pos if portfolio_value>0 else 0.0
 
     filtered["Price USD"] = filtered["Price_0"]
     filtered["FX"] = usdsek
     filtered["Price SEK"] = filtered["Price USD"] * filtered["FX"]
     filtered["Top10"] = filtered["Rank"] <= 10
 
-    def calc_qty(row):
-        if not row["Top10"] or row["Price SEK"] <= 0 or target_per_pos_sek <= 0:
-            return 0
-        return int(np.floor(target_per_pos_sek / row["Price SEK"])) or 1
+    def qty(row):
+        if not row["Top10"] or row["Price SEK"]<=0 or per_pos_sek<=0: return 0
+        q = int(np.floor(per_pos_sek / row["Price SEK"]))
+        return q if q>0 else 1
 
-    filtered["Qty"] = filtered.apply(calc_qty, axis=1)
+    filtered["Qty"] = filtered.apply(qty, axis=1)
     filtered["Position SEK"] = filtered["Qty"] * filtered["Price SEK"]
 
+    # ---- Output ----
     out = filtered[[
-        "Rank", "Ticker", "Top10", "Qty",
-        "Price USD", "FX", "Price SEK", "Position SEK",
-        "Score_MOMO", "MomentumAccel", "RankScore"
+        "Rank","Ticker","Top10","Qty","Price USD","FX","Price SEK","Position SEK",
+        "Score_MOMO","Ret1m","Ret3m","MomentumAccel","RankScore",
+        "Sig_FreshBreak","Sig_EarlyTrend","Sig_PullbackOK"
     ]].copy()
 
-    # --------- Skriv till Excel (bara BuyNow) ----------
+    # skriv till Excel (enbart BuyNow)
     wb = load_workbook(tpl)
     write_buynow_sheet(wb, out)
-
-    # Flytta BuyNow först
-    try:
-        names = wb.sheetnames[:]
-        if "BuyNow" in names:
-            names.remove("BuyNow")
-            names.insert(0, "BuyNow")
-            wb._sheets = [wb[n] for n in names]
-    except Exception:
-        pass
-
-    # Spara
     log("[STEP] Skriver utdata till Excel…")
     save_atomic(wb, Path(OUTPUT_FILE))
-    log("[OK] BuyNow uppdaterad — filtrerad & rankad med acceleration.")
+    log("[OK] BuyNow uppdaterad — signalbaserad filtrering och acceleration.")
     
-
 if __name__ == "__main__":
     main()
