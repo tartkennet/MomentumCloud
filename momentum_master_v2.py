@@ -9,17 +9,17 @@ import requests
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 
-
 TEMPLATE_FILE = "Momentum mall fil.xlsx"
 OUTPUT_FILE = "Momentum.xlsx"
 BACKUP_DIR = Path("backups")
 POLYGON_API = os.environ.get("POLYGON_API_KEY", "").strip()
-TARGET_POSITIONS = 10
 
+TARGET_POSITIONS = 10  # hur många lika stora positioner vi vill hålla
 
 def log(msg): print(msg, flush=True)
 def ensure_dir(p: Path): p.mkdir(parents=True, exist_ok=True)
 def today_stamp(): return dt.datetime.now().strftime("%Y%m%d")
+
 def backup_template(src: Path):
     ensure_dir(BACKUP_DIR)
     dst = BACKUP_DIR / f"{src.stem.replace(' ','_')}_{today_stamp()}.xlsx"
@@ -28,20 +28,25 @@ def backup_template(src: Path):
 
 def get_usdsek():
     try:
-        r = requests.get("https://api.polygon.io/v2/aggs/ticker/C:USDSEK/prev",
-                         params={"adjusted": "true", "limit": 1, "apiKey": POLYGON_API},
-                         timeout=5)
+        r = requests.get(
+            "https://api.polygon.io/v2/aggs/ticker/C:USDSEK/prev",
+            params={"adjusted": "true", "limit": 1, "apiKey": POLYGON_API},
+            timeout=5
+        )
         r.raise_for_status()
-        d = r.json()
-        res = d.get("results", [])
-        if res and res[0].get("c"): return float(res[0]["c"])
+        data = r.json()
+        res = data.get("results", [])
+        if res and res[0].get("c"):
+            return float(res[0]["c"])
     except Exception as e:
         log(f"[WARN] polygon misslyckades: {e}")
-    return 10.0
-
+    return 10.0  # fallback om polygon ballar ur
 
 def read_portfolio_value(path: Path) -> float:
-    """Läs 'Portföljvärde' ur kolumn A i Parametrar-fliken."""
+    """
+    Läs 'Portföljvärde' genom att leta efter den raden i Parametrar-bladet,
+    inte förlita oss på header.
+    """
     try:
         df = pd.read_excel(path, sheet_name="Parametrar", header=None)
         mask = df[0].astype(str).str.lower().str.contains("portföljvärde", na=False)
@@ -53,86 +58,167 @@ def read_portfolio_value(path: Path) -> float:
         log(f"[WARN] Portföljvärde kunde ej läsas: {e}")
     return 0.0
 
+def build_buylist(df_ec: pd.DataFrame, portfolio_value: float, usdsek: float) -> pd.DataFrame:
+    """
+    Hård momentum-filtrering:
+    - Price_0 > SMA50
+    - Price_0 > SMA200
+    - SMA50 > SMA200 (dvs upptrend, inte sidledes skräp)
+    - Ret1m > +10%  (det rör sig NU)
+    - MomentumAccel > 0 (farten ökar, inte bromsar)
+    Om inget klarar -> inget att köpa, BuyNow tom.
+    """
 
-def build_buylist(df_ec, portfolio_value, usdsek):
     df = df_ec.copy()
-    for c in df.columns:
-        df[c] = pd.to_numeric(df[c], errors="ignore")
-    df = df.rename(columns=lambda x: x.strip())
+    df.columns = [str(c).strip() for c in df.columns]
 
     needed = ["Ticker","Price_0","SMA50","SMA200","Ret1m","Ret3m","Score_MOMO"]
-    for n in needed:
-        if n not in df.columns: raise RuntimeError(f"Saknar kolumn {n}")
+    for col in needed:
+        if col not in df.columns:
+            raise RuntimeError(f"Saknar kolumn {col} i EarlyCandidates")
 
-    df = df[df["Price_0"]>0].copy()
+    # numbers där det går
+    numeric_cols = ["Price_0","SMA50","SMA200","Ret1m","Ret3m","Score_MOMO"]
+    for c in numeric_cols:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
 
-    df["MomentumAccel"]=df["Ret1m"]-df["Ret3m"]
-    df["Sig_StrongTrend"]=(
-        (df["Price_0"]>df["SMA200"])&
-        (df["SMA50"]>df["SMA200"])&
-        (df["Ret3m"]>10)
-    )
-    df["Sig_PullbackOK"]=(
-        (df["Price_0"]>df["SMA50"])&
-        (df["Ret3m"]>0)&
-        (df["Ret1m"].between(-5,10))
-    )
-    df["HasSignal"]=df["Sig_StrongTrend"]|df["Sig_PullbackOK"]
+    # rensa
+    df = df.replace([np.inf,-np.inf], np.nan)
+    df = df.dropna(subset=["Ticker","Price_0","SMA50","SMA200","Ret1m","Ret3m"])
+    df = df[(df["Price_0"] > 0) & (df["SMA50"] > 0) & (df["SMA200"] > 0)]
 
-    f=df[df["HasSignal"]].copy()
-    if f.empty: f=df.copy()
+    # acceleration = kort sikt minus 3m
+    df["MomentumAccel"] = df["Ret1m"] - df["Ret3m"]
 
-    f["RankScore"]=0.5*f["MomentumAccel"]+0.5*f["Ret3m"]
-    f=f.sort_values("RankScore",ascending=False).head(15).reset_index(drop=True)
-    f["Rank"]=f.index+1
-    f["Top10"]=f["Rank"]<=10
+    # villkor
+    df["OverMA"]    = (df["Price_0"] > df["SMA50"]) & (df["Price_0"] > df["SMA200"]) & (df["SMA50"] > df["SMA200"])
+    df["Strong1m"]  = df["Ret1m"] > 10
+    df["AccelOK"]   = df["MomentumAccel"] > 0
 
-    per_pos=portfolio_value/TARGET_POSITIONS if portfolio_value>0 else 0
-    f["FX"]=usdsek
-    f["Price SEK"]=f["Price_0"]*usdsek
-    f["Qty"]=np.where(
-        f["Top10"],
-        np.maximum((per_pos/f["Price SEK"]).fillna(0).astype(int),1),
-        0
-    )
-    f["Position SEK"]=f["Qty"]*f["Price SEK"]
+    strict_mask = df["OverMA"] & df["Strong1m"] & df["AccelOK"]
 
-    return f[["Rank","Ticker","Top10","Qty","Price_0","FX","Price SEK","Position SEK",
-              "Score_MOMO","Ret1m","Ret3m","MomentumAccel","RankScore",
-              "Sig_StrongTrend","Sig_PullbackOK"]]
+    filtered = df.loc[strict_mask].copy()
 
+    # Om strikt filter ger tom lista -> då är marknaden kass och vi köper inget.
+    # Vi returnerar tomma rader hellre än skräpaktier.
+    if filtered.empty:
+        filtered = df.iloc[0:0].copy()  # tom df med rätt kolumner
 
-def write_buynow(wb,df):
-    old_idx=None
-    for i,sh in enumerate(wb.worksheets):
-        if sh.title=="BuyNow": old_idx=i; wb.remove(sh)
-    ws=wb.create_sheet("BuyNow")
-    for c,h in enumerate(df.columns,1): ws.cell(1,c,h)
-    for r,row in enumerate(df.itertuples(index=False),2):
-        for c,v in enumerate(row,1): ws.cell(r,c,v)
-    for i in range(1,len(df.columns)+1):
-        ws.column_dimensions[get_column_letter(i)].width=14
-    if old_idx is not None:
-        new_order=wb.worksheets[:]; sh=new_order.pop(-1); new_order.insert(old_idx,sh); wb._sheets=new_order
+    # Ranka de som klarade filtret:
+    if not filtered.empty:
+        filtered["RankScore"] = (
+            0.6 * filtered["Ret1m"] +
+            0.3 * filtered["MomentumAccel"] +
+            0.1 * filtered["Score_MOMO"]
+        )
+        filtered = filtered.sort_values("RankScore", ascending=False).reset_index(drop=True)
+    else:
+        filtered["RankScore"] = pd.Series(dtype=float)
 
+    # numrera, bestäm Top10
+    filtered["Rank"]  = filtered.index + 1
+    filtered["Top10"] = filtered["Rank"] <= 10
+
+    # sizing
+    per_pos_sek = portfolio_value / TARGET_POSITIONS if portfolio_value > 0 else 0.0
+    filtered["FX"]        = usdsek
+    filtered["Price SEK"] = filtered["Price_0"] * usdsek
+
+    def qty(row):
+        if not row["Top10"]:
+            return 0
+        if row["Price SEK"] <= 0 or per_pos_sek <= 0:
+            return 0
+        q = int(np.floor(per_pos_sek / row["Price SEK"]))
+        return q if q > 0 else 1
+
+    filtered["Qty"] = filtered.apply(qty, axis=1)
+    filtered["Position SEK"] = filtered["Qty"] * filtered["Price SEK"]
+
+    # Slutoutput
+    out_cols = [
+        "Rank",
+        "Ticker",
+        "Top10",
+        "Qty",
+        "Price_0",
+        "FX",
+        "Price SEK",
+        "Position SEK",
+        "Score_MOMO",
+        "Ret1m",
+        "Ret3m",
+        "MomentumAccel",
+        "RankScore",
+        "OverMA",      # pris över båda snitten och SMA50>SMA200
+        "Strong1m",    # senaste månaden > 10%
+        "AccelOK",     # Ret1m > Ret3m
+    ]
+
+    return filtered[out_cols].copy()
+
+def write_buynow(wb, df_buy):
+    # hitta ev gammal plats för BuyNow
+    old_index = None
+    for i, sh in enumerate(wb.worksheets):
+        if sh.title == "BuyNow":
+            old_index = i
+            wb.remove(sh)
+            break
+
+    ws = wb.create_sheet("BuyNow")
+
+    # skriv headers
+    for c, h in enumerate(df_buy.columns, start=1):
+        ws.cell(1, c, h)
+
+    # skriv rader
+    for r_idx, row in enumerate(df_buy.itertuples(index=False), start=2):
+        for c_idx, val in enumerate(row, start=1):
+            ws.cell(r_idx, c_idx, val)
+
+    # bredda kolumner
+    for i in range(1, len(df_buy.columns)+1):
+        ws.column_dimensions[get_column_letter(i)].width = 14
+
+    # lägg tillbaka fliken där den låg, annars lämna den sist
+    if old_index is not None:
+        order = wb.worksheets[:]
+        new_sheet = order.pop(-1)
+        order.insert(old_index, new_sheet)
+        wb._sheets = order
 
 def main():
-    tpl=Path(TEMPLATE_FILE)
-    if not tpl.exists(): sys.exit(f"Fel: {tpl} saknas")
+    tpl = Path(TEMPLATE_FILE)
+    if not tpl.exists():
+        sys.exit(f"Fel: {tpl} saknas")
+
     backup_template(tpl)
-    pv=read_portfolio_value(tpl)
-    log(f"[INFO] Portföljvärde(SEK)={pv}")
-    usdsek=get_usdsek(); log(f"[INFO] USDSEK={usdsek}")
-    df_ec=pd.read_excel(tpl,sheet_name="EarlyCandidates")
-    df_buy=build_buylist(df_ec,pv,usdsek)
-    wb=load_workbook(tpl)
-    write_buynow(wb,df_buy)
-    out=Path(OUTPUT_FILE)
-    tmp=out.with_suffix(".tmp")
+
+    portfolio_value = read_portfolio_value(tpl)
+    log(f"[INFO] Portföljvärde(SEK) = {portfolio_value}")
+
+    usdsek = get_usdsek()
+    log(f"[INFO] USDSEK = {usdsek}")
+
+    df_ec = pd.read_excel(tpl, sheet_name="EarlyCandidates")
+    df_buy = build_buylist(df_ec, portfolio_value, usdsek)
+
+    wb = load_workbook(tpl)
+    write_buynow(wb, df_buy)
+
+    out = Path(OUTPUT_FILE)
+    tmp = out.with_suffix(".tmp")
     wb.save(tmp)
-    if out.exists(): out.unlink()
+    if out.exists():
+        out.unlink()
     tmp.replace(out)
-    log("[OK] Momentum.xlsx skapad.")
 
+    if df_buy.empty:
+        log("[OK] Momentum.xlsx skapad. Inga godkända momentumledare just nu (kontantläge).")
+    else:
+        tickers = ", ".join(df_buy["Ticker"].tolist())
+        log(f"[OK] Momentum.xlsx skapad. Kandidater: {tickers}")
 
-if __name__=="__main__": main()
+if __name__ == "__main__":
+    main()
