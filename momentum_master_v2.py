@@ -14,15 +14,15 @@ OUTPUT_FILE = "Momentum.xlsx"
 BACKUP_DIR = Path("backups")
 POLYGON_API = os.environ.get("POLYGON_API_KEY", "").strip()
 
-TARGET_POSITIONS = 10  # hur många lika stora positioner vi vill hålla
+TARGET_POSITIONS = 10  # lika vikt per position
 
-def log(msg): 
+def log(msg):
     print(msg, flush=True)
 
-def ensure_dir(p: Path): 
+def ensure_dir(p: Path):
     p.mkdir(parents=True, exist_ok=True)
 
-def today_stamp(): 
+def today_stamp():
     return dt.datetime.now().strftime("%Y%m%d")
 
 def backup_template(src: Path):
@@ -45,14 +45,12 @@ def get_usdsek():
             return float(res[0]["c"])
     except Exception as e:
         log(f"[WARN] polygon misslyckades: {e}")
-    # fallback ifall polygon dör
-    return 10.0
+    return 10.0  # fallback om polygon dör
 
 def read_portfolio_value(path: Path) -> float:
     """
-    Läs 'Portföljvärde' från Parametrar-bladet genom att leta efter raden som heter 'Portföljvärde'
-    i kolumn A och ta värdet i kolumn B.
-    Fungerar oavsett hur Excel-headern ser ut.
+    Robust läsning av Parametrar!B1 motsvarande 'Portföljvärde'.
+    Vi letar upp raden som innehåller 'Portföljvärde' i kol A.
     """
     try:
         df = pd.read_excel(path, sheet_name="Parametrar", header=None)
@@ -67,80 +65,73 @@ def read_portfolio_value(path: Path) -> float:
 
 def build_buylist(df_ec: pd.DataFrame, portfolio_value: float, usdsek: float) -> pd.DataFrame:
     """
-    Hård momentum-filtrering (dina krav):
-    - Price_0 > SMA50
-    - Price_0 > SMA200
-    - SMA50 > SMA200  (trend upp, inte sidledes)
-    - Ret1m > +10%    (det rör sig NU)
-    - MomentumAccel > 0 (farten ökar, inte bromsar)
-
-    Vi plockar bara aktier som uppfyller allt detta.
-    Om filtret blir tomt => BuyNow = tom tabell (cashläge).
+    NORMAL-filter (det du efterlyser):
+    1. Pris ska ligga i upptrend = över både SMA50 och SMA200
+    2. SMA50 ska ligga över SMA200 (lång trend upp)
+    3. Ret3m > 5%  (aktien går faktiskt upp senaste kvartalet)
+    4. Ret1m > 0%  (den är inte knäckt senaste månaden)
+    5. MomentumAccel = Ret1m - Ret3m >= -5  (det får inte se ut som den håller på att dö)
+       dvs farten får svalna lite, men inte kollapsa
+    -> Detta ska ge dig sunda, levande trender. Inte döda grisar, inte bara explosionsspikar.
     """
 
     df = df_ec.copy()
     df.columns = [str(c).strip() for c in df.columns]
 
-    needed = ["Ticker", "Price_0", "SMA50", "SMA200", "Ret1m", "Ret3m", "Score_MOMO"]
+    needed = ["Ticker","Price_0","SMA50","SMA200","Ret1m","Ret3m","Score_MOMO"]
     for col in needed:
         if col not in df.columns:
             raise RuntimeError(f"Saknar kolumn {col} i EarlyCandidates")
 
-    # gör allt numeriskt där det går
-    numeric_cols = ["Price_0","SMA50","SMA200","Ret1m","Ret3m","Score_MOMO"]
-    for c in numeric_cols:
+    # gör numeriskt där det går
+    for c in ["Price_0","SMA50","SMA200","Ret1m","Ret3m","Score_MOMO"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
 
-    # rensa skräp
+    # rensa orimliga rader
     df = df.replace([np.inf,-np.inf], np.nan)
     df = df.dropna(subset=["Ticker","Price_0","SMA50","SMA200","Ret1m","Ret3m"])
     df = df[(df["Price_0"] > 0) & (df["SMA50"] > 0) & (df["SMA200"] > 0)]
 
-    # acceleration = skillnad mellan kort och medellång avkastning
+    # definiera MomentumAccel
     df["MomentumAccel"] = df["Ret1m"] - df["Ret3m"]
 
-    # tekniska villkor
-    df["OverMA"]   = (df["Price_0"] > df["SMA50"]) & (df["Price_0"] > df["SMA200"]) & (df["SMA50"] > df["SMA200"])
-    df["Strong1m"] = df["Ret1m"] > 10
-    df["AccelOK"]  = df["MomentumAccel"] > 0
+    # Bygg boolean-flaggor som vi kan visa i arket
+    df["TrendOK"] = (
+        (df["Price_0"] > df["SMA50"]) &
+        (df["Price_0"] > df["SMA200"]) &
+        (df["SMA50"]  > df["SMA200"])
+    )
+    df["QuarterUp"] = df["Ret3m"] > 5        # upp senaste 3m
+    df["MonthAlive"] = df["Ret1m"] > 0       # inte total breakdown senaste månaden
+    df["AccelNotDead"] = (df["MomentumAccel"] >= -5)
 
-    strict_mask = df["OverMA"] & df["Strong1m"] & df["AccelOK"]
+    mask = df["TrendOK"] & df["QuarterUp"] & df["MonthAlive"] & df["AccelNotDead"]
 
-    filtered = df.loc[strict_mask].copy()
+    filtered = df.loc[mask].copy()
 
-    # om inget klarar filtret => returnera tom tabell
+    # Om vi fortfarande blir tomma → det är en blodig marknad.
+    # Då kör vi en mild fallback: bara TrendOK & QuarterUp.
     if filtered.empty:
-        # vi bygger en tom df med samma kolumner som slutoutput,
-        # så write_buynow fortfarande skapar fliken utan att krascha.
-        cols_out = [
-            "Rank",
-            "Ticker",
-            "Top10",
-            "Qty",
-            "Price_0",
-            "FX",
-            "Price SEK",
-            "Position SEK",
-            "Score_MOMO",
-            "Ret1m",
-            "Ret3m",
-            "MomentumAccel",
-            "RankScore",
-            "OverMA",
-            "Strong1m",
-            "AccelOK",
-        ]
-        return pd.DataFrame(columns=cols_out)
+        fallback_mask = df["TrendOK"] & df["QuarterUp"]
+        filtered = df.loc[fallback_mask].copy()
 
-    # om vi har kandidater: ranka, storleksbestäm
+    # Om det ÄNDÅ är tomt → då är marknaden helt kass, då köper vi inget alls.
+    if filtered.empty:
+        return pd.DataFrame(columns=[
+            "Rank","Ticker","Top10","Qty","Price_0","FX","Price SEK","Position SEK",
+            "Score_MOMO","Ret1m","Ret3m","MomentumAccel","RankScore",
+            "TrendOK","QuarterUp","MonthAlive","AccelNotDead"
+        ])
+
+    # Rankning: vi gillar stabil trend (Ret3m), vi gillar att den lever nu (Ret1m),
+    # och vi gillar om den inte håller på att dö (MomentumAccel).
     filtered["RankScore"] = (
-        0.6 * filtered["Ret1m"] +
-        0.3 * filtered["MomentumAccel"] +
-        0.1 * filtered["Score_MOMO"]
+        0.5 * filtered["Ret3m"] +
+        0.3 * filtered["Ret1m"] +
+        0.2 * filtered["MomentumAccel"]
     )
 
     filtered = filtered.sort_values("RankScore", ascending=False).reset_index(drop=True)
-
     filtered["Rank"]  = filtered.index + 1
     filtered["Top10"] = filtered["Rank"] <= 10
 
@@ -173,18 +164,16 @@ def build_buylist(df_ec: pd.DataFrame, portfolio_value: float, usdsek: float) ->
         "Ret3m",
         "MomentumAccel",
         "RankScore",
-        "OverMA",
-        "Strong1m",
-        "AccelOK",
+        "TrendOK",
+        "QuarterUp",
+        "MonthAlive",
+        "AccelNotDead",
     ]
 
     return filtered[out_cols].copy()
 
 def write_buynow(wb, df_buy):
-    """
-    Skapar/ersätter fliken BuyNow men ändrar inte ordningen på andra flikar.
-    Om BuyNow fanns tidigare så lägger vi tillbaka den på samma index.
-    """
+    # Hitta ev. gammal BuyNow och kom ihåg var den låg
     old_index = None
     for i, sh in enumerate(wb.worksheets):
         if sh.title == "BuyNow":
@@ -194,20 +183,20 @@ def write_buynow(wb, df_buy):
 
     ws = wb.create_sheet("BuyNow")
 
-    # headers
+    # Skriv headers
     for c, h in enumerate(df_buy.columns, start=1):
         ws.cell(1, c, h)
 
-    # rows (kan vara 0 rader och det är okej)
+    # Skriv data (kan vara tomt, det är okej)
     for r_idx, row in enumerate(df_buy.itertuples(index=False), start=2):
         for c_idx, val in enumerate(row, start=1):
             ws.cell(r_idx, c_idx, val)
 
-    # formatering: kolumnbredder
-    for i in range(1, len(df_buy.columns) + 1):
+    # Gör kolumnerna lite breda
+    for i in range(1, len(df_buy.columns)+1):
         ws.column_dimensions[get_column_letter(i)].width = 14
 
-    # Lägg tillbaka BuyNow där den låg innan, annars låt den hamna sist
+    # Stoppa tillbaka BuyNow där den låg innan om den fanns
     if old_index is not None:
         order = wb.worksheets[:]
         new_sheet = order.pop(-1)
@@ -241,7 +230,7 @@ def main():
     tmp.replace(out)
 
     if df_buy.empty:
-        log("[OK] Momentum.xlsx skapad. Ingen aktie klarar hårt momentumfilter → kontantläge.")
+        log("[OK] Momentum.xlsx skapad. Marknaden ger inget du borde köpa (fallback testad).")
     else:
         tickers = ", ".join(df_buy["Ticker"].tolist())
         log(f"[OK] Momentum.xlsx skapad. Kandidater: {tickers}")
