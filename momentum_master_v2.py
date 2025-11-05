@@ -44,7 +44,7 @@ def get_usdsek():
     return 10.0
 
 def read_param_value(path: Path, label_substr: str, default=None, numeric=True):
-    """Leta efter en rad i Parametrar-kalkylbladet vars kol A innehåller label_substr; returnera värdet i kol B."""
+    """Hitta rad i Parametrar (kol A innehåller label_substr) och returnera värde i kol B."""
     try:
         df = pd.read_excel(path, sheet_name="Parametrar", header=None)
         mask = df[0].astype(str).str.lower().str.contains(label_substr.lower(), na=False)
@@ -58,112 +58,108 @@ def read_param_value(path: Path, label_substr: str, default=None, numeric=True):
         log(f"[WARN] Parametrar läsning '{label_substr}' misslyckades: {e}")
     return default
 
-def normalize_cols(cols):
-    """lower + ta bort mellanslag, punkter, understreck."""
-    return {c: ''.join(ch for ch in c.lower() if ch.isalnum()) for c in cols}
+def norm_name(s: str) -> str:
+    return ''.join(ch for ch in s.lower() if ch.isalnum())
 
-def choose_price_column(df: pd.DataFrame) -> str:
-    """
-    Försök hitta 'senaste pris' i EarlyCandidates.
-    Stöder många rubriker. Faller tillbaka till 'Price_0' om inget bättre.
-    Väljer första som finns OCH har rimliga positiva värden.
-    """
-    # Kandidatnamn (normaliserade)
-    wanted = [
-        "pricenow","pricenowusd","price","last","lastprice","close","lastclose",
-        "closenow","latest","latestprice","pricelatest","pricenowse","pricenowsek",
-        "pricese","priceseK","pris","senaste","price_0"  # sist: fallback
-    ]
-    norm = normalize_cols(df.columns)
-    rev = {v: k for k, v in norm.items()}
-
-    # preferensordning: alla utom price_0 först
-    for key in wanted:
+def choose_column(df: pd.DataFrame, candidates: list[str], require_positive: bool = False) -> str|None:
+    """Välj första kolumn vars normaliserade namn matchar någon kandidat."""
+    norm_map = {c: norm_name(c) for c in df.columns}
+    rev = {v: k for k, v in norm_map.items()}
+    for key in candidates:
         if key in rev:
             col = rev[key]
-            s = pd.to_numeric(df[col], errors="coerce")
-            if s.dropna().gt(0).any():
-                if key != "price_0":
-                    log(f"[INFO] Vald pris-kolumn = {col} (auto)")
-                    return col
-
-    # Fallback till Price_0 om den finns
-    for c in df.columns:
-        if c.strip().lower() == "price_0":
-            log("[INFO] Vald pris-kolumn = Price_0 (fallback)")
-            return c
-
-    # Ingen hittad -> ta första numeriska > 0
-    for c in df.columns:
-        s = pd.to_numeric(df[c], errors="coerce")
-        if s.dropna().gt(0).any():
-            log(f"[WARN] Ingen tydlig pris-kolumn hittad, använder {c}")
-            return c
-    raise RuntimeError("Kunde inte hitta någon användbar pris-kolumn i EarlyCandidates.")
+            if require_positive:
+                s = pd.to_numeric(df[col], errors="coerce")
+                if not s.dropna().gt(0).any():
+                    continue
+            return col
+    return None
 
 # ======= Kärnlogik =======
-def build_buylist(df_ec_raw: pd.DataFrame, portfolio_value: float, usdsek: float, min_price_usd: float) -> pd.DataFrame:
+def build_buylist_from_universe(df_u_raw: pd.DataFrame, portfolio_value: float, usdsek: float, min_price_usd: float) -> pd.DataFrame:
     """
-    Tobias Momentum Classic (med auto-pris):
-      1) Välj 'senaste pris'-kolumn smart.
-      2) Släng uppenbart skräp: under SMA200 eller Ret1m < -20% eller pris < min_price_usd.
-      3) Ranka: 0.5*Score_MOMO + 0.3*Ret1m + 0.2*Ret3m.
-      4) Topp 15; Top10 = SANT; Qty från Parametrar!B1.
+    Momentum från Universe:
+      1) Auto-välj pris-kolumn (Close/Price/Last/Price now/…)
+      2) Använd Universe-kolumner för SMA50/SMA200/Ret1m/Ret3m/Score_MOMO (robust namnsök)
+      3) Filter: pris >= min_price, pris >= SMA200, Ret1m >= -20
+      4) Rank: 0.5*Score_MOMO + 0.3*Ret1m + 0.2*Ret3m
+      5) Top 15, markera Top10, Qty utifrån Parametrar!B1
     """
-    df = df_ec_raw.copy()
+    df = df_u_raw.copy()
     df.columns = [str(c).strip() for c in df.columns]
 
-    # Säkerställ kärnkolumner
-    required = ["Ticker","SMA200","Ret1m","Ret3m","Score_MOMO"]
-    missing = [c for c in required if c not in df.columns]
+    # --- hitta kolumner robust ---
+    # pris
+    price_candidates = [
+        "pricenow","price","last","lastprice","close","lastclose","latest","latestprice",
+        "pricelatest","pricenowusd","priceusd","pris","senaste"
+    ]
+    price_col = choose_column(df, price_candidates, require_positive=True)
+    if not price_col:
+        # fallback: Price_0 om den finns
+        if "Price_0" in df.columns:
+            price_col = "Price_0"
+            log("[INFO] Pris-kolumn fallback: Price_0")
+        else:
+            raise RuntimeError("Hittar ingen pris-kolumn i Universe.")
+
+    # SMA50 / SMA200
+    sma50_col  = choose_column(df, ["sma50","ma50"])
+    sma200_col = choose_column(df, ["sma200","ma200"])
+    # Returer
+    ret1_col = choose_column(df, ["ret1m","ret_1m","return1m","m1return","retm1"])
+    ret3_col = choose_column(df, ["ret3m","ret_3m","return3m","m3return","retm3"])
+    # Score_MOMO
+    score_col = choose_column(df, ["scoremomo","score_momo","momentumscore","momosc","momoscore"])
+
+    needed = {
+        "Pris": price_col, "SMA50": sma50_col, "SMA200": sma200_col,
+        "Ret1m": ret1_col, "Ret3m": ret3_col, "Score_MOMO": score_col
+    }
+    missing = [k for k,v in needed.items() if v is None]
     if missing:
-        raise RuntimeError(f"Saknar kolumn(er) i EarlyCandidates: {missing}")
+        raise RuntimeError(f"Saknar nödvändiga kolumner i Universe: {missing}")
 
-    # Numerik
-    for c in ["SMA200","Ret1m","Ret3m","Score_MOMO"]:
+    # numerik
+    for c in [price_col, sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
-    df = df.replace([np.inf,-np.inf], np.nan).dropna(subset=["Ticker","SMA200","Ret1m","Ret3m","Score_MOMO"])
+    df = df.replace([np.inf,-np.inf], np.nan)
+    df = df.dropna(subset=["Ticker", price_col, sma200_col, ret1_col, ret3_col, score_col])
 
-    # Hitta pris-kolumn
-    price_col = choose_price_column(df)
-    df[price_col] = pd.to_numeric(df[price_col], errors="coerce")
-    df = df.dropna(subset=[price_col])
-    df = df[df[price_col] > 0].copy()
-
-    # Släng skräp
-    df = df[(df[price_col] >= min_price_usd) & (df["SMA200"] > 0)]
-    df = df[df[price_col] >= df["SMA200"]]                # över 200-d
-    df = df[df["Ret1m"] >= -20]                           # inte fritt fall
+    # filter
+    df = df[(df[price_col] > 0) & (df[sma200_col] > 0)]
+    df = df[df[price_col] >= min_price_usd]
+    df = df[df[price_col] >= df[sma200_col]]
+    df = df[df[ret1_col] >= -20]
 
     if df.empty:
-        # Sista skydd: om allt försvann, använd topp på Score_MOMO ändå (du vill hellre ha något än noll)
-        df = df_ec_raw.copy()
-        df.columns = [str(c).strip() for c in df.columns]
-        for c in ["SMA200","Ret1m","Ret3m","Score_MOMO"]:
-            df[c] = pd.to_numeric(df[c], errors="coerce")
-        df[price_col] = pd.to_numeric(df.get(price_col, np.nan), errors="coerce")
-        df = df.replace([np.inf,-np.inf], np.nan).dropna(subset=["Ticker","SMA200","Ret1m","Ret3m","Score_MOMO", price_col])
-        df = df[df[price_col] > 0]
+        # om inget klarar filtret, ta topp på Score ändå (du vill ha en lista hellre än noll)
+        df = df_u_raw.copy()
+        for c in [price_col, sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
+            df[c] = pd.to_numeric(df.get(c), errors="coerce")
+        df = df.replace([np.inf,-np.inf], np.nan)
+        df = df.dropna(subset=["Ticker", price_col, sma200_col, ret1_col, ret3_col, score_col])
+        df = df[(df[price_col] > 0) & (df[sma200_col] > 0)]
         df["Forced"] = True
-        log("[WARN] Fallback aktiverad: marknaden gav tom lista efter filter.")
+        log("[WARN] Fallback aktiverad: Universe gav tom lista efter filter.")
     else:
         df["Forced"] = False
 
-    # Rankscore: momentum
-    df["RankScore"] = 0.5*df["Score_MOMO"] + 0.3*df["Ret1m"] + 0.2*df["Ret3m"]
+    # rank
+    df["RankScore"] = 0.5*df[score_col] + 0.3*df[ret1_col] + 0.2*df[ret3_col]
     df = df.sort_values("RankScore", ascending=False).reset_index(drop=True)
 
-    # Begränsa + flagga Top10
-    df["Rank"] = df.index + 1
+    # toppar
+    df["Rank"]  = df.index + 1
     df["Top10"] = df["Rank"] <= 10
     df = df.head(15).copy()
 
-    # Sizing
+    # sizing
     per_pos_sek = (portfolio_value / TARGET_POSITIONS) if portfolio_value > 0 else 0.0
     df["FX"] = usdsek
     df["Price SEK"] = df[price_col] * usdsek
 
-    def calc_qty(row):
+    def qty(row):
         if not row["Top10"]:
             return 0
         if row["Price SEK"] <= 0 or per_pos_sek <= 0:
@@ -171,17 +167,24 @@ def build_buylist(df_ec_raw: pd.DataFrame, portfolio_value: float, usdsek: float
         q = int(np.floor(per_pos_sek / row["Price SEK"]))
         return max(q, 1)
 
-    df["Qty"] = [calc_qty(r) for _, r in df.iterrows()]
+    df["Qty"] = [qty(r) for _, r in df.iterrows()]
     df["Position SEK"] = df["Qty"] * df["Price SEK"]
 
-    # Slutkolumner
+    # utdata
     out = df[[
         "Rank","Ticker","Top10","Qty",
         price_col, "FX","Price SEK","Position SEK",
-        "Score_MOMO","Ret1m","Ret3m","SMA200","RankScore","Forced"
+        score_col, ret1_col, ret3_col, sma50_col, sma200_col, "RankScore","Forced"
     ]].copy()
-    out = out.rename(columns={price_col: "Price_Used"})
-
+    out = out.rename(columns={
+        price_col: "Price_Used",
+        score_col: "Score_MOMO",
+        ret1_col:  "Ret1m",
+        ret3_col:  "Ret3m",
+        sma50_col: "SMA50",
+        sma200_col:"SMA200"
+    })
+    log(f"[INFO] Vald pris-kolumn (Universe) = {price_col}")
     return out
 
 def write_buynow(wb, df_buy):
@@ -192,19 +195,14 @@ def write_buynow(wb, df_buy):
             old_index = i
             wb.remove(sh)
             break
-
     ws = wb.create_sheet("BuyNow")
-    # rubriker
     for c, h in enumerate(df_buy.columns, start=1):
         ws.cell(1, c, h)
-    # data
     for r_idx, row in enumerate(df_buy.itertuples(index=False), start=2):
         for c_idx, val in enumerate(row, start=1):
             ws.cell(r_idx, c_idx, val)
-    # kolumnbredder
     for i in range(1, len(df_buy.columns)+1):
         ws.column_dimensions[get_column_letter(i)].width = 14
-
     if old_index is not None:
         order = wb.worksheets[:]
         new_sheet = order.pop(-1)
@@ -219,16 +217,18 @@ def main():
 
     backup_template(tpl)
 
-    portval = read_param_value(tpl, "portföljvärde", default=0.0, numeric=True)
-    min_price = read_param_value(tpl, "min pris", default=1.0, numeric=True)  # t.ex. Parametrar!B4
+    portval   = read_param_value(tpl, "portföljvärde", default=0.0, numeric=True)
+    min_price = read_param_value(tpl, "min pris", default=1.0, numeric=True)  # Parametrar!B4 t.ex.
     log(f"[INFO] Portföljvärde(SEK) = {portval}")
     log(f"[INFO] Min pris (USD)    = {min_price}")
 
     usdsek = get_usdsek()
     log(f"[INFO] USDSEK = {usdsek}")
 
-    df_ec = pd.read_excel(tpl, sheet_name="EarlyCandidates")
-    df_buy = build_buylist(df_ec, portval, usdsek, min_price)
+    # === Läser Universe istället för EarlyCandidates ===
+    df_uni = pd.read_excel(tpl, sheet_name="Universe")
+
+    df_buy = build_buylist_from_universe(df_uni, portval, usdsek, min_price)
 
     wb = load_workbook(tpl)
     write_buynow(wb, df_buy)
