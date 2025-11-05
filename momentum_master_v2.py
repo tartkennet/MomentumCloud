@@ -76,10 +76,57 @@ def choose_column(df: pd.DataFrame, candidates: list[str], require_positive: boo
     return None
 
 # ======= Kärnlogik =======
+def resolve_price_usd(df: pd.DataFrame, usdsek: float) -> tuple[pd.Series,str]:
+    """
+    Försök hitta pris i USD. Om bara SEK-pris finns, konvertera till USD med FX/Polygon.
+    Returnerar: (Series med USD-pris, loggbeskrivning)
+    """
+    # 1) USD-pris kandidater
+    usd_price_keys = [
+        "pricenow","price","last","lastprice","close","lastclose","latest","latestprice",
+        "pricelatest","pricenowusd","priceusd","price_0","prisusd","senaste"
+    ]
+    col_usd = choose_column(df, usd_price_keys, require_positive=True)
+    if col_usd:
+        s = pd.to_numeric(df[col_usd], errors="coerce")
+        s = s.where(s>0)
+        if s.dropna().any():
+            return s, f"[INFO] Pris (Universe) = {col_usd} [USD]"
+
+    # 2) SEK-pris + FX
+    sek_price_keys = [
+        "pricenowsek","priceseK","price_sek","prissek","pris(sek)","pris","senastepris","pristodaysek"
+    ]
+    fx_keys = [
+        "fxnow","fx","usdsek","sekusd","exchangerate","rate","fx@entry","fx@exit"
+    ]
+    col_sek = choose_column(df, sek_price_keys, require_positive=True)
+    if col_sek:
+        ssek = pd.to_numeric(df[col_sek], errors="coerce")
+        ssek = ssek.where(ssek>0)
+        col_fx = choose_column(df, fx_keys, require_positive=True)
+        if col_fx:
+            fx = pd.to_numeric(df[col_fx], errors="coerce")
+            fx = fx.where(fx>0)
+            susd = ssek / fx
+            return susd, f"[INFO] Pris (Universe) = {col_sek} [SEK] -> USD via {col_fx}"
+        else:
+            # saknar FX-kolumn, använd polygon-kurs
+            susd = ssek / max(usdsek, 1e-9)
+            return susd, f"[INFO] Pris (Universe) = {col_sek} [SEK] -> USD via Polygon ({usdsek})"
+
+    # 3) Sista utväg: första vettiga numeriska kolumn
+    for c in df.columns:
+        s = pd.to_numeric(df[c], errors="coerce")
+        if s.dropna().gt(0).any():
+            log(f"[WARN] Ingen tydlig pris-kolumn; använder {c} (kan vara fel skala)")
+            return s, f"[WARN] Pris (Universe) = {c} [okänd]"
+    raise RuntimeError("Kunde inte härleda pris i Universe.")
+
 def build_buylist_from_universe(df_u_raw: pd.DataFrame, portfolio_value: float, usdsek: float, min_price_usd: float) -> pd.DataFrame:
     """
     Momentum från Universe:
-      1) Auto-välj pris-kolumn (Close/Price/Last/Price now/…)
+      1) Hitta pris i USD (auto; SEK->USD vid behov)
       2) Använd Universe-kolumner för SMA50/SMA200/Ret1m/Ret3m/Score_MOMO (robust namnsök)
       3) Filter: pris >= min_price, pris >= SMA200, Ret1m >= -20
       4) Rank: 0.5*Score_MOMO + 0.3*Ret1m + 0.2*Ret3m
@@ -88,76 +135,62 @@ def build_buylist_from_universe(df_u_raw: pd.DataFrame, portfolio_value: float, 
     df = df_u_raw.copy()
     df.columns = [str(c).strip() for c in df.columns]
 
-    # --- hitta kolumner robust ---
-    # pris
-    price_candidates = [
-        "pricenow","price","last","lastprice","close","lastclose","latest","latestprice",
-        "pricelatest","pricenowusd","priceusd","pris","senaste"
-    ]
-    price_col = choose_column(df, price_candidates, require_positive=True)
-    if not price_col:
-        # fallback: Price_0 om den finns
-        if "Price_0" in df.columns:
-            price_col = "Price_0"
-            log("[INFO] Pris-kolumn fallback: Price_0")
-        else:
-            raise RuntimeError("Hittar ingen pris-kolumn i Universe.")
-
-    # SMA50 / SMA200
+    # Kolumner (robust namnsök)
     sma50_col  = choose_column(df, ["sma50","ma50"])
     sma200_col = choose_column(df, ["sma200","ma200"])
-    # Returer
-    ret1_col = choose_column(df, ["ret1m","ret_1m","return1m","m1return","retm1"])
-    ret3_col = choose_column(df, ["ret3m","ret_3m","return3m","m3return","retm3"])
-    # Score_MOMO
-    score_col = choose_column(df, ["scoremomo","score_momo","momentumscore","momosc","momoscore"])
+    ret1_col   = choose_column(df, ["ret1m","ret_1m","return1m","m1return","retm1"])
+    ret3_col   = choose_column(df, ["ret3m","ret_3m","return3m","m3return","retm3"])
+    score_col  = choose_column(df, ["scoremomo","score_momo","momentumscore","momosc","momoscore"])
 
-    needed = {
-        "Pris": price_col, "SMA50": sma50_col, "SMA200": sma200_col,
-        "Ret1m": ret1_col, "Ret3m": ret3_col, "Score_MOMO": score_col
-    }
+    needed = {"SMA50": sma50_col, "SMA200": sma200_col, "Ret1m": ret1_col, "Ret3m": ret3_col, "Score_MOMO": score_col}
     missing = [k for k,v in needed.items() if v is None]
     if missing:
         raise RuntimeError(f"Saknar nödvändiga kolumner i Universe: {missing}")
 
-    # numerik
-    for c in [price_col, sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
+    # Numerik
+    for c in [sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
-    df = df.replace([np.inf,-np.inf], np.nan)
-    df = df.dropna(subset=["Ticker", price_col, sma200_col, ret1_col, ret3_col, score_col])
 
-    # filter
-    df = df[(df[price_col] > 0) & (df[sma200_col] > 0)]
-    df = df[df[price_col] >= min_price_usd]
-    df = df[df[price_col] >= df[sma200_col]]
+    # Hitta/derivera USD-pris
+    price_usd, price_log = resolve_price_usd(df, usdsek)
+    log(price_log)
+    df["__price_usd__"] = pd.to_numeric(price_usd, errors="coerce")
+
+    # Rensa
+    df = df.replace([np.inf,-np.inf], np.nan)
+    df = df.dropna(subset=["Ticker", "__price_usd__", sma200_col, ret1_col, ret3_col, score_col])
+    df = df[(df["__price_usd__"] > 0) & (df[sma200_col] > 0)]
+
+    # Filter
+    df = df[df["__price_usd__"] >= min_price_usd]
+    df = df[df["__price_usd__"] >= df[sma200_col]]
     df = df[df[ret1_col] >= -20]
 
     if df.empty:
-        # om inget klarar filtret, ta topp på Score ändå (du vill ha en lista hellre än noll)
+        # Fallback: ta topp på momentumscore ändå (så du får en lista)
         df = df_u_raw.copy()
-        for c in [price_col, sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
+        for c in [sma50_col, sma200_col, ret1_col, ret3_col, score_col]:
             df[c] = pd.to_numeric(df.get(c), errors="coerce")
-        df = df.replace([np.inf,-np.inf], np.nan)
-        df = df.dropna(subset=["Ticker", price_col, sma200_col, ret1_col, ret3_col, score_col])
-        df = df[(df[price_col] > 0) & (df[sma200_col] > 0)]
-        df["Forced"] = True
+        price_usd, price_log = resolve_price_usd(df, usdsek)
         log("[WARN] Fallback aktiverad: Universe gav tom lista efter filter.")
-    else:
-        df["Forced"] = False
+        log(price_log)
+        df["__price_usd__"] = pd.to_numeric(price_usd, errors="coerce")
+        df = df.replace([np.inf,-np.inf], np.nan)
+        df = df.dropna(subset=["Ticker", "__price_usd__", sma200_col, ret1_col, ret3_col, score_col])
+        df = df[(df["__price_usd__"] > 0) & (df[sma200_col] > 0)]
 
-    # rank
+    # Rank
     df["RankScore"] = 0.5*df[score_col] + 0.3*df[ret1_col] + 0.2*df[ret3_col]
     df = df.sort_values("RankScore", ascending=False).reset_index(drop=True)
 
-    # toppar
+    # Topp & sizing
     df["Rank"]  = df.index + 1
     df["Top10"] = df["Rank"] <= 10
     df = df.head(15).copy()
 
-    # sizing
     per_pos_sek = (portfolio_value / TARGET_POSITIONS) if portfolio_value > 0 else 0.0
     df["FX"] = usdsek
-    df["Price SEK"] = df[price_col] * usdsek
+    df["Price SEK"] = df["__price_usd__"] * usdsek
 
     def qty(row):
         if not row["Top10"]:
@@ -170,21 +203,20 @@ def build_buylist_from_universe(df_u_raw: pd.DataFrame, portfolio_value: float, 
     df["Qty"] = [qty(r) for _, r in df.iterrows()]
     df["Position SEK"] = df["Qty"] * df["Price SEK"]
 
-    # utdata
+    # Utdata
     out = df[[
         "Rank","Ticker","Top10","Qty",
-        price_col, "FX","Price SEK","Position SEK",
-        score_col, ret1_col, ret3_col, sma50_col, sma200_col, "RankScore","Forced"
+        "__price_usd__", "FX","Price SEK","Position SEK",
+        score_col, ret1_col, ret3_col, sma50_col, sma200_col, "RankScore"
     ]].copy()
     out = out.rename(columns={
-        price_col: "Price_Used",
+        "__price_usd__": "Price_Used",
         score_col: "Score_MOMO",
         ret1_col:  "Ret1m",
         ret3_col:  "Ret3m",
         sma50_col: "SMA50",
         sma200_col:"SMA200"
     })
-    log(f"[INFO] Vald pris-kolumn (Universe) = {price_col}")
     return out
 
 def write_buynow(wb, df_buy):
@@ -225,7 +257,7 @@ def main():
     usdsek = get_usdsek()
     log(f"[INFO] USDSEK = {usdsek}")
 
-    # === Läser Universe istället för EarlyCandidates ===
+    # Läs Universe
     df_uni = pd.read_excel(tpl, sheet_name="Universe")
 
     df_buy = build_buylist_from_universe(df_uni, portval, usdsek, min_price)
