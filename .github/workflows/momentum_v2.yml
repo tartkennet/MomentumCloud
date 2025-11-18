@@ -32,6 +32,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy openpyxl requests
 
+          - name: Fetch sectors from Polygon (cache)
+            run: python polygon_fetch_sectors.py
+
+
       - name: Run v2 builder (with backup)
         run: |
           set -e
