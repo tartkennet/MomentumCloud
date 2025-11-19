@@ -17,23 +17,20 @@ jobs:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
+            - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install pandas numpy openpyxl requests
 
-          - name: Fetch sectors from Polygon (cache)
-            run: python polygon_fetch_sectors.py
+      - name: Fetch sectors from Polygon (cache)
+        run: |
+          python polygon_fetch_sectors.py
+
+      - name: Run v2 builder (with backup)
+        run: |
+          set -e
+          python momentum_master_v2.py
+
 
 
       - name: Run v2 builder (with backup)
