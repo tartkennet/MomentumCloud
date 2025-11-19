@@ -1,5 +1,7 @@
-import os, time
+import os
+import time
 from pathlib import Path
+
 import pandas as pd
 import requests
 
@@ -9,8 +11,10 @@ OUTFILE = Path("public/data/sector_map.csv")
 
 BASE_URL = "https://api.polygon.io/v3/reference/tickers"
 
-def log(msg): 
+
+def log(msg: str) -> None:
     print(msg, flush=True)
+
 
 def fetch_sector(ticker: str) -> dict:
     """Hämta sector/industry för en ticker från Polygon."""
@@ -18,27 +22,46 @@ def fetch_sector(ticker: str) -> dict:
     r = requests.get(url, params={"apiKey": API_KEY}, timeout=8)
     r.raise_for_status()
     res = r.json().get("results", {}) or {}
-    # Polygon har flera fält – vi plockar ut det som är mest användbart
     return {
         "Ticker": ticker,
         "Sector": res.get("sector") or "",
         "Industry": res.get("industry") or "",
-        "Name": res.get("name") or ""
+        "Name": res.get("name") or "",
     }
 
-def main():
+
+def main() -> None:
     if not API_KEY:
         raise SystemExit("POLYGON_API_KEY saknas")
 
     if not Path(TICKER_FILE).exists():
         raise SystemExit(f"{TICKER_FILE} saknas")
 
-    tickers = pd.read_csv(TICKER_FILE)["Ticker"].dropna().astype(str).unique()
+    # Försök läsa tickers.csv oavsett avgränsare
+    df_raw = pd.read_csv(TICKER_FILE, sep=None, engine="python")
+    log(f"[SECTOR] Hittade kolumner i {TICKER_FILE}: {list(df_raw.columns)}")
+
+    # Försök hitta en kolumn som heter 'Ticker', annars ta första kolumnen
+    if "Ticker" in df_raw.columns:
+        col = "Ticker"
+    else:
+        col = df_raw.columns[0]
+        log(f"[SECTOR] Kolumn 'Ticker' saknas, använder första kolumnen: {col!r}")
+
+    tickers = (
+        df_raw[col]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .replace("", pd.NA)
+        .dropna()
+        .unique()
+    )
 
     if OUTFILE.exists():
         df_map = pd.read_csv(OUTFILE)
     else:
-        df_map = pd.DataFrame(columns=["Ticker","Sector","Industry","Name"])
+        df_map = pd.DataFrame(columns=["Ticker", "Sector", "Industry", "Name"])
 
     known = set(df_map["Ticker"])
     todo = [t for t in tickers if t not in known]
@@ -65,6 +88,7 @@ def main():
     OUTFILE.parent.mkdir(parents=True, exist_ok=True)
     df_all.to_csv(OUTFILE, index=False)
     log(f"[SECTOR] Sparat {len(df_all)} rader till {OUTFILE}")
+
 
 if __name__ == "__main__":
     main()
