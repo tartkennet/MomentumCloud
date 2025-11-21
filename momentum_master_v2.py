@@ -219,6 +219,47 @@ def write_buynow(wb, df):
         new_sheet=order.pop(-1)
         order.insert(old_index,new_sheet)
         wb._sheets=order
+def add_sector_momentum(df_ec):
+    import pandas as pd
+    import numpy as np
+    from pathlib import Path
+
+    SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
+
+    df = df_ec.copy()
+
+    # 1. merge sektor-info
+    if SECTOR_MAP_FILE.exists():
+        df_sector = pd.read_csv(SECTOR_MAP_FILE).drop_duplicates(subset=["Ticker"])
+        df = df.merge(df_sector[["Ticker","Sector","Industry"]], on="Ticker", how="left")
+    else:
+        df["Sector"] = "Unknown"
+        df["Industry"] = ""
+
+    # 2. numeriska fält
+    for col in ["Score_MOMO", "Ret3m", "Ret6m"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    df["Sector"] = df["Sector"].fillna("Unknown")
+
+    # 3. sektorstatistik
+    sector_stats = df.groupby("Sector").agg(
+        SectorScore=("Score_MOMO","median"),
+        SectorRet3m=("Ret3m","median"),
+        SectorRet6m=("Ret6m","median")
+    ).reset_index()
+
+    df = df.merge(sector_stats, on="Sector", how="left")
+
+    # 4. totalscore = aktie + sektorbonus
+    df["TotalScore"] = (
+        0.6*df["Score_MOMO"].fillna(0) +
+        0.3*df["SectorScore"].fillna(0) +
+        0.1*(df["SectorRet3m"].fillna(0) + df["SectorRet6m"].fillna(0))
+    )
+
+    return df
 
 def main():
     tpl = Path(TEMPLATE_FILE)
