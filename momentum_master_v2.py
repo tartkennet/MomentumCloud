@@ -188,7 +188,7 @@ def build_buylist_from_ec(df_ec_raw: pd.DataFrame, portfolio_value: float, usdse
         df["RankScore"] = df["__price_usd__"]
         log("[INFO] Rank fallback: Price (ingen score/ret tillgänglig)")
 
-    df = df.sort_values("RankScore", ascending=False).reset_index(drop=True)
+    df = df.sort_values("TotalScore", ascending=False).reset_index(drop=True)
 
     # toppar + qty
     df["Rank"]  = df.index + 1
