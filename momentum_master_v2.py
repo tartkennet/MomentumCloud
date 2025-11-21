@@ -276,6 +276,7 @@ def main():
 
     # === Läs EarlyCandidates (robust pipeline) ===
     df_ec = pd.read_excel(tpl, sheet_name="EarlyCandidates")
+    df_ec = add_sector_momentum(df_ec)
     df_buy, used = build_buylist_from_ec(df_ec, portval, usdsek, min_price)
 
     # qty nu när vi vet portföljvärdet
