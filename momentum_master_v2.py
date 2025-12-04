@@ -220,43 +220,83 @@ def write_buynow(wb, df):
         order.insert(old_index,new_sheet)
         wb._sheets=order
 def add_sector_momentum(df_ec):
-    import pandas as pd
-    import numpy as np
     from pathlib import Path
+import pandas as pd
+import numpy as np
 
-    SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
+SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
 
+
+def add_sector_momentum(df_ec: pd.DataFrame) -> pd.DataFrame:
+  
     df = df_ec.copy()
 
-    # 1. merge sektor-info
+    # --- 1. Merg:a in sektor / industri ------------------------------------
     if SECTOR_MAP_FILE.exists():
-        df_sector = pd.read_csv(SECTOR_MAP_FILE).drop_duplicates(subset=["Ticker"])
-        df = df.merge(df_sector[["Ticker","Sector","Industry"]], on="Ticker", how="left")
+        df_sector = pd.read_csv(SECTOR_MAP_FILE)
+        # säkerställ unika tickers
+        if "Ticker" not in df_sector.columns:
+            raise RuntimeError("sector_map.csv saknar kolumnen 'Ticker'")
+        df_sector = df_sector.drop_duplicates(subset=["Ticker"])
+        df = df.merge(
+            df_sector[["Ticker", "Sector", "Industry"]],
+            on="Ticker",
+            how="left",
+        )
     else:
         df["Sector"] = "Unknown"
         df["Industry"] = ""
 
-    # 2. numeriska fält
-    for col in ["Score_MOMO", "Ret3m", "Ret6m"]:
+    df["Sector"] = df.get("Sector", "Unknown").fillna("Unknown")
+
+    # --- 2. Gör momentum-kolumner numeriska -------------------------------
+    num_cols = ["Ret1m", "Ret3m", "Ret6m", "Ret12m", "Score_MOMO"]
+    for col in num_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    df["Sector"] = df["Sector"].fillna("Unknown")
+    # --- 3. Beräkna aktiens eget momentum ---------------------------------
+    # fokus på 1–3 månader, med lite 6m som stöd
+    ret1 = df["Ret1m"].fillna(0.0)
+    ret3 = df["Ret3m"].fillna(0.0)
+    ret6 = df["Ret6m"].fillna(0.0)
 
-    # 3. sektorstatistik
-    sector_stats = df.groupby("Sector").agg(
-        SectorScore=("Score_MOMO","median"),
-        SectorRet3m=("Ret3m","median"),
-        SectorRet6m=("Ret6m","median")
-    ).reset_index()
+    # "stock momentum" = viktad kombination av kort + medellång sikt
+    df["StockMomentum"] = 0.5 * ret1 + 0.3 * ret3 + 0.2 * ret6
+
+    # acceleration: om 1m är mycket sämre än 3m → trenden tappar fart
+    df["Accel"] = ret1 - ret3
+
+    # --- 4. Sektormomentum: median per sektor -----------------------------
+    sector_stats = (
+        df.groupby("Sector", dropna=False)
+          .agg(
+              SectorMomentum=("StockMomentum", "median"),
+              SectorRet3m=("Ret3m", "median"),
+              SectorRet6m=("Ret6m", "median"),
+          )
+          .reset_index()
+    )
 
     df = df.merge(sector_stats, on="Sector", how="left")
 
-    # 4. totalscore = aktie + sektorbonus
+    # --- 5. Normalisera sektormomentum lite (så det inte exploderar) ------
+    sect_mom = df["SectorMomentum"].fillna(0.0)
+    # enkel standardisering
+    if sect_mom.std(ddof=0) > 0:
+        sect_norm = (sect_mom - sect_mom.mean()) / sect_mom.std(ddof=0)
+    else:
+        sect_norm = sect_mom * 0.0
+    df["SectorMomentumNorm"] = sect_norm
+
+    # --- 6. Slutlig TotalScore --------------------------------------------
+    #  - 60%: aktiens eget momentum (kort + medel)
+    #  - 30%: stark sektor
+    #  - 10%: acceleration (straffar tappad fart)
     df["TotalScore"] = (
-        0.6*df["Score_MOMO"].fillna(0) +
-        0.3*df["SectorScore"].fillna(0) +
-        0.1*(df["SectorRet3m"].fillna(0) + df["SectorRet6m"].fillna(0))
+        0.6 * df["StockMomentum"].fillna(0.0)
+        + 0.3 * df["SectorMomentumNorm"].fillna(0.0)
+        + 0.1 * df["Accel"].fillna(0.0)
     )
 
     return df
