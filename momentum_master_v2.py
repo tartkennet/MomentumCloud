@@ -227,8 +227,18 @@ import numpy as np
 SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
 
 
+from pathlib import Path
+import pandas as pd
+import numpy as np
+
+SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
+
+
 def add_sector_momentum(df_ec: pd.DataFrame) -> pd.DataFrame:
-  
+    """
+    Kombinerar aktiens eget momentum med sektorns momentum och
+    räknar fram TotalScore som BuyNow sorterar på.
+    """
     df = df_ec.copy()
 
     # --- 1. Merg:a in sektor / industri ------------------------------------
@@ -300,6 +310,7 @@ def add_sector_momentum(df_ec: pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
+
 
 def main():
     tpl = Path(TEMPLATE_FILE)
