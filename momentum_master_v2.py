@@ -78,20 +78,17 @@ def read_param_value(path: Path, label_substr: str, default=None, numeric=True):
 # =========================
 # POLYGON
 # =========================
-def polygon_prev_trading_day_local() -> str:
+def polygon_prev_trading_dates() -> list[str]:
     """
-    Returnerar YYYY-MM-DD för 'senaste handelsdag' ungefärligt.
-    Vi loopar bakåt tills Polygon grouped-endpoint ger resultat.
+    Returnerar en lista av datum (YYYY-MM-DD) att testa bakåt från igår UTC.
     """
-    # starta på "igår" (UTC) och backa vid behov
     d = dt.datetime.utcnow().date() - dt.timedelta(days=1)
-    for _ in range(10):
-        yield d.strftime("%Y-%m-%d")
-        d = d - dt.timedelta(days=1)
+    return [(d - dt.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(10)]
 
 def polygon_grouped_close_map(date_yyyy_mm_dd: str) -> dict[str, float]:
     """
     Hämtar grouped daily data (1 call) och returnerar ticker -> close (USD).
+    adjusted=true => split-justerat.
     """
     if not POLYGON_API_KEY:
         raise RuntimeError("POLYGON_API_KEY saknas")
@@ -128,29 +125,32 @@ def get_usdsek_prev() -> float:
 
 
 # =========================
-# SECTOR MERGE + SCORE
+# SECTOR / SCORES
 # =========================
 def merge_sector_map(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
+    df["Ticker"] = df["Ticker"].astype(str).str.upper().str.strip()
+
     if SECTOR_MAP_FILE.exists():
         sm = pd.read_csv(SECTOR_MAP_FILE)
-        if "Ticker" not in sm.columns:
-            return df
-        sm["Ticker"] = sm["Ticker"].astype(str).str.upper()
-        sm = sm.drop_duplicates(subset=["Ticker"])
-        keep = [c for c in ["Ticker","Sector","Industry"] if c in sm.columns]
-        df = df.merge(sm[keep], on="Ticker", how="left")
+        if "Ticker" in sm.columns:
+            sm["Ticker"] = sm["Ticker"].astype(str).str.upper().str.strip()
+            sm = sm.drop_duplicates(subset=["Ticker"])
+            keep = [c for c in ["Ticker", "Sector", "Industry"] if c in sm.columns]
+            df = df.merge(sm[keep], on="Ticker", how="left")
+
     if "Sector" not in df.columns:
         df["Sector"] = "Unknown"
     if "Industry" not in df.columns:
         df["Industry"] = ""
+
     df["Sector"] = df["Sector"].fillna("Unknown")
     df["Industry"] = df["Industry"].fillna("")
     return df
 
 def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Alternativ B:
+    Alternativ B (stabil, idempotent):
       - StockMomentum = 0.50*Ret1m + 0.30*Ret3m + 0.20*Ret6m
       - Accel = Ret1m - Ret3m
       - SectorMomentum = median(StockMomentum) per Sector
@@ -158,7 +158,14 @@ def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    for col in ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]:
+    # Rensa tidigare score-kolumner så vi aldrig får _x/_y-suffix via merge
+    drop_cols = ["StockMomentum","Accel","SectorMomentum","SectorZ","TotalScore"]
+    for c in drop_cols:
+        if c in df.columns:
+            df = df.drop(columns=[c])
+
+    # Numerik
+    for col in ["Ret1m","Ret3m","Ret6m"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -168,6 +175,9 @@ def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
 
     df["StockMomentum"] = 0.50*ret1 + 0.30*ret3 + 0.20*ret6
     df["Accel"] = ret1 - ret3
+
+    if "Sector" not in df.columns:
+        df["Sector"] = "Unknown"
 
     sect = (
         df.groupby("Sector", dropna=False)
@@ -183,18 +193,31 @@ def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
         z = sm*0.0
     df["SectorZ"] = z
 
-    df["TotalScore"] = 0.75*df["StockMomentum"].fillna(0.0) + 0.20*df["SectorZ"].fillna(0.0) + 0.05*df["Accel"].fillna(0.0)
+    df["TotalScore"] = (
+        0.75*df["StockMomentum"].fillna(0.0)
+        + 0.20*df["SectorZ"].fillna(0.0)
+        + 0.05*df["Accel"].fillna(0.0)
+    )
     return df
 
 
 # =========================
-# BUYNOW BUILD
+# BUY NOW
 # =========================
-def build_buynow(df_ec: pd.DataFrame, portval_sek: float, usdsek: float, min_price_usd: float, close_map: dict[str,float]) -> pd.DataFrame:
+def build_buynow(df_ec: pd.DataFrame,
+                portval_sek: float,
+                usdsek: float,
+                min_price_usd: float,
+                close_map: dict[str,float]) -> tuple[pd.DataFrame, str]:
+    """
+    Returnerar (df_out, mode) där mode = "strict" eller "relaxed".
+    strict: trend + ret3m>0 + accel (ret1>ret3)
+    relaxed: trend + ret3m>0 (ingen accel)
+    """
     df = df_ec.copy()
     df.columns = [str(c).strip() for c in df.columns]
 
-    # Ticker kolumn (robust)
+    # Ticker
     if "Ticker" not in df.columns:
         alt = choose_column(df, ["ticker","symbol"])
         if alt:
@@ -205,74 +228,65 @@ def build_buynow(df_ec: pd.DataFrame, portval_sek: float, usdsek: float, min_pri
     df["Ticker"] = df["Ticker"].astype(str).str.upper().str.strip()
     df = df[df["Ticker"].str.len() > 0]
 
-    # Pris: ONLY Polygon grouped close
-    df["Price_USD"] = df["Ticker"].map(close_map)
-    df = df.dropna(subset=["Price_USD"])
-    df["Price_USD"] = pd.to_numeric(df["Price_USD"], errors="coerce")
-    df = df[df["Price_USD"] > 0]
-    df = df[df["Price_USD"] >= float(min_price_usd)]
-
-    # Merge sektor
-    df = merge_sector_map(df)
-
-    # Säkerställ att returer/SMA finns (om de saknas kan vi inte momentum-ranka på riktigt)
-    missing = [c for c in ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"] if c not in df.columns]
+    # Måste ha returer och SMA-kolumner i EarlyCandidates
+    needed = ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]
+    missing = [c for c in needed if c not in df.columns]
     if missing:
-        raise RuntimeError(f"Saknar kolumner i EarlyCandidates: {missing}. EarlyCandidates måste innehålla dessa för momentum.")
+        raise RuntimeError(f"Saknar kolumner i EarlyCandidates: {missing}")
 
+    # Pris: polygon grouped
+    df["Price_USD"] = df["Ticker"].map(close_map)
+    df["Price_USD"] = pd.to_numeric(df["Price_USD"], errors="coerce")
+    df = df.dropna(subset=["Price_USD"])
+    df = df[(df["Price_USD"] > 0) & (df["Price_USD"] >= float(min_price_usd))]
+
+    # Sektor + score
+    df = merge_sector_map(df)
     df = compute_scores(df)
 
-    # Trend- & momentumfilter (här dör “döda momentum”)
-    before = len(df)
+    # Numerik SMA
+    df["SMA50"]  = pd.to_numeric(df["SMA50"], errors="coerce")
+    df["SMA200"] = pd.to_numeric(df["SMA200"], errors="coerce")
+    df["Ret1m"]  = pd.to_numeric(df["Ret1m"], errors="coerce")
+    df["Ret3m"]  = pd.to_numeric(df["Ret3m"], errors="coerce")
 
-    # Pris över SMA200 och SMA50 > SMA200 (stark trend)
-    df = df.dropna(subset=["SMA50","SMA200"])
+    # Trendfilter
+    df = df.dropna(subset=["SMA50","SMA200","Ret1m","Ret3m"])
     df = df[(df["SMA200"] > 0) & (df["Price_USD"] >= df["SMA200"]) & (df["SMA50"] > df["SMA200"])]
 
-    # Ret3m positiv
+    # Momentum bas: ret3m positiv
     df = df[df["Ret3m"] > 0]
 
-    # Acceleration: Ret1m > Ret3m (alt 1)
-    df = df[df["Ret1m"] > df["Ret3m"]]
+    # -------- STRICT --------
+    strict = df.copy()
+    before = len(strict)
+    strict = strict[strict["Ret1m"] > strict["Ret3m"]]
+    log(f"[INFO] Filter strict: trend + Ret3m>0 + (Ret1m>Ret3m) | {before} -> {len(strict)} rader")
 
-    log(f"[INFO] Filter: trend+momentum | {before} -> {len(df)} rader")
+    if len(strict) > 0:
+        work = strict
+        mode = "strict"
+    else:
+        # -------- RELAXED --------
+        relaxed = df.copy()
+        log(f"[WARN] Tomt i strict. Kör relaxed: trend + Ret3m>0 (utan accel)")
+        if len(relaxed) == 0:
+            raise RuntimeError("Inga kandidater efter trend+Ret3m-filter. Kontrollera EarlyCandidates.")
+        work = relaxed
+        mode = "relaxed"
 
-    # Om allt blir tomt: relaxa EN gång (behåll ändå momentumdisciplin)
-    if df.empty:
-        log("[WARN] Tomt efter strikt filter. Relaxar endast Accel (Ret1m > Ret3m) och försöker igen.")
-        df = compute_scores(merge_sector_map(df_ec.copy()))
-        df.columns = [str(c).strip() for c in df.columns]
-        if "Ticker" not in df.columns:
-            alt = choose_column(df, ["ticker","symbol"])
-            if alt:
-                df = df.rename(columns={alt: "Ticker"})
-        df["Ticker"] = df["Ticker"].astype(str).str.upper().str.strip()
-        df["Price_USD"] = df["Ticker"].map(close_map)
-        df = df.dropna(subset=["Price_USD"])
-        df["Price_USD"] = pd.to_numeric(df["Price_USD"], errors="coerce")
-        df = df[(df["Price_USD"] > 0) & (df["Price_USD"] >= float(min_price_usd))]
-        df = merge_sector_map(df)
-        for col in ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-        df = compute_scores(df)
-        df = df.dropna(subset=["SMA50","SMA200"])
-        df = df[(df["SMA200"] > 0) & (df["Price_USD"] >= df["SMA200"]) & (df["SMA50"] > df["SMA200"])]
-        df = df[df["Ret3m"] > 0]
-
-    if df.empty:
-        raise RuntimeError("Inga kandidater efter filter. Kontrollera EarlyCandidates (Ret/SMA) och min pris.")
-
-    # Sort: only TotalScore
-    df = df.sort_values("TotalScore", ascending=False).reset_index(drop=True)
-    df["Rank"] = df.index + 1
-    df["Top10"] = df["Rank"] <= 10
-    df = df.head(15).copy()
+    # Sort: ONLY TotalScore
+    work = work.sort_values("TotalScore", ascending=False).reset_index(drop=True)
+    work["Rank"] = work.index + 1
+    work["Top10"] = work["Rank"] <= 10
+    work = work.head(15).copy()
 
     # Sizing
-    df["FX"] = float(usdsek)
-    df["Price_SEK"] = df["Price_USD"] * float(usdsek)
+    work["FX"] = float(usdsek)
+    work["Price_SEK"] = work["Price_USD"] * float(usdsek)
 
     per_pos = (float(portval_sek) / TARGET_POSITIONS) if portval_sek and portval_sek > 0 else 0.0
+
     def qty(price_sek: float, top10: bool) -> int:
         if not top10:
             return 0
@@ -281,10 +295,9 @@ def build_buynow(df_ec: pd.DataFrame, portval_sek: float, usdsek: float, min_pri
         q = int(np.floor(per_pos / price_sek))
         return max(q, 1)
 
-    df["Qty"] = [qty(p, t) for p, t in zip(df["Price_SEK"], df["Top10"])]
-    df["Position_SEK"] = df["Qty"] * df["Price_SEK"]
+    work["Qty"] = [qty(p, t) for p, t in zip(work["Price_SEK"], work["Top10"])]
+    work["Position_SEK"] = work["Qty"] * work["Price_SEK"]
 
-    # Output columns (debug-friendly)
     cols = [
         "Rank","Ticker","Top10","Qty",
         "Price_USD","FX","Price_SEK","Position_SEK",
@@ -292,15 +305,14 @@ def build_buynow(df_ec: pd.DataFrame, portval_sek: float, usdsek: float, min_pri
         "Ret1m","Ret3m","Ret6m","SMA50","SMA200",
         "StockMomentum","SectorMomentum","Accel","TotalScore",
     ]
-    cols = [c for c in cols if c in df.columns]
-    return df[cols].copy()
+    cols = [c for c in cols if c in work.columns]
+    return work[cols].copy(), mode
 
 
 # =========================
 # EXCEL WRITE
 # =========================
 def write_buynow_sheet(wb, df_out: pd.DataFrame, stamp: str):
-    # remove old BuyNow (keep sheet order position)
     old_index = None
     for i, sh in enumerate(wb.worksheets):
         if sh.title == "BuyNow":
@@ -329,10 +341,8 @@ def write_buynow_sheet(wb, df_out: pd.DataFrame, stamp: str):
             w = 18
         ws.column_dimensions[get_column_letter(i)].width = w
 
-    # build stamp
     ws["Z1"] = stamp
 
-    # restore order
     if old_index is not None:
         order = wb.worksheets[:]
         new_sheet = order.pop(-1)
@@ -352,8 +362,7 @@ def main():
 
     portval   = read_param_value(tpl, "portföljvärde", default=0.0, numeric=True)
     min_price = read_param_value(tpl, "min pris", default=DEFAULT_MIN_PRICE_USD, numeric=True)
-
-    usdsek = get_usdsek_prev()
+    usdsek    = get_usdsek_prev()
 
     log(f"[INFO] Portföljvärde(SEK) = {portval}")
     log(f"[INFO] Min pris (USD)    = {min_price}")
@@ -362,11 +371,11 @@ def main():
     log("[STEP] Läser EarlyCandidates…")
     df_ec = pd.read_excel(tpl, sheet_name="EarlyCandidates")
 
-    # Polygon grouped close map (fast + korrekt)
+    # Polygon grouped close map
     close_map = {}
     ok_date = None
     log("[STEP] Hämtar Polygon grouped priser…")
-    for d in polygon_prev_trading_day_local():
+    for d in polygon_prev_trading_dates():
         try:
             close_map = polygon_grouped_close_map(d)
             if close_map:
@@ -381,10 +390,10 @@ def main():
     log(f"[INFO] Grouped date used: {ok_date} | tickers={len(close_map)}")
 
     log("[STEP] Bygger BuyNow (Alt B + Accel)…")
-    df_out = build_buynow(df_ec, portval, usdsek, min_price, close_map)
+    df_out, mode = build_buynow(df_ec, portval, usdsek, min_price, close_map)
 
     wb = load_workbook(tpl)
-    stamp = f"built_by=momentum_v2_B_accel | grouped_date={ok_date} | utc={dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
+    stamp = f"built_by=momentum_v2_B_accel | mode={mode} | grouped_date={ok_date} | utc={dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
     write_buynow_sheet(wb, df_out, stamp)
 
     out = Path(OUTPUT_FILE)
