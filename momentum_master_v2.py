@@ -7,14 +7,9 @@ import requests
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 
-
-# =========================
-# CONFIG
-# =========================
 TEMPLATE_FILE = "Momentum mall fil.xlsx"
 OUTPUT_FILE   = "Momentum.xlsx"
 BACKUP_DIR    = Path("backups")
-
 POLYGON_API_KEY = os.environ.get("POLYGON_API_KEY", "").strip()
 
 SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
@@ -22,10 +17,6 @@ SECTOR_MAP_FILE = Path("public/data/sector_map.csv")
 TARGET_POSITIONS = 10
 DEFAULT_MIN_PRICE_USD = 5.0
 
-
-# =========================
-# HELPERS
-# =========================
 def log(msg: str) -> None:
     print(msg, flush=True)
 
@@ -41,29 +32,10 @@ def backup_template(src: Path) -> None:
     shutil.copy2(src, dst)
     log(f"[BACKUP] Sparad: {dst}")
 
-def norm_name(s: str) -> str:
-    return "".join(ch for ch in str(s).lower().strip() if ch.isalnum())
-
-def choose_column(df: pd.DataFrame, candidates: list[str]) -> str | None:
-    names = {c: norm_name(c) for c in df.columns}
-    rev = {}
-    for k, v in names.items():
-        if v not in rev:
-            rev[v] = k
-    for key in candidates:
-        if key in rev:
-            return rev[key]
-    return None
-
 def read_param_value(path: Path, label_substr: str, default=None, numeric=True):
-    """
-    Robust läsning från Parametrar utan att kräva exakt text.
-    Söker i kol A efter label_substr, tar värdet i kol B.
-    """
     try:
         df = pd.read_excel(path, sheet_name="Parametrar", header=None)
-        colA = df[0].astype(str).str.lower()
-        mask = colA.str.contains(str(label_substr).lower(), na=False)
+        mask = df[0].astype(str).str.lower().str.contains(str(label_substr).lower(), na=False)
         if mask.any():
             val = df.loc[mask, 1].iloc[0]
             if numeric:
@@ -74,25 +46,13 @@ def read_param_value(path: Path, label_substr: str, default=None, numeric=True):
         log(f"[WARN] Parametrar läsning '{label_substr}' misslyckades: {e}")
     return default
 
-
-# =========================
-# POLYGON
-# =========================
 def polygon_prev_trading_dates() -> list[str]:
-    """
-    Returnerar en lista av datum (YYYY-MM-DD) att testa bakåt från igår UTC.
-    """
     d = dt.datetime.utcnow().date() - dt.timedelta(days=1)
     return [(d - dt.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(10)]
 
 def polygon_grouped_close_map(date_yyyy_mm_dd: str) -> dict[str, float]:
-    """
-    Hämtar grouped daily data (1 call) och returnerar ticker -> close (USD).
-    adjusted=true => split-justerat.
-    """
     if not POLYGON_API_KEY:
         raise RuntimeError("POLYGON_API_KEY saknas")
-
     url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date_yyyy_mm_dd}"
     r = requests.get(url, params={"adjusted": "true", "apiKey": POLYGON_API_KEY}, timeout=30)
     r.raise_for_status()
@@ -123,58 +83,39 @@ def get_usdsek_prev() -> float:
         log(f"[WARN] USDSEK polygon misslyckades: {e}")
     return 10.0
 
-
-# =========================
-# SECTOR / SCORES
-# =========================
 def merge_sector_map(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
-    df["Ticker"] = df["Ticker"].astype(str).str.upper().str.strip()
-
     if SECTOR_MAP_FILE.exists():
         sm = pd.read_csv(SECTOR_MAP_FILE)
         if "Ticker" in sm.columns:
             sm["Ticker"] = sm["Ticker"].astype(str).str.upper().str.strip()
             sm = sm.drop_duplicates(subset=["Ticker"])
-            keep = [c for c in ["Ticker", "Sector", "Industry"] if c in sm.columns]
+            keep = [c for c in ["Ticker","Sector","Industry"] if c in sm.columns]
             df = df.merge(sm[keep], on="Ticker", how="left")
-
     if "Sector" not in df.columns:
         df["Sector"] = "Unknown"
     if "Industry" not in df.columns:
         df["Industry"] = ""
-
     df["Sector"] = df["Sector"].fillna("Unknown")
     df["Industry"] = df["Industry"].fillna("")
     return df
 
 def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Alternativ B (stabil, idempotent):
-      - StockMomentum = 0.50*Ret1m + 0.30*Ret3m + 0.20*Ret6m
-      - Accel = Ret1m - Ret3m
-      - SectorMomentum = median(StockMomentum) per Sector
-      - TotalScore = 0.75*StockMomentum + 0.20*z(SectorMomentum) + 0.05*Accel
-    """
     df = df.copy()
-
-    # Rensa tidigare score-kolumner så vi aldrig får _x/_y-suffix via merge
-    drop_cols = ["StockMomentum","Accel","SectorMomentum","SectorZ","TotalScore"]
-    for c in drop_cols:
+    # idempotent
+    for c in ["StockMomentum","Accel","SectorMomentum","SectorZ","TotalScore"]:
         if c in df.columns:
             df = df.drop(columns=[c])
 
-    # Numerik
     for col in ["Ret1m","Ret3m","Ret6m"]:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
+        df[col] = pd.to_numeric(df.get(col), errors="coerce")
 
-    ret1 = df["Ret1m"].fillna(0.0) if "Ret1m" in df.columns else 0.0
-    ret3 = df["Ret3m"].fillna(0.0) if "Ret3m" in df.columns else 0.0
-    ret6 = df["Ret6m"].fillna(0.0) if "Ret6m" in df.columns else 0.0
+    r1 = df["Ret1m"].fillna(0.0)
+    r3 = df["Ret3m"].fillna(0.0)
+    r6 = df["Ret6m"].fillna(0.0)
 
-    df["StockMomentum"] = 0.50*ret1 + 0.30*ret3 + 0.20*ret6
-    df["Accel"] = ret1 - ret3
+    df["StockMomentum"] = 0.50*r1 + 0.30*r3 + 0.20*r6
+    df["Accel"] = r1 - r3
 
     if "Sector" not in df.columns:
         df["Sector"] = "Unknown"
@@ -193,100 +134,90 @@ def compute_scores(df: pd.DataFrame) -> pd.DataFrame:
         z = sm*0.0
     df["SectorZ"] = z
 
-    df["TotalScore"] = (
-        0.75*df["StockMomentum"].fillna(0.0)
-        + 0.20*df["SectorZ"].fillna(0.0)
-        + 0.05*df["Accel"].fillna(0.0)
-    )
+    df["TotalScore"] = 0.75*df["StockMomentum"].fillna(0.0) + 0.20*df["SectorZ"].fillna(0.0) + 0.05*df["Accel"].fillna(0.0)
     return df
 
+def diagnose_counts(df: pd.DataFrame, label: str):
+    log(f"[DIAG] {label}: rows={len(df)}")
+    if len(df) == 0:
+        return
+    for c in ["Price_USD","Ret1m","Ret3m","Ret6m","SMA50","SMA200","TotalScore"]:
+        if c in df.columns:
+            s = pd.to_numeric(df[c], errors="coerce")
+            log(f"[DIAG]  - {c}: non-null={int(s.notna().sum())} | >0={int((s>0).sum())}")
 
-# =========================
-# BUY NOW
-# =========================
-def build_buynow(df_ec: pd.DataFrame,
-                portval_sek: float,
-                usdsek: float,
-                min_price_usd: float,
-                close_map: dict[str,float]) -> tuple[pd.DataFrame, str]:
-    """
-    Returnerar (df_out, mode) där mode = "strict" eller "relaxed".
-    strict: trend + ret3m>0 + accel (ret1>ret3)
-    relaxed: trend + ret3m>0 (ingen accel)
-    """
+def build_buynow(df_ec: pd.DataFrame, portval_sek: float, usdsek: float, min_price_usd: float, close_map: dict[str,float]):
     df = df_ec.copy()
     df.columns = [str(c).strip() for c in df.columns]
 
-    # Ticker
     if "Ticker" not in df.columns:
-        alt = choose_column(df, ["ticker","symbol"])
-        if alt:
-            df = df.rename(columns={alt: "Ticker"})
-        else:
-            raise RuntimeError("EarlyCandidates saknar Ticker")
+        raise RuntimeError("EarlyCandidates saknar kolumn 'Ticker'")
+
+    need = ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]
+    missing = [c for c in need if c not in df.columns]
+    if missing:
+        raise RuntimeError(f"EarlyCandidates saknar: {missing}")
 
     df["Ticker"] = df["Ticker"].astype(str).str.upper().str.strip()
     df = df[df["Ticker"].str.len() > 0]
 
-    # Måste ha returer och SMA-kolumner i EarlyCandidates
-    needed = ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]
-    missing = [c for c in needed if c not in df.columns]
-    if missing:
-        raise RuntimeError(f"Saknar kolumner i EarlyCandidates: {missing}")
-
-    # Pris: polygon grouped
     df["Price_USD"] = df["Ticker"].map(close_map)
     df["Price_USD"] = pd.to_numeric(df["Price_USD"], errors="coerce")
     df = df.dropna(subset=["Price_USD"])
     df = df[(df["Price_USD"] > 0) & (df["Price_USD"] >= float(min_price_usd))]
 
-    # Sektor + score
     df = merge_sector_map(df)
+
+    # numerik
+    for c in ["Ret1m","Ret3m","Ret6m","SMA50","SMA200"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+
     df = compute_scores(df)
+    diagnose_counts(df, "Efter pris+score")
 
-    # Numerik SMA
-    df["SMA50"]  = pd.to_numeric(df["SMA50"], errors="coerce")
-    df["SMA200"] = pd.to_numeric(df["SMA200"], errors="coerce")
-    df["Ret1m"]  = pd.to_numeric(df["Ret1m"], errors="coerce")
-    df["Ret3m"]  = pd.to_numeric(df["Ret3m"], errors="coerce")
-
-    # Trendfilter
-    df = df.dropna(subset=["SMA50","SMA200","Ret1m","Ret3m"])
-    df = df[(df["SMA200"] > 0) & (df["Price_USD"] >= df["SMA200"]) & (df["SMA50"] > df["SMA200"])]
-
-    # Momentum bas: ret3m positiv
-    df = df[df["Ret3m"] > 0]
-
-    # -------- STRICT --------
-    strict = df.copy()
-    before = len(strict)
+    # --------- FILTERLÄGEN ----------
+    # 1) Strict trend + ret3m + accel
+    strict = df.dropna(subset=["SMA50","SMA200","Ret1m","Ret3m"]).copy()
+    strict = strict[(strict["SMA200"] > 0) & (strict["Price_USD"] >= strict["SMA200"]) & (strict["SMA50"] > strict["SMA200"])]
+    strict = strict[strict["Ret3m"] > 0]
     strict = strict[strict["Ret1m"] > strict["Ret3m"]]
-    log(f"[INFO] Filter strict: trend + Ret3m>0 + (Ret1m>Ret3m) | {before} -> {len(strict)} rader")
+    log(f"[INFO] Strict count = {len(strict)}")
 
-    if len(strict) > 0:
-        work = strict
-        mode = "strict"
-    else:
-        # -------- RELAXED --------
-        relaxed = df.copy()
-        log(f"[WARN] Tomt i strict. Kör relaxed: trend + Ret3m>0 (utan accel)")
-        if len(relaxed) == 0:
-            raise RuntimeError("Inga kandidater efter trend+Ret3m-filter. Kontrollera EarlyCandidates.")
+    mode = "strict"
+    work = strict
+
+    # 2) Relax trend, släpp accel
+    if work.empty:
+        relaxed = df.dropna(subset=["SMA50","SMA200","Ret3m"]).copy()
+        relaxed = relaxed[(relaxed["SMA200"] > 0) & (relaxed["Price_USD"] >= relaxed["SMA200"]) & (relaxed["SMA50"] > relaxed["SMA200"])]
+        relaxed = relaxed[relaxed["Ret3m"] > 0]
+        log(f"[WARN] Strict tom. Relax(trend+Ret3m) count = {len(relaxed)}")
+        mode = "relaxed_trend"
         work = relaxed
-        mode = "relaxed"
 
-    # Sort: ONLY TotalScore
+    # 3) Om SMA verkar “fel”: kör momentum utan SMA
+    if work.empty:
+        mom_only = df.dropna(subset=["Ret3m","Ret6m"]).copy()
+        mom_only = mom_only[(mom_only["Ret3m"] > 0) & (mom_only["Ret6m"] > 0)]
+        log(f"[WARN] Trend tomt. Momentum-only (Ret3m>0 & Ret6m>0) count = {len(mom_only)}")
+        mode = "momentum_only"
+        work = mom_only
+
+    # 4) Sista fallback: ta top på TotalScore utan filter
+    if work.empty:
+        log("[WARN] Momentum-only tomt. Fallback: top TotalScore utan filter.")
+        mode = "fallback_score"
+        work = df.copy()
+
     work = work.sort_values("TotalScore", ascending=False).reset_index(drop=True)
     work["Rank"] = work.index + 1
     work["Top10"] = work["Rank"] <= 10
     work = work.head(15).copy()
 
-    # Sizing
     work["FX"] = float(usdsek)
     work["Price_SEK"] = work["Price_USD"] * float(usdsek)
 
     per_pos = (float(portval_sek) / TARGET_POSITIONS) if portval_sek and portval_sek > 0 else 0.0
-
     def qty(price_sek: float, top10: bool) -> int:
         if not top10:
             return 0
@@ -308,10 +239,6 @@ def build_buynow(df_ec: pd.DataFrame,
     cols = [c for c in cols if c in work.columns]
     return work[cols].copy(), mode
 
-
-# =========================
-# EXCEL WRITE
-# =========================
 def write_buynow_sheet(wb, df_out: pd.DataFrame, stamp: str):
     old_index = None
     for i, sh in enumerate(wb.worksheets):
@@ -322,16 +249,13 @@ def write_buynow_sheet(wb, df_out: pd.DataFrame, stamp: str):
 
     ws = wb.create_sheet("BuyNow")
 
-    # header
     for c, h in enumerate(df_out.columns, 1):
         ws.cell(1, c, h)
 
-    # rows
     for r_idx, row in enumerate(df_out.itertuples(index=False), 2):
         for c_idx, val in enumerate(row, 1):
             ws.cell(r_idx, c_idx, val)
 
-    # widths
     for i, name in enumerate(df_out.columns, 1):
         w = 14
         ln = str(name).lower()
@@ -349,10 +273,6 @@ def write_buynow_sheet(wb, df_out: pd.DataFrame, stamp: str):
         order.insert(old_index, new_sheet)
         wb._sheets = order
 
-
-# =========================
-# MAIN
-# =========================
 def main():
     tpl = Path(TEMPLATE_FILE)
     if not tpl.exists():
@@ -371,7 +291,6 @@ def main():
     log("[STEP] Läser EarlyCandidates…")
     df_ec = pd.read_excel(tpl, sheet_name="EarlyCandidates")
 
-    # Polygon grouped close map
     close_map = {}
     ok_date = None
     log("[STEP] Hämtar Polygon grouped priser…")
@@ -389,11 +308,11 @@ def main():
 
     log(f"[INFO] Grouped date used: {ok_date} | tickers={len(close_map)}")
 
-    log("[STEP] Bygger BuyNow (Alt B + Accel)…")
+    log("[STEP] Bygger BuyNow…")
     df_out, mode = build_buynow(df_ec, portval, usdsek, min_price, close_map)
 
     wb = load_workbook(tpl)
-    stamp = f"built_by=momentum_v2_B_accel | mode={mode} | grouped_date={ok_date} | utc={dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
+    stamp = f"built_by=v2_alt1 | mode={mode} | grouped_date={ok_date} | utc={dt.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
     write_buynow_sheet(wb, df_out, stamp)
 
     out = Path(OUTPUT_FILE)
@@ -406,7 +325,7 @@ def main():
     tmp.replace(out)
 
     log("[OK] Momentum.xlsx uppdaterad — BuyNow.")
-    log(f"[OK] BuyNow tickers: {', '.join(df_out['Ticker'].astype(str).tolist())}")
+    log(f"[OK] Mode={mode} | BuyNow: {', '.join(df_out['Ticker'].astype(str).tolist())}")
 
 if __name__ == "__main__":
     main()
