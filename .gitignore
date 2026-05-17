@@ -1,0 +1,10 @@
+
+---
+
+## 4) `.gitignore`
+
+```gitignore
+backups/
+Momentum.xlsx
+__pycache__/
+*.pyc
