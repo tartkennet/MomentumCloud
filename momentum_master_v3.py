@@ -134,7 +134,7 @@ def compute_metrics(ticker: str, bars: pd.DataFrame, counters: Dict[str, int]) -
     if bars.empty:
         return None
 
-    counters["tickers_with_valid_polygon_data"] += 1
+    counters["successful_polygon_data"] += 1
 
     if len(bars) < 253:
         counters["excluded_by_insufficient_history"] += 1
@@ -242,7 +242,10 @@ def write_diagnostics(wb, counters: Dict[str, int], grouped_date: str, mode: str
     rows = [
         ("Metric", "Value"),
         ("total_tickers_in_universe", counters["total_tickers_in_universe"]),
-        ("tickers_with_valid_polygon_data", counters["tickers_with_valid_polygon_data"]),
+        ("attempted_polygon_requests", counters["attempted_polygon_requests"]),
+        ("successful_polygon_data", counters["successful_polygon_data"]),
+        ("failed_polygon_requests", counters["failed_polygon_requests"]),
+        ("no_data_from_polygon", counters["no_data_from_polygon"]),
         ("excluded_by_insufficient_history", counters["excluded_by_insufficient_history"]),
         ("excluded_by_price_filter", counters["excluded_by_price_filter"]),
         ("excluded_by_liquidity_filter", counters["excluded_by_liquidity_filter"]),
@@ -298,7 +301,10 @@ def main() -> None:
     portfolio_value_sek = read_portfolio_value_sek(INPUT_TEMPLATE)
     counters = {
         "total_tickers_in_universe": len(tickers),
-        "tickers_with_valid_polygon_data": 0,
+        "attempted_polygon_requests": 0,
+        "successful_polygon_data": 0,
+        "failed_polygon_requests": 0,
+        "no_data_from_polygon": 0,
         "excluded_by_insufficient_history": 0,
         "excluded_by_price_filter": 0,
         "excluded_by_liquidity_filter": 0,
@@ -313,14 +319,22 @@ def main() -> None:
     fx = client.fetch_grouped_close(grouped_date, "USD", "SEK")
 
     valid_metrics: List[StockMetrics] = []
-    for ticker in tickers:
+    for idx, ticker in enumerate(tickers, start=1):
+        if idx % 100 == 0 or idx == len(tickers):
+            logging.info("Processed %d / %d tickers", idx, len(tickers))
         try:
             polygon_ticker = normalize_ticker(ticker)
+            counters["attempted_polygon_requests"] += 1
             bars = client.fetch_daily_bars(polygon_ticker, start_date, grouped_date)
+            if bars.empty:
+                counters["failed_polygon_requests"] += 1
+                counters["no_data_from_polygon"] += 1
+                continue
             m = compute_metrics(ticker, bars, counters)
             if m is not None:
                 valid_metrics.append(m)
         except Exception as exc:
+            counters["failed_polygon_requests"] += 1
             logging.warning("%s skipped due to error: %s", ticker, exc)
 
     if len(valid_metrics) == 0:
