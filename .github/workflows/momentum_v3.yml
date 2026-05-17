@@ -1,0 +1,36 @@
+name: Momentum v3
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekdays 12:00 UTC (~before US market open depending on DST)
+    - cron: '0 12 * * 1-5'
+
+jobs:
+  run-momentum-v3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests openpyxl
+
+      - name: Run momentum v3
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python momentum_master_v3.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum_v3
+          path: Momentum.xlsx
+          if-no-files-found: error
