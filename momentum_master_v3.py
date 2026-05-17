@@ -91,6 +91,10 @@ def setup_logging() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 
 
+def normalize_ticker(ticker: str) -> str:
+    return ticker.strip().upper().replace(".", "-")
+
+
 def read_universe(path: str) -> List[str]:
     df = pd.read_excel(path, sheet_name=UNIVERSE_SHEET)
     if "Ticker" not in df.columns:
@@ -311,7 +315,8 @@ def main() -> None:
     valid_metrics: List[StockMetrics] = []
     for ticker in tickers:
         try:
-            bars = client.fetch_daily_bars(ticker, start_date, grouped_date)
+            polygon_ticker = normalize_ticker(ticker)
+            bars = client.fetch_daily_bars(polygon_ticker, start_date, grouped_date)
             m = compute_metrics(ticker, bars, counters)
             if m is not None:
                 valid_metrics.append(m)
