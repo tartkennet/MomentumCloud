@@ -4,9 +4,10 @@ from __future__ import annotations
 import logging
 import math
 import os
+import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -21,6 +22,7 @@ UNIVERSE_SHEET = "Universe"
 PARAM_SHEET = "Parametrar"
 BUYNOW_SHEET = "BuyNow"
 DIAGNOSTICS_SHEET = "Diagnostics"
+DEBUG_SHEET = "DebugTickers"
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
@@ -50,82 +52,93 @@ class PolygonClient:
     def __init__(self, api_key: str) -> None:
         self.api_key = api_key
         self.session = requests.Session()
+        self.grouped_cache: Dict[str, Dict[str, Dict[str, float]]] = {}
 
     def _get(self, path: str, params: Optional[Dict] = None) -> Dict:
         merged = {"apiKey": self.api_key}
         if params:
             merged.update(params)
+        url = f"{POLYGON_BASE}{path}"
 
-        response = self.session.get(
-            f"{POLYGON_BASE}{path}",
-            params=merged,
-            timeout=30,
+        for attempt in range(1, 7):
+            try:
+                response = self.session.get(url, params=merged, timeout=30)
+
+                if response.status_code == 429:
+                    wait = min(75, 10 * attempt)
+                    logging.warning("Polygon rate limit. Waiting %ss and retrying (%s/6).", wait, attempt)
+                    time.sleep(wait)
+                    continue
+
+                response.raise_for_status()
+                data = response.json()
+
+                if data.get("status") == "ERROR":
+                    raise RuntimeError(f"Polygon API error: {data}")
+
+                return data
+
+            except Exception:
+                if attempt >= 6:
+                    raise
+                time.sleep(min(30, 3 * attempt))
+
+        raise RuntimeError("Polygon request failed")
+
+    def fetch_fx_close(self, date_str: str) -> float:
+        data = self._get(
+            f"/v2/aggs/ticker/C:USDSEK/range/1/day/{date_str}/{date_str}",
+            {"adjusted": "true", "limit": 10},
         )
-        response.raise_for_status()
-        data = response.json()
+        results = data.get("results", []) or []
+        if not results:
+            raise ValueError(f"No USDSEK result for {date_str}")
+        return float(results[-1]["c"])
 
-        if data.get("status") == "ERROR":  # Polygon error payload
-            raise RuntimeError(str(data))
+    def fetch_grouped_stocks(self, date_str: str) -> Dict[str, Dict[str, float]]:
+        if date_str in self.grouped_cache:
+            return self.grouped_cache[date_str]
 
-        return data
-
-    def fetch_grouped_snapshot(self, date_str: str) -> Dict[str, Dict]:
         data = self._get(
             f"/v2/aggs/grouped/locale/us/market/stocks/{date_str}",
             {"adjusted": "true"},
         )
+        rows = data.get("results", []) or []
 
-        result = {}
-        for row in data.get("results", []):
-            ticker = row.get("T")
-            if ticker:
-                result[ticker] = row
-        return result
+        out: Dict[str, Dict[str, float]] = {}
+        for row in rows:
+            ticker = str(row.get("T", "")).upper().strip()
+            close = row.get("c")
+            volume = row.get("v")
+            if ticker and close is not None and volume is not None:
+                out[ticker] = {"close": float(close), "volume": float(volume)}
 
-    def fetch_grouped_fx(self, date_str: str) -> float:
-        data = self._get(
-            f"/v2/aggs/ticker/C:USDSEK/range/1/day/{date_str}/{date_str}",
-            {"adjusted": "true"},
-        )
-        results = data.get("results", [])
-        if not results:
-            raise RuntimeError("No USDSEK data")
-        return float(results[-1]["c"])
-
-    def fetch_daily_bars(self, ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
-        data = self._get(
-            f"/v2/aggs/ticker/{ticker}/range/1/day/{start_date}/{end_date}",
-            {
-                "adjusted": "true",
-                "sort": "asc",
-                "limit": 5000,
-            },
-        )
-
-        rows = data.get("results", [])
-        if not rows:
-            return pd.DataFrame()
-
-        df = pd.DataFrame(rows)
-        df = df.rename(columns={
-            "c": "close",
-            "v": "volume",
-        })
-        return df[["close", "volume"]].copy()
+        self.grouped_cache[date_str] = out
+        return out
 
 
 def setup_logging() -> None:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+
+
+def normalize_ticker(ticker: str) -> str:
+    return str(ticker).strip().upper()
+
+
+def alt_ticker(ticker: str) -> str:
+    return normalize_ticker(ticker).replace(".", "-")
+
+
+def get_from_map(day_map: Dict[str, Dict[str, float]], ticker: str) -> Optional[Dict[str, float]]:
+    ticker_a = normalize_ticker(ticker)
+    ticker_b = alt_ticker(ticker)
+    return day_map.get(ticker_a) or day_map.get(ticker_b)
 
 
 def read_universe(path: str) -> List[str]:
     df = pd.read_excel(path, sheet_name=UNIVERSE_SHEET)
-
     if "Ticker" not in df.columns:
-        raise ValueError("Universe sheet must contain column 'Ticker'")
+        raise ValueError("Universe sheet must contain a 'Ticker' column")
 
     tickers = (
         df["Ticker"]
@@ -138,176 +151,331 @@ def read_universe(path: str) -> List[str]:
         .tolist()
     )
 
-    return list(dict.fromkeys(tickers))
+    unique = list(dict.fromkeys(tickers))
+    if not unique:
+        raise ValueError("No tickers found in Universe sheet")
+    return unique
 
 
 def read_portfolio_value_sek(path: str) -> float:
     wb = load_workbook(path, data_only=True)
-    value = wb[PARAM_SHEET]["B1"].value
+    ws = wb[PARAM_SHEET]
+    value = ws["B1"].value
 
     if value is None:
         raise ValueError("Parametrar!B1 is empty")
 
-    value = float(value)
-
-    if value <= 0:
+    parsed = float(value)
+    if parsed <= 0:
         raise ValueError("Parametrar!B1 must be > 0")
 
-    return value
+    return parsed
 
 
-def pick_grouped_date_with_data(client: PolygonClient, max_lookback_days: int = 7) -> str:
+def pick_latest_grouped_date(client: PolygonClient, max_lookback_days: int = 10) -> Tuple[str, Dict[str, Dict[str, float]], float]:
     today = datetime.now(timezone.utc).date()
 
-    for delta in range(1, max_lookback_days + 1):
-        d = (today - timedelta(days=delta)).isoformat()
+    for days_back in range(1, max_lookback_days + 1):
+        date_str = (today - timedelta(days=days_back)).isoformat()
         try:
-            snapshot = client.fetch_grouped_snapshot(d)
-            if len(snapshot) > 5000:
-                return d
+            grouped = client.fetch_grouped_stocks(date_str)
+            fx = client.fetch_fx_close(date_str)
+            if len(grouped) > 1000:
+                return date_str, grouped, fx
+        except Exception as exc:
+            logging.info("Grouped date %s unavailable: %s", date_str, exc)
+
+    raise RuntimeError("Could not find recent grouped stock data with USDSEK")
+
+
+def find_grouped_near(client: PolygonClient, target_date, max_back_days: int = 10) -> Tuple[str, Dict[str, Dict[str, float]]]:
+    for days_back in range(0, max_back_days + 1):
+        date_str = (target_date - timedelta(days=days_back)).isoformat()
+        try:
+            grouped = client.fetch_grouped_stocks(date_str)
+            if len(grouped) > 1000:
+                return date_str, grouped
+        except Exception:
+            continue
+
+    raise RuntimeError(f"Could not find grouped data near {target_date}")
+
+
+def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed: int = 20) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
+    latest = datetime.fromisoformat(latest_date).date()
+    maps: List[Tuple[str, Dict[str, Dict[str, float]]]] = []
+    days_back = 0
+
+    while len(maps) < needed and days_back < 45:
+        date_str = (latest - timedelta(days=days_back)).isoformat()
+        try:
+            grouped = client.fetch_grouped_stocks(date_str)
+            if len(grouped) > 1000:
+                maps.append((date_str, grouped))
         except Exception:
             pass
+        days_back += 1
 
-    raise RuntimeError("Could not find valid grouped market date")
+    if len(maps) < needed:
+        raise RuntimeError(f"Only found {len(maps)} recent trading maps, need {needed}")
+
+    return maps
 
 
-def compute_metrics(ticker: str, bars: pd.DataFrame) -> Optional[StockMetrics]:
-    if len(bars) < 253:
+def pct_return(current: float, old: Optional[float]) -> Optional[float]:
+    if old is None or old <= 0:
         return None
+    return (current / old - 1.0) * 100.0
 
-    closes = bars["close"].astype(float).reset_index(drop=True)
-    volumes = bars["volume"].astype(float).reset_index(drop=True)
 
-    if closes.isna().any() or volumes.isna().any():
-        return None
+def build_metrics(
+    tickers: List[str],
+    latest_map: Dict[str, Dict[str, float]],
+    recent20: List[Tuple[str, Dict[str, Dict[str, float]]]],
+    anchor_maps: Dict[str, Dict[str, Dict[str, float]]],
+) -> Tuple[List[StockMetrics], Dict[str, int], pd.DataFrame]:
+    counters = {
+        "total_tickers_in_universe": len(tickers),
+        "grouped_data_pipeline": 1,
+        "latest_grouped_symbols": len(latest_map),
+        "successful_polygon_data": 0,
+        "no_data_from_polygon": 0,
+        "excluded_by_insufficient_history": 0,
+        "excluded_by_price_filter": 0,
+        "excluded_by_liquidity_filter": 0,
+        "excluded_by_trend_filter": 0,
+        "excluded_by_momentum_filter": 0,
+        "excluded_by_overextended_filter": 0,
+        "excluded_by_negative_5d_filter": 0,
+        "final_candidate_count": 0,
+    }
 
-    price = float(closes.iloc[-1])
+    metrics: List[StockMetrics] = []
+    debug_rows = []
 
-    if price < MIN_PRICE:
-        return None
+    for ticker in tickers:
+        latest = get_from_map(latest_map, ticker)
+        if not latest:
+            counters["no_data_from_polygon"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "NO_LATEST_DATA"})
+            continue
 
-    adv20 = float((closes.iloc[-20:] * volumes.iloc[-20:]).mean())
+        counters["successful_polygon_data"] += 1
+        price = float(latest["close"])
 
-    if adv20 < MIN_ADTV20:
-        return None
+        if price < MIN_PRICE:
+            counters["excluded_by_price_filter"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "PRICE", "LastClose": price})
+            continue
 
-    sma50 = float(closes.iloc[-50:].mean())
-    sma200 = float(closes.iloc[-200:].mean())
+        dollar_values = []
+        for _, grouped in recent20:
+            row = get_from_map(grouped, ticker)
+            if row:
+                dollar_values.append(float(row["close"]) * float(row["volume"]))
 
-    if not (price > sma50 > sma200):
-        return None
+        if len(dollar_values) < 10:
+            counters["excluded_by_insufficient_history"] += 1
+            debug_rows.append({
+                "Ticker": ticker,
+                "Status": "INSUFFICIENT_20D",
+                "RowsReturned": len(dollar_values),
+                "LastClose": price,
+            })
+            continue
 
-    ret5d = (price / float(closes.iloc[-6]) - 1.0) * 100.0
-    ret1m = (price / float(closes.iloc[-22]) - 1.0) * 100.0
-    ret3m = (price / float(closes.iloc[-64]) - 1.0) * 100.0
-    ret6m = (price / float(closes.iloc[-127]) - 1.0) * 100.0
-    ret12m = (price / float(closes.iloc[-253]) - 1.0) * 100.0
+        adv20 = float(np.mean(dollar_values))
+        if adv20 < MIN_ADTV20:
+            counters["excluded_by_liquidity_filter"] += 1
+            debug_rows.append({
+                "Ticker": ticker,
+                "Status": "LIQUIDITY",
+                "LastClose": price,
+                "AvgDollarVolume20": adv20,
+            })
+            continue
 
-    if not (ret3m > 0 and ret6m > 0 and ret12m > 0):
-        return None
+        def close_at(key: str) -> Optional[float]:
+            row = get_from_map(anchor_maps[key], ticker)
+            return float(row["close"]) if row else None
 
-    if ret5d <= 0:
-        return None
+        c5 = close_at("ret5d")
+        c21 = close_at("ret1m")
+        c63 = close_at("ret3m")
+        c126 = close_at("ret6m")
+        c252 = close_at("ret12m")
+        c50 = close_at("sma50_proxy")
+        c200 = close_at("sma200_proxy")
 
-    dist_sma50 = (price / sma50 - 1.0) * 100.0
+        if None in [c5, c21, c63, c126, c252, c50, c200]:
+            counters["excluded_by_insufficient_history"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "MISSING_ANCHOR", "LastClose": price})
+            continue
 
-    if dist_sma50 > MAX_DIST_SMA50:
-        return None
+        sma50 = float(c50)
+        sma200 = float(c200)
 
-    accel = ret1m - ret3m
+        if not (price > sma50 and price > sma200):
+            counters["excluded_by_trend_filter"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "TREND", "LastClose": price, "SMA50": sma50, "SMA200": sma200})
+            continue
 
-    stock_momentum = (
-        0.25 * ret1m
-        + 0.35 * ret3m
-        + 0.25 * ret6m
-        + 0.15 * ret12m
-    )
+        ret5d = pct_return(price, c5)
+        ret1m = pct_return(price, c21)
+        ret3m = pct_return(price, c63)
+        ret6m = pct_return(price, c126)
+        ret12m = pct_return(price, c252)
 
-    total_score = stock_momentum + 0.10 * accel
+        if None in [ret5d, ret1m, ret3m, ret6m, ret12m]:
+            counters["excluded_by_insufficient_history"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "MISSING_RETURN", "LastClose": price})
+            continue
 
-    return StockMetrics(
-        ticker=ticker,
-        price_usd=price,
-        avg_dollar_volume20=adv20,
-        sma50=sma50,
-        sma200=sma200,
-        ret5d=ret5d,
-        ret1m=ret1m,
-        ret3m=ret3m,
-        ret6m=ret6m,
-        ret12m=ret12m,
-        accel=accel,
-        dist_sma50=dist_sma50,
-        total_score=total_score,
-    )
+        if ret5d <= 0:
+            counters["excluded_by_negative_5d_filter"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "NEGATIVE_5D", "LastClose": price, "Ret5d": ret5d})
+            continue
+
+        if not (ret3m > 0 and ret6m > 0 and ret12m > 0):
+            counters["excluded_by_momentum_filter"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "MOMENTUM", "LastClose": price, "Ret3m": ret3m, "Ret6m": ret6m, "Ret12m": ret12m})
+            continue
+
+        dist_sma50 = (price / sma50 - 1.0) * 100.0
+        if dist_sma50 > MAX_DIST_SMA50:
+            counters["excluded_by_overextended_filter"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "OVEREXTENDED", "LastClose": price, "Dist_SMA50": dist_sma50})
+            continue
+
+        accel = float(ret1m - ret3m)
+        stock_momentum = 0.25 * ret1m + 0.35 * ret3m + 0.25 * ret6m + 0.15 * ret12m
+        total_score = stock_momentum + 0.10 * accel
+
+        metrics.append(
+            StockMetrics(
+                ticker=ticker,
+                price_usd=price,
+                avg_dollar_volume20=adv20,
+                sma50=sma50,
+                sma200=sma200,
+                ret5d=ret5d,
+                ret1m=ret1m,
+                ret3m=ret3m,
+                ret6m=ret6m,
+                ret12m=ret12m,
+                accel=accel,
+                dist_sma50=dist_sma50,
+                total_score=total_score,
+            )
+        )
+
+        debug_rows.append({
+            "Ticker": ticker,
+            "Status": "PASS",
+            "LastClose": price,
+            "AvgDollarVolume20": adv20,
+            "Ret5d": ret5d,
+            "Ret1m": ret1m,
+            "Ret3m": ret3m,
+            "Ret6m": ret6m,
+            "Ret12m": ret12m,
+            "Dist_SMA50": dist_sma50,
+            "TotalScore": total_score,
+        })
+
+    counters["final_candidate_count"] = len(metrics)
+    return metrics, counters, pd.DataFrame(debug_rows[:300])
 
 
 def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
     ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)[:TOP_N]
-
+    rows = []
     position_size_sek = portfolio_value_sek / TOP10_N
 
-    rows = []
-
-    for rank, m in enumerate(ranked, start=1):
+    for rank, metric in enumerate(ranked, start=1):
         is_top10 = rank <= TOP10_N
-        price_sek = m.price_usd * fx
-
-        qty = ""
-        if is_top10:
-            qty = max(1, math.floor(position_size_sek / price_sek))
+        price_sek = metric.price_usd * fx
+        qty = max(1, math.floor(position_size_sek / price_sek)) if is_top10 else ""
 
         rows.append({
             "Rank": rank,
-            "Ticker": m.ticker,
-            "Top10": is_top10,
+            "Ticker": metric.ticker,
+            "Top10": bool(is_top10),
             "Qty": qty,
-            "Price_USD": m.price_usd,
+            "Price_USD": metric.price_usd,
             "FX": fx,
             "Price_SEK": price_sek,
-            "Position_SEK": position_size_sek if is_top10 else "",
-            "AvgDollarVolume20": m.avg_dollar_volume20,
-            "SMA50": m.sma50,
-            "SMA200": m.sma200,
-            "Ret5d": m.ret5d,
-            "Ret1m": m.ret1m,
-            "Ret3m": m.ret3m,
-            "Ret6m": m.ret6m,
-            "Ret12m": m.ret12m,
-            "Dist_SMA50": m.dist_sma50,
-            "Accel": m.accel,
-            "TotalScore": m.total_score,
+            "Position_SEK": qty * price_sek if is_top10 else "",
+            "AvgDollarVolume20": metric.avg_dollar_volume20,
+            "SMA50": metric.sma50,
+            "SMA200": metric.sma200,
+            "Ret5d": metric.ret5d,
+            "Ret1m": metric.ret1m,
+            "Ret3m": metric.ret3m,
+            "Ret6m": metric.ret6m,
+            "Ret12m": metric.ret12m,
+            "Dist_SMA50": metric.dist_sma50,
+            "Accel": metric.accel,
+            "TotalScore": metric.total_score,
         })
 
     return pd.DataFrame(rows)
 
 
 def autosize_columns(ws) -> None:
-    for col_idx in range(1, ws.max_column + 1):
+    if ws.max_row < 1:
+        return
+    for col_idx, _ in enumerate(ws[1], start=1):
         col_letter = get_column_letter(col_idx)
         max_len = 0
-
         for cell in ws[col_letter]:
-            value = "" if cell.value is None else str(cell.value)
-            max_len = max(max_len, len(value))
-
-        ws.column_dimensions[col_letter].width = min(max_len + 2, 40)
+            max_len = max(max_len, len(str(cell.value)) if cell.value is not None else 0)
+        ws.column_dimensions[col_letter].width = min(max_len + 2, 60)
 
 
-def write_sheet(wb, sheet_name: str, df: pd.DataFrame) -> None:
-    if sheet_name in wb.sheetnames:
-        index = wb.sheetnames.index(sheet_name)
-        wb.remove(wb[sheet_name])
-        ws = wb.create_sheet(sheet_name, index)
+def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] = None) -> None:
+    if name in wb.sheetnames:
+        old_index = wb.sheetnames.index(name)
+        wb.remove(wb[name])
+        ws = wb.create_sheet(name, old_index if index is None else index)
     else:
-        ws = wb.create_sheet(sheet_name)
+        ws = wb.create_sheet(name, index)
 
-    if not df.empty:
-        ws.append(list(df.columns))
-        for _, row in df.iterrows():
-            ws.append(row.tolist())
-
+    ws.append(list(df.columns))
+    for _, row in df.iterrows():
+        ws.append(row.tolist())
     autosize_columns(ws)
+
+
+def write_output(
+    df: pd.DataFrame,
+    debug_df: pd.DataFrame,
+    template_file: str,
+    output_file: str,
+    grouped_date: str,
+    counters: Dict[str, int],
+    mode: str,
+) -> None:
+    wb = load_workbook(template_file)
+
+    buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
+    replace_sheet_with_df(wb, BUYNOW_SHEET, df, buynow_index)
+
+    ws = wb[BUYNOW_SHEET]
+    ws["Z1"] = (
+        f"momentum_master_v3.py | grouped_refined_pipeline | "
+        f"utc={datetime.now(timezone.utc).isoformat()} | "
+        f"grouped_date={grouped_date} | mode={mode}"
+    )
+
+    diag_df = pd.DataFrame(
+        list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date)],
+        columns=["Metric", "Value"],
+    )
+
+    replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
+    replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
+    wb.save(output_file)
 
 
 def main() -> None:
@@ -315,65 +483,45 @@ def main() -> None:
 
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
-        raise RuntimeError("Missing POLYGON_API_KEY")
+        raise EnvironmentError("Missing POLYGON_API_KEY environment variable")
+    if not os.path.exists(INPUT_TEMPLATE):
+        raise FileNotFoundError(f"Missing input template: {INPUT_TEMPLATE}")
 
     tickers = read_universe(INPUT_TEMPLATE)
-    portfolio_value_sek = read_portfolio_value_sek(INPUT_TEMPLATE)
-
+    portfolio_value = read_portfolio_value_sek(INPUT_TEMPLATE)
     client = PolygonClient(api_key)
 
-    grouped_date = pick_grouped_date_with_data(client)
-    fx = client.fetch_grouped_fx(grouped_date)
+    latest_date, latest_map, fx = pick_latest_grouped_date(client)
+    latest_dt = datetime.fromisoformat(latest_date).date()
+    logging.info("Using grouped stock date %s with %d symbols, USDSEK %.4f", latest_date, len(latest_map), fx)
 
-    start_date = (
-        datetime.fromisoformat(grouped_date).date() - timedelta(days=600)
-    ).isoformat()
+    recent20 = collect_recent_trading_maps(client, latest_date, 20)
 
-    metrics = []
+    anchor_targets = {
+        "ret5d": latest_dt - timedelta(days=7),
+        "ret1m": latest_dt - timedelta(days=30),
+        "ret3m": latest_dt - timedelta(days=91),
+        "ret6m": latest_dt - timedelta(days=182),
+        "ret12m": latest_dt - timedelta(days=365),
+        "sma50_proxy": latest_dt - timedelta(days=75),
+        "sma200_proxy": latest_dt - timedelta(days=300),
+    }
 
-    for i, ticker in enumerate(tickers, start=1):
-        if i % 100 == 0:
-            logging.info("Processing %d / %d", i, len(tickers))
+    anchor_maps: Dict[str, Dict[str, Dict[str, float]]] = {}
+    for key, target in anchor_targets.items():
+        date_str, grouped = find_grouped_near(client, target)
+        logging.info("Anchor %s uses %s with %d symbols", key, date_str, len(grouped))
+        anchor_maps[key] = grouped
 
-        try:
-            bars = client.fetch_daily_bars(ticker, start_date, grouped_date)
-            if bars.empty:
-                continue
-
-            m = compute_metrics(ticker, bars)
-            if m:
-                metrics.append(m)
-
-        except Exception:
-            continue
-
+    metrics, counters, debug_df = build_metrics(tickers, latest_map, recent20, anchor_maps)
     if not metrics:
-        raise RuntimeError("No valid momentum candidates found")
+        raise RuntimeError("Zero valid candidates after grouped refined processing")
 
-    buynow_df = build_buynow_df(metrics, fx, portfolio_value_sek)
+    mode = "normal_top15" if len(metrics) >= TOP_N else f"warning_fewer_than_15_candidates({len(metrics)})"
+    buynow = build_buynow_df(metrics, fx, portfolio_value)
 
-    wb = load_workbook(INPUT_TEMPLATE)
-    write_sheet(wb, BUYNOW_SHEET, buynow_df)
-
-    diagnostics = pd.DataFrame([
-        ["total_tickers_in_universe", len(tickers)],
-        ["successful_polygon_data", len(metrics)],
-        ["final_candidate_count", len(metrics)],
-        ["mode", "normal_top15"],
-        ["grouped_date", grouped_date],
-    ], columns=["Metric", "Value"])
-
-    write_sheet(wb, DIAGNOSTICS_SHEET, diagnostics)
-
-    wb[BUYNOW_SHEET]["Z1"] = (
-        f"momentum_master_v3.py | "
-        f"utc={datetime.now(timezone.utc).isoformat()} | "
-        f"grouped_date={grouped_date}"
-    )
-
-    wb.save(OUTPUT_FILE)
-
-    logging.info("Wrote %s with %d BuyNow rows", OUTPUT_FILE, len(buynow_df))
+    write_output(buynow, debug_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
+    logging.info("Wrote %s with %d BuyNow rows. Candidates before top cut: %d", OUTPUT_FILE, len(buynow), len(metrics))
 
 
 if __name__ == "__main__":
