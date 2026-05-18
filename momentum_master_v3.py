@@ -388,11 +388,51 @@ def build_metrics(
 
 
 def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
-    ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)[:TOP_N]
+    # Försök läsa sektorinformation från DebugTickers om den finns.
+    # Om ingen sektorinfo finns fungerar koden ändå som tidigare.
+    sector_map = {}
+
+    try:
+        wb = load_workbook(INPUT_TEMPLATE, data_only=True)
+        if "DebugTickers" in wb.sheetnames:
+            ws = wb["DebugTickers"]
+            headers = [cell.value for cell in ws[1]]
+
+            if "Ticker" in headers and "Sector" in headers:
+                ticker_col = headers.index("Ticker") + 1
+                sector_col = headers.index("Sector") + 1
+
+                for row in range(2, ws.max_row + 1):
+                    ticker = ws.cell(row=row, column=ticker_col).value
+                    sector = ws.cell(row=row, column=sector_col).value
+                    if ticker and sector:
+                        sector_map[str(ticker).upper()] = str(sector)
+    except Exception:
+        pass
+
+    # Sortera alla kandidater efter score
+    ranked_all = sorted(metrics, key=lambda x: x.total_score, reverse=True)
+
+    # Max 3 aktier per sektor
+    selected = []
+    sector_counts = {}
+
+    for metric in ranked_all:
+        sector = sector_map.get(metric.ticker, "UNKNOWN")
+
+        if sector_counts.get(sector, 0) >= 3:
+            continue
+
+        selected.append(metric)
+        sector_counts[sector] = sector_counts.get(sector, 0) + 1
+
+        if len(selected) >= TOP_N:
+            break
+
     rows = []
     position_size_sek = portfolio_value_sek / TOP10_N
 
-    for rank, metric in enumerate(ranked, start=1):
+    for rank, metric in enumerate(selected, start=1):
         is_top10 = rank <= TOP10_N
         price_sek = metric.price_usd * fx
         qty = max(1, math.floor(position_size_sek / price_sek)) if is_top10 else ""
