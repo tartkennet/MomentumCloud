@@ -26,8 +26,6 @@ DEBUG_SHEET = "DebugTickers"
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
-MIN_DIST_SMA50 = 0.0
-MAX_DIST_SMA50 = 12.0
 TOP_N = 15
 TOP10_N = 10
 
@@ -208,7 +206,6 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps):
         "excluded_by_trend_filter": 0,
         "excluded_by_momentum_filter": 0,
         "excluded_by_negative_5d_filter": 0,
-        "excluded_by_dist_sma50_filter": 0,
         "excluded_by_decelerating_momentum_filter": 0,
         "final_candidate_count": 0,
     }
@@ -288,14 +285,10 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps):
             continue
 
         dist_sma50 = (price / sma50 - 1.0) * 100.0
-        if dist_sma50 < MIN_DIST_SMA50 or dist_sma50 > MAX_DIST_SMA50:
-            counters["excluded_by_dist_sma50_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Status": "DIST_SMA50", "LastClose": price, "Dist_SMA50": dist_sma50})
-            continue
 
         if ret1m <= ret3m / 3.0:
             counters["excluded_by_decelerating_momentum_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Status": "DECELERATING", "LastClose": price, "Ret1m": ret1m, "Ret3m": ret3m})
+            debug_rows.append({"Ticker": ticker, "Status": "DECELERATING", "LastClose": price, "Ret1m": ret1m, "Ret3m": ret3m, "Dist_SMA50": dist_sma50})
             continue
 
         accel = float(ret1m - ret3m)
@@ -373,7 +366,7 @@ def write_output(df, debug_df, template_file, output_file, grouped_date, counter
     wb = load_workbook(template_file)
     buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
     replace_sheet_with_df(wb, BUYNOW_SHEET, df, buynow_index)
-    wb[BUYNOW_SHEET]["Z1"] = f"momentum_master_v3.py | active_momentum_refined | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
+    wb[BUYNOW_SHEET]["Z1"] = f"momentum_master_v3.py | active_momentum_no_hard_dist_sma50 | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
     diag_df = pd.DataFrame(list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date)], columns=["Metric", "Value"])
     replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
     replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
