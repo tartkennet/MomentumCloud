@@ -20,19 +20,16 @@ PARAM_SHEET = "Parametrar"
 BUYNOW_SHEET = "BuyNow"
 DIAGNOSTICS_SHEET = "Diagnostics"
 DEBUG_SHEET = "DebugTickers"
-SECTOR_MAP_FILE = "sector_map.csv"
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
 MAX_DIST_SMA50 = 15.0
-MAX_PER_SECTOR = 3
 TOP_N = 15
 TOP10_N = 10
 
 @dataclass
 class StockMetrics:
     ticker: str
-    sector: str
     price_usd: float
     avg_dollar_volume20: float
     sma50: float
@@ -53,7 +50,7 @@ class PolygonClient:
         self.grouped_cache: Dict[str, Dict[str, Dict[str, float]]] = {}
 
     def _get(self, path: str, params: Optional[Dict] = None) -> Dict:
-        merged = {"api" + "Key": self.key}
+        merged = {"apiKey": self.key}
         if params:
             merged.update(params)
         url = f"{POLYGON_BASE}{path}"
@@ -119,24 +116,6 @@ def read_universe(path: str) -> List[str]:
         raise ValueError("No tickers found in Universe sheet")
     return unique
 
-def read_sector_map(path: str = SECTOR_MAP_FILE) -> Dict[str, str]:
-    if not os.path.exists(path):
-        logging.warning("%s missing. Sector will be Unknown.", path)
-        return {}
-    df = pd.read_csv(path)
-    if "Ticker" not in df.columns or "Sector" not in df.columns:
-        logging.warning("%s must contain Ticker and Sector columns. Ignoring sector map.", path)
-        return {}
-    sector_map: Dict[str, str] = {}
-    for _, row in df.iterrows():
-        ticker = normalize_ticker(row.get("Ticker", ""))
-        sector = str(row.get("Sector", "")).strip()
-        if ticker and sector and sector.lower() != "nan":
-            sector_map[ticker] = sector
-            sector_map[alt_ticker(ticker)] = sector
-    logging.info("Loaded %d sector keys from %s", len(sector_map), path)
-    return sector_map
-
 def read_portfolio_value_sek(path: str) -> float:
     wb = load_workbook(path, data_only=True)
     value = wb[PARAM_SHEET]["B1"].value
@@ -193,37 +172,21 @@ def pct_return(current: float, old: Optional[float]) -> Optional[float]:
         return None
     return (current / old - 1.0) * 100.0
 
-def build_metrics(tickers, latest_map, recent20, anchor_maps, sector_map):
-    counters = {
-        "total_tickers_in_universe": len(tickers),
-        "sector_mappings_loaded": len(sector_map),
-        "grouped_data_pipeline": 1,
-        "latest_grouped_symbols": len(latest_map),
-        "successful_polygon_data": 0,
-        "no_data_from_polygon": 0,
-        "excluded_by_insufficient_history": 0,
-        "excluded_by_price_filter": 0,
-        "excluded_by_liquidity_filter": 0,
-        "excluded_by_trend_filter": 0,
-        "excluded_by_momentum_filter": 0,
-        "excluded_by_overextended_filter": 0,
-        "excluded_by_negative_5d_filter": 0,
-        "final_candidate_count": 0,
-    }
+def build_metrics(tickers, latest_map, recent20, anchor_maps):
+    counters = {"total_tickers_in_universe": len(tickers), "grouped_data_pipeline": 1, "latest_grouped_symbols": len(latest_map), "successful_polygon_data": 0, "no_data_from_polygon": 0, "excluded_by_insufficient_history": 0, "excluded_by_price_filter": 0, "excluded_by_liquidity_filter": 0, "excluded_by_trend_filter": 0, "excluded_by_momentum_filter": 0, "excluded_by_overextended_filter": 0, "excluded_by_negative_5d_filter": 0, "final_candidate_count": 0}
     metrics: List[StockMetrics] = []
     debug_rows = []
     for ticker in tickers:
-        sector = sector_map.get(normalize_ticker(ticker)) or sector_map.get(alt_ticker(ticker)) or "Unknown"
         latest = get_from_map(latest_map, ticker)
         if not latest:
             counters["no_data_from_polygon"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "NO_LATEST_DATA"})
+            debug_rows.append({"Ticker": ticker, "Status": "NO_LATEST_DATA"})
             continue
         counters["successful_polygon_data"] += 1
         price = float(latest["close"])
         if price < MIN_PRICE:
             counters["excluded_by_price_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "PRICE", "LastClose": price})
+            debug_rows.append({"Ticker": ticker, "Status": "PRICE", "LastClose": price})
             continue
         dollar_values = []
         for _, grouped in recent20:
@@ -232,12 +195,12 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps, sector_map):
                 dollar_values.append(float(row["close"]) * float(row["volume"]))
         if len(dollar_values) < 10:
             counters["excluded_by_insufficient_history"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "INSUFFICIENT_20D", "RowsReturned": len(dollar_values), "LastClose": price})
+            debug_rows.append({"Ticker": ticker, "Status": "INSUFFICIENT_20D", "RowsReturned": len(dollar_values), "LastClose": price})
             continue
         adv20 = float(np.mean(dollar_values))
         if adv20 < MIN_ADTV20:
             counters["excluded_by_liquidity_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "LIQUIDITY", "LastClose": price, "AvgDollarVolume20": adv20})
+            debug_rows.append({"Ticker": ticker, "Status": "LIQUIDITY", "LastClose": price, "AvgDollarVolume20": adv20})
             continue
         def close_at(key: str) -> Optional[float]:
             row = get_from_map(anchor_maps[key], ticker)
@@ -246,12 +209,12 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps, sector_map):
         c50, c200 = close_at("sma50_proxy"), close_at("sma200_proxy")
         if None in [c5, c21, c63, c126, c252, c50, c200]:
             counters["excluded_by_insufficient_history"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "MISSING_ANCHOR", "LastClose": price})
+            debug_rows.append({"Ticker": ticker, "Status": "MISSING_ANCHOR", "LastClose": price})
             continue
         sma50, sma200 = float(c50), float(c200)
         if not (price > sma50 and price > sma200):
             counters["excluded_by_trend_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "TREND", "LastClose": price, "SMA50": sma50, "SMA200": sma200})
+            debug_rows.append({"Ticker": ticker, "Status": "TREND", "LastClose": price, "SMA50": sma50, "SMA200": sma200})
             continue
         ret5d, ret1m, ret3m = pct_return(price, c5), pct_return(price, c21), pct_return(price, c63)
         ret6m, ret12m = pct_return(price, c126), pct_return(price, c252)
@@ -260,42 +223,33 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps, sector_map):
             continue
         if ret5d <= 0:
             counters["excluded_by_negative_5d_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "NEGATIVE_5D", "LastClose": price, "Ret5d": ret5d})
+            debug_rows.append({"Ticker": ticker, "Status": "NEGATIVE_5D", "LastClose": price, "Ret5d": ret5d})
             continue
         if not (ret3m > 0 and ret6m > 0 and ret12m > 0):
             counters["excluded_by_momentum_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "MOMENTUM", "LastClose": price, "Ret3m": ret3m, "Ret6m": ret6m, "Ret12m": ret12m})
+            debug_rows.append({"Ticker": ticker, "Status": "MOMENTUM", "LastClose": price, "Ret3m": ret3m, "Ret6m": ret6m, "Ret12m": ret12m})
             continue
         dist_sma50 = (price / sma50 - 1.0) * 100.0
         if dist_sma50 > MAX_DIST_SMA50:
             counters["excluded_by_overextended_filter"] += 1
-            debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "OVEREXTENDED", "LastClose": price, "Dist_SMA50": dist_sma50})
+            debug_rows.append({"Ticker": ticker, "Status": "OVEREXTENDED", "LastClose": price, "Dist_SMA50": dist_sma50})
             continue
         accel = float(ret1m - ret3m)
         stock_momentum = 0.25 * ret1m + 0.35 * ret3m + 0.25 * ret6m + 0.15 * ret12m
         total_score = stock_momentum + 0.10 * accel
-        metrics.append(StockMetrics(ticker, sector, price, adv20, sma50, sma200, ret5d, ret1m, ret3m, ret6m, ret12m, accel, dist_sma50, total_score))
-        debug_rows.append({"Ticker": ticker, "Sector": sector, "Status": "PASS", "LastClose": price, "AvgDollarVolume20": adv20, "Ret5d": ret5d, "Ret1m": ret1m, "Ret3m": ret3m, "Ret6m": ret6m, "Ret12m": ret12m, "Dist_SMA50": dist_sma50, "TotalScore": total_score})
+        metrics.append(StockMetrics(ticker, price, adv20, sma50, sma200, ret5d, ret1m, ret3m, ret6m, ret12m, accel, dist_sma50, total_score))
+        debug_rows.append({"Ticker": ticker, "Status": "PASS", "LastClose": price, "AvgDollarVolume20": adv20, "Ret5d": ret5d, "Ret1m": ret1m, "Ret3m": ret3m, "Ret6m": ret6m, "Ret12m": ret12m, "Dist_SMA50": dist_sma50, "TotalScore": total_score})
     counters["final_candidate_count"] = len(metrics)
     return metrics, counters, pd.DataFrame(debug_rows[:300])
 
 def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
-    ranked_all = sorted(metrics, key=lambda x: x.total_score, reverse=True)
-    selected, sector_counts = [], {}
-    for metric in ranked_all:
-        if metric.sector != "Unknown" and sector_counts.get(metric.sector, 0) >= MAX_PER_SECTOR:
-            continue
-        selected.append(metric)
-        if metric.sector != "Unknown":
-            sector_counts[metric.sector] = sector_counts.get(metric.sector, 0) + 1
-        if len(selected) >= TOP_N:
-            break
+    ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)[:TOP_N]
     rows, position_size_sek = [], portfolio_value_sek / TOP10_N
-    for rank, metric in enumerate(selected, start=1):
+    for rank, metric in enumerate(ranked, start=1):
         is_top10 = rank <= TOP10_N
         price_sek = metric.price_usd * fx
         qty = max(1, math.floor(position_size_sek / price_sek)) if is_top10 else ""
-        rows.append({"Rank": rank, "Ticker": metric.ticker, "Sector": metric.sector, "Top10": bool(is_top10), "Qty": qty, "Price_USD": metric.price_usd, "FX": fx, "Price_SEK": price_sek, "Position_SEK": qty * price_sek if is_top10 else "", "AvgDollarVolume20": metric.avg_dollar_volume20, "SMA50": metric.sma50, "SMA200": metric.sma200, "Ret5d": metric.ret5d, "Ret1m": metric.ret1m, "Ret3m": metric.ret3m, "Ret6m": metric.ret6m, "Ret12m": metric.ret12m, "Dist_SMA50": metric.dist_sma50, "Accel": metric.accel, "TotalScore": metric.total_score})
+        rows.append({"Rank": rank, "Ticker": metric.ticker, "Top10": bool(is_top10), "Qty": qty, "Price_USD": metric.price_usd, "FX": fx, "Price_SEK": price_sek, "Position_SEK": qty * price_sek if is_top10 else "", "AvgDollarVolume20": metric.avg_dollar_volume20, "SMA50": metric.sma50, "SMA200": metric.sma200, "Ret5d": metric.ret5d, "Ret1m": metric.ret1m, "Ret3m": metric.ret3m, "Ret6m": metric.ret6m, "Ret12m": metric.ret12m, "Dist_SMA50": metric.dist_sma50, "Accel": metric.accel, "TotalScore": metric.total_score})
     return pd.DataFrame(rows)
 
 def autosize_columns(ws) -> None:
@@ -322,21 +276,20 @@ def write_output(df, debug_df, template_file, output_file, grouped_date, counter
     wb = load_workbook(template_file)
     buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
     replace_sheet_with_df(wb, BUYNOW_SHEET, df, buynow_index)
-    wb[BUYNOW_SHEET]["Z1"] = f"momentum_master_v3.py | grouped_refined_sector_pipeline | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode} | max_per_sector={MAX_PER_SECTOR}"
-    diag_df = pd.DataFrame(list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date), ("max_per_sector", MAX_PER_SECTOR)], columns=["Metric", "Value"])
+    wb[BUYNOW_SHEET]["Z1"] = f"momentum_master_v3.py | grouped_refined_pipeline | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
+    diag_df = pd.DataFrame(list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date)], columns=["Metric", "Value"])
     replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
     replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
     wb.save(output_file)
 
 def main() -> None:
     setup_logging()
-    key = os.getenv("POLYGON_" + "API_KEY")
+    key = os.getenv("POLYGON_API_KEY")
     if not key:
-        raise EnvironmentError("Missing Polygon key environment variable")
+        raise EnvironmentError("Missing POLYGON_API_KEY environment variable")
     if not os.path.exists(INPUT_TEMPLATE):
         raise FileNotFoundError(f"Missing input template: {INPUT_TEMPLATE}")
     tickers = read_universe(INPUT_TEMPLATE)
-    sector_map = read_sector_map(SECTOR_MAP_FILE)
     portfolio_value = read_portfolio_value_sek(INPUT_TEMPLATE)
     client = PolygonClient(key)
     latest_date, latest_map, fx = pick_latest_grouped_date(client)
@@ -349,9 +302,9 @@ def main() -> None:
         date_str, grouped = find_grouped_near(client, target)
         logging.info("Anchor %s uses %s with %d symbols", name, date_str, len(grouped))
         anchor_maps[name] = grouped
-    metrics, counters, debug_df = build_metrics(tickers, latest_map, recent20, anchor_maps, sector_map)
+    metrics, counters, debug_df = build_metrics(tickers, latest_map, recent20, anchor_maps)
     if not metrics:
-        raise RuntimeError("Zero valid candidates after grouped refined sector processing")
+        raise RuntimeError("Zero valid candidates after grouped refined processing")
     mode = "normal_top15" if len(metrics) >= TOP_N else f"warning_fewer_than_15_candidates({len(metrics)})"
     buynow = build_buynow_df(metrics, fx, portfolio_value)
     write_output(buynow, debug_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
