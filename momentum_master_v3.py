@@ -21,6 +21,7 @@ OUTPUT_FILE = "Momentum.xlsx"
 UNIVERSE_SHEET = "Universe"
 PARAM_SHEET = "Parametrar"
 BUYNOW_SHEET = "BuyNow"
+CANDIDATES_SHEET = "Kandidater"
 DIAGNOSTICS_SHEET = "Diagnostics"
 DEBUG_SHEET = "DebugTickers"
 
@@ -308,8 +309,11 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps):
     return metrics, counters, pd.DataFrame(debug_rows[:300])
 
 
-def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
-    ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)[:TOP_N]
+def metrics_to_ranked_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float, limit: Optional[int] = None) -> pd.DataFrame:
+    ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)
+    if limit is not None:
+        ranked = ranked[:limit]
+
     rows = []
     position_size_sek = portfolio_value_sek / TOP10_N
     for rank, metric in enumerate(ranked, start=1):
@@ -340,6 +344,14 @@ def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek:
     return pd.DataFrame(rows)
 
 
+def build_buynow_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
+    return metrics_to_ranked_df(metrics, fx, portfolio_value_sek, limit=TOP_N)
+
+
+def build_candidates_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float) -> pd.DataFrame:
+    return metrics_to_ranked_df(metrics, fx, portfolio_value_sek, limit=None)
+
+
 def autosize_columns(ws) -> None:
     if ws.max_row < 1:
         return
@@ -362,11 +374,19 @@ def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] 
     autosize_columns(ws)
 
 
-def write_output(df, debug_df, template_file, output_file, grouped_date, counters, mode):
+def write_output(buynow_df, candidates_df, debug_df, template_file, output_file, grouped_date, counters, mode):
     wb = load_workbook(template_file)
+
     buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
-    replace_sheet_with_df(wb, BUYNOW_SHEET, df, buynow_index)
-    wb[BUYNOW_SHEET]["Z1"] = f"momentum_master_v3.py | active_momentum_no_hard_dist_sma50 | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
+    candidates_index = wb.sheetnames.index(CANDIDATES_SHEET) if CANDIDATES_SHEET in wb.sheetnames else None
+
+    replace_sheet_with_df(wb, BUYNOW_SHEET, buynow_df, buynow_index)
+    replace_sheet_with_df(wb, CANDIDATES_SHEET, candidates_df, candidates_index)
+
+    run_info = f"momentum_master_v3.py | active_momentum_no_hard_dist_sma50 | candidates_sheet_populated | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
+    wb[BUYNOW_SHEET]["Z1"] = run_info
+    wb[CANDIDATES_SHEET]["Z1"] = run_info
+
     diag_df = pd.DataFrame(list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date)], columns=["Metric", "Value"])
     replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
     replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
@@ -411,8 +431,9 @@ def main() -> None:
 
     mode = "normal_top15" if len(metrics) >= TOP_N else f"warning_fewer_than_15_candidates({len(metrics)})"
     buynow = build_buynow_df(metrics, fx, portfolio_value)
-    write_output(buynow, debug_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
-    logging.info("Wrote %s with %d BuyNow rows. Candidates before top cut: %d", OUTPUT_FILE, len(buynow), len(metrics))
+    candidates = build_candidates_df(metrics, fx, portfolio_value)
+    write_output(buynow, candidates, debug_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
+    logging.info("Wrote %s with %d BuyNow rows and %d candidate rows.", OUTPUT_FILE, len(buynow), len(candidates))
 
 
 if __name__ == "__main__":
