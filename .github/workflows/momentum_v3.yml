@@ -2,6 +2,14 @@ name: Momentum v3
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/momentum_v3.yml'
+      - 'momentum_master_v3.py'
+      - 'Momentum mall fil.xlsx'
+      - 'tests/**'
   schedule:
     # Weekdays 12:00 UTC (~before US market open depending on DST)
     - cron: '0 12 * * 1-5'
