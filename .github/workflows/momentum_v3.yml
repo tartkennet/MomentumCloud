@@ -6,9 +6,17 @@ on:
     # Weekdays 12:00 UTC (~before US market open depending on DST)
     - cron: '0 12 * * 1-5'
 
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-v3-main
+  cancel-in-progress: false
+
 jobs:
   run-momentum-v3:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +35,47 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: python momentum_master_v3.py
+
+      - name: Validate generated workbook
+        run: |
+          python - <<'PY'
+          from openpyxl import load_workbook
+
+          wb = load_workbook("Momentum.xlsx", data_only=True)
+          for name in ("BuyNow", "Kandidater", "Diagnostics", "DebugTickers"):
+              if name not in wb.sheetnames:
+                  raise RuntimeError(f"Missing worksheet: {name}")
+
+          def rows_and_scores(sheet_name):
+              ws = wb[sheet_name]
+              headers = [cell.value for cell in ws[1]]
+              rank_col = headers.index("Rank") + 1
+              score_col = headers.index("TotalScore") + 1
+              rows = [row for row in range(2, ws.max_row + 1) if ws.cell(row, rank_col).value is not None]
+              ranks = [ws.cell(row, rank_col).value for row in rows]
+              scores = [ws.cell(row, score_col).value for row in rows]
+              if ranks != list(range(1, len(rows) + 1)):
+                  raise RuntimeError(f"{sheet_name} ranks are not consecutive")
+              if any(a < b for a, b in zip(scores, scores[1:])):
+                  raise RuntimeError(f"{sheet_name} is not sorted by TotalScore descending")
+              return len(rows)
+
+          buy_count = rows_and_scores("BuyNow")
+          candidate_count = rows_and_scores("Kandidater")
+          if not 1 <= buy_count <= 15:
+              raise RuntimeError(f"BuyNow must have 1-15 rows, got {buy_count}")
+          if candidate_count < buy_count:
+              raise RuntimeError("Kandidater must contain at least the BuyNow rows")
+          print(f"Workbook verified: BuyNow={buy_count}, Kandidater={candidate_count}")
+          PY
+
+      - name: Commit latest workbook to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Momentum.xlsx
+          git diff --cached --quiet || git commit -m "Update Momentum.xlsx"
+          git push
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
