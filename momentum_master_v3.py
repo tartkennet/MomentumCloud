@@ -158,23 +158,12 @@ def pick_latest_grouped_date(client: PolygonClient, max_lookback_days: int = 10)
     raise RuntimeError("Could not find recent grouped stock data with USDSEK")
 
 
-def find_grouped_near(client: PolygonClient, target_date, max_back_days: int = 10) -> Tuple[str, Dict[str, Dict[str, float]]]:
-    for days_back in range(0, max_back_days + 1):
-        date_str = (target_date - timedelta(days=days_back)).isoformat()
-        try:
-            grouped = client.fetch_grouped_stocks(date_str)
-            if len(grouped) > 1000:
-                return date_str, grouped
-        except Exception:
-            continue
-    raise RuntimeError(f"Could not find grouped data near {target_date}")
-
-
-def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed: int = 20) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
+def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed: int = 253) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
     latest = datetime.fromisoformat(latest_date).date()
     maps: List[Tuple[str, Dict[str, Dict[str, float]]]] = []
     days_back = 0
-    while len(maps) < needed and days_back < 45:
+    max_calendar_days = int(needed * 2.5) + 30
+    while len(maps) < needed and days_back < max_calendar_days:
         date_str = (latest - timedelta(days=days_back)).isoformat()
         try:
             grouped = client.fetch_grouped_stocks(date_str)
@@ -194,7 +183,13 @@ def pct_return(current: float, old: Optional[float]) -> Optional[float]:
     return (current / old - 1.0) * 100.0
 
 
-def build_metrics(tickers, latest_map, recent20, anchor_maps):
+def simple_moving_average(closes: List[float], period: int) -> Optional[float]:
+    if len(closes) < period:
+        return None
+    return float(np.mean(closes[:period]))
+
+
+def build_metrics(tickers, latest_map, recent253):
     counters = {
         "total_tickers_in_universe": len(tickers),
         "grouped_data_pipeline": 1,
@@ -228,7 +223,7 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps):
             continue
 
         dollar_values = []
-        for _, grouped in recent20:
+        for _, grouped in recent253[:20]:
             row = get_from_map(grouped, ticker)
             if row:
                 dollar_values.append(float(row["close"]) * float(row["volume"]))
@@ -243,24 +238,30 @@ def build_metrics(tickers, latest_map, recent20, anchor_maps):
             debug_rows.append({"Ticker": ticker, "Status": "LIQUIDITY", "LastClose": price, "AvgDollarVolume20": adv20})
             continue
 
-        def close_at(key: str) -> Optional[float]:
-            row = get_from_map(anchor_maps[key], ticker)
-            return float(row["close"]) if row else None
+        closes = []
+        for _, grouped in recent253:
+            row = get_from_map(grouped, ticker)
+            if not row:
+                break
+            closes.append(float(row["close"]))
 
-        c5 = close_at("ret5d")
-        c21 = close_at("ret1m")
-        c63 = close_at("ret3m")
-        c126 = close_at("ret6m")
-        c252 = close_at("ret12m")
-        c50 = close_at("sma50_proxy")
-        c200 = close_at("sma200_proxy")
-
-        if None in [c5, c21, c63, c126, c252, c50, c200]:
+        if len(closes) < 253:
             counters["excluded_by_insufficient_history"] += 1
-            debug_rows.append({"Ticker": ticker, "Status": "MISSING_ANCHOR", "LastClose": price})
+            debug_rows.append({"Ticker": ticker, "Status": "INSUFFICIENT_253D", "LastClose": price, "RowsReturned": len(closes)})
             continue
 
-        sma50, sma200 = float(c50), float(c200)
+        c5 = closes[5]
+        c21 = closes[21]
+        c63 = closes[63]
+        c126 = closes[126]
+        c252 = closes[252]
+        sma50 = simple_moving_average(closes, 50)
+        sma200 = simple_moving_average(closes, 200)
+
+        if sma50 is None or sma200 is None:
+            counters["excluded_by_insufficient_history"] += 1
+            debug_rows.append({"Ticker": ticker, "Status": "MISSING_SMA_HISTORY", "LastClose": price})
+            continue
         if not (price > sma50 and price > sma200):
             counters["excluded_by_trend_filter"] += 1
             debug_rows.append({"Ticker": ticker, "Status": "TREND", "LastClose": price, "SMA50": sma50, "SMA200": sma200})
@@ -383,7 +384,7 @@ def write_output(buynow_df, candidates_df, debug_df, template_file, output_file,
     replace_sheet_with_df(wb, BUYNOW_SHEET, buynow_df, buynow_index)
     replace_sheet_with_df(wb, CANDIDATES_SHEET, candidates_df, candidates_index)
 
-    run_info = f"momentum_master_v3.py | active_momentum_no_hard_dist_sma50 | candidates_sheet_populated | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
+    run_info = f"momentum_master_v3.py | active_momentum_no_hard_dist_sma50 | real_sma50_sma200 | candidates_sheet_populated | utc={datetime.now(timezone.utc).isoformat()} | grouped_date={grouped_date} | mode={mode}"
     wb[BUYNOW_SHEET]["Z1"] = run_info
     wb[CANDIDATES_SHEET]["Z1"] = run_info
 
@@ -409,23 +410,10 @@ def main() -> None:
     latest_dt = datetime.fromisoformat(latest_date).date()
     logging.info("Using grouped stock date %s with %d symbols, USDSEK %.4f", latest_date, len(latest_map), fx)
 
-    recent20 = collect_recent_trading_maps(client, latest_date, 20)
-    anchor_targets = {
-        "ret5d": latest_dt - timedelta(days=7),
-        "ret1m": latest_dt - timedelta(days=30),
-        "ret3m": latest_dt - timedelta(days=91),
-        "ret6m": latest_dt - timedelta(days=182),
-        "ret12m": latest_dt - timedelta(days=365),
-        "sma50_proxy": latest_dt - timedelta(days=75),
-        "sma200_proxy": latest_dt - timedelta(days=300),
-    }
-    anchor_maps = {}
-    for name, target in anchor_targets.items():
-        date_str, grouped = find_grouped_near(client, target)
-        logging.info("Anchor %s uses %s with %d symbols", name, date_str, len(grouped))
-        anchor_maps[name] = grouped
+    recent253 = collect_recent_trading_maps(client, latest_date, 253)
+    logging.info("Loaded %d recent trading sessions for returns and real SMA calculations.", len(recent253))
 
-    metrics, counters, debug_df = build_metrics(tickers, latest_map, recent20, anchor_maps)
+    metrics, counters, debug_df = build_metrics(tickers, latest_map, recent253)
     if not metrics:
         raise RuntimeError("Zero valid candidates after active momentum refined processing")
 
