@@ -40,14 +40,26 @@ jobs:
           pip install pandas numpy requests openpyxl
 
       - name: Unit tests
-        run: python -m unittest discover -s tests -v
+        id: unit_tests
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python -m unittest discover -s tests -v 2>&1 | tee momentum_run.log
 
       - name: Run momentum v3
+        id: momentum
+        if: steps.unit_tests.outcome == 'success'
+        continue-on-error: true
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python momentum_master_v3.py
+        run: |
+          set -o pipefail
+          python momentum_master_v3.py 2>&1 | tee -a momentum_run.log
 
       - name: Validate generated workbook
+        id: workbook_validation
+        if: steps.unit_tests.outcome == 'success' && steps.momentum.outcome == 'success'
+        continue-on-error: true
         run: |
           python - <<'PY'
           from openpyxl import load_workbook
@@ -80,17 +92,70 @@ jobs:
           print(f"Workbook verified: BuyNow={buy_count}, Kandidater={candidate_count}")
           PY
 
-      - name: Commit latest workbook to main
+      - name: Write run status
+        if: always()
+        env:
+          UNIT_TESTS: ${{ steps.unit_tests.outcome }}
+          MOMENTUM: ${{ steps.momentum.outcome }}
+          WORKBOOK_VALIDATION: ${{ steps.workbook_validation.outcome }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          outcomes = {
+              "Unit tests": os.environ.get("UNIT_TESTS", "skipped"),
+              "Momentum run": os.environ.get("MOMENTUM", "skipped"),
+              "Workbook validation": os.environ.get("WORKBOOK_VALIDATION", "skipped"),
+          }
+          success = all(value == "success" for value in outcomes.values())
+          log_path = Path("momentum_run.log")
+          log_tail = log_path.read_text(errors="replace")[-12000:] if log_path.exists() else "No run log was created."
+          lines = [
+              "# Momentum v3 last run",
+              "",
+              f"Overall result: {'SUCCESS' if success else 'FAILED'}",
+              "",
+          ]
+          lines.extend(f"- {name}: {value}" for name, value in outcomes.items())
+          lines.extend(["", "## Log tail", "", "```text", log_tail, "```", ""])
+          Path("Momentum_last_run.md").write_text("\n".join(lines), encoding="utf-8")
+          PY
+
+      - name: Commit verified output and status
+        if: always()
+        env:
+          UNIT_TESTS: ${{ steps.unit_tests.outcome }}
+          MOMENTUM: ${{ steps.momentum.outcome }}
+          WORKBOOK_VALIDATION: ${{ steps.workbook_validation.outcome }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Momentum.xlsx
-          git diff --cached --quiet || git commit -m "Update Momentum.xlsx"
+          git add Momentum_last_run.md
+          if [ "$UNIT_TESTS" = "success" ] && [ "$MOMENTUM" = "success" ] && [ "$WORKBOOK_VALIDATION" = "success" ]; then
+            git add Momentum.xlsx
+          fi
+          git diff --cached --quiet || git commit -m "Record Momentum v3 run status"
           git push
 
-      - name: Upload artifact
+      - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Momentum_v3
-          path: Momentum.xlsx
-          if-no-files-found: error
+          path: |
+            Momentum.xlsx
+            Momentum_last_run.md
+            momentum_run.log
+          if-no-files-found: warn
+
+      - name: Mark workflow failed when checks fail
+        if: always()
+        env:
+          UNIT_TESTS: ${{ steps.unit_tests.outcome }}
+          MOMENTUM: ${{ steps.momentum.outcome }}
+          WORKBOOK_VALIDATION: ${{ steps.workbook_validation.outcome }}
+        run: |
+          test "$UNIT_TESTS" = "success"
+          test "$MOMENTUM" = "success"
+          test "$WORKBOOK_VALIDATION" = "success"
