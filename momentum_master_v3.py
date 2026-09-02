@@ -164,14 +164,17 @@ def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed:
     days_back = 0
     max_calendar_days = int(needed * 2.5) + 30
     while len(maps) < needed and days_back < max_calendar_days:
-        date_str = (latest - timedelta(days=days_back)).isoformat()
+        candidate_date = latest - timedelta(days=days_back)
+        days_back += 1
+        if candidate_date.weekday() >= 5:
+            continue
+        date_str = candidate_date.isoformat()
         try:
             grouped = client.fetch_grouped_stocks(date_str)
             if len(grouped) > 1000:
                 maps.append((date_str, grouped))
         except Exception:
             pass
-        days_back += 1
     if len(maps) < needed:
         raise RuntimeError(f"Only found {len(maps)} recent trading maps, need {needed}")
     return maps
