@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import logging
 import math
 import os
 import time
+from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Tuple
@@ -24,6 +26,7 @@ BUYNOW_SHEET = "BuyNow"
 CANDIDATES_SHEET = "Kandidater"
 DIAGNOSTICS_SHEET = "Diagnostics"
 DEBUG_SHEET = "DebugTickers"
+HISTORY_CACHE_FILE = ".momentum_history_cache.json"
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
@@ -158,8 +161,42 @@ def pick_latest_grouped_date(client: PolygonClient, max_lookback_days: int = 10)
     raise RuntimeError("Could not find recent grouped stock data with USDSEK")
 
 
-def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed: int = 253) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
+def slim_grouped_map(grouped: Dict[str, Dict[str, float]], tickers: List[str]) -> Dict[str, Dict[str, float]]:
+    relevant = {normalize_ticker(ticker) for ticker in tickers}
+    relevant.update(alt_ticker(ticker) for ticker in tickers)
+    return {ticker: row for ticker, row in grouped.items() if ticker in relevant}
+
+
+def load_history_cache(path: str) -> Dict[str, Dict[str, Dict[str, float]]]:
+    cache_path = Path(path)
+    if not cache_path.exists():
+        return {}
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        if payload.get("version") != 1 or not isinstance(payload.get("sessions"), dict):
+            raise ValueError("unsupported cache format")
+        return payload["sessions"]
+    except Exception as exc:
+        logging.warning("Ignoring invalid Momentum history cache: %s", exc)
+        return {}
+
+
+def save_history_cache(path: str, maps: List[Tuple[str, Dict[str, Dict[str, float]]]]) -> None:
+    payload = {"version": 1, "sessions": {date_str: grouped for date_str, grouped in maps}}
+    Path(path).write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+
+
+def collect_recent_trading_maps(
+    client: PolygonClient,
+    latest_date: str,
+    tickers: List[str],
+    latest_map: Dict[str, Dict[str, float]],
+    needed: int = 253,
+    cache_file: str = HISTORY_CACHE_FILE,
+) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
     latest = datetime.fromisoformat(latest_date).date()
+    cached_maps = load_history_cache(cache_file)
+    cached_maps[latest_date] = slim_grouped_map(latest_map, tickers)
     maps: List[Tuple[str, Dict[str, Dict[str, float]]]] = []
     days_back = 0
     max_calendar_days = int(needed * 2.5) + 30
@@ -169,14 +206,20 @@ def collect_recent_trading_maps(client: PolygonClient, latest_date: str, needed:
         if candidate_date.weekday() >= 5:
             continue
         date_str = candidate_date.isoformat()
+        cached = cached_maps.get(date_str)
+        if cached is not None:
+            maps.append((date_str, cached))
+            continue
         try:
             grouped = client.fetch_grouped_stocks(date_str)
             if len(grouped) > 1000:
-                maps.append((date_str, grouped))
+                cached_maps[date_str] = slim_grouped_map(grouped, tickers)
+                maps.append((date_str, cached_maps[date_str]))
         except Exception:
             pass
     if len(maps) < needed:
         raise RuntimeError(f"Only found {len(maps)} recent trading maps, need {needed}")
+    save_history_cache(cache_file, maps)
     return maps
 
 
@@ -413,7 +456,7 @@ def main() -> None:
     latest_dt = datetime.fromisoformat(latest_date).date()
     logging.info("Using grouped stock date %s with %d symbols, USDSEK %.4f", latest_date, len(latest_map), fx)
 
-    recent253 = collect_recent_trading_maps(client, latest_date, 253)
+    recent253 = collect_recent_trading_maps(client, latest_date, tickers, latest_map, 253)
     logging.info("Loaded %d recent trading sessions for returns and real SMA calculations.", len(recent253))
 
     metrics, counters, debug_df = build_metrics(tickers, latest_map, recent253)
