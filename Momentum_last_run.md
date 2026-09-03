@@ -1,30 +1,26 @@
 # Momentum v3 last run
 
-Overall result: FAILED
+Overall result: SUCCESS
 
-- Unit tests: failure
-- Momentum run: skipped
-- Workbook validation: skipped
+- Unit tests: success
+- Momentum run: success
+- Workbook validation: success
 
 ## Log tail
 
 ```text
-test_buy_history_tracks_entry_and_current_return (test_momentum_master_v3.SimpleMovingAverageTests.test_buy_history_tracks_entry_and_current_return) ... FAIL
+test_buy_history_tracks_entry_and_current_return (test_momentum_master_v3.SimpleMovingAverageTests.test_buy_history_tracks_entry_and_current_return) ... ok
 test_history_cache_round_trip (test_momentum_master_v3.SimpleMovingAverageTests.test_history_cache_round_trip) ... ok
 test_requires_enough_history (test_momentum_master_v3.SimpleMovingAverageTests.test_requires_enough_history) ... ok
 test_uses_latest_trading_sessions (test_momentum_master_v3.SimpleMovingAverageTests.test_uses_latest_trading_sessions) ... ok
 
-======================================================================
-FAIL: test_buy_history_tracks_entry_and_current_return (test_momentum_master_v3.SimpleMovingAverageTests.test_buy_history_tracks_entry_and_current_return)
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/MomentumCloud/MomentumCloud/tests/test_momentum_master_v3.py", line 38, in test_buy_history_tracks_entry_and_current_return
-    self.assertEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0)
-AssertionError: np.float64(10.000000000000009) != 10.0
+Ran 4 tests in 0.007s
 
-----------------------------------------------------------------------
-Ran 4 tests in 0.012s
-
-FAILED (failures=1)
+OK
+2026-09-03 08:13:58,908 | INFO | Using grouped stock date 2026-09-02 with 12539 symbols, USDSEK 9.6314
+2026-09-03 08:13:59,440 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-03 08:14:10,345 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
+2026-09-03 08:14:11,328 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 132 candidate rows.
 
 ```
