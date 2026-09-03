@@ -35,8 +35,8 @@ class SimpleMovingAverageTests(unittest.TestCase):
             second = update_buy_history(buy.iloc[0:0], {"ABC": {"close": 11.0, "volume": 1}}, "2026-09-09", path)
             self.assertEqual(len(first), 1)
             self.assertEqual(len(second), 1)
-            self.assertEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0)
-            self.assertEqual(second.loc[0, "Return_1W_pct"], 10.0)
+            self.assertAlmostEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0, places=8)
+            self.assertAlmostEqual(second.loc[0, "Return_1W_pct"], 10.0, places=8)
 
 
 if __name__ == "__main__":
