@@ -32,7 +32,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = str(Path(directory) / "history.csv")
             first = update_buy_history(buy, {"ABC": {"close": 10.0, "volume": 1}}, "2026-09-01", path)
-            second = update_buy_history(buy, {"ABC": {"close": 11.0, "volume": 1}}, "2026-09-09", path)
+            second = update_buy_history(buy.iloc[0:0], {"ABC": {"close": 11.0, "volume": 1}}, "2026-09-09", path)
             self.assertEqual(len(first), 1)
             self.assertEqual(len(second), 1)
             self.assertEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0)
