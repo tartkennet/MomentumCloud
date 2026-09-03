@@ -15,12 +15,12 @@ test_requires_enough_history (test_momentum_master_v3.SimpleMovingAverageTests.t
 test_uses_latest_trading_sessions (test_momentum_master_v3.SimpleMovingAverageTests.test_uses_latest_trading_sessions) ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.007s
+Ran 4 tests in 0.009s
 
 OK
-2026-09-03 08:13:58,908 | INFO | Using grouped stock date 2026-09-02 with 12539 symbols, USDSEK 9.6314
-2026-09-03 08:13:59,440 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-03 08:14:10,345 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-03 08:14:11,328 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 132 candidate rows.
+2026-09-03 15:36:59,160 | INFO | Using grouped stock date 2026-09-02 with 12539 symbols, USDSEK 9.6314
+2026-09-03 15:36:59,832 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-03 15:37:11,038 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
+2026-09-03 15:37:12,381 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 132 candidate rows.
 
 ```
