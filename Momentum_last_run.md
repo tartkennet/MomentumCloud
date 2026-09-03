@@ -23,7 +23,7 @@ Traceback (most recent call last):
 AssertionError: 2 != 1
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.009s
+Ran 4 tests in 0.008s
 
 FAILED (failures=1)
 
