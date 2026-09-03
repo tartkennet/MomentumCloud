@@ -73,7 +73,9 @@ jobs:
           from openpyxl import load_workbook
 
           wb = load_workbook("Momentum.xlsx", data_only=True)
-          for name in ("BuyNow", "Kandidater", "Diagnostics", "DebugTickers"):
+          if not __import__("os").path.exists("Momentum_buy_history.csv"):
+              raise RuntimeError("Missing tracking file")
+          for name in ("BuyNow", "Kandidater", "Diagnostics", "DebugTickers", "Utvärdering"):
               if name not in wb.sheetnames:
                   raise RuntimeError(f"Missing worksheet: {name}")
 
@@ -143,6 +145,7 @@ jobs:
           cp Momentum_last_run.md "$result_dir/Momentum_last_run.md"
           if [ "$UNIT_TESTS" = "success" ] && [ "$MOMENTUM" = "success" ] && [ "$WORKBOOK_VALIDATION" = "success" ]; then
             cp Momentum.xlsx "$result_dir/Momentum.xlsx"
+            cp Momentum_buy_history.csv "$result_dir/Momentum_buy_history.csv"
           fi
 
           for attempt in 1 2 3; do
@@ -153,6 +156,8 @@ jobs:
             if [ -f "$result_dir/Momentum.xlsx" ]; then
               cp "$result_dir/Momentum.xlsx" Momentum.xlsx
               git add -f Momentum.xlsx
+              cp "$result_dir/Momentum_buy_history.csv" Momentum_buy_history.csv
+              git add Momentum_buy_history.csv
             fi
             git diff --cached --quiet || git commit -m "Record Momentum v3 run status"
             if git push origin HEAD:main; then
@@ -169,6 +174,7 @@ jobs:
           name: Momentum_v3
           path: |
             Momentum.xlsx
+            Momentum_buy_history.csv
             Momentum_last_run.md
             momentum_run.log
           if-no-files-found: warn

@@ -26,6 +26,8 @@ BUYNOW_SHEET = "BuyNow"
 CANDIDATES_SHEET = "Kandidater"
 DIAGNOSTICS_SHEET = "Diagnostics"
 DEBUG_SHEET = "DebugTickers"
+TRACKING_SHEET = "Utvärdering"
+TRACKING_FILE = "Momentum_buy_history.csv"
 HISTORY_CACHE_FILE = ".momentum_history_cache.json"
 
 MIN_PRICE = 5.0
@@ -356,6 +358,55 @@ def build_metrics(tickers, latest_map, recent253):
     return metrics, counters, pd.DataFrame(debug_rows[:300])
 
 
+def update_buy_history(
+    buynow_df: pd.DataFrame,
+    latest_map: Dict[str, Dict[str, float]],
+    latest_date: str,
+    tracking_file: str = TRACKING_FILE,
+) -> pd.DataFrame:
+    columns = [
+        "EntryDate", "Ticker", "EntryRank", "EntryPrice_USD", "EntryTotalScore",
+        "LatestDate", "LatestPrice_USD", "Return_Since_Entry_pct",
+        "Price_1W", "Return_1W_pct", "Price_2W", "Return_2W_pct", "Price_3W", "Return_3W_pct",
+    ]
+    if os.path.exists(tracking_file):
+        history = pd.read_csv(tracking_file)
+    else:
+        history = pd.DataFrame(columns=columns)
+    history = history.reindex(columns=columns)
+
+    for row_idx, row in history.iterrows():
+        latest = get_from_map(latest_map, str(row["Ticker"]))
+        if not latest:
+            continue
+        price = float(latest["close"])
+        history.at[row_idx, "LatestDate"] = latest_date
+        history.at[row_idx, "LatestPrice_USD"] = price
+        entry_price = float(row["EntryPrice_USD"])
+        history.at[row_idx, "Return_Since_Entry_pct"] = pct_return(price, entry_price)
+        entry_date = pd.Timestamp(row["EntryDate"])
+        for days, price_col, return_col in ((7, "Price_1W", "Return_1W_pct"), (14, "Price_2W", "Return_2W_pct"), (21, "Price_3W", "Return_3W_pct")):
+            if pd.Timestamp(latest_date) >= entry_date + pd.Timedelta(days=days) and pd.isna(row[price_col]):
+                history.at[row_idx, price_col] = price
+                history.at[row_idx, return_col] = pct_return(price, entry_price)
+
+    existing = set(zip(history["EntryDate"].astype(str), history["Ticker"].astype(str)))
+    new_rows = []
+    for _, row in buynow_df.iterrows():
+        key = (latest_date, str(row["Ticker"]))
+        if key not in existing:
+            price = float(row["Price_USD"])
+            new_rows.append({
+                "EntryDate": latest_date, "Ticker": row["Ticker"], "EntryRank": int(row["Rank"]),
+                "EntryPrice_USD": price, "EntryTotalScore": float(row["TotalScore"]),
+                "LatestDate": latest_date, "LatestPrice_USD": price, "Return_Since_Entry_pct": 0.0,
+            })
+    if new_rows:
+        history = pd.concat([history, pd.DataFrame(new_rows)], ignore_index=True)
+    history.to_csv(tracking_file, index=False)
+    return history.sort_values(["EntryDate", "EntryRank"], ascending=[False, True], na_position="last").reset_index(drop=True)
+
+
 def metrics_to_ranked_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float, limit: Optional[int] = None) -> pd.DataFrame:
     ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)
     if limit is not None:
@@ -421,7 +472,7 @@ def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] 
     autosize_columns(ws)
 
 
-def write_output(buynow_df, candidates_df, debug_df, template_file, output_file, grouped_date, counters, mode):
+def write_output(buynow_df, candidates_df, debug_df, history_df, template_file, output_file, grouped_date, counters, mode):
     wb = load_workbook(template_file)
 
     buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
@@ -437,6 +488,7 @@ def write_output(buynow_df, candidates_df, debug_df, template_file, output_file,
     diag_df = pd.DataFrame(list(counters.items()) + [("mode", mode), ("grouped_date", grouped_date)], columns=["Metric", "Value"])
     replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
     replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
+    replace_sheet_with_df(wb, TRACKING_SHEET, history_df)
     wb.save(output_file)
 
 
@@ -466,7 +518,8 @@ def main() -> None:
     mode = "normal_top15" if len(metrics) >= TOP_N else f"warning_fewer_than_15_candidates({len(metrics)})"
     buynow = build_buynow_df(metrics, fx, portfolio_value)
     candidates = build_candidates_df(metrics, fx, portfolio_value)
-    write_output(buynow, candidates, debug_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
+    history_df = update_buy_history(buynow, latest_map, latest_date)
+    write_output(buynow, candidates, debug_df, history_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
     logging.info("Wrote %s with %d BuyNow rows and %d candidate rows.", OUTPUT_FILE, len(buynow), len(candidates))
 
 
