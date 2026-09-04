@@ -28,6 +28,9 @@ DIAGNOSTICS_SHEET = "Diagnostics"
 DEBUG_SHEET = "DebugTickers"
 TRACKING_SHEET = "Utvärdering"
 TRACKING_FILE = "Momentum_buy_history.csv"
+PORTFOLIO_FILE = "Momentum_portfolio.csv"
+HOLDINGS_SHEET = "Holdings"
+PORTFOLIO_SUMMARY_SHEET = "Portföljöversikt"
 HISTORY_CACHE_FILE = ".momentum_history_cache.json"
 
 MIN_PRICE = 5.0
@@ -407,6 +410,106 @@ def update_buy_history(
     return history.sort_values(["EntryDate", "EntryRank"], ascending=[False, True], na_position="last").reset_index(drop=True)
 
 
+
+def load_portfolio(path: str = PORTFOLIO_FILE) -> pd.DataFrame:
+    columns = ["Ticker", "Qty", "EntryDate", "EntryPrice_USD", "EntryFX", "EntryFees_SEK"]
+    if not os.path.exists(path):
+        return pd.DataFrame(columns=columns)
+    portfolio = pd.read_csv(path)
+    missing = [column for column in columns if column not in portfolio.columns]
+    if missing:
+        raise ValueError(f"{path} is missing columns: {', '.join(missing)}")
+    portfolio = portfolio.reindex(columns=columns).dropna(subset=["Ticker", "Qty", "EntryPrice_USD", "EntryFX"])
+    portfolio["Ticker"] = portfolio["Ticker"].map(normalize_ticker)
+    for column in ("Qty", "EntryPrice_USD", "EntryFX", "EntryFees_SEK"):
+        portfolio[column] = pd.to_numeric(portfolio[column], errors="coerce")
+    portfolio["EntryFees_SEK"] = portfolio["EntryFees_SEK"].fillna(0.0)
+    return portfolio.dropna(subset=["Qty", "EntryPrice_USD", "EntryFX"])
+
+
+def close_on_or_before(recent_maps, ticker: str, date_value) -> Optional[float]:
+    try:
+        target = pd.Timestamp(date_value).date()
+    except Exception:
+        return None
+    eligible = [
+        (date_str, get_from_map(day_map, ticker))
+        for date_str, day_map in recent_maps
+        if datetime.fromisoformat(date_str).date() <= target
+    ]
+    if not eligible:
+        return None
+    date_str, row = max(eligible, key=lambda item: item[0])
+    return float(row["close"]) if row else None
+
+
+def build_holdings_df(portfolio_df, latest_map, fx: float, candidates_df, recent_maps) -> pd.DataFrame:
+    columns = [
+        "Ticker", "Qty", "EntryDate", "EntryPrice_USD", "EntryFX", "EntryFees_SEK",
+        "EntryValue_SEK", "Price_USD", "FX", "Value_SEK", "P&L_SEK", "P&L_pct",
+        "SPY_Return_SEK_pct", "Edge_vs_SPY_pct", "CurrentRank", "MomentumStatus",
+    ]
+    if portfolio_df.empty:
+        return pd.DataFrame(columns=columns)
+
+    rank_lookup = candidates_df.set_index("Ticker")["Rank"].to_dict() if not candidates_df.empty else {}
+    current_spy = get_from_map(latest_map, "SPY")
+    rows = []
+    for _, holding in portfolio_df.iterrows():
+        ticker = normalize_ticker(holding["Ticker"])
+        latest = get_from_map(latest_map, ticker)
+        entry_value = float(holding["Qty"]) * float(holding["EntryPrice_USD"]) * float(holding["EntryFX"]) + float(holding["EntryFees_SEK"])
+        row = {
+            "Ticker": ticker,
+            "Qty": float(holding["Qty"]),
+            "EntryDate": holding["EntryDate"],
+            "EntryPrice_USD": float(holding["EntryPrice_USD"]),
+            "EntryFX": float(holding["EntryFX"]),
+            "EntryFees_SEK": float(holding["EntryFees_SEK"]),
+            "EntryValue_SEK": entry_value,
+            "Price_USD": None,
+            "FX": fx,
+            "Value_SEK": None,
+            "P&L_SEK": None,
+            "P&L_pct": None,
+            "SPY_Return_SEK_pct": None,
+            "Edge_vs_SPY_pct": None,
+            "CurrentRank": rank_lookup.get(ticker),
+            "MomentumStatus": "NO_PRICE",
+        }
+        if latest:
+            price = float(latest["close"])
+            value = float(holding["Qty"]) * price * fx
+            pnl = value - entry_value
+            row.update({"Price_USD": price, "Value_SEK": value, "P&L_SEK": pnl, "P&L_pct": pct_return(value, entry_value)})
+            rank = rank_lookup.get(ticker)
+            row["MomentumStatus"] = "TOP10" if rank and rank <= TOP10_N else ("BUY_NOW" if rank and rank <= TOP_N else ("CANDIDATE" if rank else "OUT_OF_MOMENTUM"))
+            entry_spy = close_on_or_before(recent_maps, "SPY", holding["EntryDate"])
+            if current_spy and entry_spy:
+                spy_return = pct_return(float(current_spy["close"]) * fx, entry_spy * float(holding["EntryFX"]))
+                row["SPY_Return_SEK_pct"] = spy_return
+                if row["P&L_pct"] is not None and spy_return is not None:
+                    row["Edge_vs_SPY_pct"] = row["P&L_pct"] - spy_return
+        rows.append(row)
+    return pd.DataFrame(rows, columns=columns)
+
+
+def build_portfolio_summary(holdings_df, latest_date: str) -> pd.DataFrame:
+    if holdings_df.empty:
+        return pd.DataFrame([{"Metric": "Status", "Value": "No holdings imported yet"}])
+    entry_value = float(holdings_df["EntryValue_SEK"].sum())
+    current_value = float(holdings_df["Value_SEK"].sum(min_count=1))
+    pnl = current_value - entry_value if not pd.isna(current_value) else None
+    return pd.DataFrame([
+        {"Metric": "Latest market date", "Value": latest_date},
+        {"Metric": "Positions", "Value": int(len(holdings_df))},
+        {"Metric": "Entry value SEK", "Value": entry_value},
+        {"Metric": "Current value SEK", "Value": current_value},
+        {"Metric": "P&L SEK", "Value": pnl},
+        {"Metric": "P&L %", "Value": pct_return(current_value, entry_value) if pnl is not None else None},
+        {"Metric": "Benchmark", "Value": "SPY, SEK adjusted from each entry date"},
+    ])
+
 def metrics_to_ranked_df(metrics: List[StockMetrics], fx: float, portfolio_value_sek: float, limit: Optional[int] = None) -> pd.DataFrame:
     ranked = sorted(metrics, key=lambda x: x.total_score, reverse=True)
     if limit is not None:
@@ -472,7 +575,7 @@ def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] 
     autosize_columns(ws)
 
 
-def write_output(buynow_df, candidates_df, debug_df, history_df, template_file, output_file, grouped_date, counters, mode):
+def write_output(buynow_df, candidates_df, debug_df, history_df, holdings_df, portfolio_summary_df, template_file, output_file, grouped_date, counters, mode):
     wb = load_workbook(template_file)
 
     buynow_index = wb.sheetnames.index(BUYNOW_SHEET) if BUYNOW_SHEET in wb.sheetnames else None
@@ -489,6 +592,8 @@ def write_output(buynow_df, candidates_df, debug_df, history_df, template_file, 
     replace_sheet_with_df(wb, DIAGNOSTICS_SHEET, diag_df)
     replace_sheet_with_df(wb, DEBUG_SHEET, debug_df)
     replace_sheet_with_df(wb, TRACKING_SHEET, history_df)
+    replace_sheet_with_df(wb, HOLDINGS_SHEET, holdings_df)
+    replace_sheet_with_df(wb, PORTFOLIO_SUMMARY_SHEET, portfolio_summary_df)
     wb.save(output_file)
 
 
@@ -508,7 +613,8 @@ def main() -> None:
     latest_dt = datetime.fromisoformat(latest_date).date()
     logging.info("Using grouped stock date %s with %d symbols, USDSEK %.4f", latest_date, len(latest_map), fx)
 
-    recent253 = collect_recent_trading_maps(client, latest_date, tickers, latest_map, 253)
+    history_tickers = list(dict.fromkeys(tickers + ["SPY"]))
+    recent253 = collect_recent_trading_maps(client, latest_date, history_tickers, latest_map, 253)
     logging.info("Loaded %d recent trading sessions for returns and real SMA calculations.", len(recent253))
 
     metrics, counters, debug_df = build_metrics(tickers, latest_map, recent253)
@@ -519,7 +625,10 @@ def main() -> None:
     buynow = build_buynow_df(metrics, fx, portfolio_value)
     candidates = build_candidates_df(metrics, fx, portfolio_value)
     history_df = update_buy_history(buynow, latest_map, latest_date)
-    write_output(buynow, candidates, debug_df, history_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
+    portfolio_df = load_portfolio()
+    holdings_df = build_holdings_df(portfolio_df, latest_map, fx, candidates, recent253)
+    portfolio_summary_df = build_portfolio_summary(holdings_df, latest_date)
+    write_output(buynow, candidates, debug_df, history_df, holdings_df, portfolio_summary_df, INPUT_TEMPLATE, OUTPUT_FILE, latest_date, counters, mode)
     logging.info("Wrote %s with %d BuyNow rows and %d candidate rows.", OUTPUT_FILE, len(buynow), len(candidates))
 
 
