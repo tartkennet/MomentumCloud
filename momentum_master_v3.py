@@ -575,6 +575,16 @@ def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] 
     autosize_columns(ws)
 
 
+
+def remove_embedded_api_values(workbook) -> None:
+    if PARAM_SHEET not in workbook.sheetnames:
+        return
+    ws = workbook[PARAM_SHEET]
+    for row in range(1, ws.max_row + 1):
+        label = str(ws.cell(row, 1).value or "").lower()
+        if "api key" in label:
+            ws.cell(row, 2).value = "Stored as GitHub Actions secret"
+
 def write_output(buynow_df, candidates_df, debug_df, history_df, holdings_df, portfolio_summary_df, template_file, output_file, grouped_date, counters, mode):
     wb = load_workbook(template_file)
 
@@ -594,6 +604,7 @@ def write_output(buynow_df, candidates_df, debug_df, history_df, holdings_df, po
     replace_sheet_with_df(wb, TRACKING_SHEET, history_df)
     replace_sheet_with_df(wb, HOLDINGS_SHEET, holdings_df)
     replace_sheet_with_df(wb, PORTFOLIO_SUMMARY_SHEET, portfolio_summary_df)
+    remove_embedded_api_values(wb)
     wb.save(output_file)
 
 
