@@ -75,7 +75,7 @@ jobs:
           wb = load_workbook("Momentum.xlsx", data_only=True)
           if not __import__("os").path.exists("Momentum_buy_history.csv"):
               raise RuntimeError("Missing tracking file")
-          for name in ("BuyNow", "Kandidater", "Diagnostics", "DebugTickers", "Utvärdering"):
+          for name in ("BuyNow", "Kandidater", "Diagnostics", "DebugTickers", "Utvärdering", "Holdings", "Portföljöversikt"):
               if name not in wb.sheetnames:
                   raise RuntimeError(f"Missing worksheet: {name}")
 
@@ -175,6 +175,7 @@ jobs:
           path: |
             Momentum.xlsx
             Momentum_buy_history.csv
+            Momentum_portfolio.csv
             Momentum_last_run.md
             momentum_run.log
           if-no-files-found: warn
