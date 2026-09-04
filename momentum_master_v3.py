@@ -15,6 +15,8 @@ import numpy as np
 import pandas as pd
 import requests
 from openpyxl import load_workbook
+from openpyxl.formatting.rule import CellIsRule
+from openpyxl.styles import PatternFill
 from openpyxl.utils import get_column_letter
 
 POLYGON_BASE = "https://api.polygon.io"
@@ -561,6 +563,19 @@ def autosize_columns(ws) -> None:
         max_len = max(len(str(cell.value)) if cell.value is not None else 0 for cell in ws[col_letter])
         ws.column_dimensions[col_letter].width = min(max_len + 2, 60)
 
+
+
+def apply_positive_negative_formatting(ws) -> None:
+    positive_fill = PatternFill(fill_type="solid", fgColor="C6EFCE")
+    negative_fill = PatternFill(fill_type="solid", fgColor="FFC7CE")
+    for column_index, cell in enumerate(ws[1], start=1):
+        header = str(cell.value or "").lower()
+        if "ret" not in header and "p&l" not in header and "edge" not in header:
+            continue
+        column = get_column_letter(column_index)
+        cell_range = f"{column}2:{column}{max(ws.max_row, 2)}"
+        ws.conditional_formatting.add(cell_range, CellIsRule(operator="greaterThan", formula=["0"], fill=positive_fill))
+        ws.conditional_formatting.add(cell_range, CellIsRule(operator="lessThan", formula=["0"], fill=negative_fill))
 
 def replace_sheet_with_df(wb, name: str, df: pd.DataFrame, index: Optional[int] = None) -> None:
     if name in wb.sheetnames:
