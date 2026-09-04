@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
+from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
 
 
 class SimpleMovingAverageTests(unittest.TestCase):
@@ -65,6 +65,12 @@ class SimpleMovingAverageTests(unittest.TestCase):
         ws.append(["ABC", 1.0, -10.0, 20.0])
         apply_positive_negative_formatting(ws)
         self.assertEqual(len(ws.conditional_formatting), 2)
+
+
+    def test_split_price_factor_normalizes_entry_price(self):
+        events = [{"execution_date": "2026-09-03", "split_from": 1, "split_to": 2}]
+        self.assertAlmostEqual(split_price_factor(events, "2026-09-01", "2026-09-03"), 0.5)
+        self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
 if __name__ == "__main__":
