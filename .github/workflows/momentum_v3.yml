@@ -57,7 +57,9 @@ jobs:
       - name: Restore Momentum history cache
         uses: actions/cache@v4
         with:
-          path: .momentum_history_cache.json
+          path: |
+            .momentum_history_cache.json
+            .momentum_splits_cache.json
           key: momentum-history-${{ github.run_id }}
           restore-keys: |
             momentum-history-
