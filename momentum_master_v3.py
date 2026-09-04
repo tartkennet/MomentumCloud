@@ -34,6 +34,7 @@ PORTFOLIO_FILE = "Momentum_portfolio.csv"
 HOLDINGS_SHEET = "Holdings"
 PORTFOLIO_SUMMARY_SHEET = "Portföljöversikt"
 HISTORY_CACHE_FILE = ".momentum_history_cache.json"
+SPLITS_CACHE_FILE = ".momentum_splits_cache.json"
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
@@ -97,6 +98,13 @@ class PolygonClient:
         if not results:
             raise ValueError(f"No USDSEK result for {date_str}")
         return float(results[-1]["c"])
+
+    def fetch_recent_splits(self, start_date: str, end_date: str) -> List[Dict]:
+        data = self._get(
+            "/stocks/v1/splits",
+            {"execution_date.gte": start_date, "execution_date.lte": end_date, "limit": 5000, "sort": "execution_date.asc"},
+        )
+        return data.get("results", []) or []
 
     def fetch_grouped_stocks(self, date_str: str) -> Dict[str, Dict[str, float]]:
         if date_str in self.grouped_cache:
@@ -363,15 +371,58 @@ def build_metrics(tickers, latest_map, recent253):
     return metrics, counters, pd.DataFrame(debug_rows[:300])
 
 
+
+def load_split_cache(path: str = SPLITS_CACHE_FILE) -> Dict:
+    cache_path = Path(path)
+    if not cache_path.exists():
+        return {"last_checked": None, "events": {}}
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        if not isinstance(payload.get("events"), dict):
+            raise ValueError("invalid split cache")
+        return payload
+    except Exception:
+        return {"last_checked": None, "events": {}}
+
+
+def update_split_cache(client: PolygonClient, latest_date: str, path: str = SPLITS_CACHE_FILE) -> Dict[str, List[Dict]]:
+    payload = load_split_cache(path)
+    previous = payload.get("last_checked")
+    start_date = previous or (datetime.fromisoformat(latest_date).date() - timedelta(days=14)).isoformat()
+    events = payload.get("events", {})
+    for event in client.fetch_recent_splits(start_date, latest_date):
+        ticker = normalize_ticker(event.get("ticker", ""))
+        event_id = str(event.get("id", ""))
+        if not ticker or not event_id:
+            continue
+        known = {str(item.get("id", "")) for item in events.get(ticker, [])}
+        if event_id not in known:
+            events.setdefault(ticker, []).append(event)
+    Path(path).write_text(json.dumps({"last_checked": latest_date, "events": events}, separators=(",", ":")), encoding="utf-8")
+    return events
+
+
+def split_price_factor(events: List[Dict], entry_date: str, latest_date: str) -> float:
+    factor = 1.0
+    for event in events:
+        execution_date = str(event.get("execution_date", ""))
+        if entry_date < execution_date <= latest_date:
+            split_from = float(event.get("split_from", 0) or 0)
+            split_to = float(event.get("split_to", 0) or 0)
+            if split_from > 0 and split_to > 0:
+                factor *= split_from / split_to
+    return factor
+
 def update_buy_history(
     buynow_df: pd.DataFrame,
     latest_map: Dict[str, Dict[str, float]],
     latest_date: str,
     tracking_file: str = TRACKING_FILE,
+    split_events_by_ticker: Optional[Dict[str, List[Dict]]] = None,
 ) -> pd.DataFrame:
     columns = [
         "EntryDate", "Ticker", "EntryRank", "EntryPrice_USD", "EntryTotalScore",
-        "LatestDate", "LatestPrice_USD", "Return_Since_Entry_pct",
+        "LatestDate", "LatestPrice_USD", "AdjustedEntryPrice_USD", "Return_Since_Entry_pct",
         "Price_1W", "Return_1W_pct", "Price_2W", "Return_2W_pct", "Price_3W", "Return_3W_pct",
     ]
     if os.path.exists(tracking_file):
@@ -388,7 +439,10 @@ def update_buy_history(
         history.at[row_idx, "LatestDate"] = latest_date
         history.at[row_idx, "LatestPrice_USD"] = price
         entry_price = float(row["EntryPrice_USD"])
-        history.at[row_idx, "Return_Since_Entry_pct"] = pct_return(price, entry_price)
+        events = (split_events_by_ticker or {}).get(normalize_ticker(str(row["Ticker"])), [])
+        adjusted_entry_price = entry_price * split_price_factor(events, str(row["EntryDate"]), latest_date)
+        history.at[row_idx, "AdjustedEntryPrice_USD"] = adjusted_entry_price
+        history.at[row_idx, "Return_Since_Entry_pct"] = pct_return(price, adjusted_entry_price)
         entry_date = pd.Timestamp(row["EntryDate"])
         for days, price_col, return_col in ((7, "Price_1W", "Return_1W_pct"), (14, "Price_2W", "Return_2W_pct"), (21, "Price_3W", "Return_3W_pct")):
             if pd.Timestamp(latest_date) >= entry_date + pd.Timedelta(days=days) and pd.isna(row[price_col]):
@@ -650,7 +704,8 @@ def main() -> None:
     mode = "normal_top15" if len(metrics) >= TOP_N else f"warning_fewer_than_15_candidates({len(metrics)})"
     buynow = build_buynow_df(metrics, fx, portfolio_value)
     candidates = build_candidates_df(metrics, fx, portfolio_value)
-    history_df = update_buy_history(buynow, latest_map, latest_date)
+    split_events = update_split_cache(client, latest_date)
+    history_df = update_buy_history(buynow, latest_map, latest_date, split_events_by_ticker=split_events)
     portfolio_df = load_portfolio()
     holdings_df = build_holdings_df(portfolio_df, latest_map, fx, candidates, recent253)
     portfolio_summary_df = build_portfolio_summary(holdings_df, latest_date)
