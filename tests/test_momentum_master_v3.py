@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from momentum_master_v3 import load_history_cache, save_history_cache, simple_moving_average, update_buy_history
+from momentum_master_v3 import build_holdings_df, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
 
 
 class SimpleMovingAverageTests(unittest.TestCase):
@@ -37,6 +37,25 @@ class SimpleMovingAverageTests(unittest.TestCase):
             self.assertEqual(len(second), 1)
             self.assertAlmostEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0, places=8)
             self.assertAlmostEqual(second.loc[0, "Return_1W_pct"], 10.0, places=8)
+
+
+    def test_holdings_compare_to_spy_and_current_rank(self):
+        pd = __import__("pandas")
+        portfolio = pd.DataFrame([{
+            "Ticker": "ABC", "Qty": 2, "EntryDate": "2026-09-01",
+            "EntryPrice_USD": 10.0, "EntryFX": 10.0, "EntryFees_SEK": 0.0,
+        }])
+        latest = {"ABC": {"close": 11.0, "volume": 1}, "SPY": {"close": 110.0, "volume": 1}}
+        candidates = pd.DataFrame([{"Ticker": "ABC", "Rank": 1}])
+        history = [
+            ("2026-09-03", latest),
+            ("2026-09-01", {"ABC": {"close": 10.0, "volume": 1}, "SPY": {"close": 100.0, "volume": 1}}),
+        ]
+        holdings = build_holdings_df(portfolio, latest, 10.0, candidates, history)
+        self.assertAlmostEqual(holdings.loc[0, "P&L_pct"], 10.0, places=8)
+        self.assertAlmostEqual(holdings.loc[0, "SPY_Return_SEK_pct"], 10.0, places=8)
+        self.assertAlmostEqual(holdings.loc[0, "Edge_vs_SPY_pct"], 0.0, places=8)
+        self.assertEqual(holdings.loc[0, "MomentumStatus"], "TOP10")
 
 
 if __name__ == "__main__":
