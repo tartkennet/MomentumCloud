@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from momentum_master_v3 import build_holdings_df, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
+from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
 
 
 class SimpleMovingAverageTests(unittest.TestCase):
@@ -56,6 +56,15 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(holdings.loc[0, "SPY_Return_SEK_pct"], 10.0, places=8)
         self.assertAlmostEqual(holdings.loc[0, "Edge_vs_SPY_pct"], 0.0, places=8)
         self.assertEqual(holdings.loc[0, "MomentumStatus"], "TOP10")
+
+
+    def test_return_columns_get_positive_negative_formatting(self):
+        from openpyxl import Workbook
+        ws = Workbook().active
+        ws.append(["Ticker", "Ret1m", "P&L_SEK", "Price_USD"])
+        ws.append(["ABC", 1.0, -10.0, 20.0])
+        apply_positive_negative_formatting(ws)
+        self.assertEqual(len(ws.conditional_formatting), 2)
 
 
 if __name__ == "__main__":
