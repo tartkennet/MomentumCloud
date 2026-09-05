@@ -58,7 +58,7 @@ def run(start, end, rebalance_months):
     if not api_key:
         raise RuntimeError("Missing POLYGON_API_KEY")
     client = PolygonClient(api_key)
-    tickers = read_universe(INPUT_TEMPLATE)
+    tickers = read_universe(INPUT_TEMPLATE) + ["SPY"]
     cache = load_history_cache(CACHE_FILE)
     # Build a monthly decision calendar from valid trading sessions. 253 sessions before
     # the first decision are required because the live model uses a 12-month signal.
