@@ -1,0 +1,65 @@
+name: Momentum backtest
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "First portfolio decision date, YYYY-MM-DD"
+        required: true
+        default: "2025-09-01"
+      end_date:
+        description: "Last available trading date, YYYY-MM-DD"
+        required: true
+        default: "2026-09-04"
+  push:
+    branches: [main]
+    paths:
+      - "backtest_momentum_v3.py"
+      - ".github/workflows/momentum_backtest.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: momentum-backtest
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests openpyxl
+      - name: Syntax and unit verification
+        run: |
+          python -m py_compile momentum_master_v3.py backtest_momentum_v3.py
+          python -m unittest discover -s tests -v
+      - name: Restore backtest price cache
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/cache@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-backtest-${{ github.run_id }}
+          restore-keys: momentum-backtest-
+      - name: Run one-month and three-month backtests
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1
+          cp Momentum_backtest_results.csv Momentum_backtest_1m_results.csv
+          cp Momentum_backtest_summary.csv Momentum_backtest_1m_summary.csv
+          python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 3
+          cp Momentum_backtest_results.csv Momentum_backtest_3m_results.csv
+          cp Momentum_backtest_summary.csv Momentum_backtest_3m_summary.csv
+      - name: Upload backtest report
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum_backtest
+          path: |
+            Momentum_backtest_*_results.csv
+            Momentum_backtest_*_summary.csv
