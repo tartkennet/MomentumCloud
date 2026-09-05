@@ -60,9 +60,14 @@ def run(start, end, rebalance_months):
     client = PolygonClient(api_key)
     tickers = read_universe(INPUT_TEMPLATE) + ["SPY"]
     cache = load_history_cache(CACHE_FILE)
-    # Build a monthly decision calendar from valid trading sessions. 253 sessions before
-    # the first decision are required because the live model uses a 12-month signal.
-    all_days = trading_dates(client, end, 253 + 24 * 22)
+    start_day = datetime.fromisoformat(start).date()
+    end_day = datetime.fromisoformat(end).date()
+    # 253 warm-up sessions plus only the requested evaluation period.
+    needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 5
+    all_days = trading_dates(client, end_day, needed_sessions)
+    for date_str, grouped in all_days:
+        cache[date_str] = slim_grouped_map(grouped, tickers)
+    save_history_cache(CACHE_FILE, [(date_str, cache[date_str]) for date_str in cache])
     decisions = [d for d, _ in all_days if start <= d <= end]
     decisions = decisions[::rebalance_months * 22]
     rows, equity, spy_equity = [], 1.0, 1.0
