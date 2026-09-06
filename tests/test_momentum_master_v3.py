@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from datetime import date, timedelta
 from pathlib import Path
 
 from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
@@ -73,7 +74,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
-from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown, stop_loss_exit
+from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown, research_exit, stop_loss_exit
 
 
 class BacktestTimingTests(unittest.TestCase):
@@ -102,6 +103,18 @@ class BacktestTimingTests(unittest.TestCase):
         self.assertEqual(
             stop_loss_exit(cache, days, "ABC", "2026-06-02", "2026-06-05", None),
             ("2026-06-05", "REBALANCE"),
+        )
+
+    def test_sma50_exit_is_executed_next_session(self):
+        dates = [(date(2026, 1, 1) + timedelta(days=index)).isoformat() for index in range(52)]
+        cache = {
+            day: {"ABC": {"open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 1}}
+            for day in dates
+        }
+        cache[dates[49]]["ABC"]["close"] = 80.0
+        self.assertEqual(
+            research_exit(cache, dates, "ABC", dates[49], dates[51], "sma50", None),
+            (dates[50], "BELOW_SMA50"),
         )
 
     def test_execution_is_after_signal_and_exits_at_next_execution(self):
