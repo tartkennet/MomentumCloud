@@ -119,7 +119,13 @@ class PolygonClient:
             close = row.get("c")
             volume = row.get("v")
             if ticker and close is not None and volume is not None:
-                out[ticker] = {"close": float(close), "volume": float(volume)}
+                out[ticker] = {
+                    "open": float(row["o"]) if row.get("o") is not None else float(close),
+                    "high": float(row["h"]) if row.get("h") is not None else float(close),
+                    "low": float(row["l"]) if row.get("l") is not None else float(close),
+                    "close": float(close),
+                    "volume": float(volume),
+                }
         self.grouped_cache[date_str] = out
         return out
 
