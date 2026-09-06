@@ -73,7 +73,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
-from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown
+from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown, stop_loss_exit
 
 
 class BacktestTimingTests(unittest.TestCase):
@@ -86,6 +86,23 @@ class BacktestTimingTests(unittest.TestCase):
 
     def test_rebalance_point_drawdown(self):
         self.assertAlmostEqual(rebalance_point_max_drawdown([110, 121, 90, 99]), -25.6198347107, places=7)
+
+    def test_stop_loss_signals_at_close_and_exits_next_session(self):
+        days = ["2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05"]
+        cache = {
+            "2026-06-02": {"ABC": {"close": 100.0, "volume": 1}},
+            "2026-06-03": {"ABC": {"close": 89.0, "volume": 1}},
+            "2026-06-04": {"ABC": {"close": 87.0, "volume": 1}},
+            "2026-06-05": {"ABC": {"close": 95.0, "volume": 1}},
+        }
+        self.assertEqual(
+            stop_loss_exit(cache, days, "ABC", "2026-06-02", "2026-06-05", 10),
+            ("2026-06-04", "STOP_LOSS"),
+        )
+        self.assertEqual(
+            stop_loss_exit(cache, days, "ABC", "2026-06-02", "2026-06-05", None),
+            ("2026-06-05", "REBALANCE"),
+        )
 
     def test_execution_is_after_signal_and_exits_at_next_execution(self):
         days = ["2026-03-02", "2026-03-03", "2026-03-04", "2026-04-01", "2026-04-02", "2026-04-03"]
