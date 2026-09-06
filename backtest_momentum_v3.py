@@ -130,6 +130,35 @@ def stop_loss_exit(cache, trading_day_strings, ticker, entry, planned_exit, stop
     ) if stop_loss_pct is not None else (planned_exit, "REBALANCE")
 
 
+def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
+    """Calculate drawdown from daily closes, holding exited positions as cash."""
+    if not position_rows:
+        return 0.0
+    positions = pd.DataFrame(position_rows)
+    index_values = []
+    period_start_value = 100.0
+    for (_, _), group in positions.groupby(["EntryDate", "PlannedExitDate"], sort=True):
+        entry = str(group.iloc[0]["EntryDate"])
+        planned_exit = str(group.iloc[0]["PlannedExitDate"])
+        period_days = [day for day in trading_day_strings if entry <= day <= planned_exit]
+        last_value = period_start_value
+        for day in period_days:
+            returns = []
+            for _, position in group.iterrows():
+                if day >= str(position["ExitDate"]):
+                    price = float(position["ExitPrice_USD"])
+                else:
+                    row = get_from_map(cache[day], str(position["Ticker"]))
+                    price = float(row["close"]) if row else float(position["EntryPrice_USD"])
+                returns.append(price / float(position["EntryPrice_USD"]) - 1.0)
+            last_value = period_start_value * (
+                1.0 + sum(returns) / len(returns) - ROUND_TRIP_COST_PCT / 100.0
+            )
+            index_values.append(last_value)
+        period_start_value = last_value
+    return rebalance_point_max_drawdown(index_values)
+
+
 def session_window(client, cache, tickers, asof, needed=253):
     if asof not in cache:
         cache[asof] = slim_grouped_map(client.fetch_grouped_stocks(asof), tickers)
@@ -269,6 +298,9 @@ def run(start, end, rebalance_months, stop_loss_pct=None, exit_rule=None, exit_e
     summary["BestPeriod_pct"] = float(result["NetReturn_pct"].max())
     summary["WorstPeriod_pct"] = float(result["NetReturn_pct"].min())
     summary["RebalancePointMaxDrawdown_pct"] = rebalance_point_max_drawdown(result["PortfolioIndex"])
+    summary["DailyMaxDrawdown_pct"] = daily_portfolio_max_drawdown(
+        position_rows, cache, trading_day_strings
+    )
     summary["ExitRule"] = exit_rule
     summary["ExitExecution"] = exit_execution
     summary["StopLoss_pct"] = stop_loss_pct
