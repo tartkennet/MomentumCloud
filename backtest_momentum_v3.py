@@ -79,6 +79,25 @@ def rebalance_point_max_drawdown(index_values):
     return worst * 100.0
 
 
+def stop_loss_exit(cache, trading_day_strings, ticker, entry, planned_exit, stop_loss_pct):
+    """Signal a stop at a session close and execute at the next session close."""
+    if stop_loss_pct is None:
+        return planned_exit, "REBALANCE"
+    sessions = [day for day in trading_day_strings if entry <= day <= planned_exit]
+    if len(sessions) < 2:
+        return planned_exit, "REBALANCE"
+    entry_row = get_from_map(cache[entry], ticker)
+    if not entry_row:
+        return planned_exit, "REBALANCE"
+    entry_price = float(entry_row["close"])
+    threshold = -abs(float(stop_loss_pct)) / 100.0
+    for index, signal_day in enumerate(sessions[:-1]):
+        row = get_from_map(cache[signal_day], ticker)
+        if row and float(row["close"]) / entry_price - 1.0 <= threshold:
+            return sessions[index + 1], "STOP_LOSS"
+    return planned_exit, "REBALANCE"
+
+
 def session_window(client, cache, tickers, asof, needed=253):
     if asof not in cache:
         cache[asof] = slim_grouped_map(client.fetch_grouped_stocks(asof), tickers)
@@ -105,7 +124,7 @@ def choose_top10(client, cache, tickers, asof):
     return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:TOP10]
 
 
-def run(start, end, rebalance_months):
+def run(start, end, rebalance_months, stop_loss_pct=None):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
         raise RuntimeError("Missing POLYGON_API_KEY")
@@ -140,14 +159,21 @@ def run(start, end, rebalance_months):
         stock_returns = []
         for rank, pick in enumerate(picks, start=1):
             entry_row = get_from_map(entry_map, pick.ticker)
-            exit_row = get_from_map(exit_map, pick.ticker)
+            actual_exit, exit_reason = stop_loss_exit(
+                cache, trading_day_strings, pick.ticker, entry, exit_day, stop_loss_pct
+            )
+            actual_exit_map = cache[actual_exit]
+            exit_row = get_from_map(actual_exit_map, pick.ticker)
             if entry_row and exit_row:
                 stock_return = float(exit_row["close"]) / float(entry_row["close"]) - 1
                 stock_returns.append(stock_return)
                 position_rows.append({
                     "SignalDate": signal,
                     "EntryDate": entry,
-                    "ExitDate": exit_day,
+                    "ExitDate": actual_exit,
+                    "PlannedExitDate": exit_day,
+                    "ExitReason": exit_reason,
+                    "StopLoss_pct": stop_loss_pct,
                     "RebalanceMonths": rebalance_months,
                     "Rank": rank,
                     "Ticker": pick.ticker,
@@ -174,6 +200,7 @@ def run(start, end, rebalance_months):
             "ExitDate": exit_day,
             "Execution": "NEXT_SESSION_CLOSE",
             "RebalanceMonths": rebalance_months,
+            "StopLoss_pct": stop_loss_pct,
             "Top10": ",".join(pick.ticker for pick in picks),
             "GrossReturn_pct": gross * 100,
             "Cost_pct": ROUND_TRIP_COST_PCT,
@@ -201,6 +228,8 @@ def run(start, end, rebalance_months):
     summary["BestPeriod_pct"] = float(result["NetReturn_pct"].max())
     summary["WorstPeriod_pct"] = float(result["NetReturn_pct"].min())
     summary["RebalancePointMaxDrawdown_pct"] = rebalance_point_max_drawdown(result["PortfolioIndex"])
+    summary["StopLoss_pct"] = stop_loss_pct
+    summary["StoppedPositions"] = int((pd.DataFrame(position_rows)["ExitReason"] == "STOP_LOSS").sum())
     summary["Execution"] = "SIGNAL_CLOSE_ENTRY_NEXT_SESSION_CLOSE"
     summary["Universe"] = "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS"
     summary.to_csv("Momentum_backtest_summary.csv", index=False)
@@ -212,6 +241,7 @@ if __name__ == "__main__":
     parser.add_argument("--start", default=(datetime.now(timezone.utc).date() - timedelta(days=365)).isoformat())
     parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
     parser.add_argument("--rebalance-months", type=int, choices=(1, 2, 3), required=True)
+    parser.add_argument("--stop-loss-pct", type=float)
     arguments = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-    run(arguments.start, arguments.end, arguments.rebalance_months)
+    run(arguments.start, arguments.end, arguments.rebalance_months, arguments.stop_loss_pct)
