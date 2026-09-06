@@ -52,12 +52,15 @@ jobs:
           python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1
           cp Momentum_backtest_results.csv Momentum_backtest_1m_results.csv
           cp Momentum_backtest_summary.csv Momentum_backtest_1m_summary.csv
+          cp Momentum_backtest_positions.csv Momentum_backtest_1m_positions.csv
           python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 2
           cp Momentum_backtest_results.csv Momentum_backtest_2m_results.csv
           cp Momentum_backtest_summary.csv Momentum_backtest_2m_summary.csv
+          cp Momentum_backtest_positions.csv Momentum_backtest_2m_positions.csv
           python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 3
           cp Momentum_backtest_results.csv Momentum_backtest_3m_results.csv
           cp Momentum_backtest_summary.csv Momentum_backtest_3m_summary.csv
+          cp Momentum_backtest_positions.csv Momentum_backtest_3m_positions.csv
       - name: Upload backtest report
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
@@ -66,3 +69,4 @@ jobs:
           path: |
             Momentum_backtest_*_results.csv
             Momentum_backtest_*_summary.csv
+            Momentum_backtest_*_positions.csv
