@@ -63,6 +63,16 @@ def execution_periods(trading_day_strings, signals, end):
     return periods
 
 
+def rebalance_point_max_drawdown(index_values):
+    """Maximum drawdown measured at the available portfolio valuation points."""
+    peak = 100.0
+    worst = 0.0
+    for value in index_values:
+        peak = max(peak, float(value))
+        worst = min(worst, float(value) / peak - 1.0)
+    return worst * 100.0
+
+
 def session_window(client, cache, tickers, asof, needed=253):
     if asof not in cache:
         cache[asof] = slim_grouped_map(client.fetch_grouped_stocks(asof), tickers)
@@ -114,7 +124,7 @@ def run(start, end, rebalance_months):
     if not periods:
         raise RuntimeError("No executable rebalance periods in requested range")
 
-    rows, equity, spy_equity = [], 1.0, 1.0
+    rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
     for signal, entry, exit_day in periods:
         picks = choose_top10(client, cache, tickers, signal)
         if len(picks) < TOP10:
@@ -122,11 +132,24 @@ def run(start, end, rebalance_months):
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
-        for pick in picks:
+        for rank, pick in enumerate(picks, start=1):
             entry_row = get_from_map(entry_map, pick.ticker)
             exit_row = get_from_map(exit_map, pick.ticker)
             if entry_row and exit_row:
-                stock_returns.append(float(exit_row["close"]) / float(entry_row["close"]) - 1)
+                stock_return = float(exit_row["close"]) / float(entry_row["close"]) - 1
+                stock_returns.append(stock_return)
+                position_rows.append({
+                    "SignalDate": signal,
+                    "EntryDate": entry,
+                    "ExitDate": exit_day,
+                    "RebalanceMonths": rebalance_months,
+                    "Rank": rank,
+                    "Ticker": pick.ticker,
+                    "SignalPrice_USD": pick.price_usd,
+                    "EntryPrice_USD": float(entry_row["close"]),
+                    "ExitPrice_USD": float(exit_row["close"]),
+                    "GrossReturn_pct": stock_return * 100,
+                })
         if len(stock_returns) < TOP10:
             raise RuntimeError(f"Missing entry/exit price(s) for {signal}: {entry} to {exit_day}")
 
@@ -158,6 +181,7 @@ def run(start, end, rebalance_months):
 
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
+    pd.DataFrame(position_rows).to_csv("Momentum_backtest_positions.csv", index=False)
     summary = result.groupby("RebalanceMonths").agg(
         Periods=("SignalDate", "count"),
         AvgNetReturn_pct=("NetReturn_pct", "mean"),
@@ -165,6 +189,12 @@ def run(start, end, rebalance_months):
         SPYTotalReturn_pct=("SPYIndex", lambda values: float(values.iloc[-1] - 100)),
     ).reset_index()
     summary["TotalEdgeVsSPY_pct"] = summary["TotalReturn_pct"] - summary["SPYTotalReturn_pct"]
+    summary["WinningPeriods"] = int((result["NetReturn_pct"] > 0).sum())
+    summary["LosingPeriods"] = int((result["NetReturn_pct"] <= 0).sum())
+    summary["PeriodHitRate_pct"] = float((result["NetReturn_pct"] > 0).mean() * 100)
+    summary["BestPeriod_pct"] = float(result["NetReturn_pct"].max())
+    summary["WorstPeriod_pct"] = float(result["NetReturn_pct"].min())
+    summary["RebalancePointMaxDrawdown_pct"] = rebalance_point_max_drawdown(result["PortfolioIndex"])
     summary["Execution"] = "SIGNAL_CLOSE_ENTRY_NEXT_SESSION_CLOSE"
     summary["Universe"] = "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS"
     summary.to_csv("Momentum_backtest_summary.csv", index=False)
