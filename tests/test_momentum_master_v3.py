@@ -73,7 +73,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
-from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods
+from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown
 
 
 class BacktestTimingTests(unittest.TestCase):
@@ -83,6 +83,9 @@ class BacktestTimingTests(unittest.TestCase):
             calendar_rebalance_signals(days, "2026-03-06", "2026-06-01", 2),
             ["2026-03-06", "2026-05-01"],
         )
+
+    def test_rebalance_point_drawdown(self):
+        self.assertAlmostEqual(rebalance_point_max_drawdown([110, 121, 90, 99]), -25.6198347107, places=7)
 
     def test_execution_is_after_signal_and_exits_at_next_execution(self):
         days = ["2026-03-02", "2026-03-03", "2026-03-04", "2026-04-01", "2026-04-02", "2026-04-03"]
