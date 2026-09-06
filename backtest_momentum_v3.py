@@ -25,13 +25,19 @@ TOP10 = 10
 ROUND_TRIP_COST_PCT = 0.30
 
 
-def trading_dates(client, end_date, count):
+def trading_dates(client, end_date, count, cache=None):
+    """Return recent trading sessions, reusing the persistent history cache."""
+    cache = cache or {}
     dates, day = [], end_date
     while len(dates) < count:
         if day.weekday() < 5:
-            grouped = client.fetch_grouped_stocks(day.isoformat())
-            if len(grouped) > 1000:
-                dates.append((day.isoformat(), grouped))
+            date_string = day.isoformat()
+            if date_string in cache:
+                dates.append((date_string, cache[date_string]))
+            else:
+                grouped = client.fetch_grouped_stocks(date_string)
+                if len(grouped) > 1000:
+                    dates.append((date_string, grouped))
         day -= timedelta(days=1)
     return list(reversed(dates))
 
@@ -113,7 +119,7 @@ def run(start, end, rebalance_months):
         raise ValueError("start must be earlier than end")
 
     needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 10
-    all_days = trading_dates(client, end_day, needed_sessions)
+    all_days = trading_dates(client, end_day, needed_sessions, cache=cache)
     for date_string, grouped in all_days:
         cache[date_string] = slim_grouped_map(grouped, history_tickers)
     save_history_cache(CACHE_FILE, [(date, cache[date]) for date in cache])
