@@ -74,7 +74,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
-from backtest_momentum_v3 import calendar_rebalance_signals, execution_periods, rebalance_point_max_drawdown, research_exit, stop_loss_exit
+from backtest_momentum_v3 import calendar_rebalance_signals, daily_portfolio_max_drawdown, execution_periods, rebalance_point_max_drawdown, research_exit, stop_loss_exit
 
 
 class BacktestTimingTests(unittest.TestCase):
@@ -116,6 +116,21 @@ class BacktestTimingTests(unittest.TestCase):
             research_exit(cache, dates, "ABC", dates[49], dates[51], "sma50", None),
             (dates[50], "BELOW_SMA50"),
         )
+
+    def test_daily_drawdown_holds_stopped_position_as_cash(self):
+        positions = [{
+            "EntryDate": "2026-06-02", "PlannedExitDate": "2026-06-05",
+            "ExitDate": "2026-06-04", "ExitPrice_USD": 90.0,
+            "EntryPrice_USD": 100.0, "Ticker": "ABC",
+        }]
+        cache = {
+            "2026-06-02": {"ABC": {"close": 100.0, "volume": 1}},
+            "2026-06-03": {"ABC": {"close": 95.0, "volume": 1}},
+            "2026-06-04": {"ABC": {"close": 80.0, "volume": 1}},
+            "2026-06-05": {"ABC": {"close": 120.0, "volume": 1}},
+        }
+        drawdown = daily_portfolio_max_drawdown(positions, cache, sorted(cache))
+        self.assertAlmostEqual(drawdown, -10.0, places=7)
 
     def test_execution_is_after_signal_and_exits_at_next_execution(self):
         days = ["2026-03-02", "2026-03-03", "2026-03-04", "2026-04-01", "2026-04-02", "2026-04-03"]
