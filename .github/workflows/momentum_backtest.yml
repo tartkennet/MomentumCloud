@@ -6,7 +6,7 @@ on:
       start_date:
         description: "First portfolio decision date, YYYY-MM-DD"
         required: true
-        default: "2025-09-01"
+        default: "2026-03-06"
       end_date:
         description: "Last available trading date, YYYY-MM-DD"
         required: true
