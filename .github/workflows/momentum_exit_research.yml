@@ -48,21 +48,27 @@ jobs:
           restore-keys: |
             momentum-exit-research-
             momentum-backtest-
-      - name: Compare baseline and stop-loss levels
+      - name: Compare baseline, stop, SMA50 and momentum exits
         if: github.event_name == 'workflow_dispatch'
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
-          for stop in baseline 8 10 12 15; do
-            if [ "$stop" = baseline ]; then
-              python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1
-            else
-              python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1 --stop-loss-pct "$stop"
-            fi
-            cp Momentum_backtest_results.csv "Momentum_exit_${stop}_results.csv"
-            cp Momentum_backtest_summary.csv "Momentum_exit_${stop}_summary.csv"
-            cp Momentum_backtest_positions.csv "Momentum_exit_${stop}_positions.csv"
-          done
+          run_variant () {
+            label="$1"
+            shift
+            python backtest_momentum_v3.py \
+              --start "${{ inputs.start_date }}" \
+              --end "${{ inputs.end_date }}" \
+              --rebalance-months 1 "$@"
+            cp Momentum_backtest_results.csv "Momentum_exit_${label}_results.csv"
+            cp Momentum_backtest_summary.csv "Momentum_exit_${label}_summary.csv"
+            cp Momentum_backtest_positions.csv "Momentum_exit_${label}_positions.csv"
+          }
+          run_variant baseline
+          run_variant stop8_next_close --exit-rule stop --stop-loss-pct 8 --exit-execution next-close
+          run_variant stop8_next_open --exit-rule stop --stop-loss-pct 8 --exit-execution next-open
+          run_variant sma50_next_open --exit-rule sma50 --exit-execution next-open
+          run_variant momentum_next_open --exit-rule momentum --exit-execution next-open
       - name: Upload exit research
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
