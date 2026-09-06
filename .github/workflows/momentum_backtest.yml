@@ -44,7 +44,7 @@ jobs:
           path: .momentum_backtest_cache.json
           key: momentum-backtest-${{ github.run_id }}
           restore-keys: momentum-backtest-
-      - name: Run one-month and three-month backtests
+      - name: Run one-month, two-month and three-month backtests
         if: github.event_name == 'workflow_dispatch'
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
@@ -52,6 +52,9 @@ jobs:
           python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1
           cp Momentum_backtest_results.csv Momentum_backtest_1m_results.csv
           cp Momentum_backtest_summary.csv Momentum_backtest_1m_summary.csv
+          python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 2
+          cp Momentum_backtest_results.csv Momentum_backtest_2m_results.csv
+          cp Momentum_backtest_summary.csv Momentum_backtest_2m_summary.csv
           python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 3
           cp Momentum_backtest_results.csv Momentum_backtest_3m_results.csv
           cp Momentum_backtest_summary.csv Momentum_backtest_3m_summary.csv
