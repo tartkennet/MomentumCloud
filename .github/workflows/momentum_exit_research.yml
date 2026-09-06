@@ -1,0 +1,70 @@
+name: Momentum exit research
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "First portfolio decision date, YYYY-MM-DD"
+        required: true
+        default: "2026-03-06"
+      end_date:
+        description: "Last available trading date, YYYY-MM-DD"
+        required: true
+        default: "2026-09-04"
+  push:
+    branches: [main]
+    paths:
+      - "backtest_momentum_v3.py"
+      - "tests/test_momentum_master_v3.py"
+      - ".github/workflows/momentum_exit_research.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: momentum-exit-research
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests openpyxl
+      - name: Syntax and unit verification
+        run: |
+          python -m py_compile momentum_master_v3.py backtest_momentum_v3.py
+          python -m unittest discover -s tests -v
+      - name: Restore backtest price cache
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/cache@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-exit-research-${{ github.run_id }}
+          restore-keys: |
+            momentum-exit-research-
+            momentum-backtest-
+      - name: Compare baseline and stop-loss levels
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          for stop in baseline 8 10 12 15; do
+            if [ "$stop" = baseline ]; then
+              python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1
+            else
+              python backtest_momentum_v3.py --start "${{ inputs.start_date }}" --end "${{ inputs.end_date }}" --rebalance-months 1 --stop-loss-pct "$stop"
+            fi
+            cp Momentum_backtest_results.csv "Momentum_exit_${stop}_results.csv"
+            cp Momentum_backtest_summary.csv "Momentum_exit_${stop}_summary.csv"
+            cp Momentum_backtest_positions.csv "Momentum_exit_${stop}_positions.csv"
+          done
+      - name: Upload exit research
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum_exit_research
+          path: Momentum_exit_*.csv
