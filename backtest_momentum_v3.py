@@ -25,15 +25,17 @@ TOP10 = 10
 ROUND_TRIP_COST_PCT = 0.30
 
 
-def trading_dates(client, end_date, count, cache=None):
+def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
     """Return recent trading sessions, reusing the persistent history cache."""
     cache = cache or {}
     dates, day = [], end_date
     while len(dates) < count:
         if day.weekday() < 5:
             date_string = day.isoformat()
-            if date_string in cache:
-                dates.append((date_string, cache[date_string]))
+            cached = cache.get(date_string)
+            has_ohlc = cached and any("open" in row for row in cached.values())
+            if cached is not None and (not require_ohlc or has_ohlc):
+                dates.append((date_string, cached))
             else:
                 grouped = client.fetch_grouped_stocks(date_string)
                 if len(grouped) > 1000:
@@ -79,9 +81,9 @@ def rebalance_point_max_drawdown(index_values):
     return worst * 100.0
 
 
-def stop_loss_exit(cache, trading_day_strings, ticker, entry, planned_exit, stop_loss_pct):
-    """Signal a stop at a session close and execute at the next session close."""
-    if stop_loss_pct is None:
+def research_exit(cache, trading_day_strings, ticker, entry, planned_exit, exit_rule, stop_loss_pct):
+    """Evaluate an exit at each close and execute on the next session."""
+    if exit_rule == "rebalance":
         return planned_exit, "REBALANCE"
     sessions = [day for day in trading_day_strings if entry <= day <= planned_exit]
     if len(sessions) < 2:
@@ -90,12 +92,42 @@ def stop_loss_exit(cache, trading_day_strings, ticker, entry, planned_exit, stop
     if not entry_row:
         return planned_exit, "REBALANCE"
     entry_price = float(entry_row["close"])
-    threshold = -abs(float(stop_loss_pct)) / 100.0
     for index, signal_day in enumerate(sessions[:-1]):
         row = get_from_map(cache[signal_day], ticker)
-        if row and float(row["close"]) / entry_price - 1.0 <= threshold:
-            return sessions[index + 1], "STOP_LOSS"
+        if not row:
+            continue
+        triggered = False
+        reason = "REBALANCE"
+        if exit_rule == "stop":
+            threshold = -abs(float(stop_loss_pct)) / 100.0
+            triggered = float(row["close"]) / entry_price - 1.0 <= threshold
+            reason = "STOP_LOSS"
+        elif exit_rule == "sma50":
+            history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:50]
+            closes = [
+                float(value["close"])
+                for day in history_days
+                for value in [get_from_map(cache[day], ticker)]
+                if value
+            ]
+            triggered = len(closes) == 50 and float(row["close"]) < sum(closes) / 50.0
+            reason = "BELOW_SMA50"
+        elif exit_rule == "momentum":
+            history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:253]
+            history = [(day, cache[day]) for day in history_days]
+            passed, _, _ = build_metrics([ticker], cache[signal_day], history)
+            triggered = not passed
+            reason = "OUT_OF_MOMENTUM"
+        if triggered:
+            return sessions[index + 1], reason
     return planned_exit, "REBALANCE"
+
+
+def stop_loss_exit(cache, trading_day_strings, ticker, entry, planned_exit, stop_loss_pct):
+    """Backward-compatible stop-loss helper used by unit tests."""
+    return research_exit(
+        cache, trading_day_strings, ticker, entry, planned_exit, "stop", stop_loss_pct
+    ) if stop_loss_pct is not None else (planned_exit, "REBALANCE")
 
 
 def session_window(client, cache, tickers, asof, needed=253):
@@ -124,7 +156,7 @@ def choose_top10(client, cache, tickers, asof):
     return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:TOP10]
 
 
-def run(start, end, rebalance_months, stop_loss_pct=None):
+def run(start, end, rebalance_months, stop_loss_pct=None, exit_rule=None, exit_execution="next-close"):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
         raise RuntimeError("Missing POLYGON_API_KEY")
@@ -138,7 +170,11 @@ def run(start, end, rebalance_months, stop_loss_pct=None):
         raise ValueError("start must be earlier than end")
 
     needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 10
-    all_days = trading_dates(client, end_day, needed_sessions, cache=cache)
+    exit_rule = exit_rule or ("stop" if stop_loss_pct is not None else "rebalance")
+    if exit_rule == "stop" and stop_loss_pct is None:
+        raise ValueError("stop exit rule requires --stop-loss-pct")
+    require_ohlc = exit_execution == "next-open"
+    all_days = trading_dates(client, end_day, needed_sessions, cache=cache, require_ohlc=require_ohlc)
     for date_string, grouped in all_days:
         cache[date_string] = slim_grouped_map(grouped, history_tickers)
     save_history_cache(CACHE_FILE, [(date, cache[date]) for date in cache])
@@ -159,13 +195,15 @@ def run(start, end, rebalance_months, stop_loss_pct=None):
         stock_returns = []
         for rank, pick in enumerate(picks, start=1):
             entry_row = get_from_map(entry_map, pick.ticker)
-            actual_exit, exit_reason = stop_loss_exit(
-                cache, trading_day_strings, pick.ticker, entry, exit_day, stop_loss_pct
+            actual_exit, exit_reason = research_exit(
+                cache, trading_day_strings, pick.ticker, entry, exit_day, exit_rule, stop_loss_pct
             )
             actual_exit_map = cache[actual_exit]
             exit_row = get_from_map(actual_exit_map, pick.ticker)
             if entry_row and exit_row:
-                stock_return = float(exit_row["close"]) / float(entry_row["close"]) - 1
+                exit_price_field = "open" if exit_reason != "REBALANCE" and exit_execution == "next-open" else "close"
+                exit_price = float(exit_row.get(exit_price_field, exit_row["close"]))
+                stock_return = exit_price / float(entry_row["close"]) - 1
                 stock_returns.append(stock_return)
                 position_rows.append({
                     "SignalDate": signal,
@@ -173,13 +211,14 @@ def run(start, end, rebalance_months, stop_loss_pct=None):
                     "ExitDate": actual_exit,
                     "PlannedExitDate": exit_day,
                     "ExitReason": exit_reason,
+                    "ExitExecution": exit_execution,
                     "StopLoss_pct": stop_loss_pct,
                     "RebalanceMonths": rebalance_months,
                     "Rank": rank,
                     "Ticker": pick.ticker,
                     "SignalPrice_USD": pick.price_usd,
                     "EntryPrice_USD": float(entry_row["close"]),
-                    "ExitPrice_USD": float(exit_row["close"]),
+                    "ExitPrice_USD": exit_price,
                     "GrossReturn_pct": stock_return * 100,
                 })
         if len(stock_returns) < TOP10:
@@ -200,6 +239,8 @@ def run(start, end, rebalance_months, stop_loss_pct=None):
             "ExitDate": exit_day,
             "Execution": "NEXT_SESSION_CLOSE",
             "RebalanceMonths": rebalance_months,
+            "ExitRule": exit_rule,
+            "ExitExecution": exit_execution,
             "StopLoss_pct": stop_loss_pct,
             "Top10": ",".join(pick.ticker for pick in picks),
             "GrossReturn_pct": gross * 100,
@@ -228,9 +269,11 @@ def run(start, end, rebalance_months, stop_loss_pct=None):
     summary["BestPeriod_pct"] = float(result["NetReturn_pct"].max())
     summary["WorstPeriod_pct"] = float(result["NetReturn_pct"].min())
     summary["RebalancePointMaxDrawdown_pct"] = rebalance_point_max_drawdown(result["PortfolioIndex"])
+    summary["ExitRule"] = exit_rule
+    summary["ExitExecution"] = exit_execution
     summary["StopLoss_pct"] = stop_loss_pct
-    summary["StoppedPositions"] = int((pd.DataFrame(position_rows)["ExitReason"] == "STOP_LOSS").sum())
-    summary["Execution"] = "SIGNAL_CLOSE_ENTRY_NEXT_SESSION_CLOSE"
+    summary["EarlyExitPositions"] = int((pd.DataFrame(position_rows)["ExitReason"] != "REBALANCE").sum())
+    summary["Execution"] = "SIGNAL_CLOSE_ENTRY_NEXT_SESSION"
     summary["Universe"] = "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS"
     summary.to_csv("Momentum_backtest_summary.csv", index=False)
     print(summary.to_string(index=False))
@@ -242,6 +285,15 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
     parser.add_argument("--rebalance-months", type=int, choices=(1, 2, 3), required=True)
     parser.add_argument("--stop-loss-pct", type=float)
+    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum"))
+    parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     arguments = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-    run(arguments.start, arguments.end, arguments.rebalance_months, arguments.stop_loss_pct)
+    run(
+        arguments.start,
+        arguments.end,
+        arguments.rebalance_months,
+        arguments.stop_loss_pct,
+        arguments.exit_rule,
+        arguments.exit_execution,
+    )
