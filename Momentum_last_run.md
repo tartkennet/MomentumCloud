@@ -27,18 +27,18 @@ test_compounds_returns (test_robustness_report_v3.RobustnessReportTests.test_com
 test_rolling_window_has_no_forward_periods (test_robustness_report_v3.RobustnessReportTests.test_rolling_window_has_no_forward_periods) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.029s
+Ran 16 tests in 0.031s
 
 OK
-2026-09-07 10:01:11,217 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
-2026-09-07 10:01:11,616 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
-2026-09-07 10:01:12,132 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 10:01:22,155 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 10:01:42,178 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-07 10:02:12,339 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 10:02:22,362 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 10:02:42,386 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-07 10:03:13,101 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-07 10:03:14,621 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
+2026-09-07 17:01:25,780 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
+2026-09-07 17:01:26,109 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
+2026-09-07 17:01:26,578 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-07 17:01:36,591 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-07 17:01:56,602 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
+2026-09-07 17:02:26,693 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-07 17:02:36,705 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-07 17:02:56,718 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
+2026-09-07 17:03:27,404 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
+2026-09-07 17:03:28,938 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
 
 ```
