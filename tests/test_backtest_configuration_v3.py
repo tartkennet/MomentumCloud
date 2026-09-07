@@ -7,6 +7,7 @@ from backtest_momentum_v3 import (
     choose_top,
     choose_top10,
     execution_price,
+    first_tradable_row,
 )
 
 
@@ -34,6 +35,30 @@ class BacktestConfigurationTests(unittest.TestCase):
 
     def test_next_open_falls_back_to_close_when_open_is_unavailable(self):
         self.assertEqual(execution_price({"close": 101.0}, "next-open"), 101.0)
+
+    def test_missing_execution_day_moves_to_first_tradable_session(self):
+        days = ["2026-02-03", "2026-02-04", "2026-02-05"]
+        cache = {
+            "2026-02-03": {},
+            "2026-02-04": {"HALT": {"open": 99.0, "close": 101.0}},
+            "2026-02-05": {"HALT": {"open": 102.0, "close": 103.0}},
+        }
+        day, row = first_tradable_row(cache, days, "HALT", "2026-02-03")
+        self.assertEqual(day, "2026-02-04")
+        self.assertEqual(row["open"], 99.0)
+
+    def test_missing_execution_reports_none_after_latest_allowed_day(self):
+        days = ["2026-02-03", "2026-02-04"]
+        cache = {
+            "2026-02-03": {},
+            "2026-02-04": {"HALT": {"open": 99.0, "close": 101.0}},
+        }
+        self.assertEqual(
+            first_tradable_row(
+                cache, days, "HALT", "2026-02-03", latest_day="2026-02-03"
+            ),
+            (None, None),
+        )
 
     def test_legacy_v1_uses_verified_equal_weight_return_score(self):
         closes = [200.0 - index * 0.5 for index in range(253)]

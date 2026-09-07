@@ -147,19 +147,30 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
     positions = pd.DataFrame(position_rows)
     index_values = []
     period_start_value = 100.0
-    for (_, _), group in positions.groupby(["EntryDate", "PlannedExitDate"], sort=True):
-        entry = str(group.iloc[0]["EntryDate"])
+    period_key = "SignalDate" if "SignalDate" in positions.columns else "EntryDate"
+    for (_, _), group in positions.groupby([period_key, "PlannedExitDate"], sort=True):
+        entry = str(group.iloc[0].get("PlannedEntryDate", group.iloc[0]["EntryDate"]))
         planned_exit = str(group.iloc[0]["PlannedExitDate"])
-        period_days = [day for day in trading_day_strings if entry <= day <= planned_exit]
+        final_exit = max(str(value) for value in group["ExitDate"])
+        period_end = max(planned_exit, final_exit)
+        period_days = [day for day in trading_day_strings if entry <= day <= period_end]
         last_value = period_start_value
+        last_prices = {}
         for day in period_days:
             returns = []
             for _, position in group.iterrows():
+                ticker = str(position["Ticker"])
+                actual_entry = str(position["EntryDate"])
+                if day < actual_entry:
+                    returns.append(0.0)
+                    continue
                 if day >= str(position["ExitDate"]):
                     price = float(position["ExitPrice_USD"])
                 else:
-                    row = get_from_map(cache[day], str(position["Ticker"]))
-                    price = float(row["close"]) if row else float(position["EntryPrice_USD"])
+                    row = get_from_map(cache.get(day, {}), ticker)
+                    if row:
+                        last_prices[ticker] = float(row["close"])
+                    price = last_prices.get(ticker, float(position["EntryPrice_USD"]))
                 returns.append(price / float(position["EntryPrice_USD"]) - 1.0)
             last_value = period_start_value * (
                 1.0 + sum(returns) / len(returns) - ROUND_TRIP_COST_PCT / 100.0
@@ -246,6 +257,25 @@ def execution_price(row, execution):
     return float(row.get(field, row["close"]))
 
 
+def first_tradable_row(cache, trading_day_strings, ticker, target_day, latest_day=None):
+    """Find the first actual ticker print on or after an intended execution day.
+
+    A market can be open while an individual security is halted or has no daily
+    aggregate. An order cannot fill until that security trades again, so a
+    missing row delays execution instead of removing the position or aborting
+    the whole portfolio simulation.
+    """
+    for day in trading_day_strings:
+        if day < target_day:
+            continue
+        if latest_day is not None and day > latest_day:
+            break
+        row = get_from_map(cache.get(day, {}), ticker)
+        if row:
+            return day, row
+    return None, None
+
+
 def run(
     start,
     end,
@@ -302,49 +332,79 @@ def run(
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
+        missing_executions = []
         for rank, pick in enumerate(picks, start=1):
-            entry_row = get_from_map(entry_map, pick.ticker)
+            actual_entry, entry_row = first_tradable_row(
+                cache, trading_day_strings, pick.ticker, entry, exit_day
+            )
+            if not entry_row or actual_entry >= exit_day:
+                missing_executions.append(f"{pick.ticker}(entry from {entry})")
+                continue
             actual_exit, exit_reason = research_exit(
                 cache,
                 trading_day_strings,
                 pick.ticker,
-                entry,
+                actual_entry,
                 exit_day,
                 exit_rule,
                 stop_loss_pct,
                 entry_execution,
             )
-            actual_exit_map = cache[actual_exit]
-            exit_row = get_from_map(actual_exit_map, pick.ticker)
-            if entry_row and exit_row:
-                applied_exit_execution = (
-                    exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
+            resolved_exit, exit_row = first_tradable_row(
+                cache,
+                trading_day_strings,
+                pick.ticker,
+                actual_exit,
+                trading_day_strings[-1],
+            )
+            if not exit_row or resolved_exit <= actual_entry:
+                missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
+                continue
+            applied_exit_execution = (
+                exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
+            )
+            entry_price = execution_price(entry_row, entry_execution)
+            exit_price = execution_price(exit_row, applied_exit_execution)
+            stock_return = exit_price / entry_price - 1
+            stock_returns.append(stock_return)
+            entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
+            exit_delay = trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
+            if entry_delay or exit_delay:
+                logging.warning(
+                    "%s execution delayed: entry %s->%s, exit %s->%s",
+                    pick.ticker,
+                    entry,
+                    actual_entry,
+                    actual_exit,
+                    resolved_exit,
                 )
-                entry_price = execution_price(entry_row, entry_execution)
-                exit_price = execution_price(exit_row, applied_exit_execution)
-                stock_return = exit_price / entry_price - 1
-                stock_returns.append(stock_return)
-                position_rows.append({
-                    "SignalDate": signal,
-                    "EntryDate": entry,
-                    "ExitDate": actual_exit,
-                    "PlannedExitDate": exit_day,
-                    "ExitReason": exit_reason,
-                    "EntryExecution": entry_execution,
-                    "ExitExecution": applied_exit_execution,
-                    "StopLoss_pct": stop_loss_pct,
-                    "RebalanceMonths": rebalance_months,
-                    "TopN": top_n,
-                    "SelectionModel": selection_model,
-                    "Rank": rank,
-                    "Ticker": pick.ticker,
-                    "SignalPrice_USD": pick.price_usd,
-                    "EntryPrice_USD": entry_price,
-                    "ExitPrice_USD": exit_price,
-                    "GrossReturn_pct": stock_return * 100,
-                })
+            position_rows.append({
+                "SignalDate": signal,
+                "PlannedEntryDate": entry,
+                "EntryDate": actual_entry,
+                "ExitDate": resolved_exit,
+                "PlannedExitDate": exit_day,
+                "ExitReason": exit_reason,
+                "EntryExecution": entry_execution,
+                "ExitExecution": applied_exit_execution,
+                "EntryDelaySessions": entry_delay,
+                "ExitDelaySessions": exit_delay,
+                "StopLoss_pct": stop_loss_pct,
+                "RebalanceMonths": rebalance_months,
+                "TopN": top_n,
+                "SelectionModel": selection_model,
+                "Rank": rank,
+                "Ticker": pick.ticker,
+                "SignalPrice_USD": pick.price_usd,
+                "EntryPrice_USD": entry_price,
+                "ExitPrice_USD": exit_price,
+                "GrossReturn_pct": stock_return * 100,
+            })
         if len(stock_returns) < top_n:
-            raise RuntimeError(f"Missing entry/exit price(s) for {signal}: {entry} to {exit_day}")
+            details = ", ".join(missing_executions) or "unknown ticker"
+            raise RuntimeError(
+                f"No executable price through available history for {signal}: {details}"
+            )
 
         gross = sum(stock_returns) / top_n
         net = gross - ROUND_TRIP_COST_PCT / 100
