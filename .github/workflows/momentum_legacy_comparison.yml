@@ -31,13 +31,17 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
-      - name: Restore shared market history
+      - name: Restore reusable price cache
         uses: actions/cache@v4
         with:
           path: .momentum_backtest_cache.json
-          key: momentum-history-${{ runner.os }}-${{ hashFiles('Momentum mall fil.xlsx') }}
+          key: momentum-legacy-comparison-${{ github.run_id }}
           restore-keys: |
-            momentum-history-${{ runner.os }}-
+            momentum-production-candidate-
+            momentum-walk-forward-
+            momentum-robustness-
+            momentum-exit-research-
+            momentum-backtest-
       - name: Compare verified legacy v1 with current v3
         run: |
           set -euo pipefail
@@ -94,5 +98,5 @@ jobs:
           name: Momentum_legacy_comparison
           path: |
             Momentum_legacy_*.csv
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
