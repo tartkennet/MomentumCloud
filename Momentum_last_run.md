@@ -11,6 +11,8 @@ Overall result: SUCCESS
 ```text
 test_legacy_v1_rejects_nonpositive_momentum (test_backtest_configuration_v3.BacktestConfigurationTests.test_legacy_v1_rejects_nonpositive_momentum) ... ok
 test_legacy_v1_uses_verified_equal_weight_return_score (test_backtest_configuration_v3.BacktestConfigurationTests.test_legacy_v1_uses_verified_equal_weight_return_score) ... ok
+test_missing_execution_day_moves_to_first_tradable_session (test_backtest_configuration_v3.BacktestConfigurationTests.test_missing_execution_day_moves_to_first_tradable_session) ... ok
+test_missing_execution_reports_none_after_latest_allowed_day (test_backtest_configuration_v3.BacktestConfigurationTests.test_missing_execution_reports_none_after_latest_allowed_day) ... ok
 test_next_open_falls_back_to_close_when_open_is_unavailable (test_backtest_configuration_v3.BacktestConfigurationTests.test_next_open_falls_back_to_close_when_open_is_unavailable) ... ok
 test_next_open_uses_open_and_close_mode_uses_close (test_backtest_configuration_v3.BacktestConfigurationTests.test_next_open_uses_open_and_close_mode_uses_close) ... ok
 test_top_n_matches_requested_portfolio_size (test_backtest_configuration_v3.BacktestConfigurationTests.test_top_n_matches_requested_portfolio_size) ... ok
@@ -38,27 +40,18 @@ test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_rep
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
 ----------------------------------------------------------------------
-Ran 27 tests in 0.074s
+Ran 29 tests in 0.063s
 
 OK
-2026-09-07 20:08:04,113 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 20:08:14,172 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 20:08:34,230 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-07 20:09:04,288 | WARNING | Polygon rate limit. Waiting 40s and retrying (4/6).
-2026-09-07 20:09:44,348 | WARNING | Polygon rate limit. Waiting 50s and retrying (5/6).
-2026-09-07 20:10:34,407 | WARNING | Polygon rate limit. Waiting 60s and retrying (6/6).
-2026-09-07 20:11:34,407 | INFO | Grouped date 2026-09-06 unavailable: Polygon request failed
-2026-09-07 20:11:34,465 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 20:11:44,525 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 20:12:04,648 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
-2026-09-07 20:12:05,267 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
-2026-09-07 20:12:05,949 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 20:12:16,009 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 20:12:36,067 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-07 20:13:06,437 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-07 20:13:16,496 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-07 20:13:36,555 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-07 20:14:07,270 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-07 20:14:08,842 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
+2026-09-07 21:07:09,235 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
+2026-09-07 21:07:09,502 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
+2026-09-07 21:07:09,978 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-07 21:07:19,993 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-07 21:07:40,006 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
+2026-09-07 21:08:10,123 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-07 21:08:20,137 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-07 21:08:40,149 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
+2026-09-07 21:09:10,817 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
+2026-09-07 21:09:12,267 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
 
 ```
