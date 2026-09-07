@@ -1,0 +1,108 @@
+name: Momentum walk-forward research
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "First portfolio decision date, YYYY-MM-DD"
+        required: true
+        default: "2025-10-15"
+      end_date:
+        description: "Last available trading date, YYYY-MM-DD"
+        required: true
+        default: "2026-09-04"
+      training_periods:
+        description: "Prior monthly periods used for each stop selection"
+        required: true
+        default: "6"
+  push:
+    branches: [main]
+    paths:
+      - "walkforward_report_v3.py"
+      - "tests/test_walkforward_report_v3.py"
+      - ".github/workflows/momentum_walk_forward.yml"
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: momentum-walk-forward
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      START_DATE: ${{ github.event.inputs.start_date || '2025-10-15' }}
+      END_DATE: ${{ github.event.inputs.end_date || '2026-09-04' }}
+      TRAINING_PERIODS: ${{ github.event.inputs.training_periods || '6' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Syntax and unit verification
+        run: |
+          python -m py_compile momentum_master_v3.py backtest_momentum_v3.py walkforward_report_v3.py
+          python -m unittest discover -s tests -v
+      - name: Restore reusable price cache
+        uses: actions/cache@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-walk-forward-${{ github.run_id }}
+          restore-keys: |
+            momentum-walk-forward-
+            momentum-robustness-
+            momentum-exit-research-
+            momentum-backtest-
+      - name: Run no-look-ahead walk-forward research
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          run_variant () {
+            label="$1"
+            stop="$2"
+            python backtest_momentum_v3.py \
+              --start "$START_DATE" \
+              --end "$END_DATE" \
+              --rebalance-months 1 \
+              --exit-rule stop \
+              --stop-loss-pct "$stop" \
+              --exit-execution next-open
+            cp Momentum_backtest_results.csv "Momentum_walk_forward_${label}_results.csv"
+            cp Momentum_backtest_summary.csv "Momentum_walk_forward_${label}_summary.csv"
+            cp Momentum_backtest_positions.csv "Momentum_walk_forward_${label}_positions.csv"
+          }
+          run_variant stop6_next_open 6
+          run_variant stop8_next_open 8
+          run_variant stop10_next_open 10
+          run_variant stop12_next_open 12
+          python walkforward_report_v3.py --training-periods "$TRAINING_PERIODS"
+      - name: Upload walk-forward report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum_walk_forward
+          path: Momentum_walk_forward_*.csv
+      - name: Publish discoverable run status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_STATUS: ${{ job.status }}
+        run: |
+          if [ "$RUN_STATUS" = "success" ]; then STATE=success; else STATE=failure; fi
+          jq -n \
+            --arg state "$STATE" \
+            --arg target_url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --arg description "Momentum walk-forward run ${{ github.run_id }}: $RUN_STATUS" \
+            --arg context "momentum-walk-forward/latest" \
+            '{state:$state,target_url:$target_url,description:$description,context:$context}' > status.json
+          curl --fail --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+            --data @status.json
