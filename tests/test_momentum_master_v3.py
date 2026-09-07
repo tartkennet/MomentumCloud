@@ -105,6 +105,27 @@ class BacktestTimingTests(unittest.TestCase):
             ("2026-06-05", "REBALANCE"),
         )
 
+    def test_stop_loss_is_measured_from_actual_next_open_entry(self):
+        days = ["2026-06-02", "2026-06-03", "2026-06-04"]
+        cache = {
+            "2026-06-02": {"ABC": {"open": 90.0, "close": 100.0, "volume": 1}},
+            "2026-06-03": {"ABC": {"open": 86.0, "close": 85.0, "volume": 1}},
+            "2026-06-04": {"ABC": {"open": 84.0, "close": 84.0, "volume": 1}},
+        }
+        self.assertEqual(
+            research_exit(
+                cache,
+                days,
+                "ABC",
+                "2026-06-02",
+                "2026-06-04",
+                "stop",
+                10,
+                "next-open",
+            ),
+            ("2026-06-04", "REBALANCE"),
+        )
+
     def test_sma50_exit_is_executed_next_session(self):
         dates = [(date(2026, 1, 1) + timedelta(days=index)).isoformat() for index in range(52)]
         cache = {

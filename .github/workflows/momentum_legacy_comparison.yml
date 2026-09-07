@@ -1,0 +1,98 @@
+name: Momentum legacy v1 comparison
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "backtest_momentum_v3.py"
+      - "tests/test_backtest_configuration_v3.py"
+      - ".github/workflows/momentum_legacy_comparison.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: momentum-legacy-comparison
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Restore shared market history
+        uses: actions/cache@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-history-${{ runner.os }}-${{ hashFiles('Momentum mall fil.xlsx') }}
+          restore-keys: |
+            momentum-history-${{ runner.os }}-
+      - name: Compare verified legacy v1 with current v3
+        run: |
+          set -euo pipefail
+          run_variant() {
+            label="$1"
+            model="$2"
+            stop="$3"
+            python backtest_momentum_v3.py \
+              --start 2025-10-15 \
+              --end 2026-09-04 \
+              --rebalance-months 1 \
+              --top-n 15 \
+              --selection-model "$model" \
+              --exit-rule stop \
+              --stop-loss-pct "$stop" \
+              --entry-execution next-open \
+              --exit-execution next-open \
+              --rebalance-exit-execution next-open
+            cp Momentum_backtest_summary.csv "Momentum_legacy_${label}_summary.csv"
+            cp Momentum_backtest_results.csv "Momentum_legacy_${label}_results.csv"
+            cp Momentum_backtest_positions.csv "Momentum_legacy_${label}_positions.csv"
+          }
+          run_variant legacy_v1_stop8 legacy-v1 8
+          run_variant legacy_v1_stop6 legacy-v1 6
+          run_variant current_v3_stop6 v3 6
+      - name: Build and validate comparison
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          files = sorted(Path('.').glob('Momentum_legacy_*_summary.csv'))
+          rows = []
+          for path in files:
+              row = pd.read_csv(path).iloc[0].to_dict()
+              row['Variant'] = path.name.removeprefix('Momentum_legacy_').removesuffix('_summary.csv')
+              rows.append(row)
+          comparison = pd.DataFrame(rows)
+          expected = {'legacy_v1_stop8', 'legacy_v1_stop6', 'current_v3_stop6'}
+          assert set(comparison['Variant']) == expected
+          assert set(comparison['TopN']) == {15}
+          assert set(comparison['RebalanceMonths']) == {1}
+          assert set(comparison['EntryExecution']) == {'next-open'}
+          assert set(comparison['ExitExecution']) == {'next-open'}
+          assert set(comparison['RebalanceExitExecution']) == {'next-open'}
+          assert set(comparison['Universe']) == {'CURRENT_TEMPLATE_SURVIVORSHIP_BIAS'}
+          comparison.to_csv('Momentum_legacy_comparison.csv', index=False)
+          print(comparison[['Variant', 'SelectionModel', 'StopLoss_pct', 'TotalReturn_pct', 'SPYTotalReturn_pct', 'TotalEdgeVsSPY_pct', 'DailyMaxDrawdown_pct']].to_string(index=False))
+          PY
+      - name: Upload comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Momentum_legacy_comparison
+          path: |
+            Momentum_legacy_*.csv
+          if-no-files-found: error
+          retention-days: 30

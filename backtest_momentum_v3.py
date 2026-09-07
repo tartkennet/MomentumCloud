@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta, timezone
+from types import SimpleNamespace
 
 import pandas as pd
 
@@ -81,7 +82,16 @@ def rebalance_point_max_drawdown(index_values):
     return worst * 100.0
 
 
-def research_exit(cache, trading_day_strings, ticker, entry, planned_exit, exit_rule, stop_loss_pct):
+def research_exit(
+    cache,
+    trading_day_strings,
+    ticker,
+    entry,
+    planned_exit,
+    exit_rule,
+    stop_loss_pct,
+    entry_execution="next-close",
+):
     """Evaluate an exit at each close and execute on the next session."""
     if exit_rule == "rebalance":
         return planned_exit, "REBALANCE"
@@ -91,7 +101,7 @@ def research_exit(cache, trading_day_strings, ticker, entry, planned_exit, exit_
     entry_row = get_from_map(cache[entry], ticker)
     if not entry_row:
         return planned_exit, "REBALANCE"
-    entry_price = float(entry_row["close"])
+    entry_price = execution_price(entry_row, entry_execution)
     for index, signal_day in enumerate(sessions[:-1]):
         row = get_from_map(cache[signal_day], ticker)
         if not row:
@@ -175,15 +185,53 @@ def session_window(client, cache, tickers, asof, needed=253):
     return [(date, cache[date]) for date in dates]
 
 
-def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N):
+def build_legacy_v1_metrics(tickers, latest_map, recent253):
+    """Reproduce the verified 2025 v1 ranking without newer v3 filters.
+
+    The original workbook ranked names by the arithmetic mean of the 1, 3,
+    6 and 12 month returns. Its BuyNow code required price above SMA200 and
+    all four returns to be positive.
+    """
+    metrics = []
+    for ticker in tickers:
+        latest = get_from_map(latest_map, ticker)
+        if not latest:
+            continue
+        price = float(latest["close"])
+        closes = []
+        for _, grouped in recent253:
+            row = get_from_map(grouped, ticker)
+            if not row:
+                break
+            closes.append(float(row["close"]))
+        if len(closes) < 253:
+            continue
+        sma200 = sum(closes[:200]) / 200.0
+        returns = [(price / closes[index] - 1.0) * 100.0 for index in (21, 63, 126, 252)]
+        if price <= sma200 or not all(value > 0 for value in returns):
+            continue
+        metrics.append(SimpleNamespace(
+            ticker=ticker,
+            price_usd=price,
+            total_score=sum(returns) / 4.0,
+        ))
+    return metrics
+
+
+def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N, selection_model="v3"):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
+    if selection_model not in {"v3", "legacy-v1"}:
+        raise ValueError("selection_model must be v3 or legacy-v1")
     signal_map = cache.get(asof)
     if signal_map is None:
         signal_map = slim_grouped_map(client.fetch_grouped_stocks(asof), tickers)
         cache[asof] = signal_map
     history = session_window(client, cache, tickers, asof)
-    metrics, _, _ = build_metrics(tickers, signal_map, history)
+    if selection_model == "legacy-v1":
+        metrics = build_legacy_v1_metrics(tickers, signal_map, history)
+    else:
+        metrics, _, _ = build_metrics(tickers, signal_map, history)
     return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:top_n]
 
 
@@ -208,6 +256,7 @@ def run(
     top_n=DEFAULT_TOP_N,
     entry_execution="next-close",
     rebalance_exit_execution="next-close",
+    selection_model="v3",
 ):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -222,6 +271,8 @@ def run(
         raise ValueError("start must be earlier than end")
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
+    if selection_model not in {"v3", "legacy-v1"}:
+        raise ValueError("selection_model must be v3 or legacy-v1")
 
     needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 10
     exit_rule = exit_rule or ("stop" if stop_loss_pct is not None else "rebalance")
@@ -245,7 +296,7 @@ def run(
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
     for signal, entry, exit_day in periods:
-        picks = choose_top(client, cache, tickers, signal, top_n)
+        picks = choose_top(client, cache, tickers, signal, top_n, selection_model)
         if len(picks) < top_n:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
         entry_map = cache[entry]
@@ -254,7 +305,14 @@ def run(
         for rank, pick in enumerate(picks, start=1):
             entry_row = get_from_map(entry_map, pick.ticker)
             actual_exit, exit_reason = research_exit(
-                cache, trading_day_strings, pick.ticker, entry, exit_day, exit_rule, stop_loss_pct
+                cache,
+                trading_day_strings,
+                pick.ticker,
+                entry,
+                exit_day,
+                exit_rule,
+                stop_loss_pct,
+                entry_execution,
             )
             actual_exit_map = cache[actual_exit]
             exit_row = get_from_map(actual_exit_map, pick.ticker)
@@ -277,6 +335,7 @@ def run(
                     "StopLoss_pct": stop_loss_pct,
                     "RebalanceMonths": rebalance_months,
                     "TopN": top_n,
+                    "SelectionModel": selection_model,
                     "Rank": rank,
                     "Ticker": pick.ticker,
                     "SignalPrice_USD": pick.price_usd,
@@ -307,6 +366,7 @@ def run(
             "Execution": f"ENTRY_{entry_execution.upper()}_REBALANCE_{rebalance_exit_execution.upper()}",
             "RebalanceMonths": rebalance_months,
             "TopN": top_n,
+            "SelectionModel": selection_model,
             "ExitRule": exit_rule,
             "EntryExecution": entry_execution,
             "ExitExecution": exit_execution,
@@ -344,6 +404,7 @@ def run(
     )
     summary["ExitRule"] = exit_rule
     summary["TopN"] = top_n
+    summary["SelectionModel"] = selection_model
     summary["EntryExecution"] = entry_execution
     summary["ExitExecution"] = exit_execution
     summary["RebalanceExitExecution"] = rebalance_exit_execution
@@ -368,6 +429,7 @@ if __name__ == "__main__":
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--entry-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--rebalance-exit-execution", choices=("next-close", "next-open"), default="next-close")
+    parser.add_argument("--selection-model", choices=("v3", "legacy-v1"), default="v3")
     arguments = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
     run(
@@ -380,4 +442,5 @@ if __name__ == "__main__":
         arguments.top_n,
         arguments.entry_execution,
         arguments.rebalance_exit_execution,
+        arguments.selection_model,
     )

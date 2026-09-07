@@ -2,7 +2,12 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from backtest_momentum_v3 import choose_top, choose_top10, execution_price
+from backtest_momentum_v3 import (
+    build_legacy_v1_metrics,
+    choose_top,
+    choose_top10,
+    execution_price,
+)
 
 
 class BacktestConfigurationTests(unittest.TestCase):
@@ -29,6 +34,34 @@ class BacktestConfigurationTests(unittest.TestCase):
 
     def test_next_open_falls_back_to_close_when_open_is_unavailable(self):
         self.assertEqual(execution_price({"close": 101.0}, "next-open"), 101.0)
+
+    def test_legacy_v1_uses_verified_equal_weight_return_score(self):
+        closes = [200.0 - index * 0.5 for index in range(253)]
+        history = [
+            (f"day-{index:03d}", {"OLD": {"close": close}})
+            for index, close in enumerate(closes)
+        ]
+        metrics = build_legacy_v1_metrics(
+            ["OLD"], {"OLD": {"close": 200.0}}, history
+        )
+        expected_returns = [
+            (200.0 / closes[index] - 1.0) * 100.0
+            for index in (21, 63, 126, 252)
+        ]
+        self.assertEqual(len(metrics), 1)
+        self.assertAlmostEqual(metrics[0].total_score, sum(expected_returns) / 4.0)
+
+    def test_legacy_v1_rejects_nonpositive_momentum(self):
+        flat_history = [
+            (f"day-{index:03d}", {"FLAT": {"close": 100.0}})
+            for index in range(253)
+        ]
+        self.assertEqual(
+            build_legacy_v1_metrics(
+                ["FLAT"], {"FLAT": {"close": 100.0}}, flat_history
+            ),
+            [],
+        )
 
 
 if __name__ == "__main__":
