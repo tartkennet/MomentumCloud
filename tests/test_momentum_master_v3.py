@@ -74,10 +74,26 @@ class SimpleMovingAverageTests(unittest.TestCase):
         self.assertAlmostEqual(split_price_factor(events, "2026-09-03", "2026-09-04"), 1.0)
 
 
-from backtest_momentum_v3 import calendar_rebalance_signals, daily_portfolio_max_drawdown, execution_periods, rebalance_point_max_drawdown, research_exit, stop_loss_exit
+from backtest_momentum_v3 import calendar_rebalance_signals, daily_portfolio_max_drawdown, execution_periods, execution_price, rebalance_point_max_drawdown, research_exit, stop_loss_exit
 
 
 class BacktestTimingTests(unittest.TestCase):
+    def test_next_open_normalizes_verified_split_mismatch(self):
+        row = {"open": 17.33, "close": 86.80, "volume": 1}
+        events = [{
+            "ticker": "TPC", "execution_date": "2026-08-04",
+            "split_from": 1, "split_to": 5,
+        }]
+        self.assertAlmostEqual(
+            execution_price(row, "next-open", events, "2026-08-04"),
+            86.65,
+            places=8,
+        )
+        self.assertEqual(
+            execution_price(row, "next-open", events, "2026-08-05"),
+            17.33,
+        )
+
     def test_calendar_rebalances_use_first_session_every_nth_month(self):
         days = ["2026-03-06", "2026-03-09", "2026-04-01", "2026-05-01", "2026-06-01"]
         self.assertEqual(

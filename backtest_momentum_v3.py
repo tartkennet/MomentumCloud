@@ -106,6 +106,7 @@ def research_exit(
     exit_rule,
     stop_loss_pct,
     entry_execution="next-close",
+    split_events=None,
 ):
     """Evaluate an exit at each close and execute on the next session."""
     if exit_rule == "rebalance":
@@ -116,7 +117,7 @@ def research_exit(
     entry_row = get_from_map(cache[entry], ticker)
     if not entry_row:
         return planned_exit, "REBALANCE"
-    entry_price = execution_price(entry_row, entry_execution)
+    entry_price = execution_price(entry_row, entry_execution, split_events, entry)
     for index, signal_day in enumerate(sessions[:-1]):
         row = get_from_map(cache[signal_day], ticker)
         if not row:
@@ -266,10 +267,49 @@ def choose_top10(client, cache, tickers, asof):
     return choose_top(client, cache, tickers, asof, DEFAULT_TOP_N)
 
 
-def execution_price(row, execution):
-    """Return the requested executable session price with a close fallback."""
+def execution_price(row, execution, split_events=None, execution_date=None):
+    """Return an executable price on the same split basis as the session close.
+
+    Polygon's grouped feed is adjusted, but an occasional split-session open can
+    arrive on the pre-split basis while that session's close is post-split.  For
+    next-open simulation we only normalize such a large mismatch when a verified
+    split event exists on that execution date.
+    """
     field = "open" if execution == "next-open" else "close"
-    return float(row.get(field, row["close"]))
+    price = float(row.get(field, row["close"]))
+    if execution != "next-open" or not split_events or not execution_date:
+        return price
+
+    close = float(row.get("close", price))
+    if price <= 0 or close <= 0:
+        return price
+
+    candidates = [price]
+    for event in split_events:
+        if str(event.get("execution_date", "")) != str(execution_date):
+            continue
+        split_from = float(event.get("split_from", 0) or 0)
+        split_to = float(event.get("split_to", 0) or 0)
+        if split_from > 0 and split_to > 0:
+            ratio = split_to / split_from
+            candidates.extend([price * ratio, price / ratio])
+
+    normalized = min(candidates, key=lambda value: abs(math.log(value / close)))
+    raw_gap = abs(math.log(price / close))
+    normalized_gap = abs(math.log(normalized / close))
+    if (
+        normalized != price
+        and raw_gap >= math.log(1.5)
+        and normalized_gap <= math.log(1.1)
+    ):
+        logging.warning(
+            "Normalized split-mismatched open %.4f to %.4f on %s",
+            price,
+            normalized,
+            execution_date,
+        )
+        return normalized
+    return price
 
 
 def first_tradable_row(cache, trading_day_strings, ticker, target_day, latest_day=None):
@@ -376,6 +416,11 @@ def run(
     save_history_cache(CACHE_FILE, [(date, cache[date]) for date in cache])
 
     trading_day_strings = [date for date, _ in all_days]
+    split_events_by_ticker = {}
+    for event in client.fetch_recent_splits(start, end):
+        ticker = str(event.get("ticker", "")).upper().strip()
+        if ticker:
+            split_events_by_ticker.setdefault(ticker, []).append(event)
     signals = calendar_rebalance_signals(trading_day_strings, start, end, rebalance_months)
     periods = execution_periods(trading_day_strings, signals, end)
     if not periods:
@@ -406,6 +451,7 @@ def run(
                 exit_rule,
                 stop_loss_pct,
                 entry_execution,
+                split_events_by_ticker.get(pick.ticker, []),
             )
             resolved_exit, exit_row, corporate_action = resolve_exit_execution(
                 cache,
@@ -425,11 +471,16 @@ def run(
                 applied_exit_execution = (
                     exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
                 )
-            entry_price = execution_price(entry_row, entry_execution)
+            split_events = split_events_by_ticker.get(pick.ticker, [])
+            entry_price = execution_price(
+                entry_row, entry_execution, split_events, actual_entry
+            )
             exit_price = (
                 float(exit_row["close"])
                 if corporate_action
-                else execution_price(exit_row, applied_exit_execution)
+                else execution_price(
+                    exit_row, applied_exit_execution, split_events, resolved_exit
+                )
             )
             stock_return = exit_price / entry_price - 1
             stock_returns.append(stock_return)
