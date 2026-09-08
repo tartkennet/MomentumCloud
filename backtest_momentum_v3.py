@@ -272,13 +272,14 @@ def execution_price(row, execution, split_events=None, execution_date=None):
     """Return an executable price on the same split basis as the session close.
 
     Polygon's grouped feed is adjusted, but an occasional split-session open can
-    arrive on the pre-split basis while that session's close is post-split.  For
-    next-open simulation we only normalize such a large mismatch when a verified
-    split event exists on that execution date.
+    arrive on the pre-split basis while that session's close is post-split. For
+    next-open simulation we normalize only a large mismatch that resolves to the
+    same basis as the close. Verified split events are preferred, with a narrow
+    fallback for common split ratios when the provider omits the event.
     """
     field = "open" if execution == "next-open" else "close"
     price = float(row.get(field, row["close"]))
-    if execution != "next-open" or not split_events or not execution_date:
+    if execution != "next-open":
         return price
 
     close = float(row.get("close", price))
@@ -286,7 +287,7 @@ def execution_price(row, execution, split_events=None, execution_date=None):
         return price
 
     candidates = [price]
-    for event in split_events:
+    for event in split_events or []:
         if str(event.get("execution_date", "")) != str(execution_date):
             continue
         split_from = float(event.get("split_from", 0) or 0)
@@ -294,6 +295,12 @@ def execution_price(row, execution, split_events=None, execution_date=None):
         if split_from > 0 and split_to > 0:
             ratio = split_to / split_from
             candidates.extend([price * ratio, price / ratio])
+
+    # Provider split records can lag or omit an event. Only accept a familiar
+    # split factor when it changes a 50%+ mismatch into a price within 10% of
+    # that day's close, so normal opening gaps are never rewritten.
+    for ratio in (2.0, 3.0, 4.0, 5.0, 10.0):
+        candidates.extend([price * ratio, price / ratio])
 
     normalized = min(candidates, key=lambda value: abs(math.log(value / close)))
     raw_gap = abs(math.log(price / close))
@@ -304,7 +311,7 @@ def execution_price(row, execution, split_events=None, execution_date=None):
         and normalized_gap <= math.log(1.1)
     ):
         logging.warning(
-            "Normalized split-mismatched open %.4f to %.4f on %s",
+            "Normalized split-like open %.4f to %.4f on %s",
             price,
             normalized,
             execution_date,
