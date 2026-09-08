@@ -99,6 +99,16 @@ class BacktestTimingTests(unittest.TestCase):
             86.65,
             places=8,
         )
+        prior_signal_basis_row = {"open": 19.39, "close": 19.39, "volume": 1}
+        self.assertAlmostEqual(
+            execution_price(
+                prior_signal_basis_row,
+                "next-open",
+                reference_price=80.11,
+            ),
+            77.56,
+            places=8,
+        )
 
     def test_calendar_rebalances_use_first_session_every_nth_month(self):
         days = ["2026-03-06", "2026-03-09", "2026-04-01", "2026-05-01", "2026-06-01"]
