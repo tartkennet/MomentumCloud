@@ -25,6 +25,21 @@ CACHE_FILE = ".momentum_backtest_cache.json"
 DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
 
+# Verified cash corporate actions needed for point-in-time execution.
+# FRGE: Schwab completed the all-cash acquisition on 2026-03-02 and paid
+# $45.00 per share; the stock therefore has no later exchange print.
+# Sources:
+# https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
+# https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
+CASH_CORPORATE_ACTIONS = {
+    "FRGE": {
+        "effective_date": "2026-03-02",
+        "cash_per_share": 45.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+}
+
 
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
     """Return recent trading sessions, reusing the persistent history cache."""
@@ -276,6 +291,48 @@ def first_tradable_row(cache, trading_day_strings, ticker, target_day, latest_da
     return None, None
 
 
+def resolve_exit_execution(
+    cache,
+    trading_day_strings,
+    ticker,
+    target_day,
+    entry_day,
+    latest_day,
+):
+    """Resolve a market exit or a verified cash corporate action.
+
+    A tradable exchange print on or after the target day takes precedence up to
+    the corporate-action effective date. If the security never trades again,
+    the position is settled at the verified cash consideration.
+    """
+    action = CASH_CORPORATE_ACTIONS.get(ticker)
+    eligible_action = None
+    search_latest = latest_day
+    if action:
+        action_day = str(action["effective_date"])
+        if entry_day < action_day <= latest_day:
+            eligible_action = action
+            search_latest = min(latest_day, action_day)
+
+    resolved_day, row = first_tradable_row(
+        cache,
+        trading_day_strings,
+        ticker,
+        target_day,
+        search_latest,
+    )
+    if row:
+        return resolved_day, row, None
+    if eligible_action:
+        cash_price = float(eligible_action["cash_per_share"])
+        return (
+            str(eligible_action["effective_date"]),
+            {"open": cash_price, "close": cash_price},
+            eligible_action,
+        )
+    return None, None, None
+
+
 def run(
     start,
     end,
@@ -350,25 +407,38 @@ def run(
                 stop_loss_pct,
                 entry_execution,
             )
-            resolved_exit, exit_row = first_tradable_row(
+            resolved_exit, exit_row, corporate_action = resolve_exit_execution(
                 cache,
                 trading_day_strings,
                 pick.ticker,
                 actual_exit,
+                actual_entry,
                 trading_day_strings[-1],
             )
             if not exit_row or resolved_exit <= actual_entry:
                 missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
                 continue
-            applied_exit_execution = (
-                exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
-            )
+            if corporate_action:
+                exit_reason = str(corporate_action["reason"])
+                applied_exit_execution = str(corporate_action["execution"])
+            else:
+                applied_exit_execution = (
+                    exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
+                )
             entry_price = execution_price(entry_row, entry_execution)
-            exit_price = execution_price(exit_row, applied_exit_execution)
+            exit_price = (
+                float(exit_row["close"])
+                if corporate_action
+                else execution_price(exit_row, applied_exit_execution)
+            )
             stock_return = exit_price / entry_price - 1
             stock_returns.append(stock_return)
             entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
-            exit_delay = trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
+            exit_delay = (
+                0
+                if corporate_action
+                else trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
+            )
             if entry_delay or exit_delay:
                 logging.warning(
                     "%s execution delayed: entry %s->%s, exit %s->%s",
@@ -385,6 +455,9 @@ def run(
                 "ExitDate": resolved_exit,
                 "PlannedExitDate": exit_day,
                 "ExitReason": exit_reason,
+                "CorporateAction": (
+                    str(corporate_action["reason"]) if corporate_action else ""
+                ),
                 "EntryExecution": entry_execution,
                 "ExitExecution": applied_exit_execution,
                 "EntryDelaySessions": entry_delay,

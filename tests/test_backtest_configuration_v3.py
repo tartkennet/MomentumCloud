@@ -8,6 +8,7 @@ from backtest_momentum_v3 import (
     choose_top10,
     execution_price,
     first_tradable_row,
+    resolve_exit_execution,
 )
 
 
@@ -59,6 +60,44 @@ class BacktestConfigurationTests(unittest.TestCase):
             ),
             (None, None),
         )
+
+    def test_cash_merger_settles_when_no_later_market_price_exists(self):
+        days = ["2026-02-27", "2026-03-02", "2026-03-03"]
+        cache = {
+            "2026-02-27": {"FRGE": {"open": 44.0, "close": 44.5}},
+            "2026-03-02": {},
+            "2026-03-03": {},
+        }
+        day, row, action = resolve_exit_execution(
+            cache,
+            days,
+            "FRGE",
+            "2026-03-03",
+            "2026-02-03",
+            "2026-03-03",
+        )
+        self.assertEqual(day, "2026-03-02")
+        self.assertEqual(row["close"], 45.0)
+        self.assertEqual(action["reason"], "CASH_MERGER")
+
+    def test_tradable_exit_before_cash_merger_keeps_market_price(self):
+        days = ["2026-02-27", "2026-03-02", "2026-03-03"]
+        cache = {
+            "2026-02-27": {"FRGE": {"open": 44.0, "close": 44.5}},
+            "2026-03-02": {},
+            "2026-03-03": {},
+        }
+        day, row, action = resolve_exit_execution(
+            cache,
+            days,
+            "FRGE",
+            "2026-02-27",
+            "2026-02-03",
+            "2026-03-03",
+        )
+        self.assertEqual(day, "2026-02-27")
+        self.assertEqual(row["open"], 44.0)
+        self.assertIsNone(action)
 
     def test_legacy_v1_uses_verified_equal_weight_return_score(self):
         closes = [200.0 - index * 0.5 for index in range(253)]
