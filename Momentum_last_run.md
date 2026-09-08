@@ -1,10 +1,10 @@
 # Momentum v3 last run
 
-Overall result: SUCCESS
+Overall result: FAILED
 
-- Unit tests: success
-- Momentum run: success
-- Workbook validation: success
+- Unit tests: failure
+- Momentum run: skipped
+- Workbook validation: skipped
 
 ## Log tail
 
@@ -25,7 +25,7 @@ test_execution_is_after_signal_and_exits_at_next_execution (test_momentum_master
 test_next_open_normalizes_verified_split_mismatch (test_momentum_master_v3.BacktestTimingTests.test_next_open_normalizes_verified_split_mismatch) ... WARNING:root:Normalized split-like open 17.3300 to 86.6500 on 2026-08-04
 WARNING:root:Normalized split-like open 17.3300 to 86.6500 on 2026-08-05
 WARNING:root:Normalized split-like open 17.3300 to 86.6500 on None
-ok
+FAIL
 test_rebalance_point_drawdown (test_momentum_master_v3.BacktestTimingTests.test_rebalance_point_drawdown) ... ok
 test_sma50_exit_is_executed_next_session (test_momentum_master_v3.BacktestTimingTests.test_sma50_exit_is_executed_next_session) ... ok
 test_stop_loss_is_measured_from_actual_next_open_entry (test_momentum_master_v3.BacktestTimingTests.test_stop_loss_is_measured_from_actual_next_open_entry) ... ok
@@ -45,17 +45,17 @@ test_misaligned_periods_are_rejected (test_walkforward_report_v3.WalkForwardRepo
 test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_report_v3.WalkForwardReportTests.test_report_is_out_of_sample_and_never_production_eligible) ... ok
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
+======================================================================
+FAIL: test_next_open_normalizes_verified_split_mismatch (test_momentum_master_v3.BacktestTimingTests.test_next_open_normalizes_verified_split_mismatch)
 ----------------------------------------------------------------------
-Ran 32 tests in 0.047s
+Traceback (most recent call last):
+  File "/home/runner/work/MomentumCloud/MomentumCloud/tests/test_momentum_master_v3.py", line 103, in test_next_open_normalizes_verified_split_mismatch
+    self.assertAlmostEqual(
+AssertionError: 19.39 != 77.56 within 8 places (58.17 difference)
 
-OK
-2026-09-08 20:04:02,741 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
-2026-09-08 20:04:03,570 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
-2026-09-08 20:04:04,032 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
-2026-09-08 20:04:49,092 | WARNING | Polygon rate limit. Waiting 45s and retrying (2/12).
-2026-09-08 20:05:34,153 | WARNING | Polygon rate limit. Waiting 45s and retrying (3/12).
-2026-09-08 20:06:19,547 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
-2026-09-08 20:07:05,525 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-08 20:07:06,873 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
+----------------------------------------------------------------------
+Ran 32 tests in 0.061s
+
+FAILED (failures=1)
 
 ```
