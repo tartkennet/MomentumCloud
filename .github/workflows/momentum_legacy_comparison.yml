@@ -8,6 +8,7 @@ on:
       - "backtest_momentum_v3.py"
       - "momentum_master_v3.py"
       - "tests/test_backtest_configuration_v3.py"
+      - "tests/test_momentum_master_v3.py"
       - ".github/workflows/momentum_legacy_comparison.yml"
 
 permissions:
