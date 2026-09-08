@@ -42,27 +42,17 @@ test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_rep
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
 ----------------------------------------------------------------------
-Ran 31 tests in 0.073s
+Ran 31 tests in 0.061s
 
 OK
-2026-09-08 05:41:11,170 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 05:41:21,231 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 05:41:41,292 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-08 05:42:11,353 | WARNING | Polygon rate limit. Waiting 40s and retrying (4/6).
-2026-09-08 05:42:51,412 | WARNING | Polygon rate limit. Waiting 50s and retrying (5/6).
-2026-09-08 05:43:41,473 | WARNING | Polygon rate limit. Waiting 60s and retrying (6/6).
-2026-09-08 05:44:41,474 | INFO | Grouped date 2026-09-07 unavailable: Polygon request failed
-2026-09-08 05:44:41,535 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 05:44:51,596 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 05:45:11,872 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
-2026-09-08 05:45:12,569 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
-2026-09-08 05:45:13,187 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 05:45:23,247 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 05:45:43,308 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-08 05:46:13,699 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 05:46:23,761 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 05:46:43,822 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-08 05:47:14,590 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-08 05:47:16,053 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
+2026-09-08 15:48:38,379 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
+2026-09-08 15:48:39,039 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
+2026-09-08 15:48:39,593 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-08 15:48:49,637 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-08 15:49:09,973 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
+2026-09-08 15:49:20,026 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
+2026-09-08 15:49:40,070 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
+2026-09-08 15:50:10,964 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
+2026-09-08 15:50:12,538 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
 
 ```
