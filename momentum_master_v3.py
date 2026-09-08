@@ -70,12 +70,21 @@ class PolygonClient:
         if params:
             merged.update(params)
         url = f"{POLYGON_BASE}{path}"
-        for attempt in range(1, 7):
+        max_attempts = int(os.getenv("POLYGON_MAX_RETRIES", "12"))
+        rate_limit_wait = int(os.getenv("POLYGON_RATE_LIMIT_WAIT_SECONDS", "45"))
+        for attempt in range(1, max_attempts + 1):
             try:
                 response = self.session.get(url, params=merged, timeout=30)
                 if response.status_code == 429:
-                    wait = min(75, 10 * attempt)
-                    logging.warning("Polygon rate limit. Waiting %ss and retrying (%s/6).", wait, attempt)
+                    retry_after = response.headers.get("Retry-After")
+                    try:
+                        wait = max(rate_limit_wait, int(float(retry_after))) if retry_after else rate_limit_wait
+                    except ValueError:
+                        wait = rate_limit_wait
+                    logging.warning(
+                        "Polygon rate limit. Waiting %ss and retrying (%s/%s).",
+                        wait, attempt, max_attempts,
+                    )
                     time.sleep(wait)
                     continue
                 response.raise_for_status()
@@ -83,11 +92,16 @@ class PolygonClient:
                 if data.get("status") == "ERROR":
                     raise RuntimeError(f"Polygon error: {data}")
                 return data
-            except Exception:
-                if attempt >= 6:
+            except requests.RequestException:
+                if attempt >= max_attempts:
                     raise
-                time.sleep(min(30, 3 * attempt))
-        raise RuntimeError("Polygon request failed")
+                wait = min(30, 3 * attempt)
+                logging.warning(
+                    "Polygon request failed. Waiting %ss and retrying (%s/%s).",
+                    wait, attempt, max_attempts,
+                )
+                time.sleep(wait)
+        raise RuntimeError("Polygon request failed after retry budget")
 
     def fetch_fx_close(self, date_str: str) -> float:
         data = self._get(
