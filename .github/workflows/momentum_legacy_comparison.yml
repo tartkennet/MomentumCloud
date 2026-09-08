@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "backtest_momentum_v3.py"
+      - "momentum_master_v3.py"
       - "tests/test_backtest_configuration_v3.py"
       - ".github/workflows/momentum_legacy_comparison.yml"
 
@@ -22,6 +23,8 @@ jobs:
     timeout-minutes: 90
     env:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+      POLYGON_MAX_RETRIES: "12"
+      POLYGON_RATE_LIMIT_WAIT_SECONDS: "45"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
