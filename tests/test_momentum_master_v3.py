@@ -93,6 +93,11 @@ class BacktestTimingTests(unittest.TestCase):
             execution_price(row, "next-open", events, "2026-08-05"),
             17.33,
         )
+        self.assertAlmostEqual(
+            execution_price(row, "next-open"),
+            86.65,
+            places=8,
+        )
 
     def test_calendar_rebalances_use_first_session_every_nth_month(self):
         days = ["2026-03-06", "2026-03-09", "2026-04-01", "2026-05-01", "2026-06-01"]
