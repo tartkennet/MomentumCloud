@@ -1,10 +1,10 @@
 # Momentum v3 last run
 
-Overall result: SUCCESS
+Overall result: FAILED
 
-- Unit tests: success
-- Momentum run: success
-- Workbook validation: success
+- Unit tests: failure
+- Momentum run: skipped
+- Workbook validation: skipped
 
 ## Log tail
 
@@ -22,6 +22,7 @@ test_tradable_exit_before_cash_merger_keeps_market_price (test_backtest_configur
 test_calendar_rebalances_use_first_session_every_nth_month (test_momentum_master_v3.BacktestTimingTests.test_calendar_rebalances_use_first_session_every_nth_month) ... ok
 test_daily_drawdown_holds_stopped_position_as_cash (test_momentum_master_v3.BacktestTimingTests.test_daily_drawdown_holds_stopped_position_as_cash) ... ok
 test_execution_is_after_signal_and_exits_at_next_execution (test_momentum_master_v3.BacktestTimingTests.test_execution_is_after_signal_and_exits_at_next_execution) ... ok
+test_next_open_normalizes_verified_split_mismatch (test_momentum_master_v3.BacktestTimingTests.test_next_open_normalizes_verified_split_mismatch) ... ERROR
 test_rebalance_point_drawdown (test_momentum_master_v3.BacktestTimingTests.test_rebalance_point_drawdown) ... ok
 test_sma50_exit_is_executed_next_session (test_momentum_master_v3.BacktestTimingTests.test_sma50_exit_is_executed_next_session) ... ok
 test_stop_loss_is_measured_from_actual_next_open_entry (test_momentum_master_v3.BacktestTimingTests.test_stop_loss_is_measured_from_actual_next_open_entry) ... ok
@@ -41,18 +42,24 @@ test_misaligned_periods_are_rejected (test_walkforward_report_v3.WalkForwardRepo
 test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_report_v3.WalkForwardReportTests.test_report_is_out_of_sample_and_never_production_eligible) ... ok
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
+======================================================================
+ERROR: test_next_open_normalizes_verified_split_mismatch (test_momentum_master_v3.BacktestTimingTests.test_next_open_normalizes_verified_split_mismatch)
 ----------------------------------------------------------------------
-Ran 31 tests in 0.061s
+Traceback (most recent call last):
+  File "/home/runner/work/MomentumCloud/MomentumCloud/tests/test_momentum_master_v3.py", line 88, in test_next_open_normalizes_verified_split_mismatch
+    execution_price(row, "next-open", events, "2026-08-04"),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MomentumCloud/MomentumCloud/backtest_momentum_v3.py", line 297, in execution_price
+    normalized = min(candidates, key=lambda value: abs(math.log(value / close)))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MomentumCloud/MomentumCloud/backtest_momentum_v3.py", line 297, in <lambda>
+    normalized = min(candidates, key=lambda value: abs(math.log(value / close)))
+                                                       ^^^^
+NameError: name 'math' is not defined
 
-OK
-2026-09-08 15:48:38,379 | INFO | Grouped date 2026-09-05 unavailable: No USDSEK result for 2026-09-05
-2026-09-08 15:48:39,039 | INFO | Using grouped stock date 2026-09-04 with 12508 symbols, USDSEK 9.5651
-2026-09-08 15:48:39,593 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 15:48:49,637 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 15:49:09,973 | WARNING | Polygon rate limit. Waiting 10s and retrying (1/6).
-2026-09-08 15:49:20,026 | WARNING | Polygon rate limit. Waiting 20s and retrying (2/6).
-2026-09-08 15:49:40,070 | WARNING | Polygon rate limit. Waiting 30s and retrying (3/6).
-2026-09-08 15:50:10,964 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-08 15:50:12,538 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 145 candidate rows.
+----------------------------------------------------------------------
+Ran 32 tests in 0.070s
+
+FAILED (errors=1)
 
 ```
