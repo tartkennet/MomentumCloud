@@ -42,6 +42,23 @@ jobs:
             momentum-robustness-
             momentum-exit-research-
             momentum-backtest-
+      - name: Refresh final market sessions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(".momentum_backtest_cache.json")
+          if path.exists():
+              payload = json.loads(path.read_text(encoding="utf-8"))
+              sessions = payload.get("sessions", {})
+              for day in ("2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04"):
+                  sessions.pop(day, None)
+              path.write_text(
+                  json.dumps(payload, separators=(",", ":")),
+                  encoding="utf-8",
+              )
+          PY
       - name: Compare verified legacy v1 with current v3
         run: |
           set -euo pipefail
