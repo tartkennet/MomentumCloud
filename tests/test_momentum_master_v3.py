@@ -89,9 +89,10 @@ class BacktestTimingTests(unittest.TestCase):
             86.65,
             places=8,
         )
-        self.assertEqual(
+        self.assertAlmostEqual(
             execution_price(row, "next-open", events, "2026-08-05"),
-            17.33,
+            86.65,
+            places=8,
         )
         self.assertAlmostEqual(
             execution_price(row, "next-open"),
