@@ -108,6 +108,7 @@ def research_exit(
     stop_loss_pct,
     entry_execution="next-close",
     split_events=None,
+    entry_reference_price=None,
 ):
     """Evaluate an exit at each close and execute on the next session."""
     if exit_rule == "rebalance":
@@ -118,7 +119,13 @@ def research_exit(
     entry_row = get_from_map(cache[entry], ticker)
     if not entry_row:
         return planned_exit, "REBALANCE"
-    entry_price = execution_price(entry_row, entry_execution, split_events, entry)
+    entry_price = execution_price(
+        entry_row,
+        entry_execution,
+        split_events,
+        entry,
+        entry_reference_price,
+    )
     for index, signal_day in enumerate(sessions[:-1]):
         row = get_from_map(cache[signal_day], ticker)
         if not row:
@@ -268,7 +275,13 @@ def choose_top10(client, cache, tickers, asof):
     return choose_top(client, cache, tickers, asof, DEFAULT_TOP_N)
 
 
-def execution_price(row, execution, split_events=None, execution_date=None):
+def execution_price(
+    row,
+    execution,
+    split_events=None,
+    execution_date=None,
+    reference_price=None,
+):
     """Return an executable price on the same split basis as the session close.
 
     Polygon's grouped feed is adjusted, but an occasional split-session open can
@@ -283,7 +296,8 @@ def execution_price(row, execution, split_events=None, execution_date=None):
         return price
 
     close = float(row.get("close", price))
-    if price <= 0 or close <= 0:
+    basis_price = float(reference_price) if reference_price is not None else close
+    if price <= 0 or basis_price <= 0:
         return price
 
     candidates = [price]
@@ -302,7 +316,7 @@ def execution_price(row, execution, split_events=None, execution_date=None):
     for ratio in (2.0, 3.0, 4.0, 5.0, 10.0):
         candidates.extend([price * ratio, price / ratio])
 
-    normalized = min(candidates, key=lambda value: abs(math.log(value / close)))
+    normalized = min(candidates, key=lambda value: abs(math.log(value / basis_price)))
     raw_gap = abs(math.log(price / close))
     normalized_gap = abs(math.log(normalized / close))
     if (
@@ -460,6 +474,7 @@ def run(
                 stop_loss_pct,
                 entry_execution,
                 split_events_by_ticker.get(pick.ticker, []),
+                pick.price_usd,
             )
             resolved_exit, exit_row, corporate_action = resolve_exit_execution(
                 cache,
@@ -481,13 +496,29 @@ def run(
                 )
             split_events = split_events_by_ticker.get(pick.ticker, [])
             entry_price = execution_price(
-                entry_row, entry_execution, split_events, actual_entry
+                entry_row,
+                entry_execution,
+                split_events,
+                actual_entry,
+                pick.price_usd,
             )
+            prior_exit_reference = None
+            exit_index = trading_day_strings.index(resolved_exit)
+            if exit_index > 0:
+                prior_exit_row = get_from_map(
+                    cache[trading_day_strings[exit_index - 1]], pick.ticker
+                )
+                if prior_exit_row:
+                    prior_exit_reference = float(prior_exit_row["close"])
             exit_price = (
                 float(exit_row["close"])
                 if corporate_action
                 else execution_price(
-                    exit_row, applied_exit_execution, split_events, resolved_exit
+                    exit_row,
+                    applied_exit_execution,
+                    split_events,
+                    resolved_exit,
+                    prior_exit_reference,
                 )
             )
             stock_return = exit_price / entry_price - 1
