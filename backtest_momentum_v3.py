@@ -317,8 +317,8 @@ def execution_price(
         candidates.extend([price * ratio, price / ratio])
 
     normalized = min(candidates, key=lambda value: abs(math.log(value / basis_price)))
-    raw_gap = abs(math.log(price / close))
-    normalized_gap = abs(math.log(normalized / close))
+    raw_gap = abs(math.log(price / basis_price))
+    normalized_gap = abs(math.log(normalized / basis_price))
     if (
         normalized != price
         and raw_gap >= math.log(1.5)
