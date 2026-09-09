@@ -1,28 +1,40 @@
 # MomentumCloud v3
 
-A clean, production-ready momentum investing system built from scratch using Polygon as the only market data source.
+MomentumCloud är ett USA-momentumsystem med Polygon som enda marknadsdatakälla.
 
-## What it does
+## Status
 
-- Reads stock universe from `Momentum mall fil.xlsx` → `Universe` sheet (`Ticker` column).
-- Pulls daily OHLCV data from Polygon.
-- Applies quality filters:
-  - Price >= 5 USD
-  - Avg dollar volume (20d) >= 20,000,000 USD
-  - Trend: Price > SMA50 > SMA200
-  - Momentum: Ret3m > 0, Ret6m > 0, Ret12m > 0
-- Scores stocks with weighted momentum + acceleration.
-- Selects top 15, flags top 10 buy candidates.
-- Reads portfolio value from `Parametrar!B1`.
-- Calculates equal-weight qty for top 10 positions.
-- Writes output to `Momentum.xlsx` / `BuyNow`.
+Den verifierade jämförelsen mellan den gamla v1-modellen och v3, med samma 15 lika viktade aktier, månadsvis omallokering, 6 % stop-loss, signal vid stängning och order nästa börsdags öppning, gav v3 bäst resultat.
 
-## Required environment variable
+- v3 med 6 % stop-loss: −5,19 % totalt, −20,97 procentenheter mot SPY
+- legacy v1 med 6 % stop-loss: −13,09 %
+- legacy v1 med 8 % stop-loss: −10,18 %
+- SPY: +15,77 %
 
-- `POLYGON_API_KEY`: Polygon API key.
+v1 används därför inte längre som modellkandidat. v3 med 6 % stop-loss är den enda kvarvarande kandidaten, men är **inte produktionsgodkänd**: den senaste 12-månadersjämförelsen är negativ och aktieuniversumet har `CURRENT_TEMPLATE_SURVIVORSHIP_BIAS`.
 
-## Local run
+## Vad systemet gör
+
+- Läser aktieuniversum från `Momentum mall fil.xlsx`, fliken `Universe`, kolumnen `Ticker`.
+- Hämtar daglig OHLCV-data från Polygon.
+- Tillämpar kvalitetsfilter:
+  - kurs minst 5 USD
+  - genomsnittlig dollarlikviditet, 20 dagar, minst 20 000 000 USD
+  - trend: kurs > SMA50 > SMA200
+  - momentum: avkastning 3, 6 och 12 månader över 0
+- Poängsätter aktier med viktat momentum och acceleration.
+- Väljer topp 15 och markerar topp 10 köp.
+- Läser portföljvärde från `Parametrar!B1`.
+- Räknar ut lika viktad kvantitet för de 10 främsta positionerna.
+- Skriver resultat till `Momentum.xlsx` och `BuyNow`.
+
+## Krävd miljövariabel
+
+- `POLYGON_API_KEY`: Polygon API-nyckel.
+
+## Lokal körning
 
 ```bash
 pip install pandas numpy requests openpyxl
 python momentum_master_v3.py
+```
