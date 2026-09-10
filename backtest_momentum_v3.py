@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import math
 import os
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from types import SimpleNamespace
 
 import pandas as pd
@@ -15,16 +17,106 @@ from momentum_master_v3 import (
     INPUT_TEMPLATE,
     PolygonClient,
     build_metrics,
+    alt_ticker,
     get_from_map,
-    load_history_cache,
+    normalize_ticker,
     read_universe,
-    save_history_cache,
     slim_grouped_map,
 )
 
 CACHE_FILE = ".momentum_backtest_cache.json"
 DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
+BACKTEST_CACHE_VERSION = 2
+
+
+def load_backtest_cache(path):
+    """Load only caches whose split-adjustment basis is known."""
+    cache_path = Path(path)
+    if not cache_path.exists():
+        return {}, None
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+        sessions = payload.get("sessions")
+        adjusted_through = payload.get("adjusted_through")
+        if (
+            payload.get("version") != BACKTEST_CACHE_VERSION
+            or not isinstance(sessions, dict)
+            or not adjusted_through
+        ):
+            raise ValueError("legacy cache has an unknown split-adjustment basis")
+        return sessions, str(adjusted_through)
+    except Exception as exc:
+        logging.warning("Discarding unsafe backtest cache: %s", exc)
+        return {}, None
+
+
+def save_backtest_cache(path, sessions, adjusted_through):
+    payload = {
+        "version": BACKTEST_CACHE_VERSION,
+        "adjusted_through": str(adjusted_through),
+        "sessions": sessions,
+    }
+    Path(path).write_text(
+        json.dumps(payload, separators=(",", ":")),
+        encoding="utf-8",
+    )
+
+
+def adjust_cached_history_for_splits(
+    cache,
+    split_events,
+    adjusted_through,
+    target_basis_date,
+):
+    """Move older cached OHLCV rows onto the latest known split basis.
+
+    Polygon's grouped endpoint is split-adjusted when fetched. A persistent
+    cache can nevertheless mix rows fetched before and after a later split.
+    The cache records the date through which its basis is known; only newer
+    split events are applied, making this migration idempotent.
+    """
+    if not cache or not adjusted_through:
+        return 0
+
+    applied = 0
+    for event in sorted(split_events, key=lambda item: str(item.get("execution_date", ""))):
+        event_day = str(event.get("execution_date", ""))
+        if not (str(adjusted_through) < event_day <= str(target_basis_date)):
+            continue
+        split_from = float(event.get("split_from", 0) or 0)
+        split_to = float(event.get("split_to", 0) or 0)
+        ticker = normalize_ticker(str(event.get("ticker", "")).upper().strip())
+        if not ticker or split_from <= 0 or split_to <= 0:
+            continue
+
+        price_factor = split_from / split_to
+        volume_factor = split_to / split_from
+        touched = 0
+        for session_day, day_map in cache.items():
+            if session_day >= event_day:
+                continue
+            row = get_from_map(day_map, ticker)
+            if not row:
+                continue
+            for field in ("open", "high", "low", "close"):
+                if field in row and row[field] is not None:
+                    row[field] = float(row[field]) * price_factor
+            if "volume" in row and row["volume"] is not None:
+                row["volume"] = float(row["volume"]) * volume_factor
+            touched += 1
+        if touched:
+            logging.info(
+                "Adjusted %d cached %s rows for split %s:%s on %s",
+                touched,
+                ticker,
+                split_from,
+                split_to,
+                event_day,
+            )
+            applied += 1
+    return applied
+
 
 # Verified cash corporate actions needed for point-in-time execution.
 # FRGE: Schwab completed the all-cash acquisition on 2026-03-02 and paid
@@ -413,7 +505,7 @@ def run(
     client = PolygonClient(api_key)
     tickers = read_universe(INPUT_TEMPLATE)
     history_tickers = list(dict.fromkeys(tickers + ["SPY"]))
-    cache = load_history_cache(CACHE_FILE)
+    cache, adjusted_through = load_backtest_cache(CACHE_FILE)
     start_day = datetime.fromisoformat(start).date()
     end_day = datetime.fromisoformat(end).date()
     if start_day >= end_day:
@@ -432,10 +524,20 @@ def run(
         entry_execution,
         rebalance_exit_execution,
     )
+    cache_basis_day = datetime.now(timezone.utc).date().isoformat()
+    if cache and adjusted_through < cache_basis_day:
+        new_splits = client.fetch_recent_splits(adjusted_through, cache_basis_day)
+        adjust_cached_history_for_splits(
+            cache,
+            new_splits,
+            adjusted_through,
+            cache_basis_day,
+        )
+
     all_days = trading_dates(client, end_day, needed_sessions, cache=cache, require_ohlc=require_ohlc)
     for date_string, grouped in all_days:
         cache[date_string] = slim_grouped_map(grouped, history_tickers)
-    save_history_cache(CACHE_FILE, [(date, cache[date]) for date in cache])
+    save_backtest_cache(CACHE_FILE, cache, cache_basis_day)
 
     trading_day_strings = [date for date, _ in all_days]
     split_events_by_ticker = {}
