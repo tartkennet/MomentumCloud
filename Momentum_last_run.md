@@ -56,13 +56,12 @@ test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_rep
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
 ----------------------------------------------------------------------
-Ran 38 tests in 0.076s
+Ran 38 tests in 0.044s
 
 OK
-2026-09-10 06:03:01,713 | INFO | Using grouped stock date 2026-09-09 with 12518 symbols, USDSEK 9.5895
-2026-09-10 06:03:02,146 | WARNING | Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
-2026-09-10 06:03:02,926 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
-2026-09-10 06:03:47,938 | WARNING | Polygon rate limit. Waiting 45s and retrying (2/12).
-2026-09-10 06:04:32,951 | WARNING | Polygon rate limit. Waiting 45s and retrying (3/12).
+2026-09-10 06:05:12,767 | INFO | Using grouped stock date 2026-09-09 with 12518 symbols, USDSEK 9.5895
+2026-09-10 06:05:13,084 | WARNING | Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
+2026-09-10 06:05:14,077 | WARNING | Polygon rate limit. Waiting 68.4s and retrying (1/40).
+2026-09-10 06:06:23,946 | WARNING | Polygon rate limit. Waiting 74.7s and retrying (1/40).
 
 ```
