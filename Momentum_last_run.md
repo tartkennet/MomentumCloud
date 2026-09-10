@@ -56,12 +56,17 @@ test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_rep
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
 ----------------------------------------------------------------------
-Ran 38 tests in 0.044s
+Ran 38 tests in 0.051s
 
 OK
-2026-09-10 06:05:12,767 | INFO | Using grouped stock date 2026-09-09 with 12518 symbols, USDSEK 9.5895
-2026-09-10 06:05:13,084 | WARNING | Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
-2026-09-10 06:05:14,077 | WARNING | Polygon rate limit. Waiting 68.4s and retrying (1/40).
-2026-09-10 06:06:23,946 | WARNING | Polygon rate limit. Waiting 74.7s and retrying (1/40).
+2026-09-10 06:07:11,163 | WARNING | Polygon rate limit. Waiting 61.1s and retrying (1/40).
+2026-09-10 06:08:12,817 | INFO | Using grouped stock date 2026-09-09 with 12518 symbols, USDSEK 9.5895
+2026-09-10 06:08:13,161 | WARNING | Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
+2026-09-10 06:08:14,198 | WARNING | Polygon rate limit. Waiting 71.7s and retrying (1/40).
+2026-09-10 06:09:26,842 | WARNING | Polygon rate limit. Waiting 64.1s and retrying (1/40).
+2026-09-10 06:10:30,988 | WARNING | Polygon rate limit. Waiting 71.1s and retrying (2/40).
+2026-09-10 06:11:43,214 | WARNING | Polygon rate limit. Waiting 62.9s and retrying (1/40).
+2026-09-10 06:12:46,163 | WARNING | Polygon rate limit. Waiting 61.4s and retrying (2/40).
+2026-09-10 06:13:47,620 | WARNING | Polygon rate limit. Waiting 69.9s and retrying (3/40).
 
 ```
