@@ -24,8 +24,8 @@ jobs:
     timeout-minutes: 90
     env:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-      POLYGON_MAX_RETRIES: "12"
-      POLYGON_RATE_LIMIT_WAIT_SECONDS: "45"
+      POLYGON_MAX_RETRIES: "40"
+      POLYGON_RATE_LIMIT_WAIT_SECONDS: "60"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -46,53 +46,6 @@ jobs:
             momentum-robustness-
             momentum-exit-research-
             momentum-backtest-
-      - name: Refresh TPC history on one adjusted Polygon basis
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          from momentum_master_v3 import PolygonClient
-
-          # The reusable cache can span Polygon adjustment revisions. Refresh
-          # every TPC session for this research window from one adjusted daily
-          # aggregate response, so entries and exits cannot mix price bases.
-          client = PolygonClient(os.environ["POLYGON_API_KEY"])
-          data = client._get(
-              "/v2/aggs/ticker/TPC/range/1/day/2025-09-01/2026-09-04",
-              {"adjusted": "true", "limit": 50000},
-          )
-          rows = {
-              datetime.fromtimestamp(int(item["t"]) / 1000, tz=timezone.utc).date().isoformat(): item
-              for item in data.get("results", [])
-              if item.get("o") is not None and item.get("h") is not None
-              and item.get("l") is not None and item.get("c") is not None
-              and item.get("v") is not None
-          }
-          if not rows:
-              raise RuntimeError("Polygon returned no adjusted TPC daily history")
-          path = Path(".momentum_backtest_cache.json")
-          payload = json.loads(path.read_text(encoding="utf-8"))
-          sessions = payload.get("sessions", {})
-          refreshed = 0
-          for day, prices in rows.items():
-              if day not in sessions:
-                  continue
-              sessions[day]["TPC"] = {
-                  "open": float(prices["o"]),
-                  "high": float(prices["h"]),
-                  "low": float(prices["l"]),
-                  "close": float(prices["c"]),
-                  "volume": float(prices["v"]),
-              }
-              refreshed += 1
-          if refreshed < 100:
-              raise RuntimeError(f"Refreshed only {refreshed} TPC sessions")
-          path.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
-          print(f"Refreshed {refreshed} TPC sessions from one adjusted Polygon response")
-          PY
       - name: Compare verified legacy v1 with current v3
         run: |
           set -euo pipefail
