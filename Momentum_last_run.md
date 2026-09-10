@@ -1,14 +1,18 @@
 # Momentum v3 last run
 
-Overall result: SUCCESS
+Overall result: FAILED
 
 - Unit tests: success
-- Momentum run: success
-- Workbook validation: success
+- Momentum run: cancelled
+- Workbook validation: skipped
 
 ## Log tail
 
 ```text
+test_legacy_cache_without_basis_is_rejected (test_backtest_cache_split_basis.BacktestCacheSplitBasisTests.test_legacy_cache_without_basis_is_rejected) ... WARNING:root:Discarding unsafe backtest cache: legacy cache has an unknown split-adjustment basis
+ok
+test_split_moves_older_rows_to_new_basis_once (test_backtest_cache_split_basis.BacktestCacheSplitBasisTests.test_split_moves_older_rows_to_new_basis_once) ... ok
+test_v2_round_trip_preserves_basis (test_backtest_cache_split_basis.BacktestCacheSplitBasisTests.test_v2_round_trip_preserves_basis) ... ok
 test_cash_merger_settles_when_no_later_market_price_exists (test_backtest_configuration_v3.BacktestConfigurationTests.test_cash_merger_settles_when_no_later_market_price_exists) ... ok
 test_legacy_v1_rejects_nonpositive_momentum (test_backtest_configuration_v3.BacktestConfigurationTests.test_legacy_v1_rejects_nonpositive_momentum) ... ok
 test_legacy_v1_uses_verified_equal_weight_return_score (test_backtest_configuration_v3.BacktestConfigurationTests.test_legacy_v1_uses_verified_equal_weight_return_score) ... ok
@@ -47,14 +51,24 @@ test_report_is_out_of_sample_and_never_production_eligible (test_walkforward_rep
 test_selection_does_not_inspect_test_period (test_walkforward_report_v3.WalkForwardReportTests.test_selection_does_not_inspect_test_period) ... ok
 
 ----------------------------------------------------------------------
-Ran 32 tests in 0.071s
+Ran 35 tests in 0.054s
 
 OK
-2026-09-09 15:45:11,594 | INFO | Using grouped stock date 2026-09-08 with 12532 symbols, USDSEK 9.5830
-2026-09-09 15:45:12,384 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
-2026-09-09 15:45:57,398 | WARNING | Polygon rate limit. Waiting 45s and retrying (2/12).
-2026-09-09 15:46:42,515 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
-2026-09-09 15:47:28,220 | INFO | Loaded 253 recent trading sessions for returns and real SMA calculations.
-2026-09-09 15:47:29,840 | INFO | Wrote Momentum.xlsx with 15 BuyNow rows and 132 candidate rows.
+2026-09-10 05:51:27,801 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
+2026-09-10 05:52:13,407 | INFO | Using grouped stock date 2026-09-09 with 12518 symbols, USDSEK 9.5895
+2026-09-10 05:52:13,793 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
+2026-09-10 05:52:58,868 | WARNING | Polygon rate limit. Waiting 45s and retrying (2/12).
+2026-09-10 05:53:43,927 | WARNING | Polygon rate limit. Waiting 45s and retrying (3/12).
+2026-09-10 05:54:28,987 | WARNING | Polygon rate limit. Waiting 45s and retrying (4/12).
+2026-09-10 05:55:14,047 | WARNING | Polygon rate limit. Waiting 45s and retrying (5/12).
+2026-09-10 05:55:59,105 | WARNING | Polygon rate limit. Waiting 45s and retrying (6/12).
+2026-09-10 05:56:44,165 | WARNING | Polygon rate limit. Waiting 45s and retrying (7/12).
+2026-09-10 05:57:29,226 | WARNING | Polygon rate limit. Waiting 45s and retrying (8/12).
+2026-09-10 05:58:14,285 | WARNING | Polygon rate limit. Waiting 45s and retrying (9/12).
+2026-09-10 05:58:59,344 | WARNING | Polygon rate limit. Waiting 45s and retrying (10/12).
+2026-09-10 05:59:44,404 | WARNING | Polygon rate limit. Waiting 45s and retrying (11/12).
+2026-09-10 06:00:29,464 | WARNING | Polygon rate limit. Waiting 45s and retrying (12/12).
+2026-09-10 06:01:14,526 | WARNING | Polygon rate limit. Waiting 45s and retrying (1/12).
+2026-09-10 06:01:59,586 | WARNING | Polygon rate limit. Waiting 45s and retrying (2/12).
 
 ```
