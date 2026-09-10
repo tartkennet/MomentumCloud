@@ -21,7 +21,7 @@ concurrency:
 jobs:
   compare:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 240
     env:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
       POLYGON_MAX_RETRIES: "40"
