@@ -1,7 +1,10 @@
 import unittest
 from types import SimpleNamespace
 
-from backtest_momentum_v3 import build_prior_2_12_metrics
+from backtest_momentum_v3 import (
+    build_prior_2_12_metrics,
+    required_adv20_usd,
+)
 
 
 def history_for(series_by_ticker):
@@ -21,6 +24,36 @@ def history_for(series_by_ticker):
 
 
 class LockedMomentumSelectionTests(unittest.TestCase):
+    def test_liquidity_gate_scales_from_one_million_floor(self):
+        self.assertEqual(required_adv20_usd(10_000, 15), 1_000_000.0)
+        self.assertEqual(required_adv20_usd(30_000_000, 15), 2_000_000_000.0)
+
+    def test_research_models_accept_candidate_above_one_million_adv(self):
+        closes = [125.0 - 25.0 * index / 252.0 for index in range(253)]
+        recent = history_for({"SMALL": closes})
+        for _, grouped in recent:
+            grouped["SMALL"]["volume"] = 12_000.0
+        latest = {"SMALL": {"close": 125.0, "volume": 12_000.0}}
+
+        for model in ("classic-12-2", "v4-balanced"):
+            metrics = build_prior_2_12_metrics(
+                ["SMALL"], latest, recent, model, min_adv20_usd=1_000_000.0
+            )
+            self.assertEqual([item.ticker for item in metrics], ["SMALL"])
+
+    def test_research_models_reject_candidate_below_one_million_adv(self):
+        closes = [125.0 - 25.0 * index / 252.0 for index in range(253)]
+        recent = history_for({"THIN": closes})
+        for _, grouped in recent:
+            grouped["THIN"]["volume"] = 1_000.0
+        latest = {"THIN": {"close": 125.0, "volume": 1_000.0}}
+
+        for model in ("classic-12-2", "v4-balanced"):
+            metrics = build_prior_2_12_metrics(
+                ["THIN"], latest, recent, model, min_adv20_usd=1_000_000.0
+            )
+            self.assertEqual(metrics, [])
+
     def test_classic_12_2_excludes_latest_month_from_score(self):
         formation = [120.0 - 20.0 * index / 231.0 for index in range(232)]
         a = [130.0] * 21 + formation
