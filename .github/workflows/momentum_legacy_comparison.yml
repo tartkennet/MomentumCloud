@@ -52,25 +52,35 @@ jobs:
           run_variant() {
             label="$1"
             model="$2"
-            stop="$3"
-            python backtest_momentum_v3.py \
-              --start 2025-10-15 \
-              --end 2026-09-04 \
-              --rebalance-months 1 \
-              --top-n 15 \
-              --selection-model "$model" \
-              --exit-rule stop \
-              --stop-loss-pct "$stop" \
-              --entry-execution next-open \
-              --exit-execution next-open \
+            exit_rule="$3"
+            stop="${4:-}"
+            args=(
+              --start 2025-10-15
+              --end 2026-09-04
+              --rebalance-months 1
+              --top-n 15
+              --selection-model "$model"
+              --exit-rule "$exit_rule"
+              --entry-execution next-open
+              --exit-execution next-open
               --rebalance-exit-execution next-open
+            )
+            if [ "$exit_rule" = "stop" ]; then
+              args+=(--stop-loss-pct "$stop")
+            fi
+            python backtest_momentum_v3.py "${args[@]}"
             cp Momentum_backtest_summary.csv "Momentum_legacy_${label}_summary.csv"
             cp Momentum_backtest_results.csv "Momentum_legacy_${label}_results.csv"
             cp Momentum_backtest_positions.csv "Momentum_legacy_${label}_positions.csv"
           }
-          run_variant legacy_v1_stop8 legacy-v1 8
-          run_variant legacy_v1_stop6 legacy-v1 6
-          run_variant current_v3_stop6 v3 6
+          run_variant legacy_v1_stop8 legacy-v1 stop 8
+          run_variant legacy_v1_stop6 legacy-v1 stop 6
+          run_variant current_v3_stop6 v3 stop 6
+          run_variant current_v3_rebalance v3 rebalance
+          run_variant classic_12_2_rebalance classic-12-2 rebalance
+          run_variant v4_balanced_rebalance v4-balanced rebalance
+          run_variant v4_balanced_stop6 v4-balanced stop 6
+          run_variant v4_balanced_stop8 v4-balanced stop 8
       - name: Build and validate comparison
         run: |
           python - <<'PY'
@@ -84,7 +94,12 @@ jobs:
               row['Variant'] = path.name.removeprefix('Momentum_legacy_').removesuffix('_summary.csv')
               rows.append(row)
           comparison = pd.DataFrame(rows)
-          expected = {'legacy_v1_stop8', 'legacy_v1_stop6', 'current_v3_stop6'}
+          expected = {
+              'legacy_v1_stop8', 'legacy_v1_stop6', 'current_v3_stop6',
+              'current_v3_rebalance', 'classic_12_2_rebalance',
+              'v4_balanced_rebalance', 'v4_balanced_stop6',
+              'v4_balanced_stop8',
+          }
           assert set(comparison['Variant']) == expected
           assert set(comparison['TopN']) == {15}
           assert set(comparison['RebalanceMonths']) == {1}

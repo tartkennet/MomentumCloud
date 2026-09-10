@@ -345,11 +345,130 @@ def build_legacy_v1_metrics(tickers, latest_map, recent253):
     return metrics
 
 
+def build_prior_2_12_metrics(tickers, latest_map, recent253, selection_model):
+    """Build locked long-only 12-2 research signals.
+
+    classic-12-2 ranks the prior month 2 through 12 return, matching the
+    standard momentum formation window without using the most recent month.
+    v4-balanced keeps that signal dominant, then rewards 6-2 confirmation,
+    lower formation-window volatility and less extension above SMA50.
+    """
+    if selection_model not in {"classic-12-2", "v4-balanced"}:
+        raise ValueError("selection_model must be classic-12-2 or v4-balanced")
+
+    records = []
+    for ticker in tickers:
+        latest = get_from_map(latest_map, ticker)
+        if not latest:
+            continue
+        price = float(latest["close"])
+        closes = []
+        dollar_values = []
+        for index, (_, grouped) in enumerate(recent253):
+            row = get_from_map(grouped, ticker)
+            if not row:
+                break
+            close = float(row["close"])
+            closes.append(close)
+            if index < 20 and row.get("volume") is not None:
+                dollar_values.append(close * float(row["volume"]))
+        if len(closes) < 253 or len(dollar_values) < 10:
+            continue
+
+        adv20 = sum(dollar_values) / len(dollar_values)
+        sma50 = sum(closes[:50]) / 50.0
+        sma200 = sum(closes[:200]) / 200.0
+        sma200_1m_ago = sum(closes[21:221]) / 200.0
+        mom12_2 = (closes[21] / closes[252] - 1.0) * 100.0
+        mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
+        formation = list(reversed(closes[21:127]))
+        daily_returns = [
+            later / earlier - 1.0
+            for earlier, later in zip(formation, formation[1:])
+            if earlier > 0 and later > 0
+        ]
+        if len(daily_returns) < 80:
+            continue
+        mean_return = sum(daily_returns) / len(daily_returns)
+        variance = sum((value - mean_return) ** 2 for value in daily_returns) / (
+            len(daily_returns) - 1
+        )
+        annualized_vol = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
+        dist_sma50 = (price / sma50 - 1.0) * 100.0
+
+        if selection_model == "classic-12-2":
+            if (
+                price < 5.0
+                or adv20 < 20_000_000.0
+                or price <= sma200
+                or mom12_2 <= 0.0
+            ):
+                continue
+        else:
+            if (
+                price < 10.0
+                or adv20 < 50_000_000.0
+                or price <= sma50
+                or price <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or mom6_2 <= 0.0
+            ):
+                continue
+
+        records.append({
+            "ticker": ticker,
+            "price_usd": price,
+            "mom12_2": mom12_2,
+            "mom6_2": mom6_2,
+            "annualized_vol": annualized_vol,
+            "dist_sma50": dist_sma50,
+        })
+
+    if selection_model == "classic-12-2":
+        return [
+            SimpleNamespace(
+                ticker=row["ticker"],
+                price_usd=row["price_usd"],
+                total_score=row["mom12_2"],
+            )
+            for row in records
+        ]
+    if not records:
+        return []
+
+    frame = pd.DataFrame(records)
+    frame["rank_12_2"] = frame["mom12_2"].rank(method="average", pct=True)
+    frame["rank_6_2"] = frame["mom6_2"].rank(method="average", pct=True)
+    frame["rank_low_vol"] = frame["annualized_vol"].rank(
+        method="average", ascending=False, pct=True
+    )
+    frame["rank_low_extension"] = frame["dist_sma50"].rank(
+        method="average", ascending=False, pct=True
+    )
+    frame["total_score"] = 100.0 * (
+        0.55 * frame["rank_12_2"]
+        + 0.20 * frame["rank_6_2"]
+        + 0.15 * frame["rank_low_vol"]
+        + 0.10 * frame["rank_low_extension"]
+    )
+    return [
+        SimpleNamespace(
+            ticker=str(row.ticker),
+            price_usd=float(row.price_usd),
+            total_score=float(row.total_score),
+        )
+        for row in frame.itertuples(index=False)
+    ]
+
+
 def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N, selection_model="v3"):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
-    if selection_model not in {"v3", "legacy-v1"}:
-        raise ValueError("selection_model must be v3 or legacy-v1")
+    if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
+        raise ValueError(
+            "selection_model must be v3, legacy-v1, classic-12-2 or v4-balanced"
+        )
     signal_map = cache.get(asof)
     if signal_map is None:
         signal_map = slim_grouped_map(client.fetch_grouped_stocks(asof), tickers)
@@ -357,6 +476,10 @@ def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N, selection_mode
     history = session_window(client, cache, tickers, asof)
     if selection_model == "legacy-v1":
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
+    elif selection_model in {"classic-12-2", "v4-balanced"}:
+        metrics = build_prior_2_12_metrics(
+            tickers, signal_map, history, selection_model
+        )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
     return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:top_n]
@@ -512,8 +635,10 @@ def run(
         raise ValueError("start must be earlier than end")
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
-    if selection_model not in {"v3", "legacy-v1"}:
-        raise ValueError("selection_model must be v3 or legacy-v1")
+    if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
+        raise ValueError(
+            "selection_model must be v3, legacy-v1, classic-12-2 or v4-balanced"
+        )
 
     needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 10
     exit_rule = exit_rule or ("stop" if stop_loss_pct is not None else "rebalance")
@@ -754,7 +879,11 @@ if __name__ == "__main__":
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--entry-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--rebalance-exit-execution", choices=("next-close", "next-open"), default="next-close")
-    parser.add_argument("--selection-model", choices=("v3", "legacy-v1"), default="v3")
+    parser.add_argument(
+        "--selection-model",
+        choices=("v3", "legacy-v1", "classic-12-2", "v4-balanced"),
+        default="v3",
+    )
     arguments = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
     run(
