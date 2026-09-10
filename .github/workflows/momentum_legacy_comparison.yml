@@ -21,7 +21,7 @@ concurrency:
 jobs:
   compare:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 360
     env:
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
       POLYGON_MAX_RETRIES: "40"
@@ -41,12 +41,36 @@ jobs:
           path: .momentum_backtest_cache.json
           key: momentum-legacy-comparison-${{ github.run_id }}
           restore-keys: |
+            momentum-legacy-comparison-v2-
             momentum-production-candidate-
             momentum-walk-forward-
             momentum-robustness-
             momentum-exit-research-
             momentum-backtest-
-      - name: Compare verified legacy v1 with current v3
+      - name: Warm cache and run first locked variant
+        run: |
+          set -euo pipefail
+          python backtest_momentum_v3.py \
+            --start 2025-10-15 \
+            --end 2026-09-04 \
+            --rebalance-months 1 \
+            --top-n 15 \
+            --portfolio-value-usd 10000 \
+            --selection-model legacy-v1 \
+            --exit-rule stop \
+            --stop-loss-pct 8 \
+            --entry-execution next-open \
+            --exit-execution next-open \
+            --rebalance-exit-execution next-open
+          cp Momentum_backtest_summary.csv Momentum_legacy_legacy_v1_stop8_summary.csv
+          cp Momentum_backtest_results.csv Momentum_legacy_legacy_v1_stop8_results.csv
+          cp Momentum_backtest_positions.csv Momentum_legacy_legacy_v1_stop8_positions.csv
+      - name: Save split-safe price-cache checkpoint
+        uses: actions/cache/save@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-legacy-comparison-v2-${{ github.run_id }}
+      - name: Run remaining locked model audit
         run: |
           set -euo pipefail
           run_variant() {
@@ -59,6 +83,7 @@ jobs:
               --end 2026-09-04
               --rebalance-months 1
               --top-n 15
+              --portfolio-value-usd 10000
               --selection-model "$model"
               --exit-rule "$exit_rule"
               --entry-execution next-open
@@ -73,7 +98,6 @@ jobs:
             cp Momentum_backtest_results.csv "Momentum_legacy_${label}_results.csv"
             cp Momentum_backtest_positions.csv "Momentum_legacy_${label}_positions.csv"
           }
-          run_variant legacy_v1_stop8 legacy-v1 stop 8
           run_variant legacy_v1_stop6 legacy-v1 stop 6
           run_variant current_v3_stop6 v3 stop 6
           run_variant current_v3_rebalance v3 rebalance
@@ -102,6 +126,24 @@ jobs:
           }
           assert set(comparison['Variant']) == expected
           assert set(comparison['TopN']) == {15}
+          assert set(comparison['PortfolioValue_USD']) == {10000.0}
+          expected_liquidity = {
+              'legacy_v1_stop8': ('LEGACY_NONE', 0.0),
+              'legacy_v1_stop6': ('LEGACY_NONE', 0.0),
+              'current_v3_stop6': ('V3_FIXED', 20000000.0),
+              'current_v3_rebalance': ('V3_FIXED', 20000000.0),
+              'classic_12_2_rebalance': ('POSITION_SCALED', 1000000.0),
+              'v4_balanced_rebalance': ('POSITION_SCALED', 1000000.0),
+              'v4_balanced_stop6': ('POSITION_SCALED', 1000000.0),
+              'v4_balanced_stop8': ('POSITION_SCALED', 1000000.0),
+          }
+          actual_liquidity = {
+              row['Variant']: (
+                  row['LiquidityRule'], float(row['EffectiveMinADV20_USD'])
+              )
+              for _, row in comparison.iterrows()
+          }
+          assert actual_liquidity == expected_liquidity
           assert set(comparison['RebalanceMonths']) == {1}
           assert set(comparison['EntryExecution']) == {'next-open'}
           assert set(comparison['ExitExecution']) == {'next-open'}

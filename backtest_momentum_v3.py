@@ -15,6 +15,7 @@ import pandas as pd
 
 from momentum_master_v3 import (
     INPUT_TEMPLATE,
+    MIN_ADTV20 as V3_MIN_ADV20_USD,
     PolygonClient,
     build_metrics,
     alt_ticker,
@@ -28,6 +29,27 @@ CACHE_FILE = ".momentum_backtest_cache.json"
 DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
 BACKTEST_CACHE_VERSION = 2
+RESEARCH_MIN_ADV20_USD = 1_000_000.0
+MAX_POSITION_SHARE_OF_ADV20 = 0.001
+
+
+def required_adv20_usd(portfolio_value_usd, top_n):
+    """Scale the liquidity gate to the intended order size.
+
+    A position may represent at most 0.1% of average daily dollar volume.  A
+    $1m absolute floor remains to avoid extremely thin names when the account
+    is small; unlike the previous $20m/$50m constants, the gate rises only
+    when the planned position is large enough to require it.
+    """
+    if portfolio_value_usd <= 0:
+        raise ValueError("portfolio_value_usd must be positive")
+    if top_n < 1:
+        raise ValueError("top_n must be at least 1")
+    planned_position_usd = float(portfolio_value_usd) / int(top_n)
+    return max(
+        RESEARCH_MIN_ADV20_USD,
+        planned_position_usd / MAX_POSITION_SHARE_OF_ADV20,
+    )
 
 
 def load_backtest_cache(path):
@@ -217,6 +239,7 @@ def research_exit(
         split_events,
         entry,
         entry_reference_price,
+        ticker,
     )
     for index, signal_day in enumerate(sessions[:-1]):
         row = get_from_map(cache[signal_day], ticker)
@@ -345,7 +368,13 @@ def build_legacy_v1_metrics(tickers, latest_map, recent253):
     return metrics
 
 
-def build_prior_2_12_metrics(tickers, latest_map, recent253, selection_model):
+def build_prior_2_12_metrics(
+    tickers,
+    latest_map,
+    recent253,
+    selection_model,
+    min_adv20_usd=RESEARCH_MIN_ADV20_USD,
+):
     """Build locked long-only 12-2 research signals.
 
     classic-12-2 ranks the prior month 2 through 12 return, matching the
@@ -399,15 +428,15 @@ def build_prior_2_12_metrics(tickers, latest_map, recent253, selection_model):
         if selection_model == "classic-12-2":
             if (
                 price < 5.0
-                or adv20 < 20_000_000.0
+                or adv20 < min_adv20_usd
                 or price <= sma200
                 or mom12_2 <= 0.0
             ):
                 continue
         else:
             if (
-                price < 10.0
-                or adv20 < 50_000_000.0
+                price < 5.0
+                or adv20 < min_adv20_usd
                 or price <= sma50
                 or price <= sma200
                 or sma200 <= sma200_1m_ago
@@ -462,7 +491,15 @@ def build_prior_2_12_metrics(tickers, latest_map, recent253, selection_model):
     ]
 
 
-def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N, selection_model="v3"):
+def choose_top(
+    client,
+    cache,
+    tickers,
+    asof,
+    top_n=DEFAULT_TOP_N,
+    selection_model="v3",
+    min_adv20_usd=RESEARCH_MIN_ADV20_USD,
+):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
     if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
@@ -478,7 +515,11 @@ def choose_top(client, cache, tickers, asof, top_n=DEFAULT_TOP_N, selection_mode
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {"classic-12-2", "v4-balanced"}:
         metrics = build_prior_2_12_metrics(
-            tickers, signal_map, history, selection_model
+            tickers,
+            signal_map,
+            history,
+            selection_model,
+            min_adv20_usd,
         )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
@@ -496,6 +537,7 @@ def execution_price(
     split_events=None,
     execution_date=None,
     reference_price=None,
+    ticker=None,
 ):
     """Return an executable price on the same split basis as the session close.
 
@@ -516,6 +558,7 @@ def execution_price(
         return price
 
     candidates = [price]
+    verified_factors = []
     for event in split_events or []:
         if str(event.get("execution_date", "")) != str(execution_date):
             continue
@@ -524,6 +567,7 @@ def execution_price(
         if split_from > 0 and split_to > 0:
             ratio = split_to / split_from
             candidates.extend([price * ratio, price / ratio])
+            verified_factors.extend([ratio, 1.0 / ratio])
 
     # Provider split records can lag or omit an event. Only accept a familiar
     # split factor when it changes a 50%+ mismatch into a price within 10% of
@@ -539,11 +583,21 @@ def execution_price(
         and raw_gap >= math.log(1.5)
         and normalized_gap <= math.log(1.1)
     ):
+        applied_factor = normalized / price
+        factor_source = (
+            "verified-split"
+            if any(math.isclose(applied_factor, value, rel_tol=1e-9) for value in verified_factors)
+            else "ratio-fallback"
+        )
         logging.warning(
-            "Normalized split-like open %.4f to %.4f on %s",
+            "Normalized split-like open for %s %.4f to %.4f on %s "
+            "(factor %.6g, source %s)",
+            ticker or "UNKNOWN",
             price,
             normalized,
             execution_date,
+            applied_factor,
+            factor_source,
         )
         return normalized
     return price
@@ -621,6 +675,7 @@ def run(
     entry_execution="next-close",
     rebalance_exit_execution="next-close",
     selection_model="v3",
+    portfolio_value_usd=10_000.0,
 ):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -635,6 +690,7 @@ def run(
         raise ValueError("start must be earlier than end")
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
+    min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2 or v4-balanced"
@@ -677,7 +733,15 @@ def run(
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
     for signal, entry, exit_day in periods:
-        picks = choose_top(client, cache, tickers, signal, top_n, selection_model)
+        picks = choose_top(
+            client,
+            cache,
+            tickers,
+            signal,
+            top_n,
+            selection_model,
+            min_adv20_usd,
+        )
         if len(picks) < top_n:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
         entry_map = cache[entry]
@@ -728,6 +792,7 @@ def run(
                 split_events,
                 actual_entry,
                 pick.price_usd,
+                pick.ticker,
             )
             prior_exit_reference = None
             exit_index = trading_day_strings.index(resolved_exit)
@@ -746,6 +811,7 @@ def run(
                     split_events,
                     resolved_exit,
                     prior_exit_reference,
+                    pick.ticker,
                 )
             )
             stock_return = exit_price / entry_price - 1
@@ -803,8 +869,8 @@ def run(
         if not spy0 or not spy1:
             raise RuntimeError("Missing SPY benchmark price")
         spy_return = (
-            execution_price(spy1, rebalance_exit_execution)
-            / execution_price(spy0, entry_execution)
+            execution_price(spy1, rebalance_exit_execution, ticker="SPY")
+            / execution_price(spy0, entry_execution, ticker="SPY")
             - 1
         )
         equity *= 1 + net
@@ -855,6 +921,16 @@ def run(
     summary["ExitRule"] = exit_rule
     summary["TopN"] = top_n
     summary["SelectionModel"] = selection_model
+    summary["PortfolioValue_USD"] = float(portfolio_value_usd)
+    if selection_model in {"classic-12-2", "v4-balanced"}:
+        summary["LiquidityRule"] = "POSITION_SCALED"
+        summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
+    elif selection_model == "v3":
+        summary["LiquidityRule"] = "V3_FIXED"
+        summary["EffectiveMinADV20_USD"] = float(V3_MIN_ADV20_USD)
+    else:
+        summary["LiquidityRule"] = "LEGACY_NONE"
+        summary["EffectiveMinADV20_USD"] = 0.0
     summary["EntryExecution"] = entry_execution
     summary["ExitExecution"] = exit_execution
     summary["RebalanceExitExecution"] = rebalance_exit_execution
@@ -877,6 +953,7 @@ if __name__ == "__main__":
     parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum"))
     parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
+    parser.add_argument("--portfolio-value-usd", type=float, default=10_000.0)
     parser.add_argument("--entry-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--rebalance-exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument(
@@ -897,4 +974,5 @@ if __name__ == "__main__":
         arguments.entry_execution,
         arguments.rebalance_exit_execution,
         arguments.selection_model,
+        arguments.portfolio_value_usd,
     )
