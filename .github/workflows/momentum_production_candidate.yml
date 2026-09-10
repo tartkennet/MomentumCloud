@@ -11,13 +11,6 @@ on:
         description: "Last available trading date, YYYY-MM-DD"
         required: true
         default: "2026-09-04"
-  push:
-    branches: [main]
-    paths:
-      - "backtest_momentum_v3.py"
-      - "tests/test_backtest_configuration_v3.py"
-      - ".github/workflows/momentum_production_candidate.yml"
-
 permissions:
   contents: read
   statuses: write
