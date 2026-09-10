@@ -35,6 +35,7 @@ HOLDINGS_SHEET = "Holdings"
 PORTFOLIO_SUMMARY_SHEET = "Portföljöversikt"
 HISTORY_CACHE_FILE = ".momentum_history_cache.json"
 SPLITS_CACHE_FILE = ".momentum_splits_cache.json"
+HISTORY_CACHE_VERSION = 2
 
 MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
@@ -202,23 +203,96 @@ def slim_grouped_map(grouped: Dict[str, Dict[str, float]], tickers: List[str]) -
     return {ticker: row for ticker, row in grouped.items() if ticker in relevant}
 
 
-def load_history_cache(path: str) -> Dict[str, Dict[str, Dict[str, float]]]:
+def load_history_cache_state(
+    path: str,
+) -> Tuple[Dict[str, Dict[str, Dict[str, float]]], Optional[str]]:
+    """Load only history caches whose split-adjustment basis is known."""
     cache_path = Path(path)
     if not cache_path.exists():
-        return {}
+        return {}, None
     try:
         payload = json.loads(cache_path.read_text(encoding="utf-8"))
-        if payload.get("version") != 1 or not isinstance(payload.get("sessions"), dict):
-            raise ValueError("unsupported cache format")
-        return payload["sessions"]
+        sessions = payload.get("sessions")
+        adjusted_through = payload.get("adjusted_through")
+        if (
+            payload.get("version") != HISTORY_CACHE_VERSION
+            or not isinstance(sessions, dict)
+            or not adjusted_through
+        ):
+            raise ValueError("legacy cache has an unknown split-adjustment basis")
+        return sessions, str(adjusted_through)
     except Exception as exc:
-        logging.warning("Ignoring invalid Momentum history cache: %s", exc)
-        return {}
+        logging.warning("Discarding unsafe Momentum history cache: %s", exc)
+        return {}, None
 
 
-def save_history_cache(path: str, maps: List[Tuple[str, Dict[str, Dict[str, float]]]]) -> None:
-    payload = {"version": 1, "sessions": {date_str: grouped for date_str, grouped in maps}}
+def load_history_cache(path: str) -> Dict[str, Dict[str, Dict[str, float]]]:
+    """Backward-compatible sessions-only cache reader."""
+    sessions, _ = load_history_cache_state(path)
+    return sessions
+
+
+def save_history_cache(
+    path: str,
+    maps: List[Tuple[str, Dict[str, Dict[str, float]]]],
+    adjusted_through: Optional[str] = None,
+) -> None:
+    basis_date = adjusted_through or datetime.now(timezone.utc).date().isoformat()
+    payload = {
+        "version": HISTORY_CACHE_VERSION,
+        "adjusted_through": basis_date,
+        "sessions": {date_str: grouped for date_str, grouped in maps},
+    }
     Path(path).write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+
+
+def adjust_history_cache_for_splits(
+    sessions: Dict[str, Dict[str, Dict[str, float]]],
+    split_events: List[Dict],
+    adjusted_through: Optional[str],
+    target_basis_date: str,
+) -> int:
+    """Restate cached OHLCV onto the latest split-adjusted price basis."""
+    if not sessions or not adjusted_through:
+        return 0
+
+    applied = 0
+    for event in sorted(split_events, key=lambda item: str(item.get("execution_date", ""))):
+        event_day = str(event.get("execution_date", ""))
+        if not (str(adjusted_through) < event_day <= str(target_basis_date)):
+            continue
+        split_from = float(event.get("split_from", 0) or 0)
+        split_to = float(event.get("split_to", 0) or 0)
+        ticker = normalize_ticker(str(event.get("ticker", "")).upper().strip())
+        if not ticker or split_from <= 0 or split_to <= 0:
+            continue
+
+        price_factor = split_from / split_to
+        volume_factor = split_to / split_from
+        touched = 0
+        for session_day, day_map in sessions.items():
+            if session_day >= event_day:
+                continue
+            row = get_from_map(day_map, ticker)
+            if not row:
+                continue
+            for field in ("open", "high", "low", "close"):
+                if field in row and row[field] is not None:
+                    row[field] = float(row[field]) * price_factor
+            if "volume" in row and row["volume"] is not None:
+                row["volume"] = float(row["volume"]) * volume_factor
+            touched += 1
+        if touched:
+            logging.info(
+                "Adjusted %d cached %s rows for split %s:%s on %s",
+                touched,
+                ticker,
+                split_from,
+                split_to,
+                event_day,
+            )
+            applied += 1
+    return applied
 
 
 def collect_recent_trading_maps(
@@ -230,7 +304,16 @@ def collect_recent_trading_maps(
     cache_file: str = HISTORY_CACHE_FILE,
 ) -> List[Tuple[str, Dict[str, Dict[str, float]]]]:
     latest = datetime.fromisoformat(latest_date).date()
-    cached_maps = load_history_cache(cache_file)
+    cached_maps, adjusted_through = load_history_cache_state(cache_file)
+    cache_basis_date = datetime.now(timezone.utc).date().isoformat()
+    if cached_maps and adjusted_through and adjusted_through < cache_basis_date:
+        new_splits = client.fetch_recent_splits(adjusted_through, cache_basis_date)
+        adjust_history_cache_for_splits(
+            cached_maps,
+            new_splits,
+            adjusted_through,
+            cache_basis_date,
+        )
     cached_maps[latest_date] = slim_grouped_map(latest_map, tickers)
     maps: List[Tuple[str, Dict[str, Dict[str, float]]]] = []
     days_back = 0
@@ -254,7 +337,7 @@ def collect_recent_trading_maps(
             pass
     if len(maps) < needed:
         raise RuntimeError(f"Only found {len(maps)} recent trading maps, need {needed}")
-    save_history_cache(cache_file, maps)
+    save_history_cache(cache_file, maps, cache_basis_date)
     return maps
 
 
