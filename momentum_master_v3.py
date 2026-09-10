@@ -5,6 +5,7 @@ import json
 import logging
 import math
 import os
+import random
 import time
 from pathlib import Path
 from dataclasses import dataclass
@@ -71,8 +72,8 @@ class PolygonClient:
         if params:
             merged.update(params)
         url = f"{POLYGON_BASE}{path}"
-        max_attempts = int(os.getenv("POLYGON_MAX_RETRIES", "12"))
-        rate_limit_wait = int(os.getenv("POLYGON_RATE_LIMIT_WAIT_SECONDS", "45"))
+        max_attempts = int(os.getenv("POLYGON_MAX_RETRIES", "40"))
+        rate_limit_wait = int(os.getenv("POLYGON_RATE_LIMIT_WAIT_SECONDS", "60"))
         for attempt in range(1, max_attempts + 1):
             try:
                 response = self.session.get(url, params=merged, timeout=30)
@@ -82,8 +83,11 @@ class PolygonClient:
                         wait = max(rate_limit_wait, int(float(retry_after))) if retry_after else rate_limit_wait
                     except ValueError:
                         wait = rate_limit_wait
+                    # Add jitter so simultaneous workflows do not retry in lockstep
+                    # and keep starving the same request.
+                    wait = float(wait) + random.uniform(0.0, max(1.0, float(wait) * 0.25))
                     logging.warning(
-                        "Polygon rate limit. Waiting %ss and retrying (%s/%s).",
+                        "Polygon rate limit. Waiting %.1fs and retrying (%s/%s).",
                         wait, attempt, max_attempts,
                     )
                     time.sleep(wait)
