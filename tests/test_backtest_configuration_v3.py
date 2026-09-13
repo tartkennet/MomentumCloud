@@ -7,7 +7,9 @@ from backtest_momentum_v3 import (
     choose_top,
     choose_top10,
     execution_price,
+    find_unverified_split_basis_tickers,
     first_tradable_row,
+    position_close_on_day,
     resolve_exit_execution,
 )
 
@@ -98,6 +100,41 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(day, "2026-02-27")
         self.assertEqual(row["open"], 44.0)
         self.assertIsNone(action)
+
+    def test_stock_merger_uses_successor_at_original_share_ratio(self):
+        days = ["2026-01-08", "2026-01-09", "2026-03-03"]
+        cache = {
+            "2026-01-08": {"HOUS": {"open": 12.0, "close": 12.5}},
+            "2026-01-09": {"COMP": {"open": 8.0, "close": 8.5}},
+            "2026-03-03": {"COMP": {"open": 10.0, "close": 10.5}},
+        }
+        day, row, action = resolve_exit_execution(
+            cache, days, "HOUS", "2026-03-03", "2026-01-02", "2026-03-03"
+        )
+        self.assertEqual(day, "2026-03-03")
+        self.assertAlmostEqual(row["open"], 14.36)
+        self.assertEqual(action["reason"], "STOCK_MERGER")
+        self.assertEqual(action["valuation_ticker"], "COMP")
+        close, _ = position_close_on_day(cache, "HOUS", "2026-03-03")
+        self.assertAlmostEqual(close, 10.5 * 1.436)
+
+    def test_unverified_split_like_open_is_excluded_not_rewritten(self):
+        days = ["2026-07-06", "2026-07-07"]
+        cache = {
+            "2026-07-06": {"TPC": {"open": 78.0, "close": 78.14}},
+            "2026-07-07": {"TPC": {"open": 19.535, "close": 19.60}},
+        }
+        issues = find_unverified_split_basis_tickers(cache, days, ["TPC"], {})
+        self.assertIn("TPC", issues)
+        self.assertEqual(
+            execution_price(
+                cache["2026-07-07"]["TPC"],
+                "next-open",
+                reference_price=78.14,
+                ticker="TPC",
+            ),
+            19.535,
+        )
 
     def test_legacy_v1_uses_verified_equal_weight_return_score(self):
         closes = [200.0 - index * 0.5 for index in range(253)]
