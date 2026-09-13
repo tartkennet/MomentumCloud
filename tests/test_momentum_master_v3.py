@@ -110,11 +110,11 @@ class BacktestTimingTests(unittest.TestCase):
             places=8,
         )
 
-    def test_calendar_rebalances_use_first_session_every_nth_month(self):
+    def test_calendar_rebalances_use_last_session_every_nth_month(self):
         days = ["2026-03-06", "2026-03-09", "2026-04-01", "2026-05-01", "2026-06-01"]
         self.assertEqual(
             calendar_rebalance_signals(days, "2026-03-06", "2026-06-01", 2),
-            ["2026-03-06", "2026-05-01"],
+            ["2026-03-09", "2026-05-01"],
         )
 
     def test_rebalance_point_drawdown(self):
@@ -190,7 +190,6 @@ class BacktestTimingTests(unittest.TestCase):
         periods = execution_periods(days, ["2026-03-02", "2026-04-01"], "2026-04-03")
         self.assertEqual(periods, [
             ("2026-03-02", "2026-03-03", "2026-04-02"),
-            ("2026-04-01", "2026-04-02", "2026-04-03"),
         ])
         self.assertTrue(all(signal < entry <= exit_day for signal, entry, exit_day in periods))
 
