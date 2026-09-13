@@ -3,6 +3,7 @@ from types import SimpleNamespace
 
 from backtest_momentum_v3 import (
     build_prior_2_12_metrics,
+    core_market_regime_is_risk_on,
     market_regime_is_risk_on,
     required_adv20_usd,
 )
@@ -103,6 +104,31 @@ class LockedMomentumSelectionTests(unittest.TestCase):
                 {"SPY": {"close": 80.0}}, history_for({"SPY": falling})
             )
         )
+
+    def test_v6_core_prefers_same_momentum_with_lower_volatility(self):
+        steady = [130.0 - 30.0 * index / 252.0 for index in range(253)]
+        choppy = steady.copy()
+        for index in range(22, 252):
+            choppy[index] += 6.0 if index % 2 else -6.0
+        recent = history_for({"STEADY": steady, "CHOPPY": choppy})
+        latest = {
+            "STEADY": {"close": 130.0, "volume": 10_000_000.0},
+            "CHOPPY": {"close": 130.0, "volume": 10_000_000.0},
+        }
+
+        metrics = build_prior_2_12_metrics(
+            ["STEADY", "CHOPPY"], latest, recent, "v6-core"
+        )
+
+        scores = {item.ticker: item.total_score for item in metrics}
+        self.assertGreater(scores["STEADY"], scores["CHOPPY"])
+
+    def test_v6_core_regime_does_not_require_lagging_sma_slope(self):
+        flat = [100.0] * 253
+        latest = {"SPY": {"close": 101.0}}
+        recent = history_for({"SPY": flat})
+        self.assertTrue(core_market_regime_is_risk_on(latest, recent))
+        self.assertFalse(market_regime_is_risk_on(latest, recent))
 
 
 if __name__ == "__main__":
