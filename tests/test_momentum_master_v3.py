@@ -78,7 +78,7 @@ from backtest_momentum_v3 import calendar_rebalance_signals, daily_portfolio_max
 
 
 class BacktestTimingTests(unittest.TestCase):
-    def test_next_open_normalizes_verified_split_mismatch(self):
+    def test_next_open_only_normalizes_verified_split_mismatch(self):
         row = {"open": 17.33, "close": 86.80, "volume": 1}
         events = [{
             "ticker": "TPC", "execution_date": "2026-08-04",
@@ -91,12 +91,12 @@ class BacktestTimingTests(unittest.TestCase):
         )
         self.assertAlmostEqual(
             execution_price(row, "next-open", events, "2026-08-05"),
-            86.65,
+            17.33,
             places=8,
         )
         self.assertAlmostEqual(
             execution_price(row, "next-open"),
-            86.65,
+            17.33,
             places=8,
         )
         prior_signal_basis_row = {"open": 19.39, "close": 19.39, "volume": 1}
@@ -106,7 +106,7 @@ class BacktestTimingTests(unittest.TestCase):
                 "next-open",
                 reference_price=80.11,
             ),
-            77.56,
+            19.39,
             places=8,
         )
 
