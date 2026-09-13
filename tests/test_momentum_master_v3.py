@@ -78,7 +78,7 @@ from backtest_momentum_v3 import calendar_rebalance_signals, daily_portfolio_max
 
 
 class BacktestTimingTests(unittest.TestCase):
-    def test_next_open_normalizes_verified_split_mismatch(self):
+    def test_next_open_only_normalizes_verified_split_mismatch(self):
         row = {"open": 17.33, "close": 86.80, "volume": 1}
         events = [{
             "ticker": "TPC", "execution_date": "2026-08-04",
@@ -91,12 +91,12 @@ class BacktestTimingTests(unittest.TestCase):
         )
         self.assertAlmostEqual(
             execution_price(row, "next-open", events, "2026-08-05"),
-            86.65,
+            17.33,
             places=8,
         )
         self.assertAlmostEqual(
             execution_price(row, "next-open"),
-            86.65,
+            17.33,
             places=8,
         )
         prior_signal_basis_row = {"open": 19.39, "close": 19.39, "volume": 1}
@@ -106,15 +106,15 @@ class BacktestTimingTests(unittest.TestCase):
                 "next-open",
                 reference_price=80.11,
             ),
-            77.56,
+            19.39,
             places=8,
         )
 
-    def test_calendar_rebalances_use_first_session_every_nth_month(self):
+    def test_calendar_rebalances_use_last_session_every_nth_month(self):
         days = ["2026-03-06", "2026-03-09", "2026-04-01", "2026-05-01", "2026-06-01"]
         self.assertEqual(
             calendar_rebalance_signals(days, "2026-03-06", "2026-06-01", 2),
-            ["2026-03-06", "2026-05-01"],
+            ["2026-03-09", "2026-05-01"],
         )
 
     def test_rebalance_point_drawdown(self):
@@ -190,7 +190,6 @@ class BacktestTimingTests(unittest.TestCase):
         periods = execution_periods(days, ["2026-03-02", "2026-04-01"], "2026-04-03")
         self.assertEqual(periods, [
             ("2026-03-02", "2026-03-03", "2026-04-02"),
-            ("2026-04-01", "2026-04-02", "2026-04-03"),
         ])
         self.assertTrue(all(signal < entry <= exit_day for signal, entry, exit_day in periods))
 

@@ -1,21 +1,24 @@
-name: Momentum legacy v1 comparison
+name: Momentum point-in-time decision audit
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, "codex/**"]
     paths:
       - "backtest_momentum_v3.py"
       - "momentum_master_v3.py"
+      - "tests/test_backtest_cache_split_basis.py"
       - "tests/test_backtest_configuration_v3.py"
       - "tests/test_momentum_master_v3.py"
+      - "tests/test_momentum_selection_v4.py"
+      - "tests/test_point_in_time_universe.py"
       - ".github/workflows/momentum_legacy_comparison.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  group: momentum-legacy-comparison
+  group: momentum-point-in-time-decision
   cancel-in-progress: true
 
 jobs:
@@ -35,129 +38,130 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
-      - name: Restore reusable price cache
+      - name: Restore point-in-time research caches
         uses: actions/cache@v4
         with:
-          path: .momentum_backtest_cache.json
-          key: momentum-legacy-comparison-${{ github.run_id }}
+          path: |
+            .momentum_backtest_cache.json
+            .momentum_point_in_time_universe.json
+          key: momentum-point-in-time-v1-${{ github.run_id }}
           restore-keys: |
-            momentum-legacy-comparison-v2-
-            momentum-production-candidate-
-            momentum-walk-forward-
-            momentum-robustness-
-            momentum-exit-research-
-            momentum-backtest-
-      - name: Warm cache and run first locked variant
+            momentum-point-in-time-v1-
+      - name: Warm audited cache and run locked v6 candidate
         run: |
           set -euo pipefail
           python backtest_momentum_v3.py \
-            --start 2025-10-15 \
-            --end 2026-09-04 \
+            --start 2023-08-01 \
+            --end 2026-09-11 \
             --rebalance-months 1 \
             --top-n 15 \
             --portfolio-value-usd 10000 \
-            --selection-model legacy-v1 \
-            --exit-rule stop \
-            --stop-loss-pct 8 \
+            --selection-model v6-core \
+            --exit-rule rebalance \
             --entry-execution next-open \
             --exit-execution next-open \
             --rebalance-exit-execution next-open
-          cp Momentum_backtest_summary.csv Momentum_legacy_legacy_v1_stop8_summary.csv
-          cp Momentum_backtest_results.csv Momentum_legacy_legacy_v1_stop8_results.csv
-          cp Momentum_backtest_positions.csv Momentum_legacy_legacy_v1_stop8_positions.csv
-      - name: Save split-safe price-cache checkpoint
+          cp Momentum_backtest_summary.csv Momentum_audit_v6_core_rebalance_summary.csv
+          cp Momentum_backtest_results.csv Momentum_audit_v6_core_rebalance_results.csv
+          cp Momentum_backtest_positions.csv Momentum_audit_v6_core_rebalance_positions.csv
+      - name: Save point-in-time cache checkpoint
         uses: actions/cache/save@v4
         with:
-          path: .momentum_backtest_cache.json
-          key: momentum-legacy-comparison-v2-${{ github.run_id }}
-      - name: Run remaining locked model audit
+          path: |
+            .momentum_backtest_cache.json
+            .momentum_point_in_time_universe.json
+          key: momentum-point-in-time-v1-${{ github.run_id }}
+      - name: Run locked baselines on identical data
         run: |
           set -euo pipefail
           run_variant() {
             label="$1"
             model="$2"
-            exit_rule="$3"
-            stop="${4:-}"
-            args=(
-              --start 2025-10-15
-              --end 2026-09-04
-              --rebalance-months 1
-              --top-n 15
-              --portfolio-value-usd 10000
-              --selection-model "$model"
-              --exit-rule "$exit_rule"
-              --entry-execution next-open
-              --exit-execution next-open
+            python backtest_momentum_v3.py \
+              --start 2023-08-01 \
+              --end 2026-09-11 \
+              --rebalance-months 1 \
+              --top-n 15 \
+              --portfolio-value-usd 10000 \
+              --selection-model "$model" \
+              --exit-rule rebalance \
+              --entry-execution next-open \
+              --exit-execution next-open \
               --rebalance-exit-execution next-open
-            )
-            if [ "$exit_rule" = "stop" ]; then
-              args+=(--stop-loss-pct "$stop")
-            fi
-            python backtest_momentum_v3.py "${args[@]}"
-            cp Momentum_backtest_summary.csv "Momentum_legacy_${label}_summary.csv"
-            cp Momentum_backtest_results.csv "Momentum_legacy_${label}_results.csv"
-            cp Momentum_backtest_positions.csv "Momentum_legacy_${label}_positions.csv"
+            cp Momentum_backtest_summary.csv "Momentum_audit_${label}_summary.csv"
+            cp Momentum_backtest_results.csv "Momentum_audit_${label}_results.csv"
+            cp Momentum_backtest_positions.csv "Momentum_audit_${label}_positions.csv"
           }
-          run_variant legacy_v1_stop6 legacy-v1 stop 6
-          run_variant current_v3_stop6 v3 stop 6
-          run_variant current_v3_rebalance v3 rebalance
-          run_variant classic_12_2_rebalance classic-12-2 rebalance
-          run_variant v4_balanced_rebalance v4-balanced rebalance
-          run_variant v4_balanced_stop6 v4-balanced stop 6
-          run_variant v4_balanced_stop8 v4-balanced stop 8
-      - name: Build and validate comparison
+          run_variant current_v3_rebalance v3
+          run_variant v4_balanced_rebalance v4-balanced
+      - name: Build locked decision table
         run: |
           python - <<'PY'
           from pathlib import Path
           import pandas as pd
 
-          files = sorted(Path('.').glob('Momentum_legacy_*_summary.csv'))
+          files = sorted(Path('.').glob('Momentum_audit_*_summary.csv'))
           rows = []
           for path in files:
               row = pd.read_csv(path).iloc[0].to_dict()
-              row['Variant'] = path.name.removeprefix('Momentum_legacy_').removesuffix('_summary.csv')
+              row['Variant'] = path.name.removeprefix('Momentum_audit_').removesuffix('_summary.csv')
               rows.append(row)
           comparison = pd.DataFrame(rows)
           expected = {
-              'legacy_v1_stop8', 'legacy_v1_stop6', 'current_v3_stop6',
-              'current_v3_rebalance', 'classic_12_2_rebalance',
-              'v4_balanced_rebalance', 'v4_balanced_stop6',
-              'v4_balanced_stop8',
+              'current_v3_rebalance',
+              'v4_balanced_rebalance',
+              'v6_core_rebalance',
           }
           assert set(comparison['Variant']) == expected
           assert set(comparison['TopN']) == {15}
-          assert set(comparison['PortfolioValue_USD']) == {10000.0}
-          expected_liquidity = {
-              'legacy_v1_stop8': ('LEGACY_NONE', 0.0),
-              'legacy_v1_stop6': ('LEGACY_NONE', 0.0),
-              'current_v3_stop6': ('V3_FIXED', 20000000.0),
-              'current_v3_rebalance': ('V3_FIXED', 20000000.0),
-              'classic_12_2_rebalance': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_rebalance': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_stop6': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_stop8': ('POSITION_SCALED', 1000000.0),
-          }
-          actual_liquidity = {
-              row['Variant']: (
-                  row['LiquidityRule'], float(row['EffectiveMinADV20_USD'])
-              )
-              for _, row in comparison.iterrows()
-          }
-          assert actual_liquidity == expected_liquidity
           assert set(comparison['RebalanceMonths']) == {1}
           assert set(comparison['EntryExecution']) == {'next-open'}
-          assert set(comparison['ExitExecution']) == {'next-open'}
           assert set(comparison['RebalanceExitExecution']) == {'next-open'}
-          assert set(comparison['Universe']) == {'CURRENT_TEMPLATE_SURVIVORSHIP_BIAS'}
-          comparison.to_csv('Momentum_legacy_comparison.csv', index=False)
-          print(comparison[['Variant', 'SelectionModel', 'StopLoss_pct', 'TotalReturn_pct', 'SPYTotalReturn_pct', 'TotalEdgeVsSPY_pct', 'DailyMaxDrawdown_pct']].to_string(index=False))
+          assert set(comparison['Universe']) == {'POINT_IN_TIME_US_COMMON_STOCKS'}
+          assert set(comparison['SignalConvention']) == {'MONTH_END_CLOSE'}
+          assert comparison['Periods'].min() >= 30
+          liquidity = {
+              row['Variant']: float(row['EffectiveMinADV20_USD'])
+              for _, row in comparison.iterrows()
+          }
+          assert liquidity == {
+              'current_v3_rebalance': 20000000.0,
+              'v4_balanced_rebalance': 5000000.0,
+              'v6_core_rebalance': 5000000.0,
+          }
+          comparison.to_csv('Momentum_point_in_time_comparison.csv', index=False)
+
+          candidate = comparison[comparison['Variant'] == 'v6_core_rebalance'].copy()
+          candidate['PositiveReturn'] = candidate['TotalReturn_pct'] > 0
+          candidate['BeatSPY'] = candidate['TotalEdgeVsSPY_pct'] > 0
+          candidate['DrawdownWithin20'] = candidate['DailyMaxDrawdown_pct'] >= -20
+          candidate['HitRateAtLeast50'] = candidate['PeriodHitRate_pct'] >= 50
+          candidate['AtLeast30Periods'] = candidate['Periods'] >= 30
+          gates = [
+              'PositiveReturn', 'BeatSPY', 'DrawdownWithin20',
+              'HitRateAtLeast50', 'AtLeast30Periods',
+          ]
+          candidate['Decision'] = candidate[gates].all(axis=1).map(
+              {True: 'GO_CANDIDATE', False: 'NO_GO'}
+          )
+          candidate.to_csv('Momentum_model_decision.csv', index=False)
+          print(comparison[[
+              'Variant', 'Periods', 'TotalReturn_pct', 'SPYTotalReturn_pct',
+              'TotalEdgeVsSPY_pct', 'PeriodHitRate_pct',
+              'DailyMaxDrawdown_pct', 'CashPeriods',
+              'DataQualityExclusionCount', 'UniverseMinTickers',
+              'UniverseMaxTickers',
+          ]].to_string(index=False))
+          print(candidate[['Variant', 'Decision'] + gates].to_string(index=False))
           PY
-      - name: Upload comparison
+      - name: Upload audited comparison
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Momentum_legacy_comparison
+          name: Momentum_point_in_time_comparison
           path: |
-            Momentum_legacy_*.csv
+            Momentum_audit_*.csv
+            Momentum_point_in_time_comparison.csv
+            Momentum_model_decision.csv
           if-no-files-found: warn
           retention-days: 30

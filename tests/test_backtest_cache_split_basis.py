@@ -18,7 +18,7 @@ class BacktestCacheSplitBasisTests(unittest.TestCase):
                 json.dumps({"version": 1, "sessions": {"2026-07-02": {}}}),
                 encoding="utf-8",
             )
-            sessions, adjusted_through = load_backtest_cache(path)
+            sessions, adjusted_through = load_backtest_cache(path, "expected-scope")
             self.assertEqual(sessions, {})
             self.assertIsNone(adjusted_through)
 
@@ -72,14 +72,18 @@ class BacktestCacheSplitBasisTests(unittest.TestCase):
         self.assertEqual(applied_again, 0)
         self.assertAlmostEqual(cache["2026-07-02"]["TPC"]["close"], 19.875)
 
-    def test_v2_round_trip_preserves_basis(self):
+    def test_v3_round_trip_preserves_basis_and_universe_scope(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "cache.json"
             expected = {"2026-07-02": {"TPC": {"close": 19.875, "volume": 4000.0}}}
-            save_backtest_cache(path, expected, "2026-09-08")
-            sessions, adjusted_through = load_backtest_cache(path)
+            save_backtest_cache(path, expected, "2026-09-08", "pit-scope")
+            sessions, adjusted_through = load_backtest_cache(path, "pit-scope")
             self.assertEqual(sessions, expected)
             self.assertEqual(adjusted_through, "2026-09-08")
+
+            rejected, rejected_basis = load_backtest_cache(path, "different-scope")
+            self.assertEqual(rejected, {})
+            self.assertIsNone(rejected_basis)
 
 
 if __name__ == "__main__":
