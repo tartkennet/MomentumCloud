@@ -1,40 +1,60 @@
-# MomentumCloud v3
+# MomentumCloud Production v1
 
-MomentumCloud är ett USA-momentumsystem med Polygon som enda marknadsdatakälla.
+MomentumCloud är ett mobilanpassat beslutsstöd för en låst, lång amerikansk
+momentumportfölj. Systemet hämtar marknadsdata från Polygon, skapar tydliga
+köp- och säljsignaler, uppdaterar Excel och publicerar samma verifierade
+snapshot till dashboardens API.
 
-## Status
+## Produktionsregler
 
-Den verifierade jämförelsen mellan den gamla v1-modellen och v3, med samma 15 lika viktade aktier, månadsvis omallokering, 6 % stop-loss, signal vid stängning och order nästa börsdags öppning, gav v3 bäst resultat.
+| Regel | Låst värde |
+|---|---|
+| Modell | `v4-balanced` |
+| Portfölj | 15 aktier, lika vikt |
+| Omsättning | Månadsvis omallokering |
+| Prisfilter | Minst 10 USD |
+| Likviditet | ADV20 minst 5 000 000 USD |
+| Instrument | Aktiva USA-noterade common stocks |
+| Exkluderas | ETF, SPAC, ADR, preferensaktier |
+| Marknadsregim | `SPY > SMA200` = RISK ON, annars 100 % kassa |
+| Stop loss | 10 % |
+| Ranking | 55 % 12–2, 20 % 6–2, 15 % låg volatilitet, 10 % låg SMA50-extension |
 
-- v3 med 6 % stop-loss: −5,19 % totalt, −20,97 procentenheter mot SPY
-- legacy v1 med 6 % stop-loss: −13,09 %
-- legacy v1 med 8 % stop-loss: −10,18 %
-- SPY: +15,77 %
+`Current limitation: survivorship bias`
 
-v1 används därför inte längre som modellkandidat. v3 med 6 % stop-loss är den enda kvarvarande kandidaten, men är **inte produktionsgodkänd**: den senaste 12-månadersjämförelsen är negativ och aktieuniversumet har `CURRENT_TEMPLATE_SURVIVORSHIP_BIAS`.
+Det befintliga universumet i arbetsboken används som startmängd och korsas
+med Polygons aktuella instrumentregister. Begränsningen visas i dashboard,
+Excel och valideringsresultat.
 
-## Vad systemet gör
-
-- Läser aktieuniversum från `Momentum mall fil.xlsx`, fliken `Universe`, kolumnen `Ticker`.
-- Hämtar daglig OHLCV-data från Polygon.
-- Tillämpar kvalitetsfilter:
-  - kurs minst 5 USD
-  - genomsnittlig dollarlikviditet, 20 dagar, minst 20 000 000 USD
-  - trend: kurs > SMA50 > SMA200
-  - momentum: avkastning 3, 6 och 12 månader över 0
-- Poängsätter aktier med viktat momentum och acceleration.
-- Väljer topp 15 och markerar topp 10 köp.
-- Läser portföljvärde från `Parametrar!B1`.
-- Räknar ut lika viktad kvantitet för de 10 främsta positionerna.
-- Skriver resultat till `Momentum.xlsx` och `BuyNow`.
-
-## Krävd miljövariabel
-
-- `POLYGON_API_KEY`: Polygon API-nyckel.
-
-## Lokal körning
+## Körning
 
 ```bash
-pip install pandas numpy requests openpyxl
-python momentum_master_v3.py
+python -m pip install -r requirements.txt
+export POLYGON_API_KEY="..."
+python momentum_production.py
 ```
+
+Körningen skapar `Momentum.xlsx`, `Momentum_signals.csv`,
+`Momentum_buy_history.csv`, `public/data/dashboard.json` och
+`public/data/buynow.json`.
+
+Systemet skickar inga order. `Momentum_portfolio.csv` är den registrerade
+portföljen och signalerna är beslutsunderlaget för nästa handelsöppning.
+
+## App och API
+
+- Dashboard: `public/index.html`
+- Senaste snapshot: `GET /api/dashboard`
+- Hälsokontroll: `GET /api/health`
+- Hosting: Vercel via `vercel.json`
+
+## Automation
+
+- `Production CI`: syntax, unit-tester och konfigurationslås.
+- `MomentumCloud Production v1`: vardagskvällar efter USA-stängning. Modellen
+  roterar endast månadsvis men uppdaterar priser, riskregim och stoppsignaler
+  varje handelsdag.
+- `Production model validation`: manuell backtest av exakt samma v4-modell.
+
+Full arkitektur, repo-audit och driftsinstruktioner finns i `docs/`.
+

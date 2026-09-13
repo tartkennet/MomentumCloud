@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a1020" />
+    <meta name="description" content="MomentumCloud Production v1" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>MomentumCloud</title>
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <header class="topbar">
+      <a class="brand" href="#buy-now" aria-label="MomentumCloud startsida">
+        <span class="brand-mark">M</span>
+        <span><strong>Momentum</strong><em>Cloud</em></span>
+      </a>
+      <div class="live-pill"><span></span><b id="market-date">Väntar på data</b></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">PRODUCTION V1 · USA MOMENTUM</p>
+          <h1>Dina starkaste aktier.<br /><span>Ett tydligt beslut.</span></h1>
+          <p id="hero-copy">Laddar senaste verifierade körning…</p>
+        </div>
+        <article id="regime-card" class="regime-card waiting">
+          <div class="orb"><i></i></div>
+          <div><small>MARKNADSREGIM</small><strong id="regime-status">VÄNTAR</strong><span id="regime-reason">SPY / SMA200</span></div>
+        </article>
+      </section>
+
+      <nav class="section-nav" aria-label="Dashboardsektioner">
+        <a class="active" href="#buy-now">Buy now</a>
+        <a href="#candidates">Kandidater</a>
+        <a href="#holdings">Innehav</a>
+        <a href="#signals">Signaler</a>
+        <a href="#risk">Risk</a>
+        <a href="#performance">Utveckling</a>
+        <a href="#history">Historik</a>
+        <a href="#system">System</a>
+      </nav>
+
+      <section id="buy-now" class="panel feature-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow coral">MÅNADENS PORTFÖLJ</p><h2>Buy now</h2></div>
+          <div class="count-badge"><b id="buy-count">0</b><span>av 15</span></div>
+        </div>
+        <div id="buy-grid" class="stock-grid empty-state">Ingen verifierad produktionskörning ännu.</div>
+      </section>
+
+      <section id="candidates" class="panel">
+        <div class="panel-heading"><div><p class="eyebrow lilac">URVALET</p><h2>Top 50 kandidater</h2></div></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Score</th><th>Kurs</th><th>12–2</th><th>6–2</th><th>Vol.</th><th>ADV20</th></tr></thead><tbody id="candidate-rows"></tbody></table></div>
+      </section>
+
+      <section id="holdings" class="panel">
+        <div class="panel-heading"><div><p class="eyebrow mint">PORTFÖLJEN</p><h2>Innehav</h2></div></div>
+        <div id="holding-grid" class="metric-grid empty-state">Inga registrerade innehav.</div>
+      </section>
+
+      <section id="signals" class="panel">
+        <div class="panel-heading"><div><p class="eyebrow coral">ATT GÖRA</p><h2>Signaler</h2></div><span id="rebalance-badge" class="soft-badge">Kontrollerar…</span></div>
+        <div id="signal-list" class="signal-list empty-state">Inga signaler.</div>
+      </section>
+
+      <section id="risk" class="panel split-panel">
+        <div><p class="eyebrow sky">RISK</p><h2>Skyddsräcken</h2><div id="risk-metrics" class="metric-grid"></div></div>
+        <div class="risk-art"><div class="ring"><span id="exposure-ring">0%</span></div><p>Aktieexponering</p></div>
+      </section>
+
+      <section id="performance" class="panel">
+        <div class="panel-heading"><div><p class="eyebrow mint">RESULTAT</p><h2>Portfölj mot SPY</h2></div></div>
+        <div id="performance-grid" class="metric-grid"></div>
+        <p id="performance-note" class="note"></p>
+      </section>
+
+      <section id="history" class="panel">
+        <div class="panel-heading"><div><p class="eyebrow lilac">SPÅRBART</p><h2>Historik</h2></div></div>
+        <div id="history-list" class="timeline empty-state">Historik skapas efter första produktionskörningen.</div>
+      </section>
+
+      <section id="system" class="panel system-panel">
+        <div><p class="eyebrow sky">SYSTEM STATUS</p><h2>Allt på ett ställe</h2><p id="limitation" class="warning">Current limitation: survivorship bias</p></div>
+        <div id="system-grid" class="status-grid"></div>
+      </section>
+    </main>
+
+    <footer><span>MomentumCloud Production v1</span><span>Beslutsstöd · ingen automatisk handel</span></footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
+

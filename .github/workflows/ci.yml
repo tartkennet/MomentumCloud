@@ -1,0 +1,53 @@
+name: Production CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "Momentum.xlsx"
+      - "Momentum_buy_history.csv"
+      - "Momentum_signals.csv"
+      - "Momentum_last_run.md"
+      - "public/data/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Compile production code
+        run: >-
+          python -m py_compile momentum_config.py momentum_strategy.py
+          momentum_production.py backtest_momentum_v3.py
+          validate_production_backtest.py
+      - name: Compile dashboard functions
+        run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Verify locked production configuration
+        run: |
+          python - <<'PY'
+          from momentum_config import PRODUCTION
+          PRODUCTION.validate()
+          assert PRODUCTION.selection_model == "v4-balanced"
+          assert PRODUCTION.position_count == 15
+          assert PRODUCTION.min_price_usd == 10
+          assert PRODUCTION.min_adv20_usd == 5_000_000
+          assert PRODUCTION.stop_loss_pct == 10
+          assert PRODUCTION.limitation == "Current limitation: survivorship bias"
+          print(PRODUCTION.to_dict())
+          PY

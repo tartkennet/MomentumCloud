@@ -1,10 +1,18 @@
-
----
-
-## 4) `.gitignore`
-
-```gitignore
-backups/
-Momentum.xlsx
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.venv/
+.vercel/
+.DS_Store
+
+# Regenerable provider caches and local reports
+.momentum_history_cache.json
+.momentum_splits_cache.json
+.momentum_backtest_cache.json
+.momentum_point_in_time_universe.json
+momentum_run.log
+Momentum_backtest_*.csv
+
+# Historical binary dumps do not belong in the active product tree
+backups/
+*.zip
