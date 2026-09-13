@@ -1,14 +1,15 @@
-name: Momentum legacy v1 comparison
+name: Momentum model decision audit
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, "codex/**"]
     paths:
       - "backtest_momentum_v3.py"
       - "momentum_master_v3.py"
       - "tests/test_backtest_configuration_v3.py"
       - "tests/test_momentum_master_v3.py"
+      - "tests/test_momentum_selection_v4.py"
       - ".github/workflows/momentum_legacy_comparison.yml"
 
 permissions:
@@ -47,7 +48,7 @@ jobs:
             momentum-robustness-
             momentum-exit-research-
             momentum-backtest-
-      - name: Warm cache and run first locked variant
+      - name: Warm cache and run first reference variant
         run: |
           set -euo pipefail
           python backtest_momentum_v3.py \
@@ -56,21 +57,20 @@ jobs:
             --rebalance-months 1 \
             --top-n 15 \
             --portfolio-value-usd 10000 \
-            --selection-model legacy-v1 \
-            --exit-rule stop \
-            --stop-loss-pct 8 \
+            --selection-model v3 \
+            --exit-rule rebalance \
             --entry-execution next-open \
             --exit-execution next-open \
             --rebalance-exit-execution next-open
-          cp Momentum_backtest_summary.csv Momentum_legacy_legacy_v1_stop8_summary.csv
-          cp Momentum_backtest_results.csv Momentum_legacy_legacy_v1_stop8_results.csv
-          cp Momentum_backtest_positions.csv Momentum_legacy_legacy_v1_stop8_positions.csv
+          cp Momentum_backtest_summary.csv Momentum_legacy_current_v3_rebalance_summary.csv
+          cp Momentum_backtest_results.csv Momentum_legacy_current_v3_rebalance_results.csv
+          cp Momentum_backtest_positions.csv Momentum_legacy_current_v3_rebalance_positions.csv
       - name: Save split-safe price-cache checkpoint
         uses: actions/cache/save@v4
         with:
           path: .momentum_backtest_cache.json
-          key: momentum-legacy-comparison-v2-${{ github.run_id }}
-      - name: Run remaining locked model audit
+          key: momentum-model-decision-v3-${{ github.run_id }}
+      - name: Run focused model decision audit
         run: |
           set -euo pipefail
           run_variant() {
@@ -98,13 +98,12 @@ jobs:
             cp Momentum_backtest_results.csv "Momentum_legacy_${label}_results.csv"
             cp Momentum_backtest_positions.csv "Momentum_legacy_${label}_positions.csv"
           }
-          run_variant legacy_v1_stop6 legacy-v1 stop 6
-          run_variant current_v3_stop6 v3 stop 6
-          run_variant current_v3_rebalance v3 rebalance
+          run_variant legacy_v1_stop8 legacy-v1 stop 8
           run_variant classic_12_2_rebalance classic-12-2 rebalance
           run_variant v4_balanced_rebalance v4-balanced rebalance
-          run_variant v4_balanced_stop6 v4-balanced stop 6
-          run_variant v4_balanced_stop8 v4-balanced stop 8
+          run_variant v5_regime_rebalance v5-regime rebalance
+          run_variant v5_regime_stop6 v5-regime stop 6
+          run_variant v5_regime_stop8 v5-regime stop 8
       - name: Build and validate comparison
         run: |
           python - <<'PY'
@@ -119,23 +118,22 @@ jobs:
               rows.append(row)
           comparison = pd.DataFrame(rows)
           expected = {
-              'legacy_v1_stop8', 'legacy_v1_stop6', 'current_v3_stop6',
-              'current_v3_rebalance', 'classic_12_2_rebalance',
-              'v4_balanced_rebalance', 'v4_balanced_stop6',
-              'v4_balanced_stop8',
+              'legacy_v1_stop8', 'current_v3_rebalance',
+              'classic_12_2_rebalance', 'v4_balanced_rebalance',
+              'v5_regime_rebalance', 'v5_regime_stop6',
+              'v5_regime_stop8',
           }
           assert set(comparison['Variant']) == expected
           assert set(comparison['TopN']) == {15}
           assert set(comparison['PortfolioValue_USD']) == {10000.0}
           expected_liquidity = {
               'legacy_v1_stop8': ('LEGACY_NONE', 0.0),
-              'legacy_v1_stop6': ('LEGACY_NONE', 0.0),
-              'current_v3_stop6': ('V3_FIXED', 20000000.0),
               'current_v3_rebalance': ('V3_FIXED', 20000000.0),
-              'classic_12_2_rebalance': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_rebalance': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_stop6': ('POSITION_SCALED', 1000000.0),
-              'v4_balanced_stop8': ('POSITION_SCALED', 1000000.0),
+              'classic_12_2_rebalance': ('MIN_ADV20_5M_POSITION_SCALED', 5000000.0),
+              'v4_balanced_rebalance': ('MIN_ADV20_5M_POSITION_SCALED', 5000000.0),
+              'v5_regime_rebalance': ('MIN_ADV20_5M_POSITION_SCALED', 5000000.0),
+              'v5_regime_stop6': ('MIN_ADV20_5M_POSITION_SCALED', 5000000.0),
+              'v5_regime_stop8': ('MIN_ADV20_5M_POSITION_SCALED', 5000000.0),
           }
           actual_liquidity = {
               row['Variant']: (
@@ -150,7 +148,20 @@ jobs:
           assert set(comparison['RebalanceExitExecution']) == {'next-open'}
           assert set(comparison['Universe']) == {'CURRENT_TEMPLATE_SURVIVORSHIP_BIAS'}
           comparison.to_csv('Momentum_legacy_comparison.csv', index=False)
+          candidates = comparison[comparison['Variant'].str.startswith('v5_regime_')].copy()
+          candidates['PositiveReturn'] = candidates['TotalReturn_pct'] > 0
+          candidates['BeatSPY'] = candidates['TotalEdgeVsSPY_pct'] > 0
+          candidates['DrawdownWithin20'] = candidates['DailyMaxDrawdown_pct'] >= -20
+          candidates['HitRateAtLeast50'] = candidates['PeriodHitRate_pct'] >= 50
+          candidates['Decision'] = candidates[
+              ['PositiveReturn', 'BeatSPY', 'DrawdownWithin20', 'HitRateAtLeast50']
+          ].all(axis=1).map({True: 'GO_CANDIDATE', False: 'NO_GO'})
+          candidates.sort_values(
+              ['Decision', 'TotalEdgeVsSPY_pct', 'DailyMaxDrawdown_pct'],
+              ascending=[True, False, False],
+          ).to_csv('Momentum_model_decision.csv', index=False)
           print(comparison[['Variant', 'SelectionModel', 'StopLoss_pct', 'TotalReturn_pct', 'SPYTotalReturn_pct', 'TotalEdgeVsSPY_pct', 'DailyMaxDrawdown_pct']].to_string(index=False))
+          print(candidates[['Variant', 'Decision', 'TotalReturn_pct', 'TotalEdgeVsSPY_pct', 'DailyMaxDrawdown_pct', 'PeriodHitRate_pct']].to_string(index=False))
           PY
       - name: Upload comparison
         if: always()
@@ -159,5 +170,6 @@ jobs:
           name: Momentum_legacy_comparison
           path: |
             Momentum_legacy_*.csv
+            Momentum_model_decision.csv
           if-no-files-found: warn
           retention-days: 30
