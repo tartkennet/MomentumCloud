@@ -1,0 +1,108 @@
+name: MomentumCloud Production v1
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every US trading evening. Monthly rotation is enforced by state;
+    # daily runs keep stops, holdings, prices and regime status current.
+    - cron: "15 23 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-production-v1
+  cancel-in-progress: true
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Restore price and corporate-action caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .momentum_history_cache.json
+            .momentum_splits_cache.json
+          key: momentum-production-v1-${{ github.run_id }}
+          restore-keys: momentum-production-v1-
+      - name: Verify code before data access
+        run: |
+          python -m py_compile momentum_config.py momentum_strategy.py momentum_production.py momentum_master_v3.py
+          python -m unittest discover -s tests -v
+      - name: Build verified production snapshot
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python momentum_production.py 2>&1 | tee momentum_run.log
+      - name: Validate product outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from openpyxl import load_workbook
+          from momentum_production import validate_payload
+
+          payload = json.loads(Path("public/data/dashboard.json").read_text())
+          validate_payload(payload)
+          wb = load_workbook("Momentum.xlsx", data_only=True, read_only=True)
+          required = {"BuyNow", "Kandidater", "Holdings", "Signals", "Diagnostics"}
+          missing = required.difference(wb.sheetnames)
+          if missing:
+              raise RuntimeError(f"Missing workbook sheets: {sorted(missing)}")
+          if payload["risk"]["status"] == "RISK ON" and not 1 <= len(payload["buy_now"]) <= 15:
+              raise RuntimeError("RISK ON requires 1-15 eligible Buy Now rows")
+          print(f"Verified {payload['market_date']}: {len(payload['buy_now'])} Buy Now, {len(payload['candidates'])} candidates")
+          PY
+      - name: Write run report
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          log = Path("momentum_run.log").read_text(errors="replace")[-12000:] if Path("momentum_run.log").exists() else "No production log was created."
+          Path("Momentum_last_run.md").write_text(
+              "# MomentumCloud Production v1\n\n"
+              f"Result: {os.environ['JOB_STATUS'].upper()}\n\n"
+              f"Updated UTC: {datetime.now(timezone.utc).isoformat()}\n\n"
+              "Model: v4-balanced · 15 equal weights · monthly · ADV20 5M USD · stop 10% · SPY>SMA200\n\n"
+              "Current limitation: survivorship bias\n\n"
+              "## Log tail\n\n```text\n" + log + "\n```\n",
+              encoding="utf-8",
+          )
+          PY
+      - name: Publish verified snapshot
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f Momentum.xlsx .momentum_production_state.json
+          git add Momentum_buy_history.csv Momentum_signals.csv Momentum_last_run.md public/data/dashboard.json public/data/buynow.json
+          git diff --cached --quiet || git commit -m "Publish MomentumCloud Production v1 snapshot"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_Production_v1
+          path: |
+            Momentum.xlsx
+            Momentum_buy_history.csv
+            Momentum_signals.csv
+            Momentum_last_run.md
+            public/data/dashboard.json
+            momentum_run.log
+          if-no-files-found: warn
+

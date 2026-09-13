@@ -23,7 +23,9 @@ from momentum_master_v3 import (
     get_from_map,
     normalize_ticker,
     slim_grouped_map,
+    read_universe,
 )
+from momentum_config import PRODUCTION
 
 CACHE_FILE = ".momentum_backtest_cache.json"
 UNIVERSE_CACHE_FILE = ".momentum_point_in_time_universe.json"
@@ -31,30 +33,23 @@ DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
 BACKTEST_CACHE_VERSION = 3
 UNIVERSE_CACHE_VERSION = 1
-RESEARCH_MIN_ADV20_USD = 5_000_000.0
-MAX_POSITION_SHARE_OF_ADV20 = 0.001
+RESEARCH_MIN_ADV20_USD = PRODUCTION.min_adv20_usd
 POINT_IN_TIME_UNIVERSE_LABEL = "POINT_IN_TIME_US_COMMON_STOCKS"
 ELIGIBLE_PRIMARY_EXCHANGES = frozenset({"XNAS", "XNYS", "XASE"})
 ELIGIBLE_SECURITY_TYPES = frozenset({"CS"})
 
 
 def required_adv20_usd(portfolio_value_usd, top_n):
-    """Scale the liquidity gate to the intended order size.
+    """Return the locked production ADV20 minimum.
 
-    A position may represent at most 0.1% of average daily dollar volume.  A
-    $5m absolute floor remains to avoid extremely thin names when the account
-    is small; unlike the previous $20m/$50m constants, the gate rises only
-    when the planned position is large enough to require it.
+    Inputs are still validated because the historical backtest API accepts
+    them, but production liquidity is not silently scaled with account size.
     """
     if portfolio_value_usd <= 0:
         raise ValueError("portfolio_value_usd must be positive")
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
-    planned_position_usd = float(portfolio_value_usd) / int(top_n)
-    return max(
-        RESEARCH_MIN_ADV20_USD,
-        planned_position_usd / MAX_POSITION_SHARE_OF_ADV20,
-    )
+    return RESEARCH_MIN_ADV20_USD
 
 
 def load_backtest_cache(path, expected_universe_signature=None):
@@ -97,10 +92,10 @@ def save_backtest_cache(path, sessions, adjusted_through, universe_signature):
     )
 
 
-def universe_signature(tickers, first_history_day, last_history_day):
+def universe_signature(tickers, first_history_day, last_history_day, universe_label=POINT_IN_TIME_UNIVERSE_LABEL):
     """Identify the exact security scope represented by a slim price cache."""
     material = "\n".join(
-        [POINT_IN_TIME_UNIVERSE_LABEL, str(first_history_day), str(last_history_day)]
+        [str(universe_label), str(first_history_day), str(last_history_day)]
         + sorted({normalize_ticker(ticker) for ticker in tickers})
     )
     return hashlib.sha256(material.encode("utf-8")).hexdigest()
@@ -613,7 +608,7 @@ def build_prior_2_12_metrics(
 
         if selection_model == "classic-12-2":
             if (
-                price < 5.0
+                price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
                 or price <= sma200
                 or mom12_2 <= 0.0
@@ -621,7 +616,7 @@ def build_prior_2_12_metrics(
                 continue
         elif selection_model in {"v4-balanced", "v6-core"}:
             if (
-                price < 5.0
+                price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
                 or price <= sma50
                 or price <= sma200
@@ -632,7 +627,7 @@ def build_prior_2_12_metrics(
                 continue
         else:
             if (
-                price < 5.0
+                price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
                 or price <= sma50
                 or price <= sma200
@@ -788,10 +783,12 @@ def choose_top(
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core"
     }:
-        if selection_model == "v5-regime" and not market_regime_is_risk_on(
+        if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
         ):
-            logging.info("Risk-off market regime on %s: hold cash", asof)
+            logging.info("Production risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model == "v5-regime" and not market_regime_is_risk_on(signal_map, history):
             return []
         if selection_model == "v6-core" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -1036,6 +1033,8 @@ def run(
     rebalance_exit_execution="next-close",
     selection_model="v3",
     portfolio_value_usd=10_000.0,
+    universe_mode="point-in-time",
+    template_file="Momentum mall fil.xlsx",
 ):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -1084,7 +1083,15 @@ def run(
     if not periods:
         raise RuntimeError("No executable rebalance periods in requested range")
     executable_signals = [signal for signal, _, _ in periods]
-    universes_by_signal = point_in_time_universes(client, executable_signals)
+    if universe_mode == "current-template":
+        current_universe = read_universe(template_file)
+        universes_by_signal = {signal: current_universe for signal in executable_signals}
+        universe_label = "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS"
+    elif universe_mode == "point-in-time":
+        universes_by_signal = point_in_time_universes(client, executable_signals)
+        universe_label = POINT_IN_TIME_UNIVERSE_LABEL
+    else:
+        raise ValueError("universe_mode must be current-template or point-in-time")
     successor_tickers = [
         str(action["successor_ticker"])
         for action in STOCK_CORPORATE_ACTIONS.values()
@@ -1101,6 +1108,7 @@ def run(
         history_tickers,
         trading_day_strings[0],
         trading_day_strings[-1],
+        universe_label,
     )
     cache, adjusted_through = load_backtest_cache(CACHE_FILE, price_scope)
     cache_basis_day = datetime.now(timezone.utc).date().isoformat()
@@ -1161,13 +1169,9 @@ def run(
             min_adv20_usd,
         )
         cash_period = False
-        if selection_model in {"v5-regime", "v6-core"} and not picks:
+        if selection_model in {"v4-balanced", "v5-regime", "v6-core"} and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
-            regime_check = (
-                market_regime_is_risk_on
-                if selection_model == "v5-regime"
-                else core_market_regime_is_risk_on
-            )
+            regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
@@ -1369,7 +1373,7 @@ def run(
     if selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core"
     }:
-        summary["LiquidityRule"] = "MIN_ADV20_5M_POSITION_SCALED"
+        summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
     elif selection_model == "v3":
         summary["LiquidityRule"] = "V3_FIXED"
@@ -1393,7 +1397,7 @@ def run(
         f"SIGNAL_CLOSE_ENTRY_{entry_execution.upper()}_REBALANCE_{rebalance_exit_execution.upper()}"
     )
     universe_sizes = [len(universes_by_signal[signal]) for signal in executable_signals]
-    summary["Universe"] = POINT_IN_TIME_UNIVERSE_LABEL
+    summary["Universe"] = universe_label
     summary["UniverseSignalDates"] = len(executable_signals)
     summary["UniverseMinTickers"] = min(universe_sizes)
     summary["UniverseMaxTickers"] = max(universe_sizes)
@@ -1412,6 +1416,8 @@ if __name__ == "__main__":
     parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--portfolio-value-usd", type=float, default=10_000.0)
+    parser.add_argument("--universe-mode", choices=("current-template", "point-in-time"), default="point-in-time")
+    parser.add_argument("--template-file", default="Momentum mall fil.xlsx")
     parser.add_argument("--entry-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--rebalance-exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument(
@@ -1436,4 +1442,6 @@ if __name__ == "__main__":
         arguments.rebalance_exit_execution,
         arguments.selection_model,
         arguments.portfolio_value_usd,
+        arguments.universe_mode,
+        arguments.template_file,
     )

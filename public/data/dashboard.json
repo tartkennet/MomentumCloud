@@ -1,0 +1,25 @@
+{
+  "product": "MomentumCloud Production v1",
+  "generated_at": null,
+  "market_date": null,
+  "selection_month": null,
+  "rebalance_due": false,
+  "config": {
+    "selection_model": "v4-balanced",
+    "position_count": 15,
+    "candidate_count": 50,
+    "min_price_usd": 10.0,
+    "min_adv20_usd": 5000000.0,
+    "stop_loss_pct": 10.0
+  },
+  "limitation": "Current limitation: survivorship bias",
+  "risk": {"status": "WAITING", "risk_on": false, "spy_close": null, "spy_sma200": null, "exposure_pct": 0},
+  "buy_now": [],
+  "candidates": [],
+  "holdings": [],
+  "signals": [],
+  "performance": {"status": "Awaiting first successful production run"},
+  "history": [],
+  "system": {"github_action_status": "WAITING", "polygon_status": "WAITING"}
+}
+

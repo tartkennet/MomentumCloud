@@ -189,7 +189,9 @@ def read_portfolio_value_sek(path: str) -> float:
 
 def pick_latest_grouped_date(client: PolygonClient, max_lookback_days: int = 10) -> Tuple[str, Dict[str, Dict[str, float]], float]:
     today = datetime.now(timezone.utc).date()
-    for days_back in range(1, max_lookback_days + 1):
+    # The production workflow runs after the US close, so try the current UTC
+    # date first. Polygon returns no complete grouped result before it exists.
+    for days_back in range(0, max_lookback_days + 1):
         date_str = (today - timedelta(days=days_back)).isoformat()
         try:
             grouped = client.fetch_grouped_stocks(date_str)
@@ -784,7 +786,8 @@ def write_output(buynow_df, candidates_df, debug_df, history_df, holdings_df, po
     wb.save(output_file)
 
 
-def main() -> None:
+def historical_v3_main() -> None:
+    """Frozen pre-Production-v1 runner, retained for historical comparison."""
     setup_logging()
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -821,4 +824,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # Preserve the old command as a safe compatibility alias. It must never
+    # execute the retired v3 selector in production.
+    from momentum_production import main as production_main
+
+    production_main()
