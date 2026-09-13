@@ -29,7 +29,7 @@ CACHE_FILE = ".momentum_backtest_cache.json"
 DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
 BACKTEST_CACHE_VERSION = 2
-RESEARCH_MIN_ADV20_USD = 1_000_000.0
+RESEARCH_MIN_ADV20_USD = 5_000_000.0
 MAX_POSITION_SHARE_OF_ADV20 = 0.001
 
 
@@ -37,7 +37,7 @@ def required_adv20_usd(portfolio_value_usd, top_n):
     """Scale the liquidity gate to the intended order size.
 
     A position may represent at most 0.1% of average daily dollar volume.  A
-    $1m absolute floor remains to avoid extremely thin names when the account
+    $5m absolute floor remains to avoid extremely thin names when the account
     is small; unlike the previous $20m/$50m constants, the gate rises only
     when the planned position is large enough to require it.
     """
@@ -155,6 +155,44 @@ CASH_CORPORATE_ACTIONS = {
     },
 }
 
+# Verified stock consideration needed to keep a position economically intact
+# after the original security stops trading.
+# HOUS: Compass completed the acquisition on 2026-01-09. Each HOUS share was
+# converted into 1.436 COMP shares, plus cash in lieu of any fractional share.
+# Sources:
+# https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
+# https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
+STOCK_CORPORATE_ACTIONS = {
+    "HOUS": {
+        "effective_date": "2026-01-09",
+        "successor_ticker": "COMP",
+        "shares_per_share": 1.436,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
+}
+
+
+def valuation_identity(ticker, day):
+    """Return the executable security and original-share conversion for a day."""
+    action = STOCK_CORPORATE_ACTIONS.get(ticker)
+    if action and str(day) >= str(action["effective_date"]):
+        return (
+            str(action["successor_ticker"]),
+            float(action["shares_per_share"]),
+            action,
+        )
+    return ticker, 1.0, None
+
+
+def position_close_on_day(cache, ticker, day):
+    """Value one original share across an audited stock-for-stock merger."""
+    value_ticker, ratio, action = valuation_identity(ticker, day)
+    row = get_from_map(cache.get(day, {}), value_ticker)
+    if not row:
+        return None, action
+    return float(row["close"]) * ratio, action
+
 
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
     """Return recent trading sessions, reusing the persistent history cache."""
@@ -242,24 +280,24 @@ def research_exit(
         ticker,
     )
     for index, signal_day in enumerate(sessions[:-1]):
-        row = get_from_map(cache[signal_day], ticker)
-        if not row:
+        close, _ = position_close_on_day(cache, ticker, signal_day)
+        if close is None:
             continue
         triggered = False
         reason = "REBALANCE"
         if exit_rule == "stop":
             threshold = -abs(float(stop_loss_pct)) / 100.0
-            triggered = float(row["close"]) / entry_price - 1.0 <= threshold
+            triggered = close / entry_price - 1.0 <= threshold
             reason = "STOP_LOSS"
         elif exit_rule == "sma50":
             history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:50]
             closes = [
-                float(value["close"])
+                float(value)
                 for day in history_days
-                for value in [get_from_map(cache[day], ticker)]
-                if value
+                for value, _ in [position_close_on_day(cache, ticker, day)]
+                if value is not None
             ]
-            triggered = len(closes) == 50 and float(row["close"]) < sum(closes) / 50.0
+            triggered = len(closes) == 50 and close < sum(closes) / 50.0
             reason = "BELOW_SMA50"
         elif exit_rule == "momentum":
             history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:253]
@@ -306,9 +344,9 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
                 if day >= str(position["ExitDate"]):
                     price = float(position["ExitPrice_USD"])
                 else:
-                    row = get_from_map(cache.get(day, {}), ticker)
-                    if row:
-                        last_prices[ticker] = float(row["close"])
+                    close, _ = position_close_on_day(cache, ticker, day)
+                    if close is not None:
+                        last_prices[ticker] = close
                     price = last_prices.get(ticker, float(position["EntryPrice_USD"]))
                 returns.append(price / float(position["EntryPrice_USD"]) - 1.0)
             last_value = period_start_value * (
@@ -381,9 +419,13 @@ def build_prior_2_12_metrics(
     standard momentum formation window without using the most recent month.
     v4-balanced keeps that signal dominant, then rewards 6-2 confirmation,
     lower formation-window volatility and less extension above SMA50.
+    v5-regime adds 3-1 confirmation and a bounded RSI/extension check; market
+    regime handling is applied separately so weak markets can remain in cash.
     """
-    if selection_model not in {"classic-12-2", "v4-balanced"}:
-        raise ValueError("selection_model must be classic-12-2 or v4-balanced")
+    if selection_model not in {"classic-12-2", "v4-balanced", "v5-regime"}:
+        raise ValueError(
+            "selection_model must be classic-12-2, v4-balanced or v5-regime"
+        )
 
     records = []
     for ticker in tickers:
@@ -410,6 +452,15 @@ def build_prior_2_12_metrics(
         sma200_1m_ago = sum(closes[21:221]) / 200.0
         mom12_2 = (closes[21] / closes[252] - 1.0) * 100.0
         mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
+        mom3_1 = (closes[21] / closes[63] - 1.0) * 100.0
+        recent_chronological = list(reversed(closes[:15]))
+        deltas = [
+            later - earlier
+            for earlier, later in zip(recent_chronological, recent_chronological[1:])
+        ]
+        avg_gain = sum(max(delta, 0.0) for delta in deltas) / 14.0
+        avg_loss = sum(max(-delta, 0.0) for delta in deltas) / 14.0
+        rsi14 = 100.0 if avg_loss == 0.0 else 100.0 - 100.0 / (1.0 + avg_gain / avg_loss)
         formation = list(reversed(closes[21:127]))
         daily_returns = [
             later / earlier - 1.0
@@ -433,7 +484,7 @@ def build_prior_2_12_metrics(
                 or mom12_2 <= 0.0
             ):
                 continue
-        else:
+        elif selection_model == "v4-balanced":
             if (
                 price < 5.0
                 or adv20 < min_adv20_usd
@@ -444,14 +495,30 @@ def build_prior_2_12_metrics(
                 or mom6_2 <= 0.0
             ):
                 continue
+        else:
+            if (
+                price < 5.0
+                or adv20 < min_adv20_usd
+                or price <= sma50
+                or price <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or mom6_2 <= 0.0
+                or mom3_1 <= 0.0
+                or not 45.0 <= rsi14 <= 82.0
+                or dist_sma50 > 35.0
+            ):
+                continue
 
         records.append({
             "ticker": ticker,
             "price_usd": price,
             "mom12_2": mom12_2,
             "mom6_2": mom6_2,
+            "mom3_1": mom3_1,
             "annualized_vol": annualized_vol,
             "dist_sma50": dist_sma50,
+            "rsi14": rsi14,
         })
 
     if selection_model == "classic-12-2":
@@ -475,12 +542,27 @@ def build_prior_2_12_metrics(
     frame["rank_low_extension"] = frame["dist_sma50"].rank(
         method="average", ascending=False, pct=True
     )
-    frame["total_score"] = 100.0 * (
-        0.55 * frame["rank_12_2"]
-        + 0.20 * frame["rank_6_2"]
-        + 0.15 * frame["rank_low_vol"]
-        + 0.10 * frame["rank_low_extension"]
-    )
+    if selection_model == "v4-balanced":
+        frame["total_score"] = 100.0 * (
+            0.55 * frame["rank_12_2"]
+            + 0.20 * frame["rank_6_2"]
+            + 0.15 * frame["rank_low_vol"]
+            + 0.10 * frame["rank_low_extension"]
+        )
+    else:
+        frame["rank_3_1"] = frame["mom3_1"].rank(method="average", pct=True)
+        frame["rsi_distance"] = (frame["rsi14"] - 65.0).abs()
+        frame["rank_rsi"] = frame["rsi_distance"].rank(
+            method="average", ascending=False, pct=True
+        )
+        frame["total_score"] = 100.0 * (
+            0.45 * frame["rank_12_2"]
+            + 0.20 * frame["rank_6_2"]
+            + 0.15 * frame["rank_3_1"]
+            + 0.10 * frame["rank_low_vol"]
+            + 0.05 * frame["rank_low_extension"]
+            + 0.05 * frame["rank_rsi"]
+        )
     return [
         SimpleNamespace(
             ticker=str(row.ticker),
@@ -489,6 +571,25 @@ def build_prior_2_12_metrics(
         )
         for row in frame.itertuples(index=False)
     ]
+
+
+def market_regime_is_risk_on(latest_map, recent253):
+    """Require SPY above a rising 200-day average before opening new risk."""
+    latest = get_from_map(latest_map, "SPY")
+    if not latest:
+        return False
+    closes = []
+    for _, grouped in recent253:
+        row = get_from_map(grouped, "SPY")
+        if not row:
+            break
+        closes.append(float(row["close"]))
+    if len(closes) < 221:
+        return False
+    price = float(latest["close"])
+    sma200 = sum(closes[:200]) / 200.0
+    sma200_1m_ago = sum(closes[21:221]) / 200.0
+    return price > sma200 and sma200 > sma200_1m_ago
 
 
 def choose_top(
@@ -502,9 +603,12 @@ def choose_top(
 ):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
-    if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
+    if selection_model not in {
+        "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime"
+    }:
         raise ValueError(
-            "selection_model must be v3, legacy-v1, classic-12-2 or v4-balanced"
+            "selection_model must be v3, legacy-v1, classic-12-2, "
+            "v4-balanced or v5-regime"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -513,7 +617,12 @@ def choose_top(
     history = session_window(client, cache, tickers, asof)
     if selection_model == "legacy-v1":
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
-    elif selection_model in {"classic-12-2", "v4-balanced"}:
+    elif selection_model in {"classic-12-2", "v4-balanced", "v5-regime"}:
+        if selection_model == "v5-regime" and not market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Risk-off market regime on %s: hold cash", asof)
+            return []
         metrics = build_prior_2_12_metrics(
             tickers,
             signal_map,
@@ -542,10 +651,9 @@ def execution_price(
     """Return an executable price on the same split basis as the session close.
 
     Polygon's grouped feed is adjusted, but an occasional split-session open can
-    arrive on the pre-split basis while that session's close is post-split. For
-    next-open simulation we normalize only a large mismatch that resolves to the
-    same basis as the close. Verified split events are preferred, with a narrow
-    fallback for common split ratios when the provider omits the event.
+    arrive on the pre-split basis while that session's close is post-split. Only
+    a provider-confirmed split may rewrite an execution price. Guessing common
+    ratios can manufacture returns and is therefore forbidden.
     """
     field = "open" if execution == "next-open" else "close"
     price = float(row.get(field, row["close"]))
@@ -569,12 +677,6 @@ def execution_price(
             candidates.extend([price * ratio, price / ratio])
             verified_factors.extend([ratio, 1.0 / ratio])
 
-    # Provider split records can lag or omit an event. Only accept a familiar
-    # split factor when it changes a 50%+ mismatch into a price within 10% of
-    # that day's close, so normal opening gaps are never rewritten.
-    for ratio in (2.0, 3.0, 4.0, 5.0, 10.0):
-        candidates.extend([price * ratio, price / ratio])
-
     normalized = min(candidates, key=lambda value: abs(math.log(value / basis_price)))
     raw_gap = abs(math.log(price / basis_price))
     normalized_gap = abs(math.log(normalized / basis_price))
@@ -584,23 +686,73 @@ def execution_price(
         and normalized_gap <= math.log(1.1)
     ):
         applied_factor = normalized / price
-        factor_source = (
-            "verified-split"
-            if any(math.isclose(applied_factor, value, rel_tol=1e-9) for value in verified_factors)
-            else "ratio-fallback"
-        )
         logging.warning(
             "Normalized split-like open for %s %.4f to %.4f on %s "
-            "(factor %.6g, source %s)",
+            "(factor %.6g, source verified-split)",
             ticker or "UNKNOWN",
             price,
             normalized,
             execution_date,
             applied_factor,
-            factor_source,
         )
         return normalized
     return price
+
+
+def find_unverified_split_basis_tickers(
+    cache, trading_day_strings, tickers, split_events_by_ticker
+):
+    """Find symbols whose open changes by a split-like ratio without an event.
+
+    Such rows are excluded from the audit universe instead of being silently
+    rewritten. This is a data-quality exclusion, not a trading rule.
+    """
+    suspicious = {}
+    common_ratios = (2.0, 3.0, 4.0, 5.0, 10.0)
+    for ticker in tickers:
+        prior_close = None
+        for day in trading_day_strings:
+            row = get_from_map(cache.get(day, {}), ticker)
+            if not row:
+                continue
+            open_price = float(row.get("open", row["close"]))
+            close_price = float(row["close"])
+            if prior_close and open_price > 0 and prior_close > 0:
+                raw_gap = abs(math.log(open_price / prior_close))
+                matching_ratio = next(
+                    (
+                        ratio
+                        for ratio in common_ratios
+                        if min(
+                            abs(math.log(open_price * ratio / prior_close)),
+                            abs(math.log(open_price / ratio / prior_close)),
+                        )
+                        <= math.log(1.1)
+                    ),
+                    None,
+                )
+                nearby_verified = any(
+                    abs(
+                        (
+                            datetime.fromisoformat(str(event.get("execution_date"))).date()
+                            - datetime.fromisoformat(day).date()
+                        ).days
+                    )
+                    <= 3
+                    for event in split_events_by_ticker.get(ticker, [])
+                    if event.get("execution_date")
+                )
+                if (
+                    raw_gap >= math.log(1.5)
+                    and matching_ratio is not None
+                    and not nearby_verified
+                ):
+                    suspicious.setdefault(ticker, []).append(
+                        f"{day}: open {open_price:.4f} vs prior close "
+                        f"{prior_close:.4f}, split-like ratio {matching_ratio:g}"
+                    )
+            prior_close = close_price
+    return suspicious
 
 
 def first_tradable_row(cache, trading_day_strings, ticker, target_day, latest_day=None):
@@ -636,6 +788,39 @@ def resolve_exit_execution(
     the corporate-action effective date. If the security never trades again,
     the position is settled at the verified cash consideration.
     """
+    stock_action = STOCK_CORPORATE_ACTIONS.get(ticker)
+    if stock_action:
+        action_day = str(stock_action["effective_date"])
+        if entry_day < action_day <= latest_day:
+            if target_day < action_day:
+                resolved_day, row = first_tradable_row(
+                    cache,
+                    trading_day_strings,
+                    ticker,
+                    target_day,
+                    action_day,
+                )
+                if row:
+                    return resolved_day, row, None
+            successor = str(stock_action["successor_ticker"])
+            ratio = float(stock_action["shares_per_share"])
+            successor_target = max(target_day, action_day)
+            resolved_day, successor_row = first_tradable_row(
+                cache,
+                trading_day_strings,
+                successor,
+                successor_target,
+                latest_day,
+            )
+            if successor_row:
+                converted = dict(successor_row)
+                for field in ("open", "high", "low", "close"):
+                    if field in converted and converted[field] is not None:
+                        converted[field] = float(converted[field]) * ratio
+                resolved_action = dict(stock_action)
+                resolved_action["valuation_ticker"] = successor
+                return resolved_day, converted, resolved_action
+
     action = CASH_CORPORATE_ACTIONS.get(ticker)
     eligible_action = None
     search_latest = latest_day
@@ -682,7 +867,11 @@ def run(
         raise RuntimeError("Missing POLYGON_API_KEY")
     client = PolygonClient(api_key)
     tickers = read_universe(INPUT_TEMPLATE)
-    history_tickers = list(dict.fromkeys(tickers + ["SPY"]))
+    successor_tickers = [
+        str(action["successor_ticker"])
+        for action in STOCK_CORPORATE_ACTIONS.values()
+    ]
+    history_tickers = list(dict.fromkeys(tickers + ["SPY"] + successor_tickers))
     cache, adjusted_through = load_backtest_cache(CACHE_FILE)
     start_day = datetime.fromisoformat(start).date()
     end_day = datetime.fromisoformat(end).date()
@@ -691,9 +880,12 @@ def run(
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
-    if selection_model not in {"v3", "legacy-v1", "classic-12-2", "v4-balanced"}:
+    if selection_model not in {
+        "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime"
+    }:
         raise ValueError(
-            "selection_model must be v3, legacy-v1, classic-12-2 or v4-balanced"
+            "selection_model must be v3, legacy-v1, classic-12-2, "
+            "v4-balanced or v5-regime"
         )
 
     needed_sessions = 253 + int((end_day - start_day).days * 5 / 7) + 10
@@ -726,6 +918,19 @@ def run(
         ticker = str(event.get("ticker", "")).upper().strip()
         if ticker:
             split_events_by_ticker.setdefault(ticker, []).append(event)
+    split_basis_exclusions = find_unverified_split_basis_tickers(
+        cache,
+        trading_day_strings,
+        tickers,
+        split_events_by_ticker,
+    )
+    for ticker, details in sorted(split_basis_exclusions.items()):
+        logging.error(
+            "DATA_QUALITY_EXCLUSION %s: %s",
+            ticker,
+            " | ".join(details),
+        )
+    tickers = [ticker for ticker in tickers if ticker not in split_basis_exclusions]
     signals = calendar_rebalance_signals(trading_day_strings, start, end, rebalance_months)
     periods = execution_periods(trading_day_strings, signals, end)
     if not periods:
@@ -742,7 +947,11 @@ def run(
             selection_model,
             min_adv20_usd,
         )
-        if len(picks) < top_n:
+        cash_period = False
+        if selection_model == "v5-regime" and not picks:
+            signal_history = session_window(client, cache, history_tickers, signal)
+            cash_period = not market_regime_is_risk_on(cache[signal], signal_history)
+        if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
         entry_map = cache[entry]
         exit_map = cache[exit_day]
@@ -778,7 +987,7 @@ def run(
             if not exit_row or resolved_exit <= actual_entry:
                 missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
                 continue
-            if corporate_action:
+            if corporate_action and corporate_action["reason"] == "CASH_MERGER":
                 exit_reason = str(corporate_action["reason"])
                 applied_exit_execution = str(corporate_action["execution"])
             else:
@@ -794,24 +1003,37 @@ def run(
                 pick.price_usd,
                 pick.ticker,
             )
+            exit_valuation_ticker = (
+                str(corporate_action.get("valuation_ticker", pick.ticker))
+                if corporate_action
+                else pick.ticker
+            )
+            exit_conversion_ratio = (
+                float(corporate_action.get("shares_per_share", 1.0))
+                if corporate_action
+                else 1.0
+            )
+            exit_split_events = split_events_by_ticker.get(exit_valuation_ticker, [])
             prior_exit_reference = None
             exit_index = trading_day_strings.index(resolved_exit)
             if exit_index > 0:
                 prior_exit_row = get_from_map(
-                    cache[trading_day_strings[exit_index - 1]], pick.ticker
+                    cache[trading_day_strings[exit_index - 1]], exit_valuation_ticker
                 )
                 if prior_exit_row:
-                    prior_exit_reference = float(prior_exit_row["close"])
+                    prior_exit_reference = (
+                        float(prior_exit_row["close"]) * exit_conversion_ratio
+                    )
             exit_price = (
                 float(exit_row["close"])
-                if corporate_action
+                if corporate_action and corporate_action["reason"] == "CASH_MERGER"
                 else execution_price(
                     exit_row,
                     applied_exit_execution,
-                    split_events,
+                    exit_split_events,
                     resolved_exit,
                     prior_exit_reference,
-                    pick.ticker,
+                    exit_valuation_ticker,
                 )
             )
             stock_return = exit_price / entry_price - 1
@@ -819,7 +1041,7 @@ def run(
             entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
             exit_delay = (
                 0
-                if corporate_action
+                if corporate_action and corporate_action["reason"] == "CASH_MERGER"
                 else trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
             )
             if entry_delay or exit_delay:
@@ -841,6 +1063,8 @@ def run(
                 "CorporateAction": (
                     str(corporate_action["reason"]) if corporate_action else ""
                 ),
+                "CorporateActionTicker": exit_valuation_ticker,
+                "CorporateActionRatio": exit_conversion_ratio,
                 "EntryExecution": entry_execution,
                 "ExitExecution": applied_exit_execution,
                 "EntryDelaySessions": entry_delay,
@@ -856,14 +1080,14 @@ def run(
                 "ExitPrice_USD": exit_price,
                 "GrossReturn_pct": stock_return * 100,
             })
-        if len(stock_returns) < top_n:
+        if not cash_period and len(stock_returns) < top_n:
             details = ", ".join(missing_executions) or "unknown ticker"
             raise RuntimeError(
                 f"No executable price through available history for {signal}: {details}"
             )
 
-        gross = sum(stock_returns) / top_n
-        net = gross - ROUND_TRIP_COST_PCT / 100
+        gross = 0.0 if cash_period else sum(stock_returns) / top_n
+        net = 0.0 if cash_period else gross - ROUND_TRIP_COST_PCT / 100
         spy0 = get_from_map(entry_map, "SPY")
         spy1 = get_from_map(exit_map, "SPY")
         if not spy0 or not spy1:
@@ -888,7 +1112,8 @@ def run(
             "ExitExecution": exit_execution,
             "RebalanceExitExecution": rebalance_exit_execution,
             "StopLoss_pct": stop_loss_pct,
-            "TopTickers": ",".join(pick.ticker for pick in picks),
+            "TopTickers": "CASH" if cash_period else ",".join(pick.ticker for pick in picks),
+            "RiskRegime": "CASH" if cash_period else "RISK_ON",
             "GrossReturn_pct": gross * 100,
             "Cost_pct": ROUND_TRIP_COST_PCT,
             "NetReturn_pct": net * 100,
@@ -901,7 +1126,8 @@ def run(
 
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
-    pd.DataFrame(position_rows).to_csv("Momentum_backtest_positions.csv", index=False)
+    positions_frame = pd.DataFrame(position_rows)
+    positions_frame.to_csv("Momentum_backtest_positions.csv", index=False)
     summary = result.groupby("RebalanceMonths").agg(
         Periods=("SignalDate", "count"),
         AvgNetReturn_pct=("NetReturn_pct", "mean"),
@@ -922,8 +1148,8 @@ def run(
     summary["TopN"] = top_n
     summary["SelectionModel"] = selection_model
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
-    if selection_model in {"classic-12-2", "v4-balanced"}:
-        summary["LiquidityRule"] = "POSITION_SCALED"
+    if selection_model in {"classic-12-2", "v4-balanced", "v5-regime"}:
+        summary["LiquidityRule"] = "MIN_ADV20_5M_POSITION_SCALED"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
     elif selection_model == "v3":
         summary["LiquidityRule"] = "V3_FIXED"
@@ -935,7 +1161,14 @@ def run(
     summary["ExitExecution"] = exit_execution
     summary["RebalanceExitExecution"] = rebalance_exit_execution
     summary["StopLoss_pct"] = stop_loss_pct
-    summary["EarlyExitPositions"] = int((pd.DataFrame(position_rows)["ExitReason"] != "REBALANCE").sum())
+    summary["CashPeriods"] = int((result["RiskRegime"] == "CASH").sum())
+    summary["DataQualityExclusionCount"] = len(split_basis_exclusions)
+    summary["DataQualityExcludedTickers"] = ",".join(sorted(split_basis_exclusions))
+    summary["EarlyExitPositions"] = (
+        0
+        if positions_frame.empty
+        else int((positions_frame["ExitReason"] != "REBALANCE").sum())
+    )
     summary["Execution"] = (
         f"SIGNAL_CLOSE_ENTRY_{entry_execution.upper()}_REBALANCE_{rebalance_exit_execution.upper()}"
     )
@@ -958,7 +1191,7 @@ if __name__ == "__main__":
     parser.add_argument("--rebalance-exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument(
         "--selection-model",
-        choices=("v3", "legacy-v1", "classic-12-2", "v4-balanced"),
+        choices=("v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime"),
         default="v3",
     )
     arguments = parser.parse_args()
