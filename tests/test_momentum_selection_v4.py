@@ -3,6 +3,7 @@ from types import SimpleNamespace
 
 from backtest_momentum_v3 import (
     build_prior_2_12_metrics,
+    market_regime_is_risk_on,
     required_adv20_usd,
 )
 
@@ -24,24 +25,24 @@ def history_for(series_by_ticker):
 
 
 class LockedMomentumSelectionTests(unittest.TestCase):
-    def test_liquidity_gate_scales_from_one_million_floor(self):
-        self.assertEqual(required_adv20_usd(10_000, 15), 1_000_000.0)
+    def test_liquidity_gate_scales_from_five_million_floor(self):
+        self.assertEqual(required_adv20_usd(10_000, 15), 5_000_000.0)
         self.assertEqual(required_adv20_usd(30_000_000, 15), 2_000_000_000.0)
 
-    def test_research_models_accept_candidate_above_one_million_adv(self):
+    def test_research_models_accept_candidate_above_five_million_adv(self):
         closes = [125.0 - 25.0 * index / 252.0 for index in range(253)]
         recent = history_for({"SMALL": closes})
         for _, grouped in recent:
-            grouped["SMALL"]["volume"] = 12_000.0
-        latest = {"SMALL": {"close": 125.0, "volume": 12_000.0}}
+            grouped["SMALL"]["volume"] = 48_000.0
+        latest = {"SMALL": {"close": 125.0, "volume": 48_000.0}}
 
         for model in ("classic-12-2", "v4-balanced"):
             metrics = build_prior_2_12_metrics(
-                ["SMALL"], latest, recent, model, min_adv20_usd=1_000_000.0
+                ["SMALL"], latest, recent, model, min_adv20_usd=5_000_000.0
             )
             self.assertEqual([item.ticker for item in metrics], ["SMALL"])
 
-    def test_research_models_reject_candidate_below_one_million_adv(self):
+    def test_research_models_reject_candidate_below_five_million_adv(self):
         closes = [125.0 - 25.0 * index / 252.0 for index in range(253)]
         recent = history_for({"THIN": closes})
         for _, grouped in recent:
@@ -50,7 +51,7 @@ class LockedMomentumSelectionTests(unittest.TestCase):
 
         for model in ("classic-12-2", "v4-balanced"):
             metrics = build_prior_2_12_metrics(
-                ["THIN"], latest, recent, model, min_adv20_usd=1_000_000.0
+                ["THIN"], latest, recent, model, min_adv20_usd=5_000_000.0
             )
             self.assertEqual(metrics, [])
 
@@ -88,6 +89,20 @@ class LockedMomentumSelectionTests(unittest.TestCase):
 
         scores = {item.ticker: item.total_score for item in metrics}
         self.assertGreater(scores["STEADY"], scores["EXTENDED"])
+
+    def test_regime_requires_spy_above_rising_sma200(self):
+        rising = [120.0 - 20.0 * index / 252.0 for index in range(253)]
+        falling = [80.0 + 20.0 * index / 252.0 for index in range(253)]
+        self.assertTrue(
+            market_regime_is_risk_on(
+                {"SPY": {"close": 120.0}}, history_for({"SPY": rising})
+            )
+        )
+        self.assertFalse(
+            market_regime_is_risk_on(
+                {"SPY": {"close": 80.0}}, history_for({"SPY": falling})
+            )
+        )
 
 
 if __name__ == "__main__":
