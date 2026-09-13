@@ -33,7 +33,9 @@ jobs:
         run: >-
           python -m py_compile momentum_config.py momentum_strategy.py
           momentum_production.py backtest_momentum_v3.py
-          validate_production_backtest.py api/dashboard.py api/health.py
+          validate_production_backtest.py
+      - name: Compile dashboard functions
+        run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Verify locked production configuration
@@ -49,4 +51,3 @@ jobs:
           assert PRODUCTION.limitation == "Current limitation: survivorship bias"
           print(PRODUCTION.to_dict())
           PY
-

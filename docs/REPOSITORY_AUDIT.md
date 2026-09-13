@@ -69,8 +69,8 @@ dagkopior ska inte ligga i den aktiva produktgrenen.
 | `momentum_production.py` | Produktorkestrering |
 | `validate_production_backtest.py` | Låst backtestingång |
 | `Momentum_signals.csv` | Genererad köp/säljfil |
-| `api/dashboard.py` | Snapshot-API |
-| `api/health.py` | Hälsokontroll |
+| `api/dashboard.js` | Snapshot-API utan tunga Python-beroenden i Vercel |
+| `api/health.js` | Hälsokontroll utan tunga Python-beroenden i Vercel |
 | `public/index.html` | Mobile-first dashboard |
 | `public/styles.css` | Färgstarkt responsivt UI |
 | `public/app.js` | Dashboardrendering |
