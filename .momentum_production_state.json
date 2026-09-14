@@ -1,0 +1,22 @@
+{
+  "selection_month": "2026-09",
+  "market_date": "2026-09-11",
+  "risk_status": "RISK ON",
+  "target_tickers": [
+    "AAMI",
+    "AMD",
+    "BFH",
+    "CNC",
+    "COHR",
+    "CRWD",
+    "FTK",
+    "INTC",
+    "MCS",
+    "MSGE",
+    "MTRN",
+    "MU",
+    "NUE",
+    "PRLB",
+    "STT"
+  ]
+}
