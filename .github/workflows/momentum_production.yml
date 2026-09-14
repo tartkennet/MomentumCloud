@@ -2,6 +2,11 @@ name: MomentumCloud Production v1
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/momentum_production.yml"
   schedule:
     # Every US trading evening. Monthly rotation is enforced by state;
     # daily runs keep stops, holdings, prices and regime status current.
