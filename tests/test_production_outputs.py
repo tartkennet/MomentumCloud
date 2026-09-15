@@ -97,6 +97,10 @@ class ProductionOutputTests(unittest.TestCase):
                 "ticker": f"T{index}",
                 "price_usd": 20.0,
                 "adv20_usd": 6_000_000.0,
+                "return_1m_pct": 5.0,
+                "return_3m_pct": 10.0,
+                "relative_1m_pct": 3.0,
+                "relative_3m_pct": 6.0,
                 "quantity": 1,
                 "weight_pct": 100 / 15,
             }
@@ -104,7 +108,7 @@ class ProductionOutputTests(unittest.TestCase):
         ]
         payload = {
             "config": {
-                "selection_model": "v4-balanced",
+                "selection_model": "fresh-momentum-1-3m",
                 "position_count": 15,
                 "min_price_usd": 10.0,
                 "min_adv20_usd": 5_000_000.0,
