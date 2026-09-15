@@ -99,14 +99,26 @@ def _raw_metric(
             break
         close = float(row["close"])
         volume = row.get("volume")
-        if close <= 0:
+        if not math.isfinite(close) or close <= 0:
             return None
         closes.append(close)
         if index < 20 and volume is not None:
-            dollar_volume.append(close * float(volume))
+            volume = float(volume)
+            if not math.isfinite(volume) or volume < 0:
+                return None
+            dollar_volume.append(close * volume)
 
     if len(closes) < 253 or len(dollar_volume) < 20:
         return None
+    # Adjusted Polygon closes should not contain split-sized discontinuities.
+    # Fail closed instead of allowing a corrupt series to dominate momentum.
+    adjacent_ratios = [
+        max(newer, older) / min(newer, older)
+        for newer, older in zip(closes, closes[1:])
+    ]
+    if max(adjacent_ratios, default=1.0) >= 3.0:
+        return None
+
     price = closes[0]
     adv20 = sum(dollar_volume) / 20.0
     sma50 = sum(closes[:50]) / 50.0
@@ -194,24 +206,50 @@ def rank_universe(
 def build_target_portfolio(
     ranked: Sequence[MomentumMetric],
     risk_on: bool,
+    portfolio_value_sek: float | None = None,
+    usdsek: float | None = None,
     config: ProductionConfig = PRODUCTION,
 ) -> list[dict]:
     if not risk_on:
         return []
+    if (portfolio_value_sek is None) != (usdsek is None):
+        raise ValueError("portfolio_value_sek and usdsek must be supplied together")
+    if portfolio_value_sek is not None and (portfolio_value_sek <= 0 or usdsek <= 0):
+        raise ValueError("Portfolio value and USDSEK must be positive")
+
     weight = 1.0 / config.position_count
-    return [
-        {
-            "rank": rank,
-            **metric.to_dict(),
-            "weight_pct": weight * 100.0,
-            "buy_signal": "BUY",
-        }
-        for rank, metric in enumerate(ranked[: config.position_count], 1)
-    ]
+    position_value_sek = (
+        portfolio_value_sek * weight if portfolio_value_sek is not None else None
+    )
+    target = []
+    for model_rank, metric in enumerate(ranked, 1):
+        quantity = None
+        if position_value_sek is not None:
+            quantity = math.floor(position_value_sek / (metric.price_usd * usdsek))
+            if quantity < 1:
+                continue
+        target.append(
+            {
+                "rank": model_rank,
+                "target_rank": len(target) + 1,
+                **metric.to_dict(),
+                "weight_pct": weight * 100.0,
+                "quantity": quantity,
+                "buy_signal": "BUY",
+            }
+        )
+        if len(target) == config.position_count:
+            break
+
+    if len(target) != config.position_count:
+        raise RuntimeError(
+            f"Only {len(target)} whole-share positions are affordable; "
+            f"{config.position_count} are required"
+        )
+    return target
 
 
 def stop_is_triggered(current_price: float, adjusted_entry_price: float) -> bool:
     if current_price <= 0 or adjusted_entry_price <= 0:
         raise ValueError("Prices must be positive")
     return current_price <= adjusted_entry_price * (1.0 - PRODUCTION.stop_loss_pct / 100.0)
-
