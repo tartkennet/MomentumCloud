@@ -10,7 +10,7 @@ snapshot till dashboardens API.
 | Regel | Låst värde |
 |---|---|
 | Modell | `v4-balanced` |
-| Portfölj | 15 aktier, lika vikt |
+| Portfölj | 15 aktier, lika vikt och minst 1 hel aktie per position |
 | Omsättning | Månadsvis omallokering |
 | Prisfilter | Minst 10 USD |
 | Likviditet | ADV20 minst 5 000 000 USD |
@@ -38,8 +38,20 @@ Körningen skapar `Momentum.xlsx`, `Momentum_signals.csv`,
 `Momentum_buy_history.csv`, `public/data/dashboard.json` och
 `public/data/buynow.json`.
 
-Systemet skickar inga order. `Momentum_portfolio.csv` är den registrerade
-portföljen och signalerna är beslutsunderlaget för nästa handelsöppning.
+Systemet skickar inga order. Månadens kapitalanpassade `target_portfolio`
+sparas oförändrad mellan de dagliga körningarna. `BuyNow` innehåller endast
+köp som fortfarande är möjliga och inte finns i `Momentum_portfolio.csv`;
+ett oexekverat månadsköp ligger därför kvar tills innehavet registreras.
+Stoppade aktier blockeras från återköp till nästa månadsurval.
+
+`Momentum_portfolio.csv` är den registrerade faktiska portföljen och
+signalerna är beslutsunderlaget för nästa handelsöppning.
+
+Den separata modellvalideringen använder point-in-time-universum och ger
+`GO` endast vid minst 30 perioder, positiv nettoavkastning, bättre resultat
+än SPY, daglig maximal nedgång högst 20 procent och minst 50 procents
+träffsäkerhet. Ett misslyckat krav ger `NO-GO`; resultatet optimeras inte om
+i efterhand.
 
 ## App och API
 
@@ -57,4 +69,3 @@ portföljen och signalerna är beslutsunderlaget för nästa handelsöppning.
 - `Production model validation`: manuell backtest av exakt samma v4-modell.
 
 Full arkitektur, repo-audit och driftsinstruktioner finns i `docs/`.
-

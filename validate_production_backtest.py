@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import pandas as pd
 
@@ -34,7 +36,7 @@ def main() -> None:
         rebalance_exit_execution="next-open",
         selection_model=PRODUCTION.selection_model,
         portfolio_value_usd=10_000.0,
-        universe_mode="current-template",
+        universe_mode="point-in-time",
     )
     summary = pd.read_csv("Momentum_backtest_summary.csv").iloc[0].to_dict()
     expected = {
@@ -47,14 +49,41 @@ def main() -> None:
         "ExitExecution": "next-open",
         "RebalanceExitExecution": "next-open",
         "StopLoss_pct": 10.0,
-        "Universe": "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS",
+        "Universe": "POINT_IN_TIME_US_COMMON_STOCKS",
     }
     for key, value in expected.items():
         if summary.get(key) != value:
             raise RuntimeError(f"Locked production mismatch: {key}={summary.get(key)!r}, expected {value!r}")
-    print("MomentumCloud Production v1 backtest configuration verified")
+    gates = {
+        "at_least_30_periods": int(summary["Periods"]) >= 30,
+        "positive_net_return": float(summary["TotalReturn_pct"]) > 0.0,
+        "beats_spy": float(summary["TotalEdgeVsSPY_pct"]) > 0.0,
+        "daily_max_drawdown_at_most_20_pct": float(summary["DailyMaxDrawdown_pct"]) >= -20.0,
+        "hit_rate_at_least_50_pct": float(summary["PeriodHitRate_pct"]) >= 50.0,
+    }
+    decision = {
+        "model": PRODUCTION.selection_model,
+        "universe": summary["Universe"],
+        "status": "GO" if all(gates.values()) else "NO-GO",
+        "gates": gates,
+        "metrics": {
+            key: summary[key]
+            for key in (
+                "Periods", "TotalReturn_pct", "SPYTotalReturn_pct",
+                "TotalEdgeVsSPY_pct", "DailyMaxDrawdown_pct",
+                "PeriodHitRate_pct",
+            )
+        },
+    }
+    Path("Momentum_validation_decision.json").write_text(
+        json.dumps(decision, indent=2, allow_nan=False) + "\n",
+        encoding="utf-8",
+    )
+    if decision["status"] != "GO":
+        failed = ", ".join(name for name, passed in gates.items() if not passed)
+        raise RuntimeError(f"Production model is NO-GO: {failed}")
+    print("MomentumCloud Production v1 point-in-time validation: GO")
 
 
 if __name__ == "__main__":
     main()
-

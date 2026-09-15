@@ -48,6 +48,7 @@ DASHBOARD_FILE = Path("public/data/dashboard.json")
 BUYNOW_FILE = Path("public/data/buynow.json")
 SIGNALS_FILE = Path("Momentum_signals.csv")
 PERFORMANCE_FILE = Path("Momentum_performance.csv")
+STATE_SCHEMA_VERSION = 2
 
 
 def _write_json(path: Path, payload: dict | list) -> None:
@@ -105,24 +106,37 @@ def fetch_security_master(client: PolygonClient) -> dict[str, Security]:
     return securities
 
 
-def _ranked_rows(ranked, portfolio_value_sek: float, fx: float) -> list[dict]:
+def _ranked_rows(
+    ranked,
+    portfolio_value_sek: float,
+    fx: float,
+    target: list[dict],
+) -> list[dict]:
     position_value = portfolio_value_sek / PRODUCTION.position_count
+    target_by_ticker = {row["ticker"]: row for row in target}
     rows = []
     for rank, metric in enumerate(ranked[: PRODUCTION.candidate_count], 1):
         price_sek = metric.price_usd * fx
+        affordable_quantity = math.floor(position_value / price_sek) if price_sek > 0 else 0
+        target_row = target_by_ticker.get(metric.ticker)
         rows.append(
             {
                 "rank": rank,
+                "target_rank": target_row.get("target_rank") if target_row else None,
                 "ticker": metric.ticker,
                 "score": round(metric.score, 4),
                 "price_usd": round(metric.price_usd, 4),
                 "adv20_usd": round(metric.adv20_usd, 2),
-                "weight_pct": round(100.0 / PRODUCTION.position_count, 4)
-                if rank <= PRODUCTION.position_count
-                else 0.0,
-                "quantity": math.floor(position_value / price_sek)
-                if rank <= PRODUCTION.position_count and price_sek > 0
-                else 0,
+                "weight_pct": round(float(target_row["weight_pct"]), 4)
+                if target_row else 0.0,
+                "quantity": int(target_row["quantity"]) if target_row else 0,
+                "affordable_quantity": affordable_quantity,
+                "is_target": target_row is not None,
+                "selection_status": (
+                    "TARGET" if target_row else
+                    "UNAFFORDABLE" if affordable_quantity < 1 else
+                    "RESERVE"
+                ),
                 "momentum_12_2_pct": round(metric.momentum_12_2_pct, 4),
                 "momentum_6_2_pct": round(metric.momentum_6_2_pct, 4),
                 "volatility_pct": round(metric.volatility_pct, 4),
@@ -178,7 +192,9 @@ def _signals(
     target: list[dict],
     risk_on: bool,
     rebalance_due: bool,
+    blocked_tickers: set[str] | None = None,
 ) -> list[dict]:
+    blocked_tickers = blocked_tickers or set()
     held = {row["ticker"]: row for row in holdings}
     target_by_ticker = {row["ticker"]: row for row in target}
     signals = []
@@ -194,17 +210,23 @@ def _signals(
             action, reason = "HOLD", "IN_PORTFOLIO"
         signals.append({"ticker": ticker, "action": action, "reason": reason})
 
-    if risk_on and rebalance_due:
+    if risk_on:
         for ticker, row in target_by_ticker.items():
-            if ticker not in held:
+            if ticker not in held and ticker not in blocked_tickers:
                 signals.append(
                     {
                         "ticker": ticker,
                         "action": "BUY",
-                        "reason": "MONTHLY_REBALANCE",
+                        "reason": (
+                            "MONTHLY_REBALANCE" if rebalance_due
+                            else "PENDING_MONTHLY_REBALANCE"
+                        ),
                         "rank": row["rank"],
+                        "target_rank": row.get("target_rank"),
                         "score": row["score"],
                         "weight_pct": row["weight_pct"],
+                        "quantity": row.get("quantity"),
+                        "price_usd": row.get("price_usd"),
                     }
                 )
     return sorted(signals, key=lambda row: ({"SELL": 0, "BUY": 1, "HOLD": 2}[row["action"]], row["ticker"]))
@@ -284,6 +306,7 @@ def _replace_sheet(workbook, name: str, frame: pd.DataFrame) -> None:
 
 def _write_workbook(
     buy_now: list[dict],
+    target: list[dict],
     candidates: list[dict],
     holdings: list[dict],
     signals: list[dict],
@@ -292,6 +315,7 @@ def _write_workbook(
 ) -> None:
     workbook = load_workbook(TEMPLATE_FILE)
     _replace_sheet(workbook, "BuyNow", _excel_frame(buy_now))
+    _replace_sheet(workbook, "TargetPortfolio", _excel_frame(target))
     _replace_sheet(workbook, "Kandidater", _excel_frame(candidates))
     _replace_sheet(workbook, "Holdings", pd.DataFrame(holdings))
     _replace_sheet(workbook, "Signals", pd.DataFrame(signals))
@@ -327,8 +351,28 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError(f"Production config mismatch: {key}={config.get(key)!r}")
     if payload["limitation"] != "Current limitation: survivorship bias":
         raise RuntimeError("Required survivorship-bias limitation is missing")
-    if payload["risk"]["status"] == "RISK OFF" and payload["buy_now"]:
-        raise RuntimeError("RISK OFF output must not contain new Buy Now orders")
+    risk_on = payload["risk"]["status"] == "RISK ON"
+    target = payload.get("target_portfolio", [])
+    if not risk_on and (payload["buy_now"] or target):
+        raise RuntimeError("RISK OFF output must not contain targets or Buy Now orders")
+    if risk_on:
+        if len(target) != PRODUCTION.position_count:
+            raise RuntimeError("RISK ON requires exactly 15 executable target positions")
+        if len({row["ticker"] for row in target}) != PRODUCTION.position_count:
+            raise RuntimeError("Target portfolio contains duplicate tickers")
+        if any(int(row.get("quantity") or 0) < 1 for row in target):
+            raise RuntimeError("Every target position must contain at least one whole share")
+        if any(float(row["price_usd"]) < PRODUCTION.min_price_usd for row in target):
+            raise RuntimeError("Target portfolio contains a stock below the price floor")
+        if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
+            raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
+        if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
+            raise RuntimeError("Target weights do not sum to 100 percent")
+    target_tickers = {row["ticker"] for row in target}
+    if any(row.get("ticker") not in target_tickers for row in payload["buy_now"]):
+        raise RuntimeError("Buy Now contains a ticker outside the locked target portfolio")
+    if any(row.get("buy_signal") != "BUY" for row in payload["buy_now"]):
+        raise RuntimeError("Buy Now may contain actionable BUY orders only")
     if len(payload["buy_now"]) > 15 or len(payload["candidates"]) > 50:
         raise RuntimeError("Production portfolio or candidate limit exceeded")
 
@@ -355,39 +399,66 @@ def main() -> None:
         client, latest_date, history_tickers, latest_map, needed=253
     )
     risk = market_regime(recent_maps)
-    ranked = rank_universe(eligible, recent_maps)
-    ranked_rows = _ranked_rows(ranked, read_portfolio_value_sek(TEMPLATE_FILE), fx)
-    target = build_target_portfolio(ranked, risk["risk_on"])
-    target_tickers = {row["ticker"] for row in target}
-
     previous_state = {}
     if STATE_FILE.exists():
         previous_state = json.loads(STATE_FILE.read_text(encoding="utf-8"))
     selection_month = latest_date[:7]
     # Re-enter promptly after a risk-off interval; otherwise rotate once per
     # month. This is a regime transition, not an extra ranking cycle.
+    state_is_current = (
+        previous_state.get("schema_version") == STATE_SCHEMA_VERSION
+        and isinstance(previous_state.get("target_portfolio"), list)
+        and len(previous_state.get("target_portfolio", [])) == PRODUCTION.position_count
+    )
     rebalance_due = (
-        previous_state.get("selection_month") != selection_month
+        not state_is_current
+        or previous_state.get("selection_month") != selection_month
         or (
             risk["risk_on"]
             and previous_state.get("risk_status") not in {None, "RISK ON"}
         )
     )
 
+    ranked = rank_universe(eligible, recent_maps)
+    portfolio_value_sek = read_portfolio_value_sek(TEMPLATE_FILE)
+    if risk["risk_on"] and rebalance_due:
+        target = build_target_portfolio(
+            ranked,
+            True,
+            portfolio_value_sek=portfolio_value_sek,
+            usdsek=fx,
+        )
+    elif risk["risk_on"]:
+        target = [dict(row) for row in previous_state["target_portfolio"]]
+    else:
+        target = []
+    target_tickers = {row["ticker"] for row in target}
+    ranked_rows = _ranked_rows(ranked, portfolio_value_sek, fx, target)
+
     split_events = update_split_cache(client, latest_date)
     portfolio = load_portfolio()
     holdings = _holdings(portfolio, latest_map, latest_date, fx, split_events, target_tickers)
-    signals = _signals(holdings, target, risk["risk_on"], rebalance_due)
-
-    buy_now = []
-    for row in ranked_rows[: PRODUCTION.position_count]:
-        if risk["risk_on"]:
-            row = dict(row)
-            row["buy_signal"] = (
-                "BUY" if rebalance_due and row["ticker"] not in {item["ticker"] for item in holdings}
-                else "HOLD / NEXT REBALANCE"
-            )
-            buy_now.append(row)
+    blocked_tickers = set()
+    if not rebalance_due:
+        blocked_tickers.update(previous_state.get("blocked_tickers", []))
+    blocked_tickers.update(
+        row["ticker"] for row in holdings if row.get("stop_triggered")
+    )
+    signals = _signals(
+        holdings,
+        target,
+        risk["risk_on"],
+        rebalance_due,
+        blocked_tickers,
+    )
+    buy_tickers = {
+        row["ticker"] for row in signals if row.get("action") == "BUY"
+    }
+    buy_now = [
+        {**dict(row), "buy_signal": "BUY"}
+        for row in target
+        if row["ticker"] in buy_tickers
+    ]
 
     run_url = None
     if os.getenv("GITHUB_RUN_ID") and os.getenv("GITHUB_REPOSITORY"):
@@ -402,6 +473,7 @@ def main() -> None:
         "limitation": PRODUCTION.limitation,
         "risk": {**risk, "exposure_pct": 100.0 if risk["risk_on"] else 0.0},
         "buy_now": buy_now,
+        "target_portfolio": target,
         "candidates": ranked_rows,
         "holdings": holdings,
         "signals": signals,
@@ -421,9 +493,16 @@ def main() -> None:
     _write_json(DASHBOARD_FILE, payload)
     _write_json(BUYNOW_FILE, {"updated": payload["generated_at"], "data": buy_now})
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
-    _write_workbook(buy_now, ranked_rows, holdings, signals, risk, latest_date)
+    _write_workbook(buy_now, target, ranked_rows, holdings, signals, risk, latest_date)
+    # Entry history records the monthly recommendation once.  Pending orders
+    # remain visible in Buy Now, but must not create a new fictitious entry on
+    # every daily refresh.
+    history_input = buy_now if rebalance_due else []
     history_frame = update_buy_history(
-        _excel_frame(buy_now), latest_map, latest_date, split_events_by_ticker=split_events
+        _excel_frame(history_input),
+        latest_map,
+        latest_date,
+        split_events_by_ticker=split_events,
     )
     payload["history"] = json.loads(
         history_frame.tail(100).to_json(orient="records", date_format="iso")
@@ -432,10 +511,13 @@ def main() -> None:
     _write_json(
         STATE_FILE,
         {
+            "schema_version": STATE_SCHEMA_VERSION,
             "selection_month": selection_month,
             "market_date": latest_date,
             "risk_status": risk["status"],
             "target_tickers": sorted(target_tickers),
+            "target_portfolio": target,
+            "blocked_tickers": sorted(blocked_tickers),
         },
     )
     logging.info(

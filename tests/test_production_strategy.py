@@ -69,6 +69,16 @@ class ProductionConfigTests(unittest.TestCase):
         self.assertEqual(ranked[0].ticker, "STEADY")
         self.assertGreater(ranked[0].score, ranked[1].score)
 
+    def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
+        clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
+        broken = list(clean)
+        broken[100] = broken[99] / 4.0
+        ranked = rank_universe(
+            ["CLEAN", "BROKEN"],
+            history_for({"CLEAN": clean, "BROKEN": broken}),
+        )
+        self.assertEqual([row.ticker for row in ranked], ["CLEAN"])
+
     def test_spy_regime_is_exactly_price_above_sma200(self):
         flat = [100.0] * 253
         risk_on = history_for({"SPY": flat})
@@ -87,6 +97,26 @@ class ProductionConfigTests(unittest.TestCase):
         self.assertEqual(len(target), 15)
         self.assertTrue(all(abs(row["weight_pct"] - 100 / 15) < 1e-10 for row in target))
 
+    def test_target_skips_shares_that_are_not_affordable(self):
+        from momentum_strategy import MomentumMetric
+        metrics = [
+            MomentumMetric("EXPENSIVE", 1_000, 6_000_000, 900, 800, 700, 20, 10, 25, 5, 100),
+            *[
+                MomentumMetric(str(index), 20, 6_000_000, 18, 15, 14, 20, 10, 25, 5, 90-index)
+                for index in range(20)
+            ],
+        ]
+        target = build_target_portfolio(
+            metrics,
+            True,
+            portfolio_value_sek=15_000,
+            usdsek=10,
+        )
+        self.assertEqual(len(target), 15)
+        self.assertNotIn("EXPENSIVE", {row["ticker"] for row in target})
+        self.assertTrue(all(row["quantity"] >= 1 for row in target))
+        self.assertEqual([row["target_rank"] for row in target], list(range(1, 16)))
+
     def test_stop_loss_is_locked_to_ten_percent(self):
         self.assertFalse(stop_is_triggered(90.01, 100.0))
         self.assertTrue(stop_is_triggered(90.0, 100.0))
@@ -94,4 +124,3 @@ class ProductionConfigTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
