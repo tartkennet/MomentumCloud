@@ -60,7 +60,48 @@ class ProductionOutputTests(unittest.TestCase):
         self.assertEqual(action["STOP"], ("SELL", "STOP_LOSS_10_PCT"))
         self.assertEqual(action["NEW"], ("BUY", "MONTHLY_REBALANCE"))
 
+    def test_unfilled_monthly_buy_remains_actionable(self):
+        target = [{
+            "ticker": "NEW", "rank": 1, "target_rank": 1,
+            "score": 99, "weight_pct": 100 / 15,
+            "quantity": 3, "price_usd": 20,
+        }]
+        self.assertEqual(
+            _signals([], target, risk_on=True, rebalance_due=False),
+            [{
+                "ticker": "NEW", "action": "BUY",
+                "reason": "PENDING_MONTHLY_REBALANCE", "rank": 1,
+                "target_rank": 1, "score": 99,
+                "weight_pct": 100 / 15, "quantity": 3,
+                "price_usd": 20,
+            }],
+        )
+
+    def test_stopped_position_is_not_rebought_during_same_month(self):
+        target = [{
+            "ticker": "STOP", "rank": 1, "target_rank": 1,
+            "score": 99, "weight_pct": 100 / 15,
+            "quantity": 3, "price_usd": 20,
+        }]
+        self.assertEqual(
+            _signals(
+                [], target, risk_on=True, rebalance_due=False,
+                blocked_tickers={"STOP"},
+            ),
+            [],
+        )
+
     def test_payload_guard_rejects_configuration_drift(self):
+        target = [
+            {
+                "ticker": f"T{index}",
+                "price_usd": 20.0,
+                "adv20_usd": 6_000_000.0,
+                "quantity": 1,
+                "weight_pct": 100 / 15,
+            }
+            for index in range(15)
+        ]
         payload = {
             "config": {
                 "selection_model": "v4-balanced",
@@ -72,6 +113,7 @@ class ProductionOutputTests(unittest.TestCase):
             "limitation": "Current limitation: survivorship bias",
             "risk": {"status": "RISK ON"},
             "buy_now": [],
+            "target_portfolio": target,
             "candidates": [],
         }
         validate_payload(payload)
@@ -90,12 +132,12 @@ class ProductionOutputTests(unittest.TestCase):
                 "momentum_production.OUTPUT_FILE", str(output)
             ):
                 _write_workbook(
-                    [], [], [], [],
+                    [], [], [], [], [],
                     {"status": "RISK OFF", "risk_on": False},
                     "2026-09-11",
                 )
             generated = load_workbook(output, read_only=True)
-            self.assertTrue({"BuyNow", "Kandidater", "Holdings", "Signals", "Diagnostics"}.issubset(generated.sheetnames))
+            self.assertTrue({"BuyNow", "TargetPortfolio", "Kandidater", "Holdings", "Signals", "Diagnostics"}.issubset(generated.sheetnames))
 
 
 if __name__ == "__main__":
