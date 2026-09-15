@@ -36,6 +36,7 @@
 
       <nav class="section-nav" aria-label="Dashboardsektioner">
         <a class="active" href="#buy-now">Buy now</a>
+        <a href="#target-portfolio">Målportfölj</a>
         <a href="#candidates">Kandidater</a>
         <a href="#holdings">Innehav</a>
         <a href="#signals">Signaler</a>
@@ -47,15 +48,23 @@
 
       <section id="buy-now" class="panel feature-panel">
         <div class="panel-heading">
-          <div><p class="eyebrow coral">MÅNADENS PORTFÖLJ</p><h2>Buy now</h2></div>
-          <div class="count-badge"><b id="buy-count">0</b><span>av 15</span></div>
+          <div><p class="eyebrow coral">AKTUELLA KÖPORDER</p><h2>Buy now</h2></div>
+          <div class="count-badge"><b id="buy-count">0</b><span>att köpa</span></div>
         </div>
         <div id="buy-grid" class="stock-grid empty-state">Ingen verifierad produktionskörning ännu.</div>
       </section>
 
+      <section id="target-portfolio" class="panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow mint">LÅST FÖR MÅNADEN</p><h2>Målportfölj</h2></div>
+          <div class="count-badge"><b id="target-count">0</b><span>av 15</span></div>
+        </div>
+        <div id="target-grid" class="stock-grid empty-state">Ingen målportfölj ännu.</div>
+      </section>
+
       <section id="candidates" class="panel">
         <div class="panel-heading"><div><p class="eyebrow lilac">URVALET</p><h2>Top 50 kandidater</h2></div></div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Score</th><th>Kurs</th><th>12–2</th><th>6–2</th><th>Vol.</th><th>ADV20</th></tr></thead><tbody id="candidate-rows"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Status</th><th>Score</th><th>Kurs</th><th>12–2</th><th>6–2</th><th>Vol.</th><th>ADV20</th></tr></thead><tbody id="candidate-rows"></tbody></table></div>
       </section>
 
       <section id="holdings" class="panel">
@@ -94,4 +103,3 @@
     <script src="/app.js" defer></script>
   </body>
 </html>
-
