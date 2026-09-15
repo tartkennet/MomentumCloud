@@ -7,10 +7,16 @@ const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&
 
 function metric(label, value, className = "") { return `<div class="metric"><small>${escapeHtml(label)}</small><strong class="${className}">${escapeHtml(value)}</strong></div>`; }
 
+function stockCard(row, chip) { return `<article class="stock-card">
+  <div class="stock-head"><div><span class="rank">${row.target_rank ? `MÅL ${row.target_rank} · ` : ""}RANK ${row.rank}</span><div class="ticker">${escapeHtml(row.ticker)}</div></div><span class="score">${number(row.score,1)}</span></div>
+  <div class="stock-meta"><span>Kurs<b>${money(row.price_usd)}</b></span><span>Vikt<b>${number(row.weight_pct,1)} %</b></span><span>Antal<b>${number(row.quantity,0)}</b></span></div>
+  <span class="signal-chip">${escapeHtml(chip)}</span>
+</article>`; }
+
 function render(data) {
   document.querySelector("#market-date").textContent = data.market_date || "Ingen data";
   document.querySelector("#hero-copy").textContent = data.risk?.risk_on
-    ? "Marknaden är positiv. De 15 högst rankade aktierna visas med lika vikt och en fast riskram."
+    ? "Marknaden är positiv. Månadens kapitalanpassade målportfölj är låst; Buy now visar bara köp som faktiskt återstår att genomföra."
     : "Riskregimen är avstängd. Inga nya köp görs och målportföljen hålls i kassa.";
   const regime = document.querySelector("#regime-card");
   regime.className = `regime-card ${data.risk?.risk_on ? "on" : "off"}`;
@@ -21,13 +27,22 @@ function render(data) {
   document.querySelector("#buy-count").textContent = buys.length;
   const buyGrid = document.querySelector("#buy-grid");
   buyGrid.className = buys.length ? "stock-grid" : "stock-grid empty-state";
-  buyGrid.innerHTML = buys.length ? buys.map(row => `<article class="stock-card">
-    <div class="stock-head"><div><span class="rank">RANK ${row.rank}</span><div class="ticker">${escapeHtml(row.ticker)}</div></div><span class="score">${number(row.score,1)}</span></div>
-    <div class="stock-meta"><span>Kurs<b>${money(row.price_usd)}</b></span><span>Vikt<b>${number(row.weight_pct,1)} %</b></span><span>Antal<b>${number(row.quantity,0)}</b></span></div>
-    <span class="signal-chip">${escapeHtml(row.buy_signal)}</span>
-  </article>`).join("") : "Inga köp i aktuell marknadsregim.";
+  buyGrid.innerHTML = buys.length
+    ? buys.map(row => stockCard(row, "KÖP")).join("")
+    : data.risk?.risk_on
+      ? "Inga öppna köporder. Kontrollera målportföljen och registrerade innehav."
+      : "RISK OFF – inga köp tillåts.";
 
-  document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.momentum_12_2_pct)}">${pct(row.momentum_12_2_pct)}</td><td class="${tone(row.momentum_6_2_pct)}">${pct(row.momentum_6_2_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
+  const target = data.target_portfolio || [];
+  document.querySelector("#target-count").textContent = target.length;
+  const targetGrid = document.querySelector("#target-grid");
+  targetGrid.className = target.length ? "stock-grid" : "stock-grid empty-state";
+  targetGrid.innerHTML = target.length
+    ? target.map(row => stockCard(row, "MÅLPORTFÖLJ")).join("")
+    : data.risk?.risk_on ? "Målportföljen kunde inte skapas." : "100 % kassa i RISK OFF.";
+
+  const statusLabel = {TARGET:"Mål", RESERVE:"Reserv", UNAFFORDABLE:"För dyr"};
+  document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td><span class="candidate-status ${String(row.selection_status || "").toLowerCase()}">${escapeHtml(statusLabel[row.selection_status] || "—")}</span></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.momentum_12_2_pct)}">${pct(row.momentum_12_2_pct)}</td><td class="${tone(row.momentum_6_2_pct)}">${pct(row.momentum_6_2_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
 
   const holdings = data.holdings || [];
   const holdingGrid = document.querySelector("#holding-grid");
