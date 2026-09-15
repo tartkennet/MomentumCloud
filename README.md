@@ -1,7 +1,7 @@
 # MomentumCloud Production v1
 
 MomentumCloud är ett mobilanpassat beslutsstöd för en låst, lång amerikansk
-momentumportfölj. Systemet hämtar marknadsdata från Polygon, skapar tydliga
+portfölj med färskt 1–3-månadersmomentum. Systemet hämtar marknadsdata från Polygon, skapar tydliga
 köp- och säljsignaler, uppdaterar Excel och publicerar samma verifierade
 snapshot till dashboardens API.
 
@@ -9,7 +9,7 @@ snapshot till dashboardens API.
 
 | Regel | Låst värde |
 |---|---|
-| Modell | `v4-balanced` |
+| Modell | `fresh-momentum-1-3m` |
 | Portfölj | 15 aktier, lika vikt och minst 1 hel aktie per position |
 | Omsättning | Månadsvis omallokering |
 | Prisfilter | Minst 10 USD |
@@ -18,7 +18,10 @@ snapshot till dashboardens API.
 | Exkluderas | ETF, SPAC, ADR, preferensaktier |
 | Marknadsregim | `SPY > SMA200` = RISK ON, annars 100 % kassa |
 | Stop loss | 10 % |
-| Ranking | 55 % 12–2, 20 % 6–2, 15 % låg volatilitet, 10 % låg SMA50-extension |
+| Ranking | 30 % 1 månad, 40 % 3 månader, 15 % 6 månader, 10 % låg volatilitet, 5 % låg SMA50-extension |
+| Färskhetskrav | Positiv 1 och 3 månader, samt bättre än SPY under båda perioderna |
+| Trendkrav | Kurs > SMA20 > SMA50 > SMA200; SMA50 och SMA200 ska stiga |
+| Riskfilter | Högst 80 % annualiserad volatilitet och högst 20 % över SMA50 |
 
 `Current limitation: survivorship bias`
 

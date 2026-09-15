@@ -48,7 +48,7 @@ DASHBOARD_FILE = Path("public/data/dashboard.json")
 BUYNOW_FILE = Path("public/data/buynow.json")
 SIGNALS_FILE = Path("Momentum_signals.csv")
 PERFORMANCE_FILE = Path("Momentum_performance.csv")
-STATE_SCHEMA_VERSION = 2
+STATE_SCHEMA_VERSION = 3
 
 
 def _write_json(path: Path, payload: dict | list) -> None:
@@ -137,8 +137,11 @@ def _ranked_rows(
                     "UNAFFORDABLE" if affordable_quantity < 1 else
                     "RESERVE"
                 ),
-                "momentum_12_2_pct": round(metric.momentum_12_2_pct, 4),
-                "momentum_6_2_pct": round(metric.momentum_6_2_pct, 4),
+                "return_1m_pct": round(metric.return_1m_pct, 4),
+                "return_3m_pct": round(metric.return_3m_pct, 4),
+                "return_6m_pct": round(metric.return_6m_pct, 4),
+                "relative_1m_pct": round(metric.relative_1m_pct, 4),
+                "relative_3m_pct": round(metric.relative_3m_pct, 4),
                 "volatility_pct": round(metric.volatility_pct, 4),
                 "extension_sma50_pct": round(metric.extension_sma50_pct, 4),
             }
@@ -271,7 +274,8 @@ def _excel_frame(rows: list[dict]) -> pd.DataFrame:
             columns=[
                 "Rank", "Ticker", "TotalScore", "Price_USD",
                 "AvgDollarVolume20", "Weight_pct", "Qty",
-                "Momentum_12_2_pct", "Momentum_6_2_pct",
+                "Return_1m_pct", "Return_3m_pct", "Return_6m_pct",
+                "Relative_1m_pct", "Relative_3m_pct",
                 "Volatility_pct", "Extension_SMA50_pct", "buy_signal",
             ]
         )
@@ -284,8 +288,11 @@ def _excel_frame(rows: list[dict]) -> pd.DataFrame:
             "adv20_usd": "AvgDollarVolume20",
             "weight_pct": "Weight_pct",
             "quantity": "Qty",
-            "momentum_12_2_pct": "Momentum_12_2_pct",
-            "momentum_6_2_pct": "Momentum_6_2_pct",
+            "return_1m_pct": "Return_1m_pct",
+            "return_3m_pct": "Return_3m_pct",
+            "return_6m_pct": "Return_6m_pct",
+            "relative_1m_pct": "Relative_1m_pct",
+            "relative_3m_pct": "Relative_3m_pct",
             "volatility_pct": "Volatility_pct",
             "extension_sma50_pct": "Extension_SMA50_pct",
         }
@@ -323,6 +330,7 @@ def _write_workbook(
         [
             ("Product", PRODUCTION.product_name),
             ("Selection model", PRODUCTION.selection_model),
+            ("Freshness rule", "1m and 3m positive and above SPY"),
             ("Market date", latest_date),
             ("Regime", risk["status"]),
             ("Positions", PRODUCTION.position_count),
@@ -340,7 +348,7 @@ def _write_workbook(
 def validate_payload(payload: dict) -> None:
     config = payload["config"]
     expected = {
-        "selection_model": "v4-balanced",
+        "selection_model": "fresh-momentum-1-3m",
         "position_count": 15,
         "min_price_usd": 10.0,
         "min_adv20_usd": 5_000_000.0,
@@ -366,6 +374,14 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError("Target portfolio contains a stock below the price floor")
         if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
             raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
+        if any(float(row["return_1m_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 1-month return")
+        if any(float(row["return_3m_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 3-month return")
+        if any(float(row["relative_1m_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock lagging SPY over 1 month")
+        if any(float(row["relative_3m_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock lagging SPY over 3 months")
         if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
             raise RuntimeError("Target weights do not sum to 100 percent")
     target_tickers = {row["ticker"] for row in target}

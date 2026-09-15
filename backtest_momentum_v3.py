@@ -550,12 +550,24 @@ def build_prior_2_12_metrics(
     regime handling is applied separately so weak markets can remain in cash.
     """
     if selection_model not in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core"
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+        "fresh-momentum-1-3m",
     }:
         raise ValueError(
             "selection_model must be classic-12-2, v4-balanced, v5-regime "
-            "or v6-core"
+            "v6-core or fresh-momentum-1-3m"
         )
+
+    spy_closes = []
+    for _, grouped in recent253:
+        row = get_from_map(grouped, "SPY")
+        if not row:
+            break
+        spy_closes.append(float(row["close"]))
+    if len(spy_closes) < 64:
+        return []
+    spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
+    spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
 
     records = []
     for ticker in tickers:
@@ -577,12 +589,19 @@ def build_prior_2_12_metrics(
             continue
 
         adv20 = sum(dollar_values) / len(dollar_values)
+        sma20 = sum(closes[:20]) / 20.0
         sma50 = sum(closes[:50]) / 50.0
+        sma50_1m_ago = sum(closes[21:71]) / 50.0
         sma200 = sum(closes[:200]) / 200.0
         sma200_1m_ago = sum(closes[21:221]) / 200.0
         mom12_2 = (closes[21] / closes[252] - 1.0) * 100.0
         mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
         mom3_1 = (closes[21] / closes[63] - 1.0) * 100.0
+        return_1m = (price / closes[21] - 1.0) * 100.0
+        return_3m = (price / closes[63] - 1.0) * 100.0
+        return_6m = (price / closes[126] - 1.0) * 100.0
+        relative_1m = return_1m - spy_return_1m
+        relative_3m = return_3m - spy_return_3m
         recent_chronological = list(reversed(closes[:15]))
         deltas = [
             later - earlier
@@ -625,6 +644,37 @@ def build_prior_2_12_metrics(
                 or mom6_2 <= 0.0
             ):
                 continue
+        elif selection_model == "fresh-momentum-1-3m":
+            recent_formation = list(reversed(closes[:127]))
+            recent_returns = [
+                later / earlier - 1.0
+                for earlier, later in zip(recent_formation, recent_formation[1:])
+                if earlier > 0 and later > 0
+            ]
+            if len(recent_returns) < 100:
+                continue
+            recent_mean = sum(recent_returns) / len(recent_returns)
+            recent_variance = sum(
+                (value - recent_mean) ** 2 for value in recent_returns
+            ) / (len(recent_returns) - 1)
+            annualized_vol = math.sqrt(max(recent_variance, 0.0)) * math.sqrt(252.0) * 100.0
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma20
+                or sma20 <= sma50
+                or price <= sma200
+                or sma50 <= sma50_1m_ago
+                or sma200 <= sma200_1m_ago
+                or return_1m <= PRODUCTION.min_return_1m_pct
+                or return_3m <= PRODUCTION.min_return_3m_pct
+                or return_6m <= 0.0
+                or relative_1m <= PRODUCTION.min_relative_1m_pct
+                or relative_3m <= PRODUCTION.min_relative_3m_pct
+                or annualized_vol > PRODUCTION.max_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
         else:
             if (
                 price < PRODUCTION.min_price_usd
@@ -649,6 +699,11 @@ def build_prior_2_12_metrics(
             "annualized_vol": annualized_vol,
             "dist_sma50": dist_sma50,
             "rsi14": rsi14,
+            "return_1m": return_1m,
+            "return_3m": return_3m,
+            "return_6m": return_6m,
+            "relative_1m": relative_1m,
+            "relative_3m": relative_3m,
         })
 
     if selection_model == "classic-12-2":
@@ -670,6 +725,32 @@ def build_prior_2_12_metrics(
         # above are binary; there are no fitted weights or RSI thresholds.
         frame["total_score"] = frame["mom12_2"] / frame["annualized_vol"].clip(
             lower=1.0
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "fresh-momentum-1-3m":
+        frame["rank_1m"] = frame["return_1m"].rank(method="average", pct=True)
+        frame["rank_3m"] = frame["return_3m"].rank(method="average", pct=True)
+        frame["rank_6m"] = frame["return_6m"].rank(method="average", pct=True)
+        frame["rank_low_vol"] = frame["annualized_vol"].rank(
+            method="average", ascending=False, pct=True
+        )
+        frame["rank_low_extension"] = frame["dist_sma50"].rank(
+            method="average", ascending=False, pct=True
+        )
+        frame["total_score"] = 100.0 * (
+            PRODUCTION.weight_rank_1m * frame["rank_1m"]
+            + PRODUCTION.weight_rank_3m * frame["rank_3m"]
+            + PRODUCTION.weight_rank_6m * frame["rank_6m"]
+            + PRODUCTION.weight_low_volatility * frame["rank_low_vol"]
+            + PRODUCTION.weight_low_extension * frame["rank_low_extension"]
         )
         return [
             SimpleNamespace(
@@ -767,11 +848,11 @@ def choose_top(
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core",
+        "v6-core", "fresh-momentum-1-3m",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime or v6-core"
+            "v4-balanced, v5-regime, v6-core or fresh-momentum-1-3m"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -781,7 +862,8 @@ def choose_top(
     if selection_model == "legacy-v1":
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core"
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+        "fresh-momentum-1-3m",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -794,6 +876,11 @@ def choose_top(
             signal_map, history
         ):
             logging.info("Core risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model == "fresh-momentum-1-3m" and not core_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
             return []
         metrics = build_prior_2_12_metrics(
             tickers,
@@ -1048,11 +1135,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core",
+        "v6-core", "fresh-momentum-1-3m",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime or v6-core"
+            "v4-balanced, v5-regime, v6-core or fresh-momentum-1-3m"
         )
 
     client = PolygonClient(api_key)
@@ -1169,7 +1256,9 @@ def run(
             min_adv20_usd,
         )
         cash_period = False
-        if selection_model in {"v4-balanced", "v5-regime", "v6-core"} and not picks:
+        if selection_model in {
+            "v4-balanced", "v5-regime", "v6-core", "fresh-momentum-1-3m"
+        } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
             regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
             cash_period = not regime_check(cache[signal], signal_history)
@@ -1371,7 +1460,8 @@ def run(
     summary["SelectionModel"] = selection_model
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core"
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+        "fresh-momentum-1-3m",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1424,7 +1514,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core",
+            "v6-core", "fresh-momentum-1-3m",
         ),
         default="v3",
     )

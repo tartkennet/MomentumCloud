@@ -29,11 +29,18 @@ class MomentumMetric:
     ticker: str
     price_usd: float
     adv20_usd: float
+    sma20: float
     sma50: float
+    sma50_1m_ago: float
     sma200: float
     sma200_1m_ago: float
-    momentum_12_2_pct: float
-    momentum_6_2_pct: float
+    return_1m_pct: float
+    return_3m_pct: float
+    return_6m_pct: float
+    spy_return_1m_pct: float
+    spy_return_3m_pct: float
+    relative_1m_pct: float
+    relative_3m_pct: float
     volatility_pct: float
     extension_sma50_pct: float
     score: float = 0.0
@@ -90,6 +97,8 @@ def _raw_metric(
     ticker: str,
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig,
+    spy_return_1m: float,
+    spy_return_3m: float,
 ) -> MomentumMetric | None:
     closes: list[float] = []
     dollar_volume: list[float] = []
@@ -121,11 +130,16 @@ def _raw_metric(
 
     price = closes[0]
     adv20 = sum(dollar_volume) / 20.0
+    sma20 = sum(closes[:20]) / 20.0
     sma50 = sum(closes[:50]) / 50.0
+    sma50_1m_ago = sum(closes[21:71]) / 50.0
     sma200 = sum(closes[:200]) / 200.0
     sma200_1m_ago = sum(closes[21:221]) / 200.0
-    momentum_12_2 = (closes[21] / closes[252] - 1.0) * 100.0
-    momentum_6_2 = (closes[21] / closes[126] - 1.0) * 100.0
+    return_1m = (price / closes[21] - 1.0) * 100.0
+    return_3m = (price / closes[63] - 1.0) * 100.0
+    return_6m = (price / closes[126] - 1.0) * 100.0
+    relative_1m = return_1m - spy_return_1m
+    relative_3m = return_3m - spy_return_3m
 
     chronological = list(reversed(closes[21:127]))
     returns = [
@@ -143,22 +157,36 @@ def _raw_metric(
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma50
+        or price <= sma20
+        or sma20 <= sma50
         or price <= sma200
+        or sma50 <= sma50_1m_ago
         or sma200 <= sma200_1m_ago
-        or momentum_12_2 <= 0.0
-        or momentum_6_2 <= 0.0
+        or return_1m <= config.min_return_1m_pct
+        or return_3m <= config.min_return_3m_pct
+        or return_6m <= 0.0
+        or relative_1m <= config.min_relative_1m_pct
+        or relative_3m <= config.min_relative_3m_pct
+        or volatility > config.max_volatility_pct
+        or extension > config.max_extension_sma50_pct
     ):
         return None
     return MomentumMetric(
         ticker=ticker,
         price_usd=price,
         adv20_usd=adv20,
+        sma20=sma20,
         sma50=sma50,
+        sma50_1m_ago=sma50_1m_ago,
         sma200=sma200,
         sma200_1m_ago=sma200_1m_ago,
-        momentum_12_2_pct=momentum_12_2,
-        momentum_6_2_pct=momentum_6_2,
+        return_1m_pct=return_1m,
+        return_3m_pct=return_3m,
+        return_6m_pct=return_6m,
+        spy_return_1m_pct=spy_return_1m,
+        spy_return_3m_pct=spy_return_3m,
+        relative_1m_pct=relative_1m,
+        relative_3m_pct=relative_3m,
         volatility_pct=volatility,
         extension_sma50_pct=extension,
     )
@@ -169,20 +197,38 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return eligible names ranked by the one locked v4-balanced score."""
+    """Return names with fresh 1-3 month strength ranked by the locked score."""
     config.validate()
+    spy_closes = []
+    for _, day_map in recent_maps:
+        row = _row(day_map, "SPY")
+        if not row:
+            break
+        close = float(row["close"])
+        if not math.isfinite(close) or close <= 0:
+            return []
+        spy_closes.append(close)
+    if len(spy_closes) < 64:
+        return []
+    spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
+    spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
     raw = [
         metric
         for ticker in dict.fromkeys(str(value).upper().strip() for value in tickers)
         if ticker
-        for metric in [_raw_metric(ticker, recent_maps, config)]
+        for metric in [
+            _raw_metric(
+                ticker, recent_maps, config, spy_return_1m, spy_return_3m
+            )
+        ]
         if metric is not None
     ]
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_12_2"] = frame["momentum_12_2_pct"].rank(method="average", pct=True)
-    frame["rank_6_2"] = frame["momentum_6_2_pct"].rank(method="average", pct=True)
+    frame["rank_1m"] = frame["return_1m_pct"].rank(method="average", pct=True)
+    frame["rank_3m"] = frame["return_3m_pct"].rank(method="average", pct=True)
+    frame["rank_6m"] = frame["return_6m_pct"].rank(method="average", pct=True)
     frame["rank_low_volatility"] = frame["volatility_pct"].rank(
         method="average", ascending=False, pct=True
     )
@@ -190,8 +236,9 @@ def rank_universe(
         method="average", ascending=False, pct=True
     )
     frame["score"] = 100.0 * (
-        config.weight_rank_12_2 * frame["rank_12_2"]
-        + config.weight_rank_6_2 * frame["rank_6_2"]
+        config.weight_rank_1m * frame["rank_1m"]
+        + config.weight_rank_3m * frame["rank_3m"]
+        + config.weight_rank_6m * frame["rank_6m"]
         + config.weight_low_volatility * frame["rank_low_volatility"]
         + config.weight_low_extension * frame["rank_low_extension"]
     )

@@ -42,7 +42,7 @@ def main() -> None:
     expected = {
         "RebalanceMonths": 1,
         "TopN": 15,
-        "SelectionModel": "v4-balanced",
+        "SelectionModel": "fresh-momentum-1-3m",
         "LiquidityRule": "FIXED_MIN_ADV20_5M_USD",
         "EffectiveMinADV20_USD": 5_000_000.0,
         "EntryExecution": "next-open",
