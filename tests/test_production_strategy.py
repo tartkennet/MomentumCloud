@@ -12,6 +12,8 @@ from momentum_strategy import (
 
 
 def history_for(series_by_ticker, volumes=None):
+    series_by_ticker = dict(series_by_ticker)
+    series_by_ticker.setdefault("SPY", [100.0] * 253)
     rows = []
     for index in range(253):
         grouped = {}
@@ -29,19 +31,22 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "v4-balanced")
+        self.assertEqual(PRODUCTION.selection_model, "fresh-momentum-1-3m")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 10.0)
         self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
         self.assertAlmostEqual(
-            PRODUCTION.weight_rank_12_2
-            + PRODUCTION.weight_rank_6_2
+            PRODUCTION.weight_rank_1m
+            + PRODUCTION.weight_rank_3m
+            + PRODUCTION.weight_rank_6m
             + PRODUCTION.weight_low_volatility
             + PRODUCTION.weight_low_extension,
             1.0,
         )
+        self.assertEqual(PRODUCTION.max_volatility_pct, 80.0)
+        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 20.0)
         self.assertEqual(PRODUCTION.limitation, "Current limitation: survivorship bias")
 
     def test_instrument_filter_is_fail_closed(self):
@@ -61,13 +66,36 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_balanced_score_rewards_lower_volatility_and_extension(self):
-        base = [120.0 - 20.0 * index / 231.0 for index in range(232)]
-        steady = [125.0 - 5.0 * index / 20.0 for index in range(21)] + base
-        extended = [200.0 - 80.0 * index / 20.0 for index in range(21)] + base
-        ranked = rank_universe(["STEADY", "EXTENDED"], history_for({"STEADY": steady, "EXTENDED": extended}))
-        self.assertEqual(ranked[0].ticker, "STEADY")
+    def test_fresh_one_and_three_month_strength_drives_score(self):
+        steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
+        fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
+        ranked = rank_universe(
+            ["STEADY", "FRESHER"],
+            history_for({"STEADY": steady, "FRESHER": fresher}),
+        )
+        self.assertEqual(ranked[0].ticker, "FRESHER")
         self.assertGreater(ranked[0].score, ranked[1].score)
+
+    def test_old_momentum_cannot_hide_negative_one_or_three_month_return(self):
+        fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
+        stale = [100.0 + 5.0 * index / 63.0 for index in range(64)] + [
+            105.0 - 25.0 * (index - 63) / 189.0 for index in range(64, 253)
+        ]
+        ranked = rank_universe(
+            ["FRESH", "STALE"],
+            history_for({"FRESH": fresh, "STALE": stale}),
+        )
+        self.assertEqual([row.ticker for row in ranked], ["FRESH"])
+
+    def test_recent_returns_must_beat_spy(self):
+        laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
+        leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
+        spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
+        ranked = rank_universe(
+            ["LAGGARD", "LEADER"],
+            history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
+        )
+        self.assertEqual([row.ticker for row in ranked], ["LEADER"])
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -88,8 +116,18 @@ class ProductionConfigTests(unittest.TestCase):
 
     def test_risk_off_has_no_target_and_risk_on_has_15_equal_weights(self):
         from momentum_strategy import MomentumMetric
+        def metric(ticker, score):
+            return MomentumMetric(
+                ticker=ticker, price_usd=20, adv20_usd=6_000_000,
+                sma20=19, sma50=18, sma50_1m_ago=17, sma200=15,
+                sma200_1m_ago=14, return_1m_pct=8, return_3m_pct=20,
+                return_6m_pct=30, spy_return_1m_pct=2,
+                spy_return_3m_pct=5, relative_1m_pct=6,
+                relative_3m_pct=15, volatility_pct=25,
+                extension_sma50_pct=5, score=score,
+            )
         metrics = [
-            MomentumMetric(str(index), 20, 6_000_000, 18, 15, 14, 20, 10, 25, 5, 90-index)
+            metric(str(index), 90-index)
             for index in range(20)
         ]
         self.assertEqual(build_target_portfolio(metrics, False), [])
@@ -99,10 +137,20 @@ class ProductionConfigTests(unittest.TestCase):
 
     def test_target_skips_shares_that_are_not_affordable(self):
         from momentum_strategy import MomentumMetric
+        def metric(ticker, price, score):
+            return MomentumMetric(
+                ticker=ticker, price_usd=price, adv20_usd=6_000_000,
+                sma20=19, sma50=18, sma50_1m_ago=17, sma200=15,
+                sma200_1m_ago=14, return_1m_pct=8, return_3m_pct=20,
+                return_6m_pct=30, spy_return_1m_pct=2,
+                spy_return_3m_pct=5, relative_1m_pct=6,
+                relative_3m_pct=15, volatility_pct=25,
+                extension_sma50_pct=5, score=score,
+            )
         metrics = [
-            MomentumMetric("EXPENSIVE", 1_000, 6_000_000, 900, 800, 700, 20, 10, 25, 5, 100),
+            metric("EXPENSIVE", 1_000, 100),
             *[
-                MomentumMetric(str(index), 20, 6_000_000, 18, 15, 14, 20, 10, 25, 5, 90-index)
+                metric(str(index), 20, 90-index)
                 for index in range(20)
             ],
         ]
