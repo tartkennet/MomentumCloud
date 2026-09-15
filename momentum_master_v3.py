@@ -6,6 +6,7 @@ import logging
 import math
 import os
 import random
+import re
 import time
 from pathlib import Path
 from dataclasses import dataclass
@@ -42,6 +43,15 @@ MIN_PRICE = 5.0
 MIN_ADTV20 = 20_000_000.0
 TOP_N = 15
 TOP10_N = 10
+
+
+def safe_error_text(exc: Exception) -> str:
+    """Return a useful error message without leaking Polygon credentials."""
+    return re.sub(
+        r"(?i)([?&]apiKey=)[^&\s]+",
+        r"\1[REDACTED]",
+        str(exc),
+    )
 
 
 @dataclass
@@ -199,7 +209,11 @@ def pick_latest_grouped_date(client: PolygonClient, max_lookback_days: int = 10)
             if len(grouped) > 1000:
                 return date_str, grouped, fx
         except Exception as exc:
-            logging.info("Grouped date %s unavailable: %s", date_str, exc)
+            logging.info(
+                "Grouped date %s unavailable: %s",
+                date_str,
+                safe_error_text(exc),
+            )
     raise RuntimeError("Could not find recent grouped stock data with USDSEK")
 
 
