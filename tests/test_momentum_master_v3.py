@@ -3,10 +3,19 @@ import unittest
 from datetime import date, timedelta
 from pathlib import Path
 
-from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, save_history_cache, simple_moving_average, update_buy_history
+from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, safe_error_text, save_history_cache, simple_moving_average, update_buy_history
 
 
 class SimpleMovingAverageTests(unittest.TestCase):
+    def test_polygon_api_key_is_redacted_from_error_text(self):
+        message = safe_error_text(
+            RuntimeError(
+                "403 for https://api.polygon.io/v2/aggs?adjusted=true&apiKey=secret-value"
+            )
+        )
+        self.assertNotIn("secret-value", message)
+        self.assertIn("apiKey=[REDACTED]", message)
+
     def test_uses_latest_trading_sessions(self):
         closes = [float(value) for value in range(253, 0, -1)]
 
