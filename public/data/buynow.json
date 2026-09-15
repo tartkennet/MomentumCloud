@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-14T23:30:39.041952+00:00",
+  "updated": "2026-09-15T00:16:44.278274+00:00",
   "data": [
     {
       "rank": 1,
@@ -13,7 +13,7 @@
       "momentum_6_2_pct": 56.3296,
       "volatility_pct": 30.8379,
       "extension_sma50_pct": 1.6025,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 2,
@@ -27,7 +27,7 @@
       "momentum_6_2_pct": 94.0121,
       "volatility_pct": 45.9635,
       "extension_sma50_pct": 1.4263,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 3,
@@ -41,7 +41,7 @@
       "momentum_6_2_pct": 102.451,
       "volatility_pct": 79.9984,
       "extension_sma50_pct": 1.8886,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 4,
@@ -55,7 +55,7 @@
       "momentum_6_2_pct": 64.0671,
       "volatility_pct": 32.613,
       "extension_sma50_pct": 3.3815,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 5,
@@ -69,7 +69,7 @@
       "momentum_6_2_pct": 124.8156,
       "volatility_pct": 100.4306,
       "extension_sma50_pct": 5.0236,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 6,
@@ -83,7 +83,7 @@
       "momentum_6_2_pct": 123.0939,
       "volatility_pct": 91.1005,
       "extension_sma50_pct": 4.6646,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 7,
@@ -97,7 +97,7 @@
       "momentum_6_2_pct": 144.2247,
       "volatility_pct": 78.7738,
       "extension_sma50_pct": 3.9435,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 8,
@@ -111,7 +111,7 @@
       "momentum_6_2_pct": 100.915,
       "volatility_pct": 54.0151,
       "extension_sma50_pct": 2.0522,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 9,
@@ -125,7 +125,7 @@
       "momentum_6_2_pct": 104.6676,
       "volatility_pct": 75.3975,
       "extension_sma50_pct": 3.471,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 10,
@@ -139,7 +139,7 @@
       "momentum_6_2_pct": 86.1896,
       "volatility_pct": 47.3071,
       "extension_sma50_pct": 0.8772,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 11,
@@ -153,7 +153,7 @@
       "momentum_6_2_pct": 64.4034,
       "volatility_pct": 39.7807,
       "extension_sma50_pct": 1.8431,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 12,
@@ -167,7 +167,7 @@
       "momentum_6_2_pct": 83.3168,
       "volatility_pct": 40.8008,
       "extension_sma50_pct": 3.8982,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 13,
@@ -181,7 +181,7 @@
       "momentum_6_2_pct": 54.2975,
       "volatility_pct": 23.5719,
       "extension_sma50_pct": 3.8213,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 14,
@@ -195,7 +195,7 @@
       "momentum_6_2_pct": 54.1306,
       "volatility_pct": 35.8831,
       "extension_sma50_pct": 0.7652,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     },
     {
       "rank": 15,
@@ -209,7 +209,7 @@
       "momentum_6_2_pct": 47.4033,
       "volatility_pct": 97.2244,
       "extension_sma50_pct": 1.6211,
-      "buy_signal": "BUY"
+      "buy_signal": "HOLD / NEXT REBALANCE"
     }
   ]
 }
