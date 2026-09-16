@@ -1,0 +1,68 @@
+{
+  "entry_date": "2026-09-15",
+  "entry_basis": "Verified US closing prices from MomentumCloud production snapshot",
+  "weighting": "equal_weight",
+  "spy_entry_price_usd": 757.39,
+  "positions": [
+    {
+      "ticker": "DINO",
+      "entry_price_usd": 106.91
+    },
+    {
+      "ticker": "HAE",
+      "entry_price_usd": 106.31
+    },
+    {
+      "ticker": "MPC",
+      "entry_price_usd": 396.45
+    },
+    {
+      "ticker": "VLO",
+      "entry_price_usd": 382.95
+    },
+    {
+      "ticker": "AVTR",
+      "entry_price_usd": 15.16
+    },
+    {
+      "ticker": "PSX",
+      "entry_price_usd": 257.06
+    },
+    {
+      "ticker": "DK",
+      "entry_price_usd": 74.47
+    },
+    {
+      "ticker": "IQV",
+      "entry_price_usd": 265.67
+    },
+    {
+      "ticker": "CMBT",
+      "entry_price_usd": 19.42
+    },
+    {
+      "ticker": "MTCH",
+      "entry_price_usd": 43.15
+    },
+    {
+      "ticker": "LPG",
+      "entry_price_usd": 55.38
+    },
+    {
+      "ticker": "HNGE",
+      "entry_price_usd": 94.79
+    },
+    {
+      "ticker": "INSW",
+      "entry_price_usd": 105.84
+    },
+    {
+      "ticker": "OOMA",
+      "entry_price_usd": 22.81
+    },
+    {
+      "ticker": "AII",
+      "entry_price_usd": 26.49
+    }
+  ]
+}
