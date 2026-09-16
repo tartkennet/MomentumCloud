@@ -334,17 +334,73 @@ def _performance(recent_maps, holdings: list[dict]) -> dict:
     }
 
 
+def _initialize_paper_portfolio(
+    latest_map: dict,
+    latest_date: str,
+    fx: float,
+    paper_file: Path = PAPER_PORTFOLIO_FILE,
+) -> dict:
+    """Convert the user's requested paper allocation into whole-share holdings once."""
+    try:
+        request = json.loads(paper_file.read_text(encoding="utf-8"))
+        if request.get("status") == "ACTIVE":
+            return request
+        allocation_sek = float(request["target_allocation_sek"])
+        requested = request["positions"]
+        if allocation_sek <= 0 or not requested:
+            raise ValueError("paper portfolio request is incomplete")
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        logging.warning("Paper portfolio was not initialized: %s", exc)
+        return {}
+
+    spy_market = get_from_map(latest_map, "SPY")
+    if not spy_market or float(spy_market.get("close") or 0.0) <= 0.0:
+        logging.warning("Paper portfolio is waiting for a verified SPY close")
+        return request
+
+    positions = []
+    for item in requested:
+        ticker = normalize_ticker(item.get("ticker", ""))
+        market = get_from_map(latest_map, ticker)
+        price = float(market["close"]) if market else 0.0
+        if not ticker or price <= 0.0:
+            logging.warning("Paper portfolio is waiting for a verified close for %s", ticker or "unknown")
+            return request
+        quantity = max(1, math.floor(allocation_sek / (price * fx)))
+        positions.append(
+            {
+                "ticker": ticker,
+                "quantity": int(quantity),
+                "entry_price_usd": round(price, 4),
+                "entry_value_sek": round(quantity * price * fx, 2),
+            }
+        )
+
+    portfolio = {
+        "schema_version": 2,
+        "status": "ACTIVE",
+        "entry_date": latest_date,
+        "entry_basis": "Verified closing prices from the first production snapshot after the paper request",
+        "allocation_rule": "Approximately 2,000 SEK per position; at least one whole share",
+        "target_allocation_sek": round(allocation_sek, 2),
+        "entry_fx": round(float(fx), 6),
+        "spy_entry_price_usd": round(float(spy_market["close"]), 4),
+        "positions": positions,
+    }
+    _write_json(paper_file, portfolio)
+    return portfolio
+
+
 def _paper_portfolio(
     latest_map: dict,
     latest_date: str,
+    fx: float,
     paper_file: Path = PAPER_PORTFOLIO_FILE,
 ) -> dict:
-    """Mark a fixed, equal-weight paper portfolio against its verified entry close."""
+    """Mark the user's whole-share paper portfolio against its verified entry close."""
     try:
         seed = json.loads(paper_file.read_text(encoding="utf-8"))
         entries = seed["positions"]
-        entry_date = str(seed["entry_date"])
-        spy_entry = float(seed["spy_entry_price_usd"])
         if not entries:
             raise ValueError("paper portfolio has no positions")
     except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
@@ -355,46 +411,90 @@ def _paper_portfolio(
             "positions": [],
         }
 
+    if seed.get("status") != "ACTIVE":
+        return {
+            "status": "PENDING_ENTRY",
+            "market_date": latest_date,
+            "position_count": len(entries),
+            "target_allocation_sek": seed.get("target_allocation_sek"),
+            "positions": [{"ticker": normalize_ticker(item.get("ticker", ""))} for item in entries],
+            "note": "Awaiting the next verified production close to set whole-share paper entries.",
+        }
+
+    try:
+        entry_date = str(seed["entry_date"])
+        entry_fx = float(seed["entry_fx"])
+        spy_entry = float(seed["spy_entry_price_usd"])
+    except (KeyError, TypeError, ValueError) as exc:
+        return {
+            "status": "NOT_STARTED",
+            "market_date": latest_date,
+            "reason": f"Paper portfolio entry is incomplete: {exc}",
+            "positions": [],
+        }
+
     rows = []
-    returns = []
+    entry_total_sek = 0.0
+    current_total_sek = 0.0
     for item in entries:
         ticker = normalize_ticker(item.get("ticker", ""))
+        quantity = int(item["quantity"])
         entry_price = float(item["entry_price_usd"])
+        entry_value = float(item.get("entry_value_sek") or quantity * entry_price * entry_fx)
         market = get_from_map(latest_map, ticker)
         current_price = float(market["close"]) if market else None
-        return_pct = ((current_price / entry_price) - 1.0) * 100.0 if current_price else None
-        if return_pct is not None:
-            returns.append(return_pct)
-        rows.append({
-            "ticker": ticker,
-            "entry_price_usd": round(entry_price, 4),
-            "current_price_usd": round(current_price, 4) if current_price else None,
-            "return_pct": round(return_pct, 4) if return_pct is not None else None,
-            "stop_triggered": stop_is_triggered(current_price, entry_price) if current_price else False,
-        })
+        current_value = quantity * current_price * fx if current_price is not None else None
+        price_return = ((current_price / entry_price) - 1.0) * 100.0 if current_price is not None else None
+        return_pct = ((current_value / entry_value) - 1.0) * 100.0 if current_value is not None else None
+        entry_total_sek += entry_value
+        if current_value is not None:
+            current_total_sek += current_value
+        rows.append(
+            {
+                "ticker": ticker,
+                "quantity": quantity,
+                "entry_price_usd": round(entry_price, 4),
+                "current_price_usd": round(current_price, 4) if current_price is not None else None,
+                "entry_value_sek": round(entry_value, 2),
+                "current_value_sek": round(current_value, 2) if current_value is not None else None,
+                "pnl_sek": round(current_value - entry_value, 2) if current_value is not None else None,
+                "price_return_pct": round(price_return, 4) if price_return is not None else None,
+                "return_pct": round(return_pct, 4) if return_pct is not None else None,
+                "stop_triggered": stop_is_triggered(current_price, entry_price) if current_price is not None else False,
+            }
+        )
 
     spy_market = get_from_map(latest_map, "SPY")
     spy_current = float(spy_market["close"]) if spy_market else None
-    spy_return = ((spy_current / spy_entry) - 1.0) * 100.0 if spy_current else None
-    portfolio_return = sum(returns) / len(returns) if returns else None
+    spy_return = ((spy_current / spy_entry) - 1.0) * 100.0 if spy_current is not None else None
+    complete = all(row["current_value_sek"] is not None for row in rows)
+    portfolio_return = (
+        ((current_total_sek / entry_total_sek) - 1.0) * 100.0
+        if complete and entry_total_sek > 0.0
+        else None
+    )
     return {
         "status": "ACTIVE",
         "entry_date": entry_date,
-        "entry_basis": "verified closing prices in USD",
+        "entry_basis": seed.get("entry_basis", "verified closing prices in USD"),
+        "allocation_rule": seed.get("allocation_rule"),
+        "target_allocation_sek": seed.get("target_allocation_sek"),
+        "entry_fx": round(entry_fx, 6),
         "market_date": latest_date,
-        "weighting": "equal_weight",
         "position_count": len(rows),
+        "entry_value_sek": round(entry_total_sek, 2),
+        "current_value_sek": round(current_total_sek, 2) if complete else None,
+        "pnl_sek": round(current_total_sek - entry_total_sek, 2) if complete else None,
         "portfolio_return_pct": round(portfolio_return, 4) if portfolio_return is not None else None,
         "spy_entry_price_usd": round(spy_entry, 4),
-        "spy_current_price_usd": round(spy_current, 4) if spy_current else None,
+        "spy_current_price_usd": round(spy_current, 4) if spy_current is not None else None,
         "spy_return_pct": round(spy_return, 4) if spy_return is not None else None,
         "vs_spy_pct": round(portfolio_return - spy_return, 4)
         if portfolio_return is not None and spy_return is not None else None,
         "stopped_tickers": sorted(row["ticker"] for row in rows if row["stop_triggered"]),
         "positions": rows,
-        "note": "Paper tracking only. Returns exclude fees, taxes and FX.",
+        "note": "Paper tracking only. No orders are sent. Returns include USD/SEK movement and exclude fees and taxes.",
     }
-
 
 def _history() -> list[dict]:
     path = Path("Momentum_buy_history.csv")
@@ -552,6 +652,7 @@ def main() -> None:
         )
 
     latest_date, latest_map, fx = pick_latest_grouped_date(client)
+    _initialize_paper_portfolio(latest_map, latest_date, fx)
     history_tickers = list(dict.fromkeys([*eligible, "SPY"]))
     recent_maps = collect_recent_trading_maps(
         client, latest_date, history_tickers, latest_map, needed=253
@@ -636,7 +737,7 @@ def main() -> None:
         "holdings": holdings,
         "signals": signals,
         "performance": _performance(recent_maps, holdings),
-        "paper_portfolio": _paper_portfolio(latest_map, latest_date),
+        "paper_portfolio": _paper_portfolio(latest_map, latest_date, fx),
         "history": _history(),
         "system": {
             "github_action_status": "SUCCESS",
@@ -645,6 +746,7 @@ def main() -> None:
             "universe_input_count": len(template_universe),
             "eligible_security_count": len(eligible),
             "ranked_candidate_count": len(ranked),
+            "usdsek": round(float(fx), 6),
         },
     }
     validate_payload(payload)
