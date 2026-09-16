@@ -51,7 +51,9 @@ jobs:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           POLYGON_MAX_RETRIES: "6"
           POLYGON_RATE_LIMIT_WAIT_SECONDS: "65"
-        run: python momentum_production.py 2>&1 | tee momentum_run.log
+        run: |
+          set -o pipefail
+          python momentum_production.py 2>&1 | tee momentum_run.log
       - name: Validate product outputs
         run: |
           python - <<'PY'
