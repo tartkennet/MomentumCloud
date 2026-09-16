@@ -31,7 +31,12 @@ class ProductionOutputTests(unittest.TestCase):
                 ]}
 
         client = Client()
-        self.assertEqual(sorted(fetch_security_master(client)), ["GOOD", "OTHER"])
+        # The production cache is restored in CI; isolate this pagination unit test
+        # so it exercises the client response rather than a prior workflow cache.
+        with patch("momentum_production._load_cached_security_master", return_value={}), patch(
+            "momentum_production._save_security_master_cache"
+        ):
+            self.assertEqual(sorted(fetch_security_master(client)), ["GOOD", "OTHER"])
         self.assertEqual(client.calls, 2)
 
     def test_risk_off_liquidates_and_never_buys(self):
