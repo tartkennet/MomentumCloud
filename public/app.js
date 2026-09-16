@@ -1,6 +1,7 @@
 const number = (value, digits = 1) => value == null ? "—" : new Intl.NumberFormat("sv-SE", {maximumFractionDigits: digits}).format(value);
 const pct = value => value == null ? "—" : `${value >= 0 ? "+" : ""}${number(value, 1)} %`;
 const money = value => value == null ? "—" : new Intl.NumberFormat("sv-SE", {style:"currency", currency:"USD", maximumFractionDigits:2}).format(value);
+const sek = value => value == null ? "—" : new Intl.NumberFormat("sv-SE", {style:"currency", currency:"SEK", maximumFractionDigits:0}).format(value);
 const compact = value => value == null ? "—" : new Intl.NumberFormat("sv-SE", {notation:"compact", maximumFractionDigits:1}).format(value);
 const tone = value => value == null ? "" : value >= 0 ? "positive" : "negative";
 const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
@@ -45,10 +46,17 @@ function render(data) {
   const statusLabel = {TARGET:"Mål", RESERVE:"Reserv", UNAFFORDABLE:"För dyr"};
   document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td><span class="candidate-status ${String(row.selection_status || "").toLowerCase()}">${escapeHtml(statusLabel[row.selection_status] || "—")}</span></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.return_1m_pct)}">${pct(row.return_1m_pct)}</td><td class="${tone(row.return_3m_pct)}">${pct(row.return_3m_pct)}</td><td class="${tone(row.relative_3m_pct)}">${pct(row.relative_3m_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
 
-  const holdings = data.holdings || [];
+  const paper = data.paper_portfolio || {};
+  const paperActive = paper.status === "ACTIVE";
+  const holdings = paperActive ? (paper.positions || []) : (data.holdings || []);
+  document.querySelector("#holdings-eyebrow").textContent = paperActive ? "PAPPERSPORTFÖLJ · DINA 10" : "PORTFÖLJEN";
+  document.querySelector("#holdings-title").textContent = paperActive ? "Ditt pappersinnehav" : "Innehav";
   const holdingGrid = document.querySelector("#holding-grid");
   holdingGrid.className = holdings.length ? "metric-grid" : "metric-grid empty-state";
   holdingGrid.innerHTML = holdings.length ? holdings.map(row => metric(`${row.ticker} · ${number(row.quantity,0)} st`, pct(row.return_pct), tone(row.return_pct))).join("") : "Inga registrerade innehav.";
+  document.querySelector("#holdings-note").textContent = paperActive
+    ? `${paper.allocation_rule || "Pappersportfölj"} · start ${sek(paper.entry_value_sek)} · nu ${sek(paper.current_value_sek)} · resultat ${sek(paper.pnl_sek)} · mot SPY ${pct(paper.vs_spy_pct)}. ${paper.note || ""}`
+    : paper.status === "PENDING_ENTRY" ? paper.note : "";
 
   document.querySelector("#rebalance-badge").textContent = data.rebalance_due ? "OMALLOKERING NU" : "Nästa månad";
   const signals = data.signals || [];
