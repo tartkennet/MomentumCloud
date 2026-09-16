@@ -1,3 +1,4 @@
+import json
 import unittest
 import tempfile
 from pathlib import Path
@@ -6,8 +7,7 @@ from unittest.mock import patch
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 
-from momentum_production import _signals, _write_workbook, fetch_security_master, validate_payload
-
+from momentum_production import (\n    _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,\n)\n
 
 class ProductionOutputTests(unittest.TestCase):
     def test_security_master_paginates_and_filters(self):
@@ -38,6 +38,31 @@ class ProductionOutputTests(unittest.TestCase):
         ):
             self.assertEqual(sorted(fetch_security_master(client)), ["GOOD", "OTHER"])
         self.assertEqual(client.calls, 2)
+
+    def test_paper_portfolio_uses_latest_close_and_spy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paper_file = Path(directory) / "paper.json"
+            paper_file.write_text(json.dumps({
+                "entry_date": "2026-09-15",
+                "spy_entry_price_usd": 100.0,
+                "positions": [
+                    {"ticker": "AAA", "entry_price_usd": 100.0},
+                    {"ticker": "BBB", "entry_price_usd": 100.0},
+                ],
+            }), encoding="utf-8")
+            paper = _paper_portfolio(
+                {
+                    "AAA": {"close": 110.0},
+                    "BBB": {"close": 90.0},
+                    "SPY": {"close": 105.0},
+                },
+                "2026-09-16",
+                paper_file,
+            )
+        self.assertEqual(paper["status"], "ACTIVE")
+        self.assertEqual(paper["portfolio_return_pct"], 0.0)
+        self.assertEqual(paper["spy_return_pct"], 5.0)
+        self.assertEqual(paper["vs_spy_pct"], -5.0)
 
     def test_risk_off_liquidates_and_never_buys(self):
         holdings = [{"ticker": "ABC", "stop_triggered": False}]
@@ -146,7 +171,7 @@ class ProductionOutputTests(unittest.TestCase):
                     "2026-09-11",
                 )
             generated = load_workbook(output, read_only=True)
-            self.assertTrue({"BuyNow", "TargetPortfolio", "Kandidater", "Holdings", "Signals", "Diagnostics"}.issubset(generated.sheetnames))
+            self.assertTrue({"BuyNow", "TargetPortfolio", "Kandidater", "Holdings", "Signals", "PaperPortfolio", "Diagnostics"}.issubset(generated.sheetnames))
 
 
 if __name__ == "__main__":
