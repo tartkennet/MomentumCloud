@@ -1,9 +1,12 @@
 import tempfile
 import unittest
+from unittest.mock import Mock
+
+import requests
 from datetime import date, timedelta
 from pathlib import Path
 
-from momentum_master_v3 import apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, safe_error_text, save_history_cache, simple_moving_average, update_buy_history
+from momentum_master_v3 import PolygonClient, apply_positive_negative_formatting, build_holdings_df, split_price_factor, load_history_cache, safe_error_text, save_history_cache, simple_moving_average, update_buy_history
 
 
 class SimpleMovingAverageTests(unittest.TestCase):
@@ -15,6 +18,24 @@ class SimpleMovingAverageTests(unittest.TestCase):
         )
         self.assertNotIn("secret-value", message)
         self.assertIn("apiKey=[REDACTED]", message)
+
+    def test_forbidden_polygon_request_is_not_retried(self):
+        class ForbiddenResponse:
+            status_code = 403
+            headers = {}
+
+            def raise_for_status(self):
+                error = requests.HTTPError("403 Client Error: Forbidden")
+                error.response = self
+                raise error
+
+        client = PolygonClient("test-key")
+        client.session.get = Mock(return_value=ForbiddenResponse())
+
+        with self.assertRaises(requests.HTTPError):
+            client.fetch_grouped_stocks("2026-09-15")
+
+        client.session.get.assert_called_once()
 
     def test_uses_latest_trading_sessions(self):
         closes = [float(value) for value in range(253, 0, -1)]
