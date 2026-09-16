@@ -11,7 +11,7 @@ import json
 import logging
 import math
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -49,6 +49,9 @@ BUYNOW_FILE = Path("public/data/buynow.json")
 SIGNALS_FILE = Path("Momentum_signals.csv")
 PERFORMANCE_FILE = Path("Momentum_performance.csv")
 STATE_SCHEMA_VERSION = 3
+SECURITY_MASTER_CACHE_FILE = Path(".momentum_security_master.json")
+SECURITY_MASTER_CACHE_VERSION = 1
+SECURITY_MASTER_CACHE_MAX_AGE_DAYS = 7
 
 
 def _write_json(path: Path, payload: dict | list) -> None:
@@ -65,8 +68,70 @@ def _safe_number(value):
     return float(value)
 
 
+def _load_cached_security_master(
+    cache_file: Path = SECURITY_MASTER_CACHE_FILE,
+) -> dict[str, Security]:
+    """Use a recent local master to stay within the free API plan's call limit."""
+    try:
+        payload = json.loads(cache_file.read_text(encoding="utf-8"))
+        if payload.get("version") != SECURITY_MASTER_CACHE_VERSION:
+            return {}
+        cached_at = datetime.fromisoformat(
+            str(payload["cached_at"]).replace("Z", "+00:00")
+        )
+        if cached_at.tzinfo is None:
+            cached_at = cached_at.replace(tzinfo=timezone.utc)
+        if datetime.now(timezone.utc) - cached_at > timedelta(
+            days=SECURITY_MASTER_CACHE_MAX_AGE_DAYS
+        ):
+            return {}
+        securities = {}
+        for row in payload.get("securities", []):
+            security = Security(
+                ticker=normalize_ticker(row.get("ticker", "")),
+                name=str(row.get("name", "")),
+                security_type=str(row.get("security_type", "")),
+                primary_exchange=str(row.get("primary_exchange", "")),
+                active=bool(row.get("active", True)),
+            )
+            if security.ticker and is_eligible_security(security):
+                securities[security.ticker] = security
+        return securities
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+        return {}
+
+
+def _save_security_master_cache(
+    securities: dict[str, Security],
+    cache_file: Path = SECURITY_MASTER_CACHE_FILE,
+) -> None:
+    payload = {
+        "version": SECURITY_MASTER_CACHE_VERSION,
+        "cached_at": datetime.now(timezone.utc).isoformat(),
+        "securities": [
+            {
+                "ticker": item.ticker,
+                "name": item.name,
+                "security_type": item.security_type,
+                "primary_exchange": item.primary_exchange,
+                "active": item.active,
+            }
+            for item in securities.values()
+        ],
+    }
+    cache_file.write_text(
+        json.dumps(payload, separators=(",", ":")),
+        encoding="utf-8",
+    )
+
+
 def fetch_security_master(client: PolygonClient) -> dict[str, Security]:
-    """Fetch the active US common-stock master once and fail closed."""
+    """Fetch the active US common-stock master once and cache it for seven days."""
+    cached = _load_cached_security_master()
+    if cached:
+        logging.info("Using cached security master with %d eligible securities", len(cached))
+        return cached
+
     path = "/v3/reference/tickers"
     params = {
         "market": "stocks",
@@ -103,8 +168,8 @@ def fetch_security_master(client: PolygonClient) -> dict[str, Security]:
         }
     if not securities:
         raise RuntimeError("Polygon returned no eligible active US common stocks")
+    _save_security_master_cache(securities)
     return securities
-
 
 def _ranked_rows(
     ranked,
