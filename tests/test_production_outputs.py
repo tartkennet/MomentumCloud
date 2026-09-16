@@ -7,7 +7,10 @@ from unittest.mock import patch
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 
-from momentum_production import (\n    _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,\n)\n
+from momentum_production import (
+    _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,
+)
+
 
 class ProductionOutputTests(unittest.TestCase):
     def test_security_master_paginates_and_filters(self):
