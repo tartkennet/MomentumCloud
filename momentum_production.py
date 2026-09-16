@@ -48,6 +48,7 @@ DASHBOARD_FILE = Path("public/data/dashboard.json")
 BUYNOW_FILE = Path("public/data/buynow.json")
 SIGNALS_FILE = Path("Momentum_signals.csv")
 PERFORMANCE_FILE = Path("Momentum_performance.csv")
+PAPER_PORTFOLIO_FILE = Path("Momentum_paper_portfolio.json")
 STATE_SCHEMA_VERSION = 3
 SECURITY_MASTER_CACHE_FILE = Path(".momentum_security_master.json")
 SECURITY_MASTER_CACHE_VERSION = 1
@@ -333,6 +334,68 @@ def _performance(recent_maps, holdings: list[dict]) -> dict:
     }
 
 
+def _paper_portfolio(
+    latest_map: dict,
+    latest_date: str,
+    paper_file: Path = PAPER_PORTFOLIO_FILE,
+) -> dict:
+    """Mark a fixed, equal-weight paper portfolio against its verified entry close."""
+    try:
+        seed = json.loads(paper_file.read_text(encoding="utf-8"))
+        entries = seed["positions"]
+        entry_date = str(seed["entry_date"])
+        spy_entry = float(seed["spy_entry_price_usd"])
+        if not entries:
+            raise ValueError("paper portfolio has no positions")
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        return {
+            "status": "NOT_STARTED",
+            "market_date": latest_date,
+            "reason": f"Paper portfolio unavailable: {exc}",
+            "positions": [],
+        }
+
+    rows = []
+    returns = []
+    for item in entries:
+        ticker = normalize_ticker(item.get("ticker", ""))
+        entry_price = float(item["entry_price_usd"])
+        market = get_from_map(latest_map, ticker)
+        current_price = float(market["close"]) if market else None
+        return_pct = ((current_price / entry_price) - 1.0) * 100.0 if current_price else None
+        if return_pct is not None:
+            returns.append(return_pct)
+        rows.append({
+            "ticker": ticker,
+            "entry_price_usd": round(entry_price, 4),
+            "current_price_usd": round(current_price, 4) if current_price else None,
+            "return_pct": round(return_pct, 4) if return_pct is not None else None,
+            "stop_triggered": stop_is_triggered(current_price, entry_price) if current_price else False,
+        })
+
+    spy_market = get_from_map(latest_map, "SPY")
+    spy_current = float(spy_market["close"]) if spy_market else None
+    spy_return = ((spy_current / spy_entry) - 1.0) * 100.0 if spy_current else None
+    portfolio_return = sum(returns) / len(returns) if returns else None
+    return {
+        "status": "ACTIVE",
+        "entry_date": entry_date,
+        "entry_basis": "verified closing prices in USD",
+        "market_date": latest_date,
+        "weighting": "equal_weight",
+        "position_count": len(rows),
+        "portfolio_return_pct": round(portfolio_return, 4) if portfolio_return is not None else None,
+        "spy_entry_price_usd": round(spy_entry, 4),
+        "spy_current_price_usd": round(spy_current, 4) if spy_current else None,
+        "spy_return_pct": round(spy_return, 4) if spy_return is not None else None,
+        "vs_spy_pct": round(portfolio_return - spy_return, 4)
+        if portfolio_return is not None and spy_return is not None else None,
+        "stopped_tickers": sorted(row["ticker"] for row in rows if row["stop_triggered"]),
+        "positions": rows,
+        "note": "Paper tracking only. Returns exclude fees, taxes and FX.",
+    }
+
+
 def _history() -> list[dict]:
     path = Path("Momentum_buy_history.csv")
     if not path.exists():
@@ -392,6 +455,7 @@ def _write_workbook(
     signals: list[dict],
     risk: dict,
     latest_date: str,
+    paper_portfolio: dict | None = None,
 ) -> None:
     workbook = load_workbook(TEMPLATE_FILE)
     _replace_sheet(workbook, "BuyNow", _excel_frame(buy_now))
@@ -399,6 +463,11 @@ def _write_workbook(
     _replace_sheet(workbook, "Kandidater", _excel_frame(candidates))
     _replace_sheet(workbook, "Holdings", pd.DataFrame(holdings))
     _replace_sheet(workbook, "Signals", pd.DataFrame(signals))
+    _replace_sheet(
+        workbook,
+        "PaperPortfolio",
+        pd.DataFrame((paper_portfolio or {}).get("positions", [])),
+    )
     diagnostics = pd.DataFrame(
         [
             ("Product", PRODUCTION.product_name),
@@ -567,6 +636,7 @@ def main() -> None:
         "holdings": holdings,
         "signals": signals,
         "performance": _performance(recent_maps, holdings),
+        "paper_portfolio": _paper_portfolio(latest_map, latest_date),
         "history": _history(),
         "system": {
             "github_action_status": "SUCCESS",
@@ -582,7 +652,10 @@ def main() -> None:
     _write_json(DASHBOARD_FILE, payload)
     _write_json(BUYNOW_FILE, {"updated": payload["generated_at"], "data": buy_now})
     pd.DataFrame(signals).to_csv(SIGNALS_FILE, index=False)
-    _write_workbook(buy_now, target, ranked_rows, holdings, signals, risk, latest_date)
+    _write_workbook(
+        buy_now, target, ranked_rows, holdings, signals, risk, latest_date,
+        paper_portfolio=payload["paper_portfolio"],
+    )
     # Entry history records the monthly recommendation once.  Pending orders
     # remain visible in Buy Now, but must not create a new fictitious entry on
     # every daily refresh.
