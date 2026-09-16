@@ -8,7 +8,7 @@ import pandas as pd
 from openpyxl import Workbook, load_workbook
 
 from momentum_production import (
-    _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,
+    _initialize_paper_portfolio, _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,
 )
 
 
@@ -60,12 +60,38 @@ class ProductionOutputTests(unittest.TestCase):
                     "SPY": {"close": 105.0},
                 },
                 "2026-09-16",
+                10.0,
                 paper_file,
             )
         self.assertEqual(paper["status"], "ACTIVE")
         self.assertEqual(paper["portfolio_return_pct"], 0.0)
         self.assertEqual(paper["spy_return_pct"], 5.0)
         self.assertEqual(paper["vs_spy_pct"], -5.0)
+
+    def test_paper_portfolio_initializes_whole_shares_with_minimum_one(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paper_file = Path(directory) / "paper.json"
+            paper_file.write_text(json.dumps({
+                "status": "PENDING_ENTRY",
+                "target_allocation_sek": 2_000.0,
+                "positions": [{"ticker": "LOW"}, {"ticker": "HIGH"}],
+            }), encoding="utf-8")
+            _initialize_paper_portfolio(
+                {"LOW": {"close": 10.0}, "HIGH": {"close": 300.0}, "SPY": {"close": 100.0}},
+                "2026-09-16",
+                10.0,
+                paper_file,
+            )
+            paper = _paper_portfolio(
+                {"LOW": {"close": 11.0}, "HIGH": {"close": 300.0}, "SPY": {"close": 101.0}},
+                "2026-09-17",
+                10.0,
+                paper_file,
+            )
+        quantities = {row["ticker"]: row["quantity"] for row in paper["positions"]}
+        self.assertEqual(paper["status"], "ACTIVE")
+        self.assertEqual(quantities, {"LOW": 20, "HIGH": 1})
+        self.assertEqual(paper["entry_value_sek"], 5000.0)
 
     def test_risk_off_liquidates_and_never_buys(self):
         holdings = [{"ticker": "ABC", "stop_triggered": False}]
