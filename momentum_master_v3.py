@@ -107,6 +107,21 @@ class PolygonClient:
                 if data.get("status") == "ERROR":
                     raise RuntimeError(f"Polygon error: {data}")
                 return data
+            except requests.HTTPError as exc:
+                status_code = exc.response.status_code if exc.response is not None else None
+                # Authentication, permission and invalid-request errors cannot be
+                # fixed by retrying.  In particular, a free-plan EOD request for
+                # an unavailable date must fall back immediately.
+                if status_code is not None and 400 <= status_code < 500:
+                    raise
+                if attempt >= max_attempts:
+                    raise
+                wait = min(30, 3 * attempt)
+                logging.warning(
+                    "Polygon HTTP %s. Waiting %ss and retrying (%s/%s).",
+                    status_code or "error", wait, attempt, max_attempts,
+                )
+                time.sleep(wait)
             except requests.RequestException:
                 if attempt >= max_attempts:
                     raise
