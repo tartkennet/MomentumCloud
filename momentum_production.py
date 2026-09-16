@@ -97,7 +97,7 @@ def _load_cached_security_master(
             if security.ticker and is_eligible_security(security):
                 securities[security.ticker] = security
         return securities
-    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+    except (AttributeError, KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
         return {}
 
 
