@@ -96,6 +96,14 @@ def _load_cached_security_master(
             )
             if security.ticker and is_eligible_security(security):
                 securities[security.ticker] = security
+        # A production US security master has thousands of names.  A tiny cache
+        # is a test fixture or a partial write, never a valid live universe.
+        if len(securities) < 100:
+            logging.warning(
+                "Discarding unsafe security-master cache with only %d securities",
+                len(securities),
+            )
+            return {}
         return securities
     except (AttributeError, KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
         return {}
