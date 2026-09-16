@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/momentum_production.yml"
   schedule:
+    # Credential rotations are verified through the same no-order production workflow.
     # Every US trading evening. Monthly rotation is enforced by state;
     # daily runs keep stops, holdings, prices and regime status current.
     # 21:30 UTC is after the US close year-round and remains the same Swedish date.
