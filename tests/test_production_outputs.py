@@ -46,11 +46,13 @@ class ProductionOutputTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             paper_file = Path(directory) / "paper.json"
             paper_file.write_text(json.dumps({
+                "status": "ACTIVE",
                 "entry_date": "2026-09-15",
+                "entry_fx": 10.0,
                 "spy_entry_price_usd": 100.0,
                 "positions": [
-                    {"ticker": "AAA", "entry_price_usd": 100.0},
-                    {"ticker": "BBB", "entry_price_usd": 100.0},
+                    {"ticker": "AAA", "quantity": 1, "entry_price_usd": 100.0},
+                    {"ticker": "BBB", "quantity": 1, "entry_price_usd": 100.0},
                 ],
             }), encoding="utf-8")
             paper = _paper_portfolio(
