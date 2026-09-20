@@ -1,40 +1,72 @@
 {
   "schema_version": 2,
-  "status": "PENDING_ENTRY",
-  "requested_at": "2026-09-20",
-  "request_basis": "Top ten ranked Buy Now positions from the verified 2026-09-15 MomentumCloud production snapshot",
+  "status": "ACTIVE",
+  "entry_date": "2026-09-18",
+  "entry_basis": "Verified closing prices from the first production snapshot after the paper request",
   "allocation_rule": "Approximately 2,000 SEK per position; at least one whole share",
-  "target_allocation_sek": 2000,
+  "target_allocation_sek": 2000.0,
+  "entry_fx": 9.8262,
+  "spy_entry_price_usd": 761.69,
   "positions": [
     {
-      "ticker": "DINO"
+      "ticker": "DINO",
+      "quantity": 1,
+      "entry_price_usd": 115.9,
+      "entry_value_sek": 1138.86
     },
     {
-      "ticker": "HAE"
+      "ticker": "HAE",
+      "quantity": 1,
+      "entry_price_usd": 108.4,
+      "entry_value_sek": 1065.16
     },
     {
-      "ticker": "MPC"
+      "ticker": "MPC",
+      "quantity": 1,
+      "entry_price_usd": 424.89,
+      "entry_value_sek": 4175.05
     },
     {
-      "ticker": "VLO"
+      "ticker": "VLO",
+      "quantity": 1,
+      "entry_price_usd": 413.28,
+      "entry_value_sek": 4060.97
     },
     {
-      "ticker": "AVTR"
+      "ticker": "AVTR",
+      "quantity": 13,
+      "entry_price_usd": 15.52,
+      "entry_value_sek": 1982.53
     },
     {
-      "ticker": "PSX"
+      "ticker": "PSX",
+      "quantity": 1,
+      "entry_price_usd": 273.13,
+      "entry_value_sek": 2683.83
     },
     {
-      "ticker": "DK"
+      "ticker": "DK",
+      "quantity": 2,
+      "entry_price_usd": 78.12,
+      "entry_value_sek": 1535.25
     },
     {
-      "ticker": "IQV"
+      "ticker": "IQV",
+      "quantity": 1,
+      "entry_price_usd": 266.42,
+      "entry_value_sek": 2617.9
     },
     {
-      "ticker": "CMBT"
+      "ticker": "CMBT",
+      "quantity": 10,
+      "entry_price_usd": 20.29,
+      "entry_value_sek": 1993.74
     },
     {
-      "ticker": "MTCH"
+      "ticker": "MTCH",
+      "quantity": 4,
+      "entry_price_usd": 43.2,
+      "entry_value_sek": 1697.97
     }
   ]
 }
