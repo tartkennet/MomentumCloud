@@ -100,7 +100,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f Momentum.xlsx .momentum_production_state.json
-          git add Momentum_buy_history.csv Momentum_signals.csv Momentum_last_run.md public/data/dashboard.json public/data/buynow.json
+          git add Momentum_buy_history.csv Momentum_signals.csv Momentum_last_run.md Momentum_paper_portfolio.json public/data/dashboard.json public/data/buynow.json
           git diff --cached --quiet || git commit -m "Publish MomentumCloud Production v1 snapshot"
           git pull --rebase origin main
           git push origin HEAD:main
@@ -115,5 +115,6 @@ jobs:
             Momentum_signals.csv
             Momentum_last_run.md
             public/data/dashboard.json
+            Momentum_paper_portfolio.json
             momentum_run.log
           if-no-files-found: warn
