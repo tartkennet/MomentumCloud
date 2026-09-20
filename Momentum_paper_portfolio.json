@@ -1,68 +1,40 @@
 {
-  "entry_date": "2026-09-15",
-  "entry_basis": "Verified US closing prices from MomentumCloud production snapshot",
-  "weighting": "equal_weight",
-  "spy_entry_price_usd": 757.39,
+  "schema_version": 2,
+  "status": "PENDING_ENTRY",
+  "requested_at": "2026-09-20",
+  "request_basis": "Top ten ranked Buy Now positions from the verified 2026-09-15 MomentumCloud production snapshot",
+  "allocation_rule": "Approximately 2,000 SEK per position; at least one whole share",
+  "target_allocation_sek": 2000,
   "positions": [
     {
-      "ticker": "DINO",
-      "entry_price_usd": 106.91
+      "ticker": "DINO"
     },
     {
-      "ticker": "HAE",
-      "entry_price_usd": 106.31
+      "ticker": "HAE"
     },
     {
-      "ticker": "MPC",
-      "entry_price_usd": 396.45
+      "ticker": "MPC"
     },
     {
-      "ticker": "VLO",
-      "entry_price_usd": 382.95
+      "ticker": "VLO"
     },
     {
-      "ticker": "AVTR",
-      "entry_price_usd": 15.16
+      "ticker": "AVTR"
     },
     {
-      "ticker": "PSX",
-      "entry_price_usd": 257.06
+      "ticker": "PSX"
     },
     {
-      "ticker": "DK",
-      "entry_price_usd": 74.47
+      "ticker": "DK"
     },
     {
-      "ticker": "IQV",
-      "entry_price_usd": 265.67
+      "ticker": "IQV"
     },
     {
-      "ticker": "CMBT",
-      "entry_price_usd": 19.42
+      "ticker": "CMBT"
     },
     {
-      "ticker": "MTCH",
-      "entry_price_usd": 43.15
-    },
-    {
-      "ticker": "LPG",
-      "entry_price_usd": 55.38
-    },
-    {
-      "ticker": "HNGE",
-      "entry_price_usd": 94.79
-    },
-    {
-      "ticker": "INSW",
-      "entry_price_usd": 105.84
-    },
-    {
-      "ticker": "OOMA",
-      "entry_price_usd": 22.81
-    },
-    {
-      "ticker": "AII",
-      "entry_price_usd": 26.49
+      "ticker": "MTCH"
     }
   ]
 }
