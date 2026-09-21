@@ -53,9 +53,20 @@ function render(data) {
   document.querySelector("#holdings-title").textContent = paperActive ? "Ditt pappersinnehav" : "Innehav";
   const holdingGrid = document.querySelector("#holding-grid");
   holdingGrid.className = holdings.length ? "metric-grid" : "metric-grid empty-state";
-  holdingGrid.innerHTML = holdings.length ? holdings.map(row => metric(`${row.ticker} · ${number(row.quantity,0)} st`, pct(row.return_pct), tone(row.return_pct))).join("") : "Inga registrerade innehav.";
+  const paperSummary = paperActive ? [
+    metric("Sedan fiktiv köpstart", pct(paper.portfolio_return_pct), tone(paper.portfolio_return_pct)),
+    metric("SPY sedan start", pct(paper.spy_return_pct), tone(paper.spy_return_pct)),
+    metric("Skillnad mot SPY", pct(paper.vs_spy_pct), tone(paper.vs_spy_pct)),
+    metric("Resultat i kronor", sek(paper.pnl_sek), tone(paper.pnl_sek)),
+  ] : [];
+  const positionMetrics = holdings.map(row => metric(
+    paperActive ? `${row.ticker} · sedan start · ${number(row.quantity,0)} st` : `${row.ticker} · ${number(row.quantity,0)} st`,
+    pct(row.return_pct),
+    tone(row.return_pct)
+  ));
+  holdingGrid.innerHTML = holdings.length ? [...paperSummary, ...positionMetrics].join("") : "Inga registrerade innehav.";
   document.querySelector("#holdings-note").textContent = paperActive
-    ? `${paper.allocation_rule || "Pappersportfölj"} · start ${sek(paper.entry_value_sek)} · nu ${sek(paper.current_value_sek)} · resultat ${sek(paper.pnl_sek)} · mot SPY ${pct(paper.vs_spy_pct)}. ${paper.note || ""}`
+    ? `Fiktiv köpstart ${paper.entry_date || "—"} · start ${sek(paper.entry_value_sek)} · nu ${sek(paper.current_value_sek)}. Varje akties procent visar utvecklingen sedan köpstarten, inte dagens förändring. ${paper.note || ""}`
     : paper.status === "PENDING_ENTRY" ? paper.note : "";
 
   document.querySelector("#rebalance-badge").textContent = data.rebalance_due ? "OMALLOKERING NU" : "Nästa månad";
@@ -74,13 +85,23 @@ function render(data) {
   document.querySelector(".ring").style.setProperty("--exposure", `${exposure}%`);
 
   const perf = data.performance || {};
-  document.querySelector("#performance-grid").innerHTML = [
+  const performanceMetrics = paperActive ? [
+    metric("Pappersportfölj sedan start", pct(paper.portfolio_return_pct), tone(paper.portfolio_return_pct)),
+    metric("SPY sedan start", pct(paper.spy_return_pct), tone(paper.spy_return_pct)),
+    metric("Mot SPY sedan start", pct(paper.vs_spy_pct), tone(paper.vs_spy_pct)),
+    metric("Startvärde", sek(paper.entry_value_sek)),
+    metric("Värde nu", sek(paper.current_value_sek)),
+    metric("10 % stoppar", (paper.stopped_tickers || []).length ? paper.stopped_tickers.join(", ") : "Inga")
+  ] : [
     metric("Portfölj", pct(perf.portfolio_return_pct), tone(perf.portfolio_return_pct)),
     metric("SPY 1 månad", pct(perf.spy_1m_pct), tone(perf.spy_1m_pct)),
     metric("CAGR", pct(perf.cagr_pct), tone(perf.cagr_pct)), metric("Sharpe", number(perf.sharpe,2)),
     metric("Sortino", number(perf.sortino,2)), metric("Max drawdown", pct(perf.max_drawdown_pct), tone(perf.max_drawdown_pct))
-  ].join("");
-  document.querySelector("#performance-note").textContent = perf.status || "";
+  ];
+  document.querySelector("#performance-grid").innerHTML = performanceMetrics.join("");
+  document.querySelector("#performance-note").textContent = paperActive
+    ? `Alla resultat i denna ruta räknas från den fiktiva köpstarten ${paper.entry_date || "—"}.`
+    : perf.status || "";
 
   const history = (data.history || []).slice(-30).reverse();
   const historyList = document.querySelector("#history-list");
