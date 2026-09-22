@@ -63,6 +63,7 @@ def main() -> None:
     }
     decision = {
         "model": PRODUCTION.selection_model,
+        "validated_at": datetime.now(timezone.utc).isoformat(),
         "universe": summary["Universe"],
         "status": "GO" if all(gates.values()) else "NO-GO",
         "gates": gates,
