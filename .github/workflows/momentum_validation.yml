@@ -6,11 +6,20 @@ on:
       start_date:
         description: "Validation start, YYYY-MM-DD"
         required: true
-        default: "2021-01-01"
+        default: "2024-01-01"
       end_date:
         description: "Validation end, YYYY-MM-DD"
         required: true
         default: "2026-09-01"
+  push:
+    branches: [main]
+    paths:
+      - "momentum_config.py"
+      - "momentum_strategy.py"
+      - "backtest_momentum_v3.py"
+      - "validate_production_backtest.py"
+      - "model_validation.py"
+      - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
@@ -37,13 +46,13 @@ jobs:
           path: .momentum_backtest_cache.json
           key: momentum-production-validation-${{ github.run_id }}
           restore-keys: momentum-production-validation-
-      - name: Validate v4-balanced only
+      - name: Validate locked production model
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: >-
           python validate_production_backtest.py
-          --start "${{ inputs.start_date }}"
-          --end "${{ inputs.end_date }}"
+          --start "${{ inputs.start_date || '2024-01-01' }}"
+          --end "${{ inputs.end_date || '2026-09-01' }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
