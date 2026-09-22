@@ -29,7 +29,7 @@ function render(data) {
   document.querySelector("#regime-status").textContent = data.risk?.status || "VÄNTAR";
   document.querySelector("#regime-reason").textContent = data.risk?.reason || "SPY / SMA200";
 
-  const buys = data.buy_now || [];
+  const buys = modelApproved ? (data.buy_now || []) : [];
   document.querySelector("#buy-count").textContent = buys.length;
   const buyGrid = document.querySelector("#buy-grid");
   buyGrid.className = buys.length ? "stock-grid" : "stock-grid empty-state";
@@ -41,7 +41,7 @@ function render(data) {
         ? "Inga öppna köporder. Kontrollera målportföljen och registrerade innehav."
         : "RISK OFF – inga köp tillåts.";
 
-  const target = data.target_portfolio || [];
+  const target = modelApproved ? (data.target_portfolio || []) : [];
   document.querySelector("#target-count").textContent = target.length;
   const targetGrid = document.querySelector("#target-grid");
   targetGrid.className = target.length ? "stock-grid" : "stock-grid empty-state";
