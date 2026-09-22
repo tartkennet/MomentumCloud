@@ -19,6 +19,7 @@ import pandas as pd
 from openpyxl import load_workbook
 
 from momentum_config import PRODUCTION
+from model_validation import load_model_validation
 from momentum_master_v3 import (
     PolygonClient,
     collect_recent_trading_maps,
@@ -601,9 +602,30 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError(f"Production config mismatch: {key}={config.get(key)!r}")
     if payload["limitation"] != "Current limitation: survivorship bias":
         raise RuntimeError("Required survivorship-bias limitation is missing")
-    risk_on = payload["risk"]["status"] == "RISK ON"
+
+    validation = payload.get("model_validation") or {}
+    approved = validation.get("approved") is True
     target = payload.get("target_portfolio", [])
-    if not risk_on and (payload["buy_now"] or target):
+    buys = payload.get("buy_now", [])
+    if not approved:
+        if target or buys:
+            raise RuntimeError("Unvalidated model must not publish target or Buy Now rows")
+        return
+
+    required_gates = {
+        "at_least_30_periods",
+        "positive_net_return",
+        "beats_spy",
+        "daily_max_drawdown_at_most_20_pct",
+        "hit_rate_at_least_50_pct",
+    }
+    if validation.get("status") != "APPROVED" or not all(
+        validation.get("gates", {}).get(gate) is True for gate in required_gates
+    ):
+        raise RuntimeError("Approved model is missing a complete verified validation decision")
+
+    risk_on = payload["risk"]["status"] == "RISK ON"
+    if not risk_on and (buys or target):
         raise RuntimeError("RISK OFF output must not contain targets or Buy Now orders")
     if risk_on:
         if len(target) != PRODUCTION.position_count:
@@ -627,13 +649,12 @@ def validate_payload(payload: dict) -> None:
         if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
             raise RuntimeError("Target weights do not sum to 100 percent")
     target_tickers = {row["ticker"] for row in target}
-    if any(row.get("ticker") not in target_tickers for row in payload["buy_now"]):
+    if any(row.get("ticker") not in target_tickers for row in buys):
         raise RuntimeError("Buy Now contains a ticker outside the locked target portfolio")
-    if any(row.get("buy_signal") != "BUY" for row in payload["buy_now"]):
+    if any(row.get("buy_signal") != "BUY" for row in buys):
         raise RuntimeError("Buy Now may contain actionable BUY orders only")
-    if len(payload["buy_now"]) > 15 or len(payload["candidates"]) > 50:
+    if len(buys) > 15 or len(payload["candidates"]) > 50:
         raise RuntimeError("Production portfolio or candidate limit exceeded")
-
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -680,16 +701,19 @@ def main() -> None:
 
     ranked = rank_universe(eligible, recent_maps)
     portfolio_value_sek = read_portfolio_value_sek(TEMPLATE_FILE)
-    if risk["risk_on"] and rebalance_due:
+    model_validation = load_model_validation()
+    if risk["risk_on"] and model_validation["approved"] and rebalance_due:
         target = build_target_portfolio(
             ranked,
             True,
             portfolio_value_sek=portfolio_value_sek,
             usdsek=fx,
         )
-    elif risk["risk_on"]:
+    elif risk["risk_on"] and model_validation["approved"]:
         target = [dict(row) for row in previous_state["target_portfolio"]]
     else:
+        # Candidates remain visible for research, but an unvalidated model must
+        # never emit a target portfolio or actionable BUY signal.
         target = []
     target_tickers = {row["ticker"] for row in target}
     ranked_rows = _ranked_rows(ranked, portfolio_value_sek, fx, target)
@@ -730,7 +754,8 @@ def main() -> None:
         "rebalance_due": rebalance_due,
         "config": PRODUCTION.to_dict(),
         "limitation": PRODUCTION.limitation,
-        "risk": {**risk, "exposure_pct": 100.0 if risk["risk_on"] else 0.0},
+        "risk": {**risk, "exposure_pct": 100.0 if risk["risk_on"] and model_validation["approved"] else 0.0},
+        "model_validation": model_validation,
         "buy_now": buy_now,
         "target_portfolio": target,
         "candidates": ranked_rows,
