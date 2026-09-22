@@ -45,7 +45,7 @@ jobs:
           restore-keys: momentum-production-v1-
       - name: Verify code before data access
         run: |
-          python -m py_compile momentum_config.py momentum_strategy.py momentum_production.py momentum_master_v3.py
+          python -m py_compile momentum_config.py momentum_strategy.py momentum_production.py momentum_master_v3.py update_paper_portfolio.py
           python -m unittest discover -s tests -v
       - name: Build verified production snapshot
         env:
@@ -55,6 +55,7 @@ jobs:
         run: |
           set -o pipefail
           python momentum_production.py 2>&1 | tee momentum_run.log
+          python update_paper_portfolio.py 2>&1 | tee -a momentum_run.log
       - name: Validate product outputs
         run: |
           python - <<'PY'
@@ -72,7 +73,10 @@ jobs:
               raise RuntimeError(f"Missing workbook sheets: {sorted(missing)}")
           if payload["risk"]["status"] == "RISK ON" and not 1 <= len(payload["buy_now"]) <= 15:
               raise RuntimeError("RISK ON requires 1-15 eligible Buy Now rows")
-          print(f"Verified {payload['market_date']}: {len(payload['buy_now'])} Buy Now, {len(payload['candidates'])} candidates")
+          paper = payload.get("paper_portfolio", {})
+          if paper.get("status") != "ACTIVE":
+              raise RuntimeError("Paper portfolio is not active")
+          print(f"Verified {payload['market_date']}: {len(payload['buy_now'])} Buy Now, {len(payload['candidates'])} candidates; paper {paper.get('market_date')}")
           PY
       - name: Write run report
         if: always()
