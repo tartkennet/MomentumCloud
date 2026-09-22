@@ -207,6 +207,17 @@ class ProductionOutputTests(unittest.TestCase):
                 "stop_loss_pct": 10.0,
             },
             "limitation": "Current limitation: survivorship bias",
+            "model_validation": {
+                "approved": True,
+                "status": "APPROVED",
+                "gates": {
+                    "at_least_30_periods": True,
+                    "positive_net_return": True,
+                    "beats_spy": True,
+                    "daily_max_drawdown_at_most_20_pct": True,
+                    "hit_rate_at_least_50_pct": True,
+                },
+            },
             "risk": {"status": "RISK ON"},
             "buy_now": [],
             "target_portfolio": target,
@@ -215,6 +226,25 @@ class ProductionOutputTests(unittest.TestCase):
         validate_payload(payload)
         payload["config"]["min_adv20_usd"] = 20_000_000.0
         with self.assertRaisesRegex(RuntimeError, "min_adv20_usd"):
+            validate_payload(payload)
+
+    def test_unvalidated_model_cannot_publish_buy_now(self):
+        payload = {
+            "config": {
+                "selection_model": "fresh-momentum-1-3m",
+                "position_count": 15,
+                "min_price_usd": 10.0,
+                "min_adv20_usd": 5_000_000.0,
+                "stop_loss_pct": 10.0,
+            },
+            "limitation": "Current limitation: survivorship bias",
+            "model_validation": {"approved": False, "status": "UNVALIDATED"},
+            "risk": {"status": "RISK ON"},
+            "buy_now": [{"ticker": "SHOULD_NOT_APPEAR"}],
+            "target_portfolio": [],
+            "candidates": [],
+        }
+        with self.assertRaisesRegex(RuntimeError, "Unvalidated model"):
             validate_payload(payload)
 
     def test_workbook_contract_also_handles_risk_off_empty_outputs(self):
