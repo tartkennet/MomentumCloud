@@ -17,9 +17,13 @@ function stockCard(row, chip) { return `<article class="stock-card">
 
 function render(data) {
   document.querySelector("#market-date").textContent = data.market_date || "Ingen data";
-  document.querySelector("#hero-copy").textContent = data.risk?.risk_on
-    ? "Marknaden är positiv. Månadens kapitalanpassade målportfölj är låst; Buy now visar bara köp som faktiskt återstår att genomföra."
-    : "Riskregimen är avstängd. Inga nya köp görs och målportföljen hålls i kassa.";
+  const modelApproved = data.model_validation?.approved === true;
+  const validationReason = data.model_validation?.reason || "Ingen verifierad point-in-time-validering är publicerad.";
+  document.querySelector("#hero-copy").textContent = !modelApproved
+    ? `MODELL EJ GODKÄND FÖR KÖP. Kandidaterna är endast forskning. ${validationReason}`
+    : data.risk?.risk_on
+      ? "Marknaden är positiv. Månadens kapitalanpassade målportfölj är låst; Buy now visar bara köp som faktiskt återstår att genomföra."
+      : "Riskregimen är avstängd. Inga nya köp görs och målportföljen hålls i kassa.";
   const regime = document.querySelector("#regime-card");
   regime.className = `regime-card ${data.risk?.risk_on ? "on" : "off"}`;
   document.querySelector("#regime-status").textContent = data.risk?.status || "VÄNTAR";
@@ -31,9 +35,11 @@ function render(data) {
   buyGrid.className = buys.length ? "stock-grid" : "stock-grid empty-state";
   buyGrid.innerHTML = buys.length
     ? buys.map(row => stockCard(row, "KÖP")).join("")
-    : data.risk?.risk_on
-      ? "Inga öppna köporder. Kontrollera målportföljen och registrerade innehav."
-      : "RISK OFF – inga köp tillåts.";
+    : !modelApproved
+      ? "MODELL EJ GODKÄND FÖR KÖP – inga Buy Now-signaler publiceras."
+      : data.risk?.risk_on
+        ? "Inga öppna köporder. Kontrollera målportföljen och registrerade innehav."
+        : "RISK OFF – inga köp tillåts.";
 
   const target = data.target_portfolio || [];
   document.querySelector("#target-count").textContent = target.length;
@@ -41,7 +47,9 @@ function render(data) {
   targetGrid.className = target.length ? "stock-grid" : "stock-grid empty-state";
   targetGrid.innerHTML = target.length
     ? target.map(row => stockCard(row, "MÅLPORTFÖLJ")).join("")
-    : data.risk?.risk_on ? "Målportföljen kunde inte skapas." : "100 % kassa i RISK OFF.";
+    : !modelApproved
+      ? "Målportföljen är spärrad tills point-in-time-valideringen är godkänd."
+      : data.risk?.risk_on ? "Målportföljen kunde inte skapas." : "100 % kassa i RISK OFF.";
 
   const statusLabel = {TARGET:"Mål", RESERVE:"Reserv", UNAFFORDABLE:"För dyr"};
   document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td><span class="candidate-status ${String(row.selection_status || "").toLowerCase()}">${escapeHtml(statusLabel[row.selection_status] || "—")}</span></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.return_1m_pct)}">${pct(row.return_1m_pct)}</td><td class="${tone(row.return_3m_pct)}">${pct(row.return_3m_pct)}</td><td class="${tone(row.relative_3m_pct)}">${pct(row.relative_3m_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
