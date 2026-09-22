@@ -173,6 +173,29 @@ class PolygonClient:
         self.grouped_cache[date_str] = out
         return out
 
+    def fetch_daily_open_close(self, ticker: str, date_str: str) -> Dict[str, float]:
+        """Fetch one verified US daily close for narrow live portfolio tracking.
+
+        This endpoint is deliberately separate from the grouped-market endpoint:
+        paper tracking needs only its actual positions and SPY, never a new
+        universe ranking or a substitute production snapshot.
+        """
+        normalized = normalize_ticker(ticker)
+        data = self._get(
+            f"/v1/open-close/{normalized}/{date_str}",
+            {"adjusted": "true"},
+        )
+        close = data.get("close")
+        if close is None:
+            raise ValueError(f"No verified close for {normalized} on {date_str}")
+        return {
+            "open": float(data.get("open", close)),
+            "high": float(data.get("high", close)),
+            "low": float(data.get("low", close)),
+            "close": float(close),
+            "volume": float(data.get("volume", 0.0) or 0.0),
+        }
+
 
 def setup_logging() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
