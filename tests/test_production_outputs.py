@@ -1,12 +1,14 @@
 import json
 import unittest
 import tempfile
+from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 
+from update_paper_portfolio import refresh_payload
 from momentum_production import (
     _initialize_paper_portfolio, _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,
 )
@@ -94,6 +96,35 @@ class ProductionOutputTests(unittest.TestCase):
         self.assertEqual(paper["status"], "ACTIVE")
         self.assertEqual(quantities, {"LOW": 20, "HIGH": 1})
         self.assertEqual(paper["entry_value_sek"], 5000.0)
+
+    def test_paper_close_fallback_updates_only_paper_portfolio(self):
+        class Client:
+            def fetch_daily_open_close(self, ticker, date_str):
+                prices = {"AAA": 110.0, "BBB": 90.0, "SPY": 105.0}
+                return {"close": prices[ticker]}
+
+            def fetch_fx_close(self, date_str):
+                return 10.0
+
+        with tempfile.TemporaryDirectory() as directory:
+            paper_file = Path(directory) / "paper.json"
+            paper_file.write_text(json.dumps({
+                "status": "ACTIVE",
+                "entry_date": "2026-09-15",
+                "entry_fx": 10.0,
+                "spy_entry_price_usd": 100.0,
+                "positions": [
+                    {"ticker": "AAA", "quantity": 1, "entry_price_usd": 100.0},
+                    {"ticker": "BBB", "quantity": 1, "entry_price_usd": 100.0},
+                ],
+            }), encoding="utf-8")
+            payload = {"market_date": "2026-09-18", "buy_now": [{"ticker": "UNCHANGED"}], "system": {"usdsek": 10.0}}
+            refreshed = refresh_payload(payload, Client(), paper_file, today=date(2026, 9, 21))
+        self.assertEqual(refreshed["market_date"], "2026-09-18")
+        self.assertEqual(refreshed["buy_now"], [{"ticker": "UNCHANGED"}])
+        self.assertEqual(refreshed["paper_portfolio"]["market_date"], "2026-09-21")
+        self.assertEqual(refreshed["paper_portfolio"]["portfolio_return_pct"], 0.0)
+        self.assertEqual(refreshed["paper_portfolio"]["spy_return_pct"], 5.0)
 
     def test_risk_off_liquidates_and_never_buys(self):
         holdings = [{"ticker": "ABC", "stop_triggered": False}]
