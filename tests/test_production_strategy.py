@@ -45,8 +45,8 @@ class ProductionConfigTests(unittest.TestCase):
             + PRODUCTION.weight_low_extension,
             1.0,
         )
-        self.assertEqual(PRODUCTION.max_volatility_pct, 80.0)
-        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 20.0)
+        self.assertEqual(PRODUCTION.max_volatility_pct, 60.0)
+        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 12.0)
         self.assertEqual(PRODUCTION.limitation, "Current limitation: survivorship bias")
 
     def test_instrument_filter_is_fail_closed(self):
