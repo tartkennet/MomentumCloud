@@ -43,7 +43,7 @@ jobs:
           python - <<'PY'
           from momentum_config import PRODUCTION
           PRODUCTION.validate()
-          assert PRODUCTION.selection_model == "fresh-momentum-1-3m"
+          assert PRODUCTION.selection_model == "quality-momentum-v2"
           assert PRODUCTION.position_count == 15
           assert PRODUCTION.min_price_usd == 10
           assert PRODUCTION.min_adv20_usd == 5_000_000
