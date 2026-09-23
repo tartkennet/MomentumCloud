@@ -18,6 +18,7 @@ on:
       - "momentum_strategy.py"
       - "backtest_momentum_v3.py"
       - "validate_production_backtest.py"
+      - "data_access_preflight.py"
       - "model_validation.py"
       - ".github/workflows/momentum_validation.yml"
 
@@ -46,6 +47,12 @@ jobs:
           path: .momentum_backtest_cache.json
           key: momentum-production-validation-${{ github.run_id }}
           restore-keys: momentum-production-validation-
+      - name: Verify historical data access
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: >-
+          python data_access_preflight.py
+          --start "${{ inputs.start_date || '2024-01-01' }}"
       - name: Validate locked production model
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
