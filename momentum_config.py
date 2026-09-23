@@ -55,9 +55,9 @@ class ProductionConfig:
         )
         if abs(sum(weights) - 1.0) > 1e-12:
             raise ValueError("Production ranking weights must sum to one")
-        if self.max_volatility_pct != 80.0:
+        if self.max_volatility_pct != 60.0:
             raise ValueError("Production volatility cap must be exactly 60 percent")
-        if self.max_extension_sma50_pct != 20.0:
+        if self.max_extension_sma50_pct != 12.0:
             raise ValueError("Production SMA50 extension cap must be exactly 12 percent")
 
     def to_dict(self) -> dict:
