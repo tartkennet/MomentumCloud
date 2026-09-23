@@ -197,7 +197,7 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return names with fresh 1-3 month strength ranked by the locked score."""
+    """Return quality-momentum names ranked by relative strength and risk."""
     config.validate()
     spy_closes = []
     for _, day_map in recent_maps:
@@ -226,8 +226,8 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_1m"] = frame["return_1m_pct"].rank(method="average", pct=True)
-    frame["rank_3m"] = frame["return_3m_pct"].rank(method="average", pct=True)
+    frame["rank_1m"] = frame["relative_1m_pct"].rank(method="average", pct=True)
+    frame["rank_3m"] = frame["relative_3m_pct"].rank(method="average", pct=True)
     frame["rank_6m"] = frame["return_6m_pct"].rank(method="average", pct=True)
     frame["rank_low_volatility"] = frame["volatility_pct"].rank(
         method="average", ascending=False, pct=True

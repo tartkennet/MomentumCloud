@@ -97,7 +97,7 @@ jobs:
               "# MomentumCloud Production v1\n\n"
               f"Result: {os.environ['JOB_STATUS'].upper()}\n\n"
               f"Updated UTC: {datetime.now(timezone.utc).isoformat()}\n\n"
-              "Model: fresh-momentum-1-3m · positive 1m/3m and above SPY · 15 equal weights · monthly · ADV20 5M USD · stop 10% · SPY>SMA200\n\n"
+              "Model: quality-momentum-v2 · positive 1m/3m and above SPY · 15 equal weights · monthly · ADV20 5M USD · stop 10% · SPY>SMA200\n\n"
               "Current limitation: survivorship bias\n\n"
               "## Log tail\n\n```text\n" + log + "\n```\n",
               encoding="utf-8",
