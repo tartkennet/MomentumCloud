@@ -71,8 +71,13 @@ jobs:
           missing = required.difference(wb.sheetnames)
           if missing:
               raise RuntimeError(f"Missing workbook sheets: {sorted(missing)}")
-          if payload["risk"]["status"] == "RISK ON" and not 1 <= len(payload["buy_now"]) <= 15:
-              raise RuntimeError("RISK ON requires 1-15 eligible Buy Now rows")
+          approved = bool(payload.get("model_validation", {}).get("approved"))
+          buy_now_count = len(payload["buy_now"])
+          if payload["risk"]["status"] == "RISK ON":
+              if approved and not 1 <= buy_now_count <= 15:
+                  raise RuntimeError("Approved RISK ON model requires 1-15 eligible Buy Now rows")
+              if not approved and buy_now_count != 0:
+                  raise RuntimeError("Unapproved model must not publish Buy Now rows")
           paper = payload.get("paper_portfolio", {})
           if paper.get("status") != "ACTIVE":
               raise RuntimeError("Paper portfolio is not active")
