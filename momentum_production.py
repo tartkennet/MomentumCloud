@@ -591,7 +591,7 @@ def _write_workbook(
 def validate_payload(payload: dict) -> None:
     config = payload["config"]
     expected = {
-        "selection_model": "quality-momentum-v2",
+        "selection_model": "v4-balanced",
         "position_count": 15,
         "min_price_usd": 10.0,
         "min_adv20_usd": 5_000_000.0,

@@ -43,6 +43,8 @@ class MomentumMetric:
     relative_3m_pct: float
     volatility_pct: float
     extension_sma50_pct: float
+    mom12_2_pct: float = 0.0
+    mom6_2_pct: float = 0.0
     score: float = 0.0
 
     def to_dict(self) -> dict:
@@ -138,6 +140,8 @@ def _raw_metric(
     return_1m = (price / closes[21] - 1.0) * 100.0
     return_3m = (price / closes[63] - 1.0) * 100.0
     return_6m = (price / closes[126] - 1.0) * 100.0
+    mom12_2 = (closes[21] / closes[252] - 1.0) * 100.0
+    mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
     relative_1m = return_1m - spy_return_1m
     relative_3m = return_3m - spy_return_3m
 
@@ -157,18 +161,11 @@ def _raw_metric(
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma20
-        or sma20 <= sma50
+        or price <= sma50
         or price <= sma200
-        or sma50 <= sma50_1m_ago
         or sma200 <= sma200_1m_ago
-        or return_1m <= config.min_return_1m_pct
-        or return_3m <= config.min_return_3m_pct
-        or return_6m <= 0.0
-        or relative_1m <= config.min_relative_1m_pct
-        or relative_3m <= config.min_relative_3m_pct
-        or volatility > config.max_volatility_pct
-        or extension > config.max_extension_sma50_pct
+        or mom12_2 <= 0.0
+        or mom6_2 <= 0.0
     ):
         return None
     return MomentumMetric(
@@ -189,6 +186,8 @@ def _raw_metric(
         relative_3m_pct=relative_3m,
         volatility_pct=volatility,
         extension_sma50_pct=extension,
+        mom12_2_pct=mom12_2,
+        mom6_2_pct=mom6_2,
     )
 
 
@@ -197,7 +196,7 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return quality-momentum names ranked by relative strength and risk."""
+    """Return v4-balanced candidates from the locked ranking factors."""
     config.validate()
     spy_closes = []
     for _, day_map in recent_maps:
@@ -226,9 +225,8 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_1m"] = frame["relative_1m_pct"].rank(method="average", pct=True)
-    frame["rank_3m"] = frame["relative_3m_pct"].rank(method="average", pct=True)
-    frame["rank_6m"] = frame["return_6m_pct"].rank(method="average", pct=True)
+    frame["rank_12_2"] = frame["mom12_2_pct"].rank(method="average", pct=True)
+    frame["rank_6_2"] = frame["mom6_2_pct"].rank(method="average", pct=True)
     frame["rank_low_volatility"] = frame["volatility_pct"].rank(
         method="average", ascending=False, pct=True
     )
@@ -236,9 +234,8 @@ def rank_universe(
         method="average", ascending=False, pct=True
     )
     frame["score"] = 100.0 * (
-        config.weight_rank_1m * frame["rank_1m"]
-        + config.weight_rank_3m * frame["rank_3m"]
-        + config.weight_rank_6m * frame["rank_6m"]
+        config.weight_rank_12_2 * frame["rank_12_2"]
+        + config.weight_rank_6_2 * frame["rank_6_2"]
         + config.weight_low_volatility * frame["rank_low_volatility"]
         + config.weight_low_extension * frame["rank_low_extension"]
     )

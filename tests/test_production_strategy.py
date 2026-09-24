@@ -31,22 +31,23 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "quality-momentum-v2")
+        self.assertEqual(PRODUCTION.selection_model, "v4-balanced")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 10.0)
         self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
         self.assertAlmostEqual(
-            PRODUCTION.weight_rank_1m
-            + PRODUCTION.weight_rank_3m
-            + PRODUCTION.weight_rank_6m
+            PRODUCTION.weight_rank_12_2
+            + PRODUCTION.weight_rank_6_2
             + PRODUCTION.weight_low_volatility
             + PRODUCTION.weight_low_extension,
             1.0,
         )
-        self.assertEqual(PRODUCTION.max_volatility_pct, 60.0)
-        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 12.0)
+        self.assertEqual(PRODUCTION.weight_rank_12_2, 0.55)
+        self.assertEqual(PRODUCTION.weight_rank_6_2, 0.20)
+        self.assertEqual(PRODUCTION.weight_low_volatility, 0.15)
+        self.assertEqual(PRODUCTION.weight_low_extension, 0.10)
         self.assertEqual(PRODUCTION.limitation, "Current limitation: survivorship bias")
 
     def test_instrument_filter_is_fail_closed(self):

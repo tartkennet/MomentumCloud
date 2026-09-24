@@ -17,7 +17,7 @@ class ModelValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "decision.json"
             path.write_text(json.dumps({
-                "model": "quality-momentum-v2",
+                "model": "v4-balanced",
                 "universe": "POINT_IN_TIME_US_COMMON_STOCKS",
                 "status": "GO",
                 "gates": {
