@@ -215,6 +215,8 @@ def _ranked_rows(
                 "return_1m_pct": round(metric.return_1m_pct, 4),
                 "return_3m_pct": round(metric.return_3m_pct, 4),
                 "return_6m_pct": round(metric.return_6m_pct, 4),
+                "mom12_2_pct": round(metric.mom12_2_pct, 4),
+                "mom6_2_pct": round(metric.mom6_2_pct, 4),
                 "relative_1m_pct": round(metric.relative_1m_pct, 4),
                 "relative_3m_pct": round(metric.relative_3m_pct, 4),
                 "volatility_pct": round(metric.volatility_pct, 4),

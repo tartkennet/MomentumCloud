@@ -11,7 +11,7 @@ function metric(label, value, className = "") { return `<div class="metric"><sma
 function stockCard(row, chip) { return `<article class="stock-card">
   <div class="stock-head"><div><span class="rank">${row.target_rank ? `MÅL ${row.target_rank} · ` : ""}RANK ${row.rank}</span><div class="ticker">${escapeHtml(row.ticker)}</div></div><span class="score">${number(row.score,1)}</span></div>
   <div class="stock-meta"><span>Kurs<b>${money(row.price_usd)}</b></span><span>Vikt<b>${number(row.weight_pct,1)} %</b></span><span>Antal<b>${number(row.quantity,0)}</b></span></div>
-  <div class="stock-meta fresh"><span>1 månad<b class="${tone(row.return_1m_pct)}">${pct(row.return_1m_pct)}</b></span><span>3 månader<b class="${tone(row.return_3m_pct)}">${pct(row.return_3m_pct)}</b></span><span>Mot SPY 3 mån<b class="${tone(row.relative_3m_pct)}">${pct(row.relative_3m_pct)}</b></span></div>
+  <div class="stock-meta fresh"><span>12–2 mån<b class="${tone(row.mom12_2_pct)}">${pct(row.mom12_2_pct)}</b></span><span>6–2 mån<b class="${tone(row.mom6_2_pct)}">${pct(row.mom6_2_pct)}</b></span><span>Volatilitet<b>${pct(row.volatility_pct)}</b></span></div>
   <span class="signal-chip">${escapeHtml(chip)}</span>
 </article>`; }
 
@@ -52,7 +52,7 @@ function render(data) {
       : data.risk?.risk_on ? "Målportföljen kunde inte skapas." : "100 % kassa i RISK OFF.";
 
   const statusLabel = {TARGET:"Mål", RESERVE:"Reserv", UNAFFORDABLE:"För dyr"};
-  document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td><span class="candidate-status ${String(row.selection_status || "").toLowerCase()}">${escapeHtml(statusLabel[row.selection_status] || "—")}</span></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.return_1m_pct)}">${pct(row.return_1m_pct)}</td><td class="${tone(row.return_3m_pct)}">${pct(row.return_3m_pct)}</td><td class="${tone(row.relative_3m_pct)}">${pct(row.relative_3m_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
+  document.querySelector("#candidate-rows").innerHTML = (data.candidates || []).map(row => `<tr><td>${row.rank}</td><td><b>${escapeHtml(row.ticker)}</b></td><td><span class="candidate-status ${String(row.selection_status || "").toLowerCase()}">${escapeHtml(statusLabel[row.selection_status] || "—")}</span></td><td>${number(row.score,1)}</td><td>${money(row.price_usd)}</td><td class="${tone(row.mom12_2_pct)}">${pct(row.mom12_2_pct)}</td><td class="${tone(row.mom6_2_pct)}">${pct(row.mom6_2_pct)}</td><td>${number(row.volatility_pct,1)} %</td><td>${pct(row.extension_sma50_pct)}</td><td>${compact(row.adv20_usd)}</td></tr>`).join("");
 
   const paper = data.paper_portfolio || {};
   const paperActive = paper.status === "ACTIVE";
