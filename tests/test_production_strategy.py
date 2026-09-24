@@ -88,7 +88,7 @@ class ProductionConfigTests(unittest.TestCase):
         )
         self.assertEqual([row.ticker for row in ranked], ["FRESH"])
 
-    def test_recent_returns_must_beat_spy(self):
+    def test_v4_ranking_does_not_require_short_term_relative_spy_return(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
@@ -96,7 +96,9 @@ class ProductionConfigTests(unittest.TestCase):
             ["LAGGARD", "LEADER"],
             history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["LEADER"])
+        self.assertEqual([row.ticker for row in ranked], ["LEADER", "LAGGARD"])
+        self.assertGreater(ranked[0].mom12_2_pct, ranked[1].mom12_2_pct)
+        self.assertGreater(ranked[0].mom6_2_pct, ranked[1].mom6_2_pct)
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
