@@ -96,6 +96,20 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(row["close"], 39.0)
         self.assertEqual(action["reason"], "CASH_MERGER")
 
+    def test_isee_cash_merger_settles_at_verified_consideration(self):
+        days = ["2023-07-10", "2023-07-11", "2023-08-01"]
+        cache = {
+            "2023-07-10": {"ISEE": {"open": 39.8, "close": 39.9}},
+            "2023-07-11": {},
+            "2023-08-01": {},
+        }
+        day, row, action = resolve_exit_execution(
+            cache, days, "ISEE", "2023-08-01", "2023-07-10", "2023-08-01"
+        )
+        self.assertEqual(day, "2023-07-11")
+        self.assertEqual(row["close"], 40.0)
+        self.assertEqual(action["reason"], "CASH_MERGER")
+
     def test_tradable_exit_before_cash_merger_keeps_market_price(self):
         days = ["2026-02-27", "2026-03-02", "2026-03-03"]
         cache = {
