@@ -124,6 +124,40 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(row["close"], 11.0)
         self.assertEqual(action["reason"], "CASH_MERGER")
 
+    def test_all_remaining_cash_mergers_use_verified_fixed_consideration(self):
+        cases = {
+            "CBAY": ("2024-03-21", "2024-03-22", "2024-04-01", 32.5),
+            "ALPN": ("2024-05-17", "2024-05-20", "2024-06-03", 65.0),
+            "RGLS": ("2025-06-24", "2025-06-25", "2025-07-01", 7.0),
+            "TERN": ("2026-05-04", "2026-05-05", "2026-06-01", 53.0),
+        }
+        for ticker, (prior, effective, later, cash) in cases.items():
+            with self.subTest(ticker=ticker):
+                day, row, action = resolve_exit_execution(
+                    {prior: {ticker: {"open": cash - 0.1, "close": cash - 0.05}}, effective: {}, later: {}},
+                    [prior, effective, later], ticker, later, prior, later,
+                )
+                self.assertEqual(day, effective)
+                self.assertEqual(row["close"], cash)
+                self.assertEqual(action["reason"], "CASH_MERGER")
+
+    def test_symbol_changes_resolve_to_successor_without_changing_share_count(self):
+        cases = {
+            "DWAC": ("2024-03-22", "2024-03-25", "2024-04-01", "DJT", 50.0),
+            "ARMN": ("2026-02-18", "2026-02-19", "2026-03-02", "ARIS", 20.0),
+        }
+        for ticker, (prior, effective, target, successor, price) in cases.items():
+            with self.subTest(ticker=ticker):
+                day, row, action = resolve_exit_execution(
+                    {prior: {ticker: {"open": price - 1, "close": price - 0.5}}, effective: {successor: {"open": price, "close": price}}, target: {successor: {"open": price + 1, "close": price + 2}}},
+                    [prior, effective, target], ticker, target, prior, target,
+                )
+                self.assertEqual(day, target)
+                self.assertEqual(row["close"], price + 2)
+                self.assertEqual(action["reason"], "SYMBOL_CHANGE")
+                self.assertEqual(action["valuation_ticker"], successor)
+                self.assertEqual(action["shares_per_share"], 1.0)
+
     def test_tradable_exit_before_cash_merger_keeps_market_price(self):
         days = ["2026-02-27", "2026-03-02", "2026-03-03"]
         cache = {
