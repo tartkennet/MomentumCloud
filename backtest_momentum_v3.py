@@ -426,6 +426,18 @@ def research_exit(
             ]
             triggered = len(closes) == 50 and close < sum(closes) / 50.0
             reason = "BELOW_SMA50"
+        elif exit_rule == "core":
+            history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:200]
+            closes = [
+                float(value)
+                for day in history_days
+                for value, _ in [position_close_on_day(cache, ticker, day)]
+                if value is not None
+            ]
+            stopped = close / entry_price - 1.0 <= -abs(float(stop_loss_pct)) / 100.0
+            below_sma200 = len(closes) == 200 and close < sum(closes) / 200.0
+            triggered = stopped or below_sma200
+            reason = "STOP_LOSS" if stopped else "BELOW_SMA200"
         elif exit_rule == "momentum":
             history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:253]
             history = [(day, cache[day]) for day in history_days]
@@ -550,12 +562,12 @@ def build_prior_2_12_metrics(
     regime handling is applied separately so weak markets can remain in cash.
     """
     if selection_model not in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
         "quality-momentum-v2",
     }:
         raise ValueError(
-            "selection_model must be classic-12-2, v4-balanced, v5-regime "
-            "v6-core or quality-momentum-v2"
+            "selection_model must be classic-12-2, v4-balanced, v5-regime, "
+            "v6-core, core-momentum-v1 or quality-momentum-v2"
         )
 
     spy_closes = []
@@ -633,15 +645,15 @@ def build_prior_2_12_metrics(
                 or mom12_2 <= 0.0
             ):
                 continue
-        elif selection_model in {"v4-balanced", "v6-core"}:
+        elif selection_model in {"v4-balanced", "v6-core", "core-momentum-v1"}:
             if (
                 price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
-                or price <= sma50
                 or price <= sma200
                 or sma200 <= sma200_1m_ago
                 or mom12_2 <= 0.0
                 or mom6_2 <= 0.0
+                or return_3m <= 0.0
             ):
                 continue
         elif selection_model == "quality-momentum-v2":
@@ -725,6 +737,24 @@ def build_prior_2_12_metrics(
         # above are binary; there are no fitted weights or RSI thresholds.
         frame["total_score"] = frame["mom12_2"] / frame["annualized_vol"].clip(
             lower=1.0
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "core-momentum-v1":
+        frame["rank_12_2"] = frame["mom12_2"].rank(method="average", pct=True)
+        frame["rank_6_2"] = frame["mom6_2"].rank(method="average", pct=True)
+        frame["rank_3m"] = frame["return_3m"].rank(method="average", pct=True)
+        frame["total_score"] = 100.0 * (
+            PRODUCTION.weight_rank_12_2 * frame["rank_12_2"]
+            + PRODUCTION.weight_rank_6_2 * frame["rank_6_2"]
+            + PRODUCTION.weight_rank_3m * frame["rank_3m"]
         )
         return [
             SimpleNamespace(
@@ -843,16 +873,18 @@ def choose_top(
     top_n=DEFAULT_TOP_N,
     selection_model="v3",
     min_adv20_usd=RESEARCH_MIN_ADV20_USD,
+    previous_tickers=None,
+    rank_exit_cutoff=None,
 ):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -863,7 +895,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+        "core-momentum-v1", "quality-momentum-v2",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -876,6 +908,11 @@ def choose_top(
             signal_map, history
         ):
             logging.info("Core risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model == "core-momentum-v1" and not core_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Core-momentum risk-off market regime on %s: hold cash", asof)
             return []
         if selection_model == "quality-momentum-v2" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -891,7 +928,20 @@ def choose_top(
         )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
-    return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:top_n]
+    ranked = sorted(metrics, key=lambda item: item.total_score, reverse=True)
+    if selection_model != "core-momentum-v1" or not previous_tickers:
+        return ranked[:top_n]
+
+    cutoff = int(rank_exit_cutoff or 20)
+    if cutoff < top_n:
+        raise ValueError("rank_exit_cutoff must be at least top_n")
+    previous = {str(ticker).upper().strip() for ticker in previous_tickers}
+    retained = [
+        item for rank, item in enumerate(ranked, 1)
+        if rank <= cutoff and item.ticker in previous
+    ]
+    retained_tickers = {item.ticker for item in retained}
+    return (retained + [item for item in ranked if item.ticker not in retained_tickers])[:top_n]
 
 
 def choose_top10(client, cache, tickers, asof):
@@ -1135,11 +1185,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
         )
 
     client = PolygonClient(api_key)
@@ -1240,6 +1290,7 @@ def run(
         )
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
+    prior_core_tickers = set()
     for signal, entry, exit_day in periods:
         signal_tickers = [
             ticker
@@ -1254,16 +1305,20 @@ def run(
             top_n,
             selection_model,
             min_adv20_usd,
+            previous_tickers=prior_core_tickers,
+            rank_exit_cutoff=20 if selection_model == "core-momentum-v1" else None,
         )
         cash_period = False
         if selection_model in {
-            "v4-balanced", "v5-regime", "v6-core", "quality-momentum-v2"
+            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
             regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
+        if selection_model == "core-momentum-v1":
+            prior_core_tickers = {pick.ticker for pick in picks}
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
@@ -1460,8 +1515,8 @@ def run(
     summary["SelectionModel"] = selection_model
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+            "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+            "core-momentum-v1", "quality-momentum-v2",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1502,7 +1557,7 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
     parser.add_argument("--rebalance-months", type=int, choices=(1, 2, 3), required=True)
     parser.add_argument("--stop-loss-pct", type=float)
-    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum"))
+    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum", "core"))
     parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--portfolio-value-usd", type=float, default=10_000.0)
@@ -1514,7 +1569,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "quality-momentum-v2",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2",
         ),
         default="v3",
     )
