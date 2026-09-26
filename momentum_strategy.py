@@ -161,11 +161,11 @@ def _raw_metric(
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma50
         or price <= sma200
         or sma200 <= sma200_1m_ago
         or mom12_2 <= 0.0
         or mom6_2 <= 0.0
+        or return_3m <= 0.0
     ):
         return None
     return MomentumMetric(
@@ -196,7 +196,7 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return v4-balanced candidates from the locked ranking factors."""
+    """Return core-momentum-v1 candidates from the locked ranking factors."""
     config.validate()
     spy_closes = []
     for _, day_map in recent_maps:
@@ -227,17 +227,11 @@ def rank_universe(
     frame = pd.DataFrame([item.to_dict() for item in raw])
     frame["rank_12_2"] = frame["mom12_2_pct"].rank(method="average", pct=True)
     frame["rank_6_2"] = frame["mom6_2_pct"].rank(method="average", pct=True)
-    frame["rank_low_volatility"] = frame["volatility_pct"].rank(
-        method="average", ascending=False, pct=True
-    )
-    frame["rank_low_extension"] = frame["extension_sma50_pct"].rank(
-        method="average", ascending=False, pct=True
-    )
+    frame["rank_3m"] = frame["return_3m_pct"].rank(method="average", pct=True)
     frame["score"] = 100.0 * (
         config.weight_rank_12_2 * frame["rank_12_2"]
         + config.weight_rank_6_2 * frame["rank_6_2"]
-        + config.weight_low_volatility * frame["rank_low_volatility"]
-        + config.weight_low_extension * frame["rank_low_extension"]
+        + config.weight_rank_3m * frame["rank_3m"]
     )
     frame = frame.sort_values(["score", "ticker"], ascending=[False, True])
     fields = tuple(MomentumMetric.__dataclass_fields__)
@@ -252,6 +246,7 @@ def build_target_portfolio(
     risk_on: bool,
     portfolio_value_sek: float | None = None,
     usdsek: float | None = None,
+    previous_tickers: Iterable[str] = (),
     config: ProductionConfig = PRODUCTION,
 ) -> list[dict]:
     if not risk_on:
@@ -265,8 +260,28 @@ def build_target_portfolio(
     position_value_sek = (
         portfolio_value_sek * weight if portfolio_value_sek is not None else None
     )
+    previous = {
+        str(ticker).upper().strip()
+        for ticker in previous_tickers
+        if str(ticker).upper().strip()
+    }
+    # Retain a current holding while it remains inside the monthly top-20
+    # band, then fill the rest of the 12 equal-weight slots from the ranking.
+    # This avoids needless turnover around the top-12 boundary.
+    retained = [
+        (model_rank, metric)
+        for model_rank, metric in enumerate(ranked, 1)
+        if model_rank <= config.rank_exit_cutoff and metric.ticker in previous
+    ]
+    retained_tickers = {metric.ticker for _, metric in retained}
+    selected = retained + [
+        (model_rank, metric)
+        for model_rank, metric in enumerate(ranked, 1)
+        if metric.ticker not in retained_tickers
+    ]
+
     target = []
-    for model_rank, metric in enumerate(ranked, 1):
+    for model_rank, metric in selected:
         quantity = None
         if position_value_sek is not None:
             quantity = math.floor(position_value_sek / (metric.price_usd * usdsek))

@@ -11,16 +11,16 @@ from dataclasses import asdict, dataclass
 @dataclass(frozen=True)
 class ProductionConfig:
     product_name: str = "MomentumCloud Production v1"
-    selection_model: str = "v4-balanced"
-    position_count: int = 15
+    selection_model: str = "core-momentum-v1"
+    position_count: int = 12
     candidate_count: int = 50
-    min_price_usd: float = 10.0
+    min_price_usd: float = 5.0
     min_adv20_usd: float = 5_000_000.0
     stop_loss_pct: float = 10.0
-    weight_rank_12_2: float = 0.55
-    weight_rank_6_2: float = 0.20
-    weight_low_volatility: float = 0.15
-    weight_low_extension: float = 0.10
+    weight_rank_12_2: float = 0.50
+    weight_rank_6_2: float = 0.30
+    weight_rank_3m: float = 0.20
+    rank_exit_cutoff: int = 20
     eligible_security_types: tuple[str, ...] = ("CS",)
     eligible_primary_exchanges: tuple[str, ...] = ("XNAS", "XNYS", "XASE")
     rebalance_frequency: str = "monthly"
@@ -28,26 +28,23 @@ class ProductionConfig:
     limitation: str = "Current limitation: survivorship bias"
 
     def validate(self) -> None:
-        if self.selection_model != "v4-balanced":
-            raise ValueError("Production selection_model must be v4-balanced")
-        if self.position_count != 15:
-            raise ValueError("Production portfolio must contain 15 positions")
-        if self.min_price_usd != 10.0:
-            raise ValueError("Production minimum price must be exactly 10 USD")
+        if self.selection_model != "core-momentum-v1":
+            raise ValueError("Production selection_model must be core-momentum-v1")
+        if self.position_count != 12:
+            raise ValueError("Production portfolio must contain 12 positions")
+        if self.min_price_usd != 5.0:
+            raise ValueError("Production minimum price must be exactly 5 USD")
         if self.min_adv20_usd != 5_000_000.0:
             raise ValueError("Production ADV20 minimum must be exactly 5,000,000 USD")
         if self.stop_loss_pct != 10.0:
             raise ValueError("Production stop loss must be exactly 10 percent")
-        weights = (
-            self.weight_rank_12_2,
-            self.weight_rank_6_2,
-            self.weight_low_volatility,
-            self.weight_low_extension,
-        )
-        if weights != (0.55, 0.20, 0.15, 0.10):
-            raise ValueError("Production v4-balanced ranking weights are locked")
+        weights = (self.weight_rank_12_2, self.weight_rank_6_2, self.weight_rank_3m)
+        if weights != (0.50, 0.30, 0.20):
+            raise ValueError("Production core-momentum-v1 ranking weights are locked")
         if abs(sum(weights) - 1.0) > 1e-12:
             raise ValueError("Production ranking weights must sum to one")
+        if self.rank_exit_cutoff != 20:
+            raise ValueError("Production rank exit cutoff must be exactly 20")
 
     def to_dict(self) -> dict:
         self.validate()

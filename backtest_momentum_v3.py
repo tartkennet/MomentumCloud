@@ -276,10 +276,78 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
+# OSH: CVS completed the all-cash acquisition on 2023-05-02 and paid
+# $39.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://www.cvshealth.com/news/company-news/cvs-health-completes-acquisition-of-oak-street-health.html
+# https://www.sec.gov/Archives/edgar/data/64803/000006480324000007/cvs-20231231.htm
+# ISEE: Astellas completed the all-cash IVERIC bio acquisition on 2023-07-11
+# at $40.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://newsroom.astellas.us/2023-07-11-Astellas-Completes-Acquisition-of-Iveric-Bio
+# https://www.sec.gov/Archives/edgar/data/1410939/000110465923079843/tm2320976d1_8k.htm
+# ROVR: Blackstone completed the all-cash Rover Group acquisition on 2024-02-27
+# at $11.00 per share. The ticker has no later exchange print.
+# Sources:
+# https://www.rover.com/blog/press-release/blackstone-completes-acquisition-of-rover/
+# https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
+# CBAY: Gilead completed the all-cash CymaBay acquisition on 2024-03-22 at
+# $32.50 per share. Source: https://www.sec.gov/Archives/edgar/data/882095/000110465924037619/tm249475d1_8k.htm
+# ALPN: Vertex completed the all-cash Alpine Immune Sciences acquisition on
+# 2024-05-20 at $65.00 per share. Source: https://investors.vrtx.com/static-files/695c0946-4f67-4ade-9460-7add974bbdc7
+# RGLS: Novartis completed the Regulus acquisition on 2025-06-25. The fixed
+# consideration was $7.00 cash per share plus a non-tradeable $7.00 CVR. The
+# unpriced CVR is deliberately excluded from the executable cash settlement.
+# Source: https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics
+# TERN: Merck completed the all-cash Terns acquisition on 2026-05-05 at
+# $53.00 per share. Source: https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
         "cash_per_share": 45.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "OSH": {
+        "effective_date": "2023-05-02",
+        "cash_per_share": 39.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ISEE": {
+        "effective_date": "2023-07-11",
+        "cash_per_share": 40.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ROVR": {
+        "effective_date": "2024-02-27",
+        "cash_per_share": 11.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "CBAY": {
+        "effective_date": "2024-03-22",
+        "cash_per_share": 32.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ALPN": {
+        "effective_date": "2024-05-20",
+        "cash_per_share": 65.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "RGLS": {
+        "effective_date": "2025-06-25",
+        "cash_per_share": 7.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "Unpriced contingent value right excluded from cash settlement",
+    },
+    "TERN": {
+        "effective_date": "2026-05-05",
+        "cash_per_share": 53.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
@@ -292,12 +360,32 @@ CASH_CORPORATE_ACTIONS = {
 # Sources:
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
+# DWAC: after the business combination closed on 2024-03-25, the existing
+# common shares continued under the DJT symbol. Source:
+# https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-149
+# ARMN: Aris Mining changed its US listing symbol from ARMN to ARIS when it
+# uplisted to NYSE on 2026-02-19. Source:
+# https://www.sec.gov/Archives/edgar/data/1964504/000127956926000103/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
     "HOUS": {
         "effective_date": "2026-01-09",
         "successor_ticker": "COMP",
         "shares_per_share": 1.436,
         "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
+    "DWAC": {
+        "effective_date": "2024-03-25",
+        "successor_ticker": "DJT",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
+        "execution": "successor-market",
+    },
+    "ARMN": {
+        "effective_date": "2026-02-19",
+        "successor_ticker": "ARIS",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
         "execution": "successor-market",
     },
 }
@@ -426,6 +514,18 @@ def research_exit(
             ]
             triggered = len(closes) == 50 and close < sum(closes) / 50.0
             reason = "BELOW_SMA50"
+        elif exit_rule == "core":
+            history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:200]
+            closes = [
+                float(value)
+                for day in history_days
+                for value, _ in [position_close_on_day(cache, ticker, day)]
+                if value is not None
+            ]
+            stopped = close / entry_price - 1.0 <= -abs(float(stop_loss_pct)) / 100.0
+            below_sma200 = len(closes) == 200 and close < sum(closes) / 200.0
+            triggered = stopped or below_sma200
+            reason = "STOP_LOSS" if stopped else "BELOW_SMA200"
         elif exit_rule == "momentum":
             history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:253]
             history = [(day, cache[day]) for day in history_days]
@@ -550,12 +650,12 @@ def build_prior_2_12_metrics(
     regime handling is applied separately so weak markets can remain in cash.
     """
     if selection_model not in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
         "quality-momentum-v2",
     }:
         raise ValueError(
-            "selection_model must be classic-12-2, v4-balanced, v5-regime "
-            "v6-core or quality-momentum-v2"
+            "selection_model must be classic-12-2, v4-balanced, v5-regime, "
+            "v6-core, core-momentum-v1 or quality-momentum-v2"
         )
 
     spy_closes = []
@@ -633,15 +733,15 @@ def build_prior_2_12_metrics(
                 or mom12_2 <= 0.0
             ):
                 continue
-        elif selection_model in {"v4-balanced", "v6-core"}:
+        elif selection_model in {"v4-balanced", "v6-core", "core-momentum-v1"}:
             if (
                 price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
-                or price <= sma50
                 or price <= sma200
                 or sma200 <= sma200_1m_ago
                 or mom12_2 <= 0.0
                 or mom6_2 <= 0.0
+                or return_3m <= 0.0
             ):
                 continue
         elif selection_model == "quality-momentum-v2":
@@ -725,6 +825,24 @@ def build_prior_2_12_metrics(
         # above are binary; there are no fitted weights or RSI thresholds.
         frame["total_score"] = frame["mom12_2"] / frame["annualized_vol"].clip(
             lower=1.0
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "core-momentum-v1":
+        frame["rank_12_2"] = frame["mom12_2"].rank(method="average", pct=True)
+        frame["rank_6_2"] = frame["mom6_2"].rank(method="average", pct=True)
+        frame["rank_3m"] = frame["return_3m"].rank(method="average", pct=True)
+        frame["total_score"] = 100.0 * (
+            PRODUCTION.weight_rank_12_2 * frame["rank_12_2"]
+            + PRODUCTION.weight_rank_6_2 * frame["rank_6_2"]
+            + PRODUCTION.weight_rank_3m * frame["rank_3m"]
         )
         return [
             SimpleNamespace(
@@ -843,16 +961,18 @@ def choose_top(
     top_n=DEFAULT_TOP_N,
     selection_model="v3",
     min_adv20_usd=RESEARCH_MIN_ADV20_USD,
+    previous_tickers=None,
+    rank_exit_cutoff=None,
 ):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -863,7 +983,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+        "core-momentum-v1", "quality-momentum-v2",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -876,6 +996,11 @@ def choose_top(
             signal_map, history
         ):
             logging.info("Core risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model == "core-momentum-v1" and not core_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Core-momentum risk-off market regime on %s: hold cash", asof)
             return []
         if selection_model == "quality-momentum-v2" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -891,7 +1016,20 @@ def choose_top(
         )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
-    return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:top_n]
+    ranked = sorted(metrics, key=lambda item: item.total_score, reverse=True)
+    if selection_model != "core-momentum-v1" or not previous_tickers:
+        return ranked[:top_n]
+
+    cutoff = int(rank_exit_cutoff or 20)
+    if cutoff < top_n:
+        raise ValueError("rank_exit_cutoff must be at least top_n")
+    previous = {str(ticker).upper().strip() for ticker in previous_tickers}
+    retained = [
+        item for rank, item in enumerate(ranked, 1)
+        if rank <= cutoff and item.ticker in previous
+    ]
+    retained_tickers = {item.ticker for item in retained}
+    return (retained + [item for item in ranked if item.ticker not in retained_tickers])[:top_n]
 
 
 def choose_top10(client, cache, tickers, asof):
@@ -1135,11 +1273,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
         )
 
     client = PolygonClient(api_key)
@@ -1240,6 +1378,8 @@ def run(
         )
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
+    unresolved_executions = []
+    prior_core_tickers = set()
     for signal, entry, exit_day in periods:
         signal_tickers = [
             ticker
@@ -1254,16 +1394,20 @@ def run(
             top_n,
             selection_model,
             min_adv20_usd,
+            previous_tickers=prior_core_tickers,
+            rank_exit_cutoff=20 if selection_model == "core-momentum-v1" else None,
         )
         cash_period = False
         if selection_model in {
-            "v4-balanced", "v5-regime", "v6-core", "quality-momentum-v2"
+            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
             regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
+        if selection_model == "core-momentum-v1":
+            prior_core_tickers = {pick.ticker for pick in picks}
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
@@ -1374,6 +1518,9 @@ def run(
                 "CorporateAction": (
                     str(corporate_action["reason"]) if corporate_action else ""
                 ),
+                "CorporateActionNote": (
+                    str(corporate_action.get("note", "")) if corporate_action else ""
+                ),
                 "CorporateActionTicker": exit_valuation_ticker,
                 "CorporateActionRatio": exit_conversion_ratio,
                 "EntryExecution": entry_execution,
@@ -1393,9 +1540,11 @@ def run(
             })
         if not cash_period and len(stock_returns) < top_n:
             details = ", ".join(missing_executions) or "unknown ticker"
-            raise RuntimeError(
-                f"No executable price through available history for {signal}: {details}"
-            )
+            # Do not silently value an unavailable security at a guessed price.
+            # Continue the diagnostic pass so one run reports every missing
+            # delisting/corporate action across the full validation window.
+            unresolved_executions.append(f"{signal}: {details}")
+            continue
 
         gross = 0.0 if cash_period else sum(stock_returns) / top_n
         net = 0.0 if cash_period else gross - ROUND_TRIP_COST_PCT / 100
@@ -1435,6 +1584,12 @@ def run(
         })
         logging.info("Signal %s, trade %s to %s: %.2f%% net, SPY %.2f%%", signal, entry, exit_day, net * 100, spy_return * 100)
 
+    if unresolved_executions:
+        raise RuntimeError(
+            "No executable price or verified corporate-action settlement for: "
+            + " | ".join(unresolved_executions)
+        )
+
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
     positions_frame = pd.DataFrame(position_rows)
@@ -1460,8 +1615,8 @@ def run(
     summary["SelectionModel"] = selection_model
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+            "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+            "core-momentum-v1", "quality-momentum-v2",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1502,7 +1657,7 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
     parser.add_argument("--rebalance-months", type=int, choices=(1, 2, 3), required=True)
     parser.add_argument("--stop-loss-pct", type=float)
-    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum"))
+    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum", "core"))
     parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--portfolio-value-usd", type=float, default=10_000.0)
@@ -1514,7 +1669,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "quality-momentum-v2",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2",
         ),
         default="v3",
     )
