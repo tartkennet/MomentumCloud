@@ -291,6 +291,16 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://www.rover.com/blog/press-release/blackstone-completes-acquisition-of-rover/
 # https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
+# CBAY: Gilead completed the all-cash CymaBay acquisition on 2024-03-22 at
+# $32.50 per share. Source: https://www.sec.gov/Archives/edgar/data/882095/000110465924037619/tm249475d1_8k.htm
+# ALPN: Vertex completed the all-cash Alpine Immune Sciences acquisition on
+# 2024-05-20 at $65.00 per share. Source: https://investors.vrtx.com/static-files/695c0946-4f67-4ade-9460-7add974bbdc7
+# RGLS: Novartis completed the Regulus acquisition on 2025-06-25. The fixed
+# consideration was $7.00 cash per share plus a non-tradeable $7.00 CVR. The
+# unpriced CVR is deliberately excluded from the executable cash settlement.
+# Source: https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics
+# TERN: Merck completed the all-cash Terns acquisition on 2026-05-05 at
+# $53.00 per share. Source: https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
@@ -316,6 +326,31 @@ CASH_CORPORATE_ACTIONS = {
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
+    "CBAY": {
+        "effective_date": "2024-03-22",
+        "cash_per_share": 32.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ALPN": {
+        "effective_date": "2024-05-20",
+        "cash_per_share": 65.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "RGLS": {
+        "effective_date": "2025-06-25",
+        "cash_per_share": 7.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "Unpriced contingent value right excluded from cash settlement",
+    },
+    "TERN": {
+        "effective_date": "2026-05-05",
+        "cash_per_share": 53.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
 }
 
 # Verified stock consideration needed to keep a position economically intact
@@ -325,12 +360,32 @@ CASH_CORPORATE_ACTIONS = {
 # Sources:
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
+# DWAC: after the business combination closed on 2024-03-25, the existing
+# common shares continued under the DJT symbol. Source:
+# https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-149
+# ARMN: Aris Mining changed its US listing symbol from ARMN to ARIS when it
+# uplisted to NYSE on 2026-02-19. Source:
+# https://www.sec.gov/Archives/edgar/data/1964504/000127956926000103/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
     "HOUS": {
         "effective_date": "2026-01-09",
         "successor_ticker": "COMP",
         "shares_per_share": 1.436,
         "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
+    "DWAC": {
+        "effective_date": "2024-03-25",
+        "successor_ticker": "DJT",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
+        "execution": "successor-market",
+    },
+    "ARMN": {
+        "effective_date": "2026-02-19",
+        "successor_ticker": "ARIS",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
         "execution": "successor-market",
     },
 }
@@ -1462,6 +1517,9 @@ def run(
                 "ExitReason": exit_reason,
                 "CorporateAction": (
                     str(corporate_action["reason"]) if corporate_action else ""
+                ),
+                "CorporateActionNote": (
+                    str(corporate_action.get("note", "")) if corporate_action else ""
                 ),
                 "CorporateActionTicker": exit_valuation_ticker,
                 "CorporateActionRatio": exit_conversion_ratio,
