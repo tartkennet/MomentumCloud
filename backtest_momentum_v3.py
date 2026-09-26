@@ -276,10 +276,21 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
+# OSH: CVS completed the all-cash acquisition on 2023-05-02 and paid
+# $39.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://www.cvshealth.com/news/company-news/cvs-health-completes-acquisition-of-oak-street-health.html
+# https://www.sec.gov/Archives/edgar/data/64803/000006480324000007/cvs-20231231.htm
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
         "cash_per_share": 45.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "OSH": {
+        "effective_date": "2023-05-02",
+        "cash_per_share": 39.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
