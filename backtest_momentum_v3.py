@@ -1323,6 +1323,7 @@ def run(
         )
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
+    unresolved_executions = []
     prior_core_tickers = set()
     for signal, entry, exit_day in periods:
         signal_tickers = [
@@ -1481,9 +1482,11 @@ def run(
             })
         if not cash_period and len(stock_returns) < top_n:
             details = ", ".join(missing_executions) or "unknown ticker"
-            raise RuntimeError(
-                f"No executable price through available history for {signal}: {details}"
-            )
+            # Do not silently value an unavailable security at a guessed price.
+            # Continue the diagnostic pass so one run reports every missing
+            # delisting/corporate action across the full validation window.
+            unresolved_executions.append(f"{signal}: {details}")
+            continue
 
         gross = 0.0 if cash_period else sum(stock_returns) / top_n
         net = 0.0 if cash_period else gross - ROUND_TRIP_COST_PCT / 100
@@ -1522,6 +1525,12 @@ def run(
             "SPYIndex": spy_equity * 100,
         })
         logging.info("Signal %s, trade %s to %s: %.2f%% net, SPY %.2f%%", signal, entry, exit_day, net * 100, spy_return * 100)
+
+    if unresolved_executions:
+        raise RuntimeError(
+            "No executable price or verified corporate-action settlement for: "
+            + " | ".join(unresolved_executions)
+        )
 
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
