@@ -281,6 +281,11 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://www.cvshealth.com/news/company-news/cvs-health-completes-acquisition-of-oak-street-health.html
 # https://www.sec.gov/Archives/edgar/data/64803/000006480324000007/cvs-20231231.htm
+# ISEE: Astellas completed the all-cash IVERIC bio acquisition on 2023-07-11
+# at $40.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://newsroom.astellas.us/2023-07-11-Astellas-Completes-Acquisition-of-Iveric-Bio
+# https://www.sec.gov/Archives/edgar/data/1410939/000110465923079843/tm2320976d1_8k.htm
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
@@ -291,6 +296,12 @@ CASH_CORPORATE_ACTIONS = {
     "OSH": {
         "effective_date": "2023-05-02",
         "cash_per_share": 39.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ISEE": {
+        "effective_date": "2023-07-11",
+        "cash_per_share": 40.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
