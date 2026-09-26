@@ -286,6 +286,11 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://newsroom.astellas.us/2023-07-11-Astellas-Completes-Acquisition-of-Iveric-Bio
 # https://www.sec.gov/Archives/edgar/data/1410939/000110465923079843/tm2320976d1_8k.htm
+# ROVR: Blackstone completed the all-cash Rover Group acquisition on 2024-02-27
+# at $11.00 per share. The ticker has no later exchange print.
+# Sources:
+# https://www.rover.com/blog/press-release/blackstone-completes-acquisition-of-rover/
+# https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
@@ -302,6 +307,12 @@ CASH_CORPORATE_ACTIONS = {
     "ISEE": {
         "effective_date": "2023-07-11",
         "cash_per_share": 40.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ROVR": {
+        "effective_date": "2024-02-27",
+        "cash_per_share": 11.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
