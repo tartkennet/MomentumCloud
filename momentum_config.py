@@ -25,7 +25,7 @@ class ProductionConfig:
     eligible_security_types: tuple[str, ...] = ("CS",)
     eligible_primary_exchanges: tuple[str, ...] = ("XNAS", "XNYS", "XASE")
     rebalance_frequency: str = "monthly"
-    market_regime: str = "SPY > SMA200 and SPY SMA50 > SMA200"
+    market_regime: str = "SPY > SMA200"
     limitation: str = "Current limitation: survivorship bias"
 
     def validate(self) -> None:
@@ -47,6 +47,8 @@ class ProductionConfig:
             raise ValueError("Maximum volatility must be exactly 40 percent")
         if self.max_extension_sma50_pct != 15.0:
             raise ValueError("Maximum SMA50 extension must be exactly 15 percent")
+        if self.market_regime != "SPY > SMA200":
+            raise ValueError("Production market regime must be SPY > SMA200")
 
     def to_dict(self) -> dict:
         self.validate()
