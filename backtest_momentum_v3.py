@@ -1338,21 +1338,8 @@ def core_market_regime_is_risk_on(latest_map, recent253):
 
 
 def breakout_market_regime_is_risk_on(latest_map, recent253):
-    """Require a confirmed index uptrend for the breakout strategy."""
-    latest = get_from_map(latest_map, "SPY")
-    if not latest:
-        return False
-    closes = []
-    for _, grouped in recent253:
-        row = get_from_map(grouped, "SPY")
-        if not row:
-            break
-        closes.append(float(row["close"]))
-    if len(closes) < 200:
-        return False
-    sma50 = sum(closes[:50]) / 50.0
-    sma200 = sum(closes[:200]) / 200.0
-    return float(latest["close"]) > sma200 and sma50 > sma200
+    """Use the production SPY/SMA200 gate for every production candidate."""
+    return core_market_regime_is_risk_on(latest_map, recent253)
 
 
 def choose_top(
