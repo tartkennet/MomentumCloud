@@ -31,16 +31,16 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "market-leaders-v1")
+        self.assertEqual(PRODUCTION.selection_model, "absolute-strength-v1")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 10.0)
         self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
         self.assertEqual(PRODUCTION.trend_lookback_sessions, 252)
-        self.assertEqual(PRODUCTION.minimum_positive_months, 8)
-        self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 45.0)
-        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 20.0)
+        self.assertEqual(PRODUCTION.minimum_positive_months, 7)
+        self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 40.0)
+        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 15.0)
 
     def test_instrument_filter_is_fail_closed(self):
         self.assertTrue(is_eligible_security(Security("GOOD", "Good Inc", "CS", "XNAS")))
@@ -59,7 +59,7 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_persistent_efficient_trend_drives_score(self):
+    def test_risk_adjusted_absolute_momentum_drives_score(self):
         steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
@@ -67,14 +67,14 @@ class ProductionConfigTests(unittest.TestCase):
             history_for({"STEADY": steady, "FRESHER": fresher}),
         )
         self.assertEqual(ranked[0].ticker, "FRESHER")
-        self.assertGreaterEqual(ranked[0].positive_months, 8)
-        self.assertGreater(ranked[0].trend_efficiency_pct, 0.0)
+        self.assertGreaterEqual(ranked[0].positive_months, 7)
+        self.assertGreater(ranked[0].mom12_2_pct, 0.0)
         self.assertEqual(
             ranked[0].score,
-            ranked[0].trend_efficiency_pct * ranked[0].mom12_2_pct,
+            ranked[0].mom12_2_pct / max(ranked[0].volatility_pct, 1.0),
         )
 
-    def test_lagging_spy_is_ineligible(self):
+    def test_positive_absolute_strength_is_ranked_without_spy_relative_gate(self):
         fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
         lagging = [120.0 - 20.0 * index / 252.0 for index in range(253)]
         spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -82,9 +82,9 @@ class ProductionConfigTests(unittest.TestCase):
             ["FRESH", "LAGGING"],
             history_for({"FRESH": fresh, "LAGGING": lagging, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["FRESH"])
+        self.assertEqual([row.ticker for row in ranked], ["FRESH", "LAGGING"])
 
-    def test_market_leader_requires_persistent_positive_months(self):
+    def test_absolute_strength_requires_persistent_positive_months(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
@@ -92,8 +92,8 @@ class ProductionConfigTests(unittest.TestCase):
             ["LAGGARD", "LEADER"],
             history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["LEADER"])
-        self.assertGreaterEqual(ranked[0].positive_months, 8)
+        self.assertEqual(ranked[0].ticker, "LEADER")
+        self.assertGreaterEqual(ranked[0].positive_months, 7)
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
