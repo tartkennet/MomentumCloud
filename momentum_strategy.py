@@ -192,7 +192,6 @@ def _raw_metric(
         or price <= sma200
         or sma200 <= sma200_1m_ago
         or mom12_2 <= 0.0
-        or relative_12_2 <= 0.0
         or positive_months < config.minimum_positive_months
         or trend_efficiency <= 0.0
         or volatility > config.max_annualized_volatility_pct
@@ -268,9 +267,11 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["score"] = frame["trend_efficiency_pct"] * frame["mom12_2_pct"]
+    # One pre-declared ordering: 12-2 absolute momentum per unit of realised
+    # formation volatility. Trend and persistence remain independent gates.
+    frame["score"] = frame["mom12_2_pct"] / frame["volatility_pct"].clip(lower=1.0)
     frame = frame.sort_values(
-        ["score", "positive_months", "mom12_2_pct", "ticker"],
+        ["score", "mom12_2_pct", "positive_months", "ticker"],
         ascending=[False, False, False, True],
     )
     fields = tuple(MomentumMetric.__dataclass_fields__)
