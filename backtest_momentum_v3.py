@@ -857,16 +857,16 @@ def build_prior_2_12_metrics(
     v5-regime adds 3-1 confirmation and a bounded RSI/extension check; market
     regime handling is applied separately so weak markets can remain in cash.
     market-leaders-v1 is retained only for historical comparison.
-    absolute-strength-v1 is a distinct single-signal candidate: risk-adjusted
-    12-2 absolute momentum after independent long-term trend gates.
+    liquid-leaders-v1 ranks liquid US leaders by relative performance, trend
+    efficiency and trading liquidity after independent trend gates.
     """
     if selection_model not in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
-        "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+        "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be classic-12-2, v4-balanced, v5-regime, "
-            "v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
+            "v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1, absolute-strength-v1 or liquid-leaders-v1"
         )
 
     spy_closes = []
@@ -1057,6 +1057,26 @@ def build_prior_2_12_metrics(
                 or dist_sma50 > PRODUCTION.max_extension_sma50_pct
             ):
                 continue
+        elif selection_model == "liquid-leaders-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma20
+                or sma20 <= sma50
+                or sma50 <= sma50_1m_ago
+                or sma50 <= sma200
+                or price <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or mom6_2 <= 0.0
+                or return_3m <= 0.0
+                or relative_6m <= 0.0
+                or positive_months < PRODUCTION.minimum_positive_months
+                or trend_efficiency <= 0.0
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
         else:
             if (
                 price < PRODUCTION.min_price_usd
@@ -1075,6 +1095,7 @@ def build_prior_2_12_metrics(
         records.append({
             "ticker": ticker,
             "price_usd": price,
+            "adv20": adv20,
             "mom12_2": mom12_2,
             "mom6_2": mom6_2,
             "mom3_1": mom3_1,
@@ -1214,6 +1235,34 @@ def build_prior_2_12_metrics(
             for row in frame.itertuples(index=False)
         ]
 
+    if selection_model == "liquid-leaders-v1":
+        # Equal, pre-declared ranks reward market leadership, smooth trend
+        # formation and institutional tradability without fit-to-sample weights.
+        frame["rank_relative_6m"] = frame["relative_6m"].rank(
+            method="average", pct=True
+        )
+        frame["rank_efficiency"] = frame["trend_efficiency"].rank(
+            method="average", pct=True
+        )
+        frame["rank_liquidity"] = frame["adv20"].rank(method="average", pct=True)
+        frame["total_score"] = 100.0 * (
+            frame["rank_relative_6m"]
+            + frame["rank_efficiency"]
+            + frame["rank_liquidity"]
+        ) / 3.0
+        frame = frame.sort_values(
+            ["total_score", "relative_6m", "trend_efficiency", "adv20", "ticker"],
+            ascending=[False, False, False, False, True],
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
     frame["rank_12_2"] = frame["mom12_2"].rank(method="average", pct=True)
     frame["rank_6_2"] = frame["mom6_2"].rank(method="average", pct=True)
     frame["rank_low_vol"] = frame["annualized_vol"].rank(
@@ -1322,11 +1371,11 @@ def choose_top(
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1, absolute-strength-v1 or liquid-leaders-v1"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -1337,7 +1386,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+        "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -1361,7 +1410,7 @@ def choose_top(
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
             return []
-        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"} and not breakout_market_regime_is_risk_on(
+        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1", "liquid-leaders-v1"} and not breakout_market_regime_is_risk_on(
             signal_map, history
         ):
             logging.info("Breakout risk-off market regime on %s: hold cash", asof)
@@ -1639,11 +1688,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1, absolute-strength-v1 or liquid-leaders-v1"
         )
 
     client = PolygonClient(api_key)
@@ -1766,13 +1815,13 @@ def run(
         )
         cash_period = False
         if selection_model in {
-        "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1"
+        "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
             regime_check = (
                 market_regime_is_risk_on if selection_model == "v5-regime"
                 else breakout_market_regime_is_risk_on
-                if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"}
+                if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1", "liquid-leaders-v1"}
                 else core_market_regime_is_risk_on
             )
             cash_period = not regime_check(cache[signal], signal_history)
@@ -1988,7 +2037,7 @@ def run(
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
             "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-            "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+            "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -2041,7 +2090,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1",
         ),
         default="v3",
     )
