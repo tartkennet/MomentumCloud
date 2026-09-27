@@ -43,13 +43,15 @@ jobs:
           python - <<'PY'
           from momentum_config import PRODUCTION
           PRODUCTION.validate()
-          assert PRODUCTION.selection_model == "liquid-leaders-v1"
+          assert PRODUCTION.selection_model == "robust-momentum-v1"
           assert PRODUCTION.position_count == 15
-          assert PRODUCTION.min_price_usd == 10
-          assert PRODUCTION.min_adv20_usd == 5_000_000
+          assert PRODUCTION.min_price_usd == 5
+          assert PRODUCTION.min_adv20_usd == 2_000_000
           assert PRODUCTION.stop_loss_pct == 10
           assert PRODUCTION.trend_lookback_sessions == 252
-          assert PRODUCTION.minimum_positive_months == 7
+          assert PRODUCTION.weight_rank_12_1 == 0.50
+          assert PRODUCTION.weight_rank_6_1 == 0.30
+          assert PRODUCTION.weight_rank_3_1 == 0.20
           assert PRODUCTION.market_regime == "SPY > SMA200"
           assert PRODUCTION.limitation == "Current limitation: survivorship bias"
           print(PRODUCTION.to_dict())
