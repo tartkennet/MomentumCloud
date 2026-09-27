@@ -648,14 +648,16 @@ def build_prior_2_12_metrics(
     lower formation-window volatility and less extension above SMA50.
     v5-regime adds 3-1 confirmation and a bounded RSI/extension check; market
     regime handling is applied separately so weak markets can remain in cash.
+    relative-strength-breakout-v1 is a separate strategy family: binary trend,
+    breakout and risk gates, then direct six-month relative-strength ranking.
     """
     if selection_model not in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
-        "quality-momentum-v2",
+        "quality-momentum-v2", "relative-strength-breakout-v1",
     }:
         raise ValueError(
             "selection_model must be classic-12-2, v4-balanced, v5-regime, "
-            "v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v6-core, core-momentum-v1, quality-momentum-v2 or relative-strength-breakout-v1"
         )
 
     spy_closes = []
@@ -668,6 +670,9 @@ def build_prior_2_12_metrics(
         return []
     spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
     spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
+    if len(spy_closes) < 127:
+        return []
+    spy_return_6m = (spy_closes[0] / spy_closes[126] - 1.0) * 100.0
 
     records = []
     for ticker in tickers:
@@ -702,6 +707,7 @@ def build_prior_2_12_metrics(
         return_6m = (price / closes[126] - 1.0) * 100.0
         relative_1m = return_1m - spy_return_1m
         relative_3m = return_3m - spy_return_3m
+        relative_6m = return_6m - spy_return_6m
         recent_chronological = list(reversed(closes[:15]))
         deltas = [
             later - earlier
@@ -724,6 +730,8 @@ def build_prior_2_12_metrics(
         )
         annualized_vol = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
         dist_sma50 = (price / sma50 - 1.0) * 100.0
+        high_252 = max(closes[:252])
+        distance_252d_high = (price / high_252 - 1.0) * 100.0
 
         if selection_model == "classic-12-2":
             if (
@@ -775,6 +783,24 @@ def build_prior_2_12_metrics(
                 or dist_sma50 > PRODUCTION.max_extension_sma50_pct
             ):
                 continue
+        elif selection_model == "relative-strength-breakout-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma20
+                or sma20 <= sma50
+                or sma50 <= sma200
+                or sma50 <= sma50_1m_ago
+                or sma200 <= sma200_1m_ago
+                or return_1m <= 0.0
+                or relative_1m <= 0.0
+                or return_6m <= 0.0
+                or relative_6m <= 0.0
+                or price < high_252 * PRODUCTION.minimum_breakout_fraction
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
         else:
             if (
                 price < PRODUCTION.min_price_usd
@@ -804,6 +830,8 @@ def build_prior_2_12_metrics(
             "return_6m": return_6m,
             "relative_1m": relative_1m,
             "relative_3m": relative_3m,
+            "relative_6m": relative_6m,
+            "distance_252d_high": distance_252d_high,
         })
 
     if selection_model == "classic-12-2":
@@ -875,6 +903,23 @@ def build_prior_2_12_metrics(
                 ticker=str(row.ticker),
                 price_usd=float(row.price_usd),
                 total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "relative-strength-breakout-v1":
+        # One-dimensional ordering after independently meaningful gates:
+        # buy the largest six-month excess return versus SPY, not a fitted or
+        # retrospectively reweighted mixture of indicators.
+        frame = frame.sort_values(
+            ["relative_6m", "relative_1m", "distance_252d_high", "ticker"],
+            ascending=[False, False, False, True],
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.relative_6m),
             )
             for row in frame.itertuples(index=False)
         ]
@@ -953,6 +998,24 @@ def core_market_regime_is_risk_on(latest_map, recent253):
     return float(latest["close"]) > sum(closes[:200]) / 200.0
 
 
+def breakout_market_regime_is_risk_on(latest_map, recent253):
+    """Require a confirmed index uptrend for the breakout strategy."""
+    latest = get_from_map(latest_map, "SPY")
+    if not latest:
+        return False
+    closes = []
+    for _, grouped in recent253:
+        row = get_from_map(grouped, "SPY")
+        if not row:
+            break
+        closes.append(float(row["close"]))
+    if len(closes) < 200:
+        return False
+    sma50 = sum(closes[:50]) / 50.0
+    sma200 = sum(closes[:200]) / 200.0
+    return float(latest["close"]) > sma200 and sma50 > sma200
+
+
 def choose_top(
     client,
     cache,
@@ -968,11 +1031,11 @@ def choose_top(
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2 or relative-strength-breakout-v1"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -983,7 +1046,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "core-momentum-v1", "quality-momentum-v2",
+        "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -1006,6 +1069,11 @@ def choose_top(
             signal_map, history
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model == "relative-strength-breakout-v1" and not breakout_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Breakout risk-off market regime on %s: hold cash", asof)
             return []
         metrics = build_prior_2_12_metrics(
             tickers,
@@ -1273,11 +1341,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2 or relative-strength-breakout-v1"
         )
 
     client = PolygonClient(api_key)
@@ -1399,10 +1467,15 @@ def run(
         )
         cash_period = False
         if selection_model in {
-            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2"
+            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
-            regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
+            regime_check = (
+                market_regime_is_risk_on if selection_model == "v5-regime"
+                else breakout_market_regime_is_risk_on
+                if selection_model == "relative-strength-breakout-v1"
+                else core_market_regime_is_risk_on
+            )
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
@@ -1616,7 +1689,7 @@ def run(
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
             "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-            "core-momentum-v1", "quality-momentum-v2",
+            "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1669,7 +1742,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "core-momentum-v1", "quality-momentum-v2",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1",
         ),
         default="v3",
     )
