@@ -50,6 +50,7 @@ jobs:
           assert PRODUCTION.stop_loss_pct == 10
           assert PRODUCTION.trend_lookback_sessions == 252
           assert PRODUCTION.minimum_positive_months == 7
+          assert PRODUCTION.market_regime == "SPY > SMA200"
           assert PRODUCTION.limitation == "Current limitation: survivorship bias"
           print(PRODUCTION.to_dict())
           PY
