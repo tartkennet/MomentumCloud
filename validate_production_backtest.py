@@ -14,6 +14,10 @@ from momentum_config import PRODUCTION
 
 
 OOS_START = "2025-03-31"
+# Pre-registered PR 13 exit rule: a fixed 10% stop, with no additional
+# single-stock moving-average exit. SPY>SMA200 remains the market-wide
+# risk-off rule.
+VALIDATION_EXIT_RULE = "stop"
 
 
 def segment_metrics(results: pd.DataFrame) -> dict:
@@ -55,7 +59,7 @@ def main() -> None:
         end=args.end,
         rebalance_months=1,
         stop_loss_pct=PRODUCTION.stop_loss_pct,
-        exit_rule="core",
+        exit_rule=VALIDATION_EXIT_RULE,
         exit_execution="next-open",
         top_n=PRODUCTION.position_count,
         entry_execution="next-open",
@@ -74,6 +78,7 @@ def main() -> None:
         "EntryExecution": "next-open",
         "ExitExecution": "next-open",
         "RebalanceExitExecution": "next-open",
+        "ExitRule": VALIDATION_EXIT_RULE,
         "StopLoss_pct": 10.0,
         "Universe": "POINT_IN_TIME_US_COMMON_STOCKS",
     }
