@@ -47,6 +47,7 @@ class MomentumMetric:
     distance_252d_high_pct: float = 0.0
     mom12_2_pct: float = 0.0
     mom6_2_pct: float = 0.0
+    mom3_1_pct: float = 0.0
     positive_months: int = 0
     trend_efficiency_pct: float = 0.0
     score: float = 0.0
@@ -151,6 +152,7 @@ def _raw_metric(
     return_6m = (price / closes[126] - 1.0) * 100.0
     mom12_2 = (closes[21] / closes[252] - 1.0) * 100.0
     mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
+    mom3_1 = (closes[21] / closes[63] - 1.0) * 100.0
     relative_1m = return_1m - spy_return_1m
     relative_3m = return_3m - spy_return_3m
     relative_6m = return_6m - spy_return_6m
@@ -187,20 +189,11 @@ def _raw_metric(
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma20
-        or sma20 <= sma50
-        or sma50 <= sma50_1m_ago
-        or sma50 <= sma200
         or price <= sma200
         or sma200 <= sma200_1m_ago
         or mom12_2 <= 0.0
         or mom6_2 <= 0.0
-        or return_3m <= 0.0
-        or relative_6m <= 0.0
-        or positive_months < config.minimum_positive_months
-        or trend_efficiency <= 0.0
-        or volatility > config.max_annualized_volatility_pct
-        or extension > config.max_extension_sma50_pct
+        or mom3_1 <= 0.0
     ):
         return None
     return MomentumMetric(
@@ -225,6 +218,7 @@ def _raw_metric(
         distance_252d_high_pct=distance_252d_high,
         mom12_2_pct=mom12_2,
         mom6_2_pct=mom6_2,
+        mom3_1_pct=mom3_1,
         positive_months=positive_months,
         trend_efficiency_pct=trend_efficiency * 100.0,
     )
@@ -235,11 +229,10 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Rank liquid trend leaders with independently fixed eligibility gates.
+    """Rank liquid established trends by standard cross-sectional momentum.
 
-    The score is an equal rank of six-month excess return versus SPY, trend
-    efficiency and ADV20.  These three factors are fixed before validation;
-    all other measures are binary safety gates.
+    The 50/30/20 score uses 12-1, 6-1 and 3-1 returns.  Trend, price and
+    liquidity are binary gates, not fitted score components.
     """
     config.validate()
     spy_closes = []
@@ -272,18 +265,16 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_relative_6m"] = frame["relative_6m_pct"].rank(
-        method="average", pct=True
-    )
-    frame["rank_efficiency"] = frame["trend_efficiency_pct"].rank(
-        method="average", pct=True
-    )
-    frame["rank_liquidity"] = frame["adv20_usd"].rank(method="average", pct=True)
+    frame["rank_12_1"] = frame["mom12_2_pct"].rank(method="average", pct=True)
+    frame["rank_6_1"] = frame["mom6_2_pct"].rank(method="average", pct=True)
+    frame["rank_3_1"] = frame["mom3_1_pct"].rank(method="average", pct=True)
     frame["score"] = 100.0 * (
-        frame["rank_relative_6m"] + frame["rank_efficiency"] + frame["rank_liquidity"]
-    ) / 3.0
+        config.weight_rank_12_1 * frame["rank_12_1"]
+        + config.weight_rank_6_1 * frame["rank_6_1"]
+        + config.weight_rank_3_1 * frame["rank_3_1"]
+    )
     frame = frame.sort_values(
-        ["score", "relative_6m_pct", "trend_efficiency_pct", "adv20_usd", "ticker"],
+        ["score", "mom12_2_pct", "mom6_2_pct", "mom3_1_pct", "ticker"],
         ascending=[False, False, False, False, True],
     )
     fields = tuple(MomentumMetric.__dataclass_fields__)
