@@ -188,10 +188,16 @@ def _raw_metric(
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
+        or price <= sma20
+        or sma20 <= sma50
+        or sma50 <= sma50_1m_ago
         or sma50 <= sma200
         or price <= sma200
         or sma200 <= sma200_1m_ago
         or mom12_2 <= 0.0
+        or mom6_2 <= 0.0
+        or return_3m <= 0.0
+        or relative_6m <= 0.0
         or positive_months < config.minimum_positive_months
         or trend_efficiency <= 0.0
         or volatility > config.max_annualized_volatility_pct
@@ -230,11 +236,11 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Rank persistent, low-noise long-term market leaders.
+    """Rank liquid trend leaders with independently fixed eligibility gates.
 
-    The score is trend efficiency times 12-2 excess return.  It is not a
-    weighted blend of short-horizon momentum ranks and does not use a breakout
-    threshold.  All other measures are safety gates.
+    The score is an equal rank of six-month excess return versus SPY, trend
+    efficiency and ADV20.  These three factors are fixed before validation;
+    all other measures are binary safety gates.
     """
     config.validate()
     spy_closes = []
@@ -267,12 +273,19 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    # One pre-declared ordering: 12-2 absolute momentum per unit of realised
-    # formation volatility. Trend and persistence remain independent gates.
-    frame["score"] = frame["mom12_2_pct"] / frame["volatility_pct"].clip(lower=1.0)
+    frame["rank_relative_6m"] = frame["relative_6m_pct"].rank(
+        method="average", pct=True
+    )
+    frame["rank_efficiency"] = frame["trend_efficiency_pct"].rank(
+        method="average", pct=True
+    )
+    frame["rank_liquidity"] = frame["adv20_usd"].rank(method="average", pct=True)
+    frame["score"] = 100.0 * (
+        frame["rank_relative_6m"] + frame["rank_efficiency"] + frame["rank_liquidity"]
+    ) / 3.0
     frame = frame.sort_values(
-        ["score", "mom12_2_pct", "positive_months", "ticker"],
-        ascending=[False, False, False, True],
+        ["score", "relative_6m_pct", "trend_efficiency_pct", "adv20_usd", "ticker"],
+        ascending=[False, False, False, False, True],
     )
     fields = tuple(MomentumMetric.__dataclass_fields__)
     return [
