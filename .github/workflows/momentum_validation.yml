@@ -35,10 +35,10 @@ permissions:
   contents: read
 
 concurrency:
-  # Never discard a running point-in-time validation when a follow-up commit
-  # fixes CI or tests on the same PR. Runs queue per ref instead.
+  # A newer commit supersedes every earlier validation on the same PR. Keeping
+  # stale runs queued delays the only result that can be acted on.
   group: momentum-production-validation-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate:
