@@ -31,7 +31,7 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "absolute-strength-v1")
+        self.assertEqual(PRODUCTION.selection_model, "liquid-leaders-v1")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 10.0)
@@ -59,22 +59,23 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_risk_adjusted_absolute_momentum_drives_score(self):
+    def test_liquid_leader_score_combines_relative_trend_and_liquidity(self):
         steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
+        spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
             ["STEADY", "FRESHER"],
-            history_for({"STEADY": steady, "FRESHER": fresher}),
+            history_for(
+                {"STEADY": steady, "FRESHER": fresher, "SPY": spy},
+                {"STEADY": 40_000.0, "FRESHER": 60_000.0},
+            ),
         )
         self.assertEqual(ranked[0].ticker, "FRESHER")
         self.assertGreaterEqual(ranked[0].positive_months, 7)
-        self.assertGreater(ranked[0].mom12_2_pct, 0.0)
-        self.assertEqual(
-            ranked[0].score,
-            ranked[0].mom12_2_pct / max(ranked[0].volatility_pct, 1.0),
-        )
+        self.assertGreater(ranked[0].relative_6m_pct, 0.0)
+        self.assertGreater(ranked[0].score, ranked[1].score)
 
-    def test_positive_absolute_strength_is_ranked_without_spy_relative_gate(self):
+    def test_relative_leadership_gate_rejects_spy_lagging_security(self):
         fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
         lagging = [120.0 - 20.0 * index / 252.0 for index in range(253)]
         spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -82,9 +83,9 @@ class ProductionConfigTests(unittest.TestCase):
             ["FRESH", "LAGGING"],
             history_for({"FRESH": fresh, "LAGGING": lagging, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["FRESH", "LAGGING"])
+        self.assertEqual([row.ticker for row in ranked], ["FRESH"])
 
-    def test_absolute_strength_requires_persistent_positive_months(self):
+    def test_liquid_leader_requires_persistent_positive_months(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
