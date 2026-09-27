@@ -41,6 +41,7 @@ class ProductionConfigTests(unittest.TestCase):
         self.assertEqual(PRODUCTION.minimum_positive_months, 7)
         self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 40.0)
         self.assertEqual(PRODUCTION.max_extension_sma50_pct, 15.0)
+        self.assertEqual(PRODUCTION.market_regime, "SPY > SMA200")
 
     def test_instrument_filter_is_fail_closed(self):
         self.assertTrue(is_eligible_security(Security("GOOD", "Good Inc", "CS", "XNAS")))
@@ -106,15 +107,16 @@ class ProductionConfigTests(unittest.TestCase):
         )
         self.assertEqual([row.ticker for row in ranked], ["CLEAN"])
 
-    def test_spy_regime_requires_confirmed_dual_trend(self):
+    def test_spy_regime_uses_locked_sma200_rule(self):
         flat = [100.0] * 253
         risk_on = history_for({"SPY": flat})
         risk_on[0][1]["SPY"]["close"] = 101.0
         self.assertEqual(market_regime(risk_on)["status"], "RISK ON")
         self.assertEqual(market_regime(history_for({"SPY": flat}))["status"], "RISK OFF")
-        weak = [100.0 + 30.0 * index / 252.0 for index in range(253)]
-        weak[0] = 101.0
-        self.assertEqual(market_regime(history_for({"SPY": weak}))["status"], "RISK OFF")
+        recent_rebound = [130.0 - 30.0 * index / 252.0 for index in range(253)]
+        recent_rebound[1:50] = [100.0 + index * 0.5 for index in range(49)]
+        recent_rebound[0] = 130.0
+        self.assertEqual(market_regime(history_for({"SPY": recent_rebound}))["status"], "RISK ON")
 
     def test_risk_off_has_no_target_and_risk_on_has_15_equal_weights(self):
         from momentum_strategy import MomentumMetric
