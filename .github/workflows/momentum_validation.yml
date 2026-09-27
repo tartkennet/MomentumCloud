@@ -35,8 +35,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: momentum-production-validation
-  cancel-in-progress: true
+  # Never discard a running point-in-time validation when a follow-up commit
+  # fixes CI or tests on the same PR. Runs queue per ref instead.
+  group: momentum-production-validation-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   validate:
