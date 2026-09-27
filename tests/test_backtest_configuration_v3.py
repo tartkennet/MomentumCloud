@@ -116,6 +116,20 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(row["close"], 40.0)
         self.assertEqual(action["reason"], "CASH_MERGER")
 
+    def test_trhc_cash_merger_settles_at_verified_consideration(self):
+        days = ["2023-11-02", "2023-11-03", "2023-12-01"]
+        cache = {
+            "2023-11-02": {"TRHC": {"open": 10.2, "close": 10.3}},
+            "2023-11-03": {},
+            "2023-12-01": {},
+        }
+        day, row, action = resolve_exit_execution(
+            cache, days, "TRHC", "2023-12-01", "2023-10-31", "2023-12-01"
+        )
+        self.assertEqual(day, "2023-11-03")
+        self.assertEqual(row["close"], 10.5)
+        self.assertEqual(action["reason"], "CASH_MERGER")
+
     def test_rovr_cash_merger_settles_at_verified_consideration(self):
         days = ["2024-02-26", "2024-02-27", "2024-03-01"]
         cache = {
