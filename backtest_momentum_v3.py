@@ -305,7 +305,44 @@ def adjust_cached_history_for_splits(
 # $120.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-332
 # EXAS: Abbott completed the all-cash Exact Sciences acquisition on 2026-03-23
 # at $105.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-178
+# RFP: Domtar completed the Resolute Forest Products acquisition on 2023-03-01.
+# The executable fixed consideration was $20.50 cash per share; the contingent
+# value right is not priced and is deliberately excluded. Source:
+# https://www.sec.gov/Archives/edgar/data/1381531/000119312523056293/d449137d8k.htm
+# EVOP: Global Payments completed the all-cash EVO Payments acquisition on
+# 2023-03-24 at $34.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1704596/000119312523078631/d400810d8k.htm
+# SOVO: Campbell completed the all-cash Sovos Brands acquisition on 2024-03-12
+# at $23.00 per share. Source: https://infomemo.theocc.com/infomemos?number=54287
+# NVEI: Advent completed the all-cash Nuvei acquisition on 2024-11-15 at
+# $34.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1765159/000095010324016364/dp220747_ex9902.htm
 CASH_CORPORATE_ACTIONS = {
+    "RFP": {
+        "effective_date": "2023-03-01",
+        "cash_per_share": 20.50,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "Unpriced contingent value right excluded from cash settlement",
+    },
+    "EVOP": {
+        "effective_date": "2023-03-24",
+        "cash_per_share": 34.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "SOVO": {
+        "effective_date": "2024-03-12",
+        "cash_per_share": 23.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "NVEI": {
+        "effective_date": "2024-11-15",
+        "cash_per_share": 34.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
     "FRGE": {
         "effective_date": "2026-03-02",
         "cash_per_share": 45.0,
