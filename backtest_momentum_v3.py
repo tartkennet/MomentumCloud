@@ -353,6 +353,10 @@ def adjust_cached_history_for_splits(
 # GTLS: Baker Hughes completed the all-cash Chart acquisition on 2026-07-16 at
 # $210.00 per share. Source:
 # https://www.sec.gov/Archives/edgar/data/1701605/000119312526167118/d912206dex991.htm
+# TRHC: Nautic completed the all-cash Tabula Rasa acquisition before the market
+# opened on 2023-11-03 at $10.50 per share. Sources:
+# https://www.sec.gov/Archives/edgar/data/1651561/000114036123051496/ef20014067_8k.htm
+# https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-632
 CASH_CORPORATE_ACTIONS = {
     "FPAC": {
         "effective_date": "2023-03-13",
@@ -424,6 +428,12 @@ CASH_CORPORATE_ACTIONS = {
     "GTLS": {
         "effective_date": "2026-07-16",
         "cash_per_share": 210.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "TRHC": {
+        "effective_date": "2023-11-03",
+        "cash_per_share": 10.5,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
