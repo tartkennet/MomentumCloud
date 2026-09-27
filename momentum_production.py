@@ -620,6 +620,10 @@ def validate_payload(payload: dict) -> None:
         "beats_spy",
         "daily_max_drawdown_at_most_20_pct",
         "hit_rate_at_least_50_pct",
+        "oos_at_least_12_periods",
+        "oos_positive_net_return",
+        "oos_beats_spy",
+        "oos_hit_rate_at_least_50_pct",
     }
     if validation.get("status") != "APPROVED" or not all(
         validation.get("gates", {}).get(gate) is True for gate in required_gates
@@ -640,12 +644,12 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError("Target portfolio contains a stock below the price floor")
         if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
             raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
-        if any(int(row.get("positive_months", 0)) < PRODUCTION.minimum_positive_months for row in target):
-            raise RuntimeError("Target portfolio contains a stock without the locked trend persistence")
         if any(float(row["mom12_2_pct"]) <= 0.0 for row in target):
             raise RuntimeError("Target portfolio contains a stock with non-positive 12-2 momentum")
         if any(float(row["mom6_2_pct"]) <= 0.0 for row in target):
             raise RuntimeError("Target portfolio contains a stock with non-positive 6-2 momentum")
+        if any(float(row.get("mom3_1_pct", 0.0)) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 3-1 momentum")
         if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
             raise RuntimeError("Target weights do not sum to 100 percent")
     target_tickers = {row["ticker"] for row in target}
