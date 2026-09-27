@@ -1,7 +1,8 @@
-"""Locked configuration for MomentumCloud Production v1.
+"""Frozen configuration for the liquid-leaders validation candidate.
 
-Production uses exactly one model. Research-only legacy models may remain in
-historical comparison code, but no workflow input can change these rules.
+The model ranks independently gated US trend leaders by relative strength,
+trend efficiency and trading liquidity. It is a validation candidate until
+the point-in-time gate approves it.
 """
 from __future__ import annotations
 
@@ -10,17 +11,17 @@ from dataclasses import asdict, dataclass
 
 @dataclass(frozen=True)
 class ProductionConfig:
-    product_name: str = "MomentumCloud Production v1"
-    selection_model: str = "v4-balanced"
+    product_name: str = "MomentumCloud Liquid Leaders"
+    selection_model: str = "liquid-leaders-v1"
     position_count: int = 15
     candidate_count: int = 50
     min_price_usd: float = 10.0
     min_adv20_usd: float = 5_000_000.0
     stop_loss_pct: float = 10.0
-    weight_rank_12_2: float = 0.55
-    weight_rank_6_2: float = 0.20
-    weight_low_volatility: float = 0.15
-    weight_low_extension: float = 0.10
+    trend_lookback_sessions: int = 252
+    minimum_positive_months: int = 7
+    max_annualized_volatility_pct: float = 40.0
+    max_extension_sma50_pct: float = 15.0
     eligible_security_types: tuple[str, ...] = ("CS",)
     eligible_primary_exchanges: tuple[str, ...] = ("XNAS", "XNYS", "XASE")
     rebalance_frequency: str = "monthly"
@@ -28,8 +29,8 @@ class ProductionConfig:
     limitation: str = "Current limitation: survivorship bias"
 
     def validate(self) -> None:
-        if self.selection_model != "v4-balanced":
-            raise ValueError("Production selection_model must be v4-balanced")
+        if self.selection_model != "liquid-leaders-v1":
+            raise ValueError("Production selection_model must be liquid-leaders-v1")
         if self.position_count != 15:
             raise ValueError("Production portfolio must contain 15 positions")
         if self.min_price_usd != 10.0:
@@ -38,16 +39,16 @@ class ProductionConfig:
             raise ValueError("Production ADV20 minimum must be exactly 5,000,000 USD")
         if self.stop_loss_pct != 10.0:
             raise ValueError("Production stop loss must be exactly 10 percent")
-        weights = (
-            self.weight_rank_12_2,
-            self.weight_rank_6_2,
-            self.weight_low_volatility,
-            self.weight_low_extension,
-        )
-        if weights != (0.55, 0.20, 0.15, 0.10):
-            raise ValueError("Production v4-balanced ranking weights are locked")
-        if abs(sum(weights) - 1.0) > 1e-12:
-            raise ValueError("Production ranking weights must sum to one")
+        if self.trend_lookback_sessions != 252:
+            raise ValueError("Trend formation window must be exactly 252 sessions")
+        if self.minimum_positive_months != 7:
+            raise ValueError("Trend persistence must require exactly 7 positive months")
+        if self.max_annualized_volatility_pct != 40.0:
+            raise ValueError("Maximum volatility must be exactly 40 percent")
+        if self.max_extension_sma50_pct != 15.0:
+            raise ValueError("Maximum SMA50 extension must be exactly 15 percent")
+        if self.market_regime != "SPY > SMA200":
+            raise ValueError("Production market regime must be SPY > SMA200")
 
     def to_dict(self) -> dict:
         self.validate()

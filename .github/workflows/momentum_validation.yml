@@ -1,16 +1,25 @@
 name: Production model validation
 
 on:
+  pull_request:
+    paths:
+      - "momentum_config.py"
+      - "momentum_strategy.py"
+      - "backtest_momentum_v3.py"
+      - "validate_production_backtest.py"
+      - "data_access_preflight.py"
+      - "model_validation.py"
+      - ".github/workflows/momentum_validation.yml"
   workflow_dispatch:
     inputs:
       start_date:
         description: "Validation start, YYYY-MM-DD"
         required: true
-        default: "2024-01-01"
+        default: "2023-02-01"
       end_date:
         description: "Validation end, YYYY-MM-DD"
         required: true
-        default: "2026-09-01"
+        default: "2026-09-25"
   push:
     branches: [main]
     paths:
@@ -26,7 +35,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: momentum-production-validation
+  # A newer commit supersedes every earlier validation on the same PR. Keeping
+  # stale runs queued delays the only result that can be acted on.
+  group: momentum-production-validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -52,14 +63,14 @@ jobs:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: >-
           python data_access_preflight.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
+          --start "${{ inputs.start_date || '2023-02-01' }}"
       - name: Validate locked production model
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: >-
           python validate_production_backtest.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
-          --end "${{ inputs.end_date || '2026-09-01' }}"
+          --start "${{ inputs.start_date || '2023-02-01' }}"
+          --end "${{ inputs.end_date || '2026-09-25' }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,3 +80,5 @@ jobs:
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
             Momentum_validation_decision.json
+            .momentum_backtest_cache.json
+            .momentum_point_in_time_universe.json
