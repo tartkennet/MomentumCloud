@@ -17,7 +17,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Validate the locked production model")
     parser.add_argument(
         "--start",
-        default=(datetime.now(timezone.utc).date() - timedelta(days=365 * 5)).isoformat(),
+        # Starter exposes five years.  The ranking needs 253 trading sessions,
+        # which is approximately 450 calendar days with exchange holidays.
+        # Keep a provider-access buffer as well, rather than silently issuing
+        # a partial-history test near the entitlement boundary.
+        default=(
+            datetime.now(timezone.utc).date() - timedelta(days=(365 * 3) + 235)
+        ).isoformat(),
     )
     parser.add_argument(
         "--end",
@@ -29,7 +35,7 @@ def main() -> None:
         end=args.end,
         rebalance_months=1,
         stop_loss_pct=PRODUCTION.stop_loss_pct,
-        exit_rule="stop",
+        exit_rule="core",
         exit_execution="next-open",
         top_n=PRODUCTION.position_count,
         entry_execution="next-open",
@@ -41,8 +47,8 @@ def main() -> None:
     summary = pd.read_csv("Momentum_backtest_summary.csv").iloc[0].to_dict()
     expected = {
         "RebalanceMonths": 1,
-        "TopN": 15,
-        "SelectionModel": "v4-balanced",
+        "TopN": PRODUCTION.position_count,
+        "SelectionModel": PRODUCTION.selection_model,
         "LiquidityRule": "FIXED_MIN_ADV20_5M_USD",
         "EffectiveMinADV20_USD": 5_000_000.0,
         "EntryExecution": "next-open",
@@ -72,8 +78,9 @@ def main() -> None:
             for key in (
                 "Periods", "TotalReturn_pct", "SPYTotalReturn_pct",
                 "TotalEdgeVsSPY_pct", "DailyMaxDrawdown_pct",
-                "PeriodHitRate_pct",
-            )
+            "PeriodHitRate_pct",
+            "CashPeriods", "DataQualityExclusionCount",
+        )
         },
     }
     Path("Momentum_validation_decision.json").write_text(

@@ -43,6 +43,8 @@ class MomentumMetric:
     relative_3m_pct: float
     volatility_pct: float
     extension_sma50_pct: float
+    relative_6m_pct: float = 0.0
+    distance_252d_high_pct: float = 0.0
     mom12_2_pct: float = 0.0
     mom6_2_pct: float = 0.0
     score: float = 0.0
@@ -69,7 +71,7 @@ def _row(day_map: Mapping[str, Mapping[str, float]], ticker: str):
 
 
 def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
-    """Return the locked SPY>SMA200 regime; missing data fails safely to cash."""
+    """Return the dual-trend market regime; missing data fails safely to cash."""
     closes = []
     for _, day_map in recent_maps:
         row = _row(day_map, "SPY")
@@ -84,14 +86,18 @@ def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
             "spy_sma200": None,
             "reason": "Insufficient SPY history",
         }
+    sma50 = sum(closes[:50]) / 50.0
     sma200 = sum(closes[:200]) / 200.0
-    risk_on = closes[0] > sma200
+    risk_on = closes[0] > sma200 and sma50 > sma200
     return {
         "status": "RISK ON" if risk_on else "RISK OFF",
         "risk_on": risk_on,
         "spy_close": closes[0],
         "spy_sma200": sma200,
-        "reason": "SPY above SMA200" if risk_on else "SPY at or below SMA200",
+        "reason": (
+            "SPY above SMA200 with SMA50 above SMA200"
+            if risk_on else "SPY does not have a confirmed long-term uptrend"
+        ),
     }
 
 
@@ -101,6 +107,7 @@ def _raw_metric(
     config: ProductionConfig,
     spy_return_1m: float,
     spy_return_3m: float,
+    spy_return_6m: float,
 ) -> MomentumMetric | None:
     closes: list[float] = []
     dollar_volume: list[float] = []
@@ -144,6 +151,7 @@ def _raw_metric(
     mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
     relative_1m = return_1m - spy_return_1m
     relative_3m = return_3m - spy_return_3m
+    relative_6m = return_6m - spy_return_6m
 
     chronological = list(reversed(closes[21:127]))
     returns = [
@@ -157,15 +165,25 @@ def _raw_metric(
     variance = sum((value - mean) ** 2 for value in returns) / (len(returns) - 1)
     volatility = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
     extension = (price / sma50 - 1.0) * 100.0
+    high_252 = max(closes[:252])
+    distance_252d_high = (price / high_252 - 1.0) * 100.0
 
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma50
+        or price <= sma20
+        or sma20 <= sma50
+        or sma50 <= sma200
         or price <= sma200
+        or sma50 <= sma50_1m_ago
         or sma200 <= sma200_1m_ago
-        or mom12_2 <= 0.0
-        or mom6_2 <= 0.0
+        or return_1m <= 0.0
+        or relative_1m <= 0.0
+        or return_6m <= 0.0
+        or relative_6m <= 0.0
+        or price < high_252 * config.minimum_breakout_fraction
+        or volatility > config.max_annualized_volatility_pct
+        or extension > config.max_extension_sma50_pct
     ):
         return None
     return MomentumMetric(
@@ -186,6 +204,8 @@ def _raw_metric(
         relative_3m_pct=relative_3m,
         volatility_pct=volatility,
         extension_sma50_pct=extension,
+        relative_6m_pct=relative_6m,
+        distance_252d_high_pct=distance_252d_high,
         mom12_2_pct=mom12_2,
         mom6_2_pct=mom6_2,
     )
@@ -196,7 +216,7 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return v4-balanced candidates from the locked ranking factors."""
+    """Rank trend-confirmed breakouts by six-month relative strength to SPY."""
     config.validate()
     spy_closes = []
     for _, day_map in recent_maps:
@@ -207,17 +227,18 @@ def rank_universe(
         if not math.isfinite(close) or close <= 0:
             return []
         spy_closes.append(close)
-    if len(spy_closes) < 64:
+    if len(spy_closes) < 127:
         return []
     spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
     spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
+    spy_return_6m = (spy_closes[0] / spy_closes[126] - 1.0) * 100.0
     raw = [
         metric
         for ticker in dict.fromkeys(str(value).upper().strip() for value in tickers)
         if ticker
         for metric in [
             _raw_metric(
-                ticker, recent_maps, config, spy_return_1m, spy_return_3m
+                ticker, recent_maps, config, spy_return_1m, spy_return_3m, spy_return_6m
             )
         ]
         if metric is not None
@@ -225,21 +246,13 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_12_2"] = frame["mom12_2_pct"].rank(method="average", pct=True)
-    frame["rank_6_2"] = frame["mom6_2_pct"].rank(method="average", pct=True)
-    frame["rank_low_volatility"] = frame["volatility_pct"].rank(
-        method="average", ascending=False, pct=True
+    # The old weighted rank blend is intentionally gone.  All other measures
+    # are binary quality gates; the only ordering signal is relative strength.
+    frame["score"] = frame["relative_6m_pct"]
+    frame = frame.sort_values(
+        ["score", "relative_1m_pct", "distance_252d_high_pct", "ticker"],
+        ascending=[False, False, False, True],
     )
-    frame["rank_low_extension"] = frame["extension_sma50_pct"].rank(
-        method="average", ascending=False, pct=True
-    )
-    frame["score"] = 100.0 * (
-        config.weight_rank_12_2 * frame["rank_12_2"]
-        + config.weight_rank_6_2 * frame["rank_6_2"]
-        + config.weight_low_volatility * frame["rank_low_volatility"]
-        + config.weight_low_extension * frame["rank_low_extension"]
-    )
-    frame = frame.sort_values(["score", "ticker"], ascending=[False, True])
     fields = tuple(MomentumMetric.__dataclass_fields__)
     return [
         MomentumMetric(**{field: row[field] for field in fields})
@@ -252,6 +265,7 @@ def build_target_portfolio(
     risk_on: bool,
     portfolio_value_sek: float | None = None,
     usdsek: float | None = None,
+    previous_tickers: Iterable[str] = (),
     config: ProductionConfig = PRODUCTION,
 ) -> list[dict]:
     if not risk_on:

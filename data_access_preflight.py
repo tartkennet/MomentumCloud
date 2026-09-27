@@ -16,6 +16,7 @@ import requests
 
 API_BASE = "https://api.polygon.io"
 MIN_EXPECTED_TICKERS = 1_000
+FORMATION_CALENDAR_DAYS = 450
 
 
 def first_weekday_on_or_after(value: date) -> date:
@@ -31,7 +32,10 @@ def main() -> None:
     parser.add_argument(
         "--start",
         required=True,
-        help="First validation date, YYYY-MM-DD. The first weekday on or after it is checked.",
+        help=(
+            "First validation date, YYYY-MM-DD. The required formation-history "
+            "date is checked before the validation is started."
+        ),
     )
     args = parser.parse_args()
 
@@ -42,9 +46,16 @@ def main() -> None:
         )
 
     try:
-        requested_date = first_weekday_on_or_after(date.fromisoformat(args.start))
+        validation_start = date.fromisoformat(args.start)
     except ValueError as exc:
         raise RuntimeError(f"Invalid validation start date: {args.start!r}") from exc
+
+    # A 12-2 momentum and SMA200 calculation needs roughly 253 sessions of
+    # prior prices.  Checking the formation window, not merely the requested
+    # test start, prevents a five-year plan from producing a partial backtest.
+    requested_date = first_weekday_on_or_after(
+        validation_start - timedelta(days=FORMATION_CALENDAR_DAYS)
+    )
 
     url = (
         f"{API_BASE}/v2/aggs/grouped/locale/us/market/stocks/"

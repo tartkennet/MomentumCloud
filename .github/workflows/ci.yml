@@ -43,11 +43,13 @@ jobs:
           python - <<'PY'
           from momentum_config import PRODUCTION
           PRODUCTION.validate()
-          assert PRODUCTION.selection_model == "v4-balanced"
-          assert PRODUCTION.position_count == 15
-          assert PRODUCTION.min_price_usd == 10
+          assert PRODUCTION.selection_model == "relative-strength-breakout-v1"
+          assert PRODUCTION.position_count == 12
+          assert PRODUCTION.min_price_usd == 5
           assert PRODUCTION.min_adv20_usd == 5_000_000
           assert PRODUCTION.stop_loss_pct == 10
+          assert PRODUCTION.relative_strength_lookback_sessions == 126
+          assert PRODUCTION.breakout_lookback_sessions == 252
           assert PRODUCTION.limitation == "Current limitation: survivorship bias"
           print(PRODUCTION.to_dict())
           PY
