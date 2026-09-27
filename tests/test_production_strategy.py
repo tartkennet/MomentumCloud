@@ -31,20 +31,17 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "core-momentum-v1")
+        self.assertEqual(PRODUCTION.selection_model, "relative-strength-breakout-v1")
         self.assertEqual(PRODUCTION.position_count, 12)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 5.0)
         self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
-        self.assertAlmostEqual(
-            PRODUCTION.weight_rank_12_2 + PRODUCTION.weight_rank_6_2 + PRODUCTION.weight_rank_3m,
-            1.0,
-        )
-        self.assertEqual(PRODUCTION.weight_rank_12_2, 0.50)
-        self.assertEqual(PRODUCTION.weight_rank_6_2, 0.30)
-        self.assertEqual(PRODUCTION.weight_rank_3m, 0.20)
-        self.assertEqual(PRODUCTION.rank_exit_cutoff, 20)
+        self.assertEqual(PRODUCTION.relative_strength_lookback_sessions, 126)
+        self.assertEqual(PRODUCTION.breakout_lookback_sessions, 252)
+        self.assertEqual(PRODUCTION.minimum_breakout_fraction, 0.90)
+        self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 60.0)
+        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 25.0)
 
     def test_instrument_filter_is_fail_closed(self):
         self.assertTrue(is_eligible_security(Security("GOOD", "Good Inc", "CS", "XNAS")))
@@ -63,7 +60,7 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_fresh_one_and_three_month_strength_drives_score(self):
+    def test_relative_strength_drives_score_after_breakout_gates(self):
         steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
@@ -71,20 +68,20 @@ class ProductionConfigTests(unittest.TestCase):
             history_for({"STEADY": steady, "FRESHER": fresher}),
         )
         self.assertEqual(ranked[0].ticker, "FRESHER")
-        self.assertGreater(ranked[0].score, ranked[1].score)
+        self.assertGreater(ranked[0].relative_6m_pct, ranked[1].relative_6m_pct)
+        self.assertEqual(ranked[0].score, ranked[0].relative_6m_pct)
 
-    def test_negative_three_month_return_is_ineligible(self):
+    def test_lagging_spy_is_ineligible(self):
         fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
-        stale = [100.0 + 5.0 * index / 63.0 for index in range(64)] + [
-            105.0 - 25.0 * (index - 63) / 189.0 for index in range(64, 253)
-        ]
+        lagging = [120.0 - 20.0 * index / 252.0 for index in range(253)]
+        spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
-            ["FRESH", "STALE"],
-            history_for({"FRESH": fresh, "STALE": stale}),
+            ["FRESH", "LAGGING"],
+            history_for({"FRESH": fresh, "LAGGING": lagging, "SPY": spy}),
         )
         self.assertEqual([row.ticker for row in ranked], ["FRESH"])
 
-    def test_core_ranking_uses_12_2_6_2_and_three_month_strength(self):
+    def test_breakout_candidate_is_near_its_252_day_high(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
@@ -92,9 +89,8 @@ class ProductionConfigTests(unittest.TestCase):
             ["LAGGARD", "LEADER"],
             history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["LEADER", "LAGGARD"])
-        self.assertGreater(ranked[0].mom12_2_pct, ranked[1].mom12_2_pct)
-        self.assertGreater(ranked[0].mom6_2_pct, ranked[1].mom6_2_pct)
+        self.assertEqual([row.ticker for row in ranked], ["LEADER"])
+        self.assertGreaterEqual(ranked[0].distance_252d_high_pct, -10.0)
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -106,12 +102,15 @@ class ProductionConfigTests(unittest.TestCase):
         )
         self.assertEqual([row.ticker for row in ranked], ["CLEAN"])
 
-    def test_spy_regime_is_exactly_price_above_sma200(self):
+    def test_spy_regime_requires_confirmed_dual_trend(self):
         flat = [100.0] * 253
         risk_on = history_for({"SPY": flat})
         risk_on[0][1]["SPY"]["close"] = 101.0
         self.assertEqual(market_regime(risk_on)["status"], "RISK ON")
         self.assertEqual(market_regime(history_for({"SPY": flat}))["status"], "RISK OFF")
+        weak = [100.0 + 30.0 * index / 252.0 for index in range(253)]
+        weak[0] = 101.0
+        self.assertEqual(market_regime(history_for({"SPY": weak}))["status"], "RISK OFF")
 
     def test_risk_off_has_no_target_and_risk_on_has_12_equal_weights(self):
         from momentum_strategy import MomentumMetric
@@ -164,7 +163,7 @@ class ProductionConfigTests(unittest.TestCase):
         self.assertTrue(all(row["quantity"] >= 1 for row in target))
         self.assertEqual([row["target_rank"] for row in target], list(range(1, 13)))
 
-    def test_monthly_top_twenty_band_retains_existing_holding(self):
+    def test_monthly_rebalance_uses_current_ranking_not_legacy_retention(self):
         from momentum_strategy import MomentumMetric
 
         def metric(ticker, score):
@@ -181,8 +180,8 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = [metric(str(index), 100 - index) for index in range(21)]
         target = build_target_portfolio(ranked, True, previous_tickers=["15", "20"])
         tickers = {row["ticker"] for row in target}
-        self.assertIn("15", tickers)  # Current rank 16: retain inside top 20.
-        self.assertNotIn("20", tickers)  # Current rank 21: exit below top 20.
+        self.assertNotIn("15", tickers)
+        self.assertNotIn("20", tickers)
         self.assertEqual(len(target), PRODUCTION.position_count)
 
     def test_stop_loss_is_locked_to_ten_percent(self):
