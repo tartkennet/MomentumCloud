@@ -317,7 +317,116 @@ def adjust_cached_history_for_splits(
 # NVEI: Advent completed the all-cash Nuvei acquisition on 2024-11-15 at
 # $34.00 per share. Source:
 # https://www.sec.gov/Archives/edgar/data/1765159/000095010324016364/dp220747_ex9902.htm
+# FPAC: Far Peak liquidated its Class A shares on 2023-03-13 at the announced
+# $10.21 trust redemption. Source:
+# https://infomemo.theocc.com/infomemos?number=52036
+# NATI: Emerson completed the all-cash National Instruments acquisition on
+# 2023-10-11 at $60.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/935494/000114036123047693/ef20012268_8k.htm
+# ARGO: Brookfield completed its all-cash acquisition on 2023-11-16 at $30.00
+# per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1091748/000110465923118922/tm2330620d1_ex99-1.htm
+# CCF: KKR completed the all-cash Chase acquisition on 2023-11-15 at $127.50
+# per share. Source:
+# https://www.sec.gov/Archives/edgar/data/830524/000114036123053487/ef20014744_ex99-1.htm
+# NWLI: S. USA Life completed the all-cash National Western acquisition on
+# 2024-07-09 at $500.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1635984/000163598424000019/nwli-20240709.htm
+# AXNX: Boston Scientific completed the all-cash Axonics acquisition on
+# 2024-11-15 at $71.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1603756/000162828024048038/axnx-20241115.htm
+# HCP: IBM completed the all-cash HashiCorp acquisition on 2025-02-27 at
+# $35.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/51143/000005114325000064/R14.htm
+# EVRI: Apollo completed the all-cash Everi acquisition on 2025-07-01 at
+# $14.25 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm
+# ESGR: Sixth Street completed the all-cash Enstar acquisition on 2025-07-02
+# at $338.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1363829/000110465925065337/tm2519642d2_ex99-1.htm
+# FYBR: Verizon completed the all-cash Frontier acquisition on 2026-01-20 at
+# $38.50 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/732712/000119312526016059/d198618d8k.htm
+# AL: Sumisho completed the all-cash Air Lease acquisition on 2026-04-08 at
+# $65.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1487712/000119312526147571/d139383d8k.htm
+# GTLS: Baker Hughes completed the all-cash Chart acquisition on 2026-07-16 at
+# $210.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1701605/000119312526167118/d912206dex991.htm
 CASH_CORPORATE_ACTIONS = {
+    "FPAC": {
+        "effective_date": "2023-03-13",
+        "cash_per_share": 10.21,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "SPAC trust redemption",
+    },
+    "NATI": {
+        "effective_date": "2023-10-11",
+        "cash_per_share": 60.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ARGO": {
+        "effective_date": "2023-11-16",
+        "cash_per_share": 30.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "CCF": {
+        "effective_date": "2023-11-15",
+        "cash_per_share": 127.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "NWLI": {
+        "effective_date": "2024-07-09",
+        "cash_per_share": 500.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "AXNX": {
+        "effective_date": "2024-11-15",
+        "cash_per_share": 71.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "HCP": {
+        "effective_date": "2025-02-27",
+        "cash_per_share": 35.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "EVRI": {
+        "effective_date": "2025-07-01",
+        "cash_per_share": 14.25,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ESGR": {
+        "effective_date": "2025-07-02",
+        "cash_per_share": 338.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "FYBR": {
+        "effective_date": "2026-01-20",
+        "cash_per_share": 38.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "AL": {
+        "effective_date": "2026-04-08",
+        "cash_per_share": 65.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "GTLS": {
+        "effective_date": "2026-07-16",
+        "cash_per_share": 210.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
     "RFP": {
         "effective_date": "2023-03-01",
         "cash_per_share": 20.50,
@@ -423,7 +532,28 @@ CASH_CORPORATE_ACTIONS = {
 # not elect (the deterministic backtest default) receives $10.00 cash plus
 # 0.6840 CECO shares per THR share. Source:
 # https://www.sec.gov/Archives/edgar/data/1489096/000110465926067251/tm2615817d1_ex99-1.htm
+# AEL: Brookfield completed the American Equity merger on 2024-05-02. Each
+# share converted to $38.85 cash plus 0.45464 BAM shares. Source:
+# https://www.sec.gov/Archives/edgar/data/1039828/000110465924056427/tm2413201d1_8k.htm
+# SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
+# share converted to 0.0625 RGLD shares. Source:
+# https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
+    "AEL": {
+        "effective_date": "2024-05-02",
+        "successor_ticker": "BAM",
+        "shares_per_share": 0.45464,
+        "cash_per_share": 38.85,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+    },
+    "SAND": {
+        "effective_date": "2025-10-20",
+        "successor_ticker": "RGLD",
+        "shares_per_share": 0.0625,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
     "HOUS": {
         "effective_date": "2026-01-09",
         "successor_ticker": "COMP",
