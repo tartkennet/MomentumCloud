@@ -203,7 +203,7 @@ class ProductionOutputTests(unittest.TestCase):
         ]
         payload = {
             "config": {
-                "selection_model": "core-momentum-v1",
+                "selection_model": PRODUCTION.selection_model,
                 "position_count": 12,
                 "min_price_usd": 5.0,
                 "min_adv20_usd": 5_000_000.0,
@@ -234,7 +234,7 @@ class ProductionOutputTests(unittest.TestCase):
     def test_unvalidated_model_cannot_publish_buy_now(self):
         payload = {
             "config": {
-                "selection_model": "core-momentum-v1",
+                "selection_model": PRODUCTION.selection_model,
                 "position_count": 12,
                 "min_price_usd": 5.0,
                 "min_adv20_usd": 5_000_000.0,
