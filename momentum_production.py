@@ -575,7 +575,7 @@ def _write_workbook(
         [
             ("Product", PRODUCTION.product_name),
             ("Selection model", PRODUCTION.selection_model),
-            ("Freshness rule", "1m and 3m positive and above SPY"),
+            ("Selection rule", "Persistent 12-2 market leaders, 8 positive months, trend-efficiency rank"),
             ("Market date", latest_date),
             ("Regime", risk["status"]),
             ("Positions", PRODUCTION.position_count),
@@ -640,8 +640,8 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError("Target portfolio contains a stock below the price floor")
         if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
             raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
-        if any(float(row["return_3m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock with non-positive 3-month return")
+        if any(int(row.get("positive_months", 0)) < PRODUCTION.minimum_positive_months for row in target):
+            raise RuntimeError("Target portfolio contains a stock without the locked trend persistence")
         if any(float(row["mom12_2_pct"]) <= 0.0 for row in target):
             raise RuntimeError("Target portfolio contains a stock with non-positive 12-2 momentum")
         if any(float(row["mom6_2_pct"]) <= 0.0 for row in target):
