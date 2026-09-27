@@ -31,24 +31,16 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "v4-balanced")
+        self.assertEqual(PRODUCTION.selection_model, "market-leaders-v1")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
         self.assertEqual(PRODUCTION.min_price_usd, 10.0)
         self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
-        self.assertAlmostEqual(
-            PRODUCTION.weight_rank_12_2
-            + PRODUCTION.weight_rank_6_2
-            + PRODUCTION.weight_low_volatility
-            + PRODUCTION.weight_low_extension,
-            1.0,
-        )
-        self.assertEqual(PRODUCTION.weight_rank_12_2, 0.55)
-        self.assertEqual(PRODUCTION.weight_rank_6_2, 0.20)
-        self.assertEqual(PRODUCTION.weight_low_volatility, 0.15)
-        self.assertEqual(PRODUCTION.weight_low_extension, 0.10)
-        self.assertEqual(PRODUCTION.limitation, "Current limitation: survivorship bias")
+        self.assertEqual(PRODUCTION.trend_lookback_sessions, 252)
+        self.assertEqual(PRODUCTION.minimum_positive_months, 8)
+        self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 45.0)
+        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 20.0)
 
     def test_instrument_filter_is_fail_closed(self):
         self.assertTrue(is_eligible_security(Security("GOOD", "Good Inc", "CS", "XNAS")))
@@ -67,7 +59,7 @@ class ProductionConfigTests(unittest.TestCase):
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_fresh_one_and_three_month_strength_drives_score(self):
+    def test_persistent_efficient_trend_drives_score(self):
         steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
@@ -75,20 +67,24 @@ class ProductionConfigTests(unittest.TestCase):
             history_for({"STEADY": steady, "FRESHER": fresher}),
         )
         self.assertEqual(ranked[0].ticker, "FRESHER")
-        self.assertGreater(ranked[0].score, ranked[1].score)
+        self.assertGreaterEqual(ranked[0].positive_months, 8)
+        self.assertGreater(ranked[0].trend_efficiency_pct, 0.0)
+        self.assertEqual(
+            ranked[0].score,
+            ranked[0].trend_efficiency_pct * ranked[0].mom12_2_pct,
+        )
 
-    def test_old_momentum_cannot_hide_negative_one_or_three_month_return(self):
+    def test_lagging_spy_is_ineligible(self):
         fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
-        stale = [100.0 + 5.0 * index / 63.0 for index in range(64)] + [
-            105.0 - 25.0 * (index - 63) / 189.0 for index in range(64, 253)
-        ]
+        lagging = [120.0 - 20.0 * index / 252.0 for index in range(253)]
+        spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
-            ["FRESH", "STALE"],
-            history_for({"FRESH": fresh, "STALE": stale}),
+            ["FRESH", "LAGGING"],
+            history_for({"FRESH": fresh, "LAGGING": lagging, "SPY": spy}),
         )
         self.assertEqual([row.ticker for row in ranked], ["FRESH"])
 
-    def test_v4_ranking_does_not_require_short_term_relative_spy_return(self):
+    def test_market_leader_requires_persistent_positive_months(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
@@ -96,9 +92,8 @@ class ProductionConfigTests(unittest.TestCase):
             ["LAGGARD", "LEADER"],
             history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
         )
-        self.assertEqual([row.ticker for row in ranked], ["LEADER", "LAGGARD"])
-        self.assertGreater(ranked[0].mom12_2_pct, ranked[1].mom12_2_pct)
-        self.assertGreater(ranked[0].mom6_2_pct, ranked[1].mom6_2_pct)
+        self.assertEqual([row.ticker for row in ranked], ["LEADER"])
+        self.assertGreaterEqual(ranked[0].positive_months, 8)
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -110,12 +105,15 @@ class ProductionConfigTests(unittest.TestCase):
         )
         self.assertEqual([row.ticker for row in ranked], ["CLEAN"])
 
-    def test_spy_regime_is_exactly_price_above_sma200(self):
+    def test_spy_regime_requires_confirmed_dual_trend(self):
         flat = [100.0] * 253
         risk_on = history_for({"SPY": flat})
         risk_on[0][1]["SPY"]["close"] = 101.0
         self.assertEqual(market_regime(risk_on)["status"], "RISK ON")
         self.assertEqual(market_regime(history_for({"SPY": flat}))["status"], "RISK OFF")
+        weak = [100.0 + 30.0 * index / 252.0 for index in range(253)]
+        weak[0] = 101.0
+        self.assertEqual(market_regime(history_for({"SPY": weak}))["status"], "RISK OFF")
 
     def test_risk_off_has_no_target_and_risk_on_has_15_equal_weights(self):
         from momentum_strategy import MomentumMetric
@@ -160,13 +158,34 @@ class ProductionConfigTests(unittest.TestCase):
         target = build_target_portfolio(
             metrics,
             True,
-            portfolio_value_sek=15_000,
+            portfolio_value_sek=12_000,
             usdsek=10,
         )
         self.assertEqual(len(target), 15)
         self.assertNotIn("EXPENSIVE", {row["ticker"] for row in target})
         self.assertTrue(all(row["quantity"] >= 1 for row in target))
         self.assertEqual([row["target_rank"] for row in target], list(range(1, 16)))
+
+    def test_monthly_rebalance_uses_current_ranking_not_legacy_retention(self):
+        from momentum_strategy import MomentumMetric
+
+        def metric(ticker, score):
+            return MomentumMetric(
+                ticker=ticker, price_usd=20, adv20_usd=6_000_000,
+                sma20=19, sma50=18, sma50_1m_ago=17, sma200=15,
+                sma200_1m_ago=14, return_1m_pct=8, return_3m_pct=20,
+                return_6m_pct=30, spy_return_1m_pct=2,
+                spy_return_3m_pct=5, relative_1m_pct=6,
+                relative_3m_pct=15, volatility_pct=25,
+                extension_sma50_pct=5, score=score,
+            )
+
+        ranked = [metric(str(index), 100 - index) for index in range(21)]
+        target = build_target_portfolio(ranked, True, previous_tickers=["15", "20"])
+        tickers = {row["ticker"] for row in target}
+        self.assertNotIn("15", tickers)
+        self.assertNotIn("20", tickers)
+        self.assertEqual(len(target), PRODUCTION.position_count)
 
     def test_stop_loss_is_locked_to_ten_percent(self):
         self.assertFalse(stop_is_triggered(90.01, 100.0))
