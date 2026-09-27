@@ -196,16 +196,17 @@ class ProductionOutputTests(unittest.TestCase):
                 "mom6_2_pct": 8.0,
                 "relative_1m_pct": 3.0,
                 "relative_3m_pct": 6.0,
+                "positive_months": 9,
                 "quantity": 1,
-                "weight_pct": 100 / 12,
+                "weight_pct": 100 / 15,
             }
-            for index in range(12)
+            for index in range(15)
         ]
         payload = {
             "config": {
-                "selection_model": "core-momentum-v1",
-                "position_count": 12,
-                "min_price_usd": 5.0,
+                "selection_model": PRODUCTION.selection_model,
+                "position_count": 15,
+                "min_price_usd": 10.0,
                 "min_adv20_usd": 5_000_000.0,
                 "stop_loss_pct": 10.0,
             },
@@ -234,9 +235,9 @@ class ProductionOutputTests(unittest.TestCase):
     def test_unvalidated_model_cannot_publish_buy_now(self):
         payload = {
             "config": {
-                "selection_model": "core-momentum-v1",
-                "position_count": 12,
-                "min_price_usd": 5.0,
+                "selection_model": PRODUCTION.selection_model,
+                "position_count": 15,
+                "min_price_usd": 10.0,
                 "min_adv20_usd": 5_000_000.0,
                 "stop_loss_pct": 10.0,
             },
