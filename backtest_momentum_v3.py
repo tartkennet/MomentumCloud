@@ -301,6 +301,10 @@ def adjust_cached_history_for_splits(
 # Source: https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics
 # TERN: Merck completed the all-cash Terns acquisition on 2026-05-05 at
 # $53.00 per share. Source: https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/
+# HSKA: Mars completed the all-cash Heska acquisition on 2023-06-13 at
+# $120.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-332
+# EXAS: Abbott completed the all-cash Exact Sciences acquisition on 2026-03-23
+# at $105.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-178
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
@@ -351,6 +355,18 @@ CASH_CORPORATE_ACTIONS = {
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
+    "HSKA": {
+        "effective_date": "2023-06-13",
+        "cash_per_share": 120.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "EXAS": {
+        "effective_date": "2026-03-23",
+        "cash_per_share": 105.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
 }
 
 # Verified stock consideration needed to keep a position economically intact
@@ -366,6 +382,10 @@ CASH_CORPORATE_ACTIONS = {
 # ARMN: Aris Mining changed its US listing symbol from ARMN to ARIS when it
 # uplisted to NYSE on 2026-02-19. Source:
 # https://www.sec.gov/Archives/edgar/data/1964504/000127956926000103/ex991.htm
+# THR: Thermon completed its merger with CECO on 2026-06-01. A holder that did
+# not elect (the deterministic backtest default) receives $10.00 cash plus
+# 0.6840 CECO shares per THR share. Source:
+# https://www.sec.gov/Archives/edgar/data/1489096/000110465926067251/tm2615817d1_ex99-1.htm
 STOCK_CORPORATE_ACTIONS = {
     "HOUS": {
         "effective_date": "2026-01-09",
@@ -373,6 +393,15 @@ STOCK_CORPORATE_ACTIONS = {
         "shares_per_share": 1.436,
         "reason": "STOCK_MERGER",
         "execution": "successor-market",
+    },
+    "THR": {
+        "effective_date": "2026-06-01",
+        "successor_ticker": "CECO",
+        "shares_per_share": 0.6840,
+        "cash_per_share": 10.0,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+        "note": "Default mixed consideration for non-electing THR shareholders",
     },
     "DWAC": {
         "effective_date": "2024-03-25",
@@ -404,12 +433,13 @@ def valuation_identity(ticker, day):
 
 
 def position_close_on_day(cache, ticker, day):
-    """Value one original share across an audited stock-for-stock merger."""
+    """Value one original share across an audited stock or stock-and-cash merger."""
     value_ticker, ratio, action = valuation_identity(ticker, day)
     row = get_from_map(cache.get(day, {}), value_ticker)
     if not row:
         return None, action
-    return float(row["close"]) * ratio, action
+    cash_component = float(action.get("cash_per_share", 0.0)) if action else 0.0
+    return float(row["close"]) * ratio + cash_component, action
 
 
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
@@ -648,14 +678,16 @@ def build_prior_2_12_metrics(
     lower formation-window volatility and less extension above SMA50.
     v5-regime adds 3-1 confirmation and a bounded RSI/extension check; market
     regime handling is applied separately so weak markets can remain in cash.
+    market-leaders-v1 is a separate strategy family: persistent long-term
+    market leaders ranked by trend efficiency, not a short-horizon rank blend.
     """
     if selection_model not in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
-        "quality-momentum-v2",
+        "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be classic-12-2, v4-balanced, v5-regime, "
-            "v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1 or market-leaders-v1"
         )
 
     spy_closes = []
@@ -668,6 +700,12 @@ def build_prior_2_12_metrics(
         return []
     spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
     spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
+    if len(spy_closes) < 127:
+        return []
+    spy_return_6m = (spy_closes[0] / spy_closes[126] - 1.0) * 100.0
+    if len(spy_closes) < 253:
+        return []
+    spy_mom12_2 = (spy_closes[21] / spy_closes[252] - 1.0) * 100.0
 
     records = []
     for ticker in tickers:
@@ -702,6 +740,7 @@ def build_prior_2_12_metrics(
         return_6m = (price / closes[126] - 1.0) * 100.0
         relative_1m = return_1m - spy_return_1m
         relative_3m = return_3m - spy_return_3m
+        relative_6m = return_6m - spy_return_6m
         recent_chronological = list(reversed(closes[:15]))
         deltas = [
             later - earlier
@@ -724,6 +763,22 @@ def build_prior_2_12_metrics(
         )
         annualized_vol = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
         dist_sma50 = (price / sma50 - 1.0) * 100.0
+        high_252 = max(closes[:252])
+        distance_252d_high = (price / high_252 - 1.0) * 100.0
+        formation_returns = [
+            closes[offset] / closes[offset + 21] - 1.0
+            for offset in range(21, 252, 21)
+        ]
+        positive_months = sum(value > 0.0 for value in formation_returns)
+        formation_prices = list(reversed(closes[21:253]))
+        path_return = formation_prices[-1] / formation_prices[0] - 1.0
+        path_distance = sum(
+            abs(later / earlier - 1.0)
+            for earlier, later in zip(formation_prices, formation_prices[1:])
+            if earlier > 0.0 and later > 0.0
+        )
+        trend_efficiency = 0.0 if path_distance <= 0.0 else path_return / path_distance
+        relative_12_2 = mom12_2 - spy_mom12_2
 
         if selection_model == "classic-12-2":
             if (
@@ -775,6 +830,39 @@ def build_prior_2_12_metrics(
                 or dist_sma50 > PRODUCTION.max_extension_sma50_pct
             ):
                 continue
+        elif selection_model == "relative-strength-breakout-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma20
+                or sma20 <= sma50
+                or sma50 <= sma200
+                or sma50 <= sma50_1m_ago
+                or sma200 <= sma200_1m_ago
+                or return_1m <= 0.0
+                or relative_1m <= 0.0
+                or return_6m <= 0.0
+                or relative_6m <= 0.0
+                or price < high_252 * PRODUCTION.minimum_breakout_fraction
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
+        elif selection_model == "market-leaders-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma200
+                or sma50 <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or relative_12_2 <= 0.0
+                or positive_months < PRODUCTION.minimum_positive_months
+                or trend_efficiency <= 0.0
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
         else:
             if (
                 price < PRODUCTION.min_price_usd
@@ -804,6 +892,10 @@ def build_prior_2_12_metrics(
             "return_6m": return_6m,
             "relative_1m": relative_1m,
             "relative_3m": relative_3m,
+            "relative_6m": relative_6m,
+            "distance_252d_high": distance_252d_high,
+            "positive_months": positive_months,
+            "trend_efficiency": trend_efficiency,
         })
 
     if selection_model == "classic-12-2":
@@ -869,6 +961,38 @@ def build_prior_2_12_metrics(
             + PRODUCTION.weight_rank_6m * frame["rank_6m"]
             + PRODUCTION.weight_low_volatility * frame["rank_low_vol"]
             + PRODUCTION.weight_low_extension * frame["rank_low_extension"]
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "relative-strength-breakout-v1":
+        # One-dimensional ordering after independently meaningful gates:
+        # buy the largest six-month excess return versus SPY, not a fitted or
+        # retrospectively reweighted mixture of indicators.
+        frame = frame.sort_values(
+            ["relative_6m", "relative_1m", "distance_252d_high", "ticker"],
+            ascending=[False, False, False, True],
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.relative_6m),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "market-leaders-v1":
+        frame["total_score"] = frame["trend_efficiency"] * frame["mom12_2"]
+        frame = frame.sort_values(
+            ["total_score", "positive_months", "mom12_2", "ticker"],
+            ascending=[False, False, False, True],
         )
         return [
             SimpleNamespace(
@@ -953,6 +1077,24 @@ def core_market_regime_is_risk_on(latest_map, recent253):
     return float(latest["close"]) > sum(closes[:200]) / 200.0
 
 
+def breakout_market_regime_is_risk_on(latest_map, recent253):
+    """Require a confirmed index uptrend for the breakout strategy."""
+    latest = get_from_map(latest_map, "SPY")
+    if not latest:
+        return False
+    closes = []
+    for _, grouped in recent253:
+        row = get_from_map(grouped, "SPY")
+        if not row:
+            break
+        closes.append(float(row["close"]))
+    if len(closes) < 200:
+        return False
+    sma50 = sum(closes[:50]) / 50.0
+    sma200 = sum(closes[:200]) / 200.0
+    return float(latest["close"]) > sma200 and sma50 > sma200
+
+
 def choose_top(
     client,
     cache,
@@ -968,11 +1110,11 @@ def choose_top(
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1 or market-leaders-v1"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -983,7 +1125,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "core-momentum-v1", "quality-momentum-v2",
+        "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -1006,6 +1148,11 @@ def choose_top(
             signal_map, history
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"} and not breakout_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Breakout risk-off market regime on %s: hold cash", asof)
             return []
         metrics = build_prior_2_12_metrics(
             tickers,
@@ -1211,9 +1358,10 @@ def resolve_exit_execution(
             )
             if successor_row:
                 converted = dict(successor_row)
+                cash_component = float(stock_action.get("cash_per_share", 0.0))
                 for field in ("open", "high", "low", "close"):
                     if field in converted and converted[field] is not None:
-                        converted[field] = float(converted[field]) * ratio
+                        converted[field] = float(converted[field]) * ratio + cash_component
                 resolved_action = dict(stock_action)
                 resolved_action["valuation_ticker"] = successor
                 return resolved_day, converted, resolved_action
@@ -1273,11 +1421,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "core-momentum-v1", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core, core-momentum-v1 or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1 or market-leaders-v1"
         )
 
     client = PolygonClient(api_key)
@@ -1399,10 +1547,15 @@ def run(
         )
         cash_period = False
         if selection_model in {
-            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2"
+            "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
-            regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
+            regime_check = (
+                market_regime_is_risk_on if selection_model == "v5-regime"
+                else breakout_market_regime_is_risk_on
+                if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"}
+                else core_market_regime_is_risk_on
+            )
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
@@ -1616,7 +1769,7 @@ def run(
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
             "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-            "core-momentum-v1", "quality-momentum-v2",
+            "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1669,7 +1822,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "core-momentum-v1", "quality-momentum-v2",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1",
         ),
         default="v3",
     )
