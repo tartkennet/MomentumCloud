@@ -8,6 +8,7 @@ from backtest_momentum_v3 import (
     choose_top10,
     execution_price,
     find_unverified_split_basis_tickers,
+    has_executable_planned_entry,
     first_tradable_row,
     position_close_on_day,
     resolve_exit_execution,
@@ -81,6 +82,11 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(day, "2026-03-02")
         self.assertEqual(row["close"], 45.0)
         self.assertEqual(action["reason"], "CASH_MERGER")
+
+    def test_cash_merger_cannot_be_selected_for_entry_on_or_after_delisting(self):
+        self.assertFalse(has_executable_planned_entry("RFP", "2023-03-01"))
+        self.assertFalse(has_executable_planned_entry("RFP", "2023-03-02"))
+        self.assertTrue(has_executable_planned_entry("RFP", "2023-02-28"))
 
     def test_osh_cash_merger_settles_at_verified_consideration(self):
         days = ["2023-05-01", "2023-05-02", "2023-06-01"]
