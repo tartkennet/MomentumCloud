@@ -301,6 +301,10 @@ def adjust_cached_history_for_splits(
 # Source: https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics
 # TERN: Merck completed the all-cash Terns acquisition on 2026-05-05 at
 # $53.00 per share. Source: https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/
+# HSKA: Mars completed the all-cash Heska acquisition on 2023-06-13 at
+# $120.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-332
+# EXAS: Abbott completed the all-cash Exact Sciences acquisition on 2026-03-23
+# at $105.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-178
 CASH_CORPORATE_ACTIONS = {
     "FRGE": {
         "effective_date": "2026-03-02",
@@ -351,6 +355,18 @@ CASH_CORPORATE_ACTIONS = {
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
+    "HSKA": {
+        "effective_date": "2023-06-13",
+        "cash_per_share": 120.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "EXAS": {
+        "effective_date": "2026-03-23",
+        "cash_per_share": 105.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
 }
 
 # Verified stock consideration needed to keep a position economically intact
@@ -366,6 +382,10 @@ CASH_CORPORATE_ACTIONS = {
 # ARMN: Aris Mining changed its US listing symbol from ARMN to ARIS when it
 # uplisted to NYSE on 2026-02-19. Source:
 # https://www.sec.gov/Archives/edgar/data/1964504/000127956926000103/ex991.htm
+# THR: Thermon completed its merger with CECO on 2026-06-01. A holder that did
+# not elect (the deterministic backtest default) receives $10.00 cash plus
+# 0.6840 CECO shares per THR share. Source:
+# https://www.sec.gov/Archives/edgar/data/1489096/000110465926067251/tm2615817d1_ex99-1.htm
 STOCK_CORPORATE_ACTIONS = {
     "HOUS": {
         "effective_date": "2026-01-09",
@@ -373,6 +393,15 @@ STOCK_CORPORATE_ACTIONS = {
         "shares_per_share": 1.436,
         "reason": "STOCK_MERGER",
         "execution": "successor-market",
+    },
+    "THR": {
+        "effective_date": "2026-06-01",
+        "successor_ticker": "CECO",
+        "shares_per_share": 0.6840,
+        "cash_per_share": 10.0,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+        "note": "Default mixed consideration for non-electing THR shareholders",
     },
     "DWAC": {
         "effective_date": "2024-03-25",
@@ -404,12 +433,13 @@ def valuation_identity(ticker, day):
 
 
 def position_close_on_day(cache, ticker, day):
-    """Value one original share across an audited stock-for-stock merger."""
+    """Value one original share across an audited stock or stock-and-cash merger."""
     value_ticker, ratio, action = valuation_identity(ticker, day)
     row = get_from_map(cache.get(day, {}), value_ticker)
     if not row:
         return None, action
-    return float(row["close"]) * ratio, action
+    cash_component = float(action.get("cash_per_share", 0.0)) if action else 0.0
+    return float(row["close"]) * ratio + cash_component, action
 
 
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
@@ -1279,9 +1309,10 @@ def resolve_exit_execution(
             )
             if successor_row:
                 converted = dict(successor_row)
+                cash_component = float(stock_action.get("cash_per_share", 0.0))
                 for field in ("open", "high", "low", "close"):
                     if field in converted and converted[field] is not None:
-                        converted[field] = float(converted[field]) * ratio
+                        converted[field] = float(converted[field]) * ratio + cash_component
                 resolved_action = dict(stock_action)
                 resolved_action["valuation_ticker"] = successor
                 return resolved_day, converted, resolved_action
