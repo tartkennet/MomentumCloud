@@ -4,9 +4,13 @@ import unittest
 from pathlib import Path
 
 from model_validation import load_model_validation
+from validate_production_backtest import VALIDATION_EXIT_RULE
 
 
 class ModelValidationTests(unittest.TestCase):
+    def test_pr13_validation_uses_pre_registered_fixed_stop_only(self):
+        self.assertEqual(VALIDATION_EXIT_RULE, "stop")
+
     def test_missing_decision_is_unvalidated(self):
         with tempfile.TemporaryDirectory() as directory:
             decision = load_model_validation(Path(directory) / "missing.json")
