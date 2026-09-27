@@ -130,6 +130,8 @@ class BacktestConfigurationTests(unittest.TestCase):
             "ALPN": ("2024-05-17", "2024-05-20", "2024-06-03", 65.0),
             "RGLS": ("2025-06-24", "2025-06-25", "2025-07-01", 7.0),
             "TERN": ("2026-05-04", "2026-05-05", "2026-06-01", 53.0),
+            "HSKA": ("2023-06-12", "2023-06-13", "2023-07-03", 120.0),
+            "EXAS": ("2026-03-20", "2026-03-23", "2026-04-01", 105.0),
         }
         for ticker, (prior, effective, later, cash) in cases.items():
             with self.subTest(ticker=ticker):
@@ -193,6 +195,22 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(action["valuation_ticker"], "COMP")
         close, _ = position_close_on_day(cache, "HOUS", "2026-03-03")
         self.assertAlmostEqual(close, 10.5 * 1.436)
+
+    def test_stock_and_cash_merger_uses_verified_default_consideration(self):
+        days = ["2026-05-29", "2026-06-01", "2026-06-02"]
+        cache = {
+            "2026-05-29": {"THR": {"open": 61.0, "close": 62.0}},
+            "2026-06-01": {"CECO": {"open": 80.0, "close": 81.0}},
+            "2026-06-02": {"CECO": {"open": 82.0, "close": 83.0}},
+        }
+        day, row, action = resolve_exit_execution(
+            cache, days, "THR", "2026-06-02", "2026-05-29", "2026-06-02"
+        )
+        self.assertEqual(day, "2026-06-02")
+        self.assertAlmostEqual(row["open"], 82.0 * 0.684 + 10.0)
+        self.assertEqual(action["reason"], "STOCK_CASH_MERGER")
+        close, _ = position_close_on_day(cache, "THR", "2026-06-02")
+        self.assertAlmostEqual(close, 83.0 * 0.684 + 10.0)
 
     def test_unverified_split_like_open_is_excluded_not_rewritten(self):
         days = ["2026-07-06", "2026-07-07"]
