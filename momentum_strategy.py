@@ -73,7 +73,7 @@ def _row(day_map: Mapping[str, Mapping[str, float]], ticker: str):
 
 
 def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
-    """Return the dual-trend market regime; missing data fails safely to cash."""
+    """Return the locked SPY/SMA200 regime; missing data fails safely to cash."""
     closes = []
     for _, day_map in recent_maps:
         row = _row(day_map, "SPY")
@@ -88,17 +88,16 @@ def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
             "spy_sma200": None,
             "reason": "Insufficient SPY history",
         }
-    sma50 = sum(closes[:50]) / 50.0
     sma200 = sum(closes[:200]) / 200.0
-    risk_on = closes[0] > sma200 and sma50 > sma200
+    risk_on = closes[0] > sma200
     return {
         "status": "RISK ON" if risk_on else "RISK OFF",
         "risk_on": risk_on,
         "spy_close": closes[0],
         "spy_sma200": sma200,
         "reason": (
-            "SPY above SMA200 with SMA50 above SMA200"
-            if risk_on else "SPY does not have a confirmed long-term uptrend"
+            "SPY is above SMA200"
+            if risk_on else "SPY is not above SMA200"
         ),
     }
 
