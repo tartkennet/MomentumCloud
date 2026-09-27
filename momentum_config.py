@@ -1,8 +1,8 @@
-"""Frozen configuration for the absolute-strength candidate.
+"""Frozen configuration for the liquid-leaders validation candidate.
 
-The model uses a single risk-adjusted 12-2 absolute-momentum ordering after
-independent liquidity, trend, persistence and volatility gates. It is a
-validation candidate until the point-in-time gate approves it.
+The model ranks independently gated US trend leaders by relative strength,
+trend efficiency and trading liquidity. It is a validation candidate until
+the point-in-time gate approves it.
 """
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from dataclasses import asdict, dataclass
 
 @dataclass(frozen=True)
 class ProductionConfig:
-    product_name: str = "MomentumCloud Absolute Strength"
-    selection_model: str = "absolute-strength-v1"
+    product_name: str = "MomentumCloud Liquid Leaders"
+    selection_model: str = "liquid-leaders-v1"
     position_count: int = 15
     candidate_count: int = 50
     min_price_usd: float = 10.0
@@ -29,8 +29,8 @@ class ProductionConfig:
     limitation: str = "Current limitation: survivorship bias"
 
     def validate(self) -> None:
-        if self.selection_model != "absolute-strength-v1":
-            raise ValueError("Production selection_model must be absolute-strength-v1")
+        if self.selection_model != "liquid-leaders-v1":
+            raise ValueError("Production selection_model must be liquid-leaders-v1")
         if self.position_count != 15:
             raise ValueError("Production portfolio must contain 15 positions")
         if self.min_price_usd != 10.0:
