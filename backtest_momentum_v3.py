@@ -479,6 +479,17 @@ def position_close_on_day(cache, ticker, day):
     return float(row["close"]) * ratio + cash_component, action
 
 
+def has_executable_planned_entry(ticker, entry_day):
+    """Reject securities whose known cash merger completes before entry.
+
+    A cash settlement is valid only for an existing holding. It must never be
+    used to fabricate an entry in a delisted security on the planned next-open
+    execution day.
+    """
+    action = CASH_CORPORATE_ACTIONS.get(str(ticker).upper().strip())
+    return not action or str(action["effective_date"]) > str(entry_day)
+
+
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
     """Return recent trading sessions, reusing the persistent history cache."""
     cache = cache or {}
@@ -1142,6 +1153,7 @@ def choose_top(
     min_adv20_usd=RESEARCH_MIN_ADV20_USD,
     previous_tickers=None,
     rank_exit_cutoff=None,
+    entry_day=None,
 ):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
@@ -1201,6 +1213,12 @@ def choose_top(
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
     ranked = sorted(metrics, key=lambda item: item.total_score, reverse=True)
+    if entry_day is not None:
+        ranked = [
+            item
+            for item in ranked
+            if has_executable_planned_entry(item.ticker, entry_day)
+        ]
     if selection_model != "core-momentum-v1" or not previous_tickers:
         return ranked[:top_n]
 
@@ -1581,6 +1599,7 @@ def run(
             min_adv20_usd,
             previous_tickers=prior_core_tickers,
             rank_exit_cutoff=20 if selection_model == "core-momentum-v1" else None,
+            entry_day=entry,
         )
         cash_period = False
         if selection_model in {
