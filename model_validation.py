@@ -18,6 +18,10 @@ REQUIRED_GATES = (
     "beats_spy",
     "daily_max_drawdown_at_most_20_pct",
     "hit_rate_at_least_50_pct",
+    "oos_at_least_12_periods",
+    "oos_positive_net_return",
+    "oos_beats_spy",
+    "oos_hit_rate_at_least_50_pct",
 )
 
 
