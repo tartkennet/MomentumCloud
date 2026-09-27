@@ -31,16 +31,16 @@ def history_for(series_by_ticker, volumes=None):
 
 class ProductionConfigTests(unittest.TestCase):
     def test_locked_configuration(self):
-        self.assertEqual(PRODUCTION.selection_model, "liquid-leaders-v1")
+        self.assertEqual(PRODUCTION.selection_model, "robust-momentum-v1")
         self.assertEqual(PRODUCTION.position_count, 15)
         self.assertEqual(PRODUCTION.candidate_count, 50)
-        self.assertEqual(PRODUCTION.min_price_usd, 10.0)
-        self.assertEqual(PRODUCTION.min_adv20_usd, 5_000_000.0)
+        self.assertEqual(PRODUCTION.min_price_usd, 5.0)
+        self.assertEqual(PRODUCTION.min_adv20_usd, 2_000_000.0)
         self.assertEqual(PRODUCTION.stop_loss_pct, 10.0)
         self.assertEqual(PRODUCTION.trend_lookback_sessions, 252)
-        self.assertEqual(PRODUCTION.minimum_positive_months, 7)
-        self.assertEqual(PRODUCTION.max_annualized_volatility_pct, 40.0)
-        self.assertEqual(PRODUCTION.max_extension_sma50_pct, 15.0)
+        self.assertEqual(PRODUCTION.weight_rank_12_1, 0.50)
+        self.assertEqual(PRODUCTION.weight_rank_6_1, 0.30)
+        self.assertEqual(PRODUCTION.weight_rank_3_1, 0.20)
         self.assertEqual(PRODUCTION.market_regime, "SPY > SMA200")
 
     def test_instrument_filter_is_fail_closed(self):
@@ -51,16 +51,16 @@ class ProductionConfigTests(unittest.TestCase):
         self.assertFalse(is_eligible_security(Security("SPAC", "Alpha Acquisition Corp", "CS", "XNAS")))
         self.assertFalse(is_eligible_security(Security("OTC", "OTC Inc", "CS", "PINX")))
 
-    def test_exact_five_million_liquidity_and_ten_dollar_price(self):
+    def test_exact_two_million_liquidity_and_five_dollar_price(self):
         rising = [130.0 - 30.0 * index / 252.0 for index in range(253)]
         recent = history_for(
-            {"PASS": rising, "THIN": rising, "CHEAP": [9.0 - index / 1000 for index in range(253)]},
-            {"PASS": 40_000.0, "THIN": 30_000.0, "CHEAP": 1_000_000.0},
+            {"PASS": rising, "THIN": rising, "CHEAP": [4.5 - index / 1000 for index in range(253)]},
+            {"PASS": 40_000.0, "THIN": 10_000.0, "CHEAP": 1_000_000.0},
         )
         ranked = rank_universe(["PASS", "THIN", "CHEAP"], recent)
         self.assertEqual([row.ticker for row in ranked], ["PASS"])
 
-    def test_liquid_leader_score_combines_relative_trend_and_liquidity(self):
+    def test_cross_sectional_score_rewards_stronger_momentum(self):
         steady = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         fresher = [170.0 - 70.0 * index / 252.0 for index in range(253)]
         spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
@@ -72,13 +72,12 @@ class ProductionConfigTests(unittest.TestCase):
             ),
         )
         self.assertEqual(ranked[0].ticker, "FRESHER")
-        self.assertGreaterEqual(ranked[0].positive_months, 7)
-        self.assertGreater(ranked[0].relative_6m_pct, 0.0)
+        self.assertGreater(ranked[0].mom12_2_pct, ranked[1].mom12_2_pct)
         self.assertGreater(ranked[0].score, ranked[1].score)
 
-    def test_relative_leadership_gate_rejects_spy_lagging_security(self):
+    def test_positive_momentum_gates_reject_non_momentum_security(self):
         fresh = [140.0 - 40.0 * index / 252.0 for index in range(253)]
-        lagging = [120.0 - 20.0 * index / 252.0 for index in range(253)]
+        lagging = [90.0 + 20.0 * index / 252.0 for index in range(253)]
         spy = [130.0 - 30.0 * index / 252.0 for index in range(253)]
         ranked = rank_universe(
             ["FRESH", "LAGGING"],
@@ -86,7 +85,7 @@ class ProductionConfigTests(unittest.TestCase):
         )
         self.assertEqual([row.ticker for row in ranked], ["FRESH"])
 
-    def test_liquid_leader_requires_persistent_positive_months(self):
+    def test_cross_sectional_model_ranks_stronger_trend_first(self):
         laggard = [150.0 - 50.0 * index / 252.0 for index in range(253)]
         leader = [180.0 - 80.0 * index / 252.0 for index in range(253)]
         spy = [160.0 - 60.0 * index / 252.0 for index in range(253)]
@@ -95,7 +94,7 @@ class ProductionConfigTests(unittest.TestCase):
             history_for({"LAGGARD": laggard, "LEADER": leader, "SPY": spy}),
         )
         self.assertEqual(ranked[0].ticker, "LEADER")
-        self.assertGreaterEqual(ranked[0].positive_months, 7)
+        self.assertGreater(ranked[0].score, ranked[1].score)
 
     def test_split_sized_adjusted_price_discontinuity_is_rejected(self):
         clean = [130.0 - 30.0 * index / 252.0 for index in range(253)]
