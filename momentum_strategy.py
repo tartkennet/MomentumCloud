@@ -43,8 +43,12 @@ class MomentumMetric:
     relative_3m_pct: float
     volatility_pct: float
     extension_sma50_pct: float
+    relative_6m_pct: float = 0.0
+    distance_252d_high_pct: float = 0.0
     mom12_2_pct: float = 0.0
     mom6_2_pct: float = 0.0
+    positive_months: int = 0
+    trend_efficiency_pct: float = 0.0
     score: float = 0.0
 
     def to_dict(self) -> dict:
@@ -69,7 +73,7 @@ def _row(day_map: Mapping[str, Mapping[str, float]], ticker: str):
 
 
 def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
-    """Return the locked SPY>SMA200 regime; missing data fails safely to cash."""
+    """Return the dual-trend market regime; missing data fails safely to cash."""
     closes = []
     for _, day_map in recent_maps:
         row = _row(day_map, "SPY")
@@ -84,14 +88,18 @@ def market_regime(recent_maps: Sequence[tuple[str, Mapping]]) -> dict:
             "spy_sma200": None,
             "reason": "Insufficient SPY history",
         }
+    sma50 = sum(closes[:50]) / 50.0
     sma200 = sum(closes[:200]) / 200.0
-    risk_on = closes[0] > sma200
+    risk_on = closes[0] > sma200 and sma50 > sma200
     return {
         "status": "RISK ON" if risk_on else "RISK OFF",
         "risk_on": risk_on,
         "spy_close": closes[0],
         "spy_sma200": sma200,
-        "reason": "SPY above SMA200" if risk_on else "SPY at or below SMA200",
+        "reason": (
+            "SPY above SMA200 with SMA50 above SMA200"
+            if risk_on else "SPY does not have a confirmed long-term uptrend"
+        ),
     }
 
 
@@ -101,6 +109,8 @@ def _raw_metric(
     config: ProductionConfig,
     spy_return_1m: float,
     spy_return_3m: float,
+    spy_return_6m: float,
+    spy_mom12_2: float,
 ) -> MomentumMetric | None:
     closes: list[float] = []
     dollar_volume: list[float] = []
@@ -144,6 +154,7 @@ def _raw_metric(
     mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
     relative_1m = return_1m - spy_return_1m
     relative_3m = return_3m - spy_return_3m
+    relative_6m = return_6m - spy_return_6m
 
     chronological = list(reversed(closes[21:127]))
     returns = [
@@ -157,15 +168,34 @@ def _raw_metric(
     variance = sum((value - mean) ** 2 for value in returns) / (len(returns) - 1)
     volatility = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
     extension = (price / sma50 - 1.0) * 100.0
+    high_252 = max(closes[:252])
+    distance_252d_high = (price / high_252 - 1.0) * 100.0
+    formation_returns = [
+        closes[offset] / closes[offset + 21] - 1.0
+        for offset in range(21, 252, 21)
+    ]
+    positive_months = sum(value > 0.0 for value in formation_returns)
+    formation_prices = list(reversed(closes[21:253]))
+    path_return = formation_prices[-1] / formation_prices[0] - 1.0
+    path_distance = sum(
+        abs(later / earlier - 1.0)
+        for earlier, later in zip(formation_prices, formation_prices[1:])
+        if earlier > 0.0 and later > 0.0
+    )
+    trend_efficiency = 0.0 if path_distance <= 0.0 else path_return / path_distance
+    relative_12_2 = mom12_2 - spy_mom12_2
 
     if (
         price < config.min_price_usd
         or adv20 < config.min_adv20_usd
-        or price <= sma50
+        or sma50 <= sma200
         or price <= sma200
         or sma200 <= sma200_1m_ago
         or mom12_2 <= 0.0
-        or mom6_2 <= 0.0
+        or positive_months < config.minimum_positive_months
+        or trend_efficiency <= 0.0
+        or volatility > config.max_annualized_volatility_pct
+        or extension > config.max_extension_sma50_pct
     ):
         return None
     return MomentumMetric(
@@ -186,8 +216,12 @@ def _raw_metric(
         relative_3m_pct=relative_3m,
         volatility_pct=volatility,
         extension_sma50_pct=extension,
+        relative_6m_pct=relative_6m,
+        distance_252d_high_pct=distance_252d_high,
         mom12_2_pct=mom12_2,
         mom6_2_pct=mom6_2,
+        positive_months=positive_months,
+        trend_efficiency_pct=trend_efficiency * 100.0,
     )
 
 
@@ -196,7 +230,12 @@ def rank_universe(
     recent_maps: Sequence[tuple[str, Mapping]],
     config: ProductionConfig = PRODUCTION,
 ) -> list[MomentumMetric]:
-    """Return v4-balanced candidates from the locked ranking factors."""
+    """Rank persistent, low-noise long-term market leaders.
+
+    The score is trend efficiency times 12-2 excess return.  It is not a
+    weighted blend of short-horizon momentum ranks and does not use a breakout
+    threshold.  All other measures are safety gates.
+    """
     config.validate()
     spy_closes = []
     for _, day_map in recent_maps:
@@ -207,17 +246,20 @@ def rank_universe(
         if not math.isfinite(close) or close <= 0:
             return []
         spy_closes.append(close)
-    if len(spy_closes) < 64:
+    if len(spy_closes) < 253:
         return []
     spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
     spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
+    spy_return_6m = (spy_closes[0] / spy_closes[126] - 1.0) * 100.0
+    spy_mom12_2 = (spy_closes[21] / spy_closes[252] - 1.0) * 100.0
     raw = [
         metric
         for ticker in dict.fromkeys(str(value).upper().strip() for value in tickers)
         if ticker
         for metric in [
             _raw_metric(
-                ticker, recent_maps, config, spy_return_1m, spy_return_3m
+                ticker, recent_maps, config, spy_return_1m, spy_return_3m,
+                spy_return_6m, spy_mom12_2,
             )
         ]
         if metric is not None
@@ -225,21 +267,13 @@ def rank_universe(
     if not raw:
         return []
     frame = pd.DataFrame([item.to_dict() for item in raw])
-    frame["rank_12_2"] = frame["mom12_2_pct"].rank(method="average", pct=True)
-    frame["rank_6_2"] = frame["mom6_2_pct"].rank(method="average", pct=True)
-    frame["rank_low_volatility"] = frame["volatility_pct"].rank(
-        method="average", ascending=False, pct=True
+    # One pre-declared ordering: 12-2 absolute momentum per unit of realised
+    # formation volatility. Trend and persistence remain independent gates.
+    frame["score"] = frame["mom12_2_pct"] / frame["volatility_pct"].clip(lower=1.0)
+    frame = frame.sort_values(
+        ["score", "mom12_2_pct", "positive_months", "ticker"],
+        ascending=[False, False, False, True],
     )
-    frame["rank_low_extension"] = frame["extension_sma50_pct"].rank(
-        method="average", ascending=False, pct=True
-    )
-    frame["score"] = 100.0 * (
-        config.weight_rank_12_2 * frame["rank_12_2"]
-        + config.weight_rank_6_2 * frame["rank_6_2"]
-        + config.weight_low_volatility * frame["rank_low_volatility"]
-        + config.weight_low_extension * frame["rank_low_extension"]
-    )
-    frame = frame.sort_values(["score", "ticker"], ascending=[False, True])
     fields = tuple(MomentumMetric.__dataclass_fields__)
     return [
         MomentumMetric(**{field: row[field] for field in fields})
@@ -252,6 +286,7 @@ def build_target_portfolio(
     risk_on: bool,
     portfolio_value_sek: float | None = None,
     usdsek: float | None = None,
+    previous_tickers: Iterable[str] = (),
     config: ProductionConfig = PRODUCTION,
 ) -> list[dict]:
     if not risk_on:

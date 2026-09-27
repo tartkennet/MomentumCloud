@@ -276,10 +276,240 @@ def adjust_cached_history_for_splits(
 # Sources:
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
+# OSH: CVS completed the all-cash acquisition on 2023-05-02 and paid
+# $39.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://www.cvshealth.com/news/company-news/cvs-health-completes-acquisition-of-oak-street-health.html
+# https://www.sec.gov/Archives/edgar/data/64803/000006480324000007/cvs-20231231.htm
+# ISEE: Astellas completed the all-cash IVERIC bio acquisition on 2023-07-11
+# at $40.00 per share.  The ticker has no later exchange print.
+# Sources:
+# https://newsroom.astellas.us/2023-07-11-Astellas-Completes-Acquisition-of-Iveric-Bio
+# https://www.sec.gov/Archives/edgar/data/1410939/000110465923079843/tm2320976d1_8k.htm
+# ROVR: Blackstone completed the all-cash Rover Group acquisition on 2024-02-27
+# at $11.00 per share. The ticker has no later exchange print.
+# Sources:
+# https://www.rover.com/blog/press-release/blackstone-completes-acquisition-of-rover/
+# https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
+# CBAY: Gilead completed the all-cash CymaBay acquisition on 2024-03-22 at
+# $32.50 per share. Source: https://www.sec.gov/Archives/edgar/data/882095/000110465924037619/tm249475d1_8k.htm
+# ALPN: Vertex completed the all-cash Alpine Immune Sciences acquisition on
+# 2024-05-20 at $65.00 per share. Source: https://investors.vrtx.com/static-files/695c0946-4f67-4ade-9460-7add974bbdc7
+# RGLS: Novartis completed the Regulus acquisition on 2025-06-25. The fixed
+# consideration was $7.00 cash per share plus a non-tradeable $7.00 CVR. The
+# unpriced CVR is deliberately excluded from the executable cash settlement.
+# Source: https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics
+# TERN: Merck completed the all-cash Terns acquisition on 2026-05-05 at
+# $53.00 per share. Source: https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/
+# HSKA: Mars completed the all-cash Heska acquisition on 2023-06-13 at
+# $120.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-332
+# EXAS: Abbott completed the all-cash Exact Sciences acquisition on 2026-03-23
+# at $105.00 per share. Source: https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-178
+# RFP: Domtar completed the Resolute Forest Products acquisition on 2023-03-01.
+# The executable fixed consideration was $20.50 cash per share; the contingent
+# value right is not priced and is deliberately excluded. Source:
+# https://www.sec.gov/Archives/edgar/data/1381531/000119312523056293/d449137d8k.htm
+# EVOP: Global Payments completed the all-cash EVO Payments acquisition on
+# 2023-03-24 at $34.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1704596/000119312523078631/d400810d8k.htm
+# SOVO: Campbell completed the all-cash Sovos Brands acquisition on 2024-03-12
+# at $23.00 per share. Source: https://infomemo.theocc.com/infomemos?number=54287
+# NVEI: Advent completed the all-cash Nuvei acquisition on 2024-11-15 at
+# $34.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1765159/000095010324016364/dp220747_ex9902.htm
+# FPAC: Far Peak liquidated its Class A shares on 2023-03-13 at the announced
+# $10.21 trust redemption. Source:
+# https://infomemo.theocc.com/infomemos?number=52036
+# NATI: Emerson completed the all-cash National Instruments acquisition on
+# 2023-10-11 at $60.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/935494/000114036123047693/ef20012268_8k.htm
+# ARGO: Brookfield completed its all-cash acquisition on 2023-11-16 at $30.00
+# per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1091748/000110465923118922/tm2330620d1_ex99-1.htm
+# CCF: KKR completed the all-cash Chase acquisition on 2023-11-15 at $127.50
+# per share. Source:
+# https://www.sec.gov/Archives/edgar/data/830524/000114036123053487/ef20014744_ex99-1.htm
+# NWLI: S. USA Life completed the all-cash National Western acquisition on
+# 2024-07-09 at $500.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1635984/000163598424000019/nwli-20240709.htm
+# AXNX: Boston Scientific completed the all-cash Axonics acquisition on
+# 2024-11-15 at $71.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1603756/000162828024048038/axnx-20241115.htm
+# HCP: IBM completed the all-cash HashiCorp acquisition on 2025-02-27 at
+# $35.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/51143/000005114325000064/R14.htm
+# EVRI: Apollo completed the all-cash Everi acquisition on 2025-07-01 at
+# $14.25 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm
+# ESGR: Sixth Street completed the all-cash Enstar acquisition on 2025-07-02
+# at $338.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1363829/000110465925065337/tm2519642d2_ex99-1.htm
+# FYBR: Verizon completed the all-cash Frontier acquisition on 2026-01-20 at
+# $38.50 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/732712/000119312526016059/d198618d8k.htm
+# AL: Sumisho completed the all-cash Air Lease acquisition on 2026-04-08 at
+# $65.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1487712/000119312526147571/d139383d8k.htm
+# GTLS: Baker Hughes completed the all-cash Chart acquisition on 2026-07-16 at
+# $210.00 per share. Source:
+# https://www.sec.gov/Archives/edgar/data/1701605/000119312526167118/d912206dex991.htm
 CASH_CORPORATE_ACTIONS = {
+    "FPAC": {
+        "effective_date": "2023-03-13",
+        "cash_per_share": 10.21,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "SPAC trust redemption",
+    },
+    "NATI": {
+        "effective_date": "2023-10-11",
+        "cash_per_share": 60.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ARGO": {
+        "effective_date": "2023-11-16",
+        "cash_per_share": 30.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "CCF": {
+        "effective_date": "2023-11-15",
+        "cash_per_share": 127.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "NWLI": {
+        "effective_date": "2024-07-09",
+        "cash_per_share": 500.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "AXNX": {
+        "effective_date": "2024-11-15",
+        "cash_per_share": 71.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "HCP": {
+        "effective_date": "2025-02-27",
+        "cash_per_share": 35.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "EVRI": {
+        "effective_date": "2025-07-01",
+        "cash_per_share": 14.25,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ESGR": {
+        "effective_date": "2025-07-02",
+        "cash_per_share": 338.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "FYBR": {
+        "effective_date": "2026-01-20",
+        "cash_per_share": 38.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "AL": {
+        "effective_date": "2026-04-08",
+        "cash_per_share": 65.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "GTLS": {
+        "effective_date": "2026-07-16",
+        "cash_per_share": 210.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "RFP": {
+        "effective_date": "2023-03-01",
+        "cash_per_share": 20.50,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "Unpriced contingent value right excluded from cash settlement",
+    },
+    "EVOP": {
+        "effective_date": "2023-03-24",
+        "cash_per_share": 34.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "SOVO": {
+        "effective_date": "2024-03-12",
+        "cash_per_share": 23.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "NVEI": {
+        "effective_date": "2024-11-15",
+        "cash_per_share": 34.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
     "FRGE": {
         "effective_date": "2026-03-02",
         "cash_per_share": 45.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "OSH": {
+        "effective_date": "2023-05-02",
+        "cash_per_share": 39.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ISEE": {
+        "effective_date": "2023-07-11",
+        "cash_per_share": 40.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ROVR": {
+        "effective_date": "2024-02-27",
+        "cash_per_share": 11.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "CBAY": {
+        "effective_date": "2024-03-22",
+        "cash_per_share": 32.5,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "ALPN": {
+        "effective_date": "2024-05-20",
+        "cash_per_share": 65.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "RGLS": {
+        "effective_date": "2025-06-25",
+        "cash_per_share": 7.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "Unpriced contingent value right excluded from cash settlement",
+    },
+    "TERN": {
+        "effective_date": "2026-05-05",
+        "cash_per_share": 53.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "HSKA": {
+        "effective_date": "2023-06-13",
+        "cash_per_share": 120.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
+    "EXAS": {
+        "effective_date": "2026-03-23",
+        "cash_per_share": 105.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
     },
@@ -292,12 +522,66 @@ CASH_CORPORATE_ACTIONS = {
 # Sources:
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
+# DWAC: after the business combination closed on 2024-03-25, the existing
+# common shares continued under the DJT symbol. Source:
+# https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-149
+# ARMN: Aris Mining changed its US listing symbol from ARMN to ARIS when it
+# uplisted to NYSE on 2026-02-19. Source:
+# https://www.sec.gov/Archives/edgar/data/1964504/000127956926000103/ex991.htm
+# THR: Thermon completed its merger with CECO on 2026-06-01. A holder that did
+# not elect (the deterministic backtest default) receives $10.00 cash plus
+# 0.6840 CECO shares per THR share. Source:
+# https://www.sec.gov/Archives/edgar/data/1489096/000110465926067251/tm2615817d1_ex99-1.htm
+# AEL: Brookfield completed the American Equity merger on 2024-05-02. Each
+# share converted to $38.85 cash plus 0.45464 BAM shares. Source:
+# https://www.sec.gov/Archives/edgar/data/1039828/000110465924056427/tm2413201d1_8k.htm
+# SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
+# share converted to 0.0625 RGLD shares. Source:
+# https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
+    "AEL": {
+        "effective_date": "2024-05-02",
+        "successor_ticker": "BAM",
+        "shares_per_share": 0.45464,
+        "cash_per_share": 38.85,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+    },
+    "SAND": {
+        "effective_date": "2025-10-20",
+        "successor_ticker": "RGLD",
+        "shares_per_share": 0.0625,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
     "HOUS": {
         "effective_date": "2026-01-09",
         "successor_ticker": "COMP",
         "shares_per_share": 1.436,
         "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+    },
+    "THR": {
+        "effective_date": "2026-06-01",
+        "successor_ticker": "CECO",
+        "shares_per_share": 0.6840,
+        "cash_per_share": 10.0,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+        "note": "Default mixed consideration for non-electing THR shareholders",
+    },
+    "DWAC": {
+        "effective_date": "2024-03-25",
+        "successor_ticker": "DJT",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
+        "execution": "successor-market",
+    },
+    "ARMN": {
+        "effective_date": "2026-02-19",
+        "successor_ticker": "ARIS",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
         "execution": "successor-market",
     },
 }
@@ -316,12 +600,24 @@ def valuation_identity(ticker, day):
 
 
 def position_close_on_day(cache, ticker, day):
-    """Value one original share across an audited stock-for-stock merger."""
+    """Value one original share across an audited stock or stock-and-cash merger."""
     value_ticker, ratio, action = valuation_identity(ticker, day)
     row = get_from_map(cache.get(day, {}), value_ticker)
     if not row:
         return None, action
-    return float(row["close"]) * ratio, action
+    cash_component = float(action.get("cash_per_share", 0.0)) if action else 0.0
+    return float(row["close"]) * ratio + cash_component, action
+
+
+def has_executable_planned_entry(ticker, entry_day):
+    """Reject securities whose known cash merger completes before entry.
+
+    A cash settlement is valid only for an existing holding. It must never be
+    used to fabricate an entry in a delisted security on the planned next-open
+    execution day.
+    """
+    action = CASH_CORPORATE_ACTIONS.get(str(ticker).upper().strip())
+    return not action or str(action["effective_date"]) > str(entry_day)
 
 
 def trading_dates(client, end_date, count, cache=None, require_ohlc=False):
@@ -426,6 +722,18 @@ def research_exit(
             ]
             triggered = len(closes) == 50 and close < sum(closes) / 50.0
             reason = "BELOW_SMA50"
+        elif exit_rule == "core":
+            history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:200]
+            closes = [
+                float(value)
+                for day in history_days
+                for value, _ in [position_close_on_day(cache, ticker, day)]
+                if value is not None
+            ]
+            stopped = close / entry_price - 1.0 <= -abs(float(stop_loss_pct)) / 100.0
+            below_sma200 = len(closes) == 200 and close < sum(closes) / 200.0
+            triggered = stopped or below_sma200
+            reason = "STOP_LOSS" if stopped else "BELOW_SMA200"
         elif exit_rule == "momentum":
             history_days = sorted((day for day in cache if day <= signal_day), reverse=True)[:253]
             history = [(day, cache[day]) for day in history_days]
@@ -548,14 +856,17 @@ def build_prior_2_12_metrics(
     lower formation-window volatility and less extension above SMA50.
     v5-regime adds 3-1 confirmation and a bounded RSI/extension check; market
     regime handling is applied separately so weak markets can remain in cash.
+    market-leaders-v1 is retained only for historical comparison.
+    absolute-strength-v1 is a distinct single-signal candidate: risk-adjusted
+    12-2 absolute momentum after independent long-term trend gates.
     """
     if selection_model not in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+        "classic-12-2", "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1",
+        "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
     }:
         raise ValueError(
-            "selection_model must be classic-12-2, v4-balanced, v5-regime "
-            "v6-core or quality-momentum-v2"
+            "selection_model must be classic-12-2, v4-balanced, v5-regime, "
+            "v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
         )
 
     spy_closes = []
@@ -568,6 +879,12 @@ def build_prior_2_12_metrics(
         return []
     spy_return_1m = (spy_closes[0] / spy_closes[21] - 1.0) * 100.0
     spy_return_3m = (spy_closes[0] / spy_closes[63] - 1.0) * 100.0
+    if len(spy_closes) < 127:
+        return []
+    spy_return_6m = (spy_closes[0] / spy_closes[126] - 1.0) * 100.0
+    if len(spy_closes) < 253:
+        return []
+    spy_mom12_2 = (spy_closes[21] / spy_closes[252] - 1.0) * 100.0
 
     records = []
     for ticker in tickers:
@@ -602,6 +919,7 @@ def build_prior_2_12_metrics(
         return_6m = (price / closes[126] - 1.0) * 100.0
         relative_1m = return_1m - spy_return_1m
         relative_3m = return_3m - spy_return_3m
+        relative_6m = return_6m - spy_return_6m
         recent_chronological = list(reversed(closes[:15]))
         deltas = [
             later - earlier
@@ -624,6 +942,22 @@ def build_prior_2_12_metrics(
         )
         annualized_vol = math.sqrt(max(variance, 0.0)) * math.sqrt(252.0) * 100.0
         dist_sma50 = (price / sma50 - 1.0) * 100.0
+        high_252 = max(closes[:252])
+        distance_252d_high = (price / high_252 - 1.0) * 100.0
+        formation_returns = [
+            closes[offset] / closes[offset + 21] - 1.0
+            for offset in range(21, 252, 21)
+        ]
+        positive_months = sum(value > 0.0 for value in formation_returns)
+        formation_prices = list(reversed(closes[21:253]))
+        path_return = formation_prices[-1] / formation_prices[0] - 1.0
+        path_distance = sum(
+            abs(later / earlier - 1.0)
+            for earlier, later in zip(formation_prices, formation_prices[1:])
+            if earlier > 0.0 and later > 0.0
+        )
+        trend_efficiency = 0.0 if path_distance <= 0.0 else path_return / path_distance
+        relative_12_2 = mom12_2 - spy_mom12_2
 
         if selection_model == "classic-12-2":
             if (
@@ -633,15 +967,15 @@ def build_prior_2_12_metrics(
                 or mom12_2 <= 0.0
             ):
                 continue
-        elif selection_model in {"v4-balanced", "v6-core"}:
+        elif selection_model in {"v4-balanced", "v6-core", "core-momentum-v1"}:
             if (
                 price < PRODUCTION.min_price_usd
                 or adv20 < min_adv20_usd
-                or price <= sma50
                 or price <= sma200
                 or sma200 <= sma200_1m_ago
                 or mom12_2 <= 0.0
                 or mom6_2 <= 0.0
+                or return_3m <= 0.0
             ):
                 continue
         elif selection_model == "quality-momentum-v2":
@@ -675,6 +1009,54 @@ def build_prior_2_12_metrics(
                 or dist_sma50 > PRODUCTION.max_extension_sma50_pct
             ):
                 continue
+        elif selection_model == "relative-strength-breakout-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma20
+                or sma20 <= sma50
+                or sma50 <= sma200
+                or sma50 <= sma50_1m_ago
+                or sma200 <= sma200_1m_ago
+                or return_1m <= 0.0
+                or relative_1m <= 0.0
+                or return_6m <= 0.0
+                or relative_6m <= 0.0
+                or price < high_252 * PRODUCTION.minimum_breakout_fraction
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
+        elif selection_model == "market-leaders-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma200
+                or sma50 <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or relative_12_2 <= 0.0
+                or positive_months < PRODUCTION.minimum_positive_months
+                or trend_efficiency <= 0.0
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
+        elif selection_model == "absolute-strength-v1":
+            if (
+                price < PRODUCTION.min_price_usd
+                or adv20 < min_adv20_usd
+                or price <= sma50
+                or sma50 <= sma200
+                or sma200 <= sma200_1m_ago
+                or mom12_2 <= 0.0
+                or mom6_2 <= 0.0
+                or return_3m <= 0.0
+                or positive_months < PRODUCTION.minimum_positive_months
+                or annualized_vol > PRODUCTION.max_annualized_volatility_pct
+                or dist_sma50 > PRODUCTION.max_extension_sma50_pct
+            ):
+                continue
         else:
             if (
                 price < PRODUCTION.min_price_usd
@@ -704,6 +1086,10 @@ def build_prior_2_12_metrics(
             "return_6m": return_6m,
             "relative_1m": relative_1m,
             "relative_3m": relative_3m,
+            "relative_6m": relative_6m,
+            "distance_252d_high": distance_252d_high,
+            "positive_months": positive_months,
+            "trend_efficiency": trend_efficiency,
         })
 
     if selection_model == "classic-12-2":
@@ -735,6 +1121,24 @@ def build_prior_2_12_metrics(
             for row in frame.itertuples(index=False)
         ]
 
+    if selection_model == "core-momentum-v1":
+        frame["rank_12_2"] = frame["mom12_2"].rank(method="average", pct=True)
+        frame["rank_6_2"] = frame["mom6_2"].rank(method="average", pct=True)
+        frame["rank_3m"] = frame["return_3m"].rank(method="average", pct=True)
+        frame["total_score"] = 100.0 * (
+            PRODUCTION.weight_rank_12_2 * frame["rank_12_2"]
+            + PRODUCTION.weight_rank_6_2 * frame["rank_6_2"]
+            + PRODUCTION.weight_rank_3m * frame["rank_3m"]
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
     if selection_model == "quality-momentum-v2":
         frame["rank_1m"] = frame["relative_1m"].rank(method="average", pct=True)
         frame["rank_3m"] = frame["relative_3m"].rank(method="average", pct=True)
@@ -751,6 +1155,55 @@ def build_prior_2_12_metrics(
             + PRODUCTION.weight_rank_6m * frame["rank_6m"]
             + PRODUCTION.weight_low_volatility * frame["rank_low_vol"]
             + PRODUCTION.weight_low_extension * frame["rank_low_extension"]
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "relative-strength-breakout-v1":
+        # One-dimensional ordering after independently meaningful gates:
+        # buy the largest six-month excess return versus SPY, not a fitted or
+        # retrospectively reweighted mixture of indicators.
+        frame = frame.sort_values(
+            ["relative_6m", "relative_1m", "distance_252d_high", "ticker"],
+            ascending=[False, False, False, True],
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.relative_6m),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "market-leaders-v1":
+        frame["total_score"] = frame["trend_efficiency"] * frame["mom12_2"]
+        frame = frame.sort_values(
+            ["total_score", "positive_months", "mom12_2", "ticker"],
+            ascending=[False, False, False, True],
+        )
+        return [
+            SimpleNamespace(
+                ticker=str(row.ticker),
+                price_usd=float(row.price_usd),
+                total_score=float(row.total_score),
+            )
+            for row in frame.itertuples(index=False)
+        ]
+
+    if selection_model == "absolute-strength-v1":
+        frame["total_score"] = frame["mom12_2"] / frame["annualized_vol"].clip(
+            lower=1.0
+        )
+        frame = frame.sort_values(
+            ["total_score", "mom12_2", "positive_months", "ticker"],
+            ascending=[False, False, False, True],
         )
         return [
             SimpleNamespace(
@@ -835,6 +1288,24 @@ def core_market_regime_is_risk_on(latest_map, recent253):
     return float(latest["close"]) > sum(closes[:200]) / 200.0
 
 
+def breakout_market_regime_is_risk_on(latest_map, recent253):
+    """Require a confirmed index uptrend for the breakout strategy."""
+    latest = get_from_map(latest_map, "SPY")
+    if not latest:
+        return False
+    closes = []
+    for _, grouped in recent253:
+        row = get_from_map(grouped, "SPY")
+        if not row:
+            break
+        closes.append(float(row["close"]))
+    if len(closes) < 200:
+        return False
+    sma50 = sum(closes[:50]) / 50.0
+    sma200 = sum(closes[:200]) / 200.0
+    return float(latest["close"]) > sma200 and sma50 > sma200
+
+
 def choose_top(
     client,
     cache,
@@ -843,16 +1314,19 @@ def choose_top(
     top_n=DEFAULT_TOP_N,
     selection_model="v3",
     min_adv20_usd=RESEARCH_MIN_ADV20_USD,
+    previous_tickers=None,
+    rank_exit_cutoff=None,
+    entry_day=None,
 ):
     if top_n < 1:
         raise ValueError("top_n must be at least 1")
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
         )
     signal_map = cache.get(asof)
     if signal_map is None:
@@ -863,7 +1337,7 @@ def choose_top(
         metrics = build_legacy_v1_metrics(tickers, signal_map, history)
     elif selection_model in {
         "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+        "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
     }:
         if selection_model == "v4-balanced" and not core_market_regime_is_risk_on(
             signal_map, history
@@ -877,10 +1351,20 @@ def choose_top(
         ):
             logging.info("Core risk-off market regime on %s: hold cash", asof)
             return []
+        if selection_model == "core-momentum-v1" and not core_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Core-momentum risk-off market regime on %s: hold cash", asof)
+            return []
         if selection_model == "quality-momentum-v2" and not core_market_regime_is_risk_on(
             signal_map, history
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
+            return []
+        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"} and not breakout_market_regime_is_risk_on(
+            signal_map, history
+        ):
+            logging.info("Breakout risk-off market regime on %s: hold cash", asof)
             return []
         metrics = build_prior_2_12_metrics(
             tickers,
@@ -891,7 +1375,26 @@ def choose_top(
         )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
-    return sorted(metrics, key=lambda item: item.total_score, reverse=True)[:top_n]
+    ranked = sorted(metrics, key=lambda item: item.total_score, reverse=True)
+    if entry_day is not None:
+        ranked = [
+            item
+            for item in ranked
+            if has_executable_planned_entry(item.ticker, entry_day)
+        ]
+    if selection_model != "core-momentum-v1" or not previous_tickers:
+        return ranked[:top_n]
+
+    cutoff = int(rank_exit_cutoff or 20)
+    if cutoff < top_n:
+        raise ValueError("rank_exit_cutoff must be at least top_n")
+    previous = {str(ticker).upper().strip() for ticker in previous_tickers}
+    retained = [
+        item for rank, item in enumerate(ranked, 1)
+        if rank <= cutoff and item.ticker in previous
+    ]
+    retained_tickers = {item.ticker for item in retained}
+    return (retained + [item for item in ranked if item.ticker not in retained_tickers])[:top_n]
 
 
 def choose_top10(client, cache, tickers, asof):
@@ -1073,9 +1576,10 @@ def resolve_exit_execution(
             )
             if successor_row:
                 converted = dict(successor_row)
+                cash_component = float(stock_action.get("cash_per_share", 0.0))
                 for field in ("open", "high", "low", "close"):
                     if field in converted and converted[field] is not None:
-                        converted[field] = float(converted[field]) * ratio
+                        converted[field] = float(converted[field]) * ratio + cash_component
                 resolved_action = dict(stock_action)
                 resolved_action["valuation_ticker"] = successor
                 return resolved_day, converted, resolved_action
@@ -1135,11 +1639,11 @@ def run(
     min_adv20_usd = required_adv20_usd(portfolio_value_usd, top_n)
     if selection_model not in {
         "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-        "v6-core", "quality-momentum-v2",
+        "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
     }:
         raise ValueError(
             "selection_model must be v3, legacy-v1, classic-12-2, "
-            "v4-balanced, v5-regime, v6-core or quality-momentum-v2"
+            "v4-balanced, v5-regime, v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1 or absolute-strength-v1"
         )
 
     client = PolygonClient(api_key)
@@ -1240,6 +1744,8 @@ def run(
         )
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
+    unresolved_executions = []
+    prior_core_tickers = set()
     for signal, entry, exit_day in periods:
         signal_tickers = [
             ticker
@@ -1254,16 +1760,26 @@ def run(
             top_n,
             selection_model,
             min_adv20_usd,
+            previous_tickers=prior_core_tickers,
+            rank_exit_cutoff=20 if selection_model == "core-momentum-v1" else None,
+            entry_day=entry,
         )
         cash_period = False
         if selection_model in {
-            "v4-balanced", "v5-regime", "v6-core", "quality-momentum-v2"
+        "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1"
         } and not picks:
             signal_history = session_window(client, cache, history_tickers, signal)
-            regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
+            regime_check = (
+                market_regime_is_risk_on if selection_model == "v5-regime"
+                else breakout_market_regime_is_risk_on
+                if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1"}
+                else core_market_regime_is_risk_on
+            )
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
             raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
+        if selection_model == "core-momentum-v1":
+            prior_core_tickers = {pick.ticker for pick in picks}
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
@@ -1374,6 +1890,9 @@ def run(
                 "CorporateAction": (
                     str(corporate_action["reason"]) if corporate_action else ""
                 ),
+                "CorporateActionNote": (
+                    str(corporate_action.get("note", "")) if corporate_action else ""
+                ),
                 "CorporateActionTicker": exit_valuation_ticker,
                 "CorporateActionRatio": exit_conversion_ratio,
                 "EntryExecution": entry_execution,
@@ -1393,9 +1912,11 @@ def run(
             })
         if not cash_period and len(stock_returns) < top_n:
             details = ", ".join(missing_executions) or "unknown ticker"
-            raise RuntimeError(
-                f"No executable price through available history for {signal}: {details}"
-            )
+            # Do not silently value an unavailable security at a guessed price.
+            # Continue the diagnostic pass so one run reports every missing
+            # delisting/corporate action across the full validation window.
+            unresolved_executions.append(f"{signal}: {details}")
+            continue
 
         gross = 0.0 if cash_period else sum(stock_returns) / top_n
         net = 0.0 if cash_period else gross - ROUND_TRIP_COST_PCT / 100
@@ -1435,6 +1956,12 @@ def run(
         })
         logging.info("Signal %s, trade %s to %s: %.2f%% net, SPY %.2f%%", signal, entry, exit_day, net * 100, spy_return * 100)
 
+    if unresolved_executions:
+        raise RuntimeError(
+            "No executable price or verified corporate-action settlement for: "
+            + " | ".join(unresolved_executions)
+        )
+
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
     positions_frame = pd.DataFrame(position_rows)
@@ -1460,8 +1987,8 @@ def run(
     summary["SelectionModel"] = selection_model
     summary["PortfolioValue_USD"] = float(portfolio_value_usd)
     if selection_model in {
-        "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
-        "quality-momentum-v2",
+            "classic-12-2", "v4-balanced", "v5-regime", "v6-core",
+            "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
     }:
         summary["LiquidityRule"] = "FIXED_MIN_ADV20_5M_USD"
         summary["EffectiveMinADV20_USD"] = float(min_adv20_usd)
@@ -1502,7 +2029,7 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
     parser.add_argument("--rebalance-months", type=int, choices=(1, 2, 3), required=True)
     parser.add_argument("--stop-loss-pct", type=float)
-    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum"))
+    parser.add_argument("--exit-rule", choices=("rebalance", "stop", "sma50", "momentum", "core"))
     parser.add_argument("--exit-execution", choices=("next-close", "next-open"), default="next-close")
     parser.add_argument("--top-n", type=int, default=DEFAULT_TOP_N)
     parser.add_argument("--portfolio-value-usd", type=float, default=10_000.0)
@@ -1514,7 +2041,7 @@ if __name__ == "__main__":
         "--selection-model",
         choices=(
             "v3", "legacy-v1", "classic-12-2", "v4-balanced", "v5-regime",
-            "v6-core", "quality-momentum-v2",
+            "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1",
         ),
         default="v3",
     )
