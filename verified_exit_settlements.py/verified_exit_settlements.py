@@ -80,3 +80,7 @@ def install_verified_exit_data(engine):
         engine.STOCK_CORPORATE_ACTIONS.update(old_stock)
 
     return cleanup
+
+
+import backtest_momentum_v3 as _engine
+install_verified_exit_data(_engine)
