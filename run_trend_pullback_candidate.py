@@ -6,15 +6,20 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
+
 import pandas as pd
 import backtest_momentum_v3 as engine
 from momentum_config import PRODUCTION
 from validate_production_backtest import segment_metrics
+from verified_exit_settlements.verified_exit_settlements import install_verified_exit_data
+
 
 MODEL = "trend-pullback-v1"
 OOS_START = "2025-03-31"
 TOP_N = 15
 STOP_LOSS_PCT = 10.0
+
+
 
 
 def trend_pullback_metrics(tickers, latest_map, recent253, _model, min_adv20_usd):
@@ -55,6 +60,8 @@ def trend_pullback_metrics(tickers, latest_map, recent253, _model, min_adv20_usd
             continue
         output.append(SimpleNamespace(ticker=ticker, price_usd=price, total_score=score))
     return output
+
+
 
 
 def main():
@@ -103,6 +110,8 @@ def main():
     Path("Momentum_trend_pullback_validation_decision.json").write_text(json.dumps(decision, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     if decision["status"] != "GO":
         raise RuntimeError("Trend-pullback v1 is NO-GO: " + ", ".join(name for name, passed in gates.items() if not passed))
+
+
 
 
 if __name__ == "__main__":
