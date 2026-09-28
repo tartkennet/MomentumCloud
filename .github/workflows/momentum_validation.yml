@@ -1,4 +1,4 @@
-name: Production model validation
+name: Beta-adjusted trend validation
 
 on:
   pull_request:
@@ -6,9 +6,11 @@ on:
       - "momentum_config.py"
       - "momentum_strategy.py"
       - "backtest_momentum_v3.py"
+      - "run_beta_adjusted_trend_candidate.py"
       - "validate_production_backtest.py"
       - "data_access_preflight.py"
       - "model_validation.py"
+      - "docs/BETA_ADJUSTED_TREND_V1_PREREGISTRATION.md"
       - ".github/workflows/momentum_validation.yml"
   workflow_dispatch:
     inputs:
@@ -26,18 +28,18 @@ on:
       - "momentum_config.py"
       - "momentum_strategy.py"
       - "backtest_momentum_v3.py"
+      - "run_beta_adjusted_trend_candidate.py"
       - "validate_production_backtest.py"
       - "data_access_preflight.py"
       - "model_validation.py"
+      - "docs/BETA_ADJUSTED_TREND_V1_PREREGISTRATION.md"
       - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  # A newer commit supersedes every earlier validation on the same PR. Keeping
-  # stale runs queued delays the only result that can be acted on.
-  group: momentum-production-validation-${{ github.ref }}
+  group: momentum-beta-adjusted-trend-validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -56,29 +58,29 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .momentum_backtest_cache.json
-          key: momentum-production-validation-${{ github.run_id }}
-          restore-keys: momentum-production-validation-
+          key: momentum-beta-adjusted-trend-validation-${{ github.run_id }}
+          restore-keys: momentum-beta-adjusted-trend-validation-
       - name: Verify historical data access
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: >-
           python data_access_preflight.py
           --start "${{ inputs.start_date || '2023-02-01' }}"
-      - name: Validate locked production model
+      - name: Validate preregistered beta-adjusted trend candidate
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: >-
-          python validate_production_backtest.py
+          python run_beta_adjusted_trend_candidate.py
           --start "${{ inputs.start_date || '2023-02-01' }}"
           --end "${{ inputs.end_date || '2026-09-25' }}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: MomentumCloud_Production_v1_validation
+          name: MomentumCloud_Beta_Adjusted_Trend_validation
           path: |
             Momentum_backtest_results.csv
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
-            Momentum_validation_decision.json
+            Momentum_beta_adjusted_trend_validation_decision.json
             .momentum_backtest_cache.json
             .momentum_point_in_time_universe.json
