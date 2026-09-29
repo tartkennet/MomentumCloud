@@ -1,10 +1,15 @@
 """Verified corporate-action settlements for validation runs only.
 
+
+
+
 Prices are cash consideration available on each completed transaction date.
-Unpriced CVRs are deliberately excluded.  The CDXC fallback queries the same
-provider's single-symbol daily endpoint only for its missing historical row.
+Unpriced CVRs are deliberately excluded.
 """
 import os
+
+
+
 
 CASH = """MYOV|2023-03-10|27
 AIMC|2023-03-27|62
@@ -32,12 +37,20 @@ PKST|2026-05-06|21
 EHAB|2026-05-15|13.8
 AVNS|2026-07-27|25"""
 
+
+
+
 STOCK = {
     "COMM": {"effective_date": "2026-01-14", "successor_ticker": "VISN",
              "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     "ATXS": {"effective_date": "2026-01-23", "successor_ticker": "BCRX",
              "shares_per_share": 0.59, "cash_per_share": 8.55, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
+    "CDXC": {"effective_date": "2025-03-19", "successor_ticker": "NAGE",
+             "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
 }
+
+
+
 
 def install_verified_exit_data(engine):
     old_cash = dict(engine.CASH_CORPORATE_ACTIONS)
@@ -54,33 +67,11 @@ def install_verified_exit_data(engine):
     engine.STOCK_CORPORATE_ACTIONS.update(STOCK)
     client = engine.PolygonClient(os.environ["POLYGON_API_KEY"])
 
+
+
+
     def first_tradable_row(cache, trading_days, ticker, target_day, latest_day):
         day, row = old_first(cache, trading_days, ticker, target_day, latest_day)
         if row is not None or ticker != "CDXC":
             return day, row
         for day in trading_days:
-            if day < target_day or day > latest_day:
-                continue
-            try:
-                row = client.fetch_daily_open_close(ticker, day)
-            except Exception:
-                row = None
-            if row is not None:
-                cache.setdefault(day, {})[ticker] = row
-                return day, row
-        return None, None
-
-    engine.first_tradable_row = first_tradable_row
-
-    def cleanup():
-        engine.first_tradable_row = old_first
-        engine.CASH_CORPORATE_ACTIONS.clear()
-        engine.CASH_CORPORATE_ACTIONS.update(old_cash)
-        engine.STOCK_CORPORATE_ACTIONS.clear()
-        engine.STOCK_CORPORATE_ACTIONS.update(old_stock)
-
-    return cleanup
-
-
-import backtest_momentum_v3 as _engine
-install_verified_exit_data(_engine)
