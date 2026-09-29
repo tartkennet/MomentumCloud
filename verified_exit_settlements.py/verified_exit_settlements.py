@@ -75,3 +75,4 @@ def install_verified_exit_data(engine):
         if row is not None or ticker != "CDXC":
             return day, row
         for day in trading_days:
+            pass
