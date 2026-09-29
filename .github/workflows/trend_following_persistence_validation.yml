@@ -1,0 +1,40 @@
+name: Validate trend-following persistence model
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Point-in-time trend validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+      - name: Verify historical data access
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python data_access_preflight.py --start 2023-02-01
+      - name: Validate preregistered trend-following candidate
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python run_trend_following_candidate.py --start 2023-02-01
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_Trend_Following_Persistence_validation
+          if-no-files-found: error
+          path: |
+            Momentum_backtest_results.csv
+            Momentum_backtest_summary.csv
+            Momentum_backtest_positions.csv
+            Momentum_trend_following_persistence_validation_decision.json
