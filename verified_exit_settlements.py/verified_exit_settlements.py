@@ -76,3 +76,7 @@ def install_verified_exit_data(engine):
             return day, row
         for day in trading_days:
             pass
+
+
+import backtest_momentum_v3 as _engine
+install_verified_exit_data(_engine)
