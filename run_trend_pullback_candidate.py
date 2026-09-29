@@ -6,21 +6,16 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
-
 import pandas as pd
 import backtest_momentum_v3 as engine
 from momentum_config import PRODUCTION
 from validate_production_backtest import segment_metrics
-from verified_exit_settlements.verified_exit_settlements import install_verified_exit_data
-
+from verified_exit_data import install_verified_exit_data
 
 MODEL = "trend-pullback-v1"
 OOS_START = "2025-03-31"
 TOP_N = 15
 STOP_LOSS_PCT = 10.0
-
-
-
 
 def trend_pullback_metrics(tickers, latest_map, recent253, _model, min_adv20_usd):
     output = []
@@ -45,24 +40,13 @@ def trend_pullback_metrics(tickers, latest_map, recent253, _model, min_adv20_usd
         prior_sma200 = sum(closes[20:220]) / 200.0
         extension_pct = (price / sma50 - 1.0) * 100.0
         trend_spread_pct = (sma50 / sma200 - 1.0) * 100.0
-        if (
-            price < PRODUCTION.min_price_usd
-            or sum(dollars) / len(dollars) < min_adv20_usd
-            or price <= sma200
-            or sma50 <= sma200
-            or sma200 <= prior_sma200
-            or extension_pct < 0.0
-            or extension_pct > 10.0
-        ):
+        if (price < PRODUCTION.min_price_usd or sum(dollars) / len(dollars) < min_adv20_usd or price <= sma200 or sma50 <= sma200 or sma200 <= prior_sma200 or extension_pct < 0.0 or extension_pct > 10.0):
             continue
         score = trend_spread_pct * (1.0 - extension_pct / 10.0)
         if score <= 0.0:
             continue
         output.append(SimpleNamespace(ticker=ticker, price_usd=price, total_score=score))
     return output
-
-
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -110,9 +94,6 @@ def main():
     Path("Momentum_trend_pullback_validation_decision.json").write_text(json.dumps(decision, indent=2, allow_nan=False) + "\n", encoding="utf-8")
     if decision["status"] != "GO":
         raise RuntimeError("Trend-pullback v1 is NO-GO: " + ", ".join(name for name, passed in gates.items() if not passed))
-
-
-
 
 if __name__ == "__main__":
     main()
