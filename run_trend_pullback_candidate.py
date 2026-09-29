@@ -91,7 +91,9 @@ def main():
         "out_of_sample_metrics": oos,
         "limitation": "Current limitation: survivorship bias",
     }
-    Path("Momentum_trend_pullback_validation_decision.json").write_text(json.dumps(decision, indent=2, allow_nan=False, default=lambda value: value.item()) + "\n", encoding="utf-8")
+    serialized_decision = json.dumps(decision, indent=2, allow_nan=False, default=lambda value: value.item())
+    Path("Momentum_trend_pullback_validation_decision.json").write_text(serialized_decision + "\n", encoding="utf-8")
+    print(serialized_decision)
     if decision["status"] != "GO":
         raise RuntimeError("Trend-pullback v1 is NO-GO: " + ", ".join(name for name, passed in gates.items() if not passed))
 
