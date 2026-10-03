@@ -127,6 +127,22 @@ def main():
             portfolio_value_usd=10_000,
             universe_mode="point-in-time",
         )
+    except RuntimeError as error:
+        blocked = {
+            "model": MODEL,
+            "validated_at": datetime.now(timezone.utc).isoformat(),
+            "status": "BLOCKED",
+            "reason": "validation_execution_blocked",
+            "error": str(error),
+            "out_of_sample_start": OOS_START,
+            "metrics": None,
+            "out_of_sample_metrics": None,
+            "limitation": "Current limitation: survivorship bias",
+        }
+        Path("Momentum_trend_following_persistence_validation_decision.json").write_text(
+            json.dumps(blocked, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+        )
+        raise
     finally:
         engine.build_prior_2_12_metrics = original_builder
         engine.session_window = original_window
