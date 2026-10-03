@@ -1,7 +1,10 @@
 """Verified corporate-action settlements for validation runs only.
 
 Cash values are completed transaction consideration. No price is invented for
-halted, unpriced or otherwise non-executable securities.
+halted, unpriced or otherwise non-executable securities. The additions below
+are sourced from issuer announcements or SEC completion filings; WBA excludes
+its non-transferable, unpriced contingent DAP right and INFN uses the documented
+non-electing cash consideration.
 """
 
 CASH_SETTLEMENTS = {
@@ -33,6 +36,17 @@ CASH_SETTLEMENTS = {
     "MASI": ("2026-06-10", 180.00), "JHG": ("2026-06-30", 52.00),
     "AVNS": ("2026-07-27", 25.00), "TALK": ("2026-08-17", 5.25),
     "ALOT": ("2026-08-27", 29.00),
+    "COWN": ("2023-03-01", 39.00), "ATCO": ("2023-03-28", 15.50),
+    "INDT": ("2023-06-29", 67.00), "UNVR": ("2023-08-01", 36.15),
+    "GLOP": ("2023-07-13", 8.65), "FRG": ("2023-08-21", 30.00),
+    "AMK": ("2024-09-05", 35.25), "ENV": ("2024-11-25", 63.15),
+    "HAYN": ("2024-11-21", 61.00), "VZIO": ("2024-12-03", 11.50),
+    "CTLT": ("2024-12-18", 63.50), "SCWX": ("2025-02-03", 8.50),
+    "INFN": ("2025-02-28", 6.65), "AGS": ("2025-06-30", 12.50),
+    "WBA": ("2025-08-28", 11.45), "AMED": ("2025-08-14", 101.00),
+    "SKX": ("2025-09-12", 63.00), "WOW": ("2025-12-31", 5.20),
+    "ALE": ("2025-12-15", 67.00), "CWAN": ("2026-06-25", 24.55),
+    "EA": ("2026-08-04", 210.00), "GBTG": ("2026-09-29", 9.50),
 }
 
 STOCK_SETTLEMENTS = {
@@ -40,6 +54,8 @@ STOCK_SETTLEMENTS = {
     "ATXS": {"effective_date": "2026-01-23", "successor_ticker": "BCRX", "shares_per_share": 0.59, "cash_per_share": 8.55, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "CDXC": {"effective_date": "2025-03-19", "successor_ticker": "NAGE", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     "MFH": {"effective_date": "2025-11-13", "successor_ticker": "CD", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    "STEL": {"effective_date": "2026-07-01", "successor_ticker": "PB", "shares_per_share": 0.3803, "cash_per_share": 11.36, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
+    "WBS": {"effective_date": "2026-08-20", "successor_ticker": "SAN", "shares_per_share": 2.0548, "cash_per_share": 48.75, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
 }
 
 
