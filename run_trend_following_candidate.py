@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-shot point-in-time validation of trend-following persistence v1."""
+"""One-shot point-in-time validation of trend-following persistence 252 v1."""
 from __future__ import annotations
 
 import argparse
@@ -9,7 +9,6 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pandas as pd
-
 import backtest_momentum_v3 as engine
 
 try:
@@ -17,10 +16,12 @@ try:
 except ImportError:
     pass
 
-MODEL = "trend-following-persistence-v1"
+MODEL = "trend-following-persistence-252-v1"
 OOS_START = "2025-03-31"
 TOP_N = 12
-HISTORY_SESSIONS = 504
+HISTORY_SESSIONS = 252
+PERSISTENCE_WINDOW = 32
+MIN_PERSISTENT_DAYS = 24
 MIN_PRICE_USD = 5.0
 MIN_ADV_USD = 2_000_000.0
 
@@ -57,7 +58,7 @@ def persistence_metrics(tickers, latest_map, recent_history, _model, _min_adv20_
         sma200 = sum(closes[:200]) / 200.0
         prior_sma200 = sum(closes[20:220]) / 200.0
         above_sma200_days = 0
-        for offset in range(63):
+        for offset in range(PERSISTENCE_WINDOW):
             rolling_sma200 = sum(closes[offset:offset + 200]) / 200.0
             if closes[offset] > rolling_sma200:
                 above_sma200_days += 1
@@ -67,7 +68,7 @@ def persistence_metrics(tickers, latest_map, recent_history, _model, _min_adv20_
             and adv20 >= MIN_ADV_USD
             and adv63 >= MIN_ADV_USD
             and price > sma50 > sma200 > prior_sma200
-            and above_sma200_days >= 50
+            and above_sma200_days >= MIN_PERSISTENT_DAYS
             and extension <= 0.08
         ):
             continue
@@ -177,8 +178,8 @@ def main():
     )
     if decision["status"] != "GO":
         failed = ", ".join(name for name, passed in gates.items() if not passed)
-        raise RuntimeError(f"Trend-following persistence v1 is NO-GO: {failed}")
-    print("MomentumCloud trend-following persistence v1: GO")
+        raise RuntimeError(f"Trend-following persistence 252 v1 is NO-GO: {failed}")
+    print("MomentumCloud trend-following persistence 252 v1: GO")
 
 
 if __name__ == "__main__":
