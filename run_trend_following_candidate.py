@@ -12,7 +12,7 @@ import pandas as pd
 import backtest_momentum_v3 as engine
 
 try:
-    import verified_exit_settlements  # noqa: F401
+Fix verified corporate-action settlement loader    import verified_exit_data    verified_exit_data.install_verified_exit_data(engine)
 except ImportError:
     pass
 
