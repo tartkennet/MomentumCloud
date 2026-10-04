@@ -570,7 +570,7 @@ STOCK_CORPORATE_ACTIONS = {
 # SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
 # share converted to 0.0625 RGLD shares. Source:
 # https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
-STOCK_CORPORATE_ACTIONS = {
+# duplicate map declaration removed
     "NFBK": {
         "effective_date": "2026-07-21",
         "successor_ticker": "CLBK",
