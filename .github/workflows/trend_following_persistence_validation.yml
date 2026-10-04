@@ -1,4 +1,4 @@
-name: Validate trend-following persistence model
+name: Validate v4 ablation and simple momentum candidate
 
 on:
   pull_request:
@@ -7,9 +7,9 @@ on:
 
 jobs:
   validate:
-    name: Point-in-time trend validation
+    name: Point-in-time ablation and simple candidate validation
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,18 +23,20 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: python data_access_preflight.py --start 2023-02-01
-      - name: Validate preregistered trend-following candidate
+      - name: Run preregistered v4 ablations and simple candidate
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python run_trend_following_candidate.py --start 2023-02-01
-      - name: Upload validation evidence
+        run: python run_v4_ablation_and_simple_candidate.py --start 2023-02-01
+      - name: Upload research evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: MomentumCloud_Trend_Following_Persistence_validation
+          name: MomentumCloud_v4_ablation_and_simple_candidate_validation
           if-no-files-found: error
           path: |
+            Momentum_ablation_results.csv
+            Momentum_model_review.json
+            Momentum_simple_momentum_validation_decision.json
             Momentum_backtest_results.csv
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
-            Momentum_trend_following_persistence_validation_decision.json
