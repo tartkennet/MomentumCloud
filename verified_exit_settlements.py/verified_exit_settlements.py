@@ -1,11 +1,13 @@
 """Verified corporate-action settlements for validation runs only.
 
+
 Cash values are completed transaction consideration. No price is invented for
 halted, unpriced or otherwise non-executable securities. The additions below
 are sourced from issuer announcements or SEC completion filings; WBA excludes
 its non-transferable, unpriced contingent DAP right and INFN uses the documented
 non-electing cash consideration.
 """
+
 
 CASH_SETTLEMENTS = {
     "VVNT": ("2023-03-10", 12.00), "MYOV": ("2023-03-10", 27.00), "AIMC": ("2023-03-27", 62.00),
@@ -36,6 +38,7 @@ CASH_SETTLEMENTS = {
     "MASI": ("2026-06-10", 180.00), "JHG": ("2026-06-30", 52.00),
     "AVNS": ("2026-07-27", 25.00), "TALK": ("2026-08-17", 5.25),
     "ALOT": ("2026-08-27", 29.00),
+    "APGE": ("2026-09-03", 135.11),
     "COWN": ("2023-03-01", 39.00), "ATCO": ("2023-03-28", 15.50),
     "INDT": ("2023-06-29", 67.00), "UNVR": ("2023-08-01", 36.15),
     "GLOP": ("2023-07-13", 8.65), "FRG": ("2023-08-21", 30.00),
@@ -49,6 +52,7 @@ CASH_SETTLEMENTS = {
     "EA": ("2026-08-04", 210.00), "GBTG": ("2026-09-29", 9.50),
 }
 
+
 STOCK_SETTLEMENTS = {
     "SKYT": {"effective_date": "2026-07-31", "successor_ticker": "IONQ", "shares_per_share": 0.4883, "cash_per_share": 15.00, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "COMM": {"effective_date": "2026-01-14", "successor_ticker": "VISN", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
@@ -58,6 +62,8 @@ STOCK_SETTLEMENTS = {
     "STEL": {"effective_date": "2026-07-01", "successor_ticker": "PB", "shares_per_share": 0.3803, "cash_per_share": 11.36, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "WBS": {"effective_date": "2026-08-20", "successor_ticker": "SAN", "shares_per_share": 2.0548, "cash_per_share": 48.75, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
 }
+
+
 
 
 def install_verified_exit_data(engine):
@@ -71,5 +77,8 @@ def install_verified_exit_data(engine):
     engine.STOCK_CORPORATE_ACTIONS.update(STOCK_SETTLEMENTS)
 
 
+
+
 import backtest_momentum_v3 as _engine
 install_verified_exit_data(_engine)
+
