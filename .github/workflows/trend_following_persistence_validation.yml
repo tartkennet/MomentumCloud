@@ -36,6 +36,7 @@ jobs:
           path: |
             Momentum_ablation_results.csv
             Momentum_model_review.json
+            Momentum_root_cause_analysis.json
             Momentum_simple_momentum_validation_decision.json
             Momentum_backtest_results.csv
             Momentum_backtest_summary.csv
