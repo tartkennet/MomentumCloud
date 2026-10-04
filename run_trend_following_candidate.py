@@ -191,7 +191,7 @@ def main():
         "limitation": "Current limitation: survivorship bias",
     }
     Path("Momentum_trend_following_persistence_validation_decision.json").write_text(
-        json.dumps(decision, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+        json.dumps(decision, indent=2, allow_nan=False, default=lambda value: value.item()) + "\n", encoding="utf-8"
     )
     if decision["status"] != "GO":
         failed = ", ".join(name for name, passed in gates.items() if not passed)
