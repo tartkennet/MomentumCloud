@@ -620,8 +620,19 @@ def position_close_on_day(cache, ticker, day):
 
 
 def has_executable_planned_entry(ticker, entry_day):
-    """Reject securities whose known cash merger completes before entry.
+    """Reject securities whose known cash merger completes before entry.def has_executable_planned_entry(ticker, entry_day):
+    """Reject securities that cannot execute under their original ticker.
 
+    Cash settlements and stock/symbol conversions are valid only for an
+    existing holding. A next-open entry may not be fabricated in the retired
+    ticker on or after the documented corporate-action effective date.
+    """
+    normalized = str(ticker).upper().strip()
+    for actions in (CASH_CORPORATE_ACTIONS, STOCK_CORPORATE_ACTIONS):
+        action = actions.get(normalized)
+        if action and str(action["effective_date"]) <= str(entry_day):
+            return False
+    return True
     A cash settlement is valid only for an existing holding. It must never be
     used to fabricate an entry in a delisted security on the planned next-open
     execution day.
