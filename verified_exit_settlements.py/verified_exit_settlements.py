@@ -39,6 +39,7 @@ CASH_SETTLEMENTS = {
     "AVNS": ("2026-07-27", 25.00), "TALK": ("2026-08-17", 5.25),
     "ALOT": ("2026-08-27", 29.00),
     "APGE": ("2026-09-03", 135.11),
+    "WSR": ("2026-07-14", 19.00),
     "COWN": ("2023-03-01", 39.00), "ATCO": ("2023-03-28", 15.50),
     "INDT": ("2023-06-29", 67.00), "UNVR": ("2023-08-01", 36.15),
     "GLOP": ("2023-07-13", 8.65), "FRG": ("2023-08-21", 30.00),
@@ -54,6 +55,7 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    "ETRN": {"effective_date": "2024-07-22", "successor_ticker": "EQT", "shares_per_share": 0.3504, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     "SKYT": {"effective_date": "2026-07-31", "successor_ticker": "IONQ", "shares_per_share": 0.4883, "cash_per_share": 15.00, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "COMM": {"effective_date": "2026-01-14", "successor_ticker": "VISN", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     "ATXS": {"effective_date": "2026-01-23", "successor_ticker": "BCRX", "shares_per_share": 0.59, "cash_per_share": 8.55, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
@@ -81,4 +83,3 @@ def install_verified_exit_data(engine):
 
 import backtest_momentum_v3 as _engine
 install_verified_exit_data(_engine)
-
