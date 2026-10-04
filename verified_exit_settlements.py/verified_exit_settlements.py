@@ -40,6 +40,8 @@ CASH_SETTLEMENTS = {
     "ALOT": ("2026-08-27", 29.00),
     "APGE": ("2026-09-03", 135.11),
     "WSR": ("2026-07-14", 19.00),
+    "SGFY": ("2023-03-29", 30.50),
+    "AAWW": ("2023-03-17", 102.50),
     "COWN": ("2023-03-01", 39.00), "ATCO": ("2023-03-28", 15.50),
     "INDT": ("2023-06-29", 67.00), "UNVR": ("2023-08-01", 36.15),
     "GLOP": ("2023-07-13", 8.65), "FRG": ("2023-08-21", 30.00),
@@ -55,6 +57,7 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    "WRK": {"effective_date": "2024-07-05", "successor_ticker": "SW", "shares_per_share": 1.0, "cash_per_share": 5.00, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "ETRN": {"effective_date": "2024-07-22", "successor_ticker": "EQT", "shares_per_share": 0.3504, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     "SKYT": {"effective_date": "2026-07-31", "successor_ticker": "IONQ", "shares_per_share": 0.4883, "cash_per_share": 15.00, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "COMM": {"effective_date": "2026-01-14", "successor_ticker": "VISN", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
