@@ -256,6 +256,7 @@ def main():
     Path("Momentum_model_review.json").write_text(json.dumps(review,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     root_cause={"scope":"research-only; no model, production, Buy Now or paper-portfolio change","v4_balanced":root_cause_metrics(baseline),"simple_momentum":root_cause_metrics(simple),"low_extension_counterfactual":low_extension_counterfactual(baseline,runs[3]),"component_attribution":{"v4_balanced":component_rows("v4-balanced",baseline,runs[1],runs[4]),"simple_momentum":component_rows(SIMPLE_MODEL,simple,None,simple_no_regime)},"limitation":"Current limitation: survivorship bias"}
     Path("Momentum_root_cause_analysis.json").write_text(json.dumps(root_cause,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+    print("ROOT_CAUSE_ANALYSIS_JSON=" + json.dumps(root_cause,sort_keys=True,allow_nan=False))
     print(pd.read_csv("Momentum_ablation_results.csv").to_string(index=False))
     print(f"{SIMPLE_MODEL}: {decision['status']}")
     if decision["status"] != "GO":
