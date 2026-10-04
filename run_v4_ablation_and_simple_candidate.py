@@ -132,7 +132,7 @@ def run_one(name, builder, start, end, stop=10.0, no_regime=False):
     results, positions = pd.read_csv("Momentum_backtest_results.csv"), pd.read_csv("Momentum_backtest_positions.csv")
     total = segment(results, positions)
     oos = segment(results.loc[results.SignalDate>=OOS_START].copy(), positions.loc[positions.SignalDate>=OOS_START].copy())
-    return {"scenario":name,"metrics":total,"out_of_sample_metrics":oos,"gates":check(total,oos)}
+    return {"scenario":name,"metrics":total,"out_of_sample_metrics":oos,"gates":check(total,oos),"results":results,"positions":positions}
 
 
 def row(run, baseline=None):
@@ -142,6 +142,98 @@ def row(run, baseline=None):
         data["DeltaTotalReturn_pct"] = total["TotalReturn_pct"] - baseline["metrics"]["TotalReturn_pct"]
         data["DeltaOOSTotalReturn_pct"] = oos["TotalReturn_pct"] - baseline["out_of_sample_metrics"]["TotalReturn_pct"]
     return data
+
+
+def _compounded_return(values):
+    return float(((1.0 + values / 100.0).prod() - 1.0) * 100.0) if len(values) else 0.0
+
+
+def _records(frame, columns):
+    return json.loads(frame.loc[:, columns].to_json(orient="records"))
+
+
+def exposure_accounting(results):
+    risk_on = results.loc[results["RiskRegime"] == "RISK_ON"].copy()
+    cash = results.loc[results["RiskRegime"] == "CASH"].copy()
+    gross_total = _compounded_return(results["GrossReturn_pct"])
+    net_total = _compounded_return(results["NetReturn_pct"])
+    return {
+        "risk_on_periods": int(len(risk_on)),
+        "cash_periods": int(len(cash)),
+        "risk_on_stock_gross_return_pct": _compounded_return(risk_on["GrossReturn_pct"]),
+        "risk_on_spy_return_pct": _compounded_return(risk_on["SPYReturn_pct"]),
+        "cash_period_spy_return_pct": _compounded_return(cash["SPYReturn_pct"]),
+        "gross_before_fixed_cost_pct": gross_total,
+        "net_after_fixed_cost_pct": net_total,
+        "fixed_transaction_cost_effect_pct_points": gross_total - net_total,
+        "turnover_measurement": "NOT_AVAILABLE: engine charges one fixed 0.30% round-trip cost in every RISK_ON month and does not measure security-level turnover or partial turnover.",
+    }
+
+
+def root_cause_metrics(run):
+    """Describe realised holdings and periods; no inferred sector labels."""
+    results, positions = run["results"].copy(), run["positions"].copy()
+    positions["WeightedContribution_pct"] = positions["GrossReturn_pct"] * positions["Weight"]
+    ticker = (positions.groupby("Ticker", as_index=False)
+        .agg(Occurrences=("Ticker", "size"), GrossContribution_pct=("WeightedContribution_pct", "sum"),
+             AveragePositionReturn_pct=("GrossReturn_pct", "mean"), WorstPositionReturn_pct=("GrossReturn_pct", "min"))
+        .sort_values("GrossContribution_pct"))
+    months = results.sort_values("NetReturn_pct")
+    return {
+        "largest_losing_tickers_by_weighted_gross_contribution": _records(ticker.head(20), ["Ticker", "Occurrences", "GrossContribution_pct", "AveragePositionReturn_pct", "WorstPositionReturn_pct"]),
+        "worst_months": _records(months.head(20), ["SignalDate", "NetReturn_pct", "GrossReturn_pct", "SPYReturn_pct", "NetEdgeVsSPY_pct", "RiskRegime"]),
+        "stop_loss": {
+            "triggered_positions": int((positions["ExitReason"] == "STOP_LOSS").sum()),
+            "total_positions": int(len(positions)),
+            "trigger_rate_pct": float((positions["ExitReason"] == "STOP_LOSS").mean() * 100.0) if len(positions) else 0.0,
+        },
+        "position_return_thresholds": {
+            "at_least_50_pct": int((positions["GrossReturn_pct"] >= 50.0).sum()),
+            "at_least_100_pct": int((positions["GrossReturn_pct"] >= 100.0).sum()),
+            "total_positions": int(len(positions)),
+        },
+        "exposure_and_accounting": {
+            "total": exposure_accounting(results),
+            "out_of_sample": exposure_accounting(results.loc[results["SignalDate"] >= OOS_START].copy()),
+        },
+        "sector_attribution": {
+            "status": "NOT_COMPUTED",
+            "reason": "No point-in-time sector identifier is stored in the universe cache, OHLCV cache or position output. Sector contribution would be invented without an additional verified sector dataset.",
+        },
+    }
+
+
+def low_extension_counterfactual(baseline, no_extension):
+    base = baseline["positions"][["SignalDate", "Ticker"]].drop_duplicates()
+    alternative = no_extension["positions"].merge(base, on=["SignalDate", "Ticker"], how="left", indicator=True)
+    excluded = alternative.loc[alternative["_merge"] == "left_only"].copy()
+    winners = excluded.loc[excluded["GrossReturn_pct"] > 0.0].sort_values("GrossReturn_pct", ascending=False)
+    return {
+        "definition": "Counterfactual holdings selected when only the low-extension rank is removed, but not selected by baseline; this is not a causal claim about a single ticker.",
+        "counterfactual_excluded_positions": int(len(excluded)),
+        "counterfactual_excluded_winners": int(len(winners)),
+        "counterfactual_excluded_winners_at_least_50_pct": int((winners["GrossReturn_pct"] >= 50.0).sum()),
+        "counterfactual_excluded_winners_at_least_100_pct": int((winners["GrossReturn_pct"] >= 100.0).sum()),
+        "largest_counterfactual_excluded_winners": _records(winners.head(30), ["SignalDate", "Ticker", "GrossReturn_pct", "Weight", "ExitReason"]),
+    }
+
+
+def component_rows(model, baseline, no_stop=None, no_regime=None):
+    exposure = root_cause_metrics(baseline)["exposure_and_accounting"]
+    total, oos = exposure["total"], exposure["out_of_sample"]
+    rows = [
+        {"component": "stock selection, RISK_ON months", "total_effect_pct_points": total["risk_on_stock_gross_return_pct"] - total["risk_on_spy_return_pct"], "oos_effect_pct_points": oos["risk_on_stock_gross_return_pct"] - oos["risk_on_spy_return_pct"], "method": "gross selected portfolio versus SPY during the same RISK_ON months"},
+        {"component": "cash versus SPY, CASH months", "total_effect_pct_points": -total["cash_period_spy_return_pct"], "oos_effect_pct_points": -oos["cash_period_spy_return_pct"], "method": "portfolio earns 0% while the regime is cash"},
+        {"component": "fixed transaction costs", "total_effect_pct_points": -total["fixed_transaction_cost_effect_pct_points"], "oos_effect_pct_points": -oos["fixed_transaction_cost_effect_pct_points"], "method": "compounded gross-before-cost versus net-after-cost"},
+        {"component": "security turnover", "total_effect_pct_points": None, "oos_effect_pct_points": None, "method": total["turnover_measurement"]},
+    ]
+    if no_stop is not None:
+        rows.append({"component": "10% stop-loss kept", "total_effect_pct_points": baseline["metrics"]["TotalReturn_pct"] - no_stop["metrics"]["TotalReturn_pct"], "oos_effect_pct_points": baseline["out_of_sample_metrics"]["TotalReturn_pct"] - no_stop["out_of_sample_metrics"]["TotalReturn_pct"], "method": "one-factor ablation; interactions and compounding mean it is not additive"})
+    else:
+        rows.append({"component": "stop-loss", "total_effect_pct_points": None, "oos_effect_pct_points": None, "method": "not present in this model"})
+    if no_regime is not None:
+        rows.append({"component": "SPY>SMA200 regime kept", "total_effect_pct_points": baseline["metrics"]["TotalReturn_pct"] - no_regime["metrics"]["TotalReturn_pct"], "oos_effect_pct_points": baseline["out_of_sample_metrics"]["TotalReturn_pct"] - no_regime["out_of_sample_metrics"]["TotalReturn_pct"], "method": "one-factor ablation; interactions and compounding mean it is not additive"})
+    return {"model": model, "non_additivity_warning": "Rows are separate counterfactual/accounting views and must not be summed.", "rows": rows}
 
 
 def main():
@@ -154,11 +246,14 @@ def main():
     runs=[run_one(name,builder,args.start,args.end,stop,no_regime) for name,builder,stop,no_regime in specs]
     baseline=runs[0]
     simple=run_one(SIMPLE_MODEL,simple_builder,args.start,args.end,None,False)
-    pd.DataFrame([row(item,None if item is baseline else baseline) for item in runs]+[row(simple,baseline)]).to_csv("Momentum_ablation_results.csv",index=False)
+    simple_no_regime=run_one("simple without SPY>SMA200 regime",simple_builder,args.start,args.end,None,True)
+    pd.DataFrame([row(item,None if item is baseline else baseline) for item in runs]+[row(simple,baseline),row(simple_no_regime,simple)]).to_csv("Momentum_ablation_results.csv",index=False)
     decision={"model":SIMPLE_MODEL,"pre_registered_rules":{"universe":"POINT_IN_TIME_US_COMMON_STOCKS","price_floor_usd":MIN_PRICE,"adv20_floor_usd":MIN_ADV,"market_regime":"SPY > SMA200","ranking":"60% completed 12-1, 40% completed 6-1","positions":TOP_N,"weighting":"equal","rebalancing":"monthly next-open","single_stock_exit":"rebalance only","round_trip_cost_pct":engine.ROUND_TRIP_COST_PCT},"out_of_sample_start":OOS_START,"metrics":simple["metrics"],"out_of_sample_metrics":simple["out_of_sample_metrics"],"gates":simple["gates"],"status":"GO" if all(simple["gates"].values()) else "NO-GO","limitation":"Current limitation: survivorship bias"}
     Path("Momentum_simple_momentum_validation_decision.json").write_text(json.dumps(decision,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     review={"scope":"research-only; production, Buy Now and paper portfolio untouched","execution_chain":{"universe":"point-in-time US common stocks","data":"Massive/Polygon adjusted daily OHLCV","v4_filters":"price > 10, ADV20 > 5M, above rising SMA200, positive 12-2, 6-2 and 3-month returns","v4_ranking":"55% 12-2, 20% 6-2, 15% low volatility, 10% low extension","portfolio":"15 equal-weight","exits":"10% stop or monthly rebalance, next-open","market_regime":"SPY > SMA200","costs":f"{engine.ROUND_TRIP_COST_PCT}% round trip"},"v4_balanced":{"status":"RETIRED_RESEARCH_ONLY" if not all(baseline["gates"].values()) else "RESEARCH_ONLY","gates":baseline["gates"],"metrics":baseline["metrics"],"out_of_sample_metrics":baseline["out_of_sample_metrics"]},"ablation_results":[{"scenario":run["scenario"],"total_return_delta_pct":run["metrics"]["TotalReturn_pct"]-baseline["metrics"]["TotalReturn_pct"],"oos_return_delta_pct":run["out_of_sample_metrics"]["TotalReturn_pct"]-baseline["out_of_sample_metrics"]["TotalReturn_pct"],"interpretation":"descriptive one-factor ablation, not statistical proof"} for run in runs[1:]],"simple_candidate":decision,"evidence_limit":"One five-year sample and single-factor ablations are descriptive; they do not establish statistical significance.","limitation":"Current limitation: survivorship bias"}
     Path("Momentum_model_review.json").write_text(json.dumps(review,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+    root_cause={"scope":"research-only; no model, production, Buy Now or paper-portfolio change","v4_balanced":root_cause_metrics(baseline),"simple_momentum":root_cause_metrics(simple),"low_extension_counterfactual":low_extension_counterfactual(baseline,runs[3]),"component_attribution":{"v4_balanced":component_rows("v4-balanced",baseline,runs[1],runs[4]),"simple_momentum":component_rows(SIMPLE_MODEL,simple,None,simple_no_regime)},"limitation":"Current limitation: survivorship bias"}
+    Path("Momentum_root_cause_analysis.json").write_text(json.dumps(root_cause,indent=2,allow_nan=False)+"\n",encoding="utf-8")
     print(pd.read_csv("Momentum_ablation_results.csv").to_string(index=False))
     print(f"{SIMPLE_MODEL}: {decision['status']}")
     if decision["status"] != "GO":
