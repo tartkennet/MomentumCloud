@@ -173,6 +173,7 @@ def exposure_accounting(results):
 def root_cause_metrics(run):
     """Describe realised holdings and periods; no inferred sector labels."""
     results, positions = run["results"].copy(), run["positions"].copy()
+    positions["Weight"] = 1.0 / positions["TopN"]
     positions["WeightedContribution_pct"] = positions["GrossReturn_pct"] * positions["Weight"]
     ticker = (positions.groupby("Ticker", as_index=False)
         .agg(Occurrences=("Ticker", "size"), GrossContribution_pct=("WeightedContribution_pct", "sum"),
@@ -206,6 +207,7 @@ def root_cause_metrics(run):
 def low_extension_counterfactual(baseline, no_extension):
     base = baseline["positions"][["SignalDate", "Ticker"]].drop_duplicates()
     alternative = no_extension["positions"].merge(base, on=["SignalDate", "Ticker"], how="left", indicator=True)
+    alternative["EqualWeight_pct"] = 100.0 / alternative["TopN"]
     excluded = alternative.loc[alternative["_merge"] == "left_only"].copy()
     winners = excluded.loc[excluded["GrossReturn_pct"] > 0.0].sort_values("GrossReturn_pct", ascending=False)
     return {
@@ -214,7 +216,7 @@ def low_extension_counterfactual(baseline, no_extension):
         "counterfactual_excluded_winners": int(len(winners)),
         "counterfactual_excluded_winners_at_least_50_pct": int((winners["GrossReturn_pct"] >= 50.0).sum()),
         "counterfactual_excluded_winners_at_least_100_pct": int((winners["GrossReturn_pct"] >= 100.0).sum()),
-        "largest_counterfactual_excluded_winners": _records(winners.head(30), ["SignalDate", "Ticker", "GrossReturn_pct", "Weight", "ExitReason"]),
+        "largest_counterfactual_excluded_winners": _records(winners.head(30), ["SignalDate", "Ticker", "GrossReturn_pct", "EqualWeight_pct", "ExitReason"]),
     }
 
 
