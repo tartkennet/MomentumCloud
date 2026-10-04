@@ -546,9 +546,40 @@ CASH_CORPORATE_ACTIONS = {
 # share converted to $38.85 cash plus 0.45464 BAM shares. Source:
 # https://www.sec.gov/Archives/edgar/data/1039828/000110465924056427/tm2413201d1_8k.htm
 # SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
+# SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
 # share converted to 0.0625 RGLD shares. Source:
 # https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
+    "NFBK": {
+        "effective_date": "2026-07-21",
+        "successor_ticker": "CLBK",
+        "shares_per_share": 0.6185,
+        "cash_per_share": 8.06,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+        "note": "Verified non-electing consideration; NFBK trading suspended after July 20, 2026",
+    },
+    "AEL": {
+        "effective_date": "2024-05-02",
+        "successor_ticker": "BAM",
+        "shares_per_share": 0.45464,
+        "cash_per_share": 38.85,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+    },
+# SAND: Royal Gold completed the Sandstorm arrangement on 2025-10-20. Each
+# share converted to 0.0625 RGLD shares. Source:
+# https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
+STOCK_CORPORATE_ACTIONS = {
+    "NFBK": {
+        "effective_date": "2026-07-21",
+        "successor_ticker": "CLBK",
+        "shares_per_share": 0.6185,
+        "cash_per_share": 8.06,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash",
+        "note": "Verified non-electing consideration; NFBK trading suspended after July 20, 2026",
+    },
     "AEL": {
         "effective_date": "2024-05-02",
         "successor_ticker": "BAM",
