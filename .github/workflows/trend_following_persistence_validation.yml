@@ -1,4 +1,4 @@
-name: Verify corrected backtest data handling
+name: Complete corrected-position audit evidence
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   validate:
@@ -22,16 +23,30 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Run unit tests
         run: python -m unittest discover -s tests
+      - name: Read corrected evidence from this same private repository
+        uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_engine_verification
+          run-id: 37380437479
+          github-token: ${{ github.token }}
+          path: audit_corrected
+      - name: Read original evidence from this same private repository
+        uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_existing_models_data_audit
+          run-id: 37378865391
+          github-token: ${{ github.token }}
+          path: audit_original
       - name: Audit existing models without introducing a strategy
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           POLYGON_MAX_RETRIES: '5'
           POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
-        run: python run_root_cause_data_audit.py --start 2023-02-01 --end 2026-10-03 --verification-only
+        run: python enrich_corrected_audit_lots.py
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: MomentumCloud_corrected_engine_verification
+          name: MomentumCloud_corrected_lot_enrichment
           if-no-files-found: error
           path: Momentum_data_audit/
