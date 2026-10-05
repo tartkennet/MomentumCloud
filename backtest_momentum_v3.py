@@ -1883,6 +1883,17 @@ def run(
     prior_core_tickers = set()
     for signal, entry, exit_day in periods:
         known_exclusions = data_quality_exclusions_asof(split_basis_exclusions, signal)
+        if selection_model == "v4-balanced":
+            raw_closes = client.fetch_unadjusted_signal_closes(signal)
+            if len(raw_closes) <= 1000:
+                raise RuntimeError(f"Incomplete unadjusted signal prices on {signal}")
+            for ticker in universes_by_signal[signal]:
+                adjusted_row = get_from_map(cache[signal], ticker)
+                raw_close = raw_closes.get(ticker)
+                if adjusted_row is not None:
+                    if raw_close is None:
+                        raise RuntimeError(f"Missing unadjusted signal price for {ticker} on {signal}")
+                    adjusted_row["raw_signal_close"] = raw_close
         signal_tickers = [
             ticker
             for ticker in universes_by_signal[signal]

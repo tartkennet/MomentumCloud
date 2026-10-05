@@ -61,6 +61,7 @@ def v4_builder(flags):
                 continue
             closes, adv20 = value
             price = closes[0]
+            actual_signal_price = float(engine.get_from_map(latest, ticker).get("raw_signal_close", price))
             sma50 = sum(closes[:50]) / 50.0
             sma200 = sum(closes[:200]) / 200.0
             prior_sma200 = sum(closes[21:221]) / 200.0
@@ -68,7 +69,7 @@ def v4_builder(flags):
             mom6_2 = (closes[21] / closes[126] - 1.0) * 100.0
             ret3 = (price / closes[63] - 1.0) * 100.0
             vol = formation_volatility(closes)
-            if vol is None or (price < MIN_PRICE or adv20 < MIN_ADV or price <= sma200 or sma200 <= prior_sma200 or mom12_2 <= 0 or mom6_2 <= 0 or ret3 <= 0):
+            if vol is None or (actual_signal_price < MIN_PRICE or adv20 < MIN_ADV or price <= sma200 or sma200 <= prior_sma200 or mom12_2 <= 0 or mom6_2 <= 0 or ret3 <= 0):
                 continue
             rows.append({"ticker":ticker,"price":price,"m12":mom12_2,"m6":mom6_2,"vol":vol,"extension":(price / sma50 - 1.0) * 100.0})
         if not rows:
@@ -91,7 +92,8 @@ def simple_builder(tickers, latest, history, _model, _adv):
             continue
         closes, adv20 = value
         price = closes[0]
-        if price <= MIN_PRICE or adv20 <= MIN_ADV:
+        actual_signal_price = float(engine.get_from_map(latest, ticker).get("raw_signal_close", price))
+        if actual_signal_price <= MIN_PRICE or adv20 <= MIN_ADV:
             continue
         rows.append({"ticker":ticker,"price":price,"m12":(closes[21] / closes[252] - 1.0) * 100.0,"m6":(closes[21] / closes[126] - 1.0) * 100.0})
     if not rows:

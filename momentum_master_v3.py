@@ -180,6 +180,22 @@ class PolygonClient:
         self.grouped_cache[date_str] = out
         return out
 
+    def fetch_unadjusted_signal_closes(self, date_str: str) -> Dict[str, float]:
+        """Actual historical prices for absolute eligibility floors.
+
+        Split-adjusted prices are appropriate for return ratios, but future
+        reverse splits must not make a historical penny stock pass a $10 floor.
+        """
+        data = self._get(
+            f"/v2/aggs/grouped/locale/us/market/stocks/{date_str}",
+            {"adjusted": "false"},
+        )
+        return {
+            str(row['T']).upper().strip(): float(row['c'])
+            for row in data.get('results', []) or []
+            if row.get('T') and row.get('c') is not None
+        }
+
     def fetch_daily_open_close(self, ticker: str, date_str: str) -> Dict[str, float]:
         """Fetch one verified US daily close for narrow live portfolio tracking.
 

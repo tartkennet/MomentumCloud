@@ -189,7 +189,7 @@ def main():
         run['results'].to_csv(OUT/(name+'_results.csv'),index=False)
         run['positions'].to_csv(OUT/(name+'_positions.csv'),index=False)
         write(name+'_metrics.json',{'metrics':run['metrics'],'out_of_sample_metrics':run['out_of_sample_metrics']})
-        verification[name]={'status':'COMPLETE','metrics':run['metrics'],'remaining_limits':['latest split-adjusted absolute price floor','gap screen not a proof of data corruption','price returns omit dividends']}
+        verification[name]={'status':'COMPLETE','metrics':run['metrics'],'remaining_limits':['gap screen not a proof of data corruption','dividends omitted','historical dollar-volume basis still needs reconciliation']}
     if args.verification_only:
         write('corrected_engine_verification.json',verification)
         print('CORRECTED_ENGINE_VERIFICATION '+json.dumps(verification,allow_nan=False))

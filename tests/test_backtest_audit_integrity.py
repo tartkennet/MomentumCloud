@@ -2,8 +2,14 @@ import unittest
 from unittest.mock import patch
 import backtest_momentum_v3 as engine
 from momentum_master_v3 import PolygonClient
+import run_v4_ablation_and_simple_candidate as existing
 
 class IntegrityTests(unittest.TestCase):
+    def test_future_reverse_split_cannot_make_penny_stock_pass_price_floor(self):
+        row={'close':30.88,'volume':1_000_000,'raw_signal_close':3.86}
+        history=[(str(i),{'KULR':row}) for i in range(253)]
+        self.assertEqual(existing.simple_builder(['KULR'],{'KULR':row},history,None,None),[])
+
     def test_future_gap_cannot_exclude_earlier_signal(self):
         observations={'TEST':['2025-01-02: open 10 vs prior close 20, split-like ratio 2']}
         self.assertNotIn('TEST',engine.data_quality_exclusions_asof(observations,'2023-02-28'))
