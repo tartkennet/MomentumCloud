@@ -358,6 +358,14 @@ def adjust_cached_history_for_splits(
 # https://www.sec.gov/Archives/edgar/data/1651561/000114036123051496/ef20014067_8k.htm
 # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-632
 CASH_CORPORATE_ACTIONS = {
+    "CIR": {
+        "effective_date": "2023-10-18",
+        "cash_per_share": 56.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+        "note": "CIRCOR cash acquisition by KKR; SEC 8-K 2023-10-18, accession 0001140361-23-048598",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1091883/000114036123048598/ef20012725_8k.htm",
+    },
     "FPAC": {
         "effective_date": "2023-03-13",
         "cash_per_share": 10.21,
@@ -1632,6 +1640,18 @@ def find_unverified_split_basis_tickers(
     return suspicious
 
 
+def data_quality_exclusions_asof(exclusions, signal_date):
+    """Keep future observations out of historical formation decisions.
+
+    Gap heuristics do not prove a provider error. This only repairs the
+    temporal information boundary; the screen still needs independent review.
+    """
+    return {
+        ticker for ticker, observations in exclusions.items()
+        if any(str(observation)[:10] <= str(signal_date) for observation in observations)
+    }
+
+
 def first_tradable_row(cache, trading_day_strings, ticker, target_day, latest_day=None):
     """Find the first actual ticker print on or after an intended execution day.
 
@@ -1862,10 +1882,11 @@ def run(
     unresolved_executions = []
     prior_core_tickers = set()
     for signal, entry, exit_day in periods:
+        known_exclusions = data_quality_exclusions_asof(split_basis_exclusions, signal)
         signal_tickers = [
             ticker
             for ticker in universes_by_signal[signal]
-            if ticker not in split_basis_exclusions
+            if ticker not in known_exclusions
         ]
         picks = choose_top(
             client,
@@ -1928,6 +1949,11 @@ def run(
             )
             if not exit_row or resolved_exit <= actual_entry:
                 missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
+                continue
+            if resolved_exit > exit_day:
+                missing_executions.append(
+                    f"{pick.ticker}(exit {resolved_exit} outside period ending {exit_day})"
+                )
                 continue
             if corporate_action and corporate_action["reason"] == "CASH_MERGER":
                 exit_reason = str(corporate_action["reason"])

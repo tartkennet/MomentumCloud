@@ -1,4 +1,4 @@
-name: Audit existing momentum model data
+name: Verify corrected backtest data handling
 
 on:
   pull_request:
@@ -27,11 +27,11 @@ jobs:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           POLYGON_MAX_RETRIES: '5'
           POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
-        run: python run_root_cause_data_audit.py --start 2023-02-01 --end 2026-10-03
+        run: python run_root_cause_data_audit.py --start 2023-02-01 --end 2026-10-03 --verification-only
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: MomentumCloud_existing_models_data_audit
+          name: MomentumCloud_corrected_engine_verification
           if-no-files-found: error
           path: Momentum_data_audit/

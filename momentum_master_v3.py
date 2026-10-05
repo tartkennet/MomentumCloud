@@ -12,6 +12,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlparse, parse_qs
 
 import numpy as np
 import pandas as pd
@@ -144,11 +145,17 @@ class PolygonClient:
         return float(results[-1]["c"])
 
     def fetch_recent_splits(self, start_date: str, end_date: str) -> List[Dict]:
-        data = self._get(
-            "/stocks/v1/splits",
-            {"execution_date.gte": start_date, "execution_date.lte": end_date, "limit": 5000, "sort": "execution_date.asc"},
-        )
-        return data.get("results", []) or []
+        path = "/stocks/v1/splits"
+        params = {"execution_date.gte": start_date, "execution_date.lte": end_date, "limit": 5000, "sort": "execution_date.asc"}
+        events = []
+        while True:
+            data = self._get(path, params)
+            events.extend(data.get("results", []) or [])
+            if not data.get("next_url"):
+                return events
+            parsed = urlparse(str(data["next_url"]))
+            path = parsed.path
+            params = {key: values[-1] for key, values in parse_qs(parsed.query).items() if key.lower() != "apikey" and values}
 
     def fetch_grouped_stocks(self, date_str: str) -> Dict[str, Dict[str, float]]:
         if date_str in self.grouped_cache:

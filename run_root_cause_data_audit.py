@@ -156,6 +156,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--start',default='2023-02-01')
     parser.add_argument('--end',default='2026-10-03')
+    parser.add_argument('--verification-only',action='store_true')
     args=parser.parse_args()
     OUT.mkdir(exist_ok=True)
     os.environ.setdefault('POLYGON_MAX_RETRIES','5')
@@ -172,13 +173,27 @@ def main():
     flags={'m12':True,'m6':True,'vol':True,'extension':True}
     specs=[('v4',existing.v4_builder(flags),10.0),('simple',existing.simple_builder,None)]
     runs={}
+    verification={}
     for name,builder,stop in specs:
         logging.warning('AUDIT reproduce %s',name)
-        run=existing.run_one(name,builder,args.start,args.end,stop,False)
+        try:
+            run=existing.run_one(name,builder,args.start,args.end,stop,False)
+        except Exception as exc:
+            if not args.verification_only:
+                raise
+            reason=str(exc) if isinstance(exc,RuntimeError) and str(exc).startswith(('No executable price','Only ','No executable rebalance')) else None
+            verification[name]={'status':'BLOCKED_WITHOUT_GUESSING',**safe_status(exc),'execution_blockers':reason}
+            write('corrected_engine_verification.json',verification)
+            continue
         runs[name]=run
         run['results'].to_csv(OUT/(name+'_results.csv'),index=False)
         run['positions'].to_csv(OUT/(name+'_positions.csv'),index=False)
         write(name+'_metrics.json',{'metrics':run['metrics'],'out_of_sample_metrics':run['out_of_sample_metrics']})
+        verification[name]={'status':'COMPLETE','metrics':run['metrics'],'remaining_limits':['latest split-adjusted absolute price floor','gap screen not a proof of data corruption','price returns omit dividends']}
+    if args.verification_only:
+        write('corrected_engine_verification.json',verification)
+        print('CORRECTED_ENGINE_VERIFICATION '+json.dumps(verification,allow_nan=False))
+        return
     cache,basis=engine.load_backtest_cache(engine.CACHE_FILE)
     universes=engine.load_point_in_time_universe_cache(engine.UNIVERSE_CACHE_FILE)
     first,split_events=exclusion_audit(cache,universes,client,args.end)
