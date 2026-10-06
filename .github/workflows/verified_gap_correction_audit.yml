@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - run_verified_gap_correction_audit.py
+      - fetch_gap_pair_chunk.py
+      - classify_gap_pairs.py
+      - run_one_verified_gap_model.py
       - .github/workflows/verified_gap_correction_audit.yml
   workflow_dispatch:
 permissions:
@@ -13,9 +16,93 @@ concurrency:
   group: verified-gap-audit-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  audit:
+  pairs:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_gap_selection_evidence
+          run-id: 37443720726
+          github-token: ${{ github.token }}
+          path: gap_evidence
+      - name: Fetch paired bars for deterministic chunk
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          POLYGON_MAX_RETRIES: '5'
+          POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
+          CHUNK_INDEX: ${{ matrix.chunk }}
+          CHUNK_COUNT: '4'
+        run: python fetch_gap_pair_chunk.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gap-pair-chunk-${{ matrix.chunk }}
+          if-no-files-found: error
+          path: Momentum_gap_pair_chunk/
+
+  classify:
+    needs: pairs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_gap_selection_evidence
+          run-id: 37443720726
+          github-token: ${{ github.token }}
+          path: gap_evidence
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gap-pair-chunk-*
+          merge-multiple: true
+          path: gap_chunks
+      - run: python classify_gap_pairs.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_verified_gap_classification
+          if-no-files-found: error
+          path: Momentum_verified_gap_classification/
+
+  models:
+    needs: classify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - v4_baseline
+          - v4_stop_1_regime_0_extension_0
+          - simple_baseline
+          - simple_without_regime
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -36,20 +123,16 @@ jobs:
           path: raw_evidence
       - uses: actions/download-artifact@v4
         with:
-          name: MomentumCloud_gap_selection_evidence
-          run-id: 37443720726
-          github-token: ${{ github.token }}
-          path: gap_evidence
+          name: MomentumCloud_verified_gap_classification
+          path: classification
       - run: python -m unittest discover -s tests
-      - name: Verify every flagged gap and rerun fixed models
+      - name: Run one fixed model
         env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-          POLYGON_MAX_RETRIES: '5'
-          POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
-        run: python run_verified_gap_correction_audit.py
+          SCENARIO: ${{ matrix.scenario }}
+        run: python run_one_verified_gap_model.py
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: MomentumCloud_verified_gap_audit
+          name: verified-gap-model-${{ matrix.scenario }}
           if-no-files-found: error
-          path: Momentum_verified_gap_audit/
+          path: Momentum_verified_gap_model/
