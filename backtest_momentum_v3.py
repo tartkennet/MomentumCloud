@@ -558,6 +558,15 @@ CASH_CORPORATE_ACTIONS = {
 # share converted to 0.0625 RGLD shares. Source:
 # https://www.sec.gov/Archives/edgar/data/1434614/000127956925001128/ex991.htm
 STOCK_CORPORATE_ACTIONS = {
+    "NGD": {
+        "effective_date": "2026-03-20",
+        "successor_ticker": "CDE",
+        "shares_per_share": 0.4959,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+        "note": "Coeur completed New Gold acquisition on March 20, 2026; 0.4959 CDE per NGD",
+        "source_url": "https://www.coeur.com/investors/news/news-details/2026/Coeur-Completes-Acquisition-of-New-Gold/default.aspx",
+    },
     "NFBK": {
         "effective_date": "2026-07-21",
         "successor_ticker": "CLBK",

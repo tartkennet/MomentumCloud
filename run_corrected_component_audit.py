@@ -106,7 +106,11 @@ def factorial_contributions(values):
 
 def main():
     OUT.mkdir(exist_ok=True);SNAPSHOT.mkdir(exist_ok=True)
+    initial_snapshot_files=set(x.name for x in SNAPSHOT.glob('*.json.gz'))
     freeze_provider()
+    checkpoint=OUT/'controlled_component_audit.json'
+    prior=json.loads(checkpoint.read_text()) if checkpoint.exists() else {}
+    completed={x['scenario']:x for x in prior.get('runs',[]) if x['status']=='COMPLETE'}
     flags={'m12':True,'m6':True,'vol':True,'extension':True}
     specs=[('v4_baseline',existing.v4_builder(flags),10.0,False,(True,True,True),'v4')]
     for stop,regime,extension in itertools.product([False,True],repeat=3):
@@ -121,12 +125,21 @@ def main():
     for name,builder,stop,no_regime,key,reference_name in specs:
         logging.warning('CONTROLLED_AUDIT_START %s',name)
         try:
-            run=existing.run_one(name,builder,metadata['start'],metadata['end'],stop,no_regime)
+            saved=completed.get(name)
+            if saved:
+                saved_positions=pd.read_csv(OUT/(name+'_positions.csv'))
+                affected=((saved_positions.Ticker=='NGD') & (saved_positions.EntryDate<'2026-03-20') & (saved_positions.ExitDate>='2026-03-20')).any()
+                if affected:
+                    saved=None
+            if saved:
+                run={'scenario':name,'results':pd.read_csv(OUT/(name+'_results.csv')),'positions':saved_positions,'metrics':saved['metrics'],'out_of_sample_metrics':saved['out_of_sample_metrics']}
+            else:
+                run=existing.run_one(name,builder,metadata['start'],metadata['end'],stop,no_regime)
             ref=pd.read_csv(Path('audit_corrected')/(reference_name+'_results.csv')) if reference_name else None
             checks=independent_check(run,ref)
             run['results'].to_csv(OUT/(name+'_results.csv'),index=False)
             run['positions'].to_csv(OUT/(name+'_positions.csv'),index=False)
-            record={'scenario':name,'status':'COMPLETE','metrics':run['metrics'],'out_of_sample_metrics':run['out_of_sample_metrics'],'checks':checks}
+            record={'scenario':name,'status':'COMPLETE','metrics':run['metrics'],'out_of_sample_metrics':run['out_of_sample_metrics'],'checks':checks,'execution':'REVALIDATED_UNAFFECTED_CHECKPOINT' if saved else 'FRESH_RUN'}
             allruns[name]=run
             if key is not None:values[key]=run['metrics']['TotalReturn_pct']
         except Exception as exc:
@@ -147,6 +160,14 @@ def main():
             selected.to_csv(OUT/'corrected_low_extension_excluded_lots.csv',index=False)
             metadata['corrected_low_extension_excluded']={'lots':len(selected),'positive':int((selected.GrossReturn_pct>0).sum()),'closed_ge50':int((selected.GrossReturn_pct>=50).sum()),'closed_ge100':int((selected.GrossReturn_pct>=100).sum())}
     metadata['snapshot_files']=len(list(SNAPSHOT.glob('*.json.gz')))
+    metadata['input_snapshot_source_run']=37419651430 if prior else None
+    metadata['corporate_action_correction']={'ticker':'NGD','effective_date':'2026-03-20','successor':'CDE','shares_per_share':0.4959,'source_url':engine.STOCK_CORPORATE_ACTIONS['NGD']['source_url']}
+    new_snapshot_files=[x for x in SNAPSHOT.glob('*.json.gz') if x.name not in initial_snapshot_files]
+    if new_snapshot_files:
+        import shutil
+        additional=OUT/'additional_request_snapshot';additional.mkdir(exist_ok=True)
+        for filename in new_snapshot_files:shutil.copyfile(filename,additional/filename.name)
+    metadata['additional_snapshot_files']=len(new_snapshot_files)
     (OUT/'controlled_component_audit.json').write_text(json.dumps(metadata,indent=2,allow_nan=False))
     pd.DataFrame([{'scenario':x['scenario'],**x.get('metrics',{}),'status':x['status']} for x in metadata['runs']]).to_csv(OUT/'component_summary.csv',index=False)
     if any(x['status']!='COMPLETE' for x in metadata['runs']):

@@ -30,3 +30,21 @@ class ComponentAccountingTests(unittest.TestCase):
     def test_secret_removed_from_snapshot_pagination(self):
         value={'next_url':'https://api.example/test?cursor=abc&apiKey=secret','apiKey':'secret'}
         self.assertEqual(audit.redact_response(value),{'next_url':'https://api.example/test?cursor=abc'})
+
+class NewGoldSettlementTests(unittest.TestCase):
+    def test_converts_successor_market_price_at_planned_exit(self):
+        engine=audit.engine
+        cache={'2026-03-02':{'NGD':{'open':12.0}},'2026-04-01':{'CDE':{'open':20.0,'close':21.0,'high':22.0,'low':19.0}}}
+        day,row,action=engine.resolve_exit_execution(cache,sorted(cache),'NGD','2026-04-01','2026-03-02','2026-04-01')
+        self.assertEqual(day,'2026-04-01')
+        self.assertAlmostEqual(row['open'],20.0*0.4959)
+        self.assertAlmostEqual(row['close'],21.0*0.4959)
+        self.assertEqual(action['valuation_ticker'],'CDE')
+
+    def test_market_exit_before_merger_uses_ngd_price(self):
+        engine=audit.engine
+        cache={'2026-03-02':{'NGD':{'open':12.0}},'2026-03-10':{'NGD':{'open':11.0}},'2026-04-01':{'CDE':{'open':20.0}}}
+        day,row,action=engine.resolve_exit_execution(cache,sorted(cache),'NGD','2026-03-10','2026-03-02','2026-04-01')
+        self.assertEqual(day,'2026-03-10')
+        self.assertEqual(row['open'],11.0)
+        self.assertIsNone(action)

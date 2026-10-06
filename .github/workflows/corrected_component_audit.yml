@@ -26,6 +26,13 @@ jobs:
           run-id: 37380437479
           github-token: ${{ github.token }}
           path: audit_corrected
+      - name: Restore frozen input and successful checkpoints from this private repository
+        uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
       - name: Verify component accounting tests
         run: python -m unittest discover -s tests
       - name: Run fixed component diagnostics with frozen provider responses
@@ -43,6 +50,3 @@ jobs:
           include-hidden-files: true
           path: |
             Momentum_component_audit/
-            audit_request_snapshot/
-            .momentum_backtest_cache.json
-            .momentum_point_in_time_universe.json
