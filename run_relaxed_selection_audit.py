@@ -50,8 +50,8 @@ def forward_return(cache,days,ticker,entry,exit_day):
  entry_row=engine.get_from_map(cache.get(entry,{}),ticker)
  if not entry_row or not entry_row.get('open'):return None,'MISSING_PLANNED_ENTRY'
  actual,row,action=engine.resolve_exit_execution(cache,days,ticker,exit_day,entry,exit_day)
- if row is None or actual!=exit_day:return None,'MISSING_PLANNED_EXIT'
- return (float(row['open'])/float(entry_row['open'])-1)*100,'VERIFIED_WITHIN_PERIOD'
+ if row is None or actual>exit_day:return None,'MISSING_PLANNED_EXIT'
+ return (float(row['open'])/float(entry_row['open'])-1)*100,('VERIFIED_CORPORATE_SETTLEMENT' if action and actual!=exit_day else 'VERIFIED_WITHIN_PERIOD')
 
 def main():
  OUT.mkdir(exist_ok=True)

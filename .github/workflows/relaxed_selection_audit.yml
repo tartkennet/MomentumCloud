@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
   actions: read
+concurrency:
+  group: relaxed-selection-audit-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   selection:
     runs-on: ubuntu-latest
