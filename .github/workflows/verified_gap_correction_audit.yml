@@ -129,6 +129,9 @@ jobs:
       - name: Run one fixed model
         env:
           SCENARIO: ${{ matrix.scenario }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          POLYGON_MAX_RETRIES: '5'
+          POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
         run: python run_one_verified_gap_model.py
       - if: always()
         uses: actions/upload-artifact@v4
