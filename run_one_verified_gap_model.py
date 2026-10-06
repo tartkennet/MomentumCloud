@@ -1,6 +1,7 @@
 """Run one fixed model using verified paired-gap and raw-liquidity evidence."""
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -18,11 +19,27 @@ def main():
     manifest = json.loads(Path("classification/manifest.json").read_text())
     remaining = json.loads(Path("classification/remaining_data_quality_exclusions.json").read_text())
     verified_histories = json.loads(Path("classification/verified_ticker_histories.json").read_text())
+    # Individual endpoint evidence supersedes grouped rows, including missing days.
+    for evidence_path in sorted(Path("universe_evidence").glob("histories_*.json")):
+        for ticker, payloads in json.loads(evidence_path.read_text()).items():
+            bases = {}
+            for key, adjusted in (("raw", "false"), ("adjusted", "true")):
+                payload = payloads[adjusted]
+                if "error_type" in payload or not payload.get("results"):
+                    raise RuntimeError(f"Unverified individual history for {ticker}: {key}")
+                rows = {}
+                for bar in payload["results"]:
+                    day = datetime.fromtimestamp(bar["t"] / 1000, timezone.utc).date().isoformat()
+                    rows[day] = {"open": bar["o"], "high": bar["h"], "low": bar["l"], "close": bar["c"], "volume": bar["v"]}
+                bases[key] = rows
+            verified_histories[ticker] = bases
     old_load_cache = engine.load_backtest_cache
 
     def corrected_cache(path, *args, **kwargs):
         cache, basis = old_load_cache(path, *args, **kwargs)
         for ticker, bases in verified_histories.items():
+            for day_map in cache.values():
+                day_map.pop(ticker, None)
             for day, row in bases["adjusted"].items():
                 if day in cache:
                     cache[day][ticker] = row
