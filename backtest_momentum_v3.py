@@ -1770,6 +1770,7 @@ def run(
     portfolio_value_usd=10_000.0,
     universe_mode="point-in-time",
     template_file="Momentum mall fil.xlsx",
+    execution_backfill=False,
 ):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -1908,12 +1909,19 @@ def run(
             for ticker in universes_by_signal[signal]
             if ticker not in known_exclusions
         ]
+        # Validation runs may rank reserve candidates at the signal date.  A
+        # reserve is used only when a higher-ranked order has no executable
+        # market print on or after the planned entry date.  This uses no later
+        # return information and prevents a delisted-on-entry name from either
+        # being valued at a guessed price or aborting an otherwise executable
+        # point-in-time portfolio.
+        requested_candidates = top_n + 25 if execution_backfill else top_n
         picks = choose_top(
             client,
             cache,
             signal_tickers,
             signal,
-            top_n,
+            requested_candidates,
             selection_model,
             min_adv20_usd,
             previous_tickers=prior_core_tickers,
@@ -1939,8 +1947,11 @@ def run(
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
+        executed_tickers = []
         missing_executions = []
         for rank, pick in enumerate(picks, start=1):
+            if len(stock_returns) >= top_n:
+                break
             actual_entry, entry_row = first_tradable_row(
                 cache, trading_day_strings, pick.ticker, entry, exit_day
             )
@@ -2026,6 +2037,7 @@ def run(
             )
             stock_return = exit_price / entry_price - 1
             stock_returns.append(stock_return)
+            executed_tickers.append(pick.ticker)
             entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
             exit_delay = (
                 0
@@ -2105,7 +2117,7 @@ def run(
             "ExitExecution": exit_execution,
             "RebalanceExitExecution": rebalance_exit_execution,
             "StopLoss_pct": stop_loss_pct,
-            "TopTickers": "CASH" if cash_period else ",".join(pick.ticker for pick in picks),
+            "TopTickers": "CASH" if cash_period else ",".join(executed_tickers),
             "RiskRegime": "CASH" if cash_period else "RISK_ON",
             "GrossReturn_pct": gross * 100,
             "Cost_pct": ROUND_TRIP_COST_PCT,

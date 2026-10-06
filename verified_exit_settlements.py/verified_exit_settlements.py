@@ -62,6 +62,27 @@ CASH_SETTLEMENTS = {
     # unpriced, non-transferable $1.50 CVR.  Only fixed cash is executable.
     # https://www.sec.gov/Archives/edgar/data/1520262/000119312526047682/d43532d8k.htm
     "AVDL": ("2026-02-12", 21.00),
+    # Completion filings supporting the fixed consideration below:
+    # RXDX https://www.sec.gov/Archives/edgar/data/1718852/000119312523168524/d466468d8k.htm
+    # RETA https://www.sec.gov/Archives/edgar/data/875045/000087504524000009/biib-20231231.htm
+    # BVH  https://www.sec.gov/Archives/edgar/data/1674168/000114036125030585/ny20053112x2_ex99-2.htm
+    # IMGN https://www.sec.gov/Archives/edgar/data/1551152/000110465924013692/tm245657d1_99-1.htm
+    # AMAM https://www.sec.gov/Archives/edgar/data/1990550/000119312524061543/d750145d8k.htm
+    # HARP https://www.sec.gov/Archives/edgar/data/1708493/000119312524064395/d808382d8k.htm
+    # LBPH https://www.sec.gov/Archives/edgar/data/1832168/000114036124048133/ef20039392_8k.htm
+    # CDTX https://www.sec.gov/Archives/edgar/data/1610618/000119312526005513/d55695dex99a5vi.htm
+    # VTYX https://www.sec.gov/Archives/edgar/data/1851194/000119312526090059/d116049d8k.htm
+    # RAPT https://www.sec.gov/Archives/edgar/data/1673772/000119312526086878/d69681d8k.htm
+    "RXDX": ("2023-06-16", 200.00),
+    "RETA": ("2023-09-26", 172.50),
+    "BVH": ("2024-01-17", 75.00),
+    "IMGN": ("2024-02-12", 31.26),
+    "AMAM": ("2024-03-07", 28.00),
+    "HARP": ("2024-03-11", 23.00),
+    "LBPH": ("2024-12-02", 60.00),
+    "CDTX": ("2026-01-07", 221.50),
+    "VTYX": ("2026-03-04", 14.00),
+    "RAPT": ("2026-03-03", 58.00),
 }
 
 
@@ -75,6 +96,11 @@ STOCK_SETTLEMENTS = {
     "MFH": {"effective_date": "2025-11-13", "successor_ticker": "CD", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     "STEL": {"effective_date": "2026-07-01", "successor_ticker": "PB", "shares_per_share": 0.3803, "cash_per_share": 11.36, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     "WBS": {"effective_date": "2026-08-20", "successor_ticker": "SAN", "shares_per_share": 2.0548, "cash_per_share": 48.75, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
+    # Pure one-for-one symbol changes, not acquisitions or return-based fixes.
+    # BREA/SLMT: SEC annual filing; FORD/FWDI: SEC 10-K; GLTO/DMRA: issuer 8-K exhibit.
+    "BREA": {"effective_date": "2025-10-03", "successor_ticker": "SLMT", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    "FORD": {"effective_date": "2025-11-17", "successor_ticker": "FWDI", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    "GLTO": {"effective_date": "2026-03-10", "successor_ticker": "DMRA", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
 }
 
 

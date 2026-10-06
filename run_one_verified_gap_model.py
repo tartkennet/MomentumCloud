@@ -40,6 +40,10 @@ def main():
 
     existing.history_for = actual_history
     engine.find_unverified_split_basis_tickers = lambda *_args, **_kwargs: remaining
+    original_run = engine.run
+    engine.run = lambda *args, **kwargs: original_run(
+        *args, execution_backfill=True, **kwargs
+    )
     flags = {"m12": True, "m6": True, "vol": True, "extension": True}
     specs = {
         "v4_baseline": (existing.v4_builder(flags), 10.0, False),
