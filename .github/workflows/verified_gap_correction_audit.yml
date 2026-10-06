@@ -34,6 +34,12 @@ jobs:
           run-id: 37438747197
           github-token: ${{ github.token }}
           path: raw_evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_gap_selection_evidence
+          run-id: 37443720726
+          github-token: ${{ github.token }}
+          path: gap_evidence
       - run: python -m unittest discover -s tests
       - name: Verify every flagged gap and rerun fixed models
         env:

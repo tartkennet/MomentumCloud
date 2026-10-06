@@ -59,6 +59,22 @@ def main():
     original = engine.find_unverified_split_basis_tickers(
         cache, days, tickers, selection.split_events()
     )
+    # Only observations that actually excluded an otherwise eligible candidate
+    # can affect the audited portfolios.  The complete universe scan is retained
+    # in the dated evidence artifact; limiting paired API checks here avoids
+    # thousands of irrelevant requests without changing the classification.
+    relevant_rows = json.loads(
+        Path("gap_evidence/otherwise_eligible_gap_excluded.json").read_text()
+    )
+    relevant_tickers = {row["Ticker"] for row in relevant_rows}
+    original = {
+        ticker: observations
+        for ticker, observations in original.items()
+        if ticker in relevant_tickers
+    }
+    if set(original) != relevant_tickers:
+        missing = sorted(relevant_tickers - set(original))
+        raise RuntimeError("Relevant gap tickers missing from reconstruction: " + ",".join(missing))
     parsed = []
     required_days = set()
     for ticker, observations in original.items():
@@ -230,6 +246,7 @@ def main():
                 "status": "COMPLETE",
                 "observations": len(parsed),
                 "unique_tickers": len(original),
+                "otherwise_eligible_candidate_months": len(relevant_rows),
                 "verified_real_market_gaps": len(verified_real),
                 "verified_corporate_action_transforms": len(verified_transform),
                 "confirmed_data_errors": len(data_errors),
