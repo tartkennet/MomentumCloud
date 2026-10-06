@@ -1,0 +1,42 @@
+name: Relaxed test profile and selection audit
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - run_relaxed_selection_audit.py
+      - .github/workflows/relaxed_selection_audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  selection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37427345730
+          github-token: ${{ github.token }}
+          path: control_evidence
+      - run: python -m unittest discover -s tests
+      - name: Audit the authorised relaxed profile without new provider requests
+        run: python run_relaxed_selection_audit.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_relaxed_selection_audit
+          if-no-files-found: error
+          path: Momentum_selection_audit/
