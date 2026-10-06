@@ -104,6 +104,8 @@ jobs:
           - v4_stop_1_regime_0_extension_0
           - simple_baseline
           - simple_without_regime
+          - momentum_selection_only
+          - eligible_universe_equal_weight
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

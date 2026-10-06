@@ -67,7 +67,7 @@ def main():
     engine.find_unverified_split_basis_tickers = lambda *_args, **_kwargs: remaining
     original_run = engine.run
     engine.run = lambda *args, **kwargs: original_run(
-        *args, execution_backfill=True, **kwargs
+        *args, execution_backfill=True, audit_equal_weight_all=os.environ["SCENARIO"] == "eligible_universe_equal_weight", **kwargs
     )
     flags = {"m12": True, "m6": True, "vol": True, "extension": True}
     specs = {
@@ -76,14 +76,23 @@ def main():
         "simple_baseline": (existing.simple_builder, None, False),
         "simple_without_regime": (existing.simple_builder, None, True),
     }
+    def universe_builder(tickers, latest, history, model, adv):
+        candidates = existing.simple_builder(tickers, latest, history, model, adv)
+        for candidate in candidates:
+            candidate.total_score = 0.0
+        return sorted(candidates, key=lambda candidate: candidate.ticker)
+
+    specs["momentum_selection_only"] = (existing.simple_builder, None, True)
+    specs["eligible_universe_equal_weight"] = (universe_builder, None, True)
     name = os.environ["SCENARIO"]
     if name not in specs:
         raise RuntimeError("Unknown fixed scenario: " + name)
     builder, stop, no_regime = specs[name]
     run = existing.run_one(name, builder, "2023-02-01", "2026-10-03", stop, no_regime)
     checks = controls.independent_check(run)
-    previous = pd.read_csv(SOURCE / f"{name}_positions.csv")
-    prior_keys = set(zip(previous.SignalDate, previous.Ticker))
+    previous_path = SOURCE / f"{name}_positions.csv"
+    previous = pd.read_csv(previous_path) if previous_path.exists() else None
+    prior_keys = set(zip(previous.SignalDate, previous.Ticker)) if previous is not None else set()
     new_keys = set(zip(run["positions"].SignalDate, run["positions"].Ticker))
     run["positions"].to_csv(OUT / f"{name}_positions.csv", index=False)
     run["results"].to_csv(OUT / f"{name}_results.csv", index=False)

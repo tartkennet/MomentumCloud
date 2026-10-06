@@ -1771,6 +1771,7 @@ def run(
     universe_mode="point-in-time",
     template_file="Momentum mall fil.xlsx",
     execution_backfill=False,
+    audit_equal_weight_all=False,
 ):
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -1915,7 +1916,7 @@ def run(
         # return information and prevents a delisted-on-entry name from either
         # being valued at a guessed price or aborting an otherwise executable
         # point-in-time portfolio.
-        requested_candidates = top_n + 25 if execution_backfill else top_n
+        requested_candidates = 100000 if audit_equal_weight_all else (top_n + 25 if execution_backfill else top_n)
         picks = choose_top(
             client,
             cache,
@@ -1928,6 +1929,10 @@ def run(
             rank_exit_cutoff=20 if selection_model == "core-momentum-v1" else None,
             entry_day=entry,
         )
+        if audit_equal_weight_all:
+            top_n = len(picks)
+            if top_n == 0:
+                raise RuntimeError(f"No eligible universe names on {signal}")
         cash_period = False
         if selection_model in {
         "v4-balanced", "v5-regime", "v6-core", "core-momentum-v1", "quality-momentum-v2", "relative-strength-breakout-v1", "market-leaders-v1", "absolute-strength-v1", "liquid-leaders-v1", "robust-momentum-v1"
