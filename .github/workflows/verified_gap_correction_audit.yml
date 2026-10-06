@@ -1,0 +1,49 @@
+name: Verify split-like gaps and rerun fixed models
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - run_verified_gap_correction_audit.py
+      - .github/workflows/verified_gap_correction_audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: verified-gap-audit-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_relaxed_selection_audit
+          run-id: 37438747197
+          github-token: ${{ github.token }}
+          path: raw_evidence
+      - run: python -m unittest discover -s tests
+      - name: Verify every flagged gap and rerun fixed models
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          POLYGON_MAX_RETRIES: '5'
+          POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
+        run: python run_verified_gap_correction_audit.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_verified_gap_audit
+          if-no-files-found: error
+          path: Momentum_verified_gap_audit/
