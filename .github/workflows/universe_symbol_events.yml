@@ -1,1 +1,32 @@
-cat: .github/workflows/universe_symbol_events.yml: No such file or directory
+name: Collect universe symbol events
+on:
+  pull_request:
+    paths:
+      - collect_universe_symbol_events.py
+      - .github/workflows/universe_symbol_events.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests pandas numpy
+      - run: python collect_universe_symbol_events.py
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          CHUNK_INDEX: ${{ matrix.chunk }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: universe-symbol-events-${{ matrix.chunk }}
+          path: Momentum_universe_symbol_events/
+          if-no-files-found: error
