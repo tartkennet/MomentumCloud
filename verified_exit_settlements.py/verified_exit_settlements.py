@@ -53,6 +53,15 @@ CASH_SETTLEMENTS = {
     "SKX": ("2025-09-12", 63.00), "WOW": ("2025-12-31", 5.20),
     "ALE": ("2025-12-15", 67.00), "CWAN": ("2026-06-25", 24.55),
     "EA": ("2026-08-04", 210.00), "GBTG": ("2026-09-29", 9.50),
+    # AstraZeneca completed Fusion Pharmaceuticals on 2024-06-04 for
+    # $21.00 cash plus an unpriced, non-transferable $3.00 CVR.  Only the
+    # fixed executable cash consideration is included here.
+    # https://www.sec.gov/Archives/edgar/data/1805890/000119312524154275/d827973d8k.htm
+    "FUSN": ("2024-06-04", 21.00),
+    # Alkermes completed Avadel on 2026-02-12 for $21.00 cash plus an
+    # unpriced, non-transferable $1.50 CVR.  Only fixed cash is executable.
+    # https://www.sec.gov/Archives/edgar/data/1520262/000119312526047682/d43532d8k.htm
+    "AVDL": ("2026-02-12", 21.00),
 }
 
 
