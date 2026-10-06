@@ -20,8 +20,8 @@ def main():
     verified_histories = json.loads(Path("classification/verified_ticker_histories.json").read_text())
     old_load_cache = engine.load_backtest_cache
 
-    def corrected_cache(path):
-        cache, basis = old_load_cache(path)
+    def corrected_cache(path, *args, **kwargs):
+        cache, basis = old_load_cache(path, *args, **kwargs)
         for ticker, bases in verified_histories.items():
             for day, row in bases["adjusted"].items():
                 if day in cache:
