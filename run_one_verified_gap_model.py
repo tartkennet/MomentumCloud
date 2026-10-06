@@ -16,9 +16,30 @@ SOURCE = Path("raw_evidence")
 def main():
     OUT.mkdir(exist_ok=True)
     manifest = json.loads(Path("classification/manifest.json").read_text())
-    if manifest["confirmed_data_errors"]:
-        raise RuntimeError("Confirmed stale adjusted data must be repaired before model rerun")
     remaining = json.loads(Path("classification/remaining_data_quality_exclusions.json").read_text())
+    verified_histories = json.loads(Path("classification/verified_ticker_histories.json").read_text())
+    old_load_cache = engine.load_backtest_cache
+
+    def corrected_cache(path):
+        cache, basis = old_load_cache(path)
+        for ticker, bases in verified_histories.items():
+            for day, row in bases["adjusted"].items():
+                if day in cache:
+                    cache[day][ticker] = row
+        return cache, basis
+
+    engine.load_backtest_cache = corrected_cache
+    old_raw_closes = engine.PolygonClient.fetch_unadjusted_signal_closes
+
+    def corrected_raw_closes(client, day):
+        values = old_raw_closes(client, day)
+        for ticker, bases in verified_histories.items():
+            row = bases["raw"].get(day)
+            if row:
+                values[ticker] = float(row["close"])
+        return values
+
+    engine.PolygonClient.fetch_unadjusted_signal_closes = corrected_raw_closes
     raw_volume = json.loads((SOURCE / "raw_dollar_volume.json").read_text())
     old_history = existing.history_for
 
@@ -31,9 +52,13 @@ def main():
             row = engine.get_from_map(grouped_map, ticker)
             if row is None or row.get("volume") is None:
                 continue
-            if ticker not in raw_volume.get(day, {}):
-                raise RuntimeError(f"Missing verified raw liquidity {day} {ticker}")
-            dollars.append(raw_volume[day][ticker])
+            verified_raw = verified_histories.get(ticker, {}).get("raw", {}).get(day)
+            if verified_raw:
+                dollars.append(float(verified_raw["close"]) * float(verified_raw["volume"]))
+            else:
+                if ticker not in raw_volume.get(day, {}):
+                    raise RuntimeError(f"Missing verified raw liquidity {day} {ticker}")
+                dollars.append(raw_volume[day][ticker])
         if len(dollars) < 10:
             return None
         return value[0], sum(dollars) / len(dollars)

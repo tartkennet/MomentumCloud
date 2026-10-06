@@ -5,6 +5,7 @@ on:
     paths:
       - run_verified_gap_correction_audit.py
       - fetch_gap_pair_chunk.py
+      - fetch_gap_ticker_history_chunk.py
       - classify_gap_pairs.py
       - run_one_verified_gap_model.py
       - .github/workflows/verified_gap_correction_audit.yml
@@ -41,20 +42,20 @@ jobs:
           run-id: 37443720726
           github-token: ${{ github.token }}
           path: gap_evidence
-      - name: Fetch paired bars for deterministic chunk
+      - name: Fetch full individual histories for deterministic chunk
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           POLYGON_MAX_RETRIES: '5'
           POLYGON_RATE_LIMIT_WAIT_SECONDS: '15'
           CHUNK_INDEX: ${{ matrix.chunk }}
           CHUNK_COUNT: '4'
-        run: python fetch_gap_pair_chunk.py
+        run: python fetch_gap_ticker_history_chunk.py
       - if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gap-pair-chunk-${{ matrix.chunk }}
+          name: gap-ticker-history-${{ matrix.chunk }}
           if-no-files-found: error
-          path: Momentum_gap_pair_chunk/
+          path: Momentum_gap_ticker_history_chunk/
 
   classify:
     needs: pairs
@@ -80,7 +81,7 @@ jobs:
           path: gap_evidence
       - uses: actions/download-artifact@v4
         with:
-          pattern: gap-pair-chunk-*
+          pattern: gap-ticker-history-*
           merge-multiple: true
           path: gap_chunks
       - run: python classify_gap_pairs.py

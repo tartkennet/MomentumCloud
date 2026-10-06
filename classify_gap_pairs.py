@@ -28,15 +28,15 @@ def main():
     if set(original) != relevant_tickers:
         raise RuntimeError("Relevant ticker set differs from original reconstruction")
 
-    snapshots = {}
-    for path in sorted(Path("gap_chunks").glob("gap_pair_chunk_*.json")):
+    histories = {}
+    for path in sorted(Path("gap_chunks").glob("gap_ticker_history_*.json")):
         chunk = json.loads(path.read_text())
-        overlap = set(snapshots) & set(chunk)
+        overlap = set(histories) & set(chunk)
         if overlap:
-            raise RuntimeError("Duplicate chunk days: " + ",".join(sorted(overlap)))
-        snapshots.update(chunk)
-    if not snapshots:
-        raise RuntimeError("No paired-bar chunks found")
+            raise RuntimeError("Duplicate chunk tickers: " + ",".join(sorted(overlap)))
+        histories.update(chunk)
+    if set(histories) != relevant_tickers:
+        raise RuntimeError("Ticker-history chunks do not exactly cover relevant tickers")
 
     parsed = []
     for ticker, observations in original.items():
@@ -63,28 +63,30 @@ def main():
     buckets = {key: [] for key in ("real", "transform", "stale", "unresolved")}
     for item in parsed:
         ticker, day, prior_day = item["Ticker"], item["Day"], item["PriorDay"]
-        before = snapshots.get(prior_day, {})
-        after = snapshots.get(day, {})
-        raw_before = before.get("raw", {}).get(ticker)
-        raw_after = after.get("raw", {}).get(ticker)
-        adjusted_before = before.get("adjusted", {}).get(ticker)
-        adjusted_after = after.get("adjusted", {}).get(ticker)
+        ticker_history = histories.get(ticker, {})
+        raw_before = ticker_history.get("raw", {}).get(prior_day)
+        raw_after = ticker_history.get("raw", {}).get(day)
+        adjusted_before = ticker_history.get("adjusted", {}).get(prior_day)
+        adjusted_after = ticker_history.get("adjusted", {}).get(day)
         if not all((raw_before, raw_after, adjusted_before, adjusted_after)):
             item["Classification"] = "UNRESOLVED_MISSING_PAIRED_BAR"
             buckets["unresolved"].append(item)
             continue
-        values = [raw_before.get("c"), raw_after.get("o"), adjusted_before.get("c"), adjusted_after.get("o")]
+        values = [
+            raw_before.get("close"), raw_after.get("open"),
+            adjusted_before.get("close"), adjusted_after.get("open"),
+        ]
         if any(value is None or float(value) <= 0 for value in values):
             item["Classification"] = "UNRESOLVED_INVALID_PAIRED_BAR"
             buckets["unresolved"].append(item)
             continue
-        raw_factor = float(raw_after["o"]) / float(raw_before["c"])
-        adjusted_factor = float(adjusted_after["o"]) / float(adjusted_before["c"])
+        raw_factor = float(raw_after["open"]) / float(raw_before["close"])
+        adjusted_factor = float(adjusted_after["open"]) / float(adjusted_before["close"])
         item.update({
-            "RawPriorClose": float(raw_before["c"]), "RawOpen": float(raw_after["o"]),
+            "RawPriorClose": float(raw_before["close"]), "RawOpen": float(raw_after["open"]),
             "RawFactor": raw_factor,
-            "FreshAdjustedPriorClose": float(adjusted_before["c"]),
-            "FreshAdjustedOpen": float(adjusted_after["o"]),
+            "FreshAdjustedPriorClose": float(adjusted_before["close"]),
+            "FreshAdjustedOpen": float(adjusted_after["open"]),
             "FreshAdjustedFactor": adjusted_factor,
         })
         cache_matches = relative_match(item["CacheFactor"], adjusted_factor)
@@ -107,10 +109,14 @@ def main():
     pd.DataFrame(evidence).to_csv(OUT / "paired_gap_verification.csv", index=False)
     (OUT / "paired_gap_verification.json").write_text(json.dumps(evidence, indent=2, allow_nan=False))
     remaining = {}
-    for item in buckets["stale"] + buckets["unresolved"]:
+    for item in buckets["unresolved"]:
         remaining.setdefault(item["Ticker"], []).append(item["Observation"])
     (OUT / "remaining_data_quality_exclusions.json").write_text(json.dumps(remaining, indent=2))
-    status = "BLOCKED_BY_CONFIRMED_STALE_ADJUSTED_DATA" if buckets["stale"] else "COMPLETE"
+    repaired_tickers = sorted({item["Ticker"] for item in buckets["stale"]})
+    (OUT / "verified_ticker_histories.json").write_text(
+        json.dumps(histories, separators=(",", ":"), allow_nan=False)
+    )
+    status = "COMPLETE_WITH_VERIFIED_HISTORY_REPAIRS" if repaired_tickers else "COMPLETE"
     manifest = {
         "status": status,
         "observations": len(parsed), "unique_tickers": len(original),
@@ -119,9 +125,10 @@ def main():
         "verified_corporate_action_transforms": len(buckets["transform"]),
         "confirmed_data_errors": len(buckets["stale"]),
         "unresolved_fail_closed": len(buckets["unresolved"]),
+        "repaired_tickers": repaired_tickers,
         "remaining_excluded_tickers": len(remaining), "price_basis_date": basis,
         "no_parameter_search": True, "selection_used_future_outcomes": False,
-        "next_action": "repair adjusted history before interpreting models" if buckets["stale"] else "run fixed model matrix",
+        "next_action": "run fixed models with full per-ticker history overrides",
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("GAP_CLASSIFICATION", json.dumps(manifest), flush=True)
