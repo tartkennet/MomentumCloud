@@ -1,0 +1,36 @@
+name: Dated gap exclusion evidence
+on:
+  pull_request:
+    branches: [main]
+    paths: [run_gap_selection_evidence.py, .github/workflows/gap_selection_evidence.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_relaxed_selection_audit
+          run-id: 37438747197
+          github-token: ${{ github.token }}
+          path: raw_evidence
+      - run: python run_gap_selection_evidence.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_gap_selection_evidence
+          path: Momentum_gap_selection_evidence/
