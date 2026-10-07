@@ -10,6 +10,9 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Nasdaq confirms March 2 completion; unpriced nontransferable CVR excluded.
+    # https://www.nasdaqtrader.com/TraderNews.aspx?id=eca2023-126
+    "ALBO": ("2023-03-02", 42.00),
     # SEC completion, fixed cash; June 1 trading suspension and closing announcement.
     # https://www.sec.gov/Archives/edgar/data/1273931/0001193125-23-158474.txt
     "MGI": ("2023-06-01", 11.00),
@@ -114,6 +117,21 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Completed common-share conversion or unchanged common-stock symbol; primary source:
+    # https://www.sec.gov/Archives/edgar/data/77877/000110465923088136/tm2321729d8_8k.htm
+    "PDCE": {"effective_date": "2023-08-07", "successor_ticker": "CVX", "shares_per_share": 0.4638, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
+    # Completed common-share conversion or unchanged common-stock symbol; primary source:
+    # https://www.sec.gov/Archives/edgar/data/912603/0001157523-23-001375.txt
+    "SCHN": {"effective_date": "2023-09-01", "successor_ticker": "RDUS", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # Completed common-share conversion or unchanged common-stock symbol; primary source:
+    # https://investors.fiserv.com/news-releases/news-release-details/fiserv-completes-listing-transfer-new-york-stock-exchange
+    "FISV": {"effective_date": "2023-06-07", "successor_ticker": "FI", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # Completed common-share conversion or unchanged common-stock symbol; primary source:
+    # https://www.sec.gov/Archives/edgar/data/1655888/000119312523182372/d471939dex991.htm
+    "ORCC": {"effective_date": "2023-07-06", "successor_ticker": "OBDC", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # Completed common-share conversion or unchanged common-stock symbol; primary source:
+    # https://news.revvity.com/press-announcements/press-releases/press-release-details/2023/Revvity-Announces-Financial-Results-for-the-First-Quarter-of-2023/default.aspx
+    "PKI": {"effective_date": "2023-05-16", "successor_ticker": "RVTY", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC completed September 1 2023: each NexTier common share receives 0.7520 PTEN shares.
     # https://www.sec.gov/Archives/edgar/data/1688476/0001688476-23-000147.txt
     "NEX": {"effective_date": "2023-09-01", "successor_ticker": "PTEN", "shares_per_share": 0.7520, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
