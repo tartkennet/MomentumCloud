@@ -10,6 +10,12 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # SEC completed fixed consideration: https://www.sec.gov/Archives/edgar/data/1338065/0001193125-23-167475.txt
+    "DCP": ("2023-06-15", 41.75),
+    # SEC completed fixed consideration: https://www.sec.gov/Archives/edgar/data/1651052/0001104659-23-097110.txt
+    "FOCS": ("2023-08-31", 53),
+    # SEC completed fixed consideration: https://www.sec.gov/Archives/edgar/data/1577916/0001193125-25-294735.txt
+    "PINC": ("2025-11-25", 28.25),
     # Completed July 28 2023; fixed cash, SEC https://www.sec.gov/Archives/edgar/data/40888/0001193125-23-196927.txt
     "AJRD": ("2023-07-28", 58.00),
     "VVNT": ("2023-03-10", 12.00), "MYOV": ("2023-03-10", 27.00), "AIMC": ("2023-03-27", 62.00),
@@ -89,6 +95,10 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # SEC completed exchange ratio: https://www.sec.gov/Archives/edgar/data/928022/0001193125-24-083393.txt
+    "CPE": {"effective_date": "2024-04-01", "successor_ticker": "APA", "shares_per_share": 1.0425, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
+    # SEC completed exchange ratio: https://www.sec.gov/Archives/edgar/data/1136352/0001193125-23-270382.txt
+    "CEQP": {"effective_date": "2023-11-03", "successor_ticker": "ET", "shares_per_share": 2.07, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # Unchanged common shares; SEC https://www.sec.gov/Archives/edgar/data/730464/0001104659-26-011611.txt
     "ATGE": {"effective_date": "2026-02-24", "successor_ticker": "CVSA", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1108134/0001104659-25-086043.txt
