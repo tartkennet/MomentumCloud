@@ -10,6 +10,12 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # SEC completed April 27 2023, fixed common-share consideration.
+    # https://www.sec.gov/Archives/edgar/data/1180145/0001104659-23-051430.txt
+    "CSII": ("2023-04-27", 20.00),
+    # SEC completed June 14 2023, fixed tender/merger consideration.
+    # https://www.sec.gov/Archives/edgar/data/1324272/0001193125-23-166585.txt
+    "RUTH": ("2023-06-14", 21.50),
     # SEC completion fixed cash: https://www.sec.gov/Archives/edgar/data/1160951/0001140361-23-014664.txt
     "DCT": ("2023-03-30", 19.00),
     # SEC completion fixed cash: https://www.sec.gov/Archives/edgar/data/1599489/0001104659-23-122267.txt
@@ -99,6 +105,9 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # SEC completed May 24 2023; each Evoqua share converts to 0.48 Xylem shares.
+    # https://www.sec.gov/Archives/edgar/data/1604643/0001193125-23-152552.txt
+    "AQUA": {"effective_date": "2023-05-24", "successor_ticker": "XYL", "shares_per_share": 0.48, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # SEC completed March 20 2023 terms: https://www.sec.gov/Archives/edgar/data/1745041/0001104659-23-034674.txt
     "IAA": {"effective_date": "2023-03-20", "successor_ticker": "RBA", "shares_per_share": 0.5252, "cash_per_share": 12.80, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
     # SEC completed exchange ratio: https://www.sec.gov/Archives/edgar/data/928022/0001193125-24-083393.txt
