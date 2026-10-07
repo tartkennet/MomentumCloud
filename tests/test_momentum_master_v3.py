@@ -48,22 +48,22 @@ class SimpleMovingAverageTests(unittest.TestCase):
 
 
     def test_history_cache_round_trip(self):
-        sessions = [("2026-09-01", {"ABC": {"close": 10.5, "volume": 200.0}})]
+        sessions = [("2026-09-01", {"SYNTHETIC_TEST": {"close": 10.5, "volume": 200.0}})]
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "history.json"
             save_history_cache(str(path), sessions)
             self.assertEqual(
                 load_history_cache(str(path)),
-                {"2026-09-01": {"ABC": {"close": 10.5, "volume": 200.0}}},
+                {"2026-09-01": {"SYNTHETIC_TEST": {"close": 10.5, "volume": 200.0}}},
             )
 
 
     def test_buy_history_tracks_entry_and_current_return(self):
-        buy = __import__("pandas").DataFrame([{"Ticker": "ABC", "Rank": 1, "Price_USD": 10.0, "TotalScore": 42.0}])
+        buy = __import__("pandas").DataFrame([{"Ticker": "SYNTHETIC_TEST", "Rank": 1, "Price_USD": 10.0, "TotalScore": 42.0}])
         with tempfile.TemporaryDirectory() as directory:
             path = str(Path(directory) / "history.csv")
-            first = update_buy_history(buy, {"ABC": {"close": 10.0, "volume": 1}}, "2026-09-01", path)
-            second = update_buy_history(buy.iloc[0:0], {"ABC": {"close": 11.0, "volume": 1}}, "2026-09-09", path)
+            first = update_buy_history(buy, {"SYNTHETIC_TEST": {"close": 10.0, "volume": 1}}, "2026-09-01", path)
+            second = update_buy_history(buy.iloc[0:0], {"SYNTHETIC_TEST": {"close": 11.0, "volume": 1}}, "2026-09-09", path)
             self.assertEqual(len(first), 1)
             self.assertEqual(len(second), 1)
             self.assertAlmostEqual(second.loc[0, "Return_Since_Entry_pct"], 10.0, places=8)
@@ -73,14 +73,14 @@ class SimpleMovingAverageTests(unittest.TestCase):
     def test_holdings_compare_to_spy_and_current_rank(self):
         pd = __import__("pandas")
         portfolio = pd.DataFrame([{
-            "Ticker": "ABC", "Qty": 2, "EntryDate": "2026-09-01",
+            "Ticker": "SYNTHETIC_TEST", "Qty": 2, "EntryDate": "2026-09-01",
             "EntryPrice_USD": 10.0, "EntryFX": 10.0, "EntryFees_SEK": 0.0,
         }])
-        latest = {"ABC": {"close": 11.0, "volume": 1}, "SPY": {"close": 110.0, "volume": 1}}
-        candidates = pd.DataFrame([{"Ticker": "ABC", "Rank": 1}])
+        latest = {"SYNTHETIC_TEST": {"close": 11.0, "volume": 1}, "SPY": {"close": 110.0, "volume": 1}}
+        candidates = pd.DataFrame([{"Ticker": "SYNTHETIC_TEST", "Rank": 1}])
         history = [
             ("2026-09-03", latest),
-            ("2026-09-01", {"ABC": {"close": 10.0, "volume": 1}, "SPY": {"close": 100.0, "volume": 1}}),
+            ("2026-09-01", {"SYNTHETIC_TEST": {"close": 10.0, "volume": 1}, "SPY": {"close": 100.0, "volume": 1}}),
         ]
         holdings = build_holdings_df(portfolio, latest, 10.0, candidates, history)
         self.assertAlmostEqual(holdings.loc[0, "P&L_pct"], 10.0, places=8)
@@ -93,7 +93,7 @@ class SimpleMovingAverageTests(unittest.TestCase):
         from openpyxl import Workbook
         ws = Workbook().active
         ws.append(["Ticker", "Ret1m", "P&L_SEK", "Price_USD"])
-        ws.append(["ABC", 1.0, -10.0, 20.0])
+        ws.append(["SYNTHETIC_TEST", 1.0, -10.0, 20.0])
         apply_positive_negative_formatting(ws)
         self.assertEqual(len(ws.conditional_formatting), 2)
 
@@ -153,32 +153,32 @@ class BacktestTimingTests(unittest.TestCase):
     def test_stop_loss_signals_at_close_and_exits_next_session(self):
         days = ["2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05"]
         cache = {
-            "2026-06-02": {"ABC": {"close": 100.0, "volume": 1}},
-            "2026-06-03": {"ABC": {"close": 89.0, "volume": 1}},
-            "2026-06-04": {"ABC": {"close": 87.0, "volume": 1}},
-            "2026-06-05": {"ABC": {"close": 95.0, "volume": 1}},
+            "2026-06-02": {"SYNTHETIC_TEST": {"close": 100.0, "volume": 1}},
+            "2026-06-03": {"SYNTHETIC_TEST": {"close": 89.0, "volume": 1}},
+            "2026-06-04": {"SYNTHETIC_TEST": {"close": 87.0, "volume": 1}},
+            "2026-06-05": {"SYNTHETIC_TEST": {"close": 95.0, "volume": 1}},
         }
         self.assertEqual(
-            stop_loss_exit(cache, days, "ABC", "2026-06-02", "2026-06-05", 10),
+            stop_loss_exit(cache, days, "SYNTHETIC_TEST", "2026-06-02", "2026-06-05", 10),
             ("2026-06-04", "STOP_LOSS"),
         )
         self.assertEqual(
-            stop_loss_exit(cache, days, "ABC", "2026-06-02", "2026-06-05", None),
+            stop_loss_exit(cache, days, "SYNTHETIC_TEST", "2026-06-02", "2026-06-05", None),
             ("2026-06-05", "REBALANCE"),
         )
 
     def test_stop_loss_is_measured_from_actual_next_open_entry(self):
         days = ["2026-06-02", "2026-06-03", "2026-06-04"]
         cache = {
-            "2026-06-02": {"ABC": {"open": 90.0, "close": 100.0, "volume": 1}},
-            "2026-06-03": {"ABC": {"open": 86.0, "close": 85.0, "volume": 1}},
-            "2026-06-04": {"ABC": {"open": 84.0, "close": 84.0, "volume": 1}},
+            "2026-06-02": {"SYNTHETIC_TEST": {"open": 90.0, "close": 100.0, "volume": 1}},
+            "2026-06-03": {"SYNTHETIC_TEST": {"open": 86.0, "close": 85.0, "volume": 1}},
+            "2026-06-04": {"SYNTHETIC_TEST": {"open": 84.0, "close": 84.0, "volume": 1}},
         }
         self.assertEqual(
             research_exit(
                 cache,
                 days,
-                "ABC",
+                "SYNTHETIC_TEST",
                 "2026-06-02",
                 "2026-06-04",
                 "stop",
@@ -191,12 +191,12 @@ class BacktestTimingTests(unittest.TestCase):
     def test_sma50_exit_is_executed_next_session(self):
         dates = [(date(2026, 1, 1) + timedelta(days=index)).isoformat() for index in range(52)]
         cache = {
-            day: {"ABC": {"open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 1}}
+            day: {"SYNTHETIC_TEST": {"open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0, "volume": 1}}
             for day in dates
         }
-        cache[dates[49]]["ABC"]["close"] = 80.0
+        cache[dates[49]]["SYNTHETIC_TEST"]["close"] = 80.0
         self.assertEqual(
-            research_exit(cache, dates, "ABC", dates[49], dates[51], "sma50", None),
+            research_exit(cache, dates, "SYNTHETIC_TEST", dates[49], dates[51], "sma50", None),
             (dates[50], "BELOW_SMA50"),
         )
 
@@ -204,13 +204,13 @@ class BacktestTimingTests(unittest.TestCase):
         positions = [{
             "EntryDate": "2026-06-02", "PlannedExitDate": "2026-06-05",
             "ExitDate": "2026-06-04", "ExitPrice_USD": 90.0,
-            "EntryPrice_USD": 100.0, "Ticker": "ABC",
+            "EntryPrice_USD": 100.0, "Ticker": "SYNTHETIC_TEST",
         }]
         cache = {
-            "2026-06-02": {"ABC": {"close": 100.0, "volume": 1}},
-            "2026-06-03": {"ABC": {"close": 95.0, "volume": 1}},
-            "2026-06-04": {"ABC": {"close": 80.0, "volume": 1}},
-            "2026-06-05": {"ABC": {"close": 120.0, "volume": 1}},
+            "2026-06-02": {"SYNTHETIC_TEST": {"close": 100.0, "volume": 1}},
+            "2026-06-03": {"SYNTHETIC_TEST": {"close": 95.0, "volume": 1}},
+            "2026-06-04": {"SYNTHETIC_TEST": {"close": 80.0, "volume": 1}},
+            "2026-06-05": {"SYNTHETIC_TEST": {"close": 120.0, "volume": 1}},
         }
         drawdown = daily_portfolio_max_drawdown(positions, cache, sorted(cache))
         self.assertAlmostEqual(drawdown, -10.3, places=7)

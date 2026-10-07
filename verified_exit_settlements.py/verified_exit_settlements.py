@@ -89,6 +89,8 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Unchanged common shares; SEC https://www.sec.gov/Archives/edgar/data/730464/0001104659-26-011611.txt
+    "ATGE": {"effective_date": "2026-02-24", "successor_ticker": "CVSA", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1108134/0001104659-25-086043.txt
     "BHLB": {"effective_date": "2025-09-01", "successor_ticker": "BBT", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1049782/0001104659-25-086054.txt
