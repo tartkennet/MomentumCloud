@@ -10,6 +10,8 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Completed July 28 2023; fixed cash, SEC https://www.sec.gov/Archives/edgar/data/40888/0001193125-23-196927.txt
+    "AJRD": ("2023-07-28", 58.00),
     "VVNT": ("2023-03-10", 12.00), "MYOV": ("2023-03-10", 27.00), "AIMC": ("2023-03-27", 62.00),
     "APEN": ("2023-04-04", 10.00), "TA": ("2023-05-15", 86.00),
     "MAXR": ("2023-05-03", 53.00), "SUMO": ("2023-05-12", 12.05),
@@ -87,6 +89,22 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1108134/0001104659-25-086043.txt
+    "BHLB": {"effective_date": "2025-09-01", "successor_ticker": "BBT", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1049782/0001104659-25-086054.txt
+    "BRKL": {"effective_date": "2025-09-01", "successor_ticker": "BBT", "shares_per_share": 0.42, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/910073/0001193125-24-237666.txt
+    "NYCB": {"effective_date": "2024-10-28", "successor_ticker": "FLG", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1108426/0001108426-24-000082.txt
+    "PNM": {"effective_date": "2024-08-05", "successor_ticker": "TXNM", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1140859/0001104659-23-096698.txt
+    "ABC": {"effective_date": "2023-08-30", "successor_ticker": "COR", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/1564902/0000950170-24-014585.txt
+    "SEAS": {"effective_date": "2024-02-13", "successor_ticker": "PRKS", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/884219/0000950170-25-000594.txt
+    "VVI": {"effective_date": "2025-01-02", "successor_ticker": "PRSU", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
+    # SEC completed terms / same security name change: https://www.sec.gov/Archives/edgar/data/860546/0000860546-23-000039.txt
+    "OFC": {"effective_date": "2023-09-15", "successor_ticker": "CDP", "shares_per_share": 1, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC verified same common shares, name/symbol change: https://www.sec.gov/Archives/edgar/data/1083446/0001104659-24-027198.txt
     "AMEH": {"effective_date": "2024-02-26", "successor_ticker": "ASTH", "shares_per_share": 1.0, "cash_per_share": 0.0, "reason": "SYMBOL_CHANGE", "execution": "successor-market"},
     # SEC verified same common shares, name/symbol change: https://www.sec.gov/Archives/edgar/data/890564/0000890564-26-000025.txt
