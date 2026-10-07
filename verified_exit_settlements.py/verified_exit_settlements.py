@@ -105,6 +105,12 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Completed June 1 2023, common shares: $9 cash plus 0.1301 HNI.
+    # https://www.sec.gov/Archives/edgar/data/55772/0001140361-23-027820.txt
+    "KBAL": {"effective_date": "2023-06-01", "successor_ticker": "HNI", "shares_per_share": 0.1301, "cash_per_share": 9.0, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
+    # Completed July 20 2023, common shares convert to 0.895 Extra Space shares.
+    # https://www.sec.gov/Archives/edgar/data/944314/0001193125-23-190113.txt
+    "LSI": {"effective_date": "2023-07-20", "successor_ticker": "EXR", "shares_per_share": 0.895, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # SEC completed May 24 2023; each Evoqua share converts to 0.48 Xylem shares.
     # https://www.sec.gov/Archives/edgar/data/1604643/0001193125-23-152552.txt
     "AQUA": {"effective_date": "2023-05-24", "successor_ticker": "XYL", "shares_per_share": 0.48, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
