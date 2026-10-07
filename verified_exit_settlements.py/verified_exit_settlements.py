@@ -10,6 +10,18 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Completed fixed common-share cash consideration; primary source:
+    # https://www.sec.gov/Archives/edgar/data/708818/0001193125-23-274104.txt
+    "NXGN": ("2023-11-09", 23.95),
+    # Completed fixed common-share cash consideration; primary source:
+    # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-595
+    "HCCI": ("2023-10-17", 45.5),
+    # Completed fixed common-share cash consideration; primary source:
+    # https://www.sec.gov/Archives/edgar/data/789019/000119312523255762/d537928d8k.htm
+    "ATVI": ("2023-10-13", 95),
+    # Completed fixed common-share cash consideration; primary source:
+    # https://www.sec.gov/Archives/edgar/data/318154/000119312523252361/d534754dex991.htm
+    "HZNP": ("2023-10-06", 116.5),
     # Nasdaq confirms March 2 completion; unpriced nontransferable CVR excluded.
     # https://www.nasdaqtrader.com/TraderNews.aspx?id=eca2023-126
     "ALBO": ("2023-03-02", 42.00),
