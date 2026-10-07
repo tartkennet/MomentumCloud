@@ -46,6 +46,64 @@ def main():
         return cache, basis
 
     engine.load_backtest_cache = corrected_cache
+
+    # Corporate-action consideration is in historical raw share units.
+    # Each ticker's adjusted endpoint may include different subsequent splits.
+    # Normalize to the original ticker's pre-action basis; never alter legal ratios.
+    from audit_corporate_action_basis import adjustment_factor, convert_stock_row
+    basis_client = engine.PolygonClient(os.environ["POLYGON_API_KEY"])
+    paired_factors = {}
+
+    def paired_factor(cache, ticker, day):
+        key = (ticker, day)
+        if key not in paired_factors:
+            prices = []
+            for adjusted in ("true", "false"):
+                payload = basis_client._get(
+                    f"/v2/aggs/ticker/{ticker}/range/1/day/{day}/{day}",
+                    {"adjusted": adjusted, "sort": "asc", "limit": 10},
+                )
+                bars = payload.get("results", [])
+                if len(bars) != 1:
+                    raise RuntimeError(f"Missing paired action basis: {ticker} {day} {adjusted}")
+                prices.append(float(bars[0]["c"]))
+            cached = engine.get_from_map(cache.get(day, {}), ticker)
+            if not cached or abs(float(cached["close"]) / prices[0] - 1.0) > 1e-6:
+                raise RuntimeError(f"Action basis disagrees with execution cache: {ticker} {day}")
+            paired_factors[key] = adjustment_factor(*prices)
+        return paired_factors[key]
+
+    original_resolver = engine.resolve_exit_execution
+
+    def compatible_exit(cache, days, ticker, target, entry, latest):
+        resolved_day, row, action = original_resolver(cache, days, ticker, target, entry, latest)
+        if not action or row is None:
+            return resolved_day, row, action
+        effective = str(action["effective_date"])
+        original_days = [day for day in days if entry <= day < effective
+                         and engine.get_from_map(cache.get(day, {}), ticker)]
+        if not original_days:
+            raise RuntimeError(f"No original pre-action basis: {ticker} {effective}")
+        original_factor = paired_factor(cache, ticker, max(original_days))
+        successor = action.get("valuation_ticker")
+        if successor:
+            successor_days = [day for day in days if effective <= day <= resolved_day
+                              and engine.get_from_map(cache.get(day, {}), successor)]
+            if not successor_days:
+                raise RuntimeError(f"No successor action basis: {successor} {effective}")
+            successor_factor = paired_factor(cache, successor, min(successor_days))
+            successor_row = engine.get_from_map(cache[resolved_day], successor)
+            row = convert_stock_row(successor_row, action["shares_per_share"],
+                                    action.get("cash_per_share", 0.0),
+                                    original_factor, successor_factor)
+        else:
+            row = {field: float(value) * original_factor for field, value in row.items()}
+        action = {**action, "original_adjustment_factor": original_factor,
+                  "basis_validation": "PAIRED_RAW_ADJUSTED"}
+        return resolved_day, row, action
+
+    engine.resolve_exit_execution = compatible_exit
+
     old_raw_closes = engine.PolygonClient.fetch_unadjusted_signal_closes
 
     def corrected_raw_closes(client, day):
