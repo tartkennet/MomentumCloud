@@ -10,6 +10,15 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # SEC completion, fixed cash; June 1 trading suspension and closing announcement.
+    # https://www.sec.gov/Archives/edgar/data/1273931/0001193125-23-158474.txt
+    "MGI": ("2023-06-01", 11.00),
+    # SEC completion August 23 2023, fixed common-share consideration.
+    # https://www.sec.gov/Archives/edgar/data/1543916/000114036123040969/brhc20057813_8k.htm
+    "FORG": ("2023-08-23", 23.25),
+    # SEC completion August 11 2023. Nontransferable, unpriced CVR excluded.
+    # https://www.sec.gov/Archives/edgar/data/1435049/000119312523210803/d103891d8k.htm
+    "KDNY": ("2023-08-11", 40.00),
     # SEC completed April 27 2023, fixed common-share consideration.
     # https://www.sec.gov/Archives/edgar/data/1180145/0001104659-23-051430.txt
     "CSII": ("2023-04-27", 20.00),
