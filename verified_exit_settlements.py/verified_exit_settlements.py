@@ -10,6 +10,13 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Completed fixed cash; SEC issuer completion releases and 8-K terms.
+    # https://www.sec.gov/Archives/edgar/data/1448056/000119312523273042/d469974dex991.htm
+    "NEWR": ("2023-11-08", 87.0),
+    # https://www.sec.gov/Archives/edgar/data/896841/000183988223030181/ex99-1.htm
+    "AVID": ("2023-11-07", 27.05),
+    # https://www.sec.gov/Archives/edgar/data/1760717/000110465923110660/tm2328754d2_8k.htm
+    "SCPL": ("2023-10-23", 22.95),
     # Completed September 21 2023 before open, fixed cash.
     # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-531
     "RADI": ("2023-09-21", 15.00),
@@ -135,6 +142,9 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Completed November 7 2023; common-share consideration $30 + 0.03002 SJM.
+    # https://www.sec.gov/Archives/edgar/data/1644406/0001193125-23-272309.txt
+    "TWNK": {"effective_date": "2023-11-07", "successor_ticker": "SJM", "shares_per_share": 0.03002, "cash_per_share": 30.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # Completed September 1 2023 before open; common shares convert to 0.75 GMED.
     # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-493
     "NUVA": {"effective_date": "2023-09-01", "successor_ticker": "GMED", "shares_per_share": 0.75, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
