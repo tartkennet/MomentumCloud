@@ -114,6 +114,9 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # SEC completed September 1 2023: each NexTier common share receives 0.7520 PTEN shares.
+    # https://www.sec.gov/Archives/edgar/data/1688476/0001688476-23-000147.txt
+    "NEX": {"effective_date": "2023-09-01", "successor_ticker": "PTEN", "shares_per_share": 0.7520, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # Completed June 1 2023, common shares: $9 cash plus 0.1301 HNI.
     # https://www.sec.gov/Archives/edgar/data/55772/0001140361-23-027820.txt
     "KBAL": {"effective_date": "2023-06-01", "successor_ticker": "HNI", "shares_per_share": 0.1301, "cash_per_share": 9.0, "reason": "STOCK_CASH_MERGER", "execution": "successor-market-plus-cash"},
