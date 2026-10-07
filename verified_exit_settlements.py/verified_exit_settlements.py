@@ -10,6 +10,12 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Completed September 21 2023 before open, fixed cash.
+    # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-531
+    "RADI": ("2023-09-21", 15.00),
+    # SEC completed August 18 2023, fixed common-share cash.
+    # https://www.sec.gov/Archives/edgar/data/1790982/000114036123040367/brhc20057664_8k.htm
+    "ARNC": ("2023-08-18", 30.00),
     # Completed fixed common-share cash consideration; primary source:
     # https://www.sec.gov/Archives/edgar/data/708818/0001193125-23-274104.txt
     "NXGN": ("2023-11-09", 23.95),
@@ -129,6 +135,9 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Completed September 1 2023 before open; common shares convert to 0.75 GMED.
+    # https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2023-493
+    "NUVA": {"effective_date": "2023-09-01", "successor_ticker": "GMED", "shares_per_share": 0.75, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
     # Completed common-share conversion or unchanged common-stock symbol; primary source:
     # https://www.sec.gov/Archives/edgar/data/77877/000110465923088136/tm2321729d8_8k.htm
     "PDCE": {"effective_date": "2023-08-07", "successor_ticker": "CVX", "shares_per_share": 0.4638, "cash_per_share": 0.0, "reason": "STOCK_MERGER", "execution": "successor-market"},
