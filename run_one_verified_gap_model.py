@@ -73,36 +73,8 @@ def main():
             paired_factors[key] = adjustment_factor(*prices)
         return paired_factors[key]
 
-    original_resolver = engine.resolve_exit_execution
-
-    def compatible_exit(cache, days, ticker, target, entry, latest):
-        resolved_day, row, action = original_resolver(cache, days, ticker, target, entry, latest)
-        if not action or row is None:
-            return resolved_day, row, action
-        effective = str(action["effective_date"])
-        original_days = [day for day in days if entry <= day < effective
-                         and engine.get_from_map(cache.get(day, {}), ticker)]
-        if not original_days:
-            raise RuntimeError(f"No original pre-action basis: {ticker} {effective}")
-        original_factor = paired_factor(cache, ticker, max(original_days))
-        successor = action.get("valuation_ticker")
-        if successor:
-            successor_days = [day for day in days if effective <= day <= resolved_day
-                              and engine.get_from_map(cache.get(day, {}), successor)]
-            if not successor_days:
-                raise RuntimeError(f"No successor action basis: {successor} {effective}")
-            successor_factor = paired_factor(cache, successor, min(successor_days))
-            successor_row = engine.get_from_map(cache[resolved_day], successor)
-            row = convert_stock_row(successor_row, action["shares_per_share"],
-                                    action.get("cash_per_share", 0.0),
-                                    original_factor, successor_factor)
-        else:
-            row = {field: float(value) * original_factor for field, value in row.items()}
-        action = {**action, "original_adjustment_factor": original_factor,
-                  "basis_validation": "PAIRED_RAW_ADJUSTED"}
-        return resolved_day, row, action
-
-    engine.resolve_exit_execution = compatible_exit
+    from audit_action_price_install import install_compatible_action_prices
+    install_compatible_action_prices(engine, paired_factor)
 
     old_raw_closes = engine.PolygonClient.fetch_unadjusted_signal_closes
 
@@ -165,6 +137,10 @@ def main():
     builder, stop, no_regime = specs[name]
     run = existing.run_one(name, builder, "2023-02-01", "2026-10-03", stop, no_regime)
     checks = controls.independent_check(run)
+    # Keep the engine's selector unchanged; exported metadata names the actual audit scenario.
+    run["positions"]["SelectionModel"] = name
+    if "SelectionModel" in run["results"]:
+        run["results"]["SelectionModel"] = name
     previous_path = SOURCE / f"{name}_positions.csv"
     previous = pd.read_csv(previous_path) if previous_path.exists() else None
     prior_keys = set(zip(previous.SignalDate, previous.Ticker)) if previous is not None else set()
@@ -176,6 +152,7 @@ def main():
         "out_of_sample_metrics": run["out_of_sample_metrics"], "checks": checks,
         "removed_position_keys": len(prior_keys - new_keys),
         "added_position_keys": len(new_keys - prior_keys),
+        "spy_matched_monthly_fixed_cost_return_pct": float(((1.0 + (run["results"].SPYReturn_pct - engine.ROUND_TRIP_COST_PCT) / 100.0).prod() - 1.0) * 100.0),
     }
     (OUT / f"{name}_model_result.json").write_text(json.dumps(record, indent=2))
     print("VERIFIED_GAP_RESULT", json.dumps(record), flush=True)
@@ -183,3 +160,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
