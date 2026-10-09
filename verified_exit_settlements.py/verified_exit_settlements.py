@@ -10,6 +10,115 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1721386/0001140361-25-023577.txt
+    'LSEA': ('2025-06-25', 11.3),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/917491/0001193125-25-161621.txt
+    'FARO': ('2025-07-21', 44.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1786205/0001104659-26-050318.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'ACLX': ('2026-04-28', 115.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1889956/0001193125-26-136043.txt
+    'OS': ('2026-04-01', 24.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1834494/0001140361-25-039178.txt
+    'MLNK': ('2025-10-24', 20.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/896429/0001140361-26-020064.txt
+    'CTLP': ('2026-05-08', 11.2),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1408100/0001140361-26-025340.txt
+    'KW': ('2026-06-16', 10.9),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1820877/0001140361-24-032015.txt
+    'AIRC': ('2024-06-28', 39.12),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1515816/0001193125-26-024519.txt
+    'PLYM': ('2026-01-28', 22.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1725057/0001140361-26-003628.txt
+    'DAY': ('2026-02-04', 70.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1545654/0001104659-26-029533.txt
+    'ALEX': ('2026-03-12', 20.85),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1397702/0001140361-24-041264.txt
+    'SILK': ('2024-09-17', 27.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1786255/0001104659-24-025251.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'ICVX': ('2024-02-19', 15.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/850460/0000850460-24-000070.txt
+    'WIRE': ('2024-07-02', 290.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1407623/0001193125-25-025059.txt
+    'ROIC': ('2025-02-12', 17.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1465740/0001104659-26-100622.txt
+    'TWO': ('2026-08-25', 12.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1744659/0001140361-25-044946.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'AKRO': ('2025-12-09', 54.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/894081/0000950103-25-004720.txt
+    'ATSG': ('2025-04-11', 22.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/701288/0001104659-24-091469.txt
+    'ATRI': ('2024-08-21', 460.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1808665/0001104659-26-074619.txt
+    'ASRT': ('2026-06-16', 23.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1597264/0001193125-25-160804.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'BPMC': ('2025-07-18', 129.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1141103/0000950103-26-011218.txt
+    'CCRN': ('2026-07-21', 13.25),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1178879/0001140361-26-016968.txt
+    'FOLD': ('2026-04-27', 14.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1845337/0001193125-26-171997.txt
+    'DAWN': ('2026-04-23', 21.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/850209/0001104659-25-088056.txt
+    'FL': ('2025-09-08', 24.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1766363/0001193125-25-060947.txt
+    'EDR': ('2025-03-24', 27.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1785173/0001193125-25-257616.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'ETNB': ('2025-10-30', 14.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1627014/0001193125-23-228148.txt
+    'BKI': ('2023-09-05', 75.867),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1621563/0000950103-25-001807.txt
+    'SUM': ('2025-02-10', 52.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1831840/0001140361-26-017299.txt
+    'SEMR': ('2026-04-28', 12.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1658247/0001140361-26-035195.txt
+    'CRNX': ('2026-09-01', 85.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1642545/0001193125-24-151730.txt
+    'SWAV': ('2024-05-31', 335.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1172222/0001193125-24-221104.txt
+    'HA': ('2024-09-18', 18.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/931584/0001193125-25-011290.txt
+    'USAP': ('2025-01-23', 45.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1567514/0001193125-25-071325.txt
+    'ITCI': ('2025-04-02', 132.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1043604/0001193125-25-154400.txt
+    'JNPR': ('2025-07-02', 40.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1066605/0001193125-25-313582.txt
+    'HSII': ('2025-12-10', 59.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1561680/0001193125-26-222960.txt
+    'TPH': ('2026-05-14', 47.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1169445/0001193125-26-299668.txt
+    'TBRG': ('2026-07-09', 26.25),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1861560/0001193125-26-304126.txt
+    'NUVL': ('2026-07-15', 124.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1372020/0001193125-26-136214.txt
+    'GLDD': ('2026-04-01', 17.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1600438/0001140361-25-033989.txt
+    'GMS': ('2025-09-04', 110.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1811764/0001193125-23-303512.txt
+    'PNT': ('2023-12-27', 12.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1679363/0001193125-24-202123.txt
+    'MORF': ('2024-08-16', 57.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1840574/0001193125-25-165462.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'VERV': ('2025-07-25', 10.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1827506/0001104659-25-102971.txt
+    'TRML': ('2025-10-28', 48.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1348911/0001140361-26-024949.txt
+    'KALV': ('2026-06-11', 27.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1369568/0001193125-26-304984.txt
+    'CPRX': ('2026-07-15', 31.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1562476/0001193125-26-316037.txt
+    'TMHC': ('2026-07-27', 72.5),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1527508/0000950170-25-048426.txt
+    'PTVE': ('2025-04-01', 18.0),
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1807846/0000950103-25-004975.txt
+    # Unpriced CVR excluded from fixed consideration.
+    'ML': ('2025-04-17', 82.0),
     # Unpriced CVR excluded; fixed cash only. https://www.sec.gov/Archives/edgar/data/1808865/0001193125-25-192031.txt
     'ITOS': ('2025-08-29', 10.047),
     # Completed common-share cash consideration. https://www.sec.gov/Archives/edgar/data/1029142/0001193125-26-043821.txt
@@ -269,6 +378,38 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/946647/0001193125-25-043541.txt
+    'PFC': {'effective_date': '2025-03-03', 'successor_ticker': 'WSBC', 'shares_per_share': 0.8, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/946647/0001193125-25-043541.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1393612/0001193125-25-122107.txt
+    'DFS': {'effective_date': '2025-05-19', 'successor_ticker': 'COF', 'shares_per_share': 1.0192, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1393612/0001193125-25-122107.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1723089/0001193125-25-159855.txt
+    'CHX': {'effective_date': '2025-07-16', 'successor_ticker': 'SLB', 'shares_per_share': 0.735, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1723089/0001193125-25-159855.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/846901/0001193125-24-140117.txt
+    'LBAI': {'effective_date': '2024-05-16', 'successor_ticker': 'PFS', 'shares_per_share': 0.8319, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/846901/0001193125-24-140117.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1439095/0001193125-25-269775.txt
+    'MRC': {'effective_date': '2025-11-06', 'successor_ticker': 'DNOW', 'shares_per_share': 0.9489, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1439095/0001193125-25-269775.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1382821/0000950142-25-001793.txt
+    'RDFN': {'effective_date': '2025-07-01', 'successor_ticker': 'RKT', 'shares_per_share': 0.7926, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1382821/0000950142-25-001793.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1532961/0001628280-25-037472.txt
+    'NVEE': {'effective_date': '2025-08-04', 'successor_ticker': 'TIC', 'shares_per_share': 1.1523, 'cash_per_share': 10.0, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1532961/0001628280-25-037472.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1038357/0001193125-24-130052.txt
+    'PXD': {'effective_date': '2024-05-03', 'successor_ticker': 'XOM', 'shares_per_share': 2.3234, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1038357/0001193125-24-130052.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1592000/0001213900-25-008864.txt
+    'ENLC': {'effective_date': '2025-01-31', 'successor_ticker': 'OKE', 'shares_per_share': 0.1412, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1592000/0001213900-25-008864.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1509589/0001104659-26-008521.txt
+    'CIVI': {'effective_date': '2026-01-30', 'successor_ticker': 'SM', 'shares_per_share': 1.45, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1509589/0001104659-26-008521.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/920112/0001193125-25-018916.txt
+    'HTLF': {'effective_date': '2025-02-03', 'successor_ticker': 'UMBF', 'shares_per_share': 0.55, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/920112/0001193125-25-018916.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1378992/0001104659-25-042492.txt
+    'BERY': {'effective_date': '2025-04-30', 'successor_ticker': 'AMCR', 'shares_per_share': 7.25, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1378992/0001104659-25-042492.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1501570/0001104659-25-100622.txt
+    'VBTX': {'effective_date': '2025-10-20', 'successor_ticker': 'HBAN', 'shares_per_share': 1.95, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1501570/0001104659-25-100622.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/824410/0001104659-25-030581.txt
+    'SASR': {'effective_date': '2025-04-01', 'successor_ticker': 'AUB', 'shares_per_share': 0.9, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/824410/0001104659-25-030581.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1013462/0001140361-25-026141.txt
+    'ANSS': {'effective_date': '2025-07-17', 'successor_ticker': 'SNPS', 'shares_per_share': 0.3399, 'cash_per_share': 199.91, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1013462/0001140361-25-026141.txt'},
+    # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1854401/0001193125-25-193504.txt
+    'BRDG': {'effective_date': '2025-09-02', 'successor_ticker': 'APO', 'shares_per_share': 0.07081, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1854401/0001193125-25-193504.txt'},
     # Completed common-share conversion: https://www.sec.gov/Archives/edgar/data/1308606/000119312524013577/d722798d8k.htm
     'SRC': {'effective_date': '2024-01-23', 'successor_ticker': 'O', 'shares_per_share': 0.762, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market'},
 
