@@ -12,6 +12,13 @@ def install_compatible_action_prices(engine, paired_factor):
         resolved_day, row, action = original_resolver(cache, days, ticker, target, entry, latest)
         if not action or row is None:
             return resolved_day, row, action
+        # Preserve legal closing dates on holidays, but value cash on an
+        # available session within the permitted execution window.
+        if action.get("reason") == "CASH_MERGER" and resolved_day not in days:
+            available = [day for day in days if resolved_day <= day <= latest]
+            if not available:
+                return None, None, None
+            resolved_day = min(available)
         effective = str(action["effective_date"])
         original_days = [day for day in days if entry <= day < effective
                          and engine.get_from_map(cache.get(day, {}), ticker)]
@@ -60,4 +67,3 @@ def install_compatible_action_prices(engine, paired_factor):
         return float(converted["close"]), action
 
     engine.position_close_on_day = compatible_close
-
