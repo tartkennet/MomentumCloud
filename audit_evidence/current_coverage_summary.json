@@ -1,0 +1,9 @@
+{
+  "original_cases": 288,
+  "reviewed_action_document_cases": 182,
+  "remaining_without_reviewed_action": 106,
+  "newly_documented_cases": 36,
+  "new_verified_actions": 31,
+  "remaining_unreviewed_unique_tickers": 92,
+  "full_model_run_after_batch": false
+}

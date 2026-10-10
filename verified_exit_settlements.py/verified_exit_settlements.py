@@ -10,6 +10,33 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1651311/0001193125-25-335951.txt
+    # Non-tendered common shares cancelled in back-end merger; not tender acceptance December 12.
+    'MRUS': ('2025-12-30', 97),
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/893691/0001193125-24-139523.txt
+    # NYSE withdrawal before May 15 open.
+    'DOOR': ('2024-05-15', 133),
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1654151/0001193125-24-158772.txt
+    # Nasdaq suspension before June 11 opening.
+    'DCPH': ('2024-06-11', 25.6),
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1492422/0001193125-26-222923.txt
+    # Non-transferable unpriced CVR excluded; not valued at maximum $4.
+    'APLS': ('2026-05-14', 41),
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1699838/0001104659-26-029071.txt
+    # Nasdaq suspended before opening on Closing Date.
+    'CFLT': ('2026-03-17', 31),
+    # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1897982/0001140361-25-008260.txt
+    # 
+    'AZPN': ('2025-03-12', 265),
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1856430/0001104659-24-071779.txt
+    'SNPO': ('2024-06-14', 10.75),
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1805387/0001193125-24-190764.txt
+    'CERE': ('2024-08-01', 45.0),
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1721947/0001104659-26-009193.txt
+    'JAMF': ('2026-01-30', 13.05),
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1769617/0001104659-25-105592.txt
+    # Final proration: all non-election shares receive $12 cash.
+    'HONE': ('2025-11-01', 12.0),
     # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1721386/0001140361-25-023577.txt
     'LSEA': ('2025-06-25', 11.3),
     # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/917491/0001193125-25-161621.txt
@@ -378,6 +405,60 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # https://www.sec.gov/Archives/edgar/data/1813814/0001193125-26-009854.txt
+    # Common share CUSIP unchanged; market open January 13 explicitly.
+    'MNMD': {'effective_date': '2026-01-13', 'successor_ticker': 'DFTX', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1813814/0001193125-26-009854.txt'},
+    # https://www.sec.gov/Archives/edgar/data/57515/0000057515-25-000013.txt
+    # CUSIP 513847103 unchanged; common stock rights unchanged.
+    'LANC': {'effective_date': '2025-07-01', 'successor_ticker': 'MZTI', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/57515/0000057515-25-000013.txt'},
+    # https://www.sec.gov/Archives/edgar/data/895126/0001104659-24-104976.txt
+    # Acquirer Chesapeake own existing common shares; NOT Southwestern exchange ratio. Trading EXE October 2 explicitly.
+    'CHK': {'effective_date': '2024-10-02', 'successor_ticker': 'EXE', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/895126/0001104659-24-104976.txt'},
+    # https://www.sec.gov/Archives/edgar/data/1130713/0001140361-23-051490.txt
+    # Name change effective November 6; stockholder rights unchanged; BYON filing header.
+    'OSTK': {'effective_date': '2023-11-06', 'successor_ticker': 'BYON', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1130713/0001140361-23-051490.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/1865187/0001193125-25-240243.txt
+    # Documented non-election default is .625 WES, not elective cash or mixed terms.
+    'ARIS': {'effective_date': '2025-10-15', 'successor_ticker': 'WES', 'shares_per_share': 0.625, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1865187/0001193125-25-240243.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/1618563/0001104659-26-085888.txt
+    # Common shares only; suspended before NYSE opening.
+    'NSA': {'effective_date': '2026-07-22', 'successor_ticker': 'PSA', 'shares_per_share': 0.14, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1618563/0001104659-26-085888.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/1364885/0001104659-25-119096.txt
+    # Common stock conversion; excludes Airbus asset-sale proceeds.
+    'SPR': {'effective_date': '2025-12-08', 'successor_ticker': 'BA', 'shares_per_share': 0.1955, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1364885/0001104659-25-119096.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/4447/0000950142-25-001950.txt
+    # NYSE suspended before July 18 opening.
+    'HES': {'effective_date': '2025-07-18', 'successor_ticker': 'CVX', 'shares_per_share': 1.025, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/4447/0000950142-25-001950.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/933136/0000950142-25-002623.txt
+    # Nasdaq suspended before October 1 opening.
+    'COOP': {'effective_date': '2025-10-01', 'successor_ticker': 'RKT', 'shares_per_share': 11, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/933136/0000950142-25-002623.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/10254/0001193125-23-270505.txt
+    # NYSE ceased before November 1 opening.
+    'ESTE': {'effective_date': '2023-11-01', 'successor_ticker': 'PR', 'shares_per_share': 1.446, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/10254/0001193125-23-270505.txt'},
+    # Verified completed common-security terms: https://www.sec.gov/Archives/edgar/data/1110805/0001193125-24-130840.txt
+    # Common units only, not preferred units.
+    'NS': {'effective_date': '2024-05-03', 'successor_ticker': 'SUN', 'shares_per_share': 0.4, 'cash_per_share': 0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1110805/0001193125-24-130840.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1742924/0001140361-24-000581.txt
+    'LTHM': {'effective_date': '2024-01-04', 'successor_ticker': 'ALTM', 'shares_per_share': 2.406, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1742924/0001140361-24-000581.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1339605/0001193125-25-133372.txt
+    'HEES': {'effective_date': '2025-06-02', 'successor_ticker': 'HRI', 'shares_per_share': 0.1287, 'cash_per_share': 78.75, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1339605/0001193125-25-133372.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/858470/0001104659-26-057278.txt
+    'CTRA': {'effective_date': '2026-05-07', 'successor_ticker': 'DVN', 'shares_per_share': 0.7, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/858470/0001104659-26-057278.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1126975/0001213900-23-079220.txt
+    'MMP': {'effective_date': '2023-09-25', 'successor_ticker': 'OKE', 'shares_per_share': 0.667, 'cash_per_share': 25.0, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1126975/0001213900-23-079220.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/945764/0000945764-23-000140.txt
+    'DEN': {'effective_date': '2023-11-02', 'successor_ticker': 'XOM', 'shares_per_share': 0.84, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/945764/0000945764-23-000140.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/949039/0001193125-24-212705.txt
+    'DO': {'effective_date': '2024-09-04', 'successor_ticker': 'NE', 'shares_per_share': 0.2316, 'cash_per_share': 5.65, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/949039/0001193125-24-212705.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/51644/0001193125-25-300704.txt
+    # Legal date 2025-11-26; first retired session 2025-11-28.
+    'IPG': {'effective_date': '2025-11-28', 'successor_ticker': 'OMC', 'shares_per_share': 0.344, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/51644/0001193125-25-300704.txt'},
+    # Verified completed action: https://www.sec.gov/Archives/edgar/data/1743907/0001140361-26-021071.txt
+    'SNCY': {'effective_date': '2026-05-13', 'successor_ticker': 'ALGT', 'shares_per_share': 0.1557, 'cash_per_share': 4.1, 'reason': 'STOCK_CASH_MERGER', 'execution': 'successor-market-plus-cash', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1743907/0001140361-26-021071.txt'},
+    # Verified completed action: https://infomemo.theocc.com/infomemos?number=52179
+    'SIVB': {'effective_date': '2023-03-28', 'successor_ticker': 'SIVBQ', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://infomemo.theocc.com/infomemos?number=52179'},
+    # Verified completed action: https://infomemo.theocc.com/infomemos?number=52352
+    'FRC': {'effective_date': '2023-05-03', 'successor_ticker': 'FRCB', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://infomemo.theocc.com/infomemos?number=52352'},
     # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/946647/0001193125-25-043541.txt
     'PFC': {'effective_date': '2025-03-03', 'successor_ticker': 'WSBC', 'shares_per_share': 0.8, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/946647/0001193125-25-043541.txt'},
     # SEC completed fixed terms: https://www.sec.gov/Archives/edgar/data/1393612/0001193125-25-122107.txt
