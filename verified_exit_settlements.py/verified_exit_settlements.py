@@ -405,6 +405,24 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Same company common shares; completed corporate name/ticker rebranding.
+    # https://www.sec.gov/Archives/edgar/data/1840572/000162828024051278/bowl-20241212.htm
+    'BOWL': {'effective_date': '2024-12-12', 'successor_ticker': 'LUCK', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1840572/000162828024051278/bowl-20241212.htm'},
+    # Same Class A company shares, name/ticker change; date explicit in 10-Q.
+    # https://www.sec.gov/Archives/edgar/data/1781755/000178175524000030/brp-20240331.htm
+    'BRP': {'effective_date': '2024-05-20', 'successor_ticker': 'BWIN', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1781755/000178175524000030/brp-20240331.htm'},
+    # Common shares remain listed; CUSIP unchanged.
+    # https://investors.gapinc.com/press-releases/news-details/2024/Gap-Inc.-To-Change-Ticker-Symbol-to-GAP-on-August-22-To-Report-Second-Quarter-Fiscal-2024-Results-on-August-29/default.aspx
+    'GPS': {'effective_date': '2024-08-22', 'successor_ticker': 'GAP', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://investors.gapinc.com/press-releases/news-details/2024/Gap-Inc.-To-Change-Ticker-Symbol-to-GAP-on-August-22-To-Report-Second-Quarter-Fiscal-2024-Results-on-August-29/default.aspx'},
+    # NYSE Class A same CUSIP; not ASX January 22.
+    # https://investors.block.xyz/investor-news/news-details/2025/Block-Announces-Ticker-Symbol-Change-to-XYZ-To-Report-Fourth-Quarter-Results/default.aspx
+    'SQ': {'effective_date': '2025-01-21', 'successor_ticker': 'XYZ', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://investors.block.xyz/investor-news/news-details/2025/Block-Announces-Ticker-Symbol-Change-to-XYZ-To-Report-Fourth-Quarter-Results/default.aspx'},
+    # Legal merger August 31; Nasdaq suspension before September 2 opening; common shares .9150, cash fractions unpriced.
+    # https://www.columbiabankingsystem.com/news-market-data/press-releases/press-release/2025/Columbia-Banking-System-Completes-Acquisition-of-Pacific-Premier-Bancorp-and-Unifies-Columbia-Brand/default.aspx
+    'PPBI': {'effective_date': '2025-09-02', 'successor_ticker': 'COLB', 'shares_per_share': 0.915, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.columbiabankingsystem.com/news-market-data/press-releases/press-release/2025/Columbia-Banking-System-Completes-Acquisition-of-Pacific-Premier-Bancorp-and-Unifies-Columbia-Brand/default.aspx'},
+    # Same acquirer common shares; company name/ticker change, not Marel offer ratio.
+    # https://ir.jbtmarel.com/sec-filings/all-sec-filings/content/0001193125-25-002636/d919143d8k.htm
+    'JBT': {'effective_date': '2025-01-03', 'successor_ticker': 'JBTM', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://ir.jbtmarel.com/sec-filings/all-sec-filings/content/0001193125-25-002636/d919143d8k.htm'},
     # https://www.sec.gov/Archives/edgar/data/1813814/0001193125-26-009854.txt
     # Common share CUSIP unchanged; market open January 13 explicitly.
     'MNMD': {'effective_date': '2026-01-13', 'successor_ticker': 'DFTX', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1813814/0001193125-26-009854.txt'},
