@@ -10,6 +10,22 @@ non-electing cash consideration.
 
 
 CASH_SETTLEMENTS = {
+    # Completed July25; trading suspended AS OF CLOSE July25. Operational first nontrading session July26. https://www.prnewswire.com/news-releases/hollysys-announces-completion-of-merger-transaction-with-ascendent-capital-partners-302206694.html
+    'HOLI': ('2024-07-26', 26.5),
+    # Closed before open December12; administrative suspension December13. https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-602
+    'AY': ('2024-12-12', 22.0),
+    # Nasdaq confirms September 12 completed BEFORE OPEN; September 13 administrative suspension is not the action date. https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-417
+    'WKME': ('2024-09-12', 14.0),
+    # Completed common-share consideration; prior-open halt verified. https://www.sec.gov/Archives/edgar/data/1356570/0002077096-25-000155.txt
+    'WNS': ('2025-10-17', 76.5),
+    # Completed common-share consideration; prior-open halt verified. https://www.sec.gov/Archives/edgar/data/1484565/0001193125-26-228016.txt
+    'SLNO': ('2026-05-18', 53.0),
+    # Completed common-share consideration; prior-open halt verified. https://www.sec.gov/Archives/edgar/data/1163302/0001104659-25-060674.txt
+    'X': ('2025-06-18', 55.0),
+    # Completed common-share consideration; prior-open halt verified. https://www.sec.gov/Archives/edgar/data/1773427/0001104659-25-064445.txt
+    'SWTX': ('2025-07-01', 47.0),
+    # Completed common-share consideration; prior-open halt verified. https://www.sec.gov/Archives/edgar/data/1531048/0001193125-25-029190.txt
+    'NARI': ('2025-02-19', 80.0),
     # Verified completed terms: https://www.sec.gov/Archives/edgar/data/1651311/0001193125-25-335951.txt
     # Non-tendered common shares cancelled in back-end merger; not tender acceptance December 12.
     'MRUS': ('2025-12-30', 97),
@@ -405,6 +421,41 @@ CASH_SETTLEMENTS = {
 
 
 STOCK_SETTLEMENTS = {
+    # Same common CUSIP; ticker begins June4. https://www.sec.gov/Archives/edgar/data/1800227/0001104659-26-070364.txt
+    'IAC': {'effective_date': '2026-06-04', 'successor_ticker': 'PPLI', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1800227/0001104659-26-070364.txt'},
+    # Legal January1; SEC explicitly suspension before January2 open. https://www.sec.gov/Archives/edgar/data/1564618/0000950103-25-000002.txt
+    'IBTX': {'effective_date': '2025-01-02', 'successor_ticker': 'SSB', 'shares_per_share': 0.6, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1564618/0000950103-25-000002.txt'},
+    # SEC suspension prior August1 opening; completed fixed common ratio. https://www.sec.gov/Archives/edgar/data/1053584/0001104659-24-084676.txt
+    'MCBC': {'effective_date': '2024-08-01', 'successor_ticker': 'WTFC', 'shares_per_share': 0.137, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1053584/0001104659-24-084676.txt'},
+    # SEC old common cancelled at12:01a.m.; successor SEC2074176/000119312525183036 confirms VNOM starts same opening. https://www.sec.gov/Archives/edgar/data/1949543/0001193125-25-183045.txt
+    'STR': {'effective_date': '2025-08-19', 'successor_ticker': 'VNOM', 'shares_per_share': 0.4855, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1949543/0001193125-25-183045.txt'},
+    # Closed Feb13; Nasdaq ECA2026-83 confirms last trading Feb13, suspension Feb17. Operational next trading session. https://www.sec.gov/Archives/edgar/data/1412665/0001412665-26-000015.txt
+    'MOFG': {'effective_date': '2026-02-17', 'successor_ticker': 'NIC', 'shares_per_share': 0.3175, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1412665/0001412665-26-000015.txt'},
+    # Closed Apr17; Nasdaq ECA2026-239 confirms last trading Apr17, suspension Apr20. Operational next trading session. https://www.sec.gov/Archives/edgar/data/1053352/0001193125-26-167257.txt
+    'HTBK': {'effective_date': '2026-04-20', 'successor_ticker': 'CVBF', 'shares_per_share': 0.65, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1053352/0001193125-26-167257.txt'},
+
+    'MMC': {'effective_date': '2026-01-14', 'successor_ticker': 'MRSH', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.marsh.com/en/corp/about/news/marsh-mclennan-to-change-nyse-symbol-to-mrsh.html'},
+    'NEP': {'effective_date': '2025-02-03', 'successor_ticker': 'XIFR', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.investor.nexteraenergypartners.com/~/media/Files/N/NEP-IR/news-and-events/News%20Release/2025-0123%20NEP%20name%20change%20PR%20vfinal.pdf'},
+    'UCBI': {'effective_date': '2024-08-06', 'successor_ticker': 'UCB', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/857855/000085785524000051/ucbi-20240726.htm'},
+    'CNHI': {'effective_date': '2024-05-20', 'successor_ticker': 'CNH', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://investors.cnh.com/news/news-details/2024/CNH-is-changing-its-NYSE-ticker-symbol-to-CNH-on-May-20-05-01-2024/default.aspx'},
+    'FIHL': {'effective_date': '2026-05-12', 'successor_ticker': 'PLGO', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1636639/000162828026034096/pressrelease-plgocommencem.htm'},
+    'CVGW': {'effective_date': '2026-05-28', 'successor_ticker': 'AVO', 'shares_per_share': 0.979, 'cash_per_share': 14.85, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-355'},
+    # Exchange confirms completed merger before open and common-share consideration.
+    'CYBR': {'effective_date': '2026-02-11', 'successor_ticker': 'PANW', 'shares_per_share': 2.2005, 'cash_per_share': 45.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-84'},
+    # Exchange confirms completed merger before open and common-share consideration.
+    'AMWD': {'effective_date': '2026-05-28', 'successor_ticker': 'MBC', 'shares_per_share': 5.15, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-358'},
+    # 
+    'SJW': {'effective_date': '2025-05-06', 'successor_ticker': 'HTO', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.globenewswire.com/news-release/2025/05/06/3075097/0/en/sjw-group-rebrands-as-h2o-america.html'},
+    # https://www.sec.gov/Archives/edgar/data/1095073/000109507323000039/eg-20230630.htm
+    'RE': {'effective_date': '2023-07-10', 'successor_ticker': 'EG', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.everestglobal.com/us-en/news-media/press-releases/2023/everest-re-group-to-hold-second-quarter-2023-earnings-conference-call'},
+    # 
+    'BSIG': {'effective_date': '2025-01-02', 'successor_ticker': 'AAMI', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1748824/000174882425000016/aami-20241231.htm'},
+    # https://infomemo.theocc.com/infomemos?number=55593
+    'MRO': {'effective_date': '2024-11-22', 'successor_ticker': 'COP', 'shares_per_share': 0.255, 'cash_per_share': 0.0, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/101778/0001104659-24-122113.txt'},
+    # Verified original common-share consideration; original/successor paired basis still required.
+    'PCH': {'effective_date': '2026-02-02', 'successor_ticker': 'RYN', 'shares_per_share': 1.8185, 'cash_per_share': 0.61, 'reason': 'STOCK_MERGER', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1338749/0001193125-26-032108.txt'},
+    # Verified original common-share consideration; original/successor paired basis still required.
+    'ALCC': {'effective_date': '2024-05-10', 'successor_ticker': 'OKLO', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1849056/000110465924060634/tm2414092d1_8k.htm'},
     # Same company common shares; completed corporate name/ticker rebranding.
     # https://www.sec.gov/Archives/edgar/data/1840572/000162828024051278/bowl-20241212.htm
     'BOWL': {'effective_date': '2024-12-12', 'successor_ticker': 'LUCK', 'shares_per_share': 1.0, 'cash_per_share': 0.0, 'reason': 'SYMBOL_CHANGE', 'execution': 'successor-market', 'source_url': 'https://www.sec.gov/Archives/edgar/data/1840572/000162828024051278/bowl-20241212.htm'},

@@ -1,0 +1,296 @@
+[
+  {
+    "ticker": "ALCC",
+    "effective_date": "2024-05-10",
+    "successor_ticker": "OKLO",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1849056/000110465924060634/tm2414092d1_8k.htm",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "PCH",
+    "effective_date": "2026-02-02",
+    "successor_ticker": "RYN",
+    "shares_per_share": 1.8185,
+    "cash_per_share": 0.61,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1338749/0001193125-26-032108.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "MRO",
+    "effective_date": "2024-11-22",
+    "successor_ticker": "COP",
+    "shares_per_share": 0.255,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/101778/0001104659-24-122113.txt",
+    "timing_source": "https://infomemo.theocc.com/infomemos?number=55593",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "BSIG",
+    "effective_date": "2025-01-02",
+    "successor_ticker": "AAMI",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1748824/000174882425000016/aami-20241231.htm",
+    "timing_source": "",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "RE",
+    "effective_date": "2023-07-10",
+    "successor_ticker": "EG",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.everestglobal.com/us-en/news-media/press-releases/2023/everest-re-group-to-hold-second-quarter-2023-earnings-conference-call",
+    "timing_source": "https://www.sec.gov/Archives/edgar/data/1095073/000109507323000039/eg-20230630.htm",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "SJW",
+    "effective_date": "2025-05-06",
+    "successor_ticker": "HTO",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.globenewswire.com/news-release/2025/05/06/3075097/0/en/sjw-group-rebrands-as-h2o-america.html",
+    "timing_source": "",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "NARI",
+    "effective_date": "2025-02-19",
+    "cash_per_share": 80.0,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1531048/0001193125-25-029190.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "SWTX",
+    "effective_date": "2025-07-01",
+    "cash_per_share": 47.0,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1773427/0001104659-25-064445.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "X",
+    "effective_date": "2025-06-18",
+    "cash_per_share": 55.0,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1163302/0001104659-25-060674.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "SLNO",
+    "effective_date": "2026-05-18",
+    "cash_per_share": 53.0,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1484565/0001193125-26-228016.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "WNS",
+    "effective_date": "2025-10-17",
+    "cash_per_share": 76.5,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1356570/0002077096-25-000155.txt",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "WKME",
+    "effective_date": "2024-09-12",
+    "cash_per_share": 14.0,
+    "reason": "CASH_MERGER",
+    "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-417",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "AY",
+    "effective_date": "2024-12-12",
+    "cash_per_share": 22.0,
+    "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-602",
+    "note": "Closed before open December12; administrative suspension December13.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "HOLI",
+    "effective_date": "2024-07-26",
+    "cash_per_share": 26.5,
+    "source_url": "https://www.prnewswire.com/news-releases/hollysys-announces-completion-of-merger-transaction-with-ascendent-capital-partners-302206694.html",
+    "note": "Completed July25; trading suspended AS OF CLOSE July25. Operational first nontrading session July26.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "AMWD",
+    "effective_date": "2026-05-28",
+    "successor_ticker": "MBC",
+    "shares_per_share": 5.15,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-358",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "CYBR",
+    "effective_date": "2026-02-11",
+    "successor_ticker": "PANW",
+    "shares_per_share": 2.2005,
+    "cash_per_share": 45.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-84",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "CVGW",
+    "effective_date": "2026-05-28",
+    "successor_ticker": "AVO",
+    "shares_per_share": 0.979,
+    "cash_per_share": 14.85,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-355",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "FIHL",
+    "effective_date": "2026-05-12",
+    "successor_ticker": "PLGO",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1636639/000162828026034096/pressrelease-plgocommencem.htm",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "CNHI",
+    "effective_date": "2024-05-20",
+    "successor_ticker": "CNH",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://investors.cnh.com/news/news-details/2024/CNH-is-changing-its-NYSE-ticker-symbol-to-CNH-on-May-20-05-01-2024/default.aspx",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "UCBI",
+    "effective_date": "2024-08-06",
+    "successor_ticker": "UCB",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/857855/000085785524000051/ucbi-20240726.htm",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "NEP",
+    "effective_date": "2025-02-03",
+    "successor_ticker": "XIFR",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.investor.nexteraenergypartners.com/~/media/Files/N/NEP-IR/news-and-events/News%20Release/2025-0123%20NEP%20name%20change%20PR%20vfinal.pdf",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "MMC",
+    "effective_date": "2026-01-14",
+    "successor_ticker": "MRSH",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.marsh.com/en/corp/about/news/marsh-mclennan-to-change-nyse-symbol-to-mrsh.html",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "IAC",
+    "effective_date": "2026-06-04",
+    "successor_ticker": "PPLI",
+    "shares_per_share": 1.0,
+    "cash_per_share": 0.0,
+    "reason": "SYMBOL_CHANGE",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1800227/0001104659-26-070364.txt",
+    "timing_note": "Same common CUSIP; ticker begins June4.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "IBTX",
+    "effective_date": "2025-01-02",
+    "successor_ticker": "SSB",
+    "shares_per_share": 0.6,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1564618/0000950103-25-000002.txt",
+    "timing_note": "Legal January1; SEC explicitly suspension before January2 open.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "MCBC",
+    "effective_date": "2024-08-01",
+    "successor_ticker": "WTFC",
+    "shares_per_share": 0.137,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1053584/0001104659-24-084676.txt",
+    "timing_note": "SEC suspension prior August1 opening; completed fixed common ratio.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "STR",
+    "effective_date": "2025-08-19",
+    "successor_ticker": "VNOM",
+    "shares_per_share": 0.4855,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1949543/0001193125-25-183045.txt",
+    "timing_note": "SEC old common cancelled at12:01a.m.; successor SEC2074176/000119312525183036 confirms VNOM starts same opening.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "MOFG",
+    "effective_date": "2026-02-17",
+    "successor_ticker": "NIC",
+    "shares_per_share": 0.3175,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1412665/0001412665-26-000015.txt",
+    "timing_note": "Closed Feb13; Nasdaq ECA2026-83 confirms last trading Feb13, suspension Feb17. Operational next trading session.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "ticker": "HTBK",
+    "effective_date": "2026-04-20",
+    "successor_ticker": "CVBF",
+    "shares_per_share": 0.65,
+    "cash_per_share": 0.0,
+    "reason": "STOCK_MERGER",
+    "execution": "successor-market",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1053352/0001193125-26-167257.txt",
+    "timing_note": "Closed Apr17; Nasdaq ECA2026-239 confirms last trading Apr17, suspension Apr20. Operational next trading session.",
+    "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS"
+  }
+]
