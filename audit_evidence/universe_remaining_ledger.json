@@ -161,8 +161,8 @@
     "signal": "2023-10-31",
     "ticker": "VMW",
     "issue": "exit from 2023-12-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2023-11-30",
@@ -317,8 +317,8 @@
     "signal": "2024-04-30",
     "ticker": "ERF",
     "issue": "exit from 2024-06-03",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2024-04-30",
@@ -387,8 +387,8 @@
     "signal": "2024-05-31",
     "ticker": "TNP",
     "issue": "exit from 2024-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2024-06-28",
@@ -415,8 +415,8 @@
     "signal": "2024-06-28",
     "ticker": "SBOW",
     "issue": "exit from 2024-08-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2024-06-28",
@@ -431,8 +431,8 @@
     "signal": "2024-06-28",
     "ticker": "TNP",
     "issue": "entry from 2024-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2024-06-28",
@@ -575,8 +575,8 @@
     "signal": "2024-10-31",
     "ticker": "PRMW",
     "issue": "exit from 2024-12-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2024-10-31",
@@ -838,8 +838,8 @@
     "signal": "2025-03-31",
     "ticker": "ENFN",
     "issue": "exit from 2025-05-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2025-03-31",
@@ -1137,8 +1137,8 @@
     "signal": "2025-07-31",
     "ticker": "PARA",
     "issue": "exit 2026-08-07 outside period ending 2025-09-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2025-07-31",
@@ -1379,8 +1379,8 @@
     "signal": "2025-11-28",
     "ticker": "KAR",
     "issue": "exit from 2026-01-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2025-11-28",
@@ -1432,8 +1432,8 @@
     "signal": "2025-12-31",
     "ticker": "CADE",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2025-12-31",
@@ -1497,8 +1497,8 @@
     "signal": "2025-12-31",
     "ticker": "REVG",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2025-12-31",
@@ -1522,8 +1522,8 @@
     "signal": "2026-01-30",
     "ticker": "CADE",
     "issue": "entry from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-01-30",
@@ -1580,8 +1580,8 @@
     "signal": "2026-01-30",
     "ticker": "REVG",
     "issue": "entry from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-01-30",
@@ -1643,8 +1643,8 @@
     "signal": "2026-03-31",
     "ticker": "CWEN.A",
     "issue": "exit from 2026-05-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-03-31",
@@ -1729,8 +1729,8 @@
     "signal": "2026-04-30",
     "ticker": "BK",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-04-30",
@@ -1757,8 +1757,8 @@
     "signal": "2026-04-30",
     "ticker": "CWEN.A",
     "issue": "entry from 2026-05-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-04-30",
@@ -1771,8 +1771,8 @@
     "signal": "2026-04-30",
     "ticker": "MEG",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-04-30",
@@ -1827,8 +1827,8 @@
     "signal": "2026-05-29",
     "ticker": "FDP",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-05-29",
@@ -1855,8 +1855,8 @@
     "signal": "2026-05-29",
     "ticker": "LC",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-05-29",
@@ -1869,8 +1869,8 @@
     "signal": "2026-05-29",
     "ticker": "SATS",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-05-29",
@@ -1897,8 +1897,8 @@
     "signal": "2026-05-29",
     "ticker": "VSCO",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-06-30",
@@ -1995,8 +1995,8 @@
     "signal": "2026-07-31",
     "ticker": "EQR",
     "issue": "exit from 2026-09-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-07-31",
@@ -2055,8 +2055,8 @@
     "signal": "2026-08-31",
     "ticker": "HLX",
     "issue": "exit from 2026-10-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
   },
   {
     "signal": "2026-08-31",

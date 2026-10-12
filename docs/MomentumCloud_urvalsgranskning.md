@@ -195,3 +195,92 @@ NO-GO för det granskade urvalet kvarstår. Fulluniversumets slutavkastning och 
 En separat offlineinventering kontrollerade samtliga 41 återstående fall mot de återställda fulla individuella historikerna. Alla 41 saknar ett komplett observerat rått/justerat prispar för det fasta köp- eller exitdatumet. Detta är inte bevis för att 41 bolagshändelser har inträffat: det kan också röra sig om datatäckning, symbolbyte, emittentbyte, handelsstopp eller andra exekveringsvillkor. En senare observerad kurs användes inte för det fasta datumet. De fasta datumen hämtades från de 43 kontrollerade perioderna, inte från motorns äldre sena fallback-exits.
 
 `audit_remaining_case_prices.py` och `audit_evidence/remaining_cases_price_inventory_20261012.json` sparar hela kontrollen med antal observationer och faktiskt första/sista datum för varje bas. Denna inventering ändrar varken 247/288 dokumentationsfall eller NO-GO, och är ingen ny universumkörning.
+
+
+## Fortsatt batchgranskning och GO-villkor 12 oktober 2026
+
+Den återupptagna sessionen kontrollerade PR13:s faktiska head på nytt:
+`546e538e84cf09b4a5aa04038abd2419a7e1ae07`, öppen och inte mergad.
+Den tidigare nyckelblockeringen har lösts genom den anslutna datatjänsten:
+ATCO 2023-03-27 är nu direkt observerad i både rå och justerad basis. Båda
+har öppning15,49, stängning15,48 och volym2295603, med tidsstämpel på den
+begärda dagen. Detta är ett observerat prispar, inte en godkänd universumexit.
+Den samlade hämtningen av återstående prisbasispar körs och sparar enskilda
+CSV-observationer löpande. Korta prisfönster ersätter inte formationens405
+kompletta individuella historiker. Slutförandet är ännu inte verifierat i
+denna mellancheckpoint; den aktuella manifestfilen anger faktiskt mottagna par.
+
+### Ytterligare samlade rättningar
+
+19 nya händelser har granskats från primärunderlag och installerats för
+validering. De elva symbol-/aktieslagsbytena är BK→BNY, EQR→VMRK, LC→HAPN,
+MEG→ONT, VSCO→VSXY, SATS→ECHO, KAR→OPLN, CWEN.A→CWEN, FDP→DMC, HLX→HOS
+ och TNP→TEN. Samtliga juridiska kvoter är1:1. EQR:s symbolbyte sker18augusti;
+AVB:s separata merger sker17augusti och får inte ersättas med en direkt
+AVB→VMRK-genväg som missar mellanliggande session. HLX:s kvot är1, inte
+legacy Hornbecks10,27167. Exakta datum och källor finns i
+`audit_evidence/action_batch_20261012_symbols.json`.
+
+De åtta övriga posterna är ENFN→CWAN0,4676 vid dokumenterat icke-val,
+PARA→PSKY1 aktie vid ClassB icke-val, VMW142,50USD kontant vid dokumenterat
+slutligt icke-val, ERF→CHRD0,10125+1,84USD, CADE→HBAN2,475,
+REVG→TEX0,9809+8,71USD, PRMW→PRMB1 aktie och SBOW→CRGY3,125 vid icke-val.
+Valfria alternativa rubrikbelopp eller preliminära prorateringar används
+inte som standardvederlag. ERF:s separata extrautdelning0,232675USD och
+PRMW:s specialutdelning4,38USD är dokumenterade men utelämnade enligt
+oförändrad prisavkastningsdefinition, inte värderade till noll som rättigheter.
+Nya successoremittenter och OTC-instrument kräver fortfarande daterad identitet.
+Exakta primärlänkar och begränsningar finns i
+`audit_evidence/action_batch_20261012_terms.json`.
+
+Ingen av de19 nya händelsedatumen korsar någon av de645 arkiverade valda
+innehavsperioderna. Dokumentationstäckningen är nu270/288 gamla fall;
+18 fall för17 tickers återstår utan färdiggranskad händelselösning.
+Detta är fortfarande dokumentationstäckning, inte godkända exekveringar.
+
+### Oberoende avstämning av förlusterna
+
+`analyze_verified_selection_losses.py` räknar dollarbidrag på den faktiska
+nettokapitalbanan och stämmer av dem mot både slutkapital och nedgångens
+observerade topp/botten. Vid10000USD startkapital blev slutkapitalet
+9945,399498USD. Aktievinster/förluster netto på denna kapitalbana var
++1407,624137USD och faktiska fasta modellavgifter1462,224639USD, vilket
+stämmer till kapitalförändringen−54,600502USD.
+
+Utan den fasta avgiften blir samma prisavkastningsserie+13,222697 %.
+Skillnaden mot nettoserien är13,768702 procentenheter inklusive ränta-på-ränta;
+den är inte samma mått som avgifternas direkt summerade dollarbidrag.
+Den geometriska månatliga bruttoavkastningen är0,289223 %, under den fasta
+månadskostnaden0,30 %. Kostnaden gör alltså slutresultatet negativt,
+men förklarar inte den stora dagliga nedgången.
+
+Största nedgången går från11november2024 till4april2025.
+Direkta avgifter bidrar med cirka2,21 % av kapitalförlusten mellan topp och
+botten; aktiebidragen förklarar resten. Ingen registrerad bolagshändelse
+finns bland de valda innehaven i denna nedgångsperiod. BREA-händelsen kommer
+senare, oktober2025. De tio största negativa tickerbidragen står för42,51 %
+av summan av negativa aktiebidrag i perioden: FTEL, QUBT, RDW, CAPR, ZETA,
+LUNR, RAIL, IONQ, QMCO och RKLB. Det är en koncentrerad riskförlust, inte
+bevis för att dessa förlorare får tas bort. Full avstämning finns i
+`audit_evidence/selection_loss_attribution_20261012.json` och motsvarande
+positions-, avgifts- och nedgångs-CSV-filer.
+
+Alla645 positioner har faktisk rank1–15,15 per månad. Ingen framtidsstyrd
+backfill till rank16 eller lägre inträffade i just detta kontrollerade urval.
+Det generiska backfill-läget är därmed inte bevis på sådan påverkan här.
+
+### Fortsatt validering och faktiskt GO-beslut
+
+`run_universe_diagnostic_batch.py` samlar kända saknade/motstridiga
+bolagshändelsebaser i en enda universumdiagnostik. Dessa exekveringar förblir
+olösta; ingen gissad kurs eller avkastning för ett rensat deluniversum
+publiceras. Oväntade fel stoppar fortfarande körningen. Scriptet är sparat,
+men en färdig diagnostikkörning påstås inte i denna mellancheckpoint.
+
+`docs/GO_validation_protocol.md` låser de återstående bedömningsvillkoren.
+Alla43 analyserade månader är redan sedda data och får inte döpas om till
+ny, orörd holdout. Verklig spread/slippage/marknadspåverkan, en i förväg
+beslutad riskpolicy och helt nya valideringsdata är inte verifierade.
+Ingen framtida paper trading startas utan separat positivt beslut.
+Aktuellt beslut är fortsatt **NO-GO för köp**; slutförd granskning kan
+fortfarande ge NO-GO. Ingen parameteroptimering har utförts.
