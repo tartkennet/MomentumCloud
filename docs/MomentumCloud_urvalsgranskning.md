@@ -189,3 +189,9 @@ Den breda prisbasisförkontrollen omfattar 268 potentiella datumpar för dokumen
 **FRC:s fasta exit 2023-05-01 är ett separat faktiskt exekveringshinder.** Senare FRCB-öppning den 3 maj får inte bakdateras. Mer prisdata i sig bevisar inte en möjlig exit den 1 maj. En eventuell modell som håller kapital spärrat och säljer vid senare återöppning kräver ett uttryckligt separat beslut, redovisning av kapitalbindning och risk, och får inte rapporteras som en rättning av den oförändrade modellen. Daterad identitet för FI/FISV, DOC/PEAK och B/GOLD samt val/proratering och övriga händelser återstår också. Problemaktier och förlorare har inte raderats.
 
 NO-GO för det granskade urvalet kvarstår. Fulluniversumets slutavkastning och rankningens mervärde är fortfarande obevisade. Sparningen sker endast i granskningsgrenen med `[skip ci]`. Ingen main-merge, produktionsändring, handel, dataköp eller parameteroptimering har genomförts.
+
+### Samlad kontroll av de 41 återstående fallen
+
+En separat offlineinventering kontrollerade samtliga 41 återstående fall mot de återställda fulla individuella historikerna. Alla 41 saknar ett komplett observerat rått/justerat prispar för det fasta köp- eller exitdatumet. Detta är inte bevis för att 41 bolagshändelser har inträffat: det kan också röra sig om datatäckning, symbolbyte, emittentbyte, handelsstopp eller andra exekveringsvillkor. En senare observerad kurs användes inte för det fasta datumet. De fasta datumen hämtades från de 43 kontrollerade perioderna, inte från motorns äldre sena fallback-exits.
+
+`audit_remaining_case_prices.py` och `audit_evidence/remaining_cases_price_inventory_20261012.json` sparar hela kontrollen med antal observationer och faktiskt första/sista datum för varje bas. Denna inventering ändrar varken 247/288 dokumentationsfall eller NO-GO, och är ingen ny universumkörning.
