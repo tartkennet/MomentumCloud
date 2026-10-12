@@ -59,7 +59,7 @@
     "signal": "2023-06-30",
     "ticker": "RE",
     "issue": "exit from 2023-08-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -108,8 +108,10 @@
     "signal": "2023-08-31",
     "ticker": "WWE",
     "issue": "exit from 2023-10-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1091907/0001193125-23-233499.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2023-09-29",
@@ -143,8 +145,10 @@
     "signal": "2023-10-31",
     "ticker": "HEP",
     "issue": "exit from 2023-12-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1283140/0001193125-23-287465.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2023-10-31",
@@ -171,8 +175,10 @@
     "signal": "2023-11-30",
     "ticker": "HEP",
     "issue": "entry from 2023-12-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1283140/0001193125-23-287465.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2023-11-30",
@@ -283,7 +289,7 @@
     "signal": "2024-04-30",
     "ticker": "ALCC",
     "issue": "exit from 2024-06-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -297,7 +303,7 @@
     "signal": "2024-04-30",
     "ticker": "CNHI",
     "issue": "exit from 2024-06-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -402,7 +408,7 @@
     "signal": "2024-06-28",
     "ticker": "HOLI",
     "issue": "exit from 2024-08-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -416,8 +422,10 @@
     "signal": "2024-06-28",
     "ticker": "SIX",
     "issue": "exit from 2024-08-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/701374/0001193125-24-173426.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2024-06-28",
@@ -458,7 +466,7 @@
     "signal": "2024-07-31",
     "ticker": "MCBC",
     "issue": "entry from 2024-08-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -472,7 +480,7 @@
     "signal": "2024-07-31",
     "ticker": "UCBI",
     "issue": "exit from 2024-09-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -493,15 +501,19 @@
     "signal": "2024-08-30",
     "ticker": "LSXMA",
     "issue": "exit from 2024-10-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1560385/0001104659-24-098251.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2024-08-30",
     "ticker": "LSXMK",
     "issue": "exit from 2024-10-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1560385/0001104659-24-098251.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2024-08-30",
@@ -514,7 +526,7 @@
     "signal": "2024-08-30",
     "ticker": "WKME",
     "issue": "exit from 2024-10-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -556,7 +568,7 @@
     "signal": "2024-10-31",
     "ticker": "MRO",
     "issue": "exit from 2024-12-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -570,8 +582,10 @@
     "signal": "2024-10-31",
     "ticker": "VSTO",
     "issue": "exit from 2024-12-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1616318/0001616318-24-000122.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2024-11-29",
@@ -584,7 +598,7 @@
     "signal": "2024-11-29",
     "ticker": "AY",
     "issue": "exit from 2025-01-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -598,14 +612,14 @@
     "signal": "2024-11-29",
     "ticker": "BSIG",
     "issue": "exit from 2025-01-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2024-11-29",
     "ticker": "IBTX",
     "issue": "exit from 2025-01-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -633,7 +647,7 @@
     "signal": "2024-12-31",
     "ticker": "BSIG",
     "issue": "entry from 2025-01-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -668,7 +682,7 @@
     "signal": "2024-12-31",
     "ticker": "IBTX",
     "issue": "entry from 2025-01-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -682,7 +696,7 @@
     "signal": "2024-12-31",
     "ticker": "NEP",
     "issue": "exit from 2025-02-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -717,14 +731,14 @@
     "signal": "2025-01-31",
     "ticker": "NARI",
     "issue": "exit from 2025-03-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2025-01-31",
     "ticker": "NEP",
     "issue": "entry from 2025-02-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -745,8 +759,10 @@
     "signal": "2025-01-31",
     "ticker": "SILV",
     "issue": "exit from 2025-03-03",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1659520/000095014225000380/eh250591256_ex9901.htm",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-01-31",
@@ -892,8 +908,10 @@
     "signal": "2025-04-30",
     "ticker": "DESP",
     "issue": "exit from 2025-06-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1703141/000094787125000525/ss4830126_ex9901.htm",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-04-30",
@@ -920,8 +938,10 @@
     "signal": "2025-04-30",
     "ticker": "JNVR",
     "issue": "exit from 2025-06-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.nasdaq.com/press-release/defi-development-corp-announces-ticker-symbol-change-dfdv-2025-05-02",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-04-30",
@@ -934,22 +954,26 @@
     "signal": "2025-04-30",
     "ticker": "SJW",
     "issue": "exit from 2025-06-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2025-05-30",
     "ticker": "AZEK",
     "issue": "exit from 2025-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1782754/0001193125-25-154115.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-05-30",
     "ticker": "CSWI",
     "issue": "exit from 2025-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://cswindustrials.gcs-web.com/news-releases/news-release-details/csw-industrials-announces-commencement-trading-new-york-stock",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-05-30",
@@ -976,14 +1000,14 @@
     "signal": "2025-05-30",
     "ticker": "SWTX",
     "issue": "exit from 2025-07-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2025-05-30",
     "ticker": "X",
     "issue": "exit from 2025-07-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -997,8 +1021,10 @@
     "signal": "2025-06-30",
     "ticker": "AZEK",
     "issue": "entry from 2025-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1782754/0001193125-25-154115.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-06-30",
@@ -1018,8 +1044,10 @@
     "signal": "2025-06-30",
     "ticker": "EYEN",
     "issue": "exit from 2025-08-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1682639/0001104659-25-065294.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-06-30",
@@ -1074,7 +1102,7 @@
     "signal": "2025-06-30",
     "ticker": "SWTX",
     "issue": "entry from 2025-07-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1123,7 +1151,7 @@
     "signal": "2025-07-31",
     "ticker": "STR",
     "issue": "exit from 2025-09-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1186,8 +1214,10 @@
     "signal": "2025-08-29",
     "ticker": "VERB",
     "issue": "entry from 2025-09-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1566610/0001493152-25-012461.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-09-30",
@@ -1249,7 +1279,7 @@
     "signal": "2025-09-30",
     "ticker": "WNS",
     "issue": "exit from 2025-11-03",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1319,8 +1349,10 @@
     "signal": "2025-11-28",
     "ticker": "DOOO",
     "issue": "exit from 2026-01-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1748797/000119312526125055/d76000dex991.htm",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-11-28",
@@ -1368,15 +1400,19 @@
     "signal": "2025-11-28",
     "ticker": "SCS",
     "issue": "exit from 2026-01-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1050825/0001193125-25-315864.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-11-28",
     "ticker": "SNV",
     "issue": "exit from 2026-01-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/18349/0001140361-26-000049.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-11-28",
@@ -1417,8 +1453,10 @@
     "signal": "2025-12-31",
     "ticker": "CMPO",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1823144/000162828026017266/cmpo-20251231.htm",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-12-31",
@@ -1431,7 +1469,7 @@
     "signal": "2025-12-31",
     "ticker": "MMC",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1445,7 +1483,7 @@
     "signal": "2025-12-31",
     "ticker": "PCH",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1466,15 +1504,19 @@
     "signal": "2025-12-31",
     "ticker": "SMLR",
     "issue": "exit from 2026-02-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1554859/0001104659-26-004581.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2025-12-31",
     "ticker": "SNV",
     "issue": "entry from 2026-01-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/18349/0001140361-26-000049.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2026-01-30",
@@ -1494,7 +1536,7 @@
     "signal": "2026-01-30",
     "ticker": "CYBR",
     "issue": "exit from 2026-03-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1515,22 +1557,24 @@
     "signal": "2026-01-30",
     "ticker": "MOFG",
     "issue": "exit from 2026-03-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2026-01-30",
     "ticker": "PCH",
     "issue": "entry from 2026-02-02",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
     "signal": "2026-01-30",
     "ticker": "PX",
     "issue": "exit from 2026-03-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1841968/000119312526010556/d28146d8k.htm",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2026-01-30",
@@ -1634,7 +1678,7 @@
     "signal": "2026-03-31",
     "ticker": "HTBK",
     "issue": "exit from 2026-05-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1648,8 +1692,10 @@
     "signal": "2026-03-31",
     "ticker": "PSTG",
     "issue": "exit from 2026-05-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.everpuredata.com/uk/company/newsroom/press-releases/everpure-to-change-ticker-symbol.html",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2026-03-31",
@@ -1669,7 +1715,7 @@
     "signal": "2026-04-30",
     "ticker": "AMWD",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1704,7 +1750,7 @@
     "signal": "2026-04-30",
     "ticker": "CVGW",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1718,7 +1764,7 @@
     "signal": "2026-04-30",
     "ticker": "FIHL",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1739,7 +1785,7 @@
     "signal": "2026-04-30",
     "ticker": "SLNO",
     "issue": "exit from 2026-06-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1788,7 +1834,7 @@
     "signal": "2026-05-29",
     "ticker": "IAC",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
+    "reviewed_action_record_available": true,
     "execution_status": "UNVERIFIED"
   },
   {
@@ -1970,15 +2016,19 @@
     "signal": "2026-07-31",
     "ticker": "LBRDA",
     "issue": "exit from 2026-09-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1611983/0001140361-26-033932.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2026-07-31",
     "ticker": "LBRDK",
     "issue": "exit from 2026-09-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1611983/0001140361-26-033932.txt",
+    "reviewed_terms_batch": "2026-10-12"
   },
   {
     "signal": "2026-07-31",

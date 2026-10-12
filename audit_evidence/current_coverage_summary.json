@@ -1,8 +1,11 @@
 {
   "original_cases": 288,
-  "reviewed_action_document_cases": 189,
-  "remaining_without_reviewed_action": 99,
-  "remaining_unreviewed_unique_tickers": 86,
+  "reviewed_action_document_cases": 247,
+  "remaining_without_reviewed_action": 41,
+  "remaining_unreviewed_unique_tickers": 36,
   "full_model_run_after_batch": false,
-  "new_verified_actions_total": 37
+  "coverage_is_documentation_not_execution": true,
+  "verified_actions_added_in_this_batch": 22,
+  "previous_confirmed_document_cases": 222,
+  "additional_document_cases_since_confirmed_head": 25
 }

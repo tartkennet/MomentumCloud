@@ -1,0 +1,15 @@
+{
+  "status": "PASS_ARCHIVED_SELECTION_ONLY",
+  "positions": 645,
+  "tickers": 230,
+  "periods": 43,
+  "price_checks": 1935,
+  "identity_checks": 645,
+  "nav_points": 943,
+  "net_return_pct": -0.5460050227673818,
+  "gross_return_pct": 13.222697221264369,
+  "spy_matched_cost_pct": 70.20238513471013,
+  "daily_drawdown_pct": -50.380131906776484,
+  "full_universe_complete": false,
+  "limitation": "Reverifies archived observations; does not rerun selection or prove ranking benefit."
+}
