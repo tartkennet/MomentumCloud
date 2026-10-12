@@ -31,8 +31,8 @@
     "signal": "2023-03-31",
     "ticker": "SJR",
     "issue": "exit from 2023-05-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "BLOCKED_REQUIRES_OBSERVED_USD_CONVERSION_AND_PAYMENT_DATE"
   },
   {
     "signal": "2023-05-31",
@@ -101,8 +101,8 @@
     "signal": "2023-08-31",
     "ticker": "TRTN",
     "issue": "exit from 2023-10-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2023-08-31",
@@ -124,8 +124,8 @@
     "signal": "2023-09-29",
     "ticker": "NCR",
     "issue": "exit from 2023-11-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "BLOCKED_REQUIRES_BOTH_PARENT_AND_SPINOFF_VALUATION"
   },
   {
     "signal": "2023-10-31",
@@ -240,8 +240,8 @@
     "signal": "2024-01-31",
     "ticker": "DOC",
     "issue": "exit 2024-03-04 outside period ending 2024-03-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2024-01-31",
@@ -254,8 +254,8 @@
     "signal": "2024-02-29",
     "ticker": "PEAK",
     "issue": "exit from 2024-04-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2024-03-28",
@@ -641,7 +641,7 @@
     "ticker": "B",
     "issue": "exit 2025-05-09 outside period ending 2025-02-03",
     "reviewed_action_record_available": true,
-    "execution_status": "UNVERIFIED"
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
   },
   {
     "signal": "2024-12-31",
@@ -924,8 +924,8 @@
     "signal": "2025-04-30",
     "ticker": "GOLD",
     "issue": "exit 2025-12-02 outside period ending 2025-06-02",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2025-04-30",
@@ -1067,8 +1067,8 @@
     "signal": "2025-06-30",
     "ticker": "IGT",
     "issue": "exit from 2025-08-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
   },
   {
     "signal": "2025-06-30",
@@ -1193,8 +1193,8 @@
     "signal": "2025-08-29",
     "ticker": "MAG",
     "issue": "exit from 2025-10-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
   },
   {
     "signal": "2025-08-29",
@@ -1251,8 +1251,8 @@
     "signal": "2025-09-30",
     "ticker": "MTAL",
     "issue": "exit 2026-04-14 outside period ending 2025-11-03",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_PAYMENT_TIMING"
   },
   {
     "signal": "2025-09-30",
@@ -1286,8 +1286,8 @@
     "signal": "2025-10-31",
     "ticker": "FI",
     "issue": "exit from 2025-12-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2025-10-31",
@@ -1307,8 +1307,8 @@
     "signal": "2025-10-31",
     "ticker": "LNW",
     "issue": "exit from 2025-12-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2025-10-31",
@@ -1820,8 +1820,8 @@
     "signal": "2026-05-29",
     "ticker": "BLD",
     "issue": "exit from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2026-05-29",
@@ -1904,8 +1904,8 @@
     "signal": "2026-06-30",
     "ticker": "BLD",
     "issue": "entry from 2026-07-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2026-06-30",
@@ -1918,8 +1918,8 @@
     "signal": "2026-06-30",
     "ticker": "CEPT",
     "issue": "exit from 2026-08-03",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
   },
   {
     "signal": "2026-06-30",
@@ -1981,8 +1981,8 @@
     "signal": "2026-07-31",
     "ticker": "AVB",
     "issue": "exit from 2026-09-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2026-07-31",
@@ -2009,8 +2009,8 @@
     "signal": "2026-07-31",
     "ticker": "ISSC",
     "issue": "exit from 2026-09-01",
-    "reviewed_action_record_available": false,
-    "execution_status": "UNVERIFIED"
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
   },
   {
     "signal": "2026-07-31",

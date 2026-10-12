@@ -645,10 +645,10 @@ STOCK_CORPORATE_ACTIONS = {
 }
 
 
-def valuation_identity(ticker, day):
+def valuation_identity(ticker, day, entry=None):
     """Return the executable security and original-share conversion for a day."""
     action = STOCK_CORPORATE_ACTIONS.get(ticker)
-    if action and str(day) >= str(action["effective_date"]):
+    if action and str(day) >= str(action["effective_date"]) and (entry is None or str(entry) < str(action["effective_date"])):
         return (
             str(action["successor_ticker"]),
             float(action["shares_per_share"]),
@@ -657,9 +657,9 @@ def valuation_identity(ticker, day):
     return ticker, 1.0, None
 
 
-def position_close_on_day(cache, ticker, day):
+def position_close_on_day(cache, ticker, day, entry=None):
     """Value one original share across an audited stock or stock-and-cash merger."""
-    value_ticker, ratio, action = valuation_identity(ticker, day)
+    value_ticker, ratio, action = valuation_identity(ticker, day, entry)
     row = get_from_map(cache.get(day, {}), value_ticker)
     if not row:
         return None, action
@@ -765,7 +765,7 @@ def research_exit(
         ticker,
     )
     for index, signal_day in enumerate(sessions[:-1]):
-        close, _ = position_close_on_day(cache, ticker, signal_day)
+        close, _ = position_close_on_day(cache, ticker, signal_day, entry)
         if close is None:
             continue
         triggered = False
@@ -841,7 +841,7 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
                 if day >= str(position["ExitDate"]):
                     price = float(position["ExitPrice_USD"])
                 else:
-                    close, _ = position_close_on_day(cache, ticker, day)
+                    close, _ = position_close_on_day(cache, ticker, day, actual_entry)
                     if close is not None:
                         last_prices[ticker] = close
                     price = last_prices.get(ticker, float(position["EntryPrice_USD"]))

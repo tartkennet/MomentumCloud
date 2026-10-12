@@ -1,0 +1,37 @@
+[
+  {
+    "ticker": "NCR",
+    "effective_date": "2023-10-17",
+    "legal_effective_date": "2023-10-16T17:00:00-04:00",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/70866/0001193125-23-257806.txt",
+    "source_accession": "0001193125-23-257806",
+    "original_cik": "70866",
+    "legal_components": [
+      {
+        "ticker": "VYX",
+        "shares_per_original_share": 1,
+        "cik": "70866"
+      },
+      {
+        "ticker": "NATL",
+        "shares_per_original_share": 0.5
+      }
+    ],
+    "installed": false,
+    "execution_status": "BLOCKED_REQUIRES_BOTH_PARENT_AND_SPINOFF_VALUATION",
+    "note": "Do not install VYX-only exit or assign an invented NATL cash value; due-bill entitlement and both assets must be reconciled."
+  },
+  {
+    "ticker": "SJR",
+    "effective_date": "2023-04-04",
+    "legal_effective_date": "2023-04-03",
+    "original_cik": "932872",
+    "cash_per_original_share": 40.5,
+    "cash_currency": "CAD",
+    "source_url": "https://about.rogers.com/investor-relations/shaw/",
+    "timing_source": "https://www.miaxglobal.com/sites/default/files/alert-files/SJR_Cash_Settlement_52212.pdf",
+    "installed": false,
+    "execution_status": "BLOCKED_REQUIRES_OBSERVED_USD_CONVERSION_AND_PAYMENT_DATE",
+    "note": "No USD price or exchange conversion assumed; closing stock price is not legal cash consideration."
+  }
+]

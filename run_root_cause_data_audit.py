@@ -61,9 +61,9 @@ def linked_positions(run, cache):
         observations=[]
         for day in days:
             if p.EntryDate<=day<p.ExitDate:
-                close,action=engine.position_close_on_day(cache,p.Ticker,day)
+                close,action=engine.position_close_on_day(cache,p.Ticker,day,p.EntryDate)
                 if close is not None:
-                    ticker,ratio,_=engine.valuation_identity(p.Ticker,day)
+                    ticker,ratio,_=engine.valuation_identity(p.Ticker,day,p.EntryDate)
                     row=engine.get_from_map(cache[day],ticker)
                     cash=float(action.get('cash_per_share',0)) if action else 0.0
                     observations.append((day,float(row.get('high',row['close']))*ratio+cash,float(close)))

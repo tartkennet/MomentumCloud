@@ -1,0 +1,15 @@
+{
+  "status": "BLOCKED_NO_VALID_UNIVERSE_RETURN",
+  "basis_issues": [
+    {
+      "ticker": "PARA",
+      "target_day": "2025-09-02",
+      "entry_day": "2025-08-01",
+      "reason": "Action basis disagrees with execution cache: PSKY 2025-08-07"
+    }
+  ],
+  "unresolved_executions": "No executable price or verified corporate-action settlement for: 2023-02-28: SIVB(exit from 2023-04-03) | 2023-03-31: FRC(exit from 2023-05-01), SJR(exit from 2023-05-01) | 2023-07-31: AEPPZ(exit from 2023-09-01) | 2023-09-29: NCR(exit from 2023-11-01) | 2025-07-31: PARA(exit from 2025-09-02) | 2025-10-31: LNW(exit from 2025-12-01), RNAZ(exit 2025-12-02 outside period ending 2025-12-01) | 2026-08-31: HLX(exit from 2026-10-01)",
+  "universe_return": null,
+  "ranking_value_added": null,
+  "stage": "Last verified completed diagnostic, before four successor-history installations"
+}

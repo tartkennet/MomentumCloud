@@ -73,6 +73,8 @@ def main():
             paired_factors[key] = adjustment_factor(*prices)
         return paired_factors[key]
 
+    from audit_dated_action_chain import install_dated_action_chain
+    install_dated_action_chain(engine)
     from audit_action_price_install import install_compatible_action_prices
     install_compatible_action_prices(engine, paired_factor)
 

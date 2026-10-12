@@ -27,7 +27,8 @@ def install_compatible_action_prices(engine, paired_factor):
         original_factor = paired_factor(cache, ticker, max(original_days))
         successor = action.get("valuation_ticker")
         if successor:
-            successor_days = [day for day in days if effective <= day <= resolved_day
+            successor_effective = str(action.get('successor_effective_date', effective))
+            successor_days = [day for day in days if successor_effective <= day <= resolved_day
                               and engine.get_from_map(cache.get(day, {}), successor)]
             if not successor_days:
                 raise RuntimeError(f"No successor action basis: {successor} {effective}")
@@ -46,8 +47,9 @@ def install_compatible_action_prices(engine, paired_factor):
 
     original_close = engine.position_close_on_day
 
-    def compatible_close(cache, ticker, day):
-        value_ticker, ratio, action = engine.valuation_identity(ticker, day)
+    def compatible_close(cache, ticker, day, entry=None):
+        value_ticker, ratio, action = (engine.valuation_identity(ticker, day, entry)
+                                       if entry is not None else engine.valuation_identity(ticker, day))
         if not action:
             return original_close(cache, ticker, day)
         row = engine.get_from_map(cache.get(day, {}), value_ticker)
@@ -56,7 +58,8 @@ def install_compatible_action_prices(engine, paired_factor):
         effective = str(action["effective_date"])
         original_days = [d for d in cache if d < effective
                          and engine.get_from_map(cache[d], ticker)]
-        successor_days = [d for d in cache if effective <= d <= day
+        successor_effective = str(action.get('successor_effective_date', effective))
+        successor_days = [d for d in cache if successor_effective <= d <= day
                           and engine.get_from_map(cache[d], value_ticker)]
         if not original_days or not successor_days:
             raise RuntimeError(f"No compatible daily action basis: {ticker} {day}")

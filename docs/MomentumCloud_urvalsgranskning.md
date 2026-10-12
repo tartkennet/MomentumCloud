@@ -1,5 +1,50 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 12 oktober 2026
 
+## Senaste verifierade checkpoint – 12 oktober 2026
+
+**NO-GO för köp kvarstår.** Den senaste färdiga urvalskörningen efter 33 nya
+händelseinstallationer och daterad kedjehantering matchar exakt alla 645
+positionsnycklar, signal-/köp-/exitpriser och köp-/exitdatum i arkivet:
+230 tickers, 43 månader, −0,5460050227673818 % netto,
+−50,38013190677646 % daglig största nedgång och +70,20238513471013 %
+för SPY med samma fasta månadskostnad. Oberoende kapitalavstämning PASS.
+112 lokala regressionstester passerade före körmiljöns avbrott.
+
+Dokumentationstäckningen är **286/288** gamla fall. AEPPZ och RNAZ saknar
+färdig händelselösning. Dokumenterade fall med okänd valuta-/betalnings-
+hantering, spin-off, leverans eller exekvering är fortfarande blockerade.
+Dokumentationstäckning är ingen exekveringspassfrekvens.
+
+Den breda lokala prisförkontrollen blev färdig med **291/291 observerade
+råa/justerade datumpar**, på exakt begärd dag. ATCO är löst. Den senaste
+färdiga universumdiagnostiken hade **nio olösta exekveringar**: SIVB, FRC,
+SJR, AEPPZ, NCR, PARA, LNW, RNAZ och HLX. Den publicerar ingen giltig
+universumavkastning och inget bevis för rankningens mervärde.
+
+Därefter hämtades fyra individuella successorhistoriker (SIVBQ, PSKY,
+LNWO, nya HOS) och elva daterade identitetsobservationer. Båda identifierare
+matchar föregångaren för SIVBQ/SIVB, HOS/HLX, Barrick-B/GOLD och nya
+FISV/FI. Där leverantörens CIK saknas förblir det fältet saknat; juridisk
+CIK från primärkällan redovisas separat. Gamla DOC har CIK 1574540, nya
+Healthpeak-DOC CIK 765880; gamla Barnes-B CIK 9984 är inte Barrick CIK 756894.
+
+En omkörning efter de fyra nya historikerna startades men dess slutförande
+är **inte verifierat**. Körmiljön tappade anslutningen och rapporterar
+`environment_offline` / `exec-server transport disconnected`. Ingen ny
+slutavkastning eller pågående bakgrundskörning påstås. Först måste denna
+checkpoint återställas i en fungerande körmiljö och den samlade verifieringen
+slutföras. Kod och dokumentation säkras direkt i granskningsgrenen; formatering
+och kommentarer har normaliserats från de redan lokalt testade patcharna.
+Ingen ny lokal testkörning från den återställda GitHub-headen har kunnat göras.
+
+Den befintliga rapportfilens senaste bekräftade version är 10 och ligger efter
+denna GitHub-rapport. Försöket att ersätta den med den lokala uppdateringen
+misslyckades eftersom miljön är offline. Inga modellparametrar har optimerats,
+problemaktier eller förlorare har inte raderats, och ingen main-merge,
+produktion, handel, dataköp eller automation har genomförts.
+
+
+
 ## Beslut och omfattning
 
 **Det isolerade urvalstestet är klart. Bedömning: NO-GO för att godkänna denna urvalsmodell för köp utifrån det här testet.** Det är en granskningsbedömning, inte en ändring av produktionens godkännandestatus. Urvalet gav −0,5460 procent efter kostnader och hade en största daglig nedgång på 50,3801 procent. SPY gav +70,2024 procent med samma fasta månadskostnad.
@@ -81,7 +126,7 @@ Underlagsarkivet innehåller individuella prisserier, parade basispriser, kontro
 Frysta modellindata: ursprungsrun `37419651430`, artifact `11393004537`, cachebasis 2026-10-06. Export `37753784722` passerade; alla tre delhashar och arkivhashen verifierades före lokal körning. Prisverifikationer hämtades 2026-10-08 från individuella Massive/Polygon-aggregat för de aktuella historiska datumen. Bolagshändelsernas SEC-/börskällor finns inline i granskningskodens verifierade settlements. Ingen CVR prissätts genom gissning.
 
 - [Gransknings-PR 13](https://github.com/tartkennet/MomentumCloud/pull/13)
-- [Sparad daglig basisrättning](https://github.com/tartkennet/MomentumCloud/commit/4b3b86f3b90e04cad8bb5c0a0ff70af123eeb13a)
+- [Sparad daglig basisrättning](https://github.com/tartkennet/MomentumCloud/commit/4 b 3 b 86 f 3 b 90 e 04 cad 8 bb 5 c 0 a 0 ff 70 af 123 eeb 13 a)
 - [Frysta indata exporterade](https://github.com/tartkennet/MomentumCloud/actions/runs/37753784722)
 - [Fulluniversumets kvarvarande blockerare](https://github.com/tartkennet/MomentumCloud/actions/runs/37753784684)
 
@@ -99,8 +144,8 @@ De 67 installerade händelsedatumen korsar ingen av de 645 sparade innehavsperio
 
 Prisgränsen i urvalstestets simple_builder är 10 USD. Den tidigare rapporttexten 5 USD var fel; inga parametrar ändrades. Korta referensserier för enskilda positioner får inte ersätta hela modellhistoriken. De kompletta individuella överstyrningarna omfattar 405 distinkta tickers, 117 + 308 med 20 överlapp. Ett tidigare återställningsförsök som använde korta referensserier som fullhistoriker ändrade urvalet; dess resultat är ogiltigt och ingår inte i denna rapport.
 
-- [Sparade 67 händelser och full återstående fallista](https://github.com/tartkennet/MomentumCloud/commit/d48adb7b6754c769934ae9da2b0ed1519c0d364f)
-- [Sparad kalenderfix](https://github.com/tartkennet/MomentumCloud/commit/0050526478231d0b21ab0a451d8ec2f5d6fe8823)
+- [Sparade 67 händelser och full återstående fallista](https://github.com/tartkennet/MomentumCloud/commit/d 48 adb 7 b 6754 c 769934 ae 9 da 2 b 0 ed 1519 c 0 d 364 f)
+- [Sparad kalenderfix](https://github.com/tartkennet/MomentumCloud/commit/0050526478231 d 0 b 21 ab 0 a 451 d 8 ec 2 f 5 d 6 fe 8823)
 
 Alla ändringar ligger i granskningsgrenen. Inga nya GitHub Actions-körningar har begärts. Det isolerade urvalets NO-GO kvarstår; fulluniversumets avkastning och rankningens mervärde är fortfarande obevisade.
 
@@ -114,7 +159,7 @@ Aktie-/blandvederlag: LTHM→ALTM, HEES→HRI, CTRA→DVN, MMP→OKE, DEN→XOM,
 
 Dokumentationstäckningen har ökat från 146 till **182 av 288 gamla signal/ticker-fall**. **106 fall för 92 tickers saknar fortfarande en motsvarande färdiggranskad händelselösning.** Inte alla dessa är dataleverantörsfel. Varje rättning behöver dessutom kontrolleras mot full historik, daterad emittent och rå/justerad prisbasis. Ingen ny fulluniversumkörning har genomförts efter denna batch; 182/288 är inte en exekveringspassfrekvens.
 
-De 102 lokala regressionstesterna passerar. Tre nya integrationstester kontrollerar att motorn använder den observerade SIVBQ-kursen på rätt dag och att en senare FRCB-kurs inte bakdateras. Rättningspatchen kan appliceras på granskningsgrenens sparade head 691798dd8774ccefab1796d72e1f33ea6cc06932; detta kontrollerades med git apply --check. Inga Actions-körningar startades.
+De 102 lokala regressionstesterna passerar. Tre nya integrationstester kontrollerar att motorn använder den observerade SIVBQ-kursen på rätt dag och att en senare FRCB-kurs inte bakdateras. Rättningspatchen kan appliceras på granskningsgrenens sparade head 691798 dd 8774 ccefab 1796 d 72 e 1 f 33 ea 6 cc 06932; detta kontrollerades med git apply --check. Inga Actions-körningar startades.
 
 SIVB:s oförändrade CUSIP och symbolbyte till SIVBQ den 28 mars 2023 verifieras av OCC-memo 52179. Individuell OTC-data visar öppning 0,877 USD den 3 april 2023, det krävda exitdatumet. FRC:s symbolbyte till FRCB den 3 maj verifieras av OCC-memo 52352. OCC-memo 52358 anger NYSE-handelsstopp den 1 maj och OTC-start den 3 maj. Den första observerade öppningen är 0,396 USD den 3 maj. Parade råa/justerade OTC-serier är identiska i de hämtade fönstren, men originalsymbolens basis måste fortfarande verifieras för full modellintegration.
 
@@ -126,9 +171,9 @@ Ingen av de 31 nya händelsedatumen korsar de 645 arkiverade valda innehavsperio
 
 ## Återupptaget arbete 10 oktober 2026
 
-Den tidigare GitHub-blockeringen är löst efter användarens nya instruktion att återuppta arbetet och använda GitHub med hänsyn till budgeten. De 31 rättningarna är nu sparade i commit 687af6259314698b70c8ce96912e4c1e39620fd9. Ingen betald Actions-körning startades; head-kontrollen visade 0 körningar för committen.
+Den tidigare GitHub-blockeringen är löst efter användarens nya instruktion att återuppta arbetet och använda GitHub med hänsyn till budgeten. De 31 rättningarna är nu sparade i commit 687 af 6259314698 b 70 c 8 ce 96912 e 4 c 1 e 39620 fd 9. Ingen betald Actions-körning startades; head-kontrollen visade 0 körningar för committen.
 
-Ytterligare sex primärverifierade händelser är sparade i commit 05ddff7ec1245881b829e608e061333b79074554: JBT→JBTM 1:1 den 3 januari 2025, PPBI→COLB 0,9150 med handelsstopp den 2 september 2025 (juridiskt slutdatum 31 augusti), SQ→XYZ 1:1 den 21 januari 2025, GPS→GAP 1:1 den 22 augusti 2024, BRP→BWIN 1:1 den 20 maj 2024 och BOWL→LUCK 1:1 den 12 december 2024.
+Ytterligare sex primärverifierade händelser är sparade i commit 05 ddff 7 ec 1245881 b 829 e 608 e 061333 b 79074554: JBT→JBTM 1:1 den 3 januari 2025, PPBI→COLB 0,9150 med handelsstopp den 2 september 2025 (juridiskt slutdatum 31 augusti), SQ→XYZ 1:1 den 21 januari 2025, GPS→GAP 1:1 den 22 augusti 2024, BRP→BWIN 1:1 den 20 maj 2024 och BOWL→LUCK 1:1 den 12 december 2024.
 
 Individuella råa och justerade successorkurser på planerade exitdatum hämtades för samtliga sex och är identiska inom respektive par. Observerade råa öppningspriser: JBTM 130,88 USD den 3 februari 2025, COLB 26,505 USD den 2 september 2025, XYZ 88,64 USD den 3 februari 2025, GAP 22,19 USD den 3 september 2024, BWIN 33,72 USD den 3 juni 2024 och LUCK 10,08 USD den 2 januari 2025. Detta verifierar tillgängliga successorkurser, men inte originalsymbolens historiska justeringsbasis eller hela innehavsperioden.
 
@@ -199,14 +244,14 @@ En separat offlineinventering kontrollerade samtliga 41 återstående fall mot d
 
 ## Fortsatt batchgranskning och GO-villkor 12 oktober 2026
 
-Den återupptagna sessionen kontrollerade PR13:s faktiska head på nytt:
+Den återupptagna sessionen kontrollerade PR 13:s faktiska head på nytt:
 `546e538e84cf09b4a5aa04038abd2419a7e1ae07`, öppen och inte mergad.
 Den tidigare nyckelblockeringen har lösts genom den anslutna datatjänsten:
 ATCO 2023-03-27 är nu direkt observerad i både rå och justerad basis. Båda
-har öppning15,49, stängning15,48 och volym2295603, med tidsstämpel på den
+har öppning 15,49, stängning 15,48 och volym 2295603, med tidsstämpel på den
 begärda dagen. Detta är ett observerat prispar, inte en godkänd universumexit.
 Den samlade hämtningen av återstående prisbasispar körs och sparar enskilda
-CSV-observationer löpande. Korta prisfönster ersätter inte formationens405
+CSV-observationer löpande. Korta prisfönster ersätter inte formationens 405
 kompletta individuella historiker. Slutförandet är ännu inte verifierat i
 denna mellancheckpoint; den aktuella manifestfilen anger faktiskt mottagna par.
 
@@ -215,58 +260,58 @@ denna mellancheckpoint; den aktuella manifestfilen anger faktiskt mottagna par.
 19 nya händelser har granskats från primärunderlag och installerats för
 validering. De elva symbol-/aktieslagsbytena är BK→BNY, EQR→VMRK, LC→HAPN,
 MEG→ONT, VSCO→VSXY, SATS→ECHO, KAR→OPLN, CWEN.A→CWEN, FDP→DMC, HLX→HOS
- och TNP→TEN. Samtliga juridiska kvoter är1:1. EQR:s symbolbyte sker18augusti;
-AVB:s separata merger sker17augusti och får inte ersättas med en direkt
-AVB→VMRK-genväg som missar mellanliggande session. HLX:s kvot är1, inte
-legacy Hornbecks10,27167. Exakta datum och källor finns i
+ och TNP→TEN. Samtliga juridiska kvoter är 1:1. EQR:s symbolbyte sker 18 augusti;
+AVB:s separata merger sker 17 augusti och får inte ersättas med en direkt
+AVB→VMRK-genväg som missar mellanliggande session. HLX:s kvot är 1, inte
+legacy Hornbecks 10,27167. Exakta datum och källor finns i
 `audit_evidence/action_batch_20261012_symbols.json`.
 
-De åtta övriga posterna är ENFN→CWAN0,4676 vid dokumenterat icke-val,
-PARA→PSKY1 aktie vid ClassB icke-val, VMW142,50USD kontant vid dokumenterat
-slutligt icke-val, ERF→CHRD0,10125+1,84USD, CADE→HBAN2,475,
-REVG→TEX0,9809+8,71USD, PRMW→PRMB1 aktie och SBOW→CRGY3,125 vid icke-val.
+De åtta övriga posterna är ENFN→CWAN 0,4676 vid dokumenterat icke-val,
+PARA→PSKY 1 aktie vid ClassB icke-val, VMW 142,50 USD kontant vid dokumenterat
+slutligt icke-val, ERF→CHRD 0,10125+1,84 USD, CADE→HBAN 2,475,
+REVG→TEX 0,9809+8,71 USD, PRMW→PRMB 1 aktie och SBOW→CRGY 3,125 vid icke-val.
 Valfria alternativa rubrikbelopp eller preliminära prorateringar används
-inte som standardvederlag. ERF:s separata extrautdelning0,232675USD och
-PRMW:s specialutdelning4,38USD är dokumenterade men utelämnade enligt
+inte som standardvederlag. ERF:s separata extrautdelning 0,232675 USD och
+PRMW:s specialutdelning 4,38 USD är dokumenterade men utelämnade enligt
 oförändrad prisavkastningsdefinition, inte värderade till noll som rättigheter.
 Nya successoremittenter och OTC-instrument kräver fortfarande daterad identitet.
 Exakta primärlänkar och begränsningar finns i
 `audit_evidence/action_batch_20261012_terms.json`.
 
-Ingen av de19 nya händelsedatumen korsar någon av de645 arkiverade valda
-innehavsperioderna. Dokumentationstäckningen är nu270/288 gamla fall;
-18 fall för17 tickers återstår utan färdiggranskad händelselösning.
+Ingen av de 19 nya händelsedatumen korsar någon av de 645 arkiverade valda
+innehavsperioderna. Dokumentationstäckningen är nu 270/288 gamla fall;
+18 fall för 17 tickers återstår utan färdiggranskad händelselösning.
 Detta är fortfarande dokumentationstäckning, inte godkända exekveringar.
 
 ### Oberoende avstämning av förlusterna
 
 `analyze_verified_selection_losses.py` räknar dollarbidrag på den faktiska
 nettokapitalbanan och stämmer av dem mot både slutkapital och nedgångens
-observerade topp/botten. Vid10000USD startkapital blev slutkapitalet
-9945,399498USD. Aktievinster/förluster netto på denna kapitalbana var
-+1407,624137USD och faktiska fasta modellavgifter1462,224639USD, vilket
-stämmer till kapitalförändringen−54,600502USD.
+observerade topp/botten. Vid 10000 USD startkapital blev slutkapitalet
+9945,399498 USD. Aktievinster/förluster netto på denna kapitalbana var
++1407,624137 USD och faktiska fasta modellavgifter 1462,224639 USD, vilket
+stämmer till kapitalförändringen−54,600502 USD.
 
 Utan den fasta avgiften blir samma prisavkastningsserie+13,222697 %.
-Skillnaden mot nettoserien är13,768702 procentenheter inklusive ränta-på-ränta;
+Skillnaden mot nettoserien är 13,768702 procentenheter inklusive ränta-på-ränta;
 den är inte samma mått som avgifternas direkt summerade dollarbidrag.
-Den geometriska månatliga bruttoavkastningen är0,289223 %, under den fasta
-månadskostnaden0,30 %. Kostnaden gör alltså slutresultatet negativt,
+Den geometriska månatliga bruttoavkastningen är 0,289223 %, under den fasta
+månadskostnaden 0,30 %. Kostnaden gör alltså slutresultatet negativt,
 men förklarar inte den stora dagliga nedgången.
 
-Största nedgången går från11november2024 till4april2025.
-Direkta avgifter bidrar med cirka2,21 % av kapitalförlusten mellan topp och
+Största nedgången går från 11 november 2024 till 4 april 2025.
+Direkta avgifter bidrar med cirka 2,21 % av kapitalförlusten mellan topp och
 botten; aktiebidragen förklarar resten. Ingen registrerad bolagshändelse
 finns bland de valda innehaven i denna nedgångsperiod. BREA-händelsen kommer
-senare, oktober2025. De tio största negativa tickerbidragen står för42,51 %
+senare, oktober 2025. De tio största negativa tickerbidragen står för 42,51 %
 av summan av negativa aktiebidrag i perioden: FTEL, QUBT, RDW, CAPR, ZETA,
 LUNR, RAIL, IONQ, QMCO och RKLB. Det är en koncentrerad riskförlust, inte
 bevis för att dessa förlorare får tas bort. Full avstämning finns i
 `audit_evidence/selection_loss_attribution_20261012.json` och motsvarande
 positions-, avgifts- och nedgångs-CSV-filer.
 
-Alla645 positioner har faktisk rank1–15,15 per månad. Ingen framtidsstyrd
-backfill till rank16 eller lägre inträffade i just detta kontrollerade urval.
+Alla 645 positioner har faktisk rank 1–15,15 per månad. Ingen framtidsstyrd
+backfill till rank 16 eller lägre inträffade i just detta kontrollerade urval.
 Det generiska backfill-läget är därmed inte bevis på sådan påverkan här.
 
 ### Fortsatt validering och faktiskt GO-beslut
@@ -278,9 +323,56 @@ publiceras. Oväntade fel stoppar fortfarande körningen. Scriptet är sparat,
 men en färdig diagnostikkörning påstås inte i denna mellancheckpoint.
 
 `docs/GO_validation_protocol.md` låser de återstående bedömningsvillkoren.
-Alla43 analyserade månader är redan sedda data och får inte döpas om till
+Alla 43 analyserade månader är redan sedda data och får inte döpas om till
 ny, orörd holdout. Verklig spread/slippage/marknadspåverkan, en i förväg
 beslutad riskpolicy och helt nya valideringsdata är inte verifierade.
 Ingen framtida paper trading startas utan separat positivt beslut.
 Aktuellt beslut är fortsatt **NO-GO för köp**; slutförd granskning kan
 fortfarande ge NO-GO. Ingen parameteroptimering har utförts.
+
+### Ytterligare verifierade juridiska villkor och begränsningar
+
+Efter checkpoint 8 a 410 df tillkom DOC→PEAK 0,674 den 1 mars 2024 och PEAK→DOC 1
+den 4 mars 2024, FI→FISV 1 den 11 november 2025, GOLD→B 1 den 9 maj 2025,
+AVB→EQR 2,793 den 17 augusti 2026, ISSC→IA 1 den 18 augusti 2026,
+LNW→LNWO 1 den 13 november 2025, TRTN→BIPC 0,758545+54,61096 USD
+den 28 september 2023, BLD→QXO 20,200 vid icke-val den 1 juli 2026,
+MTAL 12,25 USD kontant den 24 oktober 2025, CEPT→SECZ 1 den 2 juli 2026,
+IGT→BRSL 1 den 2 juli 2025, MAG→PAAS 0,58844257+4,52847757 USD
+den 4 september 2025 och Barnes-B 47,50 USD kontant den 27 januari 2025.
+
+Barnes slutfördes 27 januari, inte vid omröstningen 9 januari. FISV:s
+återintroduktion och DOC:s nya emittent hanteras med daterade intervall;
+gamla innehav kan följa flera juridiska omvandlingar utan att nya innehav
+får en gammal emittents kvot. AVB:s EQR-session 17 augusti bevaras före
+VMRK:s första session 18 augusti. Detta ersätter inte en komplett daterad
+formationskontroll.
+
+MAG:s slutliga vederlag kommer från den publicerade rättelsen OCC 57233,
+inte det felaktiga kontantbeloppet i 57232 eller den avrundade optionskvoten
+58/100. Aktiefraktioner rundas enligt villkoren ned till hela aktier;
+ingen påhittad likvid tilldelas dem. Leverans var fördröjd genom 8 september.
+TRTN:s slutliga icke-val är 0,758545 BIPC+54,61096 USD, inte den valbara
+blandningen 0,3895+68,50. Optionsunderlaget beskriver leveransfördröjning
+genom 4 oktober, varför faktisk handel på fasta exitdagen 2 oktober fortfarande
+måste verifieras. Dessa är juridiska installationsposter, inte exekveringsgodkännanden.
+
+NCR:s rättigheter är 1 VYX+0,5 NATL; en VYX-only-exit har inte installerats.
+SJR:s vederlag är 40,50 CAD per publik ClassB-aktie. Betalningsdag och
+USD-konvertering har inte gissats. AEPPZ är enligt SEC-underlag före
+signalen 6,125% Corporate Units med skulddel och framtida aktieköp, inte
+AEP-common. Slutlig individuell kvot och alla komponenter är inte verifierade;
+instrumentet har inte tagits bort ur jämförelsen.
+
+RNAZ saknar fortfarande observerad kurs på fasta exitdagen 2025-12-01.
+Ny data i båda baserna har första senare observation 2025-12-02.
+Den nya responsen hade 1245 rader från 2021-10-13, fyra äldre dagar färre
+än den frysta 1249-radshistoriken från 2021-10-07. Gemensamma OHLC-priser
+var identiska. Rå volym avvek bara genom heltalstrunkering under en aktie.
+Den kortare responsen ersatte inte formationens fullhistorik.
+Detta bevisar avsaknad i datakällan, inte säkert att all marknadshandel var stoppad.
+
+Alla 43 månader har redan granskats. Det generiska fältet
+`out_of_sample_metrics` för 18 månader är ingen ny orörd holdout.
+Verklig spread/slippage/marknadspåverkan och en förhandsbeslutad riskpolicy
+är inte verifierade. Ingen paper trading har startats.

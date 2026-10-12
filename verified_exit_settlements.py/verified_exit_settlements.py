@@ -824,6 +824,110 @@ STOCK_SETTLEMENTS.update({'ENFN': {'effective_date': '2025-04-21',
           'execution': 'successor-market'}})
 CASH_SETTLEMENTS.update({'VMW': ('2023-11-22', 142.5)})
 
+# Source-reviewed dated and final terms; validation only, no execution approval.
+# audit_evidence/action_batch_20261012_dated.json and action_batch_20261012_final_terms.json
+STOCK_SETTLEMENTS.update({
+    "DOC": {
+        "effective_date": "2024-03-01",
+        "successor_ticker": "PEAK",
+        "shares_per_share": 0.674,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market",
+        "reintroduced_date": "2024-03-04"
+    },
+    "PEAK": {
+        "effective_date": "2024-03-04",
+        "successor_ticker": "DOC",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "FI": {
+        "effective_date": "2025-11-11",
+        "successor_ticker": "FISV",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "GOLD": {
+        "effective_date": "2025-05-09",
+        "successor_ticker": "B",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "AVB": {
+        "effective_date": "2026-08-17",
+        "successor_ticker": "EQR",
+        "shares_per_share": 2.793,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "ISSC": {
+        "effective_date": "2026-08-18",
+        "successor_ticker": "IA",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "LNW": {
+        "effective_date": "2025-11-13",
+        "successor_ticker": "LNWO",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "TRTN": {
+        "effective_date": "2023-09-28",
+        "successor_ticker": "BIPC",
+        "shares_per_share": 0.758545,
+        "cash_per_share": 54.61096,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash"
+    },
+    "BLD": {
+        "effective_date": "2026-07-01",
+        "successor_ticker": "QXO",
+        "shares_per_share": 20.2,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "CEPT": {
+        "effective_date": "2026-07-02",
+        "successor_ticker": "SECZ",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "STOCK_MERGER",
+        "execution": "successor-market"
+    },
+    "IGT": {
+        "effective_date": "2025-07-02",
+        "successor_ticker": "BRSL",
+        "shares_per_share": 1,
+        "cash_per_share": 0,
+        "reason": "SYMBOL_CHANGE",
+        "execution": "successor-market"
+    },
+    "MAG": {
+        "effective_date": "2025-09-04",
+        "successor_ticker": "PAAS",
+        "shares_per_share": 0.58844257,
+        "cash_per_share": 4.52847757,
+        "reason": "STOCK_CASH_MERGER",
+        "execution": "successor-market-plus-cash"
+    }
+})
+STOCK_SETTLEMENTS["FISV"]["reintroduced_date"] = "2025-11-11"
+CASH_SETTLEMENTS.update({"MTAL": ("2025-10-24", 12.25), "B": ("2025-01-27", 47.5)})
+
 
 
 
@@ -835,6 +939,7 @@ def install_verified_exit_data(engine):
             "reason": "CASH_MERGER",
             "execution": "cash-settlement",
         }
+    engine.CASH_CORPORATE_ACTIONS["B"]["reintroduced_date"] = "2025-05-09"
     engine.STOCK_CORPORATE_ACTIONS.update(STOCK_SETTLEMENTS)
 
 

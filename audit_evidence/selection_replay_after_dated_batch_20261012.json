@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "positions": 645,
+  "tickers": 230,
+  "months": 43,
+  "exact_matches": {
+    "SignalDate": true,
+    "Ticker": true,
+    "EntryDate": true,
+    "ExitDate": true,
+    "SignalPrice_USD": true,
+    "EntryPrice_USD": true,
+    "ExitPrice_USD": true
+  },
+  "net_return_pct": -0.5460050227673818,
+  "daily_max_drawdown_pct": -50.38013190677646,
+  "spy_matched_fixed_cost_return_pct": 70.20238513471013,
+  "independent_position_and_capital_aggregation": "PASS",
+  "stage": "After 33 additional event installations and dated-chain changes; before four additional successor histories",
+  "latest_rerun_after_successor_histories": "NOT_VERIFIED_ENVIRONMENT_OFFLINE",
+  "note": "All 43 dates are already examined, not a new untouched holdout."
+}
