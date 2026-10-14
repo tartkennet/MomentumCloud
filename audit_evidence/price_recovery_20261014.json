@@ -1,10 +1,10 @@
 {
   "date": "2026-10-14",
-  "status": "RECOVERY_CHECKPOINT",
+  "status": "RECOVERY_COMPLETED",
   "original_daily_csv_saved": 264,
   "previous_recovery_csv_saved": 32,
-  "additional_recovery_csv_saved": 256,
-  "total_daily_csv_saved": 552,
+  "additional_recovery_csv_saved": 260,
+  "total_daily_csv_saved": 556,
   "target": 556,
   "errors": [],
   "records": [
@@ -4359,6 +4359,74 @@
         "n": 4974
       },
       "observed_at": "2026-10-14T18:46:24.630Z"
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BRSL_2025-07-02_raw.csv",
+      "bar": {
+        "v": 2675137,
+        "vw": 16.4515,
+        "o": 16.3,
+        "c": 16.6,
+        "h": 16.64,
+        "l": 16.01,
+        "t": 1751428800000,
+        "n": 22893
+      },
+      "observed_at": "2026-10-14T18:46:56.120Z"
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BRSL_2025-07-02_adjusted.csv",
+      "bar": {
+        "v": 2675137,
+        "vw": 16.4515,
+        "o": 16.3,
+        "c": 16.6,
+        "h": 16.64,
+        "l": 16.01,
+        "t": 1751428800000,
+        "n": 22893
+      },
+      "observed_at": "2026-10-14T18:47:02.463Z"
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PAAS_2025-09-04_raw.csv",
+      "bar": {
+        "v": 4856931,
+        "vw": 33.6092,
+        "o": 33.5,
+        "c": 33.58,
+        "h": 34.05,
+        "l": 33.332,
+        "t": 1756958400000,
+        "n": 44264
+      },
+      "observed_at": "2026-10-14T18:47:07.191Z"
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PAAS_2025-09-04_adjusted.csv",
+      "bar": {
+        "v": 4856931,
+        "vw": 33.6092,
+        "o": 33.5,
+        "c": 33.58,
+        "h": 34.05,
+        "l": 33.332,
+        "t": 1756958400000,
+        "n": 44264
+      },
+      "observed_at": "2026-10-14T18:47:12.038Z"
     }
   ],
   "notice": "Individual observed day pairs; no short series replace full formation history; execution basis recheck pending."
