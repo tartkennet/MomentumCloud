@@ -3,8 +3,8 @@
   "status": "RECOVERY_CHECKPOINT",
   "original_daily_csv_saved": 264,
   "previous_recovery_csv_saved": 32,
-  "additional_recovery_csv_saved": 160,
-  "total_daily_csv_saved": 456,
+  "additional_recovery_csv_saved": 192,
+  "total_daily_csv_saved": 488,
   "target": 556,
   "errors": [],
   "records": [
@@ -2727,6 +2727,550 @@
         "n": 35689
       },
       "observed_at": "2026-10-14T18:35:46.084Z"
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/TXNM_2024-08-05_raw.csv",
+      "bar": {
+        "v": 613112,
+        "vw": 40.2303,
+        "o": 41.1,
+        "c": 40.24,
+        "h": 41.1,
+        "l": 39.6,
+        "t": 1722830400000,
+        "n": 7761
+      },
+      "observed_at": "2026-10-14T18:36:16.609Z"
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/TXNM_2024-08-05_adjusted.csv",
+      "bar": {
+        "v": 613112,
+        "vw": 40.2303,
+        "o": 41.1,
+        "c": 40.24,
+        "h": 41.1,
+        "l": 39.6,
+        "t": 1722830400000,
+        "n": 7761
+      },
+      "observed_at": "2026-10-14T18:36:21.744Z"
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COR_2023-08-30_raw.csv",
+      "bar": {
+        "v": 720499,
+        "vw": 178.7722,
+        "o": 180.49,
+        "c": 178.9,
+        "h": 180.65,
+        "l": 178.025,
+        "t": 1693368000000,
+        "n": 13685
+      },
+      "observed_at": "2026-10-14T18:36:27.002Z"
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COR_2023-08-30_adjusted.csv",
+      "bar": {
+        "v": 720499,
+        "vw": 178.7722,
+        "o": 180.49,
+        "c": 178.9,
+        "h": 180.65,
+        "l": 178.025,
+        "t": 1693368000000,
+        "n": 13685
+      },
+      "observed_at": "2026-10-14T18:36:32.123Z"
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PRKS_2024-02-13_raw.csv",
+      "bar": {
+        "v": 468220,
+        "vw": 48.4698,
+        "o": 48.79,
+        "c": 48.49,
+        "h": 50.58,
+        "l": 47.61,
+        "t": 1707800400000,
+        "n": 7244
+      },
+      "observed_at": "2026-10-14T18:36:38.791Z"
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PRKS_2024-02-13_adjusted.csv",
+      "bar": {
+        "v": 468220,
+        "vw": 48.4698,
+        "o": 48.79,
+        "c": 48.49,
+        "h": 50.58,
+        "l": 47.61,
+        "t": 1707800400000,
+        "n": 7244
+      },
+      "observed_at": "2026-10-14T18:36:44.970Z"
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PRSU_2025-01-02_raw.csv",
+      "bar": {
+        "v": 161005,
+        "vw": 41.8854,
+        "o": 41.28,
+        "c": 41.63,
+        "h": 42.8,
+        "l": 41.04,
+        "t": 1735794000000,
+        "n": 2956
+      },
+      "observed_at": "2026-10-14T18:36:50.211Z"
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PRSU_2025-01-02_adjusted.csv",
+      "bar": {
+        "v": 161005,
+        "vw": 41.8854,
+        "o": 41.28,
+        "c": 41.63,
+        "h": 42.8,
+        "l": 41.04,
+        "t": 1735794000000,
+        "n": 2956
+      },
+      "observed_at": "2026-10-14T18:36:55.610Z"
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CDP_2023-09-15_raw.csv",
+      "bar": {
+        "v": 1422792,
+        "vw": 24.8864,
+        "o": 25.31,
+        "c": 24.81,
+        "h": 25.8,
+        "l": 24.68,
+        "t": 1694750400000,
+        "n": 4487
+      },
+      "observed_at": "2026-10-14T18:37:00.658Z"
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CDP_2023-09-15_adjusted.csv",
+      "bar": {
+        "v": 1422792,
+        "vw": 24.8864,
+        "o": 25.31,
+        "c": 24.81,
+        "h": 25.8,
+        "l": 24.68,
+        "t": 1694750400000,
+        "n": 4487
+      },
+      "observed_at": "2026-10-14T18:37:05.626Z"
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ASTH_2024-02-26_raw.csv",
+      "bar": {
+        "v": 273944,
+        "vw": 42.5984,
+        "o": 42.21,
+        "c": 42.79,
+        "h": 43.87,
+        "l": 42.01,
+        "t": 1708923600000,
+        "n": 3550
+      },
+      "observed_at": "2026-10-14T18:37:10.686Z"
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ASTH_2024-02-26_adjusted.csv",
+      "bar": {
+        "v": 273944,
+        "vw": 42.5984,
+        "o": 42.21,
+        "c": 42.79,
+        "h": 43.87,
+        "l": 42.01,
+        "t": 1708923600000,
+        "n": 3550
+      },
+      "observed_at": "2026-10-14T18:37:15.850Z"
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EFOR_2026-04-24_raw.csv",
+      "bar": {
+        "v": 2569039.119638,
+        "vw": 19.1672,
+        "o": 20.1,
+        "c": 18.97,
+        "h": 20.27,
+        "l": 18.5,
+        "t": 1777003200000,
+        "n": 32213
+      },
+      "observed_at": "2026-10-14T18:37:21.870Z"
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EFOR_2026-04-24_adjusted.csv",
+      "bar": {
+        "v": 2569039.119638,
+        "vw": 19.1672,
+        "o": 20.1,
+        "c": 18.97,
+        "h": 20.27,
+        "l": 18.5,
+        "t": 1777003200000,
+        "n": 32213
+      },
+      "observed_at": "2026-10-14T18:37:28.094Z"
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CALY_2026-01-16_raw.csv",
+      "bar": {
+        "v": 2844725,
+        "vw": 15.1033,
+        "o": 14.81,
+        "c": 15.14,
+        "h": 15.255,
+        "l": 14.67,
+        "t": 1768539600000,
+        "n": 23794
+      },
+      "observed_at": "2026-10-14T18:37:33.218Z"
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CALY_2026-01-16_adjusted.csv",
+      "bar": {
+        "v": 2844725,
+        "vw": 15.1033,
+        "o": 14.81,
+        "c": 15.14,
+        "h": 15.255,
+        "l": 14.67,
+        "t": 1768539600000,
+        "n": 23794
+      },
+      "observed_at": "2026-10-14T18:37:45.450Z"
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HHH_2023-08-14_raw.csv",
+      "bar": {
+        "v": 121207,
+        "vw": 78.7839,
+        "o": 79.48,
+        "c": 78.17,
+        "h": 80.33,
+        "l": 78.03,
+        "t": 1691985600000,
+        "n": 6194
+      },
+      "observed_at": "2026-10-14T18:37:39.519Z"
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HHH_2023-08-14_adjusted.csv",
+      "bar": {
+        "v": 121207,
+        "vw": 78.7839,
+        "o": 79.48,
+        "c": 78.17,
+        "h": 80.33,
+        "l": 78.03,
+        "t": 1691985600000,
+        "n": 6194
+      },
+      "observed_at": "2026-10-14T18:37:51.187Z"
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WKC_2023-06-16_raw.csv",
+      "bar": {
+        "v": 1047575,
+        "vw": 23.6365,
+        "o": 25.1,
+        "c": 23.48,
+        "h": 25.1,
+        "l": 23.3,
+        "t": 1686888000000,
+        "n": 6168
+      },
+      "observed_at": "2026-10-14T18:37:57.232Z"
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WKC_2023-06-16_adjusted.csv",
+      "bar": {
+        "v": 1047575,
+        "vw": 23.6365,
+        "o": 25.1,
+        "c": 23.48,
+        "h": 25.1,
+        "l": 23.3,
+        "t": 1686888000000,
+        "n": 6168
+      },
+      "observed_at": "2026-10-14T18:38:03.470Z"
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CPAY_2024-03-25_raw.csv",
+      "bar": {
+        "v": 156352,
+        "vw": 307.236,
+        "o": 319.94,
+        "c": 307.66,
+        "h": 319.94,
+        "l": 304.8,
+        "t": 1711339200000,
+        "n": 4828
+      },
+      "observed_at": "2026-10-14T18:38:08.799Z"
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CPAY_2024-03-25_adjusted.csv",
+      "bar": {
+        "v": 156352,
+        "vw": 307.236,
+        "o": 319.94,
+        "c": 307.66,
+        "h": 319.94,
+        "l": 304.8,
+        "t": 1711339200000,
+        "n": 4828
+      },
+      "observed_at": "2026-10-14T18:38:14.426Z"
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SGI_2025-02-18_raw.csv",
+      "bar": {
+        "v": 1578562,
+        "vw": 69.1475,
+        "o": 68,
+        "c": 69.15,
+        "h": 69.87,
+        "l": 67.3827,
+        "t": 1739854800000,
+        "n": 19494
+      },
+      "observed_at": "2026-10-14T18:38:20.606Z"
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SGI_2025-02-18_adjusted.csv",
+      "bar": {
+        "v": 1578562,
+        "vw": 69.1475,
+        "o": 68,
+        "c": 69.15,
+        "h": 69.87,
+        "l": 67.3827,
+        "t": 1739854800000,
+        "n": 19494
+      },
+      "observed_at": "2026-10-14T18:38:25.956Z"
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WRK_2024-07-03_raw.csv",
+      "bar": {
+        "v": 4435075,
+        "vw": 49.7452,
+        "o": 49.55,
+        "c": 49.75,
+        "h": 50.24,
+        "l": 49.34,
+        "t": 1719979200000,
+        "n": 27736
+      },
+      "observed_at": "2026-10-14T18:38:31.945Z"
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WRK_2024-07-03_adjusted.csv",
+      "bar": {
+        "v": 4435075,
+        "vw": 49.7452,
+        "o": 49.55,
+        "c": 49.75,
+        "h": 50.24,
+        "l": 49.34,
+        "t": 1719979200000,
+        "n": 27736
+      },
+      "observed_at": "2026-10-14T18:38:42.007Z"
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SW_2024-07-08_raw.csv",
+      "bar": {
+        "v": 67456794,
+        "vw": 46.1967,
+        "o": 47.4,
+        "c": 46.22,
+        "h": 47.6,
+        "l": 44.9,
+        "t": 1720411200000,
+        "n": 75073
+      },
+      "observed_at": "2026-10-14T18:38:36.891Z"
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SW_2024-07-08_adjusted.csv",
+      "bar": {
+        "v": 67456794,
+        "vw": 46.1967,
+        "o": 47.4,
+        "c": 46.22,
+        "h": 47.6,
+        "l": 44.9,
+        "t": 1720411200000,
+        "n": 75073
+      },
+      "observed_at": "2026-10-14T18:38:47.765Z"
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ETRN_2024-07-19_raw.csv",
+      "bar": {
+        "v": 194273745,
+        "vw": 12.4419,
+        "o": 12.36,
+        "c": 12.42,
+        "h": 12.57,
+        "l": 12.23,
+        "t": 1721361600000,
+        "n": 116990
+      },
+      "observed_at": "2026-10-14T18:38:53.734Z"
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ETRN_2024-07-19_adjusted.csv",
+      "bar": {
+        "v": 194273745,
+        "vw": 12.4419,
+        "o": 12.36,
+        "c": 12.42,
+        "h": 12.57,
+        "l": 12.23,
+        "t": 1721361600000,
+        "n": 116990
+      },
+      "observed_at": "2026-10-14T18:38:58.882Z"
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EQT_2024-07-22_raw.csv",
+      "bar": {
+        "v": 13474265,
+        "vw": 35.7861,
+        "o": 36.29,
+        "c": 35.67,
+        "h": 36.67,
+        "l": 35.52,
+        "t": 1721620800000,
+        "n": 80149
+      },
+      "observed_at": "2026-10-14T18:39:04.399Z"
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EQT_2024-07-22_adjusted.csv",
+      "bar": {
+        "v": 13474265,
+        "vw": 35.7861,
+        "o": 36.29,
+        "c": 35.67,
+        "h": 36.67,
+        "l": 35.52,
+        "t": 1721620800000,
+        "n": 80149
+      },
+      "observed_at": "2026-10-14T18:39:11.207Z"
     }
   ],
   "notice": "Individual observed day pairs; no short series replace full formation history; execution basis recheck pending."
