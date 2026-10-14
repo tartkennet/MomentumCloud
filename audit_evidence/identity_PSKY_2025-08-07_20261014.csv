@@ -1,0 +1,2 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,phone_number,address_address1,address_city,address_state,address_postal_code,sic_code,sic_description,ticker_root,round_lot
+PSKY,Paramount Skydance Corporation Class B Common Stock,stocks,us,XNAS,CS,true,usd,0002041610,BBG01VS5NK99,BBG01VS5NKB6,212-258-6000,1515 BROADWAY,NEW YORK,NY,10036,4833,TELEVISION BROADCASTING STATIONS,PSKY,100

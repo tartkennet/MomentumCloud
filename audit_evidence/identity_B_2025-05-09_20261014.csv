@@ -1,0 +1,2 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot
+B,Barrick Mining Corporation,stocks,us,XNYS,CS,true,usd,BBG000BB07P9,BBG001S5N9P3,B,1719460000,100

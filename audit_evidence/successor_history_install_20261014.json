@@ -1,0 +1,89 @@
+{
+  "status": "INSTALLED_OBSERVED_COMPLETE_SUCCESSOR_HISTORIES",
+  "request_from": "2021-11-08",
+  "request_to": "2026-10-03",
+  "original_full_histories_preserved": 405,
+  "model_validation": "PENDING",
+  "records": [
+    {
+      "ticker": "SIVBQ",
+      "basis": "raw",
+      "valid_from": "2023-03-28",
+      "bars": 407,
+      "first": "2023-03-28",
+      "last": "2024-11-07",
+      "source_path": "audit_evidence/successor_SIVBQ_raw_20261014.csv",
+      "sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37"
+    },
+    {
+      "ticker": "SIVBQ",
+      "basis": "adjusted",
+      "valid_from": "2023-03-28",
+      "bars": 407,
+      "first": "2023-03-28",
+      "last": "2024-11-07",
+      "source_path": "audit_evidence/successor_SIVBQ_adjusted_20261014.csv",
+      "sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37"
+    },
+    {
+      "ticker": "PSKY",
+      "basis": "raw",
+      "valid_from": "2025-08-07",
+      "bars": 291,
+      "first": "2025-08-07",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_PSKY_raw_20261014.csv",
+      "sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194"
+    },
+    {
+      "ticker": "PSKY",
+      "basis": "adjusted",
+      "valid_from": "2025-08-07",
+      "bars": 291,
+      "first": "2025-08-07",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_PSKY_adjusted_20261014.csv",
+      "sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194"
+    },
+    {
+      "ticker": "LNWO",
+      "basis": "raw",
+      "valid_from": "2025-11-13",
+      "bars": 222,
+      "first": "2025-11-13",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_LNWO_raw_20261014.csv",
+      "sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c"
+    },
+    {
+      "ticker": "LNWO",
+      "basis": "adjusted",
+      "valid_from": "2025-11-13",
+      "bars": 222,
+      "first": "2025-11-13",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_LNWO_adjusted_20261014.csv",
+      "sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c"
+    },
+    {
+      "ticker": "HOS",
+      "basis": "raw",
+      "valid_from": "2026-09-02",
+      "bars": 22,
+      "first": "2026-09-02",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_HOS_raw_20261014.csv",
+      "sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b"
+    },
+    {
+      "ticker": "HOS",
+      "basis": "adjusted",
+      "valid_from": "2026-09-02",
+      "bars": 22,
+      "first": "2026-09-02",
+      "last": "2026-10-02",
+      "source_path": "audit_evidence/successor_HOS_adjusted_20261014.csv",
+      "sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b"
+    }
+  ]
+}

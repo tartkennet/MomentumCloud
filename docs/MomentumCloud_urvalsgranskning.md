@@ -1,5 +1,14 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 12 oktober 2026
 
+## Återstart och säkrad återställning – 14 oktober 2026
+
+Arbetet återupptogs på användarens instruktion från verifierad head `3821474`. Den nya körmiljön fungerade men arbetsmappen var tom. Alla 410 textfiler återställdes från GitHub. Tio originalarkiv matchade sparade SHA-256. Den frysta cachen återställdes direkt till mindre delar: 507412232 byte, SHA-256 `638589917ba5a37c0c69bdd0e057b4fb873618981c286bde3d88488135313ee2`, version 3 och basis 2026-10-06. En första lokal extraktion var avklippt och användes inte för körning.
+
+**112/112 regressionstester passerade** på den återställda koden med projektets låsta paketversioner. Alla 405 ursprungliga fullhistoriker bevarades. Fyra kompletta efterföljarhistoriker återhämtades och sparades: SIVBQ 407, PSKY 291, LNWO 222 och HOS 22 observationer i vardera basen. Elva daterade emittentobservationer är sparade. Saknad CIK behålls saknad. En konflikt framkom: datakällans DOC-post 2024-03-04 anger gamla Physicians CIK 1574540 trots Healthpeak-FIGI; juridiskt kvarvarande Healthpeak har CIK 765880. Konflikten får inte tyst godkännas som identitetsbevis.
+
+32 av de 292 saknade dagspris-CSV:erna har nu återhämtats och säkrats: totalt 296/556 nya filer. Resterande 260 finns i återstartslistan. Ingen ny färdig universum- eller urvalskörning påstås i denna mellancheckpoint. Dokumentationstäckningen 286/288 och NO-GO kvarstår tills omräkning/verifiering slutförts.
+
+
 ## Stopp och verifierad sparning – 14 oktober 2026
 
 Arbetet stoppades på användarens begäran. PR 13:s head verifierades som `a1fa847e9ca1103231e43e5af8101bfc04a6bd4a`, öppen och inte mergad. GitHub svarade och hade kvar checkpointen; det finns inget verifierat belägg för att detta avbrott orsakades av GitHub-krediter. Det observerade felet var `environment_offline` / `exec-server transport disconnected` i den lokala körmiljön.

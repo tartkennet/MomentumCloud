@@ -1,0 +1,2 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot
+HOS,"Hornbeck Offshore Services, Inc.",stocks,us,XNYS,CS,true,usd,BBG000J7Q1L9,BBG001S978V8,HOS,147382447,100

@@ -1,0 +1,2 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot
+FISV,"Fiserv, Inc. Common Stock",stocks,us,XNAS,CS,true,usd,BBG000BJKPG0,BBG001S5R6Q4,FISV,543593180,100
