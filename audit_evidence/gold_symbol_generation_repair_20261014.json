@@ -1,0 +1,16 @@
+{
+  "status": "TESTED_DATED_SYMBOL_REPAIR",
+  "old_gold_cik": "756894",
+  "old_gold_successor": "B",
+  "old_gold_retirement": "2025-05-09",
+  "new_gold_cik": "1591588",
+  "new_gold_valid_from": "2025-12-02",
+  "new_gold_predecessor": "AMRK",
+  "new_gold_legal_ratio": 1,
+  "primary_source": "https://www.sec.gov/Archives/edgar/data/1591588/000119312525307852/gold-20251202.htm",
+  "behavior_before": "New GOLD planned entries rejected by the earlier Barrick retirement; default valuation identity points to B.",
+  "behavior_after": "New Gold.com entries accepted from December2; old held Barrick GOLD still converts to B; AMRK holdings convert only to new GOLD.",
+  "regression_tests": 115,
+  "full_replay_after_fix": "PASS_EXACT_645_POSITION_MATCH",
+  "documentary_coverage_unchanged": 286
+}

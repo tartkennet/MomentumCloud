@@ -926,6 +926,10 @@ STOCK_SETTLEMENTS.update({
     }
 })
 STOCK_SETTLEMENTS["FISV"]["reintroduced_date"] = "2025-11-11"
+# Gold.com (formerly AMRK), CIK 1591588, reuses Barrick's retired symbol.
+# Its unchanged common-stock CUSIP is documented in the completed 8-K:
+# https://www.sec.gov/Archives/edgar/data/1591588/000119312525307852/gold-20251202.htm
+STOCK_SETTLEMENTS["GOLD"]["reintroduced_date"] = "2025-12-02"
 CASH_SETTLEMENTS.update({"MTAL": ("2025-10-24", 12.25), "B": ("2025-01-27", 47.5)})
 
 
@@ -947,3 +951,4 @@ def install_verified_exit_data(engine):
 
 import backtest_momentum_v3 as _engine
 install_verified_exit_data(_engine)
+

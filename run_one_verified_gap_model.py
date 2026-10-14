@@ -78,6 +78,13 @@ def main():
     from audit_action_price_install import install_compatible_action_prices
     install_compatible_action_prices(engine, paired_factor)
 
+    # Execution-only distribution observations never replace formation histories.
+    if os.environ["SCENARIO"] in ("momentum_selection_only", "eligible_universe_equal_weight"):
+        from audit_multileg_action_install import install_compatible_multileg_actions
+        multi_path = Path("audit_evidence/multileg_execution_histories_20261014.json")
+        if multi_path.exists():
+            install_compatible_multileg_actions(engine, paired_factor, json.loads(multi_path.read_text()))
+
     old_raw_closes = engine.PolygonClient.fetch_unadjusted_signal_closes
 
     def corrected_raw_closes(client, day):
@@ -162,4 +169,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

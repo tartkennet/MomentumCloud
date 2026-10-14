@@ -56,12 +56,15 @@
     "cash_per_share": 0,
     "original_cik": "756894",
     "source_url": "https://www.barrick.com/English/news/news-details/2025/barrick-Is-now-B-on-the-NYSE/default.aspx",
-    "note": "Barrick CIK756894 and CUSIP06849F108; older B is Barnes CIK9984, not Barrick formation history.",
+    "note": "Barrick CIK756894 and CUSIP06849F108; older B is Barnes CIK9984, not Barrick formation history. GOLD is reused by Gold.com (formerly AMRK), CIK1591588, from December2 2025. New holdings must not be retired under the earlier Barrick action.",
     "successor_cik": "756894",
     "reason": "STOCK_MERGER",
     "execution": "successor-market",
     "execution_validation": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY",
-    "selected_position_windows_crossed": 0
+    "selected_position_windows_crossed": 0,
+    "reintroduced_date": "2025-12-02",
+    "reintroduced_issuer_cik": "1591588",
+    "reintroduced_source_url": "https://www.sec.gov/Archives/edgar/data/1591588/000119312525307852/gold-20251202.htm"
   },
   {
     "ticker": "AVB",

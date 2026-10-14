@@ -1,5 +1,18 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 12 oktober 2026
 
+## Samlad återställnings- och rättningscheckpoint – 14 oktober 2026
+
+**121 lokala regressionstester passerar.** Hela den saknade prisbatchen är nu återhämtad och sparad: 556/556 ursprungliga nya dagsprisfiler, plus två observerade filer för TEN 2024-07-01. Den omräknade breda förkontrollen är **291/291 råa/justerade datumpar, 0 saknade**. Alla 405 fullhistoriker bevaras. De fyra efterföljarhistorikerna och daterad identitet finns säkrade.
+
+GOLD:s återanvändning av Gold.com, CIK 1591588, från 2025-12-02 är rättad. Nya GOLD-innehav får inte spärras av Barricks tidigare symbolbyte till B. Gamla Barrick-innehav följer fortfarande B, och AMRK-innehav följer enbart nya GOLD. Tre nya regressioner passerar. En faktisk ny urvalsreplay efter denna rättning matchar exakt alla 645 positioner, köp-/exitdatum och priser, med oberoende kapitalavstämning PASS: −0,5460050227673818 % netto, −50,38013190677646 % daglig nedgång och +70,20238513471013 % kostnadsjämförbar SPY.
+
+NCR:s 1 VYX+0,5 NATL är nu installerad för de två fasta granskningsscenarierna. Båda aktiekomponenterna värderas på exakt begärd dag och med kompatibel rå/justerad basis för exit och daglig close. Tolv observerade dagar i varje bas och komponent är separata exekveringsunderlag; de ersätter aldrig formationens fullhistorik. Daterade dataposter på första handelsdagen bekräftar CIK 70866 respektive 1974138. Sex nya tester kräver båda benen, rätt datum och originalets basis. Marknadspriserna använder testets kontinuerliga aktieenheter; faktisk kontantavräkning för aktiefraktioner har inte gissats och modellen är ingen bevisad handelsfyllnad.
+
+Den riktade formationskontrollen av återanvända symboler och AEPPZ omfattar 177 poster över 43 signaler och 258 frysta referenssidor. 174 daterade CIK-poster matchar verifierade emittentintervall, inklusive nya Gold.com. AEPPZ är felklassat som CS på tre frysta signaldagar trots att instrumentet är corporate units. Det ligger kvar i granskningen; ingen riktad borttagning används för att förbättra resultatet. Ny DOC:s dagspost 2024-03-04 har en CIK-konflikt, medan frysta månadsreferenser från 2024-03-28 anger rätt Healthpeak-CIK 765880. Dessa kontroller verifierar inte all formationshistories kontinuitet eller en faktiskt möjlig fyllnad.
+
+Den samlade universumdiagnostiken körs lokalt efter denna batch, men dess slutförande är ännu inte verifierat i denna checkpoint. NO-GO och frånvaron av en giltig universumavkastning kvarstår. Ingen main-merge, produktion, handel, dataköp, parameteroptimering eller automation har genomförts.
+
+
 ## Återstart och säkrad återställning – 14 oktober 2026
 
 Arbetet återupptogs på användarens instruktion från verifierad head `3821474`. Den nya körmiljön fungerade men arbetsmappen var tom. Alla 410 textfiler återställdes från GitHub. Tio originalarkiv matchade sparade SHA-256. Den frysta cachen återställdes direkt till mindre delar: 507412232 byte, SHA-256 `638589917ba5a37c0c69bdd0e057b4fb873618981c286bde3d88488135313ee2`, version 3 och basis 2026-10-06. En första lokal extraktion var avklippt och användes inte för körning.
