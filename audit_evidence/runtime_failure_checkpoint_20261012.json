@@ -19,6 +19,6 @@
   "library_report_last_confirmed_version": 10,
   "library_report_replacement_status": "FAILED_ENVIRONMENT_OFFLINE",
   "background_job_status": "NOT_VERIFIABLE_DO_NOT_CLAIM_RUNNING",
-  "recovery_method": "GitHub checkpoint from previously applied and tested patches; comments and formatting normalized. New quote bytes checkpointed separately through the connected data service.",
+  "recovery_method": "GitHub checkpoint from previously applied and tested patches; comments and formatting normalized. Only 264 of 556 new daily quote CSVs verified saved at the stop; missing quote bytes listed in stopped_checkpoint_20261014.json.",
   "required_next_step": "Restore this branch plus frozen inputs, run 112 tests, then one batch universe diagnostic and fixed selection replay. Preserve FRC/RNAZ fixed-day failures, multi-asset NCR and CAD SJR blockers."
 }

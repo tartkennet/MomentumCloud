@@ -1,5 +1,14 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 12 oktober 2026
 
+## Stopp och verifierad sparning – 14 oktober 2026
+
+Arbetet stoppades på användarens begäran. PR 13:s head verifierades som `a1fa847e9ca1103231e43e5af8101bfc04a6bd4a`, öppen och inte mergad. GitHub svarade och hade kvar checkpointen; det finns inget verifierat belägg för att detta avbrott orsakades av GitHub-krediter. Det observerade felet var `environment_offline` / `exec-server transport disconnected` i den lokala körmiljön.
+
+Kodrättningar, händelseunderlag, dokumentation och de senast verifierade resultaten finns i checkpointen. Av 556 nya dagspris-CSV:er finns 264 verifierat i GitHub; 292 saknas där. Den efterföljande prisräddningen gav ingen verifierad ny branch-commit före stoppet. Fyra nya successorhistoriker och elva daterade identitetsobservationer var lokalt färdiga men deras filinnehåll är inte verifierat varaktigt sparat. Deras återställning och en samlad verifiering återstår. Den sista lokala modellomkörningen är inte verifierat slutförd. Inget fortsatt jobb påstås arbeta i bakgrunden.
+
+Detta sparstopp säkrar en exakt återstartslista i `audit_evidence/stopped_checkpoint_20261014.json`; det ersätter inte de saknade prisfilernas innehåll. Den separata rapportfilens senaste bekräftade version är 10; ersättningen misslyckades när körmiljön blev offline. GitHub-rapporten är senare. NO-GO kvarstår, fulluniversumets avkastning och rankningens mervärde är obevisade.
+
+
 ## Senaste verifierade checkpoint – 12 oktober 2026
 
 **NO-GO för köp kvarstår.** Den senaste färdiga urvalskörningen efter 33 nya
@@ -332,7 +341,7 @@ fortfarande ge NO-GO. Ingen parameteroptimering har utförts.
 
 ### Ytterligare verifierade juridiska villkor och begränsningar
 
-Efter checkpoint 8 a 410 df tillkom DOC→PEAK 0,674 den 1 mars 2024 och PEAK→DOC 1
+Efter checkpoint `8a410df` tillkom DOC→PEAK 0,674 den 1 mars 2024 och PEAK→DOC 1
 den 4 mars 2024, FI→FISV 1 den 11 november 2025, GOLD→B 1 den 9 maj 2025,
 AVB→EQR 2,793 den 17 augusti 2026, ISSC→IA 1 den 18 augusti 2026,
 LNW→LNWO 1 den 13 november 2025, TRTN→BIPC 0,758545+54,61096 USD

@@ -1,0 +1,1777 @@
+{
+  "date": "2026-10-14",
+  "status": "STOPPED_AT_USER_REQUEST",
+  "verified_parent_head": "a1fa847e9ca1103231e43e5af8101bfc04a6bd4a",
+  "observed_runtime_error": [
+    "environment_offline",
+    "exec-server transport disconnected"
+  ],
+  "github_credit_exhaustion": "NOT_ESTABLISHED",
+  "new_daily_csv_expected": 556,
+  "new_daily_csv_verified_in_github": 264,
+  "new_daily_csv_not_saved": [
+    {
+      "ticker": "SAND",
+      "day": "2025-10-17",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SAND_2025-10-17_raw.csv"
+    },
+    {
+      "ticker": "SAND",
+      "day": "2025-10-17",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SAND_2025-10-17_adjusted.csv"
+    },
+    {
+      "ticker": "RGLD",
+      "day": "2025-10-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RGLD_2025-10-20_raw.csv"
+    },
+    {
+      "ticker": "RGLD",
+      "day": "2025-10-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RGLD_2025-10-20_adjusted.csv"
+    },
+    {
+      "ticker": "JHX",
+      "day": "2025-07-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/JHX_2025-07-01_raw.csv"
+    },
+    {
+      "ticker": "JHX",
+      "day": "2025-07-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/JHX_2025-07-01_adjusted.csv"
+    },
+    {
+      "ticker": "TKO",
+      "day": "2023-09-12",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/TKO_2023-09-12_raw.csv"
+    },
+    {
+      "ticker": "TKO",
+      "day": "2023-09-12",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/TKO_2023-09-12_adjusted.csv"
+    },
+    {
+      "ticker": "GPGI",
+      "day": "2026-01-23",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/GPGI_2026-01-23_raw.csv"
+    },
+    {
+      "ticker": "GPGI",
+      "day": "2026-01-23",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/GPGI_2026-01-23_adjusted.csv"
+    },
+    {
+      "ticker": "FUN",
+      "day": "2024-07-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/FUN_2024-07-02_raw.csv"
+    },
+    {
+      "ticker": "FUN",
+      "day": "2024-07-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/FUN_2024-07-02_adjusted.csv"
+    },
+    {
+      "ticker": "GEAR",
+      "day": "2024-11-27",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/GEAR_2024-11-27_raw.csv"
+    },
+    {
+      "ticker": "GEAR",
+      "day": "2024-11-27",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/GEAR_2024-11-27_adjusted.csv"
+    },
+    {
+      "ticker": "PPLI",
+      "day": "2026-06-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PPLI_2026-06-04_raw.csv"
+    },
+    {
+      "ticker": "PPLI",
+      "day": "2026-06-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PPLI_2026-06-04_adjusted.csv"
+    },
+    {
+      "ticker": "SSB",
+      "day": "2025-01-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SSB_2025-01-02_raw.csv"
+    },
+    {
+      "ticker": "SSB",
+      "day": "2025-01-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SSB_2025-01-02_adjusted.csv"
+    },
+    {
+      "ticker": "WTFC",
+      "day": "2024-08-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WTFC_2024-08-01_raw.csv"
+    },
+    {
+      "ticker": "WTFC",
+      "day": "2024-08-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WTFC_2024-08-01_adjusted.csv"
+    },
+    {
+      "ticker": "VNOM",
+      "day": "2025-08-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/VNOM_2025-08-19_raw.csv"
+    },
+    {
+      "ticker": "VNOM",
+      "day": "2025-08-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/VNOM_2025-08-19_adjusted.csv"
+    },
+    {
+      "ticker": "NIC",
+      "day": "2026-02-17",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/NIC_2026-02-17_raw.csv"
+    },
+    {
+      "ticker": "NIC",
+      "day": "2026-02-17",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/NIC_2026-02-17_adjusted.csv"
+    },
+    {
+      "ticker": "CVBF",
+      "day": "2026-04-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CVBF_2026-04-20_raw.csv"
+    },
+    {
+      "ticker": "CVBF",
+      "day": "2026-04-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CVBF_2026-04-20_adjusted.csv"
+    },
+    {
+      "ticker": "MRSH",
+      "day": "2026-01-14",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/MRSH_2026-01-14_raw.csv"
+    },
+    {
+      "ticker": "MRSH",
+      "day": "2026-01-14",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/MRSH_2026-01-14_adjusted.csv"
+    },
+    {
+      "ticker": "XIFR",
+      "day": "2025-02-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/XIFR_2025-02-03_raw.csv"
+    },
+    {
+      "ticker": "XIFR",
+      "day": "2025-02-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/XIFR_2025-02-03_adjusted.csv"
+    },
+    {
+      "ticker": "UCB",
+      "day": "2024-08-06",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/UCB_2024-08-06_raw.csv"
+    },
+    {
+      "ticker": "UCB",
+      "day": "2024-08-06",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/UCB_2024-08-06_adjusted.csv"
+    },
+    {
+      "ticker": "CNH",
+      "day": "2024-05-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CNH_2024-05-20_raw.csv"
+    },
+    {
+      "ticker": "CNH",
+      "day": "2024-05-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CNH_2024-05-20_adjusted.csv"
+    },
+    {
+      "ticker": "PLGO",
+      "day": "2026-05-12",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PLGO_2026-05-12_raw.csv"
+    },
+    {
+      "ticker": "PLGO",
+      "day": "2026-05-12",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PLGO_2026-05-12_adjusted.csv"
+    },
+    {
+      "ticker": "AVO",
+      "day": "2026-05-28",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AVO_2026-05-28_raw.csv"
+    },
+    {
+      "ticker": "AVO",
+      "day": "2026-05-28",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AVO_2026-05-28_adjusted.csv"
+    },
+    {
+      "ticker": "PANW",
+      "day": "2026-02-11",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PANW_2026-02-11_raw.csv"
+    },
+    {
+      "ticker": "PANW",
+      "day": "2026-02-11",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PANW_2026-02-11_adjusted.csv"
+    },
+    {
+      "ticker": "MBC",
+      "day": "2026-05-28",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/MBC_2026-05-28_raw.csv"
+    },
+    {
+      "ticker": "MBC",
+      "day": "2026-05-28",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/MBC_2026-05-28_adjusted.csv"
+    },
+    {
+      "ticker": "HTO",
+      "day": "2025-05-06",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HTO_2025-05-06_raw.csv"
+    },
+    {
+      "ticker": "HTO",
+      "day": "2025-05-06",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HTO_2025-05-06_adjusted.csv"
+    },
+    {
+      "ticker": "EG",
+      "day": "2023-07-10",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EG_2023-07-10_raw.csv"
+    },
+    {
+      "ticker": "EG",
+      "day": "2023-07-10",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EG_2023-07-10_adjusted.csv"
+    },
+    {
+      "ticker": "AAMI",
+      "day": "2025-01-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AAMI_2025-01-02_raw.csv"
+    },
+    {
+      "ticker": "AAMI",
+      "day": "2025-01-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AAMI_2025-01-02_adjusted.csv"
+    },
+    {
+      "ticker": "COP",
+      "day": "2024-11-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COP_2024-11-22_raw.csv"
+    },
+    {
+      "ticker": "COP",
+      "day": "2024-11-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COP_2024-11-22_adjusted.csv"
+    },
+    {
+      "ticker": "RYN",
+      "day": "2026-02-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RYN_2026-02-02_raw.csv"
+    },
+    {
+      "ticker": "RYN",
+      "day": "2026-02-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RYN_2026-02-02_adjusted.csv"
+    },
+    {
+      "ticker": "OKLO",
+      "day": "2024-05-10",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OKLO_2024-05-10_raw.csv"
+    },
+    {
+      "ticker": "OKLO",
+      "day": "2024-05-10",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OKLO_2024-05-10_adjusted.csv"
+    },
+    {
+      "ticker": "LUCK",
+      "day": "2024-12-12",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/LUCK_2024-12-12_raw.csv"
+    },
+    {
+      "ticker": "LUCK",
+      "day": "2024-12-12",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/LUCK_2024-12-12_adjusted.csv"
+    },
+    {
+      "ticker": "BWIN",
+      "day": "2024-05-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BWIN_2024-05-20_raw.csv"
+    },
+    {
+      "ticker": "BWIN",
+      "day": "2024-05-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BWIN_2024-05-20_adjusted.csv"
+    },
+    {
+      "ticker": "GAP",
+      "day": "2024-08-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/GAP_2024-08-22_raw.csv"
+    },
+    {
+      "ticker": "GAP",
+      "day": "2024-08-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/GAP_2024-08-22_adjusted.csv"
+    },
+    {
+      "ticker": "XYZ",
+      "day": "2025-01-21",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/XYZ_2025-01-21_raw.csv"
+    },
+    {
+      "ticker": "XYZ",
+      "day": "2025-01-21",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/XYZ_2025-01-21_adjusted.csv"
+    },
+    {
+      "ticker": "COLB",
+      "day": "2025-09-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COLB_2025-09-02_raw.csv"
+    },
+    {
+      "ticker": "COLB",
+      "day": "2025-09-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COLB_2025-09-02_adjusted.csv"
+    },
+    {
+      "ticker": "JBTM",
+      "day": "2025-01-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/JBTM_2025-01-03_raw.csv"
+    },
+    {
+      "ticker": "JBTM",
+      "day": "2025-01-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/JBTM_2025-01-03_adjusted.csv"
+    },
+    {
+      "ticker": "DFTX",
+      "day": "2026-01-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/DFTX_2026-01-15_raw.csv"
+    },
+    {
+      "ticker": "DFTX",
+      "day": "2026-01-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/DFTX_2026-01-15_adjusted.csv"
+    },
+    {
+      "ticker": "MZTI",
+      "day": "2025-07-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/MZTI_2025-07-01_raw.csv"
+    },
+    {
+      "ticker": "MZTI",
+      "day": "2025-07-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/MZTI_2025-07-01_adjusted.csv"
+    },
+    {
+      "ticker": "EXE",
+      "day": "2024-10-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EXE_2024-10-02_raw.csv"
+    },
+    {
+      "ticker": "EXE",
+      "day": "2024-10-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EXE_2024-10-02_adjusted.csv"
+    },
+    {
+      "ticker": "BYON",
+      "day": "2023-11-06",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BYON_2023-11-06_raw.csv"
+    },
+    {
+      "ticker": "BYON",
+      "day": "2023-11-06",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BYON_2023-11-06_adjusted.csv"
+    },
+    {
+      "ticker": "WES",
+      "day": "2025-10-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WES_2025-10-15_raw.csv"
+    },
+    {
+      "ticker": "WES",
+      "day": "2025-10-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WES_2025-10-15_adjusted.csv"
+    },
+    {
+      "ticker": "PSA",
+      "day": "2026-07-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PSA_2026-07-22_raw.csv"
+    },
+    {
+      "ticker": "PSA",
+      "day": "2026-07-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PSA_2026-07-22_adjusted.csv"
+    },
+    {
+      "ticker": "BA",
+      "day": "2025-12-08",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BA_2025-12-08_raw.csv"
+    },
+    {
+      "ticker": "BA",
+      "day": "2025-12-08",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BA_2025-12-08_adjusted.csv"
+    },
+    {
+      "ticker": "CVX",
+      "day": "2025-07-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CVX_2025-07-18_raw.csv"
+    },
+    {
+      "ticker": "CVX",
+      "day": "2025-07-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CVX_2025-07-18_adjusted.csv"
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-10-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RKT_2025-10-01_raw.csv"
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-10-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RKT_2025-10-01_adjusted.csv"
+    },
+    {
+      "ticker": "PR",
+      "day": "2023-11-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PR_2023-11-01_raw.csv"
+    },
+    {
+      "ticker": "PR",
+      "day": "2023-11-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PR_2023-11-01_adjusted.csv"
+    },
+    {
+      "ticker": "SUN",
+      "day": "2024-05-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SUN_2024-05-03_raw.csv"
+    },
+    {
+      "ticker": "SUN",
+      "day": "2024-05-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SUN_2024-05-03_adjusted.csv"
+    },
+    {
+      "ticker": "ALTM",
+      "day": "2024-01-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ALTM_2024-01-04_raw.csv"
+    },
+    {
+      "ticker": "ALTM",
+      "day": "2024-01-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ALTM_2024-01-04_adjusted.csv"
+    },
+    {
+      "ticker": "HRI",
+      "day": "2025-06-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HRI_2025-06-02_raw.csv"
+    },
+    {
+      "ticker": "HRI",
+      "day": "2025-06-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HRI_2025-06-02_adjusted.csv"
+    },
+    {
+      "ticker": "DVN",
+      "day": "2026-05-07",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/DVN_2026-05-07_raw.csv"
+    },
+    {
+      "ticker": "DVN",
+      "day": "2026-05-07",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/DVN_2026-05-07_adjusted.csv"
+    },
+    {
+      "ticker": "OKE",
+      "day": "2023-09-25",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OKE_2023-09-25_raw.csv"
+    },
+    {
+      "ticker": "OKE",
+      "day": "2023-09-25",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OKE_2023-09-25_adjusted.csv"
+    },
+    {
+      "ticker": "XOM",
+      "day": "2023-11-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/XOM_2023-11-02_raw.csv"
+    },
+    {
+      "ticker": "XOM",
+      "day": "2023-11-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/XOM_2023-11-02_adjusted.csv"
+    },
+    {
+      "ticker": "NE",
+      "day": "2024-09-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/NE_2024-09-04_raw.csv"
+    },
+    {
+      "ticker": "NE",
+      "day": "2024-09-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/NE_2024-09-04_adjusted.csv"
+    },
+    {
+      "ticker": "OMC",
+      "day": "2025-11-28",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OMC_2025-11-28_raw.csv"
+    },
+    {
+      "ticker": "OMC",
+      "day": "2025-11-28",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OMC_2025-11-28_adjusted.csv"
+    },
+    {
+      "ticker": "ALGT",
+      "day": "2026-05-13",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ALGT_2026-05-13_raw.csv"
+    },
+    {
+      "ticker": "ALGT",
+      "day": "2026-05-13",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ALGT_2026-05-13_adjusted.csv"
+    },
+    {
+      "ticker": "WSBC",
+      "day": "2025-03-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WSBC_2025-03-03_raw.csv"
+    },
+    {
+      "ticker": "WSBC",
+      "day": "2025-03-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WSBC_2025-03-03_adjusted.csv"
+    },
+    {
+      "ticker": "COF",
+      "day": "2025-05-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COF_2025-05-19_raw.csv"
+    },
+    {
+      "ticker": "COF",
+      "day": "2025-05-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COF_2025-05-19_adjusted.csv"
+    },
+    {
+      "ticker": "SLB",
+      "day": "2025-07-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SLB_2025-07-16_raw.csv"
+    },
+    {
+      "ticker": "SLB",
+      "day": "2025-07-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SLB_2025-07-16_adjusted.csv"
+    },
+    {
+      "ticker": "PFS",
+      "day": "2024-05-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PFS_2024-05-16_raw.csv"
+    },
+    {
+      "ticker": "PFS",
+      "day": "2024-05-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PFS_2024-05-16_adjusted.csv"
+    },
+    {
+      "ticker": "DNOW",
+      "day": "2025-11-06",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/DNOW_2025-11-06_raw.csv"
+    },
+    {
+      "ticker": "DNOW",
+      "day": "2025-11-06",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/DNOW_2025-11-06_adjusted.csv"
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-07-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RKT_2025-07-01_raw.csv"
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-07-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RKT_2025-07-01_adjusted.csv"
+    },
+    {
+      "ticker": "TIC",
+      "day": "2025-08-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/TIC_2025-08-04_raw.csv"
+    },
+    {
+      "ticker": "TIC",
+      "day": "2025-08-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/TIC_2025-08-04_adjusted.csv"
+    },
+    {
+      "ticker": "XOM",
+      "day": "2024-05-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/XOM_2024-05-03_raw.csv"
+    },
+    {
+      "ticker": "XOM",
+      "day": "2024-05-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/XOM_2024-05-03_adjusted.csv"
+    },
+    {
+      "ticker": "OKE",
+      "day": "2025-01-31",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OKE_2025-01-31_raw.csv"
+    },
+    {
+      "ticker": "OKE",
+      "day": "2025-01-31",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OKE_2025-01-31_adjusted.csv"
+    },
+    {
+      "ticker": "SM",
+      "day": "2026-01-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SM_2026-01-30_raw.csv"
+    },
+    {
+      "ticker": "SM",
+      "day": "2026-01-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SM_2026-01-30_adjusted.csv"
+    },
+    {
+      "ticker": "UMBF",
+      "day": "2025-02-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/UMBF_2025-02-03_raw.csv"
+    },
+    {
+      "ticker": "UMBF",
+      "day": "2025-02-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/UMBF_2025-02-03_adjusted.csv"
+    },
+    {
+      "ticker": "AMCR",
+      "day": "2025-04-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AMCR_2025-04-30_raw.csv"
+    },
+    {
+      "ticker": "AMCR",
+      "day": "2025-04-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AMCR_2025-04-30_adjusted.csv"
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2025-10-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HBAN_2025-10-20_raw.csv"
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2025-10-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HBAN_2025-10-20_adjusted.csv"
+    },
+    {
+      "ticker": "AUB",
+      "day": "2025-04-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AUB_2025-04-01_raw.csv"
+    },
+    {
+      "ticker": "AUB",
+      "day": "2025-04-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AUB_2025-04-01_adjusted.csv"
+    },
+    {
+      "ticker": "SNPS",
+      "day": "2025-07-17",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SNPS_2025-07-17_raw.csv"
+    },
+    {
+      "ticker": "SNPS",
+      "day": "2025-07-17",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SNPS_2025-07-17_adjusted.csv"
+    },
+    {
+      "ticker": "APO",
+      "day": "2025-09-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/APO_2025-09-02_raw.csv"
+    },
+    {
+      "ticker": "APO",
+      "day": "2025-09-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/APO_2025-09-02_adjusted.csv"
+    },
+    {
+      "ticker": "O",
+      "day": "2024-01-23",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/O_2024-01-23_raw.csv"
+    },
+    {
+      "ticker": "O",
+      "day": "2024-01-23",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/O_2024-01-23_adjusted.csv"
+    },
+    {
+      "ticker": "PENG",
+      "day": "2024-10-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PENG_2024-10-15_raw.csv"
+    },
+    {
+      "ticker": "PENG",
+      "day": "2024-10-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PENG_2024-10-15_adjusted.csv"
+    },
+    {
+      "ticker": "SBLK",
+      "day": "2024-04-09",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SBLK_2024-04-09_raw.csv"
+    },
+    {
+      "ticker": "SBLK",
+      "day": "2024-04-09",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SBLK_2024-04-09_adjusted.csv"
+    },
+    {
+      "ticker": "KIM",
+      "day": "2024-01-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/KIM_2024-01-02_raw.csv"
+    },
+    {
+      "ticker": "KIM",
+      "day": "2024-01-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/KIM_2024-01-02_adjusted.csv"
+    },
+    {
+      "ticker": "COLB",
+      "day": "2023-03-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COLB_2023-03-01_raw.csv"
+    },
+    {
+      "ticker": "COLB",
+      "day": "2023-03-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COLB_2023-03-01_adjusted.csv"
+    },
+    {
+      "ticker": "RYZ",
+      "day": "2026-02-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RYZ_2026-02-24_raw.csv"
+    },
+    {
+      "ticker": "RYZ",
+      "day": "2026-02-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RYZ_2026-02-24_adjusted.csv"
+    },
+    {
+      "ticker": "SHOE",
+      "day": "2026-06-12",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SHOE_2026-06-12_raw.csv"
+    },
+    {
+      "ticker": "SHOE",
+      "day": "2026-06-12",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SHOE_2026-06-12_adjusted.csv"
+    },
+    {
+      "ticker": "AD",
+      "day": "2025-08-12",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AD_2025-08-12_raw.csv"
+    },
+    {
+      "ticker": "AD",
+      "day": "2025-08-12",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AD_2025-08-12_adjusted.csv"
+    },
+    {
+      "ticker": "BTE",
+      "day": "2023-06-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BTE_2023-06-20_raw.csv"
+    },
+    {
+      "ticker": "BTE",
+      "day": "2023-06-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BTE_2023-06-20_adjusted.csv"
+    },
+    {
+      "ticker": "RNST",
+      "day": "2025-04-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RNST_2025-04-01_raw.csv"
+    },
+    {
+      "ticker": "RNST",
+      "day": "2025-04-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RNST_2025-04-01_adjusted.csv"
+    },
+    {
+      "ticker": "AG",
+      "day": "2025-01-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/AG_2025-01-16_raw.csv"
+    },
+    {
+      "ticker": "AG",
+      "day": "2025-01-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/AG_2025-01-16_adjusted.csv"
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2025-12-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CRGY_2025-12-15_raw.csv"
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2025-12-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CRGY_2025-12-15_adjusted.csv"
+    },
+    {
+      "ticker": "FITB",
+      "day": "2026-02-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/FITB_2026-02-02_raw.csv"
+    },
+    {
+      "ticker": "FITB",
+      "day": "2026-02-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/FITB_2026-02-02_adjusted.csv"
+    },
+    {
+      "ticker": "SJM",
+      "day": "2023-11-07",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SJM_2023-11-07_raw.csv"
+    },
+    {
+      "ticker": "SJM",
+      "day": "2023-11-07",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SJM_2023-11-07_adjusted.csv"
+    },
+    {
+      "ticker": "GMED",
+      "day": "2023-09-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/GMED_2023-09-01_raw.csv"
+    },
+    {
+      "ticker": "GMED",
+      "day": "2023-09-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/GMED_2023-09-01_adjusted.csv"
+    },
+    {
+      "ticker": "CVX",
+      "day": "2023-08-07",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CVX_2023-08-07_raw.csv"
+    },
+    {
+      "ticker": "CVX",
+      "day": "2023-08-07",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CVX_2023-08-07_adjusted.csv"
+    },
+    {
+      "ticker": "OBDC",
+      "day": "2023-07-06",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OBDC_2023-07-06_raw.csv"
+    },
+    {
+      "ticker": "OBDC",
+      "day": "2023-07-06",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OBDC_2023-07-06_adjusted.csv"
+    },
+    {
+      "ticker": "RVTY",
+      "day": "2023-05-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RVTY_2023-05-16_raw.csv"
+    },
+    {
+      "ticker": "RVTY",
+      "day": "2023-05-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RVTY_2023-05-16_adjusted.csv"
+    },
+    {
+      "ticker": "PTEN",
+      "day": "2023-09-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PTEN_2023-09-01_raw.csv"
+    },
+    {
+      "ticker": "PTEN",
+      "day": "2023-09-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PTEN_2023-09-01_adjusted.csv"
+    },
+    {
+      "ticker": "HNI",
+      "day": "2023-06-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HNI_2023-06-01_raw.csv"
+    },
+    {
+      "ticker": "HNI",
+      "day": "2023-06-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HNI_2023-06-01_adjusted.csv"
+    },
+    {
+      "ticker": "EXR",
+      "day": "2023-07-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EXR_2023-07-20_raw.csv"
+    },
+    {
+      "ticker": "EXR",
+      "day": "2023-07-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EXR_2023-07-20_adjusted.csv"
+    },
+    {
+      "ticker": "XYL",
+      "day": "2023-05-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/XYL_2023-05-24_raw.csv"
+    },
+    {
+      "ticker": "XYL",
+      "day": "2023-05-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/XYL_2023-05-24_adjusted.csv"
+    },
+    {
+      "ticker": "RBA",
+      "day": "2023-03-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/RBA_2023-03-20_raw.csv"
+    },
+    {
+      "ticker": "RBA",
+      "day": "2023-03-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/RBA_2023-03-20_adjusted.csv"
+    },
+    {
+      "ticker": "APA",
+      "day": "2024-04-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/APA_2024-04-01_raw.csv"
+    },
+    {
+      "ticker": "APA",
+      "day": "2024-04-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/APA_2024-04-01_adjusted.csv"
+    },
+    {
+      "ticker": "ET",
+      "day": "2023-11-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ET_2023-11-03_raw.csv"
+    },
+    {
+      "ticker": "ET",
+      "day": "2023-11-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ET_2023-11-03_adjusted.csv"
+    },
+    {
+      "ticker": "CVSA",
+      "day": "2026-02-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CVSA_2026-02-24_raw.csv"
+    },
+    {
+      "ticker": "CVSA",
+      "day": "2026-02-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CVSA_2026-02-24_adjusted.csv"
+    },
+    {
+      "ticker": "BBT",
+      "day": "2025-09-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BBT_2025-09-02_raw.csv"
+    },
+    {
+      "ticker": "BBT",
+      "day": "2025-09-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BBT_2025-09-02_adjusted.csv"
+    },
+    {
+      "ticker": "FLG",
+      "day": "2024-10-28",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/FLG_2024-10-28_raw.csv"
+    },
+    {
+      "ticker": "FLG",
+      "day": "2024-10-28",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/FLG_2024-10-28_adjusted.csv"
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/TXNM_2024-08-05_raw.csv"
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/TXNM_2024-08-05_adjusted.csv"
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COR_2023-08-30_raw.csv"
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COR_2023-08-30_adjusted.csv"
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PRKS_2024-02-13_raw.csv"
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PRKS_2024-02-13_adjusted.csv"
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PRSU_2025-01-02_raw.csv"
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PRSU_2025-01-02_adjusted.csv"
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CDP_2023-09-15_raw.csv"
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CDP_2023-09-15_adjusted.csv"
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ASTH_2024-02-26_raw.csv"
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ASTH_2024-02-26_adjusted.csv"
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EFOR_2026-04-24_raw.csv"
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EFOR_2026-04-24_adjusted.csv"
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CALY_2026-01-16_raw.csv"
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CALY_2026-01-16_adjusted.csv"
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HHH_2023-08-14_raw.csv"
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HHH_2023-08-14_adjusted.csv"
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WKC_2023-06-16_raw.csv"
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WKC_2023-06-16_adjusted.csv"
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CPAY_2024-03-25_raw.csv"
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CPAY_2024-03-25_adjusted.csv"
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SGI_2025-02-18_raw.csv"
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SGI_2025-02-18_adjusted.csv"
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WRK_2024-07-03_raw.csv"
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WRK_2024-07-03_adjusted.csv"
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SW_2024-07-08_raw.csv"
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SW_2024-07-08_adjusted.csv"
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ETRN_2024-07-19_raw.csv"
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ETRN_2024-07-19_adjusted.csv"
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/EQT_2024-07-22_raw.csv"
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/EQT_2024-07-22_adjusted.csv"
+    },
+    {
+      "ticker": "SKYT",
+      "day": "2026-07-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SKYT_2026-07-30_raw.csv"
+    },
+    {
+      "ticker": "SKYT",
+      "day": "2026-07-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SKYT_2026-07-30_adjusted.csv"
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2026-07-31",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/IONQ_2026-07-31_raw.csv"
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2026-07-31",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/IONQ_2026-07-31_adjusted.csv"
+    },
+    {
+      "ticker": "COMM",
+      "day": "2026-01-13",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/COMM_2026-01-13_raw.csv"
+    },
+    {
+      "ticker": "COMM",
+      "day": "2026-01-13",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/COMM_2026-01-13_adjusted.csv"
+    },
+    {
+      "ticker": "VISN",
+      "day": "2026-01-14",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/VISN_2026-01-14_raw.csv"
+    },
+    {
+      "ticker": "VISN",
+      "day": "2026-01-14",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/VISN_2026-01-14_adjusted.csv"
+    },
+    {
+      "ticker": "ATXS",
+      "day": "2026-01-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ATXS_2026-01-22_raw.csv"
+    },
+    {
+      "ticker": "ATXS",
+      "day": "2026-01-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ATXS_2026-01-22_adjusted.csv"
+    },
+    {
+      "ticker": "BCRX",
+      "day": "2026-01-23",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BCRX_2026-01-23_raw.csv"
+    },
+    {
+      "ticker": "BCRX",
+      "day": "2026-01-23",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BCRX_2026-01-23_adjusted.csv"
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-03-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CDXC_2025-03-18_raw.csv"
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-03-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CDXC_2025-03-18_adjusted.csv"
+    },
+    {
+      "ticker": "NAGE",
+      "day": "2025-03-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/NAGE_2025-03-19_raw.csv"
+    },
+    {
+      "ticker": "NAGE",
+      "day": "2025-03-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/NAGE_2025-03-19_adjusted.csv"
+    },
+    {
+      "ticker": "STEL",
+      "day": "2026-06-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/STEL_2026-06-30_raw.csv"
+    },
+    {
+      "ticker": "STEL",
+      "day": "2026-06-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/STEL_2026-06-30_adjusted.csv"
+    },
+    {
+      "ticker": "PB",
+      "day": "2026-07-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PB_2026-07-01_raw.csv"
+    },
+    {
+      "ticker": "PB",
+      "day": "2026-07-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PB_2026-07-01_adjusted.csv"
+    },
+    {
+      "ticker": "WBS",
+      "day": "2026-08-19",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/WBS_2026-08-19_raw.csv"
+    },
+    {
+      "ticker": "WBS",
+      "day": "2026-08-19",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/WBS_2026-08-19_adjusted.csv"
+    },
+    {
+      "ticker": "SAN",
+      "day": "2026-08-20",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SAN_2026-08-20_raw.csv"
+    },
+    {
+      "ticker": "SAN",
+      "day": "2026-08-20",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SAN_2026-08-20_adjusted.csv"
+    },
+    {
+      "ticker": "BNY",
+      "day": "2026-05-21",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BNY_2026-05-21_raw.csv"
+    },
+    {
+      "ticker": "BNY",
+      "day": "2026-05-21",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BNY_2026-05-21_adjusted.csv"
+    },
+    {
+      "ticker": "VMRK",
+      "day": "2026-08-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/VMRK_2026-08-18_raw.csv"
+    },
+    {
+      "ticker": "VMRK",
+      "day": "2026-08-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/VMRK_2026-08-18_adjusted.csv"
+    },
+    {
+      "ticker": "HAPN",
+      "day": "2026-06-22",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HAPN_2026-06-22_raw.csv"
+    },
+    {
+      "ticker": "HAPN",
+      "day": "2026-06-22",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HAPN_2026-06-22_adjusted.csv"
+    },
+    {
+      "ticker": "ONT",
+      "day": "2026-05-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ONT_2026-05-04_raw.csv"
+    },
+    {
+      "ticker": "ONT",
+      "day": "2026-05-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ONT_2026-05-04_adjusted.csv"
+    },
+    {
+      "ticker": "VSXY",
+      "day": "2026-06-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/VSXY_2026-06-02_raw.csv"
+    },
+    {
+      "ticker": "VSXY",
+      "day": "2026-06-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/VSXY_2026-06-02_adjusted.csv"
+    },
+    {
+      "ticker": "ECHO",
+      "day": "2026-06-24",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/ECHO_2026-06-24_raw.csv"
+    },
+    {
+      "ticker": "ECHO",
+      "day": "2026-06-24",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/ECHO_2026-06-24_adjusted.csv"
+    },
+    {
+      "ticker": "OPLN",
+      "day": "2025-12-26",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/OPLN_2025-12-26_raw.csv"
+    },
+    {
+      "ticker": "OPLN",
+      "day": "2025-12-26",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/OPLN_2025-12-26_adjusted.csv"
+    },
+    {
+      "ticker": "CWEN",
+      "day": "2026-05-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CWEN_2026-05-01_raw.csv"
+    },
+    {
+      "ticker": "CWEN",
+      "day": "2026-05-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CWEN_2026-05-01_adjusted.csv"
+    },
+    {
+      "ticker": "DMC",
+      "day": "2026-06-29",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/DMC_2026-06-29_raw.csv"
+    },
+    {
+      "ticker": "DMC",
+      "day": "2026-06-29",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/DMC_2026-06-29_adjusted.csv"
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2025-04-21",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CWAN_2025-04-21_raw.csv"
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2025-04-21",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CWAN_2025-04-21_adjusted.csv"
+    },
+    {
+      "ticker": "PSKY",
+      "day": "2025-08-07",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PSKY_2025-08-07_raw.csv"
+    },
+    {
+      "ticker": "PSKY",
+      "day": "2025-08-07",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PSKY_2025-08-07_adjusted.csv"
+    },
+    {
+      "ticker": "CHRD",
+      "day": "2024-05-31",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CHRD_2024-05-31_raw.csv"
+    },
+    {
+      "ticker": "CHRD",
+      "day": "2024-05-31",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CHRD_2024-05-31_adjusted.csv"
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2026-02-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/HBAN_2026-02-02_raw.csv"
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2026-02-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/HBAN_2026-02-02_adjusted.csv"
+    },
+    {
+      "ticker": "TEX",
+      "day": "2026-02-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/TEX_2026-02-02_raw.csv"
+    },
+    {
+      "ticker": "TEX",
+      "day": "2026-02-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/TEX_2026-02-02_adjusted.csv"
+    },
+    {
+      "ticker": "PRMB",
+      "day": "2024-11-11",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PRMB_2024-11-11_raw.csv"
+    },
+    {
+      "ticker": "PRMB",
+      "day": "2024-11-11",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PRMB_2024-11-11_adjusted.csv"
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2024-07-30",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/CRGY_2024-07-30_raw.csv"
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2024-07-30",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/CRGY_2024-07-30_adjusted.csv"
+    },
+    {
+      "ticker": "IA",
+      "day": "2026-08-18",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/IA_2026-08-18_raw.csv"
+    },
+    {
+      "ticker": "IA",
+      "day": "2026-08-18",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/IA_2026-08-18_adjusted.csv"
+    },
+    {
+      "ticker": "BIPC",
+      "day": "2023-09-28",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BIPC_2023-09-28_raw.csv"
+    },
+    {
+      "ticker": "BIPC",
+      "day": "2023-09-28",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BIPC_2023-09-28_adjusted.csv"
+    },
+    {
+      "ticker": "QXO",
+      "day": "2026-07-01",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/QXO_2026-07-01_raw.csv"
+    },
+    {
+      "ticker": "QXO",
+      "day": "2026-07-01",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/QXO_2026-07-01_adjusted.csv"
+    },
+    {
+      "ticker": "SECZ",
+      "day": "2026-07-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/SECZ_2026-07-02_raw.csv"
+    },
+    {
+      "ticker": "SECZ",
+      "day": "2026-07-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/SECZ_2026-07-02_adjusted.csv"
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/BRSL_2025-07-02_raw.csv"
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/BRSL_2025-07-02_adjusted.csv"
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "basis": "raw",
+      "path": "audit_evidence/bulk_basis/PAAS_2025-09-04_raw.csv"
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "basis": "adjusted",
+      "path": "audit_evidence/bulk_basis/PAAS_2025-09-04_adjusted.csv"
+    }
+  ],
+  "successor_history_bytes_not_verified_saved": [
+    "SIVBQ",
+    "PSKY",
+    "LNWO",
+    "HOS"
+  ],
+  "identity_observations_not_verified_saved": 11,
+  "latest_model_rerun": "NOT_VERIFIED",
+  "latest_library_report_version_confirmed": 10,
+  "decision": "NO_GO",
+  "next_step": "Restore frozen inputs and missing observations; run tests, one batch universe diagnostic and unchanged selection replay in a functioning local environment. No jobs scheduled."
+}
