@@ -26,6 +26,7 @@ from momentum_master_v3 import (
     read_universe,
 )
 from momentum_config import PRODUCTION
+from momentum_strategy import rank_universe as rank_locked_robust_universe
 
 CACHE_FILE = ".momentum_backtest_cache.json"
 UNIVERSE_CACHE_FILE = ".momentum_point_in_time_universe.json"
@@ -930,6 +931,15 @@ def build_prior_2_12_metrics(
             "v6-core, core-momentum-v1, quality-momentum-v2, relative-strength-breakout-v1, market-leaders-v1, absolute-strength-v1, liquid-leaders-v1 or robust-momentum-v1"
         )
 
+    if selection_model == PRODUCTION.selection_model:
+        if min_adv20_usd != PRODUCTION.min_adv20_usd:
+            raise ValueError("robust-momentum-v1 requires the locked ADV20 minimum")
+        return [
+            SimpleNamespace(ticker=metric.ticker, price_usd=metric.price_usd,
+                            total_score=metric.score)
+            for metric in rank_locked_robust_universe(tickers, recent253)
+        ]
+
     spy_closes = []
     for _, grouped in recent253:
         row = get_from_map(grouped, "SPY")
@@ -1493,7 +1503,7 @@ def choose_top(
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
             return []
-        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1", "liquid-leaders-v1"} and not breakout_market_regime_is_risk_on(
+        if selection_model in {"relative-strength-breakout-v1", "market-leaders-v1", "liquid-leaders-v1", "robust-momentum-v1"} and not breakout_market_regime_is_risk_on(
             signal_map, history
         ):
             logging.info("Breakout risk-off market regime on %s: hold cash", asof)
