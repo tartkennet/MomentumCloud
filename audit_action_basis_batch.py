@@ -39,6 +39,10 @@ def inspect_pair(request, get):
             missing.append({'path': path, 'params': params,
                             'reason': 'OBSERVATION_DATE_DOES_NOT_MATCH_REQUEST'})
             continue
+        if float(bar['v']) <= 0:
+            missing.append({'path': path, 'params': params,
+                            'reason': 'NO_POSITIVE_OBSERVED_TRADE_VOLUME'})
+            continue
         observations[name] = [bar]
     return {**request, 'status': 'OBSERVED_PAIR_ONLY' if not missing else 'MISSING_OBSERVED_PAIR',
             'observations': observations, 'missing_requests': missing}

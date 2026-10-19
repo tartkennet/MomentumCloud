@@ -1,0 +1,21 @@
+{
+  "checked_date": "2026-10-19",
+  "request": {
+    "path": "/v1/open-close/FRC/2023-05-01",
+    "params": {
+      "adjusted": "false"
+    }
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"b410e6db-8de6-4ec0-a2cf-7819f3c26b46\",\"message\":\"Data not found.\"}"
+      }
+    ],
+    "structuredContent": {
+      "result": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"b410e6db-8de6-4ec0-a2cf-7819f3c26b46\",\"message\":\"Data not found.\"}"
+    },
+    "isError": false
+  }
+}

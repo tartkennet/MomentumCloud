@@ -1,0 +1,26 @@
+{
+  "files": {
+    "audit_action_basis_batch.py": "776598d5134e259f768350dcee2d54c1706933bdaa9d83a28522843ecd922f80",
+    "tests/test_action_basis_batch.py": "133ce8e301bc14f0b300da5f24c7178fd48dc5d8d006a17b2d53f2263f41dafe",
+    "docs/MomentumCloud_urvalsgranskning.md": "a31e0b35e59747cf91e67380e52cd5f2309bc85002714d1d6bc546426138bad2",
+    "audit_evidence/FRC_fixed_exit_adjusted_20261019.json": "f7ee4970be6f0e39f4b86e7937713ab19a9119ee67ee18b4c690f9103abf4ad5",
+    "audit_evidence/FRC_fixed_exit_raw_20261019.json": "d35c66450d19b1b96dbd74b97874c69fd65fa454f6499c5d93fa7758e936217b",
+    "audit_evidence/RNAZ_fixed_exit_adjusted_20261019.json": "590ed432442a478c4afafbbcada70a33934ffadcade355f05bf42960505ae32d",
+    "audit_evidence/RNAZ_fixed_exit_raw_20261019.json": "e559cb3a6198d2c63e8f9ef34b7c11bf7c15fb26f8984f2e51ff798b2d8ae709",
+    "audit_evidence/FRC_trades_fixed_exit_20261019.json": "1de635ec32f4b8b2b7f4e32f30be1b80ea40ab9a07ed23085c92af388a91a6ae",
+    "audit_evidence/RNAZ_trades_fixed_exit_20261019.json": "54ea33e631249bf57c6ec59d2b145fb9edfb32ebda732bdef74b2d281a6b5939",
+    "audit_evidence/RNAZ_quotes_fixed_exit_20261019.json": "fe4d851549536c426ba32cfc77fc708364aa3eff1b6830bacdc96ebd11ead092",
+    "audit_evidence/RNAZ_nasdaq_fixed_exit_20261019.json": "0d2598fb4d43d1e360f9452250c87721551b114e5898a2ab391305d2e8e1c733",
+    "audit_evidence/RNAZ_nasdaq_exit_window_20261019.json": "d05396d6d9c9501f01431adbd5d18afbbb062869b32de80fe02f3148cecb2051",
+    "audit_evidence/SJR_BOC_daily_reference_20261019.json": "d05cb1edfa41459c58391559b532b8b29088e64eaec7687f6230969b0a15ade3",
+    "audit_evidence/SJR_CAD_receivable_reference_marks_20261019.csv": "4d5d4d812b8a7eb69ff9060cc11ceafb79e3c923882df917180aa8f5529da6cd",
+    "audit_evidence/SJR_FX_reference_review_20261019.json": "ab98ab7e69bd867be4a2b54df498dcde8bb6a8cd520f9363be1857ac5b118194",
+    "audit_evidence/AEPPZ_targeted_SEC_review_20261019.json": "47a72f6b136f777226a2a9dfcb77284a4e1dda8764e7765c6a5db02c9f4e48f9",
+    "audit_evidence/AEPPZ_form25_20230814_20261019.txt": "611be4b785c68d79449ae0d76a0889e9233a0eb49a1c080faed0a409b658b052",
+    "audit_evidence/tests_price_evidence_guard_20261019.log": "9db0185ce90ea12a50a29ed27775734e3baaa887abdde3b6dd7e20ec144130ab",
+    "audit_evidence/preflight_volume_guard_20261019.log": "ffb228af913209b86f95b2f8eb9cca00238b7ea30d23e0ed68f4b8a805c4b1fb",
+    "audit_evidence/action_basis_preflight_volume_guard_20261019.json": "4f924535fd38ee902d73f0a05aeae92e40f6c10a0d24e3919baba9298bf7d44b",
+    "audit_evidence/accessible_evidence_batch_20261019.json": "01bb012de387a62f0284c5790375ba69abc6c6ad88192b35f80f16b79f97b5bb"
+  },
+  "scope": "Evidence-only batch and stricter preflight; no execution price inferred or installed."
+}

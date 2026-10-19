@@ -1,0 +1,126 @@
+{
+  "checked_date": "2026-10-19",
+  "status": "COMPLETE_ACCESSIBLE_EVIDENCE_BATCH_FOUR_EXITS_STILL_BLOCKED",
+  "fresh_daily_summary_requests": 4,
+  "fresh_daily_summary_results": "4 HTTP 404; raw and adjusted absent for the exact fixed exits",
+  "tick_and_quote_requests": 3,
+  "tick_and_quote_results": "3 NOT_ENTITLED responses; no data purchase made",
+  "requests": [
+    {
+      "path": "audit_evidence/FRC_fixed_exit_adjusted_20261019.json",
+      "request": {
+        "path": "/v1/open-close/FRC/2023-05-01",
+        "params": {
+          "adjusted": "true"
+        }
+      },
+      "status": "HTTP_404_DATA_NOT_FOUND",
+      "sha256": "f7ee4970be6f0e39f4b86e7937713ab19a9119ee67ee18b4c690f9103abf4ad5",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/FRC_fixed_exit_raw_20261019.json",
+      "request": {
+        "path": "/v1/open-close/FRC/2023-05-01",
+        "params": {
+          "adjusted": "false"
+        }
+      },
+      "status": "HTTP_404_DATA_NOT_FOUND",
+      "sha256": "d35c66450d19b1b96dbd74b97874c69fd65fa454f6499c5d93fa7758e936217b",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/RNAZ_fixed_exit_adjusted_20261019.json",
+      "request": {
+        "path": "/v1/open-close/RNAZ/2025-12-01",
+        "params": {
+          "adjusted": "true"
+        }
+      },
+      "status": "HTTP_404_DATA_NOT_FOUND",
+      "sha256": "590ed432442a478c4afafbbcada70a33934ffadcade355f05bf42960505ae32d",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/RNAZ_fixed_exit_raw_20261019.json",
+      "request": {
+        "path": "/v1/open-close/RNAZ/2025-12-01",
+        "params": {
+          "adjusted": "false"
+        }
+      },
+      "status": "HTTP_404_DATA_NOT_FOUND",
+      "sha256": "e559cb3a6198d2c63e8f9ef34b7c11bf7c15fb26f8984f2e51ff798b2d8ae709",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/FRC_trades_fixed_exit_20261019.json",
+      "request": {
+        "path": "/v3/trades/FRC",
+        "params": {
+          "timestamp": "2023-05-01",
+          "order": "asc",
+          "sort": "timestamp",
+          "limit": 50000
+        }
+      },
+      "status": "NOT_ENTITLED",
+      "sha256": "1de635ec32f4b8b2b7f4e32f30be1b80ea40ab9a07ed23085c92af388a91a6ae",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/RNAZ_trades_fixed_exit_20261019.json",
+      "request": {
+        "path": "/v3/trades/RNAZ",
+        "params": {
+          "timestamp": "2025-12-01",
+          "order": "asc",
+          "sort": "timestamp",
+          "limit": 50000
+        }
+      },
+      "status": "NOT_ENTITLED",
+      "sha256": "54ea33e631249bf57c6ec59d2b145fb9edfb32ebda732bdef74b2d281a6b5939",
+      "observed_execution_price": false
+    },
+    {
+      "path": "audit_evidence/RNAZ_quotes_fixed_exit_20261019.json",
+      "request": {
+        "path": "/v3/quotes/RNAZ",
+        "params": {
+          "timestamp": "2025-12-01",
+          "order": "asc",
+          "sort": "timestamp",
+          "limit": 10
+        }
+      },
+      "status": "NOT_ENTITLED",
+      "sha256": "fe4d851549536c426ba32cfc77fc708364aa3eff1b6830bacdc96ebd11ead092",
+      "observed_execution_price": false
+    }
+  ],
+  "SJR_new_input": "20 Bank of Canada daily average FX observations, reference valuation only; not an opening execution rate or broker credit date",
+  "AEPPZ_new_input": "Nasdaq Form 25-NSE and targeted full SEC filings; no final holder-applicable conversion rate verified",
+  "RNAZ_alternate_source": "Nasdaq official history endpoint returned zero records for the requested Nov 28\u2013Dec 2 window, including days observed in preserved histories; this is not proof of no trading on Dec 1",
+  "regression_tests": 125,
+  "preflight": {
+    "observed_pairs": 291,
+    "missing_pairs": 0,
+    "volume_guard": "PASS; zero or negative volume does not establish a verified price pair"
+  },
+  "strategy_or_execution_inputs_changed": false,
+  "fresh_model_rerun_after_this_review": false,
+  "last_completed_model_batch": "audit_evidence/replay_20261019/batch_summary.json",
+  "unresolved": [
+    "FRC",
+    "SJR",
+    "AEPPZ",
+    "RNAZ"
+  ],
+  "universe_return": null,
+  "ranking_value_added": null,
+  "decision": "NO_GO",
+  "restart_condition": "New verifiable settlement/credit/conversion evidence or licensed exact-day market observations; no unchanged rerun is warranted merely by another instruction to continue.",
+  "out_of_scope": "Data purchase, external contact, a changed exit/capital policy, parameter optimization, production or trading."
+}

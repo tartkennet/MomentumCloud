@@ -1,5 +1,20 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Kompletterad pris- och källbatch – 19 oktober 2026
+
+**125 lokala tester passerar.** Ett nytt skydd kräver positiv observerad handelsvolym för att ett rått/justerat dagsprispar ska godkännas i förkontrollen. Båda nya regressionerna passerar och den samlade förkontrollen behåller **291/291 observerade par, 0 saknade**. Strategin och modellens indata har inte ändrats; den färdiga modellreplayen nedan gäller fortsatt. Testloggen och hela den nya förkontrollen är sparade.
+
+Fyra nya direkta Massive-förfrågningar är färdiga: rå och justerad dagssammanfattning saknas på FRC:s fasta exit 2023-05-01 och RNAZ:s fasta exit 2025-12-01, samtliga med HTTP 404. Försöken att kontrollera transaktioner för båda och historiska quotes för RNAZ gav **NOT_ENTITLED** i den anslutna planen. De är åtkomstfel, inte bevis för att marknadshandel saknades. Inga data har köpts. Nasdaq:s offentliga historik gav noll poster även för ett omgivande fönster där bevarade serier faktiskt har handel; svaret kan därför inte ensamt fastställa ett handelsstopp. Ingen alternativ kurs har installerats.
+
+För **SJR** är 20 daterade USD/CAD-referenser nu hämtade direkt från [Bank of Canada](https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2023-04-03&end_date=2023-05-01). Beräkningen är 40,50 CAD dividerat med CAD per USD, i juridiska enheter per aktie. Dessa kurser är indikativa dagsgenomsnitt publicerade 16:30 ET, enligt [bankens metodbeskrivning](https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/). De är inte exekverbara öppningskurser eller bevis för när en mäklare krediterade USD. Serien och en separat referensvärdering är sparade, men inte installerade som exekveringar eller justerad modell-NAV.
+
+För **AEPPZ** har Nasdaq:s kompletta [Form 25-NSE, accession 0001354457-23-000582](https://www.sec.gov/Archives/edgar/data/4904/000135445723000582/0001354457-23-000582.txt), kontrollerats. Den anger Corporate Unit och är daterad 14 augusti 2023. Bilagan innehåller ingen omvandlingskvot. Fullständiga 8-K från 2 juni och 21 augusti kontrollerades också: det ena gäller remarketing, det andra en styrelseutnämning. Ingen slutlig kvot per innehavd enhet är därmed verifierad. Originalkällornas URL:er och SHA-256 är dokumenterade.
+
+**Det återstår fyra verkliga evidenshinder.** För AEPPZ behövs slutligt avräknings-/leveransbesked med kvot och eventuella kontantkomponenter. För SJR behövs tillämplig krediterings- och valutaomvandlingshantering, inte bara en indikativ valutareferens. FRC och RNAZ saknar fortfarande verifierbar exekvering på exakt fast exitdag. Att flytta faktisk exit och bära bundet kapital över nästa ombalansering vore en uttrycklig redovisnings-/exekveringsutvidgning; den har inte införts som en tyst rättning av det fasta testet.
+
+Källbatchens samtliga anrop och begränsningar finns i `audit_evidence/accessible_evidence_batch_20261019.json`. Ingen ny oförändrad modellomkörning görs efter denna källgranskning. Inget giltigt universumresultat eller rankningsmervärde påstås. Ingen main-merge, produktion, handel, dataköp, parameteroptimering eller automation har genomförts.
+
+
 ## Färdig samlad lokal verifiering – 19 oktober 2026
 
 **Den tidigare osparade fyrfallsdiagnostiken är nu återskapad genom en ny färdig lokal körning. NO-GO kvarstår.** Hela den redan installerade GOLD/NCR- och efterföljarbatchen kördes med frysta indata och projektets låsta paketversioner. Alla fem steg avslutades utan processfel. Testloggar, full prisförkontroll, urvalspositioner, periodresultat, modellresultat och universumdiagnostik sparas tillsammans i `audit_evidence/replay_20261019/`, med filhashar och körd källkods hashvärden.

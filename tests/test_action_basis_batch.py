@@ -33,3 +33,24 @@ class ActionBasisBatchTests(unittest.TestCase):
             raise RuntimeError('BROKEN_FILE_HASH')
         with self.assertRaisesRegex(RuntimeError, 'BROKEN_FILE_HASH'):
             inspect_pair(self.request, broken)
+
+    def test_zero_volume_reference_mark_is_not_a_verified_trade_pair(self):
+        timestamp = datetime(2023, 5, 1, tzinfo=timezone.utc).timestamp() * 1000
+        def no_trades(*_args):
+            return {'results': [dict(o=10, h=10, l=10, c=10, v=0, t=timestamp)]}
+        result = inspect_pair(self.request, no_trades)
+        self.assertEqual(result['observations'], {})
+        self.assertEqual(len(result['missing_requests']), 2)
+        self.assertEqual({item['reason'] for item in result['missing_requests']},
+                         {'NO_POSITIVE_OBSERVED_TRADE_VOLUME'})
+
+    def test_actual_positive_volume_observations_are_preserved(self):
+        timestamp = datetime(2023, 5, 1, tzinfo=timezone.utc).timestamp() * 1000
+        def observed(_client, _path, params):
+            value = 5 if params['adjusted'] == 'true' else 10
+            return {'results': [dict(o=value, h=value, l=value, c=value, v=2, t=timestamp)]}
+        result = inspect_pair(self.request, observed)
+        self.assertEqual(result['status'], 'OBSERVED_PAIR_ONLY')
+        self.assertEqual(result['observations']['raw'][0]['o'], 10)
+        self.assertEqual(result['observations']['adjusted'][0]['o'], 5)
+        self.assertEqual(result['missing_requests'], [])

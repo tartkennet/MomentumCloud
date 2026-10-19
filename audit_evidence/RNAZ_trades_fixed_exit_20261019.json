@@ -1,0 +1,24 @@
+{
+  "checked_date": "2026-10-19",
+  "request": {
+    "path": "/v3/trades/RNAZ",
+    "params": {
+      "timestamp": "2025-12-01",
+      "order": "asc",
+      "sort": "timestamp",
+      "limit": 50000
+    }
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Warning [NOT_ENTITLED]: This data isn't included in the user's current Massive plan. Tell the user this specific request isn't covered by their plan, and that they can see which plans include it at https://massive.com/pricing . Do not silently answer from another source: if you use one, say so plainly and note it is not from Massive and may be unverified."
+      }
+    ],
+    "structuredContent": {
+      "result": "Warning [NOT_ENTITLED]: This data isn't included in the user's current Massive plan. Tell the user this specific request isn't covered by their plan, and that they can see which plans include it at https://massive.com/pricing . Do not silently answer from another source: if you use one, say so plainly and note it is not from Massive and may be unverified."
+    },
+    "isError": false
+  }
+}
