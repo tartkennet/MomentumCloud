@@ -1,0 +1,62 @@
+{
+  "status": "PASS_RESTORED_FIXED_INPUTS",
+  "artifacts": [
+    {
+      "artifact": "MomentumCloud_verified_gap_classification",
+      "sha256": "cf9661a6ec32f7e91f3dc71b8597a58b7eb7574bfcd5a0a5f0d878f363339fb7",
+      "status": "PASS"
+    },
+    {
+      "artifact": "MomentumCloud_relaxed_selection_audit",
+      "sha256": "150bfd98a2fb20a11750525ef4f24d75d3ed7569ffd07e3c8cffe815135b65c0",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-0",
+      "sha256": "d3a8fe0aa69121f7620c6835d0f9a9540da50fcac7b4ad91c47e7a3bcd877b81",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-1",
+      "sha256": "f2eb2ff22bf2e7b2c89ec83f010e674d404ee4e2df703ca7faec0834d3f7ae10",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-2",
+      "sha256": "922cbe3ce2bf588621b5acb8ea2bae3856acf7b1ccda2281c82de390e2427ca5",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-3",
+      "sha256": "6ff6535b772c65125bdf53fab7f804eb94ab8482fb0cef92e3960406df24a7d9",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-4",
+      "sha256": "9430ecf0e9c6ceed7ce9008a4288b82f7108d16bc0eebfb9b1cda777a874beef",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-5",
+      "sha256": "e13bf01f688f29118d402f9750a428b49845b50ea12ce7068a249220d72f8bb9",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-6",
+      "sha256": "77ca47ed93b33ce47b61882da1979c1ea9da3959c5ee481f9fb49d23786e6332",
+      "status": "PASS"
+    },
+    {
+      "artifact": "universe-exit-evidence-7",
+      "sha256": "5086dd5823dc3d01feb080b6e1857bc7219ee4b4c788f1e740c98eb7b19e2e88",
+      "status": "PASS"
+    }
+  ],
+  "cache_sha256": "638589917ba5a37c0c69bdd0e057b4fb873618981c286bde3d88488135313ee2",
+  "cache_bytes": 507412232,
+  "cache_parts": 16,
+  "cache_sessions": 1230,
+  "frozen_files": 1561,
+  "adjusted_through": "2026-10-06",
+  "limitation": "Input recovery only; not a fresh model or execution approval."
+}

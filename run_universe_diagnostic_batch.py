@@ -16,11 +16,12 @@ def evidence_error(error):
     ))
 
 
-def main():
+def main(output_path=None):
     os.environ['SCENARIO'] = 'eligible_universe_equal_weight'
     import replay_verified_audit_offline as replay
     import audit_action_price_install as installation
-    target = Path('audit_evidence/universe_diagnostic_batch_20261012.json')
+    target = Path(output_path) if output_path else Path('audit_evidence/universe_diagnostic_batch_20261012.json')
+    target.parent.mkdir(parents=True, exist_ok=True)
     original_install = installation.install_compatible_action_prices
     issues = []
 
@@ -61,4 +62,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output', type=Path)
+    main(parser.parse_args().output)

@@ -1,5 +1,39 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Färdig samlad lokal verifiering – 19 oktober 2026
+
+**Den tidigare osparade fyrfallsdiagnostiken är nu återskapad genom en ny färdig lokal körning. NO-GO kvarstår.** Hela den redan installerade GOLD/NCR- och efterföljarbatchen kördes med frysta indata och projektets låsta paketversioner. Alla fem steg avslutades utan processfel. Testloggar, full prisförkontroll, urvalspositioner, periodresultat, modellresultat och universumdiagnostik sparas tillsammans i `audit_evidence/replay_20261019/`, med filhashar och körd källkods hashvärden.
+
+| Färskt verifierat resultat | Utfall |
+|---|---|
+| Regressionstester | **123/123 passerade**, inklusive skydd för oförändrad formationscache och orelaterade tillgångars priser |
+| Bred rå/justerad prisförkontroll | **291/291 observerade datumpar, 0 saknade** |
+| Urvalsreplay efter hela batchen | **645 positioner, 230 tickers, 43 månader**, exakt samma nycklar, signal-/köp-/exitpriser och köp-/exitdatum som arkivet |
+| Oberoende positions- och kapitalaggregering | PASS |
+| Nettoavkastning | **−0,5460050227673818 %** |
+| Största dagliga nedgång | **−50,38013190677646 %** |
+| SPY med samma fasta månadskostnad | **+70,20238513471013 %** |
+| Universumdiagnostik | **4 olösta exekveringar, 0 basisavvikelser** |
+| Dokumentationstäckning i de ursprungliga fallen | **286/288**, ingen exekveringspassfrekvens |
+
+Arkivets egna pris-, identitets- och NAV-kontroller återverifierades också: 1 935 priser, 645 daterade identiteter och 943 dagliga NAV-punkter passerade. Detta är en kontroll av arkiverat underlag; den separata nya modellkörningen verifierar reproduktion efter hela den nu installerade batchen.
+
+| Kvarvarande modellblockerare | Exakt saknat underlag |
+|---|---|
+| FRC, signal 2023-03-31 | Observerad exekvering eller verifierat vederlag på fasta exitdagen **2023-05-01**. Senare OTC-kurs får inte bakdateras. |
+| SJR, signal 2023-03-31 | Verifierad USD-betalning/valutahantering och daglig värdering av CAD-fordran fram till betalning. Optionsavräkning bevisar inte i sig common-share-betalning. |
+| AEPPZ, signal 2023-07-31 | Faktiska per-enhet-villkor för corporate units och dess skuld-/forwardkomponenter vid exit **2023-09-01**. Ingen gissad aktiekvot eller riktad borttagning. |
+| RNAZ, signal 2025-10-31 | Observerad kurs på fasta exitdagen **2025-12-01**. Bevarad historik ger först **2025-12-02**, vilket ligger utanför perioden. |
+
+SIVB, NCR, PARA, LNW och HLX finns inte längre i modellens olösta lista efter den samlade batchen. Detta betyder att just dessa resolverhinder inte återkommer, inte att faktisk leverans, fraktionsavräkning eller handelsfyllnad är godkänd. Ingen giltig universumavkastning publiceras och rankningens mervärde är fortfarande obevisat. Daterad emittentidentitet och formationshistorikers kontinuitet behöver fortsatt bedömas separat.
+
+Den nya körningen ändrar inte urvalets negativa resultat. Att stänga dataluckorna kan göra jämförelsen granskbar, men ger inte automatiskt ett GO för modellen. Strategiregler, kostnad, historiska problemaktier och förlorare har bevarats. Inga modellparametrar har optimerats. Inga Actions-jobb, main-merge, produktionsändringar, affärer, dataköp eller automationer startades för den lokala batchen.
+
+Återställningen verifierade tio originalarkiv samt hela den frysta cachen: 507 412 232 byte, 1 230 sessioner, basis 2026-10-06 och SHA-256 `638589917ba5a37c0c69bdd0e057b4fb873618981c286bde3d88488135313ee2`. Två manuellt startade lokala kommandon återställer respektive verifierar underlaget: `restore_verified_audit_inputs.py` och `verify_restored_audit_batch.py`. De skapar ingen schemaläggning eller automation. De daterade äldre avsnitten nedan beskriver tidigare sparlägen; de är inte aktuell körstatus.
+
+## Historik före den färdiga samlade verifieringen
+
+
 ## Aktuell verifierad sparstatus – 19 oktober 2026
 
 **NO-GO kvarstår. Granskningen är inte färdig.** PR 13 var öppen och inte mergad vid återkontrollen. Senaste faktiskt sparade kod-checkpoint var [`3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb`](https://github.com/tartkennet/MomentumCloud/commit/3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb). Den lokala arbetskatalogen är nu rensad. Senare lokala slutresultat kan därför inte behandlas som återkontrollerade eller återställda slutresultat.

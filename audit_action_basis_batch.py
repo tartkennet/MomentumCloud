@@ -44,10 +44,10 @@ def inspect_pair(request, get):
             'observations': observations, 'missing_requests': missing}
 
 
-def main():
+def main(request_path=None, output_path=None):
     from replay_verified_audit_offline import offline_get
     root = Path(__file__).parent
-    requests = json.loads((root / 'audit_evidence/basis_requests_bulk.json').read_text())
+    requests = json.loads((Path(request_path) if request_path else root / 'audit_evidence/basis_requests_bulk.json').read_text())
     records = [inspect_pair(request, offline_get) for request in requests]
     missing = [record for record in records if record['missing_requests']]
     output = {
@@ -59,10 +59,16 @@ def main():
         'full_universe_complete': False,
         'records': records,
     }
-    target = root / 'audit_evidence/action_basis_preflight_20261012.json'
+    target = Path(output_path) if output_path else root / 'audit_evidence/action_basis_preflight_20261012.json'
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(output, indent=2, allow_nan=False) + '\n')
     print(json.dumps({key: value for key, value in output.items() if key != 'records'}), flush=True)
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--requests', type=Path)
+    parser.add_argument('--output', type=Path)
+    arguments = parser.parse_args()
+    main(arguments.requests, arguments.output)

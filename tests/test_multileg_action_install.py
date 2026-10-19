@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from audit_dated_action_chain import install_dated_action_chain
@@ -68,6 +69,20 @@ class MultiLegActionTests(unittest.TestCase):
         cache['2023-10-16'] = {}
         with self.assertRaisesRegex(RuntimeError, 'No original pre-action basis'):
             engine.resolve_exit_execution(cache, sorted(cache), 'NCR', '2023-11-01', '2023-10-02', '2023-11-01')
+
+    def test_execution_and_daily_valuation_do_not_change_formation_cache(self):
+        engine, cache = self.build()
+        before = deepcopy(cache)
+        engine.resolve_exit_execution(cache, sorted(cache), 'NCR', '2023-11-01', '2023-10-02', '2023-11-01')
+        engine.position_close_on_day(cache, 'NCR', '2023-11-01', '2023-10-02')
+        self.assertEqual(cache, before)
+
+    def test_unrelated_asset_keeps_its_original_execution_and_close(self):
+        engine, cache = self.build()
+        cache['2023-11-01']['OTHER'] = {'open': 17.25, 'close': 18.5}
+        day, row, action = engine.resolve_exit_execution(cache, sorted(cache), 'OTHER', '2023-11-01', '2023-10-02', '2023-11-01')
+        self.assertEqual((day, row, action), ('2023-11-01', {'open': 17.25, 'close': 18.5}, None))
+        self.assertEqual(engine.position_close_on_day(cache, 'OTHER', '2023-11-01', '2023-10-02'), (18.5, None))
 
 
 if __name__ == '__main__':

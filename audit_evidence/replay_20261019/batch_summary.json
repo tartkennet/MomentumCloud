@@ -1,0 +1,155 @@
+{
+  "status": "COMPLETE_VERIFICATION_UNIVERSE_BLOCKED",
+  "source_head": "007e28dfcb301f9108e3e693230e64f252217492",
+  "started_utc": "2026-10-19T17:27:25.835510+00:00",
+  "stages": [
+    {
+      "name": "regression_tests",
+      "returncode": 0
+    },
+    {
+      "name": "archive_reverification",
+      "returncode": 0
+    },
+    {
+      "name": "action_basis_preflight",
+      "returncode": 0
+    },
+    {
+      "name": "selection_model",
+      "returncode": 0
+    },
+    {
+      "name": "universe_diagnostic",
+      "returncode": 0
+    }
+  ],
+  "packages": {
+    "pandas": "2.2.2",
+    "numpy": "2.0.1",
+    "pyarrow": "17.0.0",
+    "requests": "2.32.3",
+    "openpyxl": "3.1.5"
+  },
+  "source_sha256": {
+    "analyze_verified_selection_losses.py": "9b749431757c6c6bc7621bc269df0e2096f0c4df0609e0764007c1d57865881f",
+    "audit_action_basis_batch.py": "3d06142535791933083d2faa38832fdd4fa4af711d1209d91e03f565f60e1f53",
+    "audit_action_price_install.py": "e78bf70bc1e6c8eca3a4b98e76005c6d1c0fb42d9fcb02d22b7389db320e6e98",
+    "audit_corporate_action_basis.py": "a6244182aef575caf5b305b752f3b24a7d4041b0bb442bf2fddc487b34946b98",
+    "audit_dated_action_chain.py": "beb0832d18efda6c8ecb0c76876b5633e2cc66abd12a8b42da964987b2f33a9b",
+    "audit_multileg_action_install.py": "3f683f0312bcf8f39e3b6a4392f88d15fa5316c5e005657d2f7422090ba7252f",
+    "audit_remaining_case_prices.py": "11b450c593459a09ad36a4423fc98d420d93584f768af5f99d8fd32aa0556d8f",
+    "backtest_momentum_v3.py": "1243e254d852cf9329271135f91e2f34d7378850ea56ff28964167be7506f1ef",
+    "classify_gap_pairs.py": "a54618943574f631271f505367bc579ea353644d265e4c7cbb77d2fc677be595",
+    "collect_remaining_full_filings.py": "c2ee6fa6b449ff45cfc31a346fa1eadc65074134bb73f732d6dc9995da695abf",
+    "collect_universe_exit_evidence.py": "fd58c2225eafe3e1cb2a9dc9dc598081f1f9253eec5497b11de90e08d7a041ab",
+    "collect_universe_symbol_events.py": "51a615d3aaa66f8403bbe183e78164401c674823a853abd5fa86c9f4f2cb0c4e",
+    "data_access_preflight.py": "0a23242a3bfc6f486d488ddda718958b89edff1ad347991dfe923977755a3b1b",
+    "enrich_corrected_audit_lots.py": "ee798aed47c669eb09a3cf586326521f6711bb22ced858b8c88c06cc793b6004",
+    "fetch_gap_pair_chunk.py": "c5ffb2111b4ec1198b25632f79e2a92a59a36fc5398d2a26f23827a1864a759c",
+    "fetch_gap_ticker_history_chunk.py": "b3ca412a4e52b09489ed2a11e3a9241881e7e7e58160c04fb2100bce280772d4",
+    "model_validation.py": "3de7758f1971f8a38528b2585edf9cc1dfbb837b4e0f4a6e88efea620e0a0d88",
+    "momentum_config.py": "5e6540ab5bce17cbbc38b8708f168abf8572bd83bb350f8e6f1ad00cb8ef9fdc",
+    "momentum_master_v3.py": "1d1104e304e67307b9e9e0f3fda3fb455bf7990ae577045b9327130d0b8e3048",
+    "momentum_production.py": "e1e64b88c4e1a51b9c1acd28b3f31251ff18b7c21f17acf7dd8e72381c7c4126",
+    "momentum_strategy.py": "44082819361a411ae278c2c1ca55d516f38088f697986639b65372112a374f2f",
+    "prepare_action_basis_requests.py": "9c34ddb5aa5eafab41e41a52d071e472c1b8383a5a988338a8d4eba78e5823de",
+    "replay_verified_audit_offline.py": "cbfd7a8cc4a582434349c0c16421623a64d29e1e4ac2f5c8c12fe2bb2fadf5ee",
+    "restore_verified_audit_inputs.py": "0dd9278950d337086e2699882b79680e76484d7a7e304f0cdbccd3012387ffb6",
+    "reverify_selection_archive.py": "9ae435f95b2fb086efb92ae68e859c9e5036ecc6cc64a900b6989b9a72cc92e7",
+    "run_beta_adjusted_trend_candidate.py": "929c0229e810d73c332795dfcc9e23260ffff4c0a4b166d11df175417db5d2e4",
+    "run_corrected_component_audit.py": "60d197b0b4a20599fea065b04cd5f8559d41d631f2d28445c9baaca66cfcd66d",
+    "run_gap_selection_evidence.py": "feed6ed84f50f19c2ec08a3723762a754ac9452f75f691dbbb1624014b77e8d9",
+    "run_one_verified_gap_model.py": "98d263431e74a896ca9085330c6ccd9ca9569a2a5363f8b83b10db22a988df3b",
+    "run_raw_liquidity_selection_audit.py": "c99b9d2280eda2b2591eaa9f06d89726556748775f5085e804ecfaab08e5671f",
+    "run_relaxed_selection_audit.py": "5fe5f3cd95d66b1b8bad8845be6a6554b6e400aef631a82a5f3b3b099553715e",
+    "run_root_cause_data_audit.py": "8b4e82ae578509c1a9051fb15cddb80c2b31b34e0da75f1ef3ddef0ed71520a6",
+    "run_trend_following_candidate.py": "094001f4ed6328ca7f658a845544342418c0d665270d2c2d0d45a8921437a214",
+    "run_trend_pullback_candidate.py": "519adc46ea9dd99ff6088f2f70e0c4d8b0d682e9fc63f526254931fd5ecdc3a4",
+    "run_universe_diagnostic_batch.py": "ba539d31bcaf21605264a8adf1c13818762ad38e7115ca6849548bf4ce74885a",
+    "run_v4_ablation_and_simple_candidate.py": "4181346d579fb0d778141f25bae264857397bf1aa7dc9bb74e9e4e4b75936fc6",
+    "run_verified_gap_correction_audit.py": "ad002a473b57985efffac9790e2096393c8476bfb35f786d1b556aea0f141d0c",
+    "tests/test_action_basis_batch.py": "2eff935adb64c5d6d877a84f3eaa0eb79a6b423a023fceda2e21b092edb72c06",
+    "tests/test_action_price_install.py": "11bcc299561b166bd9ae36b1a06834681d9e39f9ab8348a4300f408a9b1bf9ee",
+    "tests/test_audit_corporate_action_basis.py": "417ad1a142079c613164f0ad5b8e2034baa041e9c3a072fbefc38742cc5750cb",
+    "tests/test_backtest_audit_integrity.py": "4a8e4784231a5c14302fde6c6bc545a183e9519618b925ffe92247e6dee900aa",
+    "tests/test_backtest_cache_split_basis.py": "9868602c0eccd64023a3cde437ee9a88653cf69ef6c9f306a9603dc86d41180d",
+    "tests/test_backtest_configuration_v3.py": "d68ac504bed57c7353fd20dfff2dd1d7e45125362fce2fabfe712a714c85d691",
+    "tests/test_cash_action_calendar.py": "51dffbee012f891c0ae7814f9b381fc735acac11ec43c2b60a909c9c2a593e23",
+    "tests/test_cash_holiday_engine_integration.py": "95e4d227f6a3bc5caade7fcc79173005a89300edcaff9d31782bfdf95416ae2f",
+    "tests/test_corrected_component_audit.py": "44f1177d8d66f86153aa5cfb7fe2bba19900b7dff902e8d8c279c3ff3280ae76",
+    "tests/test_dated_action_chain.py": "46655b2fb651bc1d156add4859734a47151fdc6dfbf88158145dc54fe8fb19af",
+    "tests/test_gold_symbol_generations.py": "0557976649758be20d748b70dadf34e318f04c672668127c5ca8112b20662867",
+    "tests/test_history_cache_split_basis.py": "dbc3d312139e4f6c652a0b815b0175f1848a1c3819df57777466c830cb4b81e8",
+    "tests/test_model_validation.py": "af9990100dcb01ddc1dfe432d4d7ee1fb16fe7ad7046ba5cf34be5528990fb8b",
+    "tests/test_momentum_master_v3.py": "981fc3ea574c3f0ea5c44c1dcd9b102e86b01aaed904ea408c28218ccc762616",
+    "tests/test_multileg_action_install.py": "f540e13a585e4d1b456d20d764887f6cae19dd8a979eac1a9ad9cdfcd007c92c",
+    "tests/test_otc_action_execution_window.py": "6257991c2bcb916321cf0d45548ac6adc7d1aa6d2cbdb92d487d656ca29a6381",
+    "tests/test_point_in_time_universe.py": "b3d4890126acea8ce6f4e284d5f1e25071e84b07b9f0ca20e778beedeea6c54a",
+    "tests/test_production_outputs.py": "bb7c96a353a50bb57b0ee05e01c8bc082635c44a0cae3fa31e860422d813f3aa",
+    "tests/test_production_strategy.py": "546e7b3b77fa0122b8176d3134c350ba73c9598470c418a401ca5c63ccfa8e5e",
+    "tests/test_root_cause_data_audit.py": "10df14197e36d9231d470e516ab4ed689ecdf172a4eeab3b035d7d8a4f817631",
+    "tests/test_verified_action_batch.py": "4602f9a4212cc025a4303d3aa9f981b2aee7e63ee40132b4764c5ba6f1b02925",
+    "update_paper_portfolio.py": "38c1bcba1a91b24b2f95d2dfc30e4d4a8fc5857427b61c9329d12e86f789a7f0",
+    "validate_production_backtest.py": "bd4f3663d0ff06e399552bbee3b485621583fc87c2883f94806a7a00199a3229",
+    "verified_exit_data.py": "baf3e4708b882663e0de0c608902bcbf9b9476518dbda7c2b93675b7a8ecc5c4",
+    "verified_exit_settlements.py/verified_exit_settlements.py": "81edc88229a350fc8d81a6852680dc9fb669b29bcfabdb5f3536f7de9d46ccfe",
+    "verify_restored_audit_batch.py": "99d5e8d6d4e963ed92ca2ffa1b6aacf908863c1bff2fcff3aaadd3528acd019d"
+  },
+  "regression_tests": 123,
+  "archive_reverification": {
+    "status": "PASS_ARCHIVED_SELECTION_ONLY",
+    "positions": 645,
+    "tickers": 230,
+    "periods": 43,
+    "price_checks": 1935,
+    "identity_checks": 645,
+    "nav_points": 943,
+    "net_return_pct": -0.5460050227673818,
+    "gross_return_pct": 13.222697221264369,
+    "spy_matched_cost_pct": 70.20238513471013,
+    "daily_drawdown_pct": -50.380131906776484,
+    "full_universe_complete": false,
+    "limitation": "Reverifies archived observations; does not rerun selection or prove ranking benefit."
+  },
+  "preflight": {
+    "status": "COMPLETE_PREFLIGHT_NOT_MODEL_EXECUTION",
+    "requested_pairs": 291,
+    "observed_pairs": 291,
+    "missing_pairs": 0,
+    "missing_individual_requests": 0,
+    "full_universe_complete": false
+  },
+  "selection": {
+    "status": "PASS_FRESH_REPLAY_AFTER_COMPLETE_GOLD_AND_NCR_BATCH",
+    "positions": 645,
+    "tickers": 230,
+    "periods": 43,
+    "exact_position_keys_prices_dates": true,
+    "metrics": {
+      "Periods": 43,
+      "TotalReturn_pct": -0.5460050227673818,
+      "SPYTotalReturn_pct": 93.30821172959709,
+      "TotalEdgeVsSPY_pct": -93.85421675236447,
+      "PeriodHitRate_pct": 58.139534883720934,
+      "DailyMaxDrawdown_pct": -50.38013190677646
+    },
+    "spy_matched_cost_pct": 70.20238513471013,
+    "checks": {
+      "independent_position_and_capital_aggregation": "PASS",
+      "baseline_reproduction": "NOT_APPLICABLE",
+      "periods": 43,
+      "spy_price_return_pct": 93.30821172959709
+    }
+  },
+  "universe": {
+    "status": "BLOCKED_NO_VALID_UNIVERSE_RETURN",
+    "basis_issues": [],
+    "unresolved_executions": "No executable price or verified corporate-action settlement for: 2023-03-31: FRC(exit from 2023-05-01), SJR(exit from 2023-05-01) | 2023-07-31: AEPPZ(exit from 2023-09-01) | 2025-10-31: RNAZ(exit 2025-12-02 outside period ending 2025-12-01)",
+    "universe_return": null,
+    "ranking_value_added": null
+  },
+  "decision": "NO_GO",
+  "limitation": "No valid universe return or ranking benefit while executions remain unresolved; no actual fill approval.",
+  "finished_utc": "2026-10-19T17:32:00.313084+00:00"
+}
