@@ -1,4 +1,32 @@
-# MomentumCloud – kontrollerat urvalstest, uppdaterad 12 oktober 2026
+# MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
+
+## Aktuell verifierad sparstatus – 19 oktober 2026
+
+**NO-GO kvarstår. Granskningen är inte färdig.** PR 13 var öppen och inte mergad vid återkontrollen. Senaste faktiskt sparade kod-checkpoint var [`3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb`](https://github.com/tartkennet/MomentumCloud/commit/3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb). Den lokala arbetskatalogen är nu rensad. Senare lokala slutresultat kan därför inte behandlas som återkontrollerade eller återställda slutresultat.
+
+Den sparade urvalsreplayen efter GOLD-rättningen och de fyra fullständiga efterföljarhistorikerna omfattar 645 positioner, 230 tickers och 43 månader. Alla positionsnycklar, priser och köp-/exitdatum anges matcha arkivet exakt, med oberoende kapitalaggregering PASS. Nettoavkastning: **−0,5460050227673818 %**, största dagliga nedgång **−50,38013190677646 %**, SPY med samma fasta månadskostnad **+70,20238513471013 %**. Detta är den sparade körningen från 14 oktober, inte en ny modellkörning den 19 oktober. Den föregår den sista lokala kontrollen efter NCR-installationen.
+
+| Kontroll vid återstart | Verifierat sparläge |
+|---|---|
+| Dokumentationslista | Omräknad direkt från sparad lista: 286/288 fall; AEPPZ och RNAZ saknar färdig händelselösning |
+| Dagsprisbatch | 558 CSV-filer finns i GitHub-trädet: ursprungliga 556 plus TEN:s två basisfiler |
+| Rå/justerad förkontroll | Sparad sammanfattning anger 291/291 och 0 saknade; den fullständiga senare kontrollfilen är inte sparad |
+| Tester | Sparad checkpoint anger 121 passerade lokala tester; inga nya tester kördes i denna återkontroll |
+| Senaste sparade universumdiagnostik | Nio olösta exekveringar och en PARA/PSKY-basisavvikelse, före efterföljarhistorikerna och NCR-rättningen |
+| Senare uppgift om fyra olösta fall och 123 tester | Finns i överlämningen, men slutresultatfilerna och de två sista testerna är inte sparade; måste återskapas |
+| Giltig universumavkastning / rankningens mervärde | Saknas fortfarande |
+
+Den senast sparade diagnostikens nio tickers är SIVB, FRC, SJR, AEPPZ, NCR, PARA, LNW, RNAZ och HLX. Överlämningen anger att en senare lokal diagnostik reducerade detta till FRC, SJR, AEPPZ och RNAZ utan basisavvikelser. Den senare uppgiften får inte ersätta den sparade diagnostiken innan en samlad lokal körning ger ett sparat resultat. Dokumentationstäckning är ingen godkänd exekveringsfrekvens.
+
+Åtta sparade efterföljar-CSV:er har nu kontrollerats direkt: SIVBQ 407, PSKY 291, LNWO 222 och HOS 22 prisrader per basis. Samtliga åtta äldre manifesthashar visade sig avse CSV-innehållet plus en extra avslutande radbrytning. Manifestet rättas till hash för de faktiskt sparade filernas byte. Prisraderna och de installerade historikerna ändras inte. Detta är en reproducerbarhetsrättning, ingen ny pris- eller avkastningsrättning.
+
+**Nästa konkreta beräkningssteg:** återställ kod och frysta indata från de sparade källorna och kör en samlad lokal verifiering av hela den redan installerade batchen. Spara testlogg, full prisförkontroll, urvalsavstämning och universumdiagnostik tillsammans innan ytterligare händelser installeras. Därefter utreds kvarvarande blockerare i en gemensam källbatch.
+
+Överlämningens fyra kvarvarande utredningsspår är: FRC:s saknade fasta exit 2023-05-01; SJR:s verifierbara betalnings-/valutahantering och daglig värdering fram till betalning; AEPPZ:s faktiska corporate-unit-komponenter; RNAZ:s saknade observation på fasta exitdagen 2025-12-01. Senare kurser får inte bakdateras och inga priser, valutakurser eller rättighetsvärden får gissas. Daterad emittentidentitet, sammanhängande formationshistorik, leverans och verklig exekverbarhet kräver fortsatt granskning även om modellens resolver senare bara rapporterar fyra fall.
+
+Ingen main-merge, produktionsändring, handel, dataköp, parameteroptimering eller automation ingår. Inga modelljobb startades under denna sparåterkontroll. Äldre avsnitt nedan är daterad historik; deras ord som ”körs” eller ”återstår” beskriver respektive checkpoint och är ingen aktuell körstatus.
+
+## Tidigare dokumenterade checkpoints
 
 ## Samlad återställnings- och rättningscheckpoint – 14 oktober 2026
 
@@ -157,7 +185,7 @@ Underlagsarkivet innehåller individuella prisserier, parade basispriser, kontro
 Frysta modellindata: ursprungsrun `37419651430`, artifact `11393004537`, cachebasis 2026-10-06. Export `37753784722` passerade; alla tre delhashar och arkivhashen verifierades före lokal körning. Prisverifikationer hämtades 2026-10-08 från individuella Massive/Polygon-aggregat för de aktuella historiska datumen. Bolagshändelsernas SEC-/börskällor finns inline i granskningskodens verifierade settlements. Ingen CVR prissätts genom gissning.
 
 - [Gransknings-PR 13](https://github.com/tartkennet/MomentumCloud/pull/13)
-- [Sparad daglig basisrättning](https://github.com/tartkennet/MomentumCloud/commit/4 b 3 b 86 f 3 b 90 e 04 cad 8 bb 5 c 0 a 0 ff 70 af 123 eeb 13 a)
+- [Sparad daglig basisrättning](https://github.com/tartkennet/MomentumCloud/commit/4b3b86f3b90e04cad8bb5c0a0ff70af123eeb13a)
 - [Frysta indata exporterade](https://github.com/tartkennet/MomentumCloud/actions/runs/37753784722)
 - [Fulluniversumets kvarvarande blockerare](https://github.com/tartkennet/MomentumCloud/actions/runs/37753784684)
 
@@ -175,8 +203,8 @@ De 67 installerade händelsedatumen korsar ingen av de 645 sparade innehavsperio
 
 Prisgränsen i urvalstestets simple_builder är 10 USD. Den tidigare rapporttexten 5 USD var fel; inga parametrar ändrades. Korta referensserier för enskilda positioner får inte ersätta hela modellhistoriken. De kompletta individuella överstyrningarna omfattar 405 distinkta tickers, 117 + 308 med 20 överlapp. Ett tidigare återställningsförsök som använde korta referensserier som fullhistoriker ändrade urvalet; dess resultat är ogiltigt och ingår inte i denna rapport.
 
-- [Sparade 67 händelser och full återstående fallista](https://github.com/tartkennet/MomentumCloud/commit/d 48 adb 7 b 6754 c 769934 ae 9 da 2 b 0 ed 1519 c 0 d 364 f)
-- [Sparad kalenderfix](https://github.com/tartkennet/MomentumCloud/commit/0050526478231 d 0 b 21 ab 0 a 451 d 8 ec 2 f 5 d 6 fe 8823)
+- [Sparade 67 händelser och full återstående fallista](https://github.com/tartkennet/MomentumCloud/commit/d48adb7b6754c769934ae9da2b0ed1519c0d364f)
+- [Sparad kalenderfix](https://github.com/tartkennet/MomentumCloud/commit/0050526478231d0b21ab0a451d8ec2f5d6fe8823)
 
 Alla ändringar ligger i granskningsgrenen. Inga nya GitHub Actions-körningar har begärts. Det isolerade urvalets NO-GO kvarstår; fulluniversumets avkastning och rankningens mervärde är fortfarande obevisade.
 

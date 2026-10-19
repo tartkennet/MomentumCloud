@@ -13,7 +13,7 @@
       "first": "2023-03-28",
       "last": "2024-11-07",
       "source_path": "audit_evidence/successor_SIVBQ_raw_20261014.csv",
-      "sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37"
+      "sha256": "a669f1221327d19cb00b0fff84a62f0241b6a7c7d84c19105cbc3ac7ff36b278"
     },
     {
       "ticker": "SIVBQ",
@@ -23,7 +23,7 @@
       "first": "2023-03-28",
       "last": "2024-11-07",
       "source_path": "audit_evidence/successor_SIVBQ_adjusted_20261014.csv",
-      "sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37"
+      "sha256": "a669f1221327d19cb00b0fff84a62f0241b6a7c7d84c19105cbc3ac7ff36b278"
     },
     {
       "ticker": "PSKY",
@@ -33,7 +33,7 @@
       "first": "2025-08-07",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_PSKY_raw_20261014.csv",
-      "sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194"
+      "sha256": "81a492f8e04f1c3411e67850d496e1c63b1435da10b920eb0de225b8cf478219"
     },
     {
       "ticker": "PSKY",
@@ -43,7 +43,7 @@
       "first": "2025-08-07",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_PSKY_adjusted_20261014.csv",
-      "sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194"
+      "sha256": "81a492f8e04f1c3411e67850d496e1c63b1435da10b920eb0de225b8cf478219"
     },
     {
       "ticker": "LNWO",
@@ -53,7 +53,7 @@
       "first": "2025-11-13",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_LNWO_raw_20261014.csv",
-      "sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c"
+      "sha256": "3dc125587dccd19c5562f1f48f6b180f6a1b5bcf6d3d2f91cb57e9af8124c2c8"
     },
     {
       "ticker": "LNWO",
@@ -63,7 +63,7 @@
       "first": "2025-11-13",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_LNWO_adjusted_20261014.csv",
-      "sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c"
+      "sha256": "3dc125587dccd19c5562f1f48f6b180f6a1b5bcf6d3d2f91cb57e9af8124c2c8"
     },
     {
       "ticker": "HOS",
@@ -73,7 +73,7 @@
       "first": "2026-09-02",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_HOS_raw_20261014.csv",
-      "sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b"
+      "sha256": "5876a08e403d05e05309bf580109dfcd5ca1f6894d340810d8cda4db1b363317"
     },
     {
       "ticker": "HOS",
@@ -83,7 +83,71 @@
       "first": "2026-09-02",
       "last": "2026-10-02",
       "source_path": "audit_evidence/successor_HOS_adjusted_20261014.csv",
-      "sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b"
+      "sha256": "5876a08e403d05e05309bf580109dfcd5ca1f6894d340810d8cda4db1b363317"
     }
-  ]
+  ],
+  "hash_verification": {
+    "date": "2026-10-19",
+    "source_commit": "3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb",
+    "status": "PASS_AFTER_MANIFEST_CORRECTION",
+    "scope": "SHA-256 now matches exact saved CSV bytes; prior hashes included one extra trailing newline. No price rows or histories changed.",
+    "records": [
+      {
+        "path": "audit_evidence/successor_SIVBQ_raw_20261014.csv",
+        "bars": 407,
+        "previous_manifest_sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37",
+        "saved_bytes_sha256": "a669f1221327d19cb00b0fff84a62f0241b6a7c7d84c19105cbc3ac7ff36b278",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_SIVBQ_adjusted_20261014.csv",
+        "bars": 407,
+        "previous_manifest_sha256": "f042d5798bf52ce90db89d42eda67898edd05b06a9e5f079de2695072e7cec37",
+        "saved_bytes_sha256": "a669f1221327d19cb00b0fff84a62f0241b6a7c7d84c19105cbc3ac7ff36b278",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_PSKY_raw_20261014.csv",
+        "bars": 291,
+        "previous_manifest_sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194",
+        "saved_bytes_sha256": "81a492f8e04f1c3411e67850d496e1c63b1435da10b920eb0de225b8cf478219",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_PSKY_adjusted_20261014.csv",
+        "bars": 291,
+        "previous_manifest_sha256": "ff157e038e64a53b9a9c71cdcebc99ac64b3ab6539fe1e56c629c1ce37d10194",
+        "saved_bytes_sha256": "81a492f8e04f1c3411e67850d496e1c63b1435da10b920eb0de225b8cf478219",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_LNWO_raw_20261014.csv",
+        "bars": 222,
+        "previous_manifest_sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c",
+        "saved_bytes_sha256": "3dc125587dccd19c5562f1f48f6b180f6a1b5bcf6d3d2f91cb57e9af8124c2c8",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_LNWO_adjusted_20261014.csv",
+        "bars": 222,
+        "previous_manifest_sha256": "d22c6ac378d3374655b74ef59083b52040a54244d327789979dd0fd0e363645c",
+        "saved_bytes_sha256": "3dc125587dccd19c5562f1f48f6b180f6a1b5bcf6d3d2f91cb57e9af8124c2c8",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_HOS_raw_20261014.csv",
+        "bars": 22,
+        "previous_manifest_sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b",
+        "saved_bytes_sha256": "5876a08e403d05e05309bf580109dfcd5ca1f6894d340810d8cda4db1b363317",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      },
+      {
+        "path": "audit_evidence/successor_HOS_adjusted_20261014.csv",
+        "bars": 22,
+        "previous_manifest_sha256": "00a9c7dce4c789b6d6a8dac766e0bf5b528563a919fe3d03bc3a273953825c7b",
+        "saved_bytes_sha256": "5876a08e403d05e05309bf580109dfcd5ca1f6894d340810d8cda4db1b363317",
+        "previous_hash_equals_saved_bytes_plus_one_newline": true
+      }
+    ]
+  }
 }
