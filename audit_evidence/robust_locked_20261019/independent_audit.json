@@ -1,0 +1,2948 @@
+{
+  "status": "PASS_INTERNAL_NAV_REGIME_AND_STOPS",
+  "approval": "UNVALIDATED",
+  "adjusted_basis": "2026-10-06",
+  "periods": 43,
+  "positions": 585,
+  "cash_signals": [
+    "2023-10-31",
+    "2025-03-31",
+    "2025-04-30",
+    "2026-03-31"
+  ],
+  "non_action_stop_paths_checked": 567,
+  "daily_marks": 943,
+  "missing_daily_marks": 0,
+  "net_return_pct": -57.84148894194839,
+  "daily_max_drawdown_pct": -64.91730805468802,
+  "individual_price_checks": 1152,
+  "individual_price_mismatches": [],
+  "individual_price_evidence_missing": [
+    {
+      "ticker": "CABA",
+      "day": "2023-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CABA",
+      "day": "2023-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CABA",
+      "day": "2023-03-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NINE",
+      "day": "2023-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NINE",
+      "day": "2023-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NINE",
+      "day": "2023-03-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "GLYC",
+      "day": "2023-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "GLYC",
+      "day": "2023-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "GLYC",
+      "day": "2023-03-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2023-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2023-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2023-04-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "PSTX",
+      "day": "2023-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "PSTX",
+      "day": "2023-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "PSTX",
+      "day": "2023-03-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BORR",
+      "day": "2023-03-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BORR",
+      "day": "2023-04-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BORR",
+      "day": "2023-04-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TNK",
+      "day": "2023-03-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TNK",
+      "day": "2023-04-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TNK",
+      "day": "2023-05-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NRDS",
+      "day": "2023-03-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NRDS",
+      "day": "2023-04-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NRDS",
+      "day": "2023-04-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CPS",
+      "day": "2023-03-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CPS",
+      "day": "2023-04-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CPS",
+      "day": "2023-04-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2023-03-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2023-04-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BLPH",
+      "day": "2023-04-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BLPH",
+      "day": "2023-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BLPH",
+      "day": "2023-06-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TERN",
+      "day": "2023-04-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TERN",
+      "day": "2023-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TERN",
+      "day": "2023-05-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INTT",
+      "day": "2023-04-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INTT",
+      "day": "2023-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-04-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-06-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ANVS",
+      "day": "2023-04-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ANVS",
+      "day": "2023-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ANVS",
+      "day": "2023-05-31",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-06-21",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALDX",
+      "day": "2023-06-22",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-07-07",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-07-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "XFOR",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "XFOR",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "XFOR",
+      "day": "2023-07-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-07-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "APLD",
+      "day": "2023-08-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AAOI",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AAOI",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "RMTI",
+      "day": "2023-08-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "WEAV",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "WEAV",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WEAV",
+      "day": "2023-08-07",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EVLV",
+      "day": "2023-08-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-08-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2023-08-14",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BZH",
+      "day": "2023-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BZH",
+      "day": "2023-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BZH",
+      "day": "2023-09-18",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AMSC",
+      "day": "2023-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AMSC",
+      "day": "2023-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AMSC",
+      "day": "2023-09-07",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2023-10-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "FNGR",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "FNGR",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FNGR",
+      "day": "2023-10-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "INOD",
+      "day": "2023-10-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ANF",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ANF",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ACHR",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ACHR",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ACHR",
+      "day": "2023-10-26",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CAMT",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CAMT",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CAMT",
+      "day": "2023-10-20",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "WW",
+      "day": "2023-09-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "WW",
+      "day": "2023-10-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WW",
+      "day": "2023-10-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LFMD",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LFMD",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LFMD",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "MTRX",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "MTRX",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MTRX",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CYBN",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CYBN",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CYBN",
+      "day": "2023-12-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "UEC",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "UEC",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "UEC",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "GNE",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "GNE",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "GNE",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NR",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NR",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NR",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "FRO",
+      "day": "2023-11-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "FRO",
+      "day": "2023-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FRO",
+      "day": "2024-01-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "MYO",
+      "day": "2023-12-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "MYO",
+      "day": "2024-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MYO",
+      "day": "2024-01-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "HRTG",
+      "day": "2023-12-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "HRTG",
+      "day": "2024-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "HRTG",
+      "day": "2024-02-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "DERM",
+      "day": "2023-12-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "DERM",
+      "day": "2024-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "DERM",
+      "day": "2024-01-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2023-12-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2024-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MSTR",
+      "day": "2024-01-09",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ROKU",
+      "day": "2023-12-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ROKU",
+      "day": "2024-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ROKU",
+      "day": "2024-02-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-02-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-02-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AMRX",
+      "day": "2024-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AMRX",
+      "day": "2024-02-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AMRX",
+      "day": "2024-03-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LUXH",
+      "day": "2024-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LUXH",
+      "day": "2024-02-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LUXH",
+      "day": "2024-02-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ARDX",
+      "day": "2024-02-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ARDX",
+      "day": "2024-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ARDX",
+      "day": "2024-03-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-02-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-04-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-02-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-03-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "EPIX",
+      "day": "2024-02-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EPIX",
+      "day": "2024-03-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EPIX",
+      "day": "2024-04-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-03-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-04-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "APLT",
+      "day": "2024-04-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VINC",
+      "day": "2024-03-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VINC",
+      "day": "2024-04-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VINC",
+      "day": "2024-04-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CCCC",
+      "day": "2024-03-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CCCC",
+      "day": "2024-04-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CCCC",
+      "day": "2024-04-15",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ATOS",
+      "day": "2024-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ATOS",
+      "day": "2024-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ATOS",
+      "day": "2024-05-30",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "SG",
+      "day": "2024-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "SG",
+      "day": "2024-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "SG",
+      "day": "2024-05-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CATX",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CATX",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CATX",
+      "day": "2024-06-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NN",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NN",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NN",
+      "day": "2024-07-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "IBRX",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "IBRX",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "IBRX",
+      "day": "2024-06-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AEYE",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AEYE",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AEYE",
+      "day": "2024-06-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CGEM",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CGEM",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CGEM",
+      "day": "2024-06-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VST",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VST",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VST",
+      "day": "2024-06-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-05-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-06-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-06-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "POWL",
+      "day": "2024-06-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "POWL",
+      "day": "2024-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "POWL",
+      "day": "2024-07-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-06-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-06-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-07-29",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "EVER",
+      "day": "2024-06-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EVER",
+      "day": "2024-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EVER",
+      "day": "2024-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ADMA",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ADMA",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FTAI",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "FTAI",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FTAI",
+      "day": "2024-08-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ASPN",
+      "day": "2024-08-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NVDA",
+      "day": "2024-08-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NRIX",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NRIX",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NRIX",
+      "day": "2024-09-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RSI",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RSI",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "RSI",
+      "day": "2024-08-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "DYN",
+      "day": "2024-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "DYN",
+      "day": "2024-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "DYN",
+      "day": "2024-09-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "KOSS",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "KOSS",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "KOSS",
+      "day": "2024-09-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2024-09-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "EBS",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EBS",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EBS",
+      "day": "2024-09-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "KINS",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "KINS",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "KINS",
+      "day": "2024-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "WLFC",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "WLFC",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WLFC",
+      "day": "2024-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VIRC",
+      "day": "2024-09-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-09-25",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-08-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-09-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "PSNL",
+      "day": "2024-10-14",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NEON",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NEON",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NEON",
+      "day": "2024-10-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-10-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "PLSE",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "PLSE",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "PLSE",
+      "day": "2024-10-09",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AVAH",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AVAH",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AVAH",
+      "day": "2024-10-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-11-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "REAX",
+      "day": "2024-11-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RAIL",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RAIL",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "DOGZ",
+      "day": "2024-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "DOGZ",
+      "day": "2024-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LUMN",
+      "day": "2024-12-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "COMM",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "COMM",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "COMM",
+      "day": "2024-11-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-12-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NISN",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NISN",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NISN",
+      "day": "2024-12-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INSG",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INSG",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "INSG",
+      "day": "2024-11-14",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AXGN",
+      "day": "2024-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AXGN",
+      "day": "2024-11-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AXGN",
+      "day": "2024-11-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RAIL",
+      "day": "2024-12-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NXL",
+      "day": "2024-11-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NXL",
+      "day": "2024-12-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NXL",
+      "day": "2024-12-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-11-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-12-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2024-12-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TIL",
+      "day": "2024-12-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LTBR",
+      "day": "2024-11-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LTBR",
+      "day": "2024-12-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LTBR",
+      "day": "2024-12-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "XCUR",
+      "day": "2024-12-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "XCUR",
+      "day": "2025-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "XCUR",
+      "day": "2025-01-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2024-12-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-01-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2024-12-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-02-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-02-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-02-25",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-02-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-03-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RCAT",
+      "day": "2025-02-25",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-02-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-02-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ARQQ",
+      "day": "2025-01-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ARQQ",
+      "day": "2025-02-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ARQQ",
+      "day": "2025-02-18",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "KULR",
+      "day": "2025-03-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "REAL",
+      "day": "2025-03-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "WLGS",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "WLGS",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WLGS",
+      "day": "2025-03-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-03-10",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "OPFI",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "OPFI",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "OPFI",
+      "day": "2025-03-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2025-03-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-02-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-03-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "QBTS",
+      "day": "2025-03-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RGLS",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RGLS",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MPTI",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "MPTI",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "MPTI",
+      "day": "2025-06-20",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TRVI",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TRVI",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TRVI",
+      "day": "2025-06-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "XGN",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "XGN",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "XGN",
+      "day": "2025-07-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-06-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-07-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AEVA",
+      "day": "2025-05-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AEVA",
+      "day": "2025-06-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CURI",
+      "day": "2025-07-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APPS",
+      "day": "2025-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APPS",
+      "day": "2025-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "APPS",
+      "day": "2025-07-14",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALLT",
+      "day": "2025-08-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TMC",
+      "day": "2025-08-18",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BTM",
+      "day": "2025-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BTM",
+      "day": "2025-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BTM",
+      "day": "2025-08-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BBAI",
+      "day": "2025-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BBAI",
+      "day": "2025-08-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BBAI",
+      "day": "2025-08-26",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AMPX",
+      "day": "2025-08-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AMPX",
+      "day": "2025-09-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "QNTM",
+      "day": "2025-08-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "QNTM",
+      "day": "2025-09-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "QNTM",
+      "day": "2025-09-05",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "JOBY",
+      "day": "2025-08-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "JOBY",
+      "day": "2025-09-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "JOBY",
+      "day": "2025-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NEON",
+      "day": "2025-09-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AMLX",
+      "day": "2025-08-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AMLX",
+      "day": "2025-09-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "AMLX",
+      "day": "2025-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-10-23",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ATAI",
+      "day": "2025-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ATAI",
+      "day": "2025-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ATAI",
+      "day": "2025-11-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALAB",
+      "day": "2025-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALAB",
+      "day": "2025-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALAB",
+      "day": "2025-10-15",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TDUP",
+      "day": "2025-11-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-11-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "IREN",
+      "day": "2025-09-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "IREN",
+      "day": "2025-10-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-11-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ONDS",
+      "day": "2025-11-07",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "OPEN",
+      "day": "2025-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "OPEN",
+      "day": "2025-11-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "OPEN",
+      "day": "2025-11-07",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NVFY",
+      "day": "2025-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NVFY",
+      "day": "2025-11-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-11-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LPTH",
+      "day": "2025-11-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ABAT",
+      "day": "2025-10-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ABAT",
+      "day": "2025-11-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ABAT",
+      "day": "2025-11-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "UAMY",
+      "day": "2025-11-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "UAMY",
+      "day": "2025-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "UAMY",
+      "day": "2025-12-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "GSIT",
+      "day": "2025-11-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "GSIT",
+      "day": "2025-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "GSIT",
+      "day": "2025-12-16",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "AXTI",
+      "day": "2025-11-28",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "AXTI",
+      "day": "2025-12-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2025-12-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-02-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LITE",
+      "day": "2025-12-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LITE",
+      "day": "2026-01-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LITE",
+      "day": "2026-01-13",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-01-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-02-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-02-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "NUVB",
+      "day": "2026-01-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "NUVB",
+      "day": "2026-02-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "NUVB",
+      "day": "2026-03-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ARWR",
+      "day": "2026-01-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ARWR",
+      "day": "2026-02-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ARWR",
+      "day": "2026-02-12",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "HL",
+      "day": "2026-01-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "HL",
+      "day": "2026-02-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "HL",
+      "day": "2026-03-02",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ARMN",
+      "day": "2026-01-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ARMN",
+      "day": "2026-02-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "USAS",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "USAS",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "USAS",
+      "day": "2026-03-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BW",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ASM",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ASM",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ASM",
+      "day": "2026-03-04",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CRVS",
+      "day": "2026-03-16",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CRML",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CRML",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CRML",
+      "day": "2026-03-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "FLNC",
+      "day": "2026-02-27",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "FLNC",
+      "day": "2026-03-02",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FLNC",
+      "day": "2026-03-31",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "RLMD",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "RLMD",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "RLMD",
+      "day": "2026-05-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-05-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-05-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "FSLY",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "FSLY",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "FSLY",
+      "day": "2026-05-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "IRD",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "IRD",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "IRD",
+      "day": "2026-05-19",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CLYM",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CLYM",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CIEN",
+      "day": "2026-04-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CIEN",
+      "day": "2026-05-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CIEN",
+      "day": "2026-06-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "EDSA",
+      "day": "2026-05-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "EDSA",
+      "day": "2026-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "EDSA",
+      "day": "2026-06-08",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-05-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "STTK",
+      "day": "2026-06-03",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ORKA",
+      "day": "2026-05-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ORKA",
+      "day": "2026-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ORKA",
+      "day": "2026-07-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-05-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-07-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-05-29",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-06-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ALTO",
+      "day": "2026-06-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "HYLN",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "HYLN",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "HYLN",
+      "day": "2026-07-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "STX",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "STX",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "STX",
+      "day": "2026-07-17",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "HUT",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "HUT",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "HUT",
+      "day": "2026-07-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "INTC",
+      "day": "2026-07-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-07-28",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-06-30",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-07-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-07-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-08-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "VPG",
+      "day": "2026-08-06",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ATEX",
+      "day": "2026-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ATEX",
+      "day": "2026-08-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WYY",
+      "day": "2026-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "WYY",
+      "day": "2026-08-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "WYY",
+      "day": "2026-08-18",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-08-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BAND",
+      "day": "2026-09-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ABSI",
+      "day": "2026-07-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ABSI",
+      "day": "2026-08-03",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ABSI",
+      "day": "2026-09-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "CDNA",
+      "day": "2026-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TXG",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TXG",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TXG",
+      "day": "2026-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "APGE",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "APGE",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BFLY",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "BFLY",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "BFLY",
+      "day": "2026-09-11",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "LQDA",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "LQDA",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "LQDA",
+      "day": "2026-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "ETON",
+      "day": "2026-10-01",
+      "field": "ExitPrice_USD"
+    },
+    {
+      "ticker": "TWST",
+      "day": "2026-08-31",
+      "field": "SignalPrice_USD"
+    },
+    {
+      "ticker": "TWST",
+      "day": "2026-09-01",
+      "field": "EntryPrice_USD"
+    },
+    {
+      "ticker": "TWST",
+      "day": "2026-10-01",
+      "field": "ExitPrice_USD"
+    }
+  ],
+  "scope": "NAV, stop timing and source coverage only; shared action converters are not independently re-derived; no new holdout or trading approval."
+}

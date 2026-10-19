@@ -9,6 +9,13 @@ from momentum_strategy import market_regime, rank_universe
 
 
 class RobustBacktestParityTests(unittest.TestCase):
+    def test_dwac_keeps_its_original_symbol_until_market_effective_date(self):
+        from audit_dated_action_chain import identity
+        self.assertEqual(identity(backtest.STOCK_CORPORATE_ACTIONS, 'DWAC', '2024-03-25', '2024-03-01'), ('DWAC', 1.0, None))
+        successor, ratio, action = identity(backtest.STOCK_CORPORATE_ACTIONS, 'DWAC', '2024-03-26', '2024-03-01')
+        self.assertEqual((successor, ratio), ('DJT', 1.0))
+        self.assertEqual(action['effective_date'], '2024-03-26')
+
     def test_ranking_and_data_guards_match_live(self):
         rising = [150.0 - i * 50.0 / 252 for i in range(253)]
         history = []

@@ -27,6 +27,7 @@ from momentum_master_v3 import (
 )
 from momentum_config import PRODUCTION
 from momentum_strategy import rank_universe as rank_locked_robust_universe
+from momentum_strategy import Security, is_eligible_security
 
 CACHE_FILE = ".momentum_backtest_cache.json"
 UNIVERSE_CACHE_FILE = ".momentum_point_in_time_universe.json"
@@ -135,7 +136,7 @@ def save_point_in_time_universe_cache(path, universes):
     )
 
 
-def fetch_point_in_time_universe(client, date_string):
+def fetch_point_in_time_universe(client, date_string, *, locked_robust=False):
     """Return US-listed common stocks active on the requested historical date.
 
     Massive/Polygon exposes `date` and `active` on /v3/reference/tickers.  The
@@ -163,6 +164,14 @@ def fetch_point_in_time_universe(client, date_string):
                 and str(row.get("primary_exchange", "")) in ELIGIBLE_PRIMARY_EXCHANGES
                 and str(row.get("type", "")) in ELIGIBLE_SECURITY_TYPES
             ):
+                if locked_robust and not is_eligible_security(Security(
+                    ticker=ticker,
+                    name=str(row.get("name", "")),
+                    security_type=str(row.get("type", "")),
+                    primary_exchange=str(row.get("primary_exchange", "")),
+                    active=row.get("active") is not False,
+                )):
+                    continue
                 tickers.add(ticker)
         next_url = data.get("next_url")
         if not next_url:
@@ -630,7 +639,7 @@ STOCK_CORPORATE_ACTIONS = {
         "note": "Default mixed consideration for non-electing THR shareholders",
     },
     "DWAC": {
-        "effective_date": "2024-03-25",
+        "effective_date": "2024-03-26",
         "successor_ticker": "DJT",
         "shares_per_share": 1.0,
         "reason": "SYMBOL_CHANGE",
@@ -642,6 +651,15 @@ STOCK_CORPORATE_ACTIONS = {
         "shares_per_share": 1.0,
         "reason": "SYMBOL_CHANGE",
         "execution": "successor-market",
+    },
+    "NVFY": {
+        "effective_date": "2025-11-10",
+        "successor_ticker": "XWIN",
+        "shares_per_share": 1.0,
+        "reason": "SYMBOL_CHANGE",
+        "execution": "successor-market",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1473334/000149315225016865/formdef14a.htm",
+        "date_source": "Massive events for Composite FIGI BBG000QL42S5, verified 2026-10-19",
     },
 }
 
@@ -1835,7 +1853,16 @@ def run(
         universes_by_signal = {signal: current_universe for signal in executable_signals}
         universe_label = "CURRENT_TEMPLATE_SURVIVORSHIP_BIAS"
     elif universe_mode == "point-in-time":
-        universes_by_signal = point_in_time_universes(client, executable_signals)
+        if selection_model == PRODUCTION.selection_model:
+            # The ticker-only audit cache lacks dated issuer names. Reuse the
+            # dated reference responses and the live instrument filter, rather
+            # than silently admitting acquisition companies in this model.
+            universes_by_signal = {
+                signal: fetch_point_in_time_universe(client, signal, locked_robust=True)
+                for signal in executable_signals
+            }
+        else:
+            universes_by_signal = point_in_time_universes(client, executable_signals)
         universe_label = POINT_IN_TIME_UNIVERSE_LABEL
     else:
         raise ValueError("universe_mode must be current-template or point-in-time")
@@ -2250,3 +2277,4 @@ if __name__ == "__main__":
         arguments.universe_mode,
         arguments.template_file,
     )
+

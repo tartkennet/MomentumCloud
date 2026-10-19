@@ -1,0 +1,180 @@
+{
+  "invested_periods": 39,
+  "cash_periods": 4,
+  "stop_exits": 342,
+  "stop_exit_pct": 58.46153846153847,
+  "winning_positions": 196,
+  "losing_positions": 389,
+  "flat_positions": 0,
+  "spy_same_monthly_exposure_before_cost_pct": 52.88231347671086,
+  "spy_same_monthly_exposure_after_cost_pct": 36.14365133906543,
+  "cash_months_spy_compound_pct": 26.442495101988705,
+  "worst_periods": [
+    {
+      "SignalDate": "2025-10-31",
+      "NetReturn_pct": -17.965184326003538
+    },
+    {
+      "SignalDate": "2025-02-28",
+      "NetReturn_pct": -17.70592939471035
+    },
+    {
+      "SignalDate": "2024-11-29",
+      "NetReturn_pct": -13.58116840251919
+    },
+    {
+      "SignalDate": "2024-03-28",
+      "NetReturn_pct": -12.975060453791912
+    },
+    {
+      "SignalDate": "2023-02-28",
+      "NetReturn_pct": -11.43146106221158
+    }
+  ],
+  "action_lots": [
+    {
+      "SignalDate": "2023-05-31",
+      "Ticker": "RXDX",
+      "EntryDate": "2023-06-01",
+      "ExitDate": "2023-06-16",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.7049345417925457
+    },
+    {
+      "SignalDate": "2023-06-30",
+      "Ticker": "ISEE",
+      "EntryDate": "2023-07-03",
+      "ExitDate": "2023-07-11",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 1.6518424396442244
+    },
+    {
+      "SignalDate": "2023-08-31",
+      "Ticker": "RETA",
+      "EntryDate": "2023-09-01",
+      "ExitDate": "2023-09-26",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 2.131438721136769
+    },
+    {
+      "SignalDate": "2023-11-30",
+      "Ticker": "PNT",
+      "EntryDate": "2023-12-01",
+      "ExitDate": "2023-12-27",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": -7.612712490761265
+    },
+    {
+      "SignalDate": "2023-12-29",
+      "Ticker": "BVH",
+      "EntryDate": "2024-01-02",
+      "ExitDate": "2024-01-17",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": -0.1065530101225342
+    },
+    {
+      "SignalDate": "2024-01-31",
+      "Ticker": "IMGN",
+      "EntryDate": "2024-02-01",
+      "ExitDate": "2024-02-12",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 6.507666098807485
+    },
+    {
+      "SignalDate": "2024-01-31",
+      "Ticker": "ROVR",
+      "EntryDate": "2024-02-01",
+      "ExitDate": "2024-02-27",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.5484460694698434
+    },
+    {
+      "SignalDate": "2024-02-29",
+      "Ticker": "AMAM",
+      "EntryDate": "2024-03-01",
+      "ExitDate": "2024-03-07",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.2147458840372262
+    },
+    {
+      "SignalDate": "2024-02-29",
+      "Ticker": "HARP",
+      "EntryDate": "2024-03-01",
+      "ExitDate": "2024-03-11",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.2615518744550904
+    },
+    {
+      "SignalDate": "2024-04-30",
+      "Ticker": "ALPN",
+      "EntryDate": "2024-05-01",
+      "ExitDate": "2024-05-20",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.5724895559337861
+    },
+    {
+      "SignalDate": "2024-05-31",
+      "Ticker": "FUSN",
+      "EntryDate": "2024-06-03",
+      "ExitDate": "2024-06-04",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": -2.552204176334105
+    },
+    {
+      "SignalDate": "2025-05-30",
+      "Ticker": "RGLS",
+      "EntryDate": "2025-06-02",
+      "ExitDate": "2025-06-25",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": -11.72761664564943
+    },
+    {
+      "SignalDate": "2025-10-31",
+      "Ticker": "NVFY",
+      "EntryDate": "2025-11-03",
+      "ExitDate": "2025-12-01",
+      "CorporateAction": "SYMBOL_CHANGE",
+      "GrossReturn_pct": -1.6157989228007152
+    },
+    {
+      "SignalDate": "2025-12-31",
+      "Ticker": "CDTX",
+      "EntryDate": "2026-01-02",
+      "ExitDate": "2026-01-07",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.2943174100067836
+    },
+    {
+      "SignalDate": "2026-01-30",
+      "Ticker": "ARMN",
+      "EntryDate": "2026-02-02",
+      "ExitDate": "2026-03-02",
+      "CorporateAction": "SYMBOL_CHANGE",
+      "GrossReturn_pct": 34.67455621301778
+    },
+    {
+      "SignalDate": "2026-02-27",
+      "Ticker": "RAPT",
+      "EntryDate": "2026-03-02",
+      "ExitDate": "2026-03-03",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.0344946533287426
+    },
+    {
+      "SignalDate": "2026-04-30",
+      "Ticker": "TERN",
+      "EntryDate": "2026-05-01",
+      "ExitDate": "2026-05-05",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.0755287009063465
+    },
+    {
+      "SignalDate": "2026-08-31",
+      "Ticker": "APGE",
+      "EntryDate": "2026-09-01",
+      "ExitDate": "2026-09-03",
+      "CorporateAction": "CASH_MERGER",
+      "GrossReturn_pct": 0.0592460934607297
+    }
+  ]
+}

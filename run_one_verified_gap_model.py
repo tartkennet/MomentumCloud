@@ -14,7 +14,7 @@ OUT = Path("Momentum_verified_gap_model")
 SOURCE = Path("raw_evidence")
 
 
-def main():
+def install_verified_inputs(scenario):
     OUT.mkdir(exist_ok=True)
     manifest = json.loads(Path("classification/manifest.json").read_text())
     remaining = json.loads(Path("classification/remaining_data_quality_exclusions.json").read_text())
@@ -76,10 +76,12 @@ def main():
     from audit_dated_action_chain import install_dated_action_chain
     install_dated_action_chain(engine)
     from audit_action_price_install import install_compatible_action_prices
-    install_compatible_action_prices(engine, paired_factor)
+    observed_path = Path('audit_evidence/robust_successor_observations_20261019.json')
+    observed = (json.loads(observed_path.read_text()) if scenario == 'robust_locked_candidate' and observed_path.exists() else None)
+    install_compatible_action_prices(engine, paired_factor, observed)
 
     # Execution-only distribution observations never replace formation histories.
-    if os.environ["SCENARIO"] in ("momentum_selection_only", "eligible_universe_equal_weight"):
+    if scenario in ("momentum_selection_only", "eligible_universe_equal_weight", "robust_locked_candidate"):
         from audit_multileg_action_install import install_compatible_multileg_actions
         multi_path = Path("audit_evidence/multileg_execution_histories_20261014.json")
         if multi_path.exists():
@@ -121,6 +123,11 @@ def main():
 
     existing.history_for = actual_history
     engine.find_unverified_split_basis_tickers = lambda *_args, **_kwargs: remaining
+    return {"full_history_tickers": len(verified_histories)}
+
+
+def main():
+    install_verified_inputs(os.environ["SCENARIO"])
     original_run = engine.run
     engine.run = lambda *args, **kwargs: original_run(
         *args, execution_backfill=True, audit_equal_weight_all=os.environ["SCENARIO"] == "eligible_universe_equal_weight", **kwargs
@@ -169,5 +176,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 

@@ -1,0 +1,46 @@
+{
+  "checked_date": "2026-10-19",
+  "status": "VERIFIED_PROVIDER_BARS_AND_MARKET_EFFECTIVE_DATE",
+  "dwac_market_effective_date": "2024-03-26",
+  "previous_implementation_date": "2024-03-25",
+  "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-149",
+  "finding": "Business combination closed March 25; Nasdaq explicitly specifies March 26 as the marketplace effective date for DWAC to DJT. Legal 1:1 share continuation is unchanged.",
+  "requests": [
+    {
+      "path": "/v2/aggs/ticker/DWAC/range/1/day/2024-03-22/2024-03-22",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n9915264.0,41.1695,44.2,36.94,48.01,36.44,1711080000000,120614\n"
+    },
+    {
+      "path": "/v2/aggs/ticker/DWAC/range/1/day/2024-03-22/2024-03-22",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n9915264.0,41.1695,44.2,36.94,48.01,36.44,1711080000000,120614\n"
+    },
+    {
+      "path": "/v2/aggs/ticker/DJT/range/1/day/2024-03-25/2024-03-26",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n55523528.0,68.8608,70.9,57.99,79.38,57.25,1711425600000,818230\n"
+    },
+    {
+      "path": "/v2/aggs/ticker/DJT/range/1/day/2024-03-25/2024-03-26",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n55523528.0,68.8608,70.9,57.99,79.38,57.25,1711425600000,818230\n"
+    }
+  ]
+}

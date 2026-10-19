@@ -1,5 +1,44 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Färdig månadskörning för låsta 50/30/20, fortsatt UNVALIDATED – 19 oktober 2026
+
+**Den låsta robust-modellens månadskörning är slutförd. Resultatet är ett forskningsresultat, inte en färdig validering av appens dagliga beteende. Den här körningen klarar inte avkastnings-, risk- eller träffsäkerhetskraven.** Den tidigare siffran −0,546005 % gäller den äldre 60/40-modellen och ska inte användas som resultat för 50/30/20.
+
+| Ny färdig 50/30/20-körning | Resultat |
+|---|---:|
+| Månadssignaler / investerade / kassa | 43 / 39 / 4 |
+| Positioner / unika tickers | 585 / 308 |
+| Före fast kostnad | −52,470977 % |
+| Efter fast kostnad | **−57,841489 %** |
+| Största dagliga nedgång | **−64,917308 %** |
+| SPY, samma fasta kostnad varje månad | **+70,202385 %** |
+| SPY, prisavkastning utan jämförelsekostnad | +93,308212 % |
+| Positiva portföljmånader | 13/43, 30,232558 % |
+| Vinnande / förlorande positioner | 196 / 389 |
+| Stoppexits | 342/585, 58,461538 % |
+
+Körningen använder de redan låsta reglerna: 50/30/20-viktad tvärsnittsrankning av 12–1, 6–1 och 3–1, 15 lika viktade innehav, prisgräns 5 USD, ADV20-gräns 2 MUSD, positivt momentum, kurs över stigande SMA200, SPY över SMA200 på månadssignalen, 10 % stopp vid dagsstängning och exekvering nästa öppning. Signaler 2023-02-28–2026-08-31, affärsfönster 2023-03-01–2026-10-01. Kostnaden är 0,30 procentenheter av startkapitalet i var och en av de 39 investerade månaderna; kassamånadernas netto är noll. Ingen parameter har anpassats efter utfallet.
+
+Den beskrivande jämförelsen visar att förlusten redan finns före kostnader. SPY enbart under exakt samma 39 investerade månader gav +52,882313 % före kostnader, mot aktiekorgarnas −52,470977 %. Kassamånaderna innehöll samtidigt +26,442495 % sammansatt SPY-prisavkastning. Dessa mått är separata jämförelser och ska inte summeras som additiva orsaksbidrag. Stoppen, rankningen och urvalet är inte kausalt separerade av denna körning.
+
+Det redan tidigare granskade senare segmentet har 18 månader: modellen +4,223278 % netto, SPY +30.017946 % med samma fasta månadskostnad. Detta är **inte ett nytt eller orört holdout**.
+
+**Rättat för denna körning.** Backtestet använder nu samma rankningsfunktion som appen och kan inte längre köpa på en månadssignal där SPY-regeln kräver kassa. Det tillämpar också appens befintliga instrument-/namnfilter på de historiska referensposterna, inte dagens bolagsnamn. 258 frysta referenssidor över 43 signaler har avstämts mot originaluniversumet. Den generella namnregeln utesluter 8 105 signalposter; det är upprepade poster över månader, inte 8 105 unika bolag. Kvarvarande storlek är 4 966–5 227 per signal. Ingen avkastningsbaserad borttagning har gjorts.
+
+ISEE:s och RGLS:s ytterligare råa/justerade prispar är hämtade. DWAC:s marknadsdatum rättas från stängningsdagen 25 mars till **26 mars 2024**, enligt [Nasdaq ECA2024-149](https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-149). NVFY följs från 10 november 2025 till **XWIN**, inte till XMAX ett halvår för tidigt. SEC:s [definitiva proxy](https://www.sec.gov/Archives/edgar/data/1473334/000149315225016865/formdef14a.htm) anger oförändrat antal aktier; leverantörens FIGI-tidslinje daterar symbolbytet, och båda daterade identiteterna har samma Composite- och Share Class-FIGI. ARMN följs från 19 februari 2026 till **ARIS**, vilket också bekräftas i emittentens [genomförandebesked på SEC](https://www.sec.gov/Archives/edgar/data/1964504/000175392626000336/g085137_ex99-1.htm). Successorernas CIK saknas i leverantörssvaren och har inte fyllts i som leverantörsdata.
+
+De 15 XWIN-dagarna och åtta ARIS-dagarna används i tillfälliga vyer för just de gamla innehavens exekvering och dagliga värdering. De ändrar inte formationens cache eller andra aktiers priser. NVFY-positionens −1,615799 % och ARMN-positionens +34,674556 % behålls. Båda följdes till ordinarie periodexit, utan bakdatering eller riktad borttagning.
+
+**Verifiering:** 147 lokala regressionstester passerar med de fem låsta paketversionerna. Oberoende positions- och kapitalaggregering passerar. En separat daglig beräkning av 943 värderingspunkter, med noll saknade dagliga markeringar, stämmer av både slutkapital och −64,917308 % nedgång. Alla 43 SPY-beslut och 567 stopphistoriker utan bolagshändelse har kontrollerats. Bolagshändelsernas enhetsomräkning återanvänder den separat testade konverteraren och påstås inte vara oberoende härledd.
+
+Det individuella prisunderlaget täcker **1 152 jämförelser utan avvikelse**. Ytterligare **585 signal-/köp-/exitobservationer**, fördelade på 200 positioner, saknar denna separata endpoint-kontroll. Den interna avstämningen innebär därför inte att alla modellpriser har verifierats mot individuell historik. Den exakta listan finns i `independent_audit.json`.
+
+**Kvarvarande konkreta skillnader mot appen:** appen kontrollerar SPY dagligen och kan återinträda under månaden, medan denna frysta månadsmotor kontrollerar regimen vid månadssignalen. Appens byte av `selection_month` sker på den första observerade sessionen i månaden, medan detta test använder månadsslutssignal. Testet använder kontinuerliga lika aktieandelar; appens heltalsaktier och överhopp av ej överkomliga aktier simuleras inte. Historisk rå pris-/likviditetsparitet är inte färdigkontrollerad. Ingen av dessa skillnader får döljas bakom godkända rankningsenhetstester. **Ingen fullständig appvalidering eller köp-GO publiceras.**
+
+Samtliga nya resultat, daglig NAV, prischecklista och en separat forskningsbedömning finns under `audit_evidence/robust_locked_20261019/`. Körningens tre CSV-resultat blev färdiga; den första JSON-exporten avbröts enbart eftersom ett tomt textfält lästes som NaN. Exporten är rättad, den använda körkällan är bevarad och sammanfattningen återbyggd från de färdiga CSV:erna med oberoende kapitalavstämning. Ingen ny numerisk körning påstås för den exportkorrigeringen.
+
+De fyra äldre universumhindren nedan är fortfarande en separat, ofärdig universumjämförelse. Inget av dem används som ursäkt för att ersätta 50/30/20-modellens resultat med den äldre 60/40-siffran. Ingen main-merge, produktion, handel, externa mejl, dataköp eller automation har genomförts.
+
 ## Slutförd källbatch, fortsatt datastopp – 19 oktober 2026
 
 **Källbatchen är färdig, men universumjämförelsen är fortfarande ofärdig. NO-GO kvarstår.** Inga nya modellpriser eller strategiregler har installerats.

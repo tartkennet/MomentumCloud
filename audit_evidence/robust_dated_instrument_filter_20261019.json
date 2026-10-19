@@ -1,0 +1,271 @@
+{
+  "status": "COMPLETE_DATED_LIVE_INSTRUMENT_FILTER_AUDIT",
+  "rule": "Existing momentum_strategy.is_eligible_security; no performance-based exclusions",
+  "source_sha256": "3eb5293f80dce0098008e1a2f5edbcde4b83c85e8928135fdbff430d51fe725c",
+  "full_evidence": {
+    "path": "audit_evidence/robust_dated_instrument_filter_20261019.json.gz",
+    "sha256": "89ebdb5de0c230c198cf05b20cbe1256ea98d4f0c82fa00cce2a144c95912270"
+  },
+  "reference_sources": 258,
+  "periods": [
+    {
+      "signal_date": "2023-02-28",
+      "original_count": 5591,
+      "live_filter_count": 5212,
+      "excluded_count": 379
+    },
+    {
+      "signal_date": "2023-03-31",
+      "original_count": 5543,
+      "live_filter_count": 5187,
+      "excluded_count": 356
+    },
+    {
+      "signal_date": "2023-04-28",
+      "original_count": 5518,
+      "live_filter_count": 5174,
+      "excluded_count": 344
+    },
+    {
+      "signal_date": "2023-05-31",
+      "original_count": 5558,
+      "live_filter_count": 5227,
+      "excluded_count": 331
+    },
+    {
+      "signal_date": "2023-06-30",
+      "original_count": 5530,
+      "live_filter_count": 5213,
+      "excluded_count": 317
+    },
+    {
+      "signal_date": "2023-07-31",
+      "original_count": 5493,
+      "live_filter_count": 5194,
+      "excluded_count": 299
+    },
+    {
+      "signal_date": "2023-08-31",
+      "original_count": 5465,
+      "live_filter_count": 5183,
+      "excluded_count": 282
+    },
+    {
+      "signal_date": "2023-09-29",
+      "original_count": 5453,
+      "live_filter_count": 5181,
+      "excluded_count": 272
+    },
+    {
+      "signal_date": "2023-10-31",
+      "original_count": 5423,
+      "live_filter_count": 5165,
+      "excluded_count": 258
+    },
+    {
+      "signal_date": "2023-11-30",
+      "original_count": 5390,
+      "live_filter_count": 5145,
+      "excluded_count": 245
+    },
+    {
+      "signal_date": "2023-12-29",
+      "original_count": 5336,
+      "live_filter_count": 5120,
+      "excluded_count": 216
+    },
+    {
+      "signal_date": "2024-01-31",
+      "original_count": 5335,
+      "live_filter_count": 5124,
+      "excluded_count": 211
+    },
+    {
+      "signal_date": "2024-02-29",
+      "original_count": 5317,
+      "live_filter_count": 5119,
+      "excluded_count": 198
+    },
+    {
+      "signal_date": "2024-03-28",
+      "original_count": 5292,
+      "live_filter_count": 5114,
+      "excluded_count": 178
+    },
+    {
+      "signal_date": "2024-04-30",
+      "original_count": 5282,
+      "live_filter_count": 5114,
+      "excluded_count": 168
+    },
+    {
+      "signal_date": "2024-05-31",
+      "original_count": 5256,
+      "live_filter_count": 5098,
+      "excluded_count": 158
+    },
+    {
+      "signal_date": "2024-06-28",
+      "original_count": 5241,
+      "live_filter_count": 5091,
+      "excluded_count": 150
+    },
+    {
+      "signal_date": "2024-07-31",
+      "original_count": 5224,
+      "live_filter_count": 5084,
+      "excluded_count": 140
+    },
+    {
+      "signal_date": "2024-08-30",
+      "original_count": 5196,
+      "live_filter_count": 5063,
+      "excluded_count": 133
+    },
+    {
+      "signal_date": "2024-09-30",
+      "original_count": 5192,
+      "live_filter_count": 5065,
+      "excluded_count": 127
+    },
+    {
+      "signal_date": "2024-10-31",
+      "original_count": 5192,
+      "live_filter_count": 5068,
+      "excluded_count": 124
+    },
+    {
+      "signal_date": "2024-11-29",
+      "original_count": 5169,
+      "live_filter_count": 5062,
+      "excluded_count": 107
+    },
+    {
+      "signal_date": "2024-12-31",
+      "original_count": 5154,
+      "live_filter_count": 5059,
+      "excluded_count": 95
+    },
+    {
+      "signal_date": "2025-01-31",
+      "original_count": 5135,
+      "live_filter_count": 5048,
+      "excluded_count": 87
+    },
+    {
+      "signal_date": "2025-02-28",
+      "original_count": 5140,
+      "live_filter_count": 5053,
+      "excluded_count": 87
+    },
+    {
+      "signal_date": "2025-03-31",
+      "original_count": 5136,
+      "live_filter_count": 5052,
+      "excluded_count": 84
+    },
+    {
+      "signal_date": "2025-04-30",
+      "original_count": 5118,
+      "live_filter_count": 5036,
+      "excluded_count": 82
+    },
+    {
+      "signal_date": "2025-05-30",
+      "original_count": 5053,
+      "live_filter_count": 4966,
+      "excluded_count": 87
+    },
+    {
+      "signal_date": "2025-06-30",
+      "original_count": 5146,
+      "live_filter_count": 5042,
+      "excluded_count": 104
+    },
+    {
+      "signal_date": "2025-07-31",
+      "original_count": 5160,
+      "live_filter_count": 5048,
+      "excluded_count": 112
+    },
+    {
+      "signal_date": "2025-08-29",
+      "original_count": 5214,
+      "live_filter_count": 5094,
+      "excluded_count": 120
+    },
+    {
+      "signal_date": "2025-09-30",
+      "original_count": 5225,
+      "live_filter_count": 5095,
+      "excluded_count": 130
+    },
+    {
+      "signal_date": "2025-10-31",
+      "original_count": 5231,
+      "live_filter_count": 5099,
+      "excluded_count": 132
+    },
+    {
+      "signal_date": "2025-11-28",
+      "original_count": 5242,
+      "live_filter_count": 5100,
+      "excluded_count": 142
+    },
+    {
+      "signal_date": "2025-12-31",
+      "original_count": 5230,
+      "live_filter_count": 5080,
+      "excluded_count": 150
+    },
+    {
+      "signal_date": "2026-01-30",
+      "original_count": 5242,
+      "live_filter_count": 5075,
+      "excluded_count": 167
+    },
+    {
+      "signal_date": "2026-02-27",
+      "original_count": 5262,
+      "live_filter_count": 5079,
+      "excluded_count": 183
+    },
+    {
+      "signal_date": "2026-03-31",
+      "original_count": 5267,
+      "live_filter_count": 5072,
+      "excluded_count": 195
+    },
+    {
+      "signal_date": "2026-04-30",
+      "original_count": 5277,
+      "live_filter_count": 5065,
+      "excluded_count": 212
+    },
+    {
+      "signal_date": "2026-05-29",
+      "original_count": 5285,
+      "live_filter_count": 5064,
+      "excluded_count": 221
+    },
+    {
+      "signal_date": "2026-06-30",
+      "original_count": 5306,
+      "live_filter_count": 5077,
+      "excluded_count": 229
+    },
+    {
+      "signal_date": "2026-07-31",
+      "original_count": 5309,
+      "live_filter_count": 5067,
+      "excluded_count": 242
+    },
+    {
+      "signal_date": "2026-08-31",
+      "original_count": 5317,
+      "live_filter_count": 5066,
+      "excluded_count": 251
+    }
+  ],
+  "excluded_signal_records": 8105
+}

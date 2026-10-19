@@ -1,0 +1,276 @@
+{
+  "checked_date": "2026-10-19",
+  "status": "VERIFIED_DATED_SUCCESSOR_EXECUTION_OBSERVATIONS_ONLY",
+  "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1964504/000175392626000336/g085137_ex99-1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1473334/000149315225016865/formdef14a.htm"
+  ],
+  "events": "name,composite_figi,cik,ticker_change_ticker,type,date\n\"XMAX, Inc. Common Stock\",BBG000QL42S5,0001473334,XMAX,ticker_change,2026-05-18\n\"XMAX, Inc. Common Stock\",BBG000QL42S5,0001473334,XWIN,ticker_change,2025-11-10\n\"XMAX, Inc. Common Stock\",BBG000QL42S5,0001473334,NVFY,ticker_change,2023-05-24\n",
+  "identities": [
+    {
+      "request": {
+        "path": "/v3/reference/tickers/ARIS",
+        "params": {
+          "date": "2026-02-19"
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot\nARIS,Aris Mining Corporation,stocks,us,XNYS,CS,true,usd,BBG000K0VQL1,BBG001S75835,ARIS,205532283,100\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot\nARIS,Aris Mining Corporation,stocks,us,XNYS,CS,true,usd,BBG000K0VQL1,BBG001S75835,ARIS,205532283,100\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v3/reference/tickers/XWIN",
+        "params": {
+          "date": "2025-11-10"
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot\nXWIN,\"XMAX, Inc. Common Stock\",stocks,us,XNAS,CS,true,usd,BBG000QL42S5,BBG001T7SW36,XWIN,13771322,100\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,ticker_root,share_class_shares_outstanding,round_lot\nXWIN,\"XMAX, Inc. Common Stock\",stocks,us,XNAS,CS,true,usd,BBG000QL42S5,BBG001T7SW36,XWIN,13771322,100\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v3/reference/tickers/NVFY",
+        "params": {
+          "date": "2025-11-07"
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,market_cap,phone_number,address_address1,address_city,address_state,address_postal_code,description,sic_code,sic_description,ticker_root,homepage_url,total_employees,list_date,share_class_shares_outstanding,weighted_shares_outstanding,round_lot\nNVFY,\"Nova Lifestyle, Inc.\",stocks,us,XNAS,CS,true,usd,0001473334,BBG000QL42S5,BBG001T7SW36,202140168.35999998,(323) 888-9999,6565 E. WASHINGTON BLVD.,COMMERCE,CA,90040,Nova Lifestyle Inc is a designer and lifestyle furniture company. It distributes and retails contemporary styled residential and commercial furniture. The firms marketing and sales platform offers retail as well as online selection and purchase fulfillment internationally. The company also sells managed a variety of bedding foundation components. Its collection of lifestyle furniture brands includes Diamond Sofa. The firm's products are made in the United States and Asia. Its customers mainly comprise distributors and retailers having specific geographic coverages that deploy middle to high-end private label home furnishings. The company operates in one business and industry segment: the design and sale of furniture.,2510,HOUSEHOLD FURNITURE,NVFY,https://www.novalifestyle.com,27,2010-03-29,13771322,37572522,100\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,market_cap,phone_number,address_address1,address_city,address_state,address_postal_code,description,sic_code,sic_description,ticker_root,homepage_url,total_employees,list_date,share_class_shares_outstanding,weighted_shares_outstanding,round_lot\nNVFY,\"Nova Lifestyle, Inc.\",stocks,us,XNAS,CS,true,usd,0001473334,BBG000QL42S5,BBG001T7SW36,202140168.35999998,(323) 888-9999,6565 E. WASHINGTON BLVD.,COMMERCE,CA,90040,Nova Lifestyle Inc is a designer and lifestyle furniture company. It distributes and retails contemporary styled residential and commercial furniture. The firms marketing and sales platform offers retail as well as online selection and purchase fulfillment internationally. The company also sells managed a variety of bedding foundation components. Its collection of lifestyle furniture brands includes Diamond Sofa. The firm's products are made in the United States and Asia. Its customers mainly comprise distributors and retailers having specific geographic coverages that deploy middle to high-end private label home furnishings. The company operates in one business and industry segment: the design and sale of furniture.,2510,HOUSEHOLD FURNITURE,NVFY,https://www.novalifestyle.com,27,2010-03-29,13771322,37572522,100\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v3/reference/tickers/ARMN",
+        "params": {
+          "date": "2026-02-18"
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,market_cap,description,ticker_root,homepage_url,total_employees,list_date,branding_logo_url,branding_icon_url,share_class_shares_outstanding,weighted_shares_outstanding,round_lot\nARMN,Aris Mining Corporation,stocks,us,XASE,CS,true,usd,0001964504,BBG000K0VQL1,BBG001S75835,3918969730.8,\"Aris Mining Corp is engaged in the acquisition, exploration, development, and operation of gold properties in Colombia, Guyana, and Canada. It owns and operates its Segovia Operations, Soto Norte Project and Marmato Mine in Colombia, the Toroparu Project in Guyana, and the Juby Project in Ontario, Canada. The company generates revenue from the sale of gold and silver.\",ARMN,https://www.aris-mining.com,3485,2012-12-07,https://api.massive.com/v1/reference/company-branding/YXJpcy1taW5pbmcuY29t/images/2026-02-01_logo.svg,https://api.massive.com/v1/reference/company-branding/YXJpcy1taW5pbmcuY29t/images/2026-02-01_icon.jpeg,205532283,204539130,100\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,market_cap,description,ticker_root,homepage_url,total_employees,list_date,branding_logo_url,branding_icon_url,share_class_shares_outstanding,weighted_shares_outstanding,round_lot\nARMN,Aris Mining Corporation,stocks,us,XASE,CS,true,usd,0001964504,BBG000K0VQL1,BBG001S75835,3918969730.8,\"Aris Mining Corp is engaged in the acquisition, exploration, development, and operation of gold properties in Colombia, Guyana, and Canada. It owns and operates its Segovia Operations, Soto Norte Project and Marmato Mine in Colombia, the Toroparu Project in Guyana, and the Juby Project in Ontario, Canada. The company generates revenue from the sale of gold and silver.\",ARMN,https://www.aris-mining.com,3485,2012-12-07,https://api.massive.com/v1/reference/company-branding/YXJpcy1taW5pbmcuY29t/images/2026-02-01_logo.svg,https://api.massive.com/v1/reference/company-branding/YXJpcy1taW5pbmcuY29t/images/2026-02-01_icon.jpeg,205532283,204539130,100\n"
+          },
+          "isError": false
+        }
+      }
+    }
+  ],
+  "price_requests": [
+    {
+      "path": "/v2/aggs/ticker/ARMN/range/1/day/2026-02-18/2026-02-18",
+      "result": [
+        {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "v,vw,o,c,h,l,t,n\n1744469.0,19.0171,18.9,19.16,19.33,18.62,1771390800000,28496\n"
+              }
+            ],
+            "structuredContent": {
+              "result": "v,vw,o,c,h,l,t,n\n1744469.0,19.0171,18.9,19.16,19.33,18.62,1771390800000,28496\n"
+            },
+            "isError": false
+          }
+        },
+        {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "v,vw,o,c,h,l,t,n\n1744469.0,19.0171,18.9,19.16,19.33,18.62,1771390800000,28496\n"
+              }
+            ],
+            "structuredContent": {
+              "result": "v,vw,o,c,h,l,t,n\n1744469.0,19.0171,18.9,19.16,19.33,18.62,1771390800000,28496\n"
+            },
+            "isError": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "/v2/aggs/ticker/ARIS/range/1/day/2026-02-19/2026-03-02",
+      "result": [
+        {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "v,vw,o,c,h,l,t,n\n695930.0,19.5283,19.035,19.84,19.93,18.73,1771477200000,6744\n1573897.0,20.6196,19.74,21.01,21.15,19.7,1771563600000,15781\n1233632.986411,21.1119,21.33,21.18,21.42,20.79,1771822800000,18480\n1110946.197757,21.3415,20.53,21.44,21.605,20.41,1771909200000,13957\n1714217.410099,22.157,21.7,22.12,22.4378,21.52,1771995600000,18110\n899885.879075,22.2493,21.86,22.45,22.45,21.6501,1772082000000,9596\n1207952.772535,22.6636,23.03,22.68,23.29,22.355,1772168400000,12873\n1032669.034952,22.3635,22.76,22.45,22.855,21.71,1772427600000,12694\n"
+              }
+            ],
+            "structuredContent": {
+              "result": "v,vw,o,c,h,l,t,n\n695930.0,19.5283,19.035,19.84,19.93,18.73,1771477200000,6744\n1573897.0,20.6196,19.74,21.01,21.15,19.7,1771563600000,15781\n1233632.986411,21.1119,21.33,21.18,21.42,20.79,1771822800000,18480\n1110946.197757,21.3415,20.53,21.44,21.605,20.41,1771909200000,13957\n1714217.410099,22.157,21.7,22.12,22.4378,21.52,1771995600000,18110\n899885.879075,22.2493,21.86,22.45,22.45,21.6501,1772082000000,9596\n1207952.772535,22.6636,23.03,22.68,23.29,22.355,1772168400000,12873\n1032669.034952,22.3635,22.76,22.45,22.855,21.71,1772427600000,12694\n"
+            },
+            "isError": false
+          }
+        },
+        {
+          "status": "fulfilled",
+          "value": {
+            "content": [
+              {
+                "type": "text",
+                "text": "v,vw,o,c,h,l,t,n\n695930.0,19.5283,19.035,19.84,19.93,18.73,1771477200000,6744\n1573897.0,20.6196,19.74,21.01,21.15,19.7,1771563600000,15781\n1233632.986411,21.1119,21.33,21.18,21.42,20.79,1771822800000,18480\n1110946.197757,21.3415,20.53,21.44,21.605,20.41,1771909200000,13957\n1714217.410099,22.157,21.7,22.12,22.4378,21.52,1771995600000,18110\n899885.879075,22.2493,21.86,22.45,22.45,21.6501,1772082000000,9596\n1207952.772535,22.6636,23.03,22.68,23.29,22.355,1772168400000,12873\n1032669.034952,22.3635,22.76,22.45,22.855,21.71,1772427600000,12694\n"
+              }
+            ],
+            "structuredContent": {
+              "result": "v,vw,o,c,h,l,t,n\n695930.0,19.5283,19.035,19.84,19.93,18.73,1771477200000,6744\n1573897.0,20.6196,19.74,21.01,21.15,19.7,1771563600000,15781\n1233632.986411,21.1119,21.33,21.18,21.42,20.79,1771822800000,18480\n1110946.197757,21.3415,20.53,21.44,21.605,20.41,1771909200000,13957\n1714217.410099,22.157,21.7,22.12,22.4378,21.52,1771995600000,18110\n899885.879075,22.2493,21.86,22.45,22.45,21.6501,1772082000000,9596\n1207952.772535,22.6636,23.03,22.68,23.29,22.355,1772168400000,12873\n1032669.034952,22.3635,22.76,22.45,22.855,21.71,1772427600000,12694\n"
+            },
+            "isError": false
+          }
+        }
+      ]
+    },
+    {
+      "request": {
+        "path": "/v2/aggs/ticker/NVFY/range/1/day/2025-11-07/2025-11-07",
+        "params": {
+          "adjusted": "true",
+          "sort": "asc",
+          "limit": 10
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "v,vw,o,c,h,l,t,n\n693194,5.4003,5.65,5.38,5.68,5.25,1762491600000,3497\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "v,vw,o,c,h,l,t,n\n693194,5.4003,5.65,5.38,5.68,5.25,1762491600000,3497\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v2/aggs/ticker/NVFY/range/1/day/2025-11-07/2025-11-07",
+        "params": {
+          "adjusted": "false",
+          "sort": "asc",
+          "limit": 10
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "v,vw,o,c,h,l,t,n\n693194,5.4003,5.65,5.38,5.68,5.25,1762491600000,3497\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "v,vw,o,c,h,l,t,n\n693194,5.4003,5.65,5.38,5.68,5.25,1762491600000,3497\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v2/aggs/ticker/XWIN/range/1/day/2025-11-10/2025-12-01",
+        "params": {
+          "adjusted": "true",
+          "sort": "asc",
+          "limit": 100
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "v,vw,o,c,h,l,t,n\n794360.0,5.8071,5.5,5.77,6.0099,5.5,1762750800000,2638\n466557.0,5.6782,5.73,5.62,5.99,5.5,1762837200000,2473\n536912.0,5.5971,5.58,5.61,5.72,5.49,1762923600000,2915\n575625.0,5.4927,5.61,5.5,5.7,5.31,1763010000000,2952\n545741.0,5.5211,5.52,5.46,5.66,5.4,1763096400000,2934\n670566.0,5.3975,5.59,5.2,5.6,5.2,1763355600000,3146\n1003870.0,5.6118,5.4,5.66,5.89,5.35,1763442000000,6725\n411324.0,5.6388,5.66,5.58,5.73,5.57,1763528400000,3140\n530312.0,5.4763,5.58,5.37,5.7,5.34,1763614800000,3232\n322148.0,5.4049,5.37,5.37,5.52,5.2621,1763701200000,2220\n436749.0,5.4567,5.42,5.58,5.58,5.32,1763960400000,2818\n907071.0,5.3549,5.46,5.45,5.5,5.2,1764046800000,4474\n490550.0,5.476,5.45,5.46,5.54,5.36,1764133200000,3124\n190756.0,5.5198,5.51,5.53,5.58,5.46,1764306000000,1689\n870360.0,5.3433,5.48,5.41,5.49,5.28,1764565200000,2333\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "v,vw,o,c,h,l,t,n\n794360.0,5.8071,5.5,5.77,6.0099,5.5,1762750800000,2638\n466557.0,5.6782,5.73,5.62,5.99,5.5,1762837200000,2473\n536912.0,5.5971,5.58,5.61,5.72,5.49,1762923600000,2915\n575625.0,5.4927,5.61,5.5,5.7,5.31,1763010000000,2952\n545741.0,5.5211,5.52,5.46,5.66,5.4,1763096400000,2934\n670566.0,5.3975,5.59,5.2,5.6,5.2,1763355600000,3146\n1003870.0,5.6118,5.4,5.66,5.89,5.35,1763442000000,6725\n411324.0,5.6388,5.66,5.58,5.73,5.57,1763528400000,3140\n530312.0,5.4763,5.58,5.37,5.7,5.34,1763614800000,3232\n322148.0,5.4049,5.37,5.37,5.52,5.2621,1763701200000,2220\n436749.0,5.4567,5.42,5.58,5.58,5.32,1763960400000,2818\n907071.0,5.3549,5.46,5.45,5.5,5.2,1764046800000,4474\n490550.0,5.476,5.45,5.46,5.54,5.36,1764133200000,3124\n190756.0,5.5198,5.51,5.53,5.58,5.46,1764306000000,1689\n870360.0,5.3433,5.48,5.41,5.49,5.28,1764565200000,2333\n"
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/v2/aggs/ticker/XWIN/range/1/day/2025-11-10/2025-12-01",
+        "params": {
+          "adjusted": "false",
+          "sort": "asc",
+          "limit": 100
+        }
+      },
+      "response": {
+        "status": "fulfilled",
+        "value": {
+          "content": [
+            {
+              "type": "text",
+              "text": "v,vw,o,c,h,l,t,n\n794360.0,5.8071,5.5,5.77,6.0099,5.5,1762750800000,2638\n466557.0,5.6782,5.73,5.62,5.99,5.5,1762837200000,2473\n536912.0,5.5971,5.58,5.61,5.72,5.49,1762923600000,2915\n575625.0,5.4927,5.61,5.5,5.7,5.31,1763010000000,2952\n545741.0,5.5211,5.52,5.46,5.66,5.4,1763096400000,2934\n670566.0,5.3975,5.59,5.2,5.6,5.2,1763355600000,3146\n1003870.0,5.6118,5.4,5.66,5.89,5.35,1763442000000,6725\n411324.0,5.6388,5.66,5.58,5.73,5.57,1763528400000,3140\n530312.0,5.4763,5.58,5.37,5.7,5.34,1763614800000,3232\n322148.0,5.4049,5.37,5.37,5.52,5.2621,1763701200000,2220\n436749.0,5.4567,5.42,5.58,5.58,5.32,1763960400000,2818\n907071.0,5.3549,5.46,5.45,5.5,5.2,1764046800000,4474\n490550.0,5.476,5.45,5.46,5.54,5.36,1764133200000,3124\n190756.0,5.5198,5.51,5.53,5.58,5.46,1764306000000,1689\n870360.0,5.3433,5.48,5.41,5.49,5.28,1764565200000,2333\n"
+            }
+          ],
+          "structuredContent": {
+            "result": "v,vw,o,c,h,l,t,n\n794360.0,5.8071,5.5,5.77,6.0099,5.5,1762750800000,2638\n466557.0,5.6782,5.73,5.62,5.99,5.5,1762837200000,2473\n536912.0,5.5971,5.58,5.61,5.72,5.49,1762923600000,2915\n575625.0,5.4927,5.61,5.5,5.7,5.31,1763010000000,2952\n545741.0,5.5211,5.52,5.46,5.66,5.4,1763096400000,2934\n670566.0,5.3975,5.59,5.2,5.6,5.2,1763355600000,3146\n1003870.0,5.6118,5.4,5.66,5.89,5.35,1763442000000,6725\n411324.0,5.6388,5.66,5.58,5.73,5.57,1763528400000,3140\n530312.0,5.4763,5.58,5.37,5.7,5.34,1763614800000,3232\n322148.0,5.4049,5.37,5.37,5.52,5.2621,1763701200000,2220\n436749.0,5.4567,5.42,5.58,5.58,5.32,1763960400000,2818\n907071.0,5.3549,5.46,5.45,5.5,5.2,1764046800000,4474\n490550.0,5.476,5.45,5.46,5.54,5.36,1764133200000,3124\n190756.0,5.5198,5.51,5.53,5.58,5.46,1764306000000,1689\n870360.0,5.3433,5.48,5.41,5.49,5.28,1764565200000,2333\n"
+          },
+          "isError": false
+        }
+      }
+    }
+  ],
+  "note": "Successor CIK absent in provider responses remains absent; legal issuer CIK comes separately from SEC. Shared Composite and Share Class FIGIs match each predecessor. Observations are scoped to original held positions; formation histories are unchanged."
+}

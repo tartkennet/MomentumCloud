@@ -1,0 +1,2054 @@
+{
+  "requested_pairs": 622,
+  "missing": [
+    {
+      "ticker": "APO",
+      "day": "2025-09-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ARCE",
+      "day": "2023-12-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ARGO",
+      "day": "2023-11-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ARMN",
+      "day": "2026-02-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ASST",
+      "day": "2026-01-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ATCO",
+      "day": "2023-03-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ATXS",
+      "day": "2026-01-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AUB",
+      "day": "2025-04-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AVDX",
+      "day": "2025-10-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AVNS",
+      "day": "2026-07-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AVO",
+      "day": "2026-05-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AXNX",
+      "day": "2024-11-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "AYX",
+      "day": "2024-03-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BA",
+      "day": "2025-12-08",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BAM",
+      "day": "2024-05-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BASE",
+      "day": "2025-09-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BBT",
+      "day": "2025-09-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BCRX",
+      "day": "2026-01-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BIPC",
+      "day": "2023-09-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BNY",
+      "day": "2026-05-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BTE",
+      "day": "2023-06-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BWIN",
+      "day": "2024-05-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "BYON",
+      "day": "2023-11-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2024-03-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CCF",
+      "day": "2023-11-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CDE",
+      "day": "2025-02-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CDE",
+      "day": "2026-03-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-03-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CECO",
+      "day": "2026-06-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CHRD",
+      "day": "2024-05-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CHS",
+      "day": "2024-01-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CHTR",
+      "day": "2026-08-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CIO",
+      "day": "2026-01-08",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CLBK",
+      "day": "2026-07-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CNH",
+      "day": "2024-05-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COF",
+      "day": "2025-05-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COLB",
+      "day": "2023-03-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COLB",
+      "day": "2025-09-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COMM",
+      "day": "2026-01-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COP",
+      "day": "2024-11-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "COWN",
+      "day": "2023-02-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2024-07-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2025-12-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CSGS",
+      "day": "2026-05-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CSW",
+      "day": "2025-06-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CTLT",
+      "day": "2024-12-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CVBF",
+      "day": "2026-04-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CVSA",
+      "day": "2026-02-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CVT",
+      "day": "2023-06-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CVX",
+      "day": "2023-08-07",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CVX",
+      "day": "2025-07-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2025-04-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2026-06-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "CWEN",
+      "day": "2026-05-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DFDV",
+      "day": "2025-05-05",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DFTX",
+      "day": "2026-01-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DINO",
+      "day": "2023-12-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DMC",
+      "day": "2026-06-29",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DNOW",
+      "day": "2025-11-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DOO",
+      "day": "2025-12-08",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DSEY",
+      "day": "2023-07-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DSKE",
+      "day": "2024-03-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DVN",
+      "day": "2026-05-07",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "DWAC",
+      "day": "2024-03-25",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EA",
+      "day": "2026-08-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ECHO",
+      "day": "2026-06-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EG",
+      "day": "2023-07-10",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EHAB",
+      "day": "2026-05-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ENV",
+      "day": "2024-11-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ESGR",
+      "day": "2025-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ET",
+      "day": "2023-11-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EVBG",
+      "day": "2024-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EVOP",
+      "day": "2023-03-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EVRI",
+      "day": "2025-06-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EXAS",
+      "day": "2026-03-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EXE",
+      "day": "2024-10-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "EXR",
+      "day": "2023-07-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FITB",
+      "day": "2026-02-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FLG",
+      "day": "2024-10-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FPAC",
+      "day": "2023-03-07",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FRG",
+      "day": "2023-08-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FRGE",
+      "day": "2026-02-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FUN",
+      "day": "2024-07-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FYBR",
+      "day": "2026-01-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GAP",
+      "day": "2024-08-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GBTG",
+      "day": "2026-09-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GEAR",
+      "day": "2024-11-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GES",
+      "day": "2026-01-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GLOP",
+      "day": "2023-07-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GMED",
+      "day": "2023-09-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GPGI",
+      "day": "2026-01-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "GTLS",
+      "day": "2026-07-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HAPN",
+      "day": "2026-06-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HAYN",
+      "day": "2024-11-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2025-10-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2026-02-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HCP",
+      "day": "2025-02-26",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HI",
+      "day": "2026-02-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HNI",
+      "day": "2023-06-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HNI",
+      "day": "2025-12-10",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HRI",
+      "day": "2025-06-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HSKA",
+      "day": "2023-06-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HTO",
+      "day": "2025-05-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "HYPD",
+      "day": "2025-07-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "IA",
+      "day": "2026-08-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "INDT",
+      "day": "2023-06-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "INFA",
+      "day": "2025-11-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "INFN",
+      "day": "2025-02-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "INST",
+      "day": "2024-11-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2026-07-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ITI",
+      "day": "2024-10-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "JBTM",
+      "day": "2025-01-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "JHG",
+      "day": "2026-06-29",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "JHX",
+      "day": "2025-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "KIM",
+      "day": "2024-01-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "KRTX",
+      "day": "2024-03-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "LUCK",
+      "day": "2024-12-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MASI",
+      "day": "2026-06-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MAXR",
+      "day": "2023-05-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MBC",
+      "day": "2026-05-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MRSH",
+      "day": "2026-01-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MRTX",
+      "day": "2024-01-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MYOV",
+      "day": "2023-03-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "MZTI",
+      "day": "2025-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NAGE",
+      "day": "2025-03-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NATI",
+      "day": "2023-10-10",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NE",
+      "day": "2024-09-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NFBK",
+      "day": "2026-07-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NGD",
+      "day": "2026-03-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NIC",
+      "day": "2026-02-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NVEI",
+      "day": "2024-11-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "NWLI",
+      "day": "2024-07-08",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "O",
+      "day": "2024-01-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OBDC",
+      "day": "2023-07-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ODP",
+      "day": "2025-12-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OKE",
+      "day": "2023-09-25",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OKE",
+      "day": "2025-01-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OKLO",
+      "day": "2024-05-10",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OMC",
+      "day": "2025-11-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ONT",
+      "day": "2026-05-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OPLN",
+      "day": "2025-12-26",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "OSH",
+      "day": "2023-05-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "P",
+      "day": "2026-04-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PANW",
+      "day": "2026-02-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PB",
+      "day": "2026-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PENG",
+      "day": "2024-10-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PFS",
+      "day": "2024-05-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PGTI",
+      "day": "2024-03-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PKST",
+      "day": "2026-05-05",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PLGO",
+      "day": "2026-05-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PLYA",
+      "day": "2025-06-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PNFP",
+      "day": "2026-01-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PPLI",
+      "day": "2026-06-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PR",
+      "day": "2023-11-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PRFT",
+      "day": "2024-10-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PRMB",
+      "day": "2024-11-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PSA",
+      "day": "2026-07-22",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PTEN",
+      "day": "2023-09-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "PWSC",
+      "day": "2024-09-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "QXO",
+      "day": "2026-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RBA",
+      "day": "2023-03-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RCM",
+      "day": "2024-11-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RFP",
+      "day": "2023-02-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RGLD",
+      "day": "2025-10-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RGLS",
+      "day": "2025-06-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-07-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-10-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RNST",
+      "day": "2025-04-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RPC",
+      "day": "2026-02-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RVTY",
+      "day": "2023-05-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RYN",
+      "day": "2026-02-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "RYZ",
+      "day": "2026-02-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SAN",
+      "day": "2026-08-20",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SAND",
+      "day": "2025-10-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SBLK",
+      "day": "2024-04-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SCWX",
+      "day": "2025-01-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SECZ",
+      "day": "2026-07-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SGEN",
+      "day": "2023-12-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SGFY",
+      "day": "2023-03-28",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SHOE",
+      "day": "2026-06-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SIRI",
+      "day": "2024-09-10",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SJM",
+      "day": "2023-11-07",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SKX",
+      "day": "2025-09-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SKYT",
+      "day": "2026-07-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SLB",
+      "day": "2025-07-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SLCA",
+      "day": "2024-07-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SM",
+      "day": "2026-01-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SMAR",
+      "day": "2025-01-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SNPS",
+      "day": "2025-07-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SOVO",
+      "day": "2024-03-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2024-03-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SPNS",
+      "day": "2025-12-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SPTN",
+      "day": "2025-09-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SQSP",
+      "day": "2024-10-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SRCL",
+      "day": "2024-11-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SSB",
+      "day": "2025-01-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "STEL",
+      "day": "2026-06-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SUMO",
+      "day": "2023-05-11",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SUN",
+      "day": "2024-05-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TA",
+      "day": "2023-05-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TALK",
+      "day": "2026-08-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TAST",
+      "day": "2024-05-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TCN",
+      "day": "2024-04-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TEX",
+      "day": "2026-02-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TGH",
+      "day": "2024-03-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TGI",
+      "day": "2025-07-23",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "THR",
+      "day": "2026-05-29",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "THRN",
+      "day": "2023-10-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TIC",
+      "day": "2025-08-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TKO",
+      "day": "2023-09-12",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TONX",
+      "day": "2025-09-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TRHC",
+      "day": "2023-11-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "UCB",
+      "day": "2024-08-06",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "UMBF",
+      "day": "2025-02-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "UNVR",
+      "day": "2023-07-31",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VIGL",
+      "day": "2025-08-04",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VISN",
+      "day": "2026-01-14",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VMRK",
+      "day": "2026-08-18",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VNOM",
+      "day": "2025-08-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VSXY",
+      "day": "2026-06-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VVNT",
+      "day": "2023-03-09",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VYX",
+      "day": "2023-10-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "VZIO",
+      "day": "2024-12-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WBA",
+      "day": "2025-08-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WBS",
+      "day": "2026-08-19",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WES",
+      "day": "2025-10-15",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WOW",
+      "day": "2025-12-30",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WSBC",
+      "day": "2025-03-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WSR",
+      "day": "2026-07-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "WTFC",
+      "day": "2024-08-01",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XIFR",
+      "day": "2025-02-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XM",
+      "day": "2023-06-27",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XOM",
+      "day": "2023-11-02",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XOM",
+      "day": "2024-05-03",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XYL",
+      "day": "2023-05-24",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "XYZ",
+      "day": "2025-01-21",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ZIMV",
+      "day": "2025-10-17",
+      "missing": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "ZUO",
+      "day": "2025-02-13",
+      "missing": [
+        "true",
+        "false"
+      ]
+    }
+  ],
+  "scope": "Preflight of existing fixed corporate-action basis only; not a model result"
+}

@@ -1,0 +1,29 @@
+{
+  "checked_date": "2026-10-19",
+  "provider": "Massive connected Stocks Custom Bars",
+  "purpose": "Additional paired basis required by locked robust replay, not a strategy change",
+  "ticker": "ISEE",
+  "day": "2023-07-10",
+  "requests": [
+    {
+      "path": "/v2/aggs/ticker/ISEE/range/1/day/2023-07-10/2023-07-10",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n10999110.0,39.9276,39.86,39.95,39.99,39.85,1688961600000,20569\n",
+      "output_file": "audit_evidence/bulk_basis/ISEE_2023-07-10_adjusted.csv"
+    },
+    {
+      "path": "/v2/aggs/ticker/ISEE/range/1/day/2023-07-10/2023-07-10",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n10999110.0,39.9276,39.86,39.95,39.99,39.85,1688961600000,20569\n",
+      "output_file": "audit_evidence/bulk_basis/ISEE_2023-07-10_raw.csv"
+    }
+  ]
+}

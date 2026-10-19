@@ -1,0 +1,30 @@
+{
+  "status": "NO_GO_RESEARCH_ONLY",
+  "model": "robust-momentum-v1",
+  "gates": {
+    "at_least_30_periods": true,
+    "positive_net_return": false,
+    "beats_spy_same_fixed_cost": false,
+    "daily_drawdown_at_most_20_pct": false,
+    "monthly_hit_rate_at_least_50_pct": false,
+    "complete_individual_price_audit": false,
+    "live_daily_execution_parity": false,
+    "new_unseen_holdout": false
+  },
+  "monthly_replay_complete": true,
+  "live_strategy_validation_complete": false,
+  "later_segment_spy_same_fixed_cost_return_pct": 30.01794628339207,
+  "differences_from_live": [
+    "SPY gate is month-end only; live checks risk daily and can reenter intramonth.",
+    "Backtest signals are month-end; live selection_month advances on the first observed session of a month.",
+    "Backtest uses fractional equal weights; live may skip unaffordable whole shares.",
+    "Absolute historical raw price/liquidity parity has not been established."
+  ],
+  "price_coverage": {
+    "individual_observations_checked": 1152,
+    "mismatches": 0,
+    "unverified_observations": 585
+  },
+  "production_validation_file_modified": false,
+  "no_new_holdout": true
+}
