@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-19",
+  "status": "PRIMARY_SOURCE_BATCH_REVIEWED_NO_UNVERIFIED_SETTLEMENT_INSTALLED",
+  "model_inputs_changed": false,
+  "another_model_run_needed_for_this_review": false,
+  "SJR": {
+    "legal_consideration": {
+      "amount": 40.5,
+      "currency": "CAD"
+    },
+    "common_share_currency_source": "https://about.rogers.com/wp-content/uploads/Letter-of-Transmittal-Shaw-Communications-Inc-2023-03-31.pdf",
+    "common_share_currency_source_location": "page 5 and instruction 12 on page 14",
+    "common_share_payment_timing_source": "https://about.rogers.com/investor-relations/shaw/",
+    "timing_finding": "Beneficial-holder payment follows intermediary timelines and procedures; no single broker credit date is established here.",
+    "occ_source": "https://infomemo.theocc.com/infomemos?number=52248",
+    "occ_publication": "2023-04-11",
+    "occ_confirmed_usd_per_share": 29.87591536,
+    "occ_delayed_options_settlement": "2023-04-04 through 2023-04-10; resumes 2023-04-11",
+    "limitation": "Options cash settlement is not evidence of the date a common-share holder receives USD. Do not backdate this confirmed USD amount into earlier daily valuations.",
+    "still_required": [
+      "verified treatment and dated observations for the CAD receivable in the USD NAV",
+      "verified applicable conversion and cash-availability treatment for fixed-window capital aggregation"
+    ],
+    "execution_approved": false
+  },
+  "AEPPZ": {
+    "security_type": "corporate units, not common stock",
+    "prospectus_source": "https://docs.aep.com/docs/investors/currentProspectus/AEPEquityUnits-ProspectusSupplement.pdf",
+    "stated_amount_usd": 50.0,
+    "original_components": "purchase contract plus 1/20 beneficial interest in $1000 principal of junior subordinated notes",
+    "contract_settlement_date": "2023-08-15",
+    "original_formula": {
+      "below_or_equal_83_29": 0.6003,
+      "at_or_above_99_95": 0.5003,
+      "between": "50 divided by applicable market value, rounded to 4 decimals",
+      "market_value": "average of prescribed daily VWAPs over 20 scheduled trading days; adjustments and disruption provisions apply"
+    },
+    "remarketing_source": "https://www.aep.com/news/stories/view/8964/AEP-Announces-Remarketing-of-850-Million-in-Aggregate-Principal-Amount-of-Debt-Underlying-its-Equity-Units/",
+    "remarketing_finding": "Notes were remarketed on behalf of unit holders; proceeds fund treasury collateral used for stock purchase settlement. No extra $50 cash distribution is assumed.",
+    "completed_aggregate_source": "https://www.sec.gov/Archives/edgar/data/4904/000000490424000020/aep-20231231.htm",
+    "completed_aggregate_finding": "The 2023 annual filing reports 10,048,668 shares issued and $850 million received in settlement. This aggregate does not establish the applicable per-unit rate, elections or cash components for the modeled holder.",
+    "still_required": [
+      "final applicable settlement notice and any rate adjustments",
+      "per-unit stock delivery, any residual/coupon cash and fractional treatment"
+    ],
+    "execution_approved": false
+  },
+  "FRC": {
+    "fdic_source": "https://www.fdic.gov/news/press-releases/2023/pr23034.html",
+    "fdic_event_date": "2023-05-01",
+    "finding": "Receiver appointed; JPMorgan assumes deposits and substantially all assets. This is not a quoted common-share exit or a verified $0 shareholder settlement.",
+    "exchange_source": "https://ir.theice.com/press/news-details/2023/NYSE-to-Suspend-Trading-Immediately-in-First-Republic-Bank-FRC-and-Commence-Delisting-Proceedings/default.aspx",
+    "exchange_publication": "2023-05-02",
+    "exchange_finding": "NYSE announced immediate suspension and delisting proceedings on May 2. Its publication must not be misdated May 1.",
+    "still_required": [
+      "an observed exact-day exit or a separately specified treatment for genuinely unexecutable capital; no later quote backdating"
+    ],
+    "execution_approved": false
+  },
+  "RNAZ": {
+    "preserved_history_bars_per_basis": 1249,
+    "fixed_exit": "2025-12-01",
+    "fixed_day_observed": false,
+    "next_observed": "2025-12-02",
+    "next_day_outside_fixed_period": true,
+    "still_required": [
+      "primary observed raw/adjusted exact-day quote or verified event explaining the missing day"
+    ],
+    "global_halt_inferred": false,
+    "execution_approved": false
+  },
+  "decision": "NO_GO",
+  "valid_universe_return": null,
+  "ranking_value_added": null,
+  "scope_limit": "No strategy parameter or fixed exit date is changed to force completion. A generalized treatment of halted capital would be a separately specified accounting/execution extension, not a recovered price."
+}
