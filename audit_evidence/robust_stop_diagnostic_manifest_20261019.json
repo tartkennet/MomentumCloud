@@ -1,0 +1,35 @@
+{
+  "status": "COMPLETE_TOP20_SOURCE_AUDIT_AND_FROZEN_CHOICE_STOP_ABLATION",
+  "parent_commit": "c7e661228dede3a7d5a8ec6c4a113b77cec5d49f",
+  "tests": 147,
+  "packages": {
+    "pandas": "2.2.2",
+    "numpy": "2.0.1",
+    "pyarrow": "17.0.0",
+    "requests": "2.32.3",
+    "openpyxl": "3.1.5"
+  },
+  "files": {
+    "audit_evidence/robust_loss_top20_requests_20261019.json": "a5eb5f73858400d8b04a7f4816d76123018baee0c990e70e32812ee31088860f",
+    "audit_evidence/robust_stop_diagnostic_20261019/calendar.json": "b8888b1487e9cd1552102d69018085b233671e0a3721f2682c93227b1d64f205",
+    "audit_evidence/robust_stop_diagnostic_20261019/comparison.json": "0420fac91dc9a1f622d83862b940c35e6f68b27f433156457be95ca111047044",
+    "audit_evidence/robust_stop_diagnostic_20261019/independent_comparison_check.json": "a986e13b178df538a2aa4ad61e35420e3aa9f02f54d6bdbb73a94518b01b0324",
+    "audit_evidence/robust_stop_diagnostic_20261019/individual_price_coverage_update.json": "85c69da253f25066a8eda2a46b57075797b595b4e1164de69d09ef2ba42ffac9",
+    "audit_evidence/robust_stop_diagnostic_20261019/same_choices_without_stop_daily_nav.csv": "564647ff6ef758aa6061ae0e42357d46a9e17f3d1115be846aa0926fa70b1639",
+    "audit_evidence/robust_stop_diagnostic_20261019/same_choices_without_stop_positions.csv": "06f9ef30890b00599b3f61a03e137c81908e35b0b0ea5624d2f243d29ca1f23d",
+    "audit_evidence/robust_stop_diagnostic_20261019/same_choices_without_stop_results.csv": "014a392206cb5b207c0ebdc6fec89b4ea8b4dd55c2ee0772b9e58a7465185549",
+    "audit_evidence/robust_stop_diagnostic_20261019/top20_cached_windows.json": "79488248dd3abd798a23355824872f4312eb4ca75963966ed8ca40bb07035028",
+    "audit_evidence/robust_stop_diagnostic_20261019/top20_price_and_stop_audit.csv": "43fa3d87f19faccb62fe9826bb5ae7ed16a7f7ac67905833c7109bce158ede6a",
+    "audit_evidence/robust_stop_diagnostic_20261019/top20_price_and_stop_audit.json": "0c75f4512869618e44694fd0c3bdf900d1c34c815cbe6ca8cc2370b9f5667389",
+    "audit_evidence/robust_stop_diagnostic_run_20261019.log": "0420fac91dc9a1f622d83862b940c35e6f68b27f433156457be95ca111047044",
+    "audit_evidence/robust_top20_source_batch_20261019.json": "46b4675873572fab005cf59123c2716c41cd808b69fa41e06e0eca78b90658ed",
+    "audit_evidence/robust_top20_verification_20261019.log": "e570abb341d56fa6b6ae0ccca538a8a655b243c3dfd0d2860975987e1bf346a9",
+    "audit_evidence/tests_robust_stop_diagnostic_20261019.log": "05f96e022bdfe4fc34f4af2f3d41b7a07e0fcc751b486d4361e0bc5bba4c643d",
+    "audit_locked_stop_ablation.py": "c06f95ff28ad7924e9ed68b90dcc4dae0778192afaf19221026a94cbe3b8545d",
+    "docs/MomentumCloud_urvalsgranskning.md": "455ac941e848829c6da78f7549d3b771cf898318f468a727477048d71a5fb384",
+    "verify_locked_top20_losses.py": "2153e083f4405ad359ae0dce45c535537f3018f2a55f2397f681c35753ecd4bf"
+  },
+  "decision": "NO_GO_CURRENT_RULE_COMBINATION_REQUIRES_RISK_AND_SELECTION_REDESIGN",
+  "production_changed": false,
+  "parameters_optimized": false
+}

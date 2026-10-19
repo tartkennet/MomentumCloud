@@ -1,5 +1,37 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Slutförd granskning av 20 största förluster och fast stoppjämförelse – 19 oktober 2026
+
+**De tre överenskomna stegen är färdiga. Bedömning: den nuvarande regelkombinationen ska inte användas som färdig köpmodell och behöver omarbetas i urvalets riskhantering.** Granskningen hittar inga pris- eller stoppdatumfel i de 20 största förlusterna. Att avskaffa 10-procentsstoppet försämrar dessutom det frysta testet. Ingen ny modell eller parameterkombination har tagits fram.
+
+| Samma 585 affärsurval, 43 månader | Med låst stopp | Utan enskilt aktiestopp |
+|---|---:|---:|
+| Nettoavkastning | **−57,841489 %** | **−68,290660 %** |
+| Före fast kostnad | −52,470977 % | −64,207589 % |
+| Största dagliga nedgång | **−64,917308 %** | **−71,147870 %** |
+| Positiva portföljmånader | 13/43 | 13/43 |
+
+Stoppet förbättrar slutavkastningen med **10,449171 procentenheter** i just denna jämförelse. Utan stopp blir 152 affärer bättre, 187 sämre och 246 oförändrade. Fler vinnande affärer utan stopp räcker inte för att kompensera för de större förlusterna. Detta är ett kontrollerat historiskt resultat och ingen generell slutsats om stoppregler.
+
+**1. De 20 förlusterna har verifierats.** Fyrtio nya individuella råa/justerade dagsserieförfrågningar täcker de 20 i förväg fastställda fallen från respektive signal till planerad månadsexit. Alla **1 872 kontroller av dagliga OHLC-fält och affärspriser** stämmer. Även första stoppsignal vid stängning och nästa ordinarie sessions exitdatum stämmer i samtliga 20 fall. En separat splitförfrågan efter den frysta basen 6 oktober till och med 19 oktober innehåller 40 händelser; ingen berör dessa 20 aktier. Alla 20 klarar den faktiska råa femdollarsgränsen på sin signaldag. Detta bevisar inte rå pris-/likviditetsparitet i resten av universumet.
+
+| Exempel på verifierade förluster | Vid stoppsignalens stängning | Faktisk nästa öppnings-exit |
+|---|---:|---:|
+| VINC, signal 2024-03-28 | −78,323108 % | −79,550102 % |
+| FTEL, signal 2024-11-29 | −75,862069 % | −76,965517 % |
+| LQDA, signal 2026-08-31 | −55,302806 % | −64,608567 % |
+| ZBIO, signal 2025-12-31 | −54,255026 % | −56,623520 % |
+
+Det konkreta problemet är att ett stopp som **observeras vid stängning och säljs nästa öppning inte begränsar förlusten till 10 %**. VINC öppnade stoppsignaldagen 65,690377 % under föregående stängning och föll ytterligare under dagen. FTEL föll 74,946314 % från öppning till stängning på sin signaldag. LQDA föll kraftigt före stoppsignalen och öppnade dessutom nästa session 20,819564 % under signaldagens stängning. Dessa rörelser finns i de individuella prisserierna; de har inte ersatts med ett påhittat 10-procentigt försäljningspris. Ingen intradagsexekvering eller faktisk orderfyllnad har simulerats.
+
+**2. Samma urval med och utan stopp är jämfört.** Samtliga 585 signal-/ticker-nycklar, köpdatum, köppriser, ranker och 1/15-vikter är exakt bevarade. Samma fyra kassamånader, månatliga SPY-regim, fasta kostnad och bolagshändelseregler används. Alla 243 exekveringar som redan saknade stopputgång bevaras exakt. En ny fullständig diagnostik använder motorns befintliga pris- och splithantering och ger noll saknade exits eller dagliga markeringar. Separat aggregering direkt från CSV-affärernas priser bekräftar −68,290660 % utan stopp. Ingen omrankning, ny aktie, parameteroptimering eller flyttning av testfönstret ingår.
+
+**3. Slutsats för fortsatt modellarbete.** Dessa data stödjer inte att reparera modellen genom att ta bort stoppet. De stödjer inte heller att förklara bort de största förlusterna som de prisfel som nu har granskats. Kombinationen av urval, lika viktning och den aktuella riskhanteringen klarar inte kraven i detta fönster. Den nuvarande versionen avvisas som färdigt köpunderlag. En omarbetning behöver först specificera hur stora enskilda kursfall och samlad portföljrisk ska hanteras, utan att i efterhand radera just de historiska förlorarna. Denna batch gör ingen sådan ny design och ändrar ingen produktionsregel.
+
+Den nya prisgranskningen täcker 24 av de tidigare saknade separata prisobservationerna: **1 176 är nu kontrollerade utan avvikelse och 561 återstår** av de ursprungliga 1 737 jämförelserna. De 1 872 dagliga fältkontrollerna ovan är en annan räknare och får inte adderas till detta antal. Full individuell prisvalidering och appens dagliga regim-/exekveringsparitet är fortfarande ofärdiga. Inget nytt orört holdout eller köp-GO påstås.
+
+Alla 147 befintliga regressionstester passerar. Nya originalsvar, tjugofallslistan, råa/justerade kontroller, frysta urval, den kompletta jämförelsen, daglig NAV och separata avstämningar är sparade under `audit_evidence/robust_stop_diagnostic_20261019/`, med originalsvaren i `audit_evidence/robust_top20_source_batch_20261019.json`. Detta är individuella endpoint-kontroller hos samma dataleverantör, inte en andra oberoende dataleverantör. Originalets frysta 50/30/20-körning och dess filer är bevarade. Ingen main-merge, produktion, handel, externa mejl, dataköp eller automation ingår.
+
 ## Färdig månadskörning för låsta 50/30/20, fortsatt UNVALIDATED – 19 oktober 2026
 
 **Den låsta robust-modellens månadskörning är slutförd. Resultatet är ett forskningsresultat, inte en färdig validering av appens dagliga beteende. Den här körningen klarar inte avkastnings-, risk- eller träffsäkerhetskraven.** Den tidigare siffran −0,546005 % gäller den äldre 60/40-modellen och ska inte användas som resultat för 50/30/20.

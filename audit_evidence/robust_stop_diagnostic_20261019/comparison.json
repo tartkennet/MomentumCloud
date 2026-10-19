@@ -1,0 +1,41 @@
+{
+  "status": "COMPLETE_FROZEN_INPUT_DIAGNOSTIC",
+  "approval": "UNVALIDATED",
+  "basis": "2026-10-06",
+  "choice_keys_entries_ranks_weights": "EXACTLY_PRESERVED",
+  "periods": 43,
+  "positions": 585,
+  "cash_signals": [
+    "2023-10-31",
+    "2025-03-31",
+    "2025-04-30",
+    "2026-03-31"
+  ],
+  "with_stop": {
+    "net_return_pct": -57.84148894194847,
+    "daily_drawdown_pct": -64.91730805468802
+  },
+  "without_stop": {
+    "net_return_pct": -68.29065961637397,
+    "gross_return_pct": -64.20758918847525,
+    "daily_drawdown_pct": -71.14786955335096,
+    "positive_months": 13,
+    "positive_lots": 242
+  },
+  "without_minus_with_stop_pp": -10.449170674425503,
+  "lots_improved_without_stop": 152,
+  "lots_worse_without_stop": 187,
+  "lots_unchanged": 246,
+  "issues": [],
+  "limitations": [
+    "Frozen source prices and original choices; not a fresh ranking replay.",
+    "Top-20 source audit is separate and must be read before interpreting performance.",
+    "Monthly SPY gate, fixed cost, continuous equal weights and action assumptions unchanged.",
+    "No new unseen holdout, live approval or parameter optimization."
+  ],
+  "sources": {
+    "audit_evidence/robust_locked_20261019/Momentum_backtest_positions.csv": "3236529596b31fa6bd775b0629260b1e9d79e822753202b6e9985207ff80217e",
+    "audit_evidence/robust_locked_20261019/Momentum_backtest_results.csv": "4bb65627464d67b0bd0680d187031c68850b2cc1566959d6a6778e61846ca6da",
+    "/workspace/scratch/c79cf0445865/MomentumCloud/audit_locked_stop_ablation.py": "c06f95ff28ad7924e9ed68b90dcc4dae0778192afaf19221026a94cbe3b8545d"
+  }
+}
