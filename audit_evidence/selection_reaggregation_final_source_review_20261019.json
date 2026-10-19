@@ -1,0 +1,18 @@
+{
+  "source_head": "b1d0fb51c381b2e47c73286382451cf4fe74a091",
+  "positions": 645,
+  "months": 43,
+  "unique_tickers": 230,
+  "positions_per_month": 15,
+  "gross_return_pct": 13.222697221264346,
+  "net_return_pct": -0.5460050227671154,
+  "geometric_monthly_gross_pct": 0.2892231784840771,
+  "cost_pct_per_month": 0.3,
+  "universe_blockers_in_selection": {
+    "FRC": 0,
+    "SJR": 0,
+    "AEPPZ": 0,
+    "RNAZ": 0
+  },
+  "scope": "Independent aggregation of previously completed archived positions; not a new model replay or full-universe result"
+}

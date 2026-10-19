@@ -1,0 +1,22 @@
+{
+  "request": {
+    "path": "/v2/aggs/ticker/RNAZ/range/1/minute/2025-12-01/2025-12-01",
+    "params": {
+      "adjusted": false,
+      "sort": "asc",
+      "limit": 50000
+    }
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period."
+      }
+    ],
+    "structuredContent": {
+      "result": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period."
+    },
+    "isError": false
+  }
+}

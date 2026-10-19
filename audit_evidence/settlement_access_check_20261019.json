@@ -1,0 +1,20 @@
+[
+  {
+    "name": "CDS_public_bulletins_20261019.html",
+    "bytes": 269,
+    "status": 200,
+    "url": "https://services.cds.ca/applications/bulletins/bulletinsP.nsf/welcome-EN-?ReadForm"
+  },
+  {
+    "name": "CDS_enhanced_bulletins_20261019.html",
+    "bytes": 52972,
+    "status": 200,
+    "url": "https://www.cds.ca/bulletins-and-resources/bulletins-and-alerts/cds-enhanced-bulletins"
+  },
+  {
+    "name": "DTCC_notices_20261019.html",
+    "bytes": 244752,
+    "status": 200,
+    "url": "https://www.dtcc.com/legal/important-notices"
+  }
+]

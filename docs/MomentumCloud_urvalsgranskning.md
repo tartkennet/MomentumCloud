@@ -1,5 +1,27 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Slutförd källbatch, fortsatt datastopp – 19 oktober 2026
+
+**Källbatchen är färdig, men universumjämförelsen är fortfarande ofärdig. NO-GO kvarstår.** Inga nya modellpriser eller strategiregler har installerats.
+
+En ny oberoende aggregering av de sparade 645 positionerna bekräftar **−0,546005022767 % netto** och **+13,222697221264 % brutto** över 43 månader. Geometrisk månadsavkastning före kostnad är **0,289223 %**, under den fasta månadskostnaden 0,30 %. **FRC, SJR, AEPPZ och RNAZ förekommer inte bland de 645 valda positionerna.** Deras kvarvarande luckor blockerar universumjämförelsen, men är inte en ny förklaring till eller rättning av urvalets verifierade förlust. Detta är en separat omräkning av redan färdiga positioner, ingen ny modellreplay.
+
+| Ny kontroll | Verifierat utfall |
+|---|---|
+| FRC 2023-05-01, minutdata i båda baserna | 180 staplar per bas: 163 före och 17 efter ordinarie handel, **0 under 09:30–16:00 New York**. Även den separat begärda öppningsminuten är tom. |
+| RNAZ 2025-12-01, minutdata i båda baserna | 0 staplar; den separat begärda öppningsminuten är också tom. Kontrollförfrågan för 2 december ger 18 ordinarie råa minutstaplar, första 09:30. |
+| AEPPZ, ny SEC-kontroll | Komplett original för tredje kvartalet 2023 och SEC companyfacts kontrollerade. Aggregatet 10 048 668 aktier/850 MUSD är verifierat, men ingen slutlig tillämplig per-enhet-kvot har återfunnits. Augustis 8-K gäller styrelseändringar. |
+| Två sparade källarkiv | Återlästa med filhashar. AEPPZ/SJR-posterna i `filings.json` innehåller inte deras slutbesked. De tre RNAZ-filingsen gäller kliniska nyheter eller styrelse och ger ingen kurs på exitdagen. |
+| Ursprunglig dokumentationslista | Direkt omräknad: **286/288**. AEPPZ och RNAZ saknar färdig händelselösning. Detta är inte en godkänd exekveringsfrekvens. |
+
+Minutdata är ett nytt åtkomligt underlag trots att transaktionshistoriken tidigare gav NOT_ENTITLED. FRC:s för-/efterhandel installeras inte som ordinarie öppningskurs. Ett tomt aggregatsvar bevisar inte i sig handelsstopp eller avsaknad av alla transaktioner på alla handelsplatser.
+
+SJR:s identifierade [CDS-bulletintjänst](https://services.cds.ca/applications/bulletins/bulletinsP.nsf/welcome-EN-?ReadForm) visade en inloggningssida; en separat direktförfrågan gav en blockeringssida med HTTP 200, inte ett bulletinbesked. [Produktinformationen](https://www.cds.ca/bulletins-and-resources/bulletins-and-alerts/cds-enhanced-bulletins) beskriver en särskild onlinetjänst och hänvisar till prisförfrågan. [DTCC:s LENS-information](https://www.dtcc.com/products-and-services/asset-services/issuer-services/legal-notice-system-lens) kräver registrerad inloggning för att läsa notices och avtal för icke-DTC-deltagare. Detta visar åtkomstbegränsningen, inte att ett specifikt AEPPZ-besked bevisligen finns i LENS. Ingen prenumeration eller data har köpts.
+
+**Konkret nästa väg är tre förberedda kostnadsfria underlagsförfrågningar** till AEP:s investor relations, TSX Trust och Massive support. Mottagarnas publicerade kontaktadresser har kontrollerats och fullständiga texter finns i `docs/external_evidence_requests_20261019.md`. Inget mejl har skickats. Extern kontakt kräver ett uttryckligt godkännande; den är inte en del av redan godkänd GitHub-sparning.
+
+Samtliga nio nya minut-/öppningsanrop, källgranskningen och den oberoende omräkningen dokumenteras i `audit_evidence/final_source_batch_20261019.json` med manifest. Alla fyra fasta originalexekveringar kvarstår olösta; giltig universumavkastning och rankningsmervärde saknas. Den tidigare testcheckpointen är 140 PASS; ingen kod har ändrats och ingen oförändrad modell- eller testomkörning har gjorts i denna källbatch. Inga jobb fortsätter i bakgrunden.
+
 ## Separat kontroll av bundet kapital – 19 oktober 2026
 
 **140/140 lokala regressionstester passerar**, med projektets fem låsta paketversioner. De 15 nya testerna gäller en fristående kassaflödeskontroll, `audit_capital_availability.py`. Den håller isär öppna innehav, obetalda fordringar och tillgänglig kassa per valuta. En planerad exit frigör inget kapital; ett registrerat försäljnings-/inlösenbelopp blir inte kassa förrän en separat mottagning registrerats. CAD kan inte finansiera USD-köp utan två uttryckligt dokumenterade växlingsbelopp. Bakdatering, dubbel kreditering och köp utan täckning stoppas.
