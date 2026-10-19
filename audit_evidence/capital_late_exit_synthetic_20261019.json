@@ -1,0 +1,6 @@
+{
+  "status": "BLOCKED_CASH_FLOW_AUDIT",
+  "error": "Unavailable USD cash for new_entry",
+  "input_sha256": "d9e1475bd13ba19d7b22b4be0fc8f2d68ff748ff108ea173396cac1a2a0d20d6",
+  "historical_execution_approved": false
+}

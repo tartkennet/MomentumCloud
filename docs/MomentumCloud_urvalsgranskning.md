@@ -1,5 +1,17 @@
 # MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
 
+## Separat kontroll av bundet kapital – 19 oktober 2026
+
+**140/140 lokala regressionstester passerar**, med projektets fem låsta paketversioner. De 15 nya testerna gäller en fristående kassaflödeskontroll, `audit_capital_availability.py`. Den håller isär öppna innehav, obetalda fordringar och tillgänglig kassa per valuta. En planerad exit frigör inget kapital; ett registrerat försäljnings-/inlösenbelopp blir inte kassa förrän en separat mottagning registrerats. CAD kan inte finansiera USD-köp utan två uttryckligt dokumenterade växlingsbelopp. Bakdatering, dubbel kreditering och köp utan täckning stoppas.
+
+Kontrollen är **inte inkopplad i originalmotorn** och är ännu ingen färdig modell för försenad exekvering. Den väljer inte vilka nya köp som ska skjutas upp när kapital saknas och skapar ingen prisserie, NAV, avkastning eller exekveringsgodkännande. En sådan integration behöver en sammanhängande tilldelnings- och värderingsregel; den ursprungliga fasta jämförelsen har inte ändrats. Två sparade CLI-exempel är tydligt märkta **syntetiska**, inte historiska affärer. Det ena stoppar ett köp som försöker återanvända spärrat kapital; det andra visar att mottagna CAD fortfarande ger noll tillgängliga USD.
+
+SJR:s nya clearingreferens är CDS event **E119202124603**, bulletin **2023.01688M**, återgiven i [BMV:s meddelande 12 april 2023](https://www.bmv.com.mx/docs-pub/sicderec/sicderec_1270261_1.pdf). Den återger uppdateringen 5 april med **förväntad** CDS-betalning 6 april och anger att ett slutbesked ska följa när depositariens pengar mottagits. Något sådant slutbesked har inte verifierats här. PDF:ens indexerade text kunde läsas, men direkt nedladdning blev ofullständig och ett senare försök gav HTTP 503; inget komplett original påstås sparat. [CDS:s egen FAQ](https://www.cds.ca/bulletins-and-resources/cds-support/faqs) bekräftar generellt att utebliven betalning förs vidare och att betalningar kan ske efter börsöppningen. Den kompletta FAQ-responsen är sparad med SHA-256; den bevisar inte SJR:s faktiska kreditering.
+
+**Inget av de fyra historiska hindren är stängt av denna batch.** AEPPZ:s slutliga per-enhet-leverans och SJR:s tillämpliga betalnings-/valutaunderlag saknas fortfarande. FRC och RNAZ saknar fortfarande verifierad exekvering på respektive fasta exitdag. Det räcker inte att tillåta deras senare priser i den gamla periodaggregeringen: den måste även kunna bära spärrat kapital över ombalanseringen. Ingen sådan genväg används. Exakta underlagskrav finns i `audit_evidence/remaining_evidence_requirements_20261019.json`.
+
+Dokumentationstäckningen förblir **286/288**, och senaste färdiga prisförkontroll är fortsatt **291/291**. Ingen oförändrad modellreplay har körts igen. Det verifierade urvalet är fortfarande −0,546005 % netto med −50,380132 % största dagliga nedgång; giltig universumavkastning och rankningsmervärde saknas. **NO-GO för köp kvarstår.** Källspår, testlogg, CLI-resultat och hashmanifest sparas tillsammans för fortsatt granskning. Ingen main-merge, produktion, handel, dataköp, parameteroptimering, Actions-körning eller automation ingår.
+
 ## Kompletterad pris- och källbatch – 19 oktober 2026
 
 **125 lokala tester passerar.** Ett nytt skydd kräver positiv observerad handelsvolym för att ett rått/justerat dagsprispar ska godkännas i förkontrollen. Båda nya regressionerna passerar och den samlade förkontrollen behåller **291/291 observerade par, 0 saknade**. Strategin och modellens indata har inte ändrats; den färdiga modellreplayen nedan gäller fortsatt. Testloggen och hela den nya förkontrollen är sparade.
@@ -495,3 +507,4 @@ Alla 43 månader har redan granskats. Det generiska fältet
 `out_of_sample_metrics` för 18 månader är ingen ny orörd holdout.
 Verklig spread/slippage/marknadspåverkan och en förhandsbeslutad riskpolicy
 är inte verifierade. Ingen paper trading har startats.
+

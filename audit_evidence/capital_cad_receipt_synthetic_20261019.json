@@ -1,0 +1,58 @@
+{
+  "status": "ACCOUNTING_ONLY_NO_NAV_OR_EXECUTION_APPROVAL",
+  "journal": [
+    {
+      "id": "entry",
+      "at": "2023-04-03T13:30:00+00:00",
+      "kind": "BUY",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "available_cash": {
+        "USD": "0"
+      },
+      "open_lots": {
+        "held": {
+          "cost": "100",
+          "currency": "USD",
+          "planned_exit": null
+        }
+      },
+      "overdue_open_lots": [],
+      "receivables": {}
+    },
+    {
+      "id": "entitlement",
+      "at": "2023-04-04T13:30:00+00:00",
+      "kind": "EXIT",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "available_cash": {
+        "USD": "0"
+      },
+      "open_lots": {},
+      "overdue_open_lots": [],
+      "receivables": {
+        "claim": {
+          "amount": "120",
+          "currency": "CAD",
+          "lot_id": "held"
+        }
+      }
+    },
+    {
+      "id": "receipt",
+      "at": "2023-04-06T20:00:00+00:00",
+      "kind": "RECEIVE",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "available_cash": {
+        "CAD": "120",
+        "USD": "0"
+      },
+      "open_lots": {},
+      "overdue_open_lots": [],
+      "receivables": {}
+    }
+  ],
+  "open_lot_count": 0,
+  "unreceived_claim_count": 0,
+  "input_sha256": "b720e0a8403c304907a186aec470b1c7a25887d83471ef62b66d49b47ce106d7",
+  "historical_execution_approved": false
+}
