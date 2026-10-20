@@ -20,17 +20,29 @@ on:
       - "validate_production_backtest.py"
       - "data_access_preflight.py"
       - "model_validation.py"
+      - "momentum_production.py"
+      - "momentum_master_v3.py"
+      - "requirements.txt"
+      - "Momentum mall fil.xlsx"
+      - ".github/workflows/momentum_validation.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "*.py"
+      - "requirements.txt"
+      - "Momentum mall fil.xlsx"
       - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  group: momentum-production-validation
+  group: momentum-production-validation-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -50,16 +62,15 @@ jobs:
       - name: Verify historical data access
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python data_access_preflight.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
+        run: |
+          set -o pipefail
+          python data_access_preflight.py --start "${{ inputs.start_date || '2024-01-01' }}" 2>&1 | tee validation_preflight.log
       - name: Validate locked production model
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python validate_production_backtest.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
-          --end "${{ inputs.end_date || '2026-09-01' }}"
+        run: |
+          set -o pipefail
+          python validate_production_backtest.py --start "${{ inputs.start_date || '2024-01-01' }}" --end "${{ inputs.end_date || '2026-09-01' }}" 2>&1 | tee validation_run.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,3 +80,6 @@ jobs:
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
             Momentum_validation_decision.json
+            validation_preflight.log
+            validation_run.log
+          if-no-files-found: error

@@ -640,14 +640,8 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError("Target portfolio contains a stock below the price floor")
         if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
             raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
-        if any(float(row["return_1m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock with non-positive 1-month return")
-        if any(float(row["return_3m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock with non-positive 3-month return")
-        if any(float(row["relative_1m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock lagging SPY over 1 month")
-        if any(float(row["relative_3m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock lagging SPY over 3 months")
+        # v4-balanced eligibility is defined by momentum_strategy.rank_universe.
+        # Its 12-2/6-2 signal does not require positive 1m/3m relative returns.
         if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
             raise RuntimeError("Target weights do not sum to 100 percent")
     target_tickers = {row["ticker"] for row in target}

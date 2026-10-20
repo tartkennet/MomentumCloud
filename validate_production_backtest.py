@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -11,22 +12,14 @@ import pandas as pd
 
 from backtest_momentum_v3 import run
 from momentum_config import PRODUCTION
+from momentum_master_v3 import safe_error_text
+from model_validation import evaluate_metrics, validation_source_fingerprint
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Validate the locked production model")
-    parser.add_argument(
-        "--start",
-        default=(datetime.now(timezone.utc).date() - timedelta(days=365 * 5)).isoformat(),
-    )
-    parser.add_argument(
-        "--end",
-        default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat(),
-    )
-    args = parser.parse_args()
+def validate(start: str, end: str) -> None:
     run(
-        start=args.start,
-        end=args.end,
+        start=start,
+        end=end,
         rebalance_months=1,
         stop_loss_pct=PRODUCTION.stop_loss_pct,
         exit_rule="stop",
@@ -54,17 +47,15 @@ def main() -> None:
     for key, value in expected.items():
         if summary.get(key) != value:
             raise RuntimeError(f"Locked production mismatch: {key}={summary.get(key)!r}, expected {value!r}")
-    gates = {
-        "at_least_30_periods": int(summary["Periods"]) >= 30,
-        "positive_net_return": float(summary["TotalReturn_pct"]) > 0.0,
-        "beats_spy": float(summary["TotalEdgeVsSPY_pct"]) > 0.0,
-        "daily_max_drawdown_at_most_20_pct": float(summary["DailyMaxDrawdown_pct"]) >= -20.0,
-        "hit_rate_at_least_50_pct": float(summary["PeriodHitRate_pct"]) >= 50.0,
-    }
+    gates = evaluate_metrics(summary)
     decision = {
         "model": PRODUCTION.selection_model,
         "validated_at": datetime.now(timezone.utc).isoformat(),
         "universe": summary["Universe"],
+        "source_fingerprint": validation_source_fingerprint(),
+        "source_commit": os.getenv("GITHUB_SHA"),
+        "start": start,
+        "end": end,
         "status": "GO" if all(gates.values()) else "NO-GO",
         "gates": gates,
         "metrics": {
@@ -84,6 +75,35 @@ def main() -> None:
         failed = ", ".join(name for name, passed in gates.items() if not passed)
         raise RuntimeError(f"Production model is NO-GO: {failed}")
     print("MomentumCloud Production v1 point-in-time validation: GO")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Validate the locked production model")
+    parser.add_argument("--start", default=(datetime.now(timezone.utc).date() - timedelta(days=365 * 5)).isoformat())
+    parser.add_argument("--end", default=(datetime.now(timezone.utc).date() - timedelta(days=1)).isoformat())
+    args = parser.parse_args()
+    # Never let a failed new run publish or consume a previous run's GO/CSVs.
+    for name in (
+        "Momentum_validation_decision.json", "Momentum_backtest_results.csv",
+        "Momentum_backtest_positions.csv", "Momentum_backtest_summary.csv",
+    ):
+        Path(name).unlink(missing_ok=True)
+    try:
+        validate(args.start, args.end)
+    except Exception as exc:
+        path = Path("Momentum_validation_decision.json")
+        if not path.exists():
+            path.write_text(json.dumps({
+                "model": PRODUCTION.selection_model,
+                "status": "VALIDATION_ERROR",
+                "validated_at": datetime.now(timezone.utc).isoformat(),
+                "start": args.start,
+                "end": args.end,
+                "gates": {},
+                "metrics": {},
+                "error": safe_error_text(exc),
+            }, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+        raise
 
 
 if __name__ == "__main__":
