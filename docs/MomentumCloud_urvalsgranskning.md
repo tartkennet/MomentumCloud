@@ -1,4 +1,46 @@
-# MomentumCloud – kontrollerat urvalstest, uppdaterad 19 oktober 2026
+# MomentumCloud – urval och risk, uppdaterad 20 oktober 2026
+
+## Omarbetat aktieurval och riskhantering, färdig v2-körning – 20 oktober 2026
+
+**Omarbetningen är implementerad och testad, men den nya modellen underkänns som köpmodell.** Risk Managed Momentum v2 förbättrar nettoresultatet från −57,841489 % till **−3,160851 %** och största dagliga nedgången från −64,917308 % till **−21,301747 %**. Det är en tydlig förbättring mot v1, men v2 missar både det i förväg satta målet om positiv nettoavkastning och målet om högst 20 % nedgång. Den slår inte heller SPY. Ingen ny godkänd köpmodell påstås färdig.
+
+| Samma 43 signalmånader och frysta prisbas | Efter fast kostnad | Största dagliga nedgång |
+|---|---:|---:|
+| Tidigare robust v1 | −57,841489 % | −64,917308 % |
+| Nytt urval, 25 lika viktade aktier | −11,818656 % | −28,721772 % |
+| Samma nya urval, nya riskvikter | −3,383565 % | −21,455803 % |
+| Full v2, även daglig SPY-exit | **−3,160851 %** | **−21,301747 %** |
+| SPY med samma initiala exponering och marknadsexit | +28,938444 % | −8,526265 % |
+| SPY prisstrategi, samma fasta månadskostnad | +70,202385 % | −19,537340 % |
+
+**Vad som faktiskt har ändrats.** Det historiskt daterade common-stock-universumet behålls. Nytt urval kräver faktisk rå kurs minst 10 USD och genomsnittlig faktisk rå dollaromsättning över 20 sessioner minst 20 MUSD. Splitjusterade priser multiplicerade med rå volym används inte för denna gräns. Trend- och positivt 12–1/6–1/3–1-momentum behålls, men rankningen använder momentum dividerat med 126-dagars volatilitet före samma 50/30/20-viktning. Både 63- och 126-dagars annualiserad volatilitet begränsas till 60 %, senaste 63 dagarnas enskilda absoluta kursrörelser till 25 % och kursens avstånd över SMA50 till 25 %. Dessa generella regler använder inga namnlistor över historiska förlorare.
+
+Portföljen får upp till 25 innehav med omvänd volatilitetsviktning, **högst 5 % per aktie vid ombalansering**, och skalas ned mot **15 % prognostiserad årsvolatilitet** med hela den historiska 63-dagars kovariansmatrisen. Ingen belåning tillåts och saknade platser behålls som kassa. SPY kontrolleras varje stängning; en negativ marknadssignal säljer nästa faktiska öppning och portföljen väntar därefter till nästa månadssignal. Aktiestoppet behålls på 10 %, observerat vid stängning med faktisk nästa öppningskurs. Inga återinträden eller ersättningsaktier väljs efter en exit under månaden.
+
+**Viktiga gränser:** femprocentsgränsen är en initial viktgräns, inte ett löpande garanterat tak efter kursrörelser eller bolagshändelser. Riskmålet är en prognos, inte en garanterad maximal förlust. V2:s värsta affär är APLS, −40,108913 %, trots stoppet. Den initiala vikten 2,635643 % ger −1,057128 procentenheters bidrag till den månadsperiodens bruttoavkastning. Samma mekanik som tidigare gäller: ett gap kan passera stoppnivån innan försäljning kan ske.
+
+**Kontrollerad uppdelning.** De tre v2-varianterna bestämdes i specifikationen före resultatberäkning och använder exakt samma 975 signal-/ticker-val och köppriser. Varianten med nya vikter ändrar inga av de lika viktade portföljernas exitdatum eller exitpriser. Den fulla variantens dagliga marknadsregel ändrar exits men bevarar urval, köp och initiala vikter. Nya vikter förbättrar nettoresultatet med 8,435090 procentenheter jämfört med samma urval med lika vikt. Den dagliga marknadsregeln bidrar därefter med 0,222714 procentenheter. Ingen parametergrid eller efterföljande justering av trösklar efter resultatet har körts. Jämförelsen med gamla v1 omfattar även förändrat antal innehav och andra urvalsgränser och isolerar därför inte enbart rankningsformeln.
+
+V2 omfattar **975 innehavsperioder, 486 unika tickers, 39 investerade månader och samma fyra ursprungliga kassamånader**. Genomsnittlig initial aktieexponering över samtliga 43 månader är 79,913617 %. 229 innehav avslutas av aktiestopp, 72 av marknadssignalen och fyra med kontantvederlag; ett ytterligare innehav följer ett dokumenterat aktievederlag. Positiva portföljmånader är 18/43. Före den fasta kostnaden blir avkastningen +8,862116 %; med 0,60 i stället för 0,30 procentenheters kostnad per investerad månad blir den −13,886371 %. Avgiftsstressen ändrar inga affärer. Kostnaden är samma fasta forskningsantagande som tidigare, inte uppmätta spreadar eller verklig omsättning.
+
+| Signalår, inte fullständiga kalenderårsresultat | Månader | V2 netto |
+|---|---:|---:|
+| 2023 | 11 | −0,712647 % |
+| 2024 | 12 | +15,164215 % |
+| 2025 | 12 | −0,295064 % |
+| 2026 | 8 | −15,057933 % |
+
+Den exponeringsmatchade SPY-kontrollen använder v2:s **initiala** totalvikt och samma dagliga marknadsregel, men inte varje akties individuella stopptid. Skillnaden mot den är därför ingen ren kausal alpha-beräkning. Även denna kontroll går dock klart bättre än aktieurvalet, med lägre nedgång. Lägre exponering förklarar inte i sig att v2 är en bättre aktiemodell än SPY.
+
+**Verifierat och sparat.** 158 regressionstester passerar, inklusive tester för råa pris-/likviditetsenheter, framtida data, saknade observationer, korrelerade risker, viktgränser, kontantvederlag och gap som passerar stoppet. En separat verifierare utan modellens beräkningsfunktioner räknar om positionsavkastningar, vikter, månadskostnader, sammansatt kapital, kostnadsstress och nedgång från CSV-underlagen. Samtliga 943 NAV-punkter per variant ingår i nedgångskontrollen, samtliga 43 periodslut avstäms mot affärspriserna och den vanliga SPY-kontrollen reproducerar den tidigare +70,202385-procentsjämförelsen.
+
+De fem största nya förlusterna, APLS, ZETA, REZI, ENVA och KGS, kontrollerades med tio nya parade individuella råa/justerade dagsserier. Alla 20 kontroller av signal-, köp-, exit- och rå signalpris stämmer, och första stoppsignal samt nästa öppningsdag stämmer i alla fem fall. En särskild splitfråga för dessa fem efter 6 oktober till och med 20 oktober gav noll poster. Detta är fortfarande samma dataleverantör. Totalt finns **260 matchande individuella prisjämförelser och 2 660 ännu saknade** i v2:s separata punktkontroll; fem bolagshändelseexits kräver separat enhetskonvertering. V1:s tidigare räknare 1 176/561 gäller ett annat urval och har inte blandats ihop med dessa nya tal. Full pris-/emittentvalidering av v2 påstås inte.
+
+**Arbetsstatus.** `risk_managed_momentum.py` innehåller den nya urvals- och viktlogiken. `run_risk_managed_research.py` genomför de tre låsta varianterna; `verify_risk_managed_research.py` och `verify_risk_managed_sources.py` gör de separata kontrollerna. Specifikationen finns i `docs/risk_managed_momentum_v2_spec.md`, och alla resultat, urval, priser, vikter, NAV och kontrollistor i `audit_evidence/risk_managed_v2_20261020/`. Slutligt statusbesked finns i `research_decision.json`. Beräkningsstopp under utvecklingen gällde redan dokumenterade bolagshändelser och saknade lokala underlagskopior; deras befintliga källor återställdes, inga dåliga affärer togs bort och inga strategitrösklar ändrades för att få testet att gå igenom.
+
+Den gamla tillfälliga indatamappen saknades efter avbrottet och exportdelarnas tidsgräns hade gått ut. En enda avgränsad återkörning av det befintliga **indataexportjobbet** återställde samma källarkiv. Den sammansatta cachehashen är oförändrad: `638589917ba5a37c0c69bdd0e057b4fb873618981c286bde3d88488135313ee2`, 1 230 sessioner och basis 2026-10-06. Ett komplett nytt återställningsarkiv med nödvändiga frysta forskningsindata är framtaget och dess 336 filer återställda med verifierade hashvärden. Därmed behöver en framtida fortsättning inte vara beroende av den nya tillfälliga exportens giltighet. Detta var en indatakopiering, inte ett nytt produktions- eller handelsjobb.
+
+**Slutsats:** den beställda omarbetningen är gjord och historiskt jämförd. Riskkontrollen förbättras kraftigt mot v1, men det nya aktieurvalet klarar fortfarande inte avkastningskraven. V2 aktiveras därför inte som en godkänd ersättare i appen. Alla 43 perioder var redan kända från tidigare arbete; inget orört holdout eller framtida överavkastning påstås. Testet använder andelar av aktier och prisavkastning utan utdelningar, skatter, USD/SEK eller verifierade mäklarfyllnader. Ingen main-merge, driftsättning, handel, dataköp, extern kontakt eller ny schemalagd automation ingår.
 
 ## Slutförd granskning av 20 största förluster och fast stoppjämförelse – 19 oktober 2026
 
