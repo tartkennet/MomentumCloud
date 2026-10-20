@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "url": "https://blogg.avanza.se/kopa-utlandska-aktier-har-ar-allt-du-behover-veta/",
+      "retrieved_date": "2026-10-20",
+      "supports": "Automatic foreign-currency trading conversion fee stated as 0.25%. This is not confirmation of the user's account or current US commission class."
+    },
+    {
+      "url": "https://investors.avanza.se/media/press/2015/lanserar-ny-mobil-app-och-sanker-courtaget-pa-utlandshandel/",
+      "retrieved_date": "2026-10-20",
+      "supports": "Historical official Mini US commission table: 0.25%, USD 1 minimum. Used as an explicitly declared scenario; current US table was not readable and user's actual tariff is unverified."
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1117480/000119312525087237/d942664d8k.htm",
+      "retrieved_date": "2026-10-20",
+      "supports": "CMRX shares converted to USD 8.55 cash per share on April 21, 2025; report items 2.01, 3.01 and introductory note."
+    },
+    {
+      "url": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2025-196",
+      "retrieved_date": "2026-10-20",
+      "supports": "CMRX last traded April 17, remained halted April 21 closing day, suspended April 22. No fictional post-closing market print used."
+    }
+  ],
+  "spread_slippage": "Declared sensitivities, not observed bid/ask/fills.",
+  "account_sizes": "Illustrative USD 10000 and USD 100000, not known user capital."
+}

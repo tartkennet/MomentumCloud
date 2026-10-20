@@ -1,0 +1,133 @@
+name: Export frozen audit cache in bounded parts
+on:
+  pull_request:
+    branches: [main]
+    paths: [.github/workflows/export_audit_cache.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_corrected_component_audit
+          run-id: 37419651430
+          github-token: ${{ github.token }}
+          path: frozen
+      - name: Create checked archive parts
+        shell: python
+        run: |
+          import hashlib, json, pathlib, tarfile
+          root = pathlib.Path("frozen")
+          for required in [".momentum_backtest_cache.json", ".momentum_point_in_time_universe.json"]:
+              if len(list(root.rglob(required))) != 1:
+                  raise RuntimeError(f"Missing or duplicate input: {required}")
+          with tarfile.open("frozen-inputs.tar.gz", "w:gz") as archive:
+              archive.add(root, arcname="frozen")
+          digest = hashlib.sha256()
+          parts = []
+          with open("frozen-inputs.tar.gz", "rb") as source:
+              index = 0
+              while data := source.read(200 * 1024 * 1024):
+                  digest.update(data)
+                  target = pathlib.Path(f"parts/part-{index:03d}")
+                  target.mkdir(parents=True)
+                  (target / "chunk.bin").write_bytes(data)
+                  parts.append({"index": index, "size": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+                  index += 1
+          if index > 12:
+              raise RuntimeError("Archive exceeds export slots")
+          pathlib.Path("manifest.json").write_text(json.dumps({"source_run": 37419651430, "source_artifact": 11393004537, "archive_sha256": digest.hexdigest(), "parts": parts}, indent=2))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-000
+          path: parts/part-000/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-001
+          path: parts/part-001/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-002
+          path: parts/part-002/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-003
+          path: parts/part-003/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-004
+          path: parts/part-004/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-005
+          path: parts/part-005/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-006
+          path: parts/part-006/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-007
+          path: parts/part-007/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-008
+          path: parts/part-008/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-009
+          path: parts/part-009/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-010
+          path: parts/part-010/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-part-011
+          path: parts/part-011/chunk.bin
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-audit-cache-manifest
+          path: manifest.json
+          retention-days: 1

@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-19",
+  "source_head": "2aa1715e5d4b2249a442168f7161bb153062d429",
+  "status": "ACCOUNTING_FOUNDATION_COMPLETE_HISTORICAL_UNIVERSE_STILL_BLOCKED",
+  "accounting_module": {
+    "path": "audit_capital_availability.py",
+    "integrated_into_fixed_model": false,
+    "changes_allocation_policy": false,
+    "produces_nav": false,
+    "produces_return": false,
+    "synthetic_examples_only": true,
+    "tests_added": 15
+  },
+  "source_review": {
+    "SJR_BMV": {
+      "url": "https://www.bmv.com.mx/docs-pub/sicderec/sicderec_1270261_1.pdf",
+      "access_route": "Search index extracted text; complete original PDF not obtained",
+      "notice_date": "2023-04-12",
+      "cds_release": "2023-04-05",
+      "bulletin": "2023.01688M",
+      "event_id": "E119202124603",
+      "anticipated_payable": "2023-04-06",
+      "final_bulletin": "To follow receipt of depositary funds; not found in reviewed indexed notice",
+      "payment_verified": false,
+      "direct_access": "First two complete-download attempts truncated at 13337 of 27739 bytes; two range attempts returned HTTP 503",
+      "model_installation": false
+    },
+    "SJR_CDS_FAQ": {
+      "url": "https://www.cds.ca/bulletins-and-resources/cds-support/faqs",
+      "path": "audit_evidence/SJR_CDS_FAQ_20261019.html",
+      "bytes": 89095,
+      "sha256": "66d5b53fee4d10b1cab8b7b7666eeb2612c4f0e6e17f2168771c60822ffd77eb",
+      "finding": "General processing instructions permit later-day payment and rolling unpaid events to the next business day. Does not establish a SJR-specific credit.",
+      "event_payment_verified": false
+    },
+    "AEPPZ": {
+      "new_final_settlement_verified": false,
+      "model_installation": false,
+      "search_scope": "Ticker, CUSIP, issuer, conversion/settlement and exchange/depository notices. No final holder-applicable notice obtained.",
+      "old_registered_description_review": {
+        "url": "https://www.sec.gov/Archives/edgar/data/81027/000000490421000010/ex4c20204q.htm",
+        "sha256": "f049e68b15144372825b5ada4f5afa1ad565e89a093f3fb5309e688c2194d46e",
+        "bytes": 564474,
+        "retained_in_this_checkpoint": false,
+        "finding": "Contains both series; 0.6026 belongs to another series and is not a new AEPPZ adjustment. AEPPZ 2023 section repeats original 0.6003/formula, not final rate."
+      }
+    }
+  },
+  "validation": {
+    "existing_regressions": 125,
+    "new_accounting_regressions": 15,
+    "total": 140,
+    "status": "PASS",
+    "log": "audit_evidence/tests_capital_batch_20261019.log",
+    "model_replayed_this_batch": false,
+    "price_preflight_repeated_this_batch": false,
+    "last_completed_price_preflight": {
+      "observed_pairs": 291,
+      "missing": 0
+    },
+    "historical_execution_blockers_closed": 0
+  },
+  "unresolved_original_fixed_exits": [
+    "FRC 2023-05-01",
+    "SJR 2023-05-01",
+    "AEPPZ 2023-09-01",
+    "RNAZ 2025-12-01"
+  ],
+  "documentation_coverage": {
+    "reviewed": 286,
+    "total": 288,
+    "is_execution_pass_rate": false
+  },
+  "decision": "NO_GO",
+  "valid_universe_return": null,
+  "ranking_value_added": null
+}

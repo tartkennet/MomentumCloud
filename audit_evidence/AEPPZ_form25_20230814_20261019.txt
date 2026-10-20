@@ -1,0 +1,126 @@
+<SEC-DOCUMENT>0001354457-23-000582.txt : 20230814
+<SEC-HEADER>0001354457-23-000582.hdr.sgml : 20230814
+<ACCEPTANCE-DATETIME>20230814162447
+ACCESSION NUMBER:		0001354457-23-000582
+CONFORMED SUBMISSION TYPE:	25-NSE
+PUBLIC DOCUMENT COUNT:		2
+FILED AS OF DATE:		20230814
+DATE AS OF CHANGE:		20230814
+EFFECTIVENESS DATE:		20230814
+
+SUBJECT COMPANY:	
+
+	COMPANY DATA:	
+		COMPANY CONFORMED NAME:			AMERICAN ELECTRIC POWER CO INC
+		CENTRAL INDEX KEY:			0000004904
+		STANDARD INDUSTRIAL CLASSIFICATION:	ELECTRIC SERVICES [4911]
+		IRS NUMBER:				134922640
+		STATE OF INCORPORATION:			NY
+		FISCAL YEAR END:			1231
+
+	FILING VALUES:
+		FORM TYPE:		25-NSE
+		SEC ACT:		1934 Act
+		SEC FILE NUMBER:	001-03525
+		FILM NUMBER:		231170751
+
+	BUSINESS ADDRESS:	
+		STREET 1:		1 RIVERSIDE PLAZA
+		CITY:			COLUMBUS
+		STATE:			OH
+		ZIP:			43215
+		BUSINESS PHONE:		614-716-1000
+
+	MAIL ADDRESS:	
+		STREET 1:		1 RIVERSIDE PLAZA
+		CITY:			COLUMBUS
+		STATE:			OH
+		ZIP:			43215
+
+	FORMER COMPANY:	
+		FORMER CONFORMED NAME:	KINGSPORT UTILITIES INC
+		DATE OF NAME CHANGE:	19660906
+
+FILED BY:		
+
+	COMPANY DATA:	
+		COMPANY CONFORMED NAME:			Nasdaq Stock Market LLC
+		CENTRAL INDEX KEY:			0001354457
+		IRS NUMBER:				521165937
+		STATE OF INCORPORATION:			DE
+		FISCAL YEAR END:			1231
+
+	FILING VALUES:
+		FORM TYPE:		25-NSE
+
+	BUSINESS ADDRESS:	
+		STREET 1:		One Liberty Plaza
+		CITY:			New York
+		STATE:			NY
+		ZIP:			10006
+		BUSINESS PHONE:		301-978-4144
+
+	MAIL ADDRESS:	
+		STREET 1:		Office of General Counsel
+		STREET 2:		805 King Farm Blvd.
+		CITY:			ROCKVILLE
+		STATE:			MD
+		ZIP:			20850
+
+	FORMER COMPANY:	
+		FORMER CONFORMED NAME:	The Nasdaq Stock Market LLC
+		DATE OF NAME CHANGE:	20060224
+</SEC-HEADER>
+<DOCUMENT>
+<TYPE>25-NSE
+<SEQUENCE>1
+<FILENAME>primary_doc.xml
+<TEXT>
+<XML>
+<?xml version="1.0"?>
+<notificationOfRemoval>
+
+    <schemaVersion>X0203</schemaVersion>
+
+    <exchange>
+        <cik>0001354457</cik>
+        <entityName>Nasdaq Stock Market LLC</entityName>
+    </exchange>
+
+    <issuer>
+        <cik>0000004904</cik>
+        <entityName>AMERICAN ELECTRIC POWER CO INC</entityName>
+        <fileNumber>001-03525</fileNumber>
+        <address>
+            <street1>1 Riverside Plaza</street1>
+            <street2></street2>
+            <city>Columbus</city>
+            <stateOrCountryCode>OH</stateOrCountryCode>
+            <stateOrCountry>OHIO</stateOrCountry>
+            <zipCode>43215-2373</zipCode>
+        </address>
+        <telephoneNumber>43215-2373</telephoneNumber>
+    </issuer>
+
+    <descriptionClassSecurity>Corporate Unit</descriptionClassSecurity>
+
+    <ruleProvision>17 CFR 240.12d2-2(a)(2)</ruleProvision>
+
+    <signatureData>
+        <signatureName>Tara Petta</signatureName>
+        <signatureTitle>Director</signatureTitle>
+        <signatureDate>2023-08-14</signatureDate>
+    </signatureData>
+</notificationOfRemoval>
+</XML>
+</TEXT>
+</DOCUMENT>
+<DOCUMENT>
+<TYPE>EX-99.25
+<SEQUENCE>2
+<FILENAME>aeppz-form25.txt
+<TEXT>
+Aeppz-form25
+</TEXT>
+</DOCUMENT>
+</SEC-DOCUMENT>

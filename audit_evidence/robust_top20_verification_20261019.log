@@ -1,0 +1,68 @@
+{
+  "status": "COMPLETE_ALL_20_PASS",
+  "scope": "Fixed 20 largest archived losses; same vendor individual adjusted/raw endpoints, not an independent market-data provider or proof of order fills.",
+  "cases": 20,
+  "pass": 20,
+  "daily_ohlc_and_lot_price_checks": 1872,
+  "post_basis_split_check": {
+    "from_exclusive": "2026-10-06",
+    "through": "2026-10-19",
+    "events_returned": 40,
+    "affecting_cases": []
+  },
+  "raw_signal_price_floor_failures": 0
+}
+[
+  {
+    "ticker": "VINC",
+    "signal_date": "2024-03-28",
+    "entry_date": "2024-04-01",
+    "exit_date": "2024-04-10",
+    "individual_return_pct": -79.55010224948876,
+    "stop_signal_date": "2024-04-09",
+    "return_at_stop_signal_close_pct": -78.32310838445808,
+    "exit_open_gap_from_previous_close_pct": -5.660377358490565,
+    "planned_month_end_return_without_stop_pct": -83.23108384458078,
+    "actual_raw_signal_close": 5.06,
+    "status": "PASS_INDIVIDUAL_BARS_AND_STOP_TIMING"
+  },
+  {
+    "ticker": "FTEL",
+    "signal_date": "2024-11-29",
+    "entry_date": "2024-12-02",
+    "exit_date": "2024-12-19",
+    "individual_return_pct": -76.96551724137932,
+    "stop_signal_date": "2024-12-18",
+    "return_at_stop_signal_close_pct": -75.86206896551724,
+    "exit_open_gap_from_previous_close_pct": -4.571428571428571,
+    "planned_month_end_return_without_stop_pct": -69.9655172413793,
+    "actual_raw_signal_close": 28.63,
+    "status": "PASS_INDIVIDUAL_BARS_AND_STOP_TIMING"
+  },
+  {
+    "ticker": "LQDA",
+    "signal_date": "2026-08-31",
+    "entry_date": "2026-09-01",
+    "exit_date": "2026-10-01",
+    "individual_return_pct": -64.6085672082718,
+    "stop_signal_date": "2026-09-30",
+    "return_at_stop_signal_close_pct": -55.30280649926145,
+    "exit_open_gap_from_previous_close_pct": -20.819563780568405,
+    "planned_month_end_return_without_stop_pct": -64.6085672082718,
+    "actual_raw_signal_close": 68.17,
+    "status": "PASS_INDIVIDUAL_BARS_AND_STOP_TIMING"
+  },
+  {
+    "ticker": "ZBIO",
+    "signal_date": "2025-12-31",
+    "entry_date": "2026-01-02",
+    "exit_date": "2026-01-06",
+    "individual_return_pct": -56.623519691545035,
+    "stop_signal_date": "2026-01-05",
+    "return_at_stop_signal_close_pct": -54.2550261635913,
+    "exit_open_gap_from_previous_close_pct": -5.177603853100543,
+    "planned_month_end_return_without_stop_pct": -49.51803910768384,
+    "actual_raw_signal_close": 36.31,
+    "status": "PASS_INDIVIDUAL_BARS_AND_STOP_TIMING"
+  }
+]

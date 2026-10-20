@@ -1,0 +1,134 @@
+[
+  {
+    "variant": "broad_risk_adjusted__equal_reference",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__equal_reference",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__M",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__M",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__S",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__S",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__SM",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted__SM",
+    "stage": "STOP_AND_NAV",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum__equal_reference",
+    "stage": "STOP_AND_NAV",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum__M",
+    "stage": "STOP_AND_NAV",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum__S",
+    "stage": "STOP_AND_NAV",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum__SM",
+    "stage": "STOP_AND_NAV",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  }
+]

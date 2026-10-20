@@ -1,0 +1,15 @@
+{
+  "status": "PASS_FRESH_MODEL_REPLAY_AFTER_GOLD_REINTRODUCTION_AND_FOUR_FULL_HISTORIES",
+  "positions": 645,
+  "tickers": 230,
+  "periods": 43,
+  "identical_position_keys": true,
+  "exact_price_and_date_matches": true,
+  "independent_net_return_pct": -0.5460050227673818,
+  "net_return_pct": -0.5460050227673818,
+  "daily_max_drawdown_pct": -50.38013190677646,
+  "spy_matched_fixed_cost_return_pct": 70.20238513471013,
+  "independent_capital_aggregation": "PASS",
+  "regression_tests": 115,
+  "universe_complete": false
+}

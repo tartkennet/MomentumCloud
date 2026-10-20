@@ -1,0 +1,5 @@
+{
+  "status": "PASS_INDEPENDENT_ORDER_CASH_AND_NAV_RECONCILIATION",
+  "ledgers": 232,
+  "limitation": "Accounting and frozen-path validation, not independently verified market fills or unseen performance."
+}

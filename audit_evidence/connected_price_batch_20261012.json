@@ -1,0 +1,1360 @@
+{
+  "source": "Massive connected API",
+  "fetched_at": "2026-10-12T20:54:37.877Z",
+  "completed_pairs": 113,
+  "records": [
+    {
+      "ticker": "ATCO",
+      "day": "2023-03-27",
+      "status": "OBSERVED_PAIR",
+      "bases": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "ticker": "FPAC",
+      "day": "2023-03-07",
+      "purpose": "original-basis",
+      "action": "FPAC",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "NATI",
+      "day": "2023-10-10",
+      "purpose": "original-basis",
+      "action": "NATI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ARGO",
+      "day": "2023-11-15",
+      "purpose": "original-basis",
+      "action": "ARGO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CCF",
+      "day": "2023-11-14",
+      "purpose": "original-basis",
+      "action": "CCF",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "NWLI",
+      "day": "2024-07-08",
+      "purpose": "original-basis",
+      "action": "NWLI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AXNX",
+      "day": "2024-11-14",
+      "purpose": "original-basis",
+      "action": "AXNX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "HCP",
+      "day": "2025-02-26",
+      "purpose": "original-basis",
+      "action": "HCP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EVRI",
+      "day": "2025-06-30",
+      "purpose": "original-basis",
+      "action": "EVRI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ESGR",
+      "day": "2025-07-01",
+      "purpose": "original-basis",
+      "action": "ESGR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "FYBR",
+      "day": "2026-01-16",
+      "purpose": "original-basis",
+      "action": "FYBR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AL",
+      "day": "2026-04-07",
+      "purpose": "original-basis",
+      "action": "AL",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "GTLS",
+      "day": "2026-07-15",
+      "purpose": "original-basis",
+      "action": "GTLS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TRHC",
+      "day": "2023-11-02",
+      "purpose": "original-basis",
+      "action": "TRHC",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "RFP",
+      "day": "2023-02-28",
+      "purpose": "original-basis",
+      "action": "RFP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EVOP",
+      "day": "2023-03-23",
+      "purpose": "original-basis",
+      "action": "EVOP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SOVO",
+      "day": "2024-03-11",
+      "purpose": "original-basis",
+      "action": "SOVO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "NVEI",
+      "day": "2024-11-14",
+      "purpose": "original-basis",
+      "action": "NVEI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "FRGE",
+      "day": "2026-02-27",
+      "purpose": "original-basis",
+      "action": "FRGE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "OSH",
+      "day": "2023-05-01",
+      "purpose": "original-basis",
+      "action": "OSH",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ISEE",
+      "day": "2023-07-10",
+      "purpose": "original-basis",
+      "action": "ISEE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2024-03-21",
+      "purpose": "original-basis",
+      "action": "CBAY",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "RGLS",
+      "day": "2025-06-24",
+      "purpose": "original-basis",
+      "action": "RGLS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "HSKA",
+      "day": "2023-06-12",
+      "purpose": "original-basis",
+      "action": "HSKA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EXAS",
+      "day": "2026-03-20",
+      "purpose": "original-basis",
+      "action": "EXAS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "VVNT",
+      "day": "2023-03-09",
+      "purpose": "original-basis",
+      "action": "VVNT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "MYOV",
+      "day": "2023-03-09",
+      "purpose": "original-basis",
+      "action": "MYOV",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AIMC",
+      "day": "2023-03-24",
+      "purpose": "original-basis",
+      "action": "AIMC",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "APEN",
+      "day": "2023-04-03",
+      "purpose": "original-basis",
+      "action": "APEN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TA",
+      "day": "2023-05-12",
+      "purpose": "original-basis",
+      "action": "TA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "MAXR",
+      "day": "2023-05-02",
+      "purpose": "original-basis",
+      "action": "MAXR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SUMO",
+      "day": "2023-05-11",
+      "purpose": "original-basis",
+      "action": "SUMO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CVT",
+      "day": "2023-06-14",
+      "purpose": "original-basis",
+      "action": "CVT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "XM",
+      "day": "2023-06-27",
+      "purpose": "original-basis",
+      "action": "XM",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "DSEY",
+      "day": "2023-07-03",
+      "purpose": "original-basis",
+      "action": "DSEY",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ARCE",
+      "day": "2023-12-06",
+      "purpose": "original-basis",
+      "action": "ARCE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "THRN",
+      "day": "2023-10-13",
+      "purpose": "original-basis",
+      "action": "THRN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SGEN",
+      "day": "2023-12-13",
+      "purpose": "original-basis",
+      "action": "SGEN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CHS",
+      "day": "2024-01-04",
+      "purpose": "original-basis",
+      "action": "CHS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "MRTX",
+      "day": "2024-01-22",
+      "purpose": "original-basis",
+      "action": "MRTX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AYX",
+      "day": "2024-03-12",
+      "purpose": "original-basis",
+      "action": "AYX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TGH",
+      "day": "2024-03-13",
+      "purpose": "original-basis",
+      "action": "TGH",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2024-03-15",
+      "purpose": "original-basis",
+      "action": "SPLK",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "KRTX",
+      "day": "2024-03-15",
+      "purpose": "original-basis",
+      "action": "KRTX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "PGTI",
+      "day": "2024-03-27",
+      "purpose": "original-basis",
+      "action": "PGTI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "DSKE",
+      "day": "2024-03-28",
+      "purpose": "original-basis",
+      "action": "DSKE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TCN",
+      "day": "2024-04-30",
+      "purpose": "original-basis",
+      "action": "TCN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TAST",
+      "day": "2024-05-15",
+      "purpose": "original-basis",
+      "action": "TAST",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SLCA",
+      "day": "2024-07-30",
+      "purpose": "original-basis",
+      "action": "SLCA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EVBG",
+      "day": "2024-07-01",
+      "purpose": "original-basis",
+      "action": "EVBG",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AAN",
+      "day": "2024-10-02",
+      "purpose": "original-basis",
+      "action": "AAN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "PWSC",
+      "day": "2024-09-30",
+      "purpose": "original-basis",
+      "action": "PWSC",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "PRFT",
+      "day": "2024-10-01",
+      "purpose": "original-basis",
+      "action": "PRFT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SQSP",
+      "day": "2024-10-16",
+      "purpose": "original-basis",
+      "action": "SQSP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ITI",
+      "day": "2024-10-31",
+      "purpose": "original-basis",
+      "action": "ITI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SRCL",
+      "day": "2024-11-01",
+      "purpose": "original-basis",
+      "action": "SRCL",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "INST",
+      "day": "2024-11-12",
+      "purpose": "original-basis",
+      "action": "INST",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "RCM",
+      "day": "2024-11-18",
+      "purpose": "original-basis",
+      "action": "RCM",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SMAR",
+      "day": "2025-01-21",
+      "purpose": "original-basis",
+      "action": "SMAR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ZUO",
+      "day": "2025-02-13",
+      "purpose": "original-basis",
+      "action": "ZUO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ALTR",
+      "day": "2025-03-25",
+      "purpose": "original-basis",
+      "action": "ALTR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "PLYA",
+      "day": "2025-06-13",
+      "purpose": "original-basis",
+      "action": "PLYA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TGI",
+      "day": "2025-07-23",
+      "purpose": "original-basis",
+      "action": "TGI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "VIGL",
+      "day": "2025-08-04",
+      "purpose": "original-basis",
+      "action": "VIGL",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SPTN",
+      "day": "2025-09-19",
+      "purpose": "original-basis",
+      "action": "SPTN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "BASE",
+      "day": "2025-09-23",
+      "purpose": "original-basis",
+      "action": "BASE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AVDX",
+      "day": "2025-10-14",
+      "purpose": "original-basis",
+      "action": "AVDX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ZIMV",
+      "day": "2025-10-17",
+      "purpose": "original-basis",
+      "action": "ZIMV",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "INFA",
+      "day": "2025-11-17",
+      "purpose": "original-basis",
+      "action": "INFA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ODP",
+      "day": "2025-12-09",
+      "purpose": "original-basis",
+      "action": "ODP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SPNS",
+      "day": "2025-12-16",
+      "purpose": "original-basis",
+      "action": "SPNS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CIO",
+      "day": "2026-01-08",
+      "purpose": "original-basis",
+      "action": "CIO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "GES",
+      "day": "2026-01-22",
+      "purpose": "original-basis",
+      "action": "GES",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "HI",
+      "day": "2026-02-09",
+      "purpose": "original-basis",
+      "action": "HI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "PKST",
+      "day": "2026-05-05",
+      "purpose": "original-basis",
+      "action": "PKST",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CSGS",
+      "day": "2026-05-13",
+      "purpose": "original-basis",
+      "action": "CSGS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EHAB",
+      "day": "2026-05-14",
+      "purpose": "original-basis",
+      "action": "EHAB",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "MASI",
+      "day": "2026-06-09",
+      "purpose": "original-basis",
+      "action": "MASI",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "JHG",
+      "day": "2026-06-29",
+      "purpose": "original-basis",
+      "action": "JHG",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AVNS",
+      "day": "2026-07-24",
+      "purpose": "original-basis",
+      "action": "AVNS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "TALK",
+      "day": "2026-08-14",
+      "purpose": "original-basis",
+      "action": "TALK",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ALOT",
+      "day": "2026-08-26",
+      "purpose": "original-basis",
+      "action": "ALOT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "APGE",
+      "day": "2026-09-02",
+      "purpose": "original-basis",
+      "action": "APGE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "WSR",
+      "day": "2026-07-13",
+      "purpose": "original-basis",
+      "action": "WSR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SGFY",
+      "day": "2023-03-28",
+      "purpose": "original-basis",
+      "action": "SGFY",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AAWW",
+      "day": "2023-03-16",
+      "purpose": "original-basis",
+      "action": "AAWW",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "COWN",
+      "day": "2023-02-28",
+      "purpose": "original-basis",
+      "action": "COWN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "INDT",
+      "day": "2023-06-28",
+      "purpose": "original-basis",
+      "action": "INDT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "UNVR",
+      "day": "2023-07-31",
+      "purpose": "original-basis",
+      "action": "UNVR",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "GLOP",
+      "day": "2023-07-12",
+      "purpose": "original-basis",
+      "action": "GLOP",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "FRG",
+      "day": "2023-08-18",
+      "purpose": "original-basis",
+      "action": "FRG",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AMK",
+      "day": "2024-09-04",
+      "purpose": "original-basis",
+      "action": "AMK",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ENV",
+      "day": "2024-11-22",
+      "purpose": "original-basis",
+      "action": "ENV",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "HAYN",
+      "day": "2024-11-20",
+      "purpose": "original-basis",
+      "action": "HAYN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "VZIO",
+      "day": "2024-12-02",
+      "purpose": "original-basis",
+      "action": "VZIO",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CTLT",
+      "day": "2024-12-17",
+      "purpose": "original-basis",
+      "action": "CTLT",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SCWX",
+      "day": "2025-01-31",
+      "purpose": "original-basis",
+      "action": "SCWX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "INFN",
+      "day": "2025-02-27",
+      "purpose": "original-basis",
+      "action": "INFN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AGS",
+      "day": "2025-06-27",
+      "purpose": "original-basis",
+      "action": "AGS",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "WBA",
+      "day": "2025-08-27",
+      "purpose": "original-basis",
+      "action": "WBA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AMED",
+      "day": "2025-08-13",
+      "purpose": "original-basis",
+      "action": "AMED",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "SKX",
+      "day": "2025-09-11",
+      "purpose": "original-basis",
+      "action": "SKX",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "WOW",
+      "day": "2025-12-30",
+      "purpose": "original-basis",
+      "action": "WOW",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "ALE",
+      "day": "2025-12-12",
+      "purpose": "original-basis",
+      "action": "ALE",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2026-06-24",
+      "purpose": "original-basis",
+      "action": "CWAN",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "EA",
+      "day": "2026-08-03",
+      "purpose": "original-basis",
+      "action": "EA",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "GBTG",
+      "day": "2026-09-28",
+      "purpose": "original-basis",
+      "action": "GBTG",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "NGD",
+      "day": "2026-03-19",
+      "purpose": "original-basis",
+      "action": "NGD",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CDE",
+      "day": "2026-03-20",
+      "purpose": "successor-basis",
+      "action": "NGD",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "NFBK",
+      "day": "2026-07-20",
+      "purpose": "original-basis",
+      "action": "NFBK",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "CLBK",
+      "day": "2026-07-21",
+      "purpose": "successor-basis",
+      "action": "NFBK",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "AEL",
+      "day": "2024-05-01",
+      "purpose": "original-basis",
+      "action": "AEL",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    },
+    {
+      "ticker": "BAM",
+      "day": "2024-05-02",
+      "purpose": "successor-basis",
+      "action": "AEL",
+      "bases": [
+        "true",
+        "false"
+      ],
+      "errors": [],
+      "status": "OBSERVED_PAIR"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "ticker": "BWIN",
+    "day": "2024-06-03",
+    "raw_adjusted_same": true,
+    "open": 33.72,
+    "close": 34.8,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  },
+  {
+    "ticker": "COLB",
+    "day": "2025-09-02",
+    "raw_adjusted_same": true,
+    "open": 26.505,
+    "close": 27.03,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  },
+  {
+    "ticker": "GAP",
+    "day": "2024-09-03",
+    "raw_adjusted_same": true,
+    "open": 22.19,
+    "close": 22.83,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  },
+  {
+    "ticker": "JBTM",
+    "day": "2025-02-03",
+    "raw_adjusted_same": true,
+    "open": 130.88,
+    "close": 129.04,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  },
+  {
+    "ticker": "LUCK",
+    "day": "2025-01-02",
+    "raw_adjusted_same": true,
+    "open": 10.08,
+    "close": 10.13,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  },
+  {
+    "ticker": "XYZ",
+    "day": "2025-02-03",
+    "raw_adjusted_same": true,
+    "open": 88.64,
+    "close": 90.2,
+    "status": "SUCCESSOR_PRICE_ONLY_ORIGINAL_BASIS_PENDING"
+  }
+]

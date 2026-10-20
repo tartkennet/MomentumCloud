@@ -35,6 +35,20 @@ class FakeReferenceClient:
 
 
 class PointInTimeUniverseTests(unittest.TestCase):
+    def test_locked_universe_applies_live_name_filter_at_the_signal_date(self):
+        class DatedClient:
+            def _get(self, path, params):
+                self.requested_date = params['date']
+                return {'results': [
+                    {'ticker': 'FORMER_SPAC', 'name': 'Operating Business Inc.' if params['date'] >= '2024-03-26' else 'Example Acquisition Corp.', 'active': True, 'primary_exchange': 'XNAS', 'type': 'CS'},
+                    {'ticker': 'LOSS_MAKER', 'name': 'Ordinary Business Inc.', 'active': True, 'primary_exchange': 'XNYS', 'type': 'CS'},
+                ]}
+        client = DatedClient()
+        self.assertEqual(fetch_point_in_time_universe(client, '2024-02-29', locked_robust=True), ['LOSS_MAKER'])
+        self.assertEqual(client.requested_date, '2024-02-29')
+        self.assertEqual(fetch_point_in_time_universe(client, '2024-04-30', locked_robust=True), ['FORMER_SPAC', 'LOSS_MAKER'])
+        self.assertEqual(fetch_point_in_time_universe(client, '2024-02-29'), ['FORMER_SPAC', 'LOSS_MAKER'])
+
     def test_reference_universe_is_paginated_and_filters_non_common_stock(self):
         client = FakeReferenceClient()
         tickers = fetch_point_in_time_universe(client, "2025-12-31")
@@ -72,3 +86,4 @@ class PointInTimeUniverseTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

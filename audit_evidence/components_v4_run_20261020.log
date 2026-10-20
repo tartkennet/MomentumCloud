@@ -1,0 +1,3824 @@
+PREPARED 2023-02-28 gaps 0
+PREPARED 2023-03-31 gaps 0
+PREPARED 2023-04-28 gaps 0
+PREPARED 2023-05-31 gaps 0
+PREPARED 2023-06-30 gaps 0
+PREPARED 2023-07-31 gaps 0
+PREPARED 2023-08-31 gaps 0
+PREPARED 2023-09-29 gaps 0
+PREPARED 2023-10-31 gaps 0
+PREPARED 2023-11-30 gaps 0
+PREPARED 2023-12-29 gaps 0
+PREPARED 2024-01-31 gaps 0
+PREPARED 2024-02-29 gaps 0
+PREPARED 2024-03-28 gaps 0
+PREPARED 2024-04-30 gaps 0
+PREPARED 2024-05-31 gaps 0
+PREPARED 2024-06-28 gaps 0
+PREPARED 2024-07-31 gaps 0
+PREPARED 2024-08-30 gaps 0
+PREPARED 2024-09-30 gaps 0
+PREPARED 2024-10-31 gaps 0
+PREPARED 2024-11-29 gaps 0
+PREPARED 2024-12-31 gaps 0
+PREPARED 2025-01-31 gaps 0
+PREPARED 2025-02-28 gaps 0
+PREPARED 2025-03-31 gaps 0
+PREPARED 2025-04-30 gaps 0
+PREPARED 2025-05-30 gaps 0
+PREPARED 2025-06-30 gaps 0
+PREPARED 2025-07-31 gaps 0
+PREPARED 2025-08-29 gaps 0
+PREPARED 2025-09-30 gaps 0
+PREPARED 2025-10-31 gaps 0
+PREPARED 2025-11-28 gaps 0
+PREPARED 2025-12-31 gaps 0
+PREPARED 2026-01-30 gaps 0
+PREPARED 2026-02-27 gaps 0
+PREPARED 2026-03-31 gaps 0
+PREPARED 2026-04-30 gaps 0
+PREPARED 2026-05-29 gaps 0
+PREPARED 2026-06-30 gaps 0
+PREPARED 2026-07-31 gaps 0
+PREPARED 2026-08-31 gaps 0
+COMPARED broad_momentum__equal_reference
+COMPARED broad_momentum__M
+COMPARED broad_momentum__S
+COMPARED broad_momentum__SM
+COMPARED broad_momentum__W
+COMPARED broad_momentum__WM
+COMPARED broad_momentum__WS
+COMPARED broad_momentum__WSM
+COMPARED broad_risk_adjusted__equal_reference
+COMPARED broad_risk_adjusted__M
+COMPARED broad_risk_adjusted__S
+COMPARED broad_risk_adjusted__SM
+COMPARED broad_risk_adjusted__W
+COMPARED broad_risk_adjusted__WM
+COMPARED broad_risk_adjusted__WS
+COMPARED broad_risk_adjusted__WSM
+{
+  "status": "COMPLETE_FACTORIAL_PROVISIONAL",
+  "spec_sha256_before_returns": "3df52fe071b1b459deb272a18cca0148faba8bbb7cd449a6e4ba178287b1aea2",
+  "approval": "RESEARCH_ONLY",
+  "holdout": "No untouched period; all 43 were previously examined.",
+  "factors": {
+    "W": "risk weights",
+    "S": "stock stop",
+    "M": "monthly entry and daily exit SPY policy"
+  },
+  "scenario_assumptions": [
+    {
+      "name": "fee_only_lower_bound",
+      "commission": 0.0025,
+      "minimum_usd": 1.0,
+      "fx": 0.0025,
+      "half_spread": 0.0,
+      "slippage": 0.0
+    },
+    {
+      "name": "central_assumption",
+      "commission": 0.0025,
+      "minimum_usd": 1.0,
+      "fx": 0.0025,
+      "half_spread": 0.0005,
+      "slippage": 0.0005
+    },
+    {
+      "name": "execution_stress",
+      "commission": 0.0025,
+      "minimum_usd": 1.0,
+      "fx": 0.0025,
+      "half_spread": 0.0025,
+      "slippage": 0.0025
+    }
+  ],
+  "account_sizes_usd": [
+    10000.0,
+    100000.0
+  ],
+  "input_install": {
+    "full_history_tickers": 409
+  },
+  "price_basis": "2026-10-06",
+  "stale_affected_variants": {
+    "broad_momentum__equal_reference": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__M": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__S": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__SM": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__W": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__WM": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__WS": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_momentum__WSM": [
+      {
+        "ticker": "MGRT",
+        "day": "2026-09-14"
+      }
+    ],
+    "broad_risk_adjusted__equal_reference": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__M": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__S": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__SM": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__W": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__WM": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__WS": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ],
+    "broad_risk_adjusted__WSM": [
+      {
+        "ticker": "CVII",
+        "day": "2023-06-22"
+      },
+      {
+        "ticker": "CVII",
+        "day": "2023-06-23"
+      }
+    ]
+  },
+  "matched_spy": {
+    "broad_momentum__equal_reference": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 93.46257583635769,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 10000.0,
+        "final_usd": 19346.25758363577,
+        "positions": 43,
+        "market_orders": 5,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837208,
+        "sum_traded_notional_over_period_start_nav": 2.0838445419970397,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 90.91969029239063,
+        "daily_drawdown_pct": -19.0101219474206,
+        "initial_usd": 10000.0,
+        "final_usd": 19091.969029239062,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.87449424172029,
+          "fx": 75.97223860262254,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 190.84673284434282
+        },
+        "average_initial_exposure_pct": 99.79444091676686,
+        "sum_traded_notional_over_period_start_nav": 2.081684372530093,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 90.52169162878681,
+        "daily_drawdown_pct": -19.01014532022789,
+        "initial_usd": 10000.0,
+        "final_usd": 19052.16916287868,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.79481587402549,
+          "fx": 75.89265832259545,
+          "half_spread": 15.17853166451909,
+          "slippage": 15.17853166451909,
+          "total": 221.0445375256591
+        },
+        "average_initial_exposure_pct": 99.79185278029959,
+        "sum_traded_notional_over_period_start_nav": 2.0806992862708587,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 88.93789788783182,
+        "daily_drawdown_pct": -19.010239303144218,
+        "initial_usd": 10000.0,
+        "final_usd": 18893.789788783182,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.47773498534728,
+          "fx": 75.575971761166,
+          "half_spread": 75.575971761166,
+          "slippage": 75.575971761166,
+          "total": 341.2056502688453
+        },
+        "average_initial_exposure_pct": 99.78154387109136,
+        "sum_traded_notional_over_period_start_nav": 2.076780196195265,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 93.46257583635776,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 100000.0,
+        "final_usd": 193462.57583635775,
+        "positions": 43,
+        "market_orders": 5,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837209,
+        "sum_traded_notional_over_period_start_nav": 2.08384454199704,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 91.40598503837279,
+        "daily_drawdown_pct": -19.000026651296544,
+        "initial_usd": 100000.0,
+        "final_usd": 191405.98503837278,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 799.0121367823205,
+          "fx": 760.109881143223,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 1559.1220179255436
+        },
+        "average_initial_exposure_pct": 99.80035666917541,
+        "sum_traded_notional_over_period_start_nav": 2.0791405989944094,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 91.00796194679734,
+        "daily_drawdown_pct": -19.00002898144081,
+        "initial_usd": 100000.0,
+        "final_usd": 191007.96194679735,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 798.2165650596639,
+          "fx": 759.3144075082332,
+          "half_spread": 151.86288150164663,
+          "slippage": 151.86288150164663,
+          "total": 1861.2567355711903
+        },
+        "average_initial_exposure_pct": 99.79778057704105,
+        "sum_traded_notional_over_period_start_nav": 2.078150333672026,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 89.424070483594,
+        "daily_drawdown_pct": -19.000038350892446,
+        "initial_usd": 100000.0,
+        "final_usd": 189424.070483594,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 795.0506293210262,
+          "fx": 756.1488660968447,
+          "half_spread": 756.1488660968447,
+          "slippage": 756.1488660968447,
+          "total": 3063.4972276115604
+        },
+        "average_initial_exposure_pct": 99.78752009276472,
+        "sum_traded_notional_over_period_start_nav": 2.0742104208757204,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__M": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 47.562723660505846,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 10000.0,
+        "final_usd": 14756.272366050584,
+        "positions": 39,
+        "market_orders": 13,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697674,
+        "sum_traded_notional_over_period_start_nav": 9.96184715148209,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 39.946753409542744,
+        "daily_drawdown_pct": -9.478903237750169,
+        "initial_usd": 10000.0,
+        "final_usd": 13994.675340954274,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 319.3967608235554,
+          "fx": 288.47445505914436,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 607.8712158826997
+        },
+        "average_initial_exposure_pct": 90.4463938085607,
+        "sum_traded_notional_over_period_start_nav": 9.934386998702932,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 38.54067956231943,
+        "daily_drawdown_pct": -9.659872741326069,
+        "initial_usd": 10000.0,
+        "final_usd": 13854.067956231944,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 317.84228745124943,
+          "fx": 286.92005965395896,
+          "half_spread": 57.384011930791786,
+          "slippage": 57.384011930791786,
+          "total": 719.530370966792
+        },
+        "average_initial_exposure_pct": 90.43457934096338,
+        "sum_traded_notional_over_period_start_nav": 9.928477076771818,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 33.05589765690211,
+        "daily_drawdown_pct": -10.380169256936977,
+        "initial_usd": 10000.0,
+        "final_usd": 13305.58976569021,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 311.73328452899744,
+          "fx": 280.81137017131493,
+          "half_spread": 280.81137017131493,
+          "slippage": 280.81137017131493,
+          "total": 1154.1673950429422
+        },
+        "average_initial_exposure_pct": 90.3875448386895,
+        "sum_traded_notional_over_period_start_nav": 9.904957324285254,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 47.562723660505846,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 100000.0,
+        "final_usd": 147562.72366050584,
+        "positions": 39,
+        "market_orders": 13,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 9.96184715148209,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 40.27287372333734,
+        "daily_drawdown_pct": -9.455776622943102,
+        "initial_usd": 100000.0,
+        "final_usd": 140272.87372333734,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2918.431383735093,
+          "fx": 2887.509077970682,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 5805.940461705774
+        },
+        "average_initial_exposure_pct": 90.45180659436774,
+        "sum_traded_notional_over_period_start_nav": 9.932275290422474,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 38.865612873891344,
+        "daily_drawdown_pct": -9.636699853703156,
+        "initial_usd": 100000.0,
+        "final_usd": 138865.61287389134,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2902.8810051416235,
+          "fx": 2871.9587773443327,
+          "half_spread": 574.3917554688666,
+          "slippage": 574.3917554688666,
+          "total": 6923.62329342369
+        },
+        "average_initial_exposure_pct": 90.44002711830433,
+        "sum_traded_notional_over_period_start_nav": 9.926351583729705,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 33.37613617899664,
+        "daily_drawdown_pct": -10.356810343761492,
+        "initial_usd": 100000.0,
+        "final_usd": 133376.13617899665,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2841.768639303624,
+          "fx": 2810.846724945941,
+          "half_spread": 2810.846724945941,
+          "slippage": 2810.846724945941,
+          "total": 11274.308814141446
+        },
+        "average_initial_exposure_pct": 90.3931350478941,
+        "sum_traded_notional_over_period_start_nav": 9.902775712787587,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__S": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 93.46257583635769,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 10000.0,
+        "final_usd": 19346.25758363577,
+        "positions": 43,
+        "market_orders": 5,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837208,
+        "sum_traded_notional_over_period_start_nav": 2.0838445419970397,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 90.91969029239063,
+        "daily_drawdown_pct": -19.0101219474206,
+        "initial_usd": 10000.0,
+        "final_usd": 19091.969029239062,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.87449424172029,
+          "fx": 75.97223860262254,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 190.84673284434282
+        },
+        "average_initial_exposure_pct": 99.79444091676686,
+        "sum_traded_notional_over_period_start_nav": 2.081684372530093,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 90.52169162878681,
+        "daily_drawdown_pct": -19.01014532022789,
+        "initial_usd": 10000.0,
+        "final_usd": 19052.16916287868,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.79481587402549,
+          "fx": 75.89265832259545,
+          "half_spread": 15.17853166451909,
+          "slippage": 15.17853166451909,
+          "total": 221.0445375256591
+        },
+        "average_initial_exposure_pct": 99.79185278029959,
+        "sum_traded_notional_over_period_start_nav": 2.0806992862708587,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 88.93789788783182,
+        "daily_drawdown_pct": -19.010239303144218,
+        "initial_usd": 10000.0,
+        "final_usd": 18893.789788783182,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 114.47773498534728,
+          "fx": 75.575971761166,
+          "half_spread": 75.575971761166,
+          "slippage": 75.575971761166,
+          "total": 341.2056502688453
+        },
+        "average_initial_exposure_pct": 99.78154387109136,
+        "sum_traded_notional_over_period_start_nav": 2.076780196195265,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 93.46257583635776,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 100000.0,
+        "final_usd": 193462.57583635775,
+        "positions": 43,
+        "market_orders": 5,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837209,
+        "sum_traded_notional_over_period_start_nav": 2.08384454199704,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 91.40598503837279,
+        "daily_drawdown_pct": -19.000026651296544,
+        "initial_usd": 100000.0,
+        "final_usd": 191405.98503837278,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 799.0121367823205,
+          "fx": 760.109881143223,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 1559.1220179255436
+        },
+        "average_initial_exposure_pct": 99.80035666917541,
+        "sum_traded_notional_over_period_start_nav": 2.0791405989944094,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 91.00796194679734,
+        "daily_drawdown_pct": -19.00002898144081,
+        "initial_usd": 100000.0,
+        "final_usd": 191007.96194679735,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 798.2165650596639,
+          "fx": 759.3144075082332,
+          "half_spread": 151.86288150164663,
+          "slippage": 151.86288150164663,
+          "total": 1861.2567355711903
+        },
+        "average_initial_exposure_pct": 99.79778057704105,
+        "sum_traded_notional_over_period_start_nav": 2.078150333672026,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 89.424070483594,
+        "daily_drawdown_pct": -19.000038350892446,
+        "initial_usd": 100000.0,
+        "final_usd": 189424.070483594,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 795.0506293210262,
+          "fx": 756.1488660968447,
+          "half_spread": 756.1488660968447,
+          "slippage": 756.1488660968447,
+          "total": 3063.4972276115604
+        },
+        "average_initial_exposure_pct": 99.78752009276472,
+        "sum_traded_notional_over_period_start_nav": 2.0742104208757204,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__SM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 47.562723660505846,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 10000.0,
+        "final_usd": 14756.272366050584,
+        "positions": 39,
+        "market_orders": 13,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697674,
+        "sum_traded_notional_over_period_start_nav": 9.96184715148209,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 39.946753409542744,
+        "daily_drawdown_pct": -9.478903237750169,
+        "initial_usd": 10000.0,
+        "final_usd": 13994.675340954274,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 319.3967608235554,
+          "fx": 288.47445505914436,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 607.8712158826997
+        },
+        "average_initial_exposure_pct": 90.4463938085607,
+        "sum_traded_notional_over_period_start_nav": 9.934386998702932,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 38.54067956231943,
+        "daily_drawdown_pct": -9.659872741326069,
+        "initial_usd": 10000.0,
+        "final_usd": 13854.067956231944,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 317.84228745124943,
+          "fx": 286.92005965395896,
+          "half_spread": 57.384011930791786,
+          "slippage": 57.384011930791786,
+          "total": 719.530370966792
+        },
+        "average_initial_exposure_pct": 90.43457934096338,
+        "sum_traded_notional_over_period_start_nav": 9.928477076771818,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 33.05589765690211,
+        "daily_drawdown_pct": -10.380169256936977,
+        "initial_usd": 10000.0,
+        "final_usd": 13305.58976569021,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 311.73328452899744,
+          "fx": 280.81137017131493,
+          "half_spread": 280.81137017131493,
+          "slippage": 280.81137017131493,
+          "total": 1154.1673950429422
+        },
+        "average_initial_exposure_pct": 90.3875448386895,
+        "sum_traded_notional_over_period_start_nav": 9.904957324285254,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 47.562723660505846,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 100000.0,
+        "final_usd": 147562.72366050584,
+        "positions": 39,
+        "market_orders": 13,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 9.96184715148209,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 40.27287372333734,
+        "daily_drawdown_pct": -9.455776622943102,
+        "initial_usd": 100000.0,
+        "final_usd": 140272.87372333734,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2918.431383735093,
+          "fx": 2887.509077970682,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 5805.940461705774
+        },
+        "average_initial_exposure_pct": 90.45180659436774,
+        "sum_traded_notional_over_period_start_nav": 9.932275290422474,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 38.865612873891344,
+        "daily_drawdown_pct": -9.636699853703156,
+        "initial_usd": 100000.0,
+        "final_usd": 138865.61287389134,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2902.8810051416235,
+          "fx": 2871.9587773443327,
+          "half_spread": 574.3917554688666,
+          "slippage": 574.3917554688666,
+          "total": 6923.62329342369
+        },
+        "average_initial_exposure_pct": 90.44002711830433,
+        "sum_traded_notional_over_period_start_nav": 9.926351583729705,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 33.37613617899664,
+        "daily_drawdown_pct": -10.356810343761492,
+        "initial_usd": 100000.0,
+        "final_usd": 133376.13617899665,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2841.768639303624,
+          "fx": 2810.846724945941,
+          "half_spread": 2810.846724945941,
+          "slippage": 2810.846724945941,
+          "total": 11274.308814141446
+        },
+        "average_initial_exposure_pct": 90.3931350478941,
+        "sum_traded_notional_over_period_start_nav": 9.902775712787587,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__W": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 34.057228961080654,
+        "daily_drawdown_pct": -5.846548306842192,
+        "initial_usd": 10000.0,
+        "final_usd": 13405.722896108065,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 37.85931924020298,
+        "sum_traded_notional_over_period_start_nav": 3.9451750243520625,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 31.367567567156975,
+        "daily_drawdown_pct": -5.957360895206776,
+        "initial_usd": 10000.0,
+        "final_usd": 13136.756756715697,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 122.60317426745209,
+          "fx": 116.51307605180423,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 239.11625031925632
+        },
+        "average_initial_exposure_pct": 37.842077604854246,
+        "sum_traded_notional_over_period_start_nav": 3.942908912294476,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 30.85005857368712,
+        "daily_drawdown_pct": -5.9794860806356205,
+        "initial_usd": 10000.0,
+        "final_usd": 13085.005857368713,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 122.37656099654224,
+          "fx": 116.27427338957736,
+          "half_spread": 23.25485467791547,
+          "slippage": 23.25485467791547,
+          "total": 285.1605437419505
+        },
+        "average_initial_exposure_pct": 37.83874236387311,
+        "sum_traded_notional_over_period_start_nav": 3.942430486161598,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 28.80011599323593,
+        "daily_drawdown_pct": -6.067897867483341,
+        "initial_usd": 10000.0,
+        "final_usd": 12880.011599323592,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 121.47643727709129,
+          "fx": 115.32568968743207,
+          "half_spread": 115.32568968743207,
+          "slippage": 115.32568968743207,
+          "total": 467.4535063393875
+        },
+        "average_initial_exposure_pct": 37.82541405794167,
+        "sum_traded_notional_over_period_start_nav": 3.9405308500781615,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 34.05722896108061,
+        "daily_drawdown_pct": -5.846548306842214,
+        "initial_usd": 100000.0,
+        "final_usd": 134057.2289610806,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 37.85931924020298,
+        "sum_traded_notional_over_period_start_nav": 3.945175024352062,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 31.438078799726377,
+        "daily_drawdown_pct": -5.957236045576719,
+        "initial_usd": 100000.0,
+        "final_usd": 131438.07879972638,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1166.223016344244,
+          "fx": 1165.5242928833113,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 2331.7473092275554
+        },
+        "average_initial_exposure_pct": 37.84262389375709,
+        "sum_traded_notional_over_period_start_nav": 3.942763517467727,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 30.92053378316344,
+        "daily_drawdown_pct": -5.979346677481134,
+        "initial_usd": 100000.0,
+        "final_usd": 130920.53378316344,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1163.8349525258272,
+          "fx": 1163.1362060678885,
+          "half_spread": 232.62724121357772,
+          "slippage": 232.62724121357772,
+          "total": 2792.225641020871
+        },
+        "average_initial_exposure_pct": 37.83929022023476,
+        "sum_traded_notional_over_period_start_nav": 3.9422847824096623,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 28.870444501191784,
+        "daily_drawdown_pct": -6.067699917513602,
+        "initial_usd": 100000.0,
+        "final_usd": 128870.44450119179,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1154.348956316126,
+          "fx": 1153.6501193459983,
+          "half_spread": 1153.6501193459983,
+          "slippage": 1153.6501193459983,
+          "total": 4615.299314354122
+        },
+        "average_initial_exposure_pct": 37.82596821570079,
+        "sum_traded_notional_over_period_start_nav": 3.940383899219533,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__WM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 19.243018798315383,
+        "daily_drawdown_pct": -4.239820663100103,
+        "initial_usd": 10000.0,
+        "final_usd": 11924.301879831539,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 34.19809654624087,
+        "sum_traded_notional_over_period_start_nav": 6.887130941388378,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 15.134785341085522,
+        "daily_drawdown_pct": -4.924327173832865,
+        "initial_usd": 10000.0,
+        "final_usd": 11513.478534108552,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 189.17021299490705,
+          "fx": 183.2542368305962,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 372.42444982550325
+        },
+        "average_initial_exposure_pct": 34.17127432070012,
+        "sum_traded_notional_over_period_start_nav": 6.8787483008919965,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 14.342628200788422,
+        "daily_drawdown_pct": -5.058770399323908,
+        "initial_usd": 10000.0,
+        "final_usd": 11434.262820078842,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 188.54081402502393,
+          "fx": 182.60367027135763,
+          "half_spread": 36.52073405427152,
+          "slippage": 36.52073405427152,
+          "total": 444.1859524049246
+        },
+        "average_initial_exposure_pct": 34.16603099993029,
+        "sum_traded_notional_over_period_start_nav": 6.8770532234592965,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 11.227894697395936,
+        "daily_drawdown_pct": -5.594271428151131,
+        "initial_usd": 10000.0,
+        "final_usd": 11122.789469739593,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 186.06106330935384,
+          "fx": 180.0318476469588,
+          "half_spread": 180.0318476469588,
+          "slippage": 180.0318476469588,
+          "total": 726.1566062502302
+        },
+        "average_initial_exposure_pct": 34.14509516686786,
+        "sum_traded_notional_over_period_start_nav": 6.870300712699559,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 19.243018798315404,
+        "daily_drawdown_pct": -4.239820663100103,
+        "initial_usd": 100000.0,
+        "final_usd": 119243.0187983154,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 34.19809654624087,
+        "sum_traded_notional_over_period_start_nav": 6.88713094138838,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 15.19845240646729,
+        "daily_drawdown_pct": -4.91609121834562,
+        "initial_usd": 100000.0,
+        "final_usd": 115198.45240646729,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1833.8240704312445,
+          "fx": 1833.1171244444813,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 3666.9411948757256
+        },
+        "average_initial_exposure_pct": 34.17182904037273,
+        "sum_traded_notional_over_period_start_nav": 6.878615184382599,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 14.406272867298453,
+        "daily_drawdown_pct": -5.050529237286117,
+        "initial_usd": 100000.0,
+        "final_usd": 114406.27286729845,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1827.3185394343539,
+          "fx": 1826.6112953248012,
+          "half_spread": 365.3222590649602,
+          "slippage": 365.3222590649602,
+          "total": 4384.574352889075
+        },
+        "average_initial_exposure_pct": 34.16658875699456,
+        "sum_traded_notional_over_period_start_nav": 6.876919608797585,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 11.291529075649521,
+        "daily_drawdown_pct": -5.586009371664824,
+        "initial_usd": 100000.0,
+        "final_usd": 111291.52907564952,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1801.6013848397313,
+          "fx": 1800.8929527309426,
+          "half_spread": 1800.8929527309426,
+          "slippage": 1800.8929527309426,
+          "total": 7204.280243032559
+        },
+        "average_initial_exposure_pct": 34.145666043331616,
+        "sum_traded_notional_over_period_start_nav": 6.870164710198677,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__WS": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 34.057228961080654,
+        "daily_drawdown_pct": -5.846548306842192,
+        "initial_usd": 10000.0,
+        "final_usd": 13405.722896108065,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 37.85931924020298,
+        "sum_traded_notional_over_period_start_nav": 3.9451750243520625,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 31.367567567156975,
+        "daily_drawdown_pct": -5.957360895206776,
+        "initial_usd": 10000.0,
+        "final_usd": 13136.756756715697,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 122.60317426745209,
+          "fx": 116.51307605180423,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 239.11625031925632
+        },
+        "average_initial_exposure_pct": 37.842077604854246,
+        "sum_traded_notional_over_period_start_nav": 3.942908912294476,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 30.85005857368712,
+        "daily_drawdown_pct": -5.9794860806356205,
+        "initial_usd": 10000.0,
+        "final_usd": 13085.005857368713,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 122.37656099654224,
+          "fx": 116.27427338957736,
+          "half_spread": 23.25485467791547,
+          "slippage": 23.25485467791547,
+          "total": 285.1605437419505
+        },
+        "average_initial_exposure_pct": 37.83874236387311,
+        "sum_traded_notional_over_period_start_nav": 3.942430486161598,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 28.80011599323593,
+        "daily_drawdown_pct": -6.067897867483341,
+        "initial_usd": 10000.0,
+        "final_usd": 12880.011599323592,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 121.47643727709129,
+          "fx": 115.32568968743207,
+          "half_spread": 115.32568968743207,
+          "slippage": 115.32568968743207,
+          "total": 467.4535063393875
+        },
+        "average_initial_exposure_pct": 37.82541405794167,
+        "sum_traded_notional_over_period_start_nav": 3.9405308500781615,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 34.05722896108061,
+        "daily_drawdown_pct": -5.846548306842214,
+        "initial_usd": 100000.0,
+        "final_usd": 134057.2289610806,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 37.85931924020298,
+        "sum_traded_notional_over_period_start_nav": 3.945175024352062,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 31.438078799726377,
+        "daily_drawdown_pct": -5.957236045576719,
+        "initial_usd": 100000.0,
+        "final_usd": 131438.07879972638,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1166.223016344244,
+          "fx": 1165.5242928833113,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 2331.7473092275554
+        },
+        "average_initial_exposure_pct": 37.84262389375709,
+        "sum_traded_notional_over_period_start_nav": 3.942763517467727,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 30.92053378316344,
+        "daily_drawdown_pct": -5.979346677481134,
+        "initial_usd": 100000.0,
+        "final_usd": 130920.53378316344,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1163.8349525258272,
+          "fx": 1163.1362060678885,
+          "half_spread": 232.62724121357772,
+          "slippage": 232.62724121357772,
+          "total": 2792.225641020871
+        },
+        "average_initial_exposure_pct": 37.83929022023476,
+        "sum_traded_notional_over_period_start_nav": 3.9422847824096623,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 28.870444501191784,
+        "daily_drawdown_pct": -6.067699917513602,
+        "initial_usd": 100000.0,
+        "final_usd": 128870.44450119179,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1154.348956316126,
+          "fx": 1153.6501193459983,
+          "half_spread": 1153.6501193459983,
+          "slippage": 1153.6501193459983,
+          "total": 4615.299314354122
+        },
+        "average_initial_exposure_pct": 37.82596821570079,
+        "sum_traded_notional_over_period_start_nav": 3.940383899219533,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_momentum__WSM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 19.243018798315383,
+        "daily_drawdown_pct": -4.239820663100103,
+        "initial_usd": 10000.0,
+        "final_usd": 11924.301879831539,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 34.19809654624087,
+        "sum_traded_notional_over_period_start_nav": 6.887130941388378,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 15.134785341085522,
+        "daily_drawdown_pct": -4.924327173832865,
+        "initial_usd": 10000.0,
+        "final_usd": 11513.478534108552,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 189.17021299490705,
+          "fx": 183.2542368305962,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 372.42444982550325
+        },
+        "average_initial_exposure_pct": 34.17127432070012,
+        "sum_traded_notional_over_period_start_nav": 6.8787483008919965,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 14.342628200788422,
+        "daily_drawdown_pct": -5.058770399323908,
+        "initial_usd": 10000.0,
+        "final_usd": 11434.262820078842,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 188.54081402502393,
+          "fx": 182.60367027135763,
+          "half_spread": 36.52073405427152,
+          "slippage": 36.52073405427152,
+          "total": 444.1859524049246
+        },
+        "average_initial_exposure_pct": 34.16603099993029,
+        "sum_traded_notional_over_period_start_nav": 6.8770532234592965,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 11.227894697395936,
+        "daily_drawdown_pct": -5.594271428151131,
+        "initial_usd": 10000.0,
+        "final_usd": 11122.789469739593,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 186.06106330935384,
+          "fx": 180.0318476469588,
+          "half_spread": 180.0318476469588,
+          "slippage": 180.0318476469588,
+          "total": 726.1566062502302
+        },
+        "average_initial_exposure_pct": 34.14509516686786,
+        "sum_traded_notional_over_period_start_nav": 6.870300712699559,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 19.243018798315404,
+        "daily_drawdown_pct": -4.239820663100103,
+        "initial_usd": 100000.0,
+        "final_usd": 119243.0187983154,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 34.19809654624087,
+        "sum_traded_notional_over_period_start_nav": 6.88713094138838,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 15.19845240646729,
+        "daily_drawdown_pct": -4.91609121834562,
+        "initial_usd": 100000.0,
+        "final_usd": 115198.45240646729,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1833.8240704312445,
+          "fx": 1833.1171244444813,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 3666.9411948757256
+        },
+        "average_initial_exposure_pct": 34.17182904037273,
+        "sum_traded_notional_over_period_start_nav": 6.878615184382599,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 14.406272867298453,
+        "daily_drawdown_pct": -5.050529237286117,
+        "initial_usd": 100000.0,
+        "final_usd": 114406.27286729845,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1827.3185394343539,
+          "fx": 1826.6112953248012,
+          "half_spread": 365.3222590649602,
+          "slippage": 365.3222590649602,
+          "total": 4384.574352889075
+        },
+        "average_initial_exposure_pct": 34.16658875699456,
+        "sum_traded_notional_over_period_start_nav": 6.876919608797585,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 11.291529075649521,
+        "daily_drawdown_pct": -5.586009371664824,
+        "initial_usd": 100000.0,
+        "final_usd": 111291.52907564952,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 1801.6013848397313,
+          "fx": 1800.8929527309426,
+          "half_spread": 1800.8929527309426,
+          "slippage": 1800.8929527309426,
+          "total": 7204.280243032559
+        },
+        "average_initial_exposure_pct": 34.145666043331616,
+        "sum_traded_notional_over_period_start_nav": 6.870164710198677,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__equal_reference": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 93.36353774163031,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 10000.0,
+        "final_usd": 19336.35377416303,
+        "positions": 43,
+        "market_orders": 6,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837208,
+        "sum_traded_notional_over_period_start_nav": 2.1633580668596424,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 90.76070738153071,
+        "daily_drawdown_pct": -19.0101219474206,
+        "initial_usd": 10000.0,
+        "final_usd": 19076.07073815307,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.93144868722513,
+          "fx": 79.02668678246322,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 195.95813546968836
+        },
+        "average_initial_exposure_pct": 99.79416043924594,
+        "sum_traded_notional_over_period_start_nav": 2.161067471213147,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 90.34796661175308,
+        "daily_drawdown_pct": -19.01014532022789,
+        "initial_usd": 10000.0,
+        "final_usd": 19034.796661175307,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.84459013849221,
+          "fx": 78.9399238063296,
+          "half_spread": 15.787984761265921,
+          "slippage": 15.787984761265921,
+          "total": 227.36048346735365
+        },
+        "average_initial_exposure_pct": 99.79148192506436,
+        "sum_traded_notional_over_period_start_nav": 2.1600821409968702,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 88.70582830023544,
+        "daily_drawdown_pct": -19.010239303144218,
+        "initial_usd": 10000.0,
+        "final_usd": 18870.582830023544,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.49899755538458,
+          "fx": 78.59471543951564,
+          "half_spread": 78.59471543951564,
+          "slippage": 78.59471543951564,
+          "total": 352.2831438739315
+        },
+        "average_initial_exposure_pct": 99.78081330092785,
+        "sum_traded_notional_over_period_start_nav": 2.1561635980074247,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 93.3635377416304,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 100000.0,
+        "final_usd": 193363.5377416304,
+        "positions": 43,
+        "market_orders": 6,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837209,
+        "sum_traded_notional_over_period_start_nav": 2.1633580668596433,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 91.23362145847484,
+        "daily_drawdown_pct": -19.000026651296544,
+        "initial_usd": 100000.0,
+        "final_usd": 191233.62145847484,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 828.6040536125022,
+          "fx": 790.6992917077406,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 1619.3033453202427
+        },
+        "average_initial_exposure_pct": 99.79991840623558,
+        "sum_traded_notional_over_period_start_nav": 2.1586389076862873,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 90.82082897010709,
+        "daily_drawdown_pct": -19.00002898144081,
+        "initial_usd": 100000.0,
+        "final_usd": 190820.82897010708,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 827.7366284027277,
+          "fx": 789.8319620705644,
+          "half_spread": 157.9663924141129,
+          "slippage": 157.9663924141129,
+          "total": 1933.501375301518
+        },
+        "average_initial_exposure_pct": 99.79725173109142,
+        "sum_traded_notional_over_period_start_nav": 2.157648589283035,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 89.17848382035913,
+        "daily_drawdown_pct": -19.000038350892446,
+        "initial_usd": 100000.0,
+        "final_usd": 189178.48382035914,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 824.2853691688247,
+          "fx": 786.3810870529554,
+          "half_spread": 786.3810870529554,
+          "slippage": 786.3810870529554,
+          "total": 3183.428630327691
+        },
+        "average_initial_exposure_pct": 99.78663070911841,
+        "sum_traded_notional_over_period_start_nav": 2.153709990006966,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__M": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 47.48718279198933,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 10000.0,
+        "final_usd": 14748.718279198933,
+        "positions": 39,
+        "market_orders": 14,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 10.041360676344693,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 39.83166328635828,
+        "daily_drawdown_pct": -9.478903237750169,
+        "initial_usd": 10000.0,
+        "final_usd": 13983.166328635827,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 320.8286819521127,
+          "fx": 290.9038699220375,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 611.7325518741501
+        },
+        "average_initial_exposure_pct": 90.44613738674511,
+        "sum_traded_notional_over_period_start_nav": 10.013740531953438,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 38.41583865426519,
+        "daily_drawdown_pct": -9.659872741326069,
+        "initial_usd": 10000.0,
+        "final_usd": 13841.583865426519,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 319.2491706452702,
+          "fx": 289.3244340672472,
+          "half_spread": 57.86488681344944,
+          "slippage": 57.86488681344944,
+          "total": 724.3033783394163
+        },
+        "average_initial_exposure_pct": 90.43423344752357,
+        "sum_traded_notional_over_period_start_nav": 10.007829350479911,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 32.894103168930556,
+        "daily_drawdown_pct": -10.380169256936977,
+        "initial_usd": 10000.0,
+        "final_usd": 13289.410316893056,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 313.04259846802034,
+          "fx": 283.1181652186501,
+          "half_spread": 283.1181652186501,
+          "slippage": 283.1181652186501,
+          "total": 1162.3970941239706
+        },
+        "average_initial_exposure_pct": 90.38684289668019,
+        "sum_traded_notional_over_period_start_nav": 9.984305990220813,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 47.48718279198927,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 100000.0,
+        "final_usd": 147487.18279198927,
+        "positions": 39,
+        "market_orders": 14,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 10.041360676344691,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 40.1467010566154,
+        "daily_drawdown_pct": -9.455776622943102,
+        "initial_usd": 100000.0,
+        "final_usd": 140146.7010566154,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2941.665410968563,
+          "fx": 2911.7405989384874,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 5853.40600990705
+        },
+        "average_initial_exposure_pct": 90.4513707355523,
+        "sum_traded_notional_over_period_start_nav": 10.011770645124441,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 38.72971323016685,
+        "daily_drawdown_pct": -9.636699853703156,
+        "initial_usd": 100000.0,
+        "final_usd": 138729.71323016685,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2925.8645373742197,
+          "fx": 2895.9398007961963,
+          "half_spread": 579.1879601592393,
+          "slippage": 579.1879601592393,
+          "total": 6980.180258488895
+        },
+        "average_initial_exposure_pct": 90.4395007666868,
+        "sum_traded_notional_over_period_start_nav": 10.005846784157427,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 33.20337895105796,
+        "daily_drawdown_pct": -10.356810343761492,
+        "initial_usd": 100000.0,
+        "final_usd": 133203.37895105797,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2863.7760240401494,
+          "fx": 2833.851590790779,
+          "half_spread": 2833.851590790779,
+          "slippage": 2833.851590790779,
+          "total": 11365.330796412487
+        },
+        "average_initial_exposure_pct": 90.39224852355079,
+        "sum_traded_notional_over_period_start_nav": 9.982271812776403,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__S": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 93.36353774163031,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 10000.0,
+        "final_usd": 19336.35377416303,
+        "positions": 43,
+        "market_orders": 6,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837208,
+        "sum_traded_notional_over_period_start_nav": 2.1633580668596424,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 90.76070738153071,
+        "daily_drawdown_pct": -19.0101219474206,
+        "initial_usd": 10000.0,
+        "final_usd": 19076.07073815307,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.93144868722513,
+          "fx": 79.02668678246322,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 195.95813546968836
+        },
+        "average_initial_exposure_pct": 99.79416043924594,
+        "sum_traded_notional_over_period_start_nav": 2.161067471213147,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 90.34796661175308,
+        "daily_drawdown_pct": -19.01014532022789,
+        "initial_usd": 10000.0,
+        "final_usd": 19034.796661175307,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.84459013849221,
+          "fx": 78.9399238063296,
+          "half_spread": 15.787984761265921,
+          "slippage": 15.787984761265921,
+          "total": 227.36048346735365
+        },
+        "average_initial_exposure_pct": 99.79148192506436,
+        "sum_traded_notional_over_period_start_nav": 2.1600821409968702,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 88.70582830023544,
+        "daily_drawdown_pct": -19.010239303144218,
+        "initial_usd": 10000.0,
+        "final_usd": 18870.582830023544,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 116.49899755538458,
+          "fx": 78.59471543951564,
+          "half_spread": 78.59471543951564,
+          "slippage": 78.59471543951564,
+          "total": 352.2831438739315
+        },
+        "average_initial_exposure_pct": 99.78081330092785,
+        "sum_traded_notional_over_period_start_nav": 2.1561635980074247,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 93.3635377416304,
+        "daily_drawdown_pct": -18.998906889856904,
+        "initial_usd": 100000.0,
+        "final_usd": 193363.5377416304,
+        "positions": 43,
+        "market_orders": 6,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 99.81395348837209,
+        "sum_traded_notional_over_period_start_nav": 2.1633580668596433,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 91.23362145847484,
+        "daily_drawdown_pct": -19.000026651296544,
+        "initial_usd": 100000.0,
+        "final_usd": 191233.62145847484,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 828.6040536125022,
+          "fx": 790.6992917077406,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 1619.3033453202427
+        },
+        "average_initial_exposure_pct": 99.79991840623558,
+        "sum_traded_notional_over_period_start_nav": 2.1586389076862873,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 90.82082897010709,
+        "daily_drawdown_pct": -19.00002898144081,
+        "initial_usd": 100000.0,
+        "final_usd": 190820.82897010708,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 827.7366284027277,
+          "fx": 789.8319620705644,
+          "half_spread": 157.9663924141129,
+          "slippage": 157.9663924141129,
+          "total": 1933.501375301518
+        },
+        "average_initial_exposure_pct": 99.79725173109142,
+        "sum_traded_notional_over_period_start_nav": 2.157648589283035,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 89.17848382035913,
+        "daily_drawdown_pct": -19.000038350892446,
+        "initial_usd": 100000.0,
+        "final_usd": 189178.48382035914,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 824.2853691688247,
+          "fx": 786.3810870529554,
+          "half_spread": 786.3810870529554,
+          "slippage": 786.3810870529554,
+          "total": 3183.428630327691
+        },
+        "average_initial_exposure_pct": 99.78663070911841,
+        "sum_traded_notional_over_period_start_nav": 2.153709990006966,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__SM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 47.48718279198933,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 10000.0,
+        "final_usd": 14748.718279198933,
+        "positions": 39,
+        "market_orders": 14,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 10.041360676344693,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 39.83166328635828,
+        "daily_drawdown_pct": -9.478903237750169,
+        "initial_usd": 10000.0,
+        "final_usd": 13983.166328635827,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 320.8286819521127,
+          "fx": 290.9038699220375,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 611.7325518741501
+        },
+        "average_initial_exposure_pct": 90.44613738674511,
+        "sum_traded_notional_over_period_start_nav": 10.013740531953438,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 38.41583865426519,
+        "daily_drawdown_pct": -9.659872741326069,
+        "initial_usd": 10000.0,
+        "final_usd": 13841.583865426519,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 319.2491706452702,
+          "fx": 289.3244340672472,
+          "half_spread": 57.86488681344944,
+          "slippage": 57.86488681344944,
+          "total": 724.3033783394163
+        },
+        "average_initial_exposure_pct": 90.43423344752357,
+        "sum_traded_notional_over_period_start_nav": 10.007829350479911,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 32.894103168930556,
+        "daily_drawdown_pct": -10.380169256936977,
+        "initial_usd": 10000.0,
+        "final_usd": 13289.410316893056,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 313.04259846802034,
+          "fx": 283.1181652186501,
+          "half_spread": 283.1181652186501,
+          "slippage": 283.1181652186501,
+          "total": 1162.3970941239706
+        },
+        "average_initial_exposure_pct": 90.38684289668019,
+        "sum_traded_notional_over_period_start_nav": 9.984305990220813,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 47.48718279198927,
+        "daily_drawdown_pct": -8.733460590932074,
+        "initial_usd": 100000.0,
+        "final_usd": 147487.18279198927,
+        "positions": 39,
+        "market_orders": 14,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 90.51162790697673,
+        "sum_traded_notional_over_period_start_nav": 10.041360676344691,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 40.1467010566154,
+        "daily_drawdown_pct": -9.455776622943102,
+        "initial_usd": 100000.0,
+        "final_usd": 140146.7010566154,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2941.665410968563,
+          "fx": 2911.7405989384874,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 5853.40600990705
+        },
+        "average_initial_exposure_pct": 90.4513707355523,
+        "sum_traded_notional_over_period_start_nav": 10.011770645124441,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 38.72971323016685,
+        "daily_drawdown_pct": -9.636699853703156,
+        "initial_usd": 100000.0,
+        "final_usd": 138729.71323016685,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2925.8645373742197,
+          "fx": 2895.9398007961963,
+          "half_spread": 579.1879601592393,
+          "slippage": 579.1879601592393,
+          "total": 6980.180258488895
+        },
+        "average_initial_exposure_pct": 90.4395007666868,
+        "sum_traded_notional_over_period_start_nav": 10.005846784157427,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 33.20337895105796,
+        "daily_drawdown_pct": -10.356810343761492,
+        "initial_usd": 100000.0,
+        "final_usd": 133203.37895105797,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2863.7760240401494,
+          "fx": 2833.851590790779,
+          "half_spread": 2833.851590790779,
+          "slippage": 2833.851590790779,
+          "total": 11365.330796412487
+        },
+        "average_initial_exposure_pct": 90.39224852355079,
+        "sum_traded_notional_over_period_start_nav": 9.982271812776403,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__W": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 57.45028205799292,
+        "daily_drawdown_pct": -14.94858503304105,
+        "initial_usd": 10000.0,
+        "final_usd": 15745.028205799292,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 64.16020422154124,
+        "sum_traded_notional_over_period_start_nav": 7.512949538837812,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 51.60392487250696,
+        "daily_drawdown_pct": -15.371958464167134,
+        "initial_usd": 10000.0,
+        "final_usd": 15160.392487250696,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 249.75966781182373,
+          "fx": 246.43215955404239,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 496.1918273658661
+        },
+        "average_initial_exposure_pct": 64.10792702833044,
+        "sum_traded_notional_over_period_start_nav": 7.505007985725993,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 50.469144242854604,
+        "daily_drawdown_pct": -15.456290053989175,
+        "initial_usd": 10000.0,
+        "final_usd": 15046.91442428546,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 248.7875702778069,
+          "fx": 245.44788842721454,
+          "half_spread": 49.08957768544291,
+          "slippage": 49.08957768544291,
+          "total": 592.4146140759073
+        },
+        "average_initial_exposure_pct": 64.09758217188052,
+        "sum_traded_notional_over_period_start_nav": 7.503470656855548,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 46.013917407802566,
+        "daily_drawdown_pct": -15.792484694409936,
+        "initial_usd": 10000.0,
+        "final_usd": 14601.391740780256,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 244.95038573504704,
+          "fx": 241.56248228489704,
+          "half_spread": 241.56248228489704,
+          "slippage": 241.56248228489704,
+          "total": 969.6378325897382
+        },
+        "average_initial_exposure_pct": 64.05626018271151,
+        "sum_traded_notional_over_period_start_nav": 7.497391422638108,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 57.45028205799287,
+        "daily_drawdown_pct": -14.948585033041029,
+        "initial_usd": 100000.0,
+        "final_usd": 157450.28205799288,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 64.16020422154124,
+        "sum_traded_notional_over_period_start_nav": 7.512949538837813,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 51.64642310955332,
+        "daily_drawdown_pct": -15.371958464167113,
+        "initial_usd": 100000.0,
+        "final_usd": 151646.42310955332,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2465.0650263493144,
+          "fx": 2464.889608507142,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 4929.954634856456
+        },
+        "average_initial_exposure_pct": 64.10839915942985,
+        "sum_traded_notional_over_period_start_nav": 7.5051573630573705,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 50.51152796247682,
+        "daily_drawdown_pct": -15.456290053989152,
+        "initial_usd": 100000.0,
+        "final_usd": 150511.52796247683,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2455.223376566752,
+          "fx": 2455.0463957371094,
+          "half_spread": 491.00927914742186,
+          "slippage": 491.00927914742186,
+          "total": 5892.288330598705
+        },
+        "average_initial_exposure_pct": 64.09805630312394,
+        "sum_traded_notional_over_period_start_nav": 7.503620280903517,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 46.05584199297523,
+        "daily_drawdown_pct": -15.792484694409936,
+        "initial_usd": 100000.0,
+        "final_usd": 146055.84199297524,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2416.3734864522735,
+          "fx": 2416.1902932480566,
+          "half_spread": 2416.1902932480566,
+          "slippage": 2416.1902932480566,
+          "total": 9664.944366196443
+        },
+        "average_initial_exposure_pct": 64.05674235474856,
+        "sum_traded_notional_over_period_start_nav": 7.497542015778644,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__WM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 32.35237008785501,
+        "daily_drawdown_pct": -6.783572024767304,
+        "initial_usd": 10000.0,
+        "final_usd": 13235.237008785502,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 57.59549712392284,
+        "sum_traded_notional_over_period_start_nav": 11.501401750522373,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 24.889825697119193,
+        "daily_drawdown_pct": -7.665065497442292,
+        "initial_usd": 10000.0,
+        "final_usd": 12488.98256971192,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 326.93735381558105,
+          "fx": 323.23842561668823,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 650.1757794322693
+        },
+        "average_initial_exposure_pct": 57.52997955864562,
+        "sum_traded_notional_over_period_start_nav": 11.480757847524808,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 23.456429014118328,
+        "daily_drawdown_pct": -7.838853998174667,
+        "initial_usd": 10000.0,
+        "final_usd": 12345.642901411833,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 325.00844006200714,
+          "fx": 321.2891100601217,
+          "half_spread": 64.25782201202433,
+          "slippage": 64.25782201202433,
+          "total": 774.8131941461776
+        },
+        "average_initial_exposure_pct": 57.51701829772353,
+        "sum_traded_notional_over_period_start_nav": 11.476690247936574,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 17.885199549210927,
+        "daily_drawdown_pct": -8.530489082226634,
+        "initial_usd": 10000.0,
+        "final_usd": 11788.519954921094,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 317.44420794553065,
+          "fx": 313.64452780901524,
+          "half_spread": 313.64452780901524,
+          "slippage": 313.64452780901524,
+          "total": 1258.3777913725764
+        },
+        "average_initial_exposure_pct": 57.46529031239286,
+        "sum_traded_notional_over_period_start_nav": 11.460516585207987,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 32.35237008785501,
+        "daily_drawdown_pct": -6.78357202476727,
+        "initial_usd": 100000.0,
+        "final_usd": 132352.370087855,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 57.59549712392284,
+        "sum_traded_notional_over_period_start_nav": 11.501401750522373,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 24.931433788277047,
+        "daily_drawdown_pct": -7.657773766764087,
+        "initial_usd": 100000.0,
+        "final_usd": 124931.43378827705,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3233.3474094178273,
+          "fx": 3233.140301830626,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 6466.487711248453
+        },
+        "average_initial_exposure_pct": 57.53053197584344,
+        "sum_traded_notional_over_period_start_nav": 11.48091881616581,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 23.497930441055193,
+        "daily_drawdown_pct": -7.831547822076724,
+        "initial_usd": 100000.0,
+        "final_usd": 123497.93044105518,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3213.856332983338,
+          "fx": 3213.646798601967,
+          "half_spread": 642.7293597203934,
+          "slippage": 642.7293597203934,
+          "total": 7712.961851026092
+        },
+        "average_initial_exposure_pct": 57.51757524885723,
+        "sum_traded_notional_over_period_start_nav": 11.476851706082984,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 17.926264230051437,
+        "daily_drawdown_pct": -8.523125265193787,
+        "initial_usd": 100000.0,
+        "final_usd": 117926.26423005144,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3137.418577656784,
+          "fx": 3137.1994196912556,
+          "half_spread": 3137.1994196912556,
+          "slippage": 3137.1994196912556,
+          "total": 12549.01683673055
+        },
+        "average_initial_exposure_pct": 57.46586561095711,
+        "sum_traded_notional_over_period_start_nav": 11.460679971680296,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__WS": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 57.45028205799292,
+        "daily_drawdown_pct": -14.94858503304105,
+        "initial_usd": 10000.0,
+        "final_usd": 15745.028205799292,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 64.16020422154124,
+        "sum_traded_notional_over_period_start_nav": 7.512949538837812,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 51.60392487250696,
+        "daily_drawdown_pct": -15.371958464167134,
+        "initial_usd": 10000.0,
+        "final_usd": 15160.392487250696,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 249.75966781182373,
+          "fx": 246.43215955404239,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 496.1918273658661
+        },
+        "average_initial_exposure_pct": 64.10792702833044,
+        "sum_traded_notional_over_period_start_nav": 7.505007985725993,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 50.469144242854604,
+        "daily_drawdown_pct": -15.456290053989175,
+        "initial_usd": 10000.0,
+        "final_usd": 15046.91442428546,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 248.7875702778069,
+          "fx": 245.44788842721454,
+          "half_spread": 49.08957768544291,
+          "slippage": 49.08957768544291,
+          "total": 592.4146140759073
+        },
+        "average_initial_exposure_pct": 64.09758217188052,
+        "sum_traded_notional_over_period_start_nav": 7.503470656855548,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 46.013917407802566,
+        "daily_drawdown_pct": -15.792484694409936,
+        "initial_usd": 10000.0,
+        "final_usd": 14601.391740780256,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 244.95038573504704,
+          "fx": 241.56248228489704,
+          "half_spread": 241.56248228489704,
+          "slippage": 241.56248228489704,
+          "total": 969.6378325897382
+        },
+        "average_initial_exposure_pct": 64.05626018271151,
+        "sum_traded_notional_over_period_start_nav": 7.497391422638108,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 57.45028205799287,
+        "daily_drawdown_pct": -14.948585033041029,
+        "initial_usd": 100000.0,
+        "final_usd": 157450.28205799288,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 64.16020422154124,
+        "sum_traded_notional_over_period_start_nav": 7.512949538837813,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 51.64642310955332,
+        "daily_drawdown_pct": -15.371958464167113,
+        "initial_usd": 100000.0,
+        "final_usd": 151646.42310955332,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2465.0650263493144,
+          "fx": 2464.889608507142,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 4929.954634856456
+        },
+        "average_initial_exposure_pct": 64.10839915942985,
+        "sum_traded_notional_over_period_start_nav": 7.5051573630573705,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 50.51152796247682,
+        "daily_drawdown_pct": -15.456290053989152,
+        "initial_usd": 100000.0,
+        "final_usd": 150511.52796247683,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2455.223376566752,
+          "fx": 2455.0463957371094,
+          "half_spread": 491.00927914742186,
+          "slippage": 491.00927914742186,
+          "total": 5892.288330598705
+        },
+        "average_initial_exposure_pct": 64.09805630312394,
+        "sum_traded_notional_over_period_start_nav": 7.503620280903517,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 46.05584199297523,
+        "daily_drawdown_pct": -15.792484694409936,
+        "initial_usd": 100000.0,
+        "final_usd": 146055.84199297524,
+        "positions": 43,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 2416.3734864522735,
+          "fx": 2416.1902932480566,
+          "half_spread": 2416.1902932480566,
+          "slippage": 2416.1902932480566,
+          "total": 9664.944366196443
+        },
+        "average_initial_exposure_pct": 64.05674235474856,
+        "sum_traded_notional_over_period_start_nav": 7.497542015778644,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    },
+    "broad_risk_adjusted__WSM": {
+      "zero_diagnostic__10000": {
+        "net_return_pct": 32.35237008785501,
+        "daily_drawdown_pct": -6.783572024767304,
+        "initial_usd": 10000.0,
+        "final_usd": 13235.237008785502,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 57.59549712392284,
+        "sum_traded_notional_over_period_start_nav": 11.501401750522373,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__10000": {
+        "net_return_pct": 24.889825697119193,
+        "daily_drawdown_pct": -7.665065497442292,
+        "initial_usd": 10000.0,
+        "final_usd": 12488.98256971192,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 326.93735381558105,
+          "fx": 323.23842561668823,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 650.1757794322693
+        },
+        "average_initial_exposure_pct": 57.52997955864562,
+        "sum_traded_notional_over_period_start_nav": 11.480757847524808,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__10000": {
+        "net_return_pct": 23.456429014118328,
+        "daily_drawdown_pct": -7.838853998174667,
+        "initial_usd": 10000.0,
+        "final_usd": 12345.642901411833,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 325.00844006200714,
+          "fx": 321.2891100601217,
+          "half_spread": 64.25782201202433,
+          "slippage": 64.25782201202433,
+          "total": 774.8131941461776
+        },
+        "average_initial_exposure_pct": 57.51701829772353,
+        "sum_traded_notional_over_period_start_nav": 11.476690247936574,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__10000": {
+        "net_return_pct": 17.885199549210927,
+        "daily_drawdown_pct": -8.530489082226634,
+        "initial_usd": 10000.0,
+        "final_usd": 11788.519954921094,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 317.44420794553065,
+          "fx": 313.64452780901524,
+          "half_spread": 313.64452780901524,
+          "slippage": 313.64452780901524,
+          "total": 1258.3777913725764
+        },
+        "average_initial_exposure_pct": 57.46529031239286,
+        "sum_traded_notional_over_period_start_nav": 11.460516585207987,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      },
+      "zero_diagnostic__100000": {
+        "net_return_pct": 32.35237008785501,
+        "daily_drawdown_pct": -6.78357202476727,
+        "initial_usd": 100000.0,
+        "final_usd": 132352.370087855,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 0.0
+        },
+        "average_initial_exposure_pct": 57.59549712392284,
+        "sum_traded_notional_over_period_start_nav": 11.501401750522373,
+        "cost_configuration": {
+          "name": "zero_diagnostic",
+          "commission": 0.0,
+          "minimum_usd": 0.0,
+          "fx": 0.0,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "fee_only_lower_bound__100000": {
+        "net_return_pct": 24.931433788277047,
+        "daily_drawdown_pct": -7.657773766764087,
+        "initial_usd": 100000.0,
+        "final_usd": 124931.43378827705,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3233.3474094178273,
+          "fx": 3233.140301830626,
+          "half_spread": 0.0,
+          "slippage": 0.0,
+          "total": 6466.487711248453
+        },
+        "average_initial_exposure_pct": 57.53053197584344,
+        "sum_traded_notional_over_period_start_nav": 11.48091881616581,
+        "cost_configuration": {
+          "name": "fee_only_lower_bound",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0,
+          "slippage": 0.0
+        }
+      },
+      "central_assumption__100000": {
+        "net_return_pct": 23.497930441055193,
+        "daily_drawdown_pct": -7.831547822076724,
+        "initial_usd": 100000.0,
+        "final_usd": 123497.93044105518,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3213.856332983338,
+          "fx": 3213.646798601967,
+          "half_spread": 642.7293597203934,
+          "slippage": 642.7293597203934,
+          "total": 7712.961851026092
+        },
+        "average_initial_exposure_pct": 57.51757524885723,
+        "sum_traded_notional_over_period_start_nav": 11.476851706082984,
+        "cost_configuration": {
+          "name": "central_assumption",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0005,
+          "slippage": 0.0005
+        }
+      },
+      "execution_stress__100000": {
+        "net_return_pct": 17.926264230051437,
+        "daily_drawdown_pct": -8.523125265193787,
+        "initial_usd": 100000.0,
+        "final_usd": 117926.26423005144,
+        "positions": 39,
+        "market_orders": 44,
+        "cash_settlements": 0,
+        "total_cost_usd": {
+          "commission": 3137.418577656784,
+          "fx": 3137.1994196912556,
+          "half_spread": 3137.1994196912556,
+          "slippage": 3137.1994196912556,
+          "total": 12549.01683673055
+        },
+        "average_initial_exposure_pct": 57.46586561095711,
+        "sum_traded_notional_over_period_start_nav": 11.460679971680296,
+        "cost_configuration": {
+          "name": "execution_stress",
+          "commission": 0.0025,
+          "minimum_usd": 1.0,
+          "fx": 0.0025,
+          "half_spread": 0.0025,
+          "slippage": 0.0025
+        }
+      }
+    }
+  },
+  "checks": {
+    "broad_momentum": "PASS_EXACT_CHOICES_PRICES_WEIGHTS_AND_FIXED_COST_RETURN",
+    "broad_risk_adjusted": "PASS_EXACT_CHOICES_PRICES_WEIGHTS_AND_FIXED_COST_RETURN"
+  },
+  "spy_buy_hold": {
+    "zero_diagnostic__10000": {
+      "net_return_pct": 93.30821172959709,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 10000.0,
+      "final_usd": 19330.82117295971,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 0.0,
+        "fx": 0.0,
+        "half_spread": 0.0,
+        "slippage": 0.0,
+        "total": 0.0
+      },
+      "average_initial_exposure_pct": 100.0,
+      "sum_traded_notional_over_period_start_nav": 2.933082117295971,
+      "cost_configuration": {
+        "name": "zero_diagnostic",
+        "commission": 0.0,
+        "minimum_usd": 0.0,
+        "fx": 0.0,
+        "half_spread": 0.0,
+        "slippage": 0.0
+      }
+    },
+    "fee_only_lower_bound__10000": {
+      "net_return_pct": 91.38474693626779,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 10000.0,
+      "final_usd": 19138.47469362678,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 72.96224172378038,
+        "fx": 72.96224172378038,
+        "half_spread": 0.0,
+        "slippage": 0.0,
+        "total": 145.92448344756076
+      },
+      "average_initial_exposure_pct": 99.50248756218906,
+      "sum_traded_notional_over_period_start_nav": 2.9184896689512154,
+      "cost_configuration": {
+        "name": "fee_only_lower_bound",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0,
+        "slippage": 0.0
+      }
+    },
+    "central_assumption__10000": {
+      "net_return_pct": 91.00234836900549,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 10000.0,
+      "final_usd": 19100.23483690055,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 72.88971464453209,
+        "fx": 72.88971464453209,
+        "half_spread": 14.577942928906417,
+        "slippage": 14.577942928906417,
+        "total": 174.935315146877
+      },
+      "average_initial_exposure_pct": 99.40357852882704,
+      "sum_traded_notional_over_period_start_nav": 2.9155885857812835,
+      "cost_configuration": {
+        "name": "central_assumption",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0005,
+        "slippage": 0.0005
+      }
+    },
+    "execution_stress__10000": {
+      "net_return_pct": 89.480326348813,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 10000.0,
+      "final_usd": 18948.0326348813,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 72.60104250732601,
+        "fx": 72.60104250732601,
+        "half_spread": 72.60104250732601,
+        "slippage": 72.60104250732601,
+        "total": 290.40417002930405
+      },
+      "average_initial_exposure_pct": 99.00990099009901,
+      "sum_traded_notional_over_period_start_nav": 2.9040417002930408,
+      "cost_configuration": {
+        "name": "execution_stress",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0025,
+        "slippage": 0.0025
+      }
+    },
+    "zero_diagnostic__100000": {
+      "net_return_pct": 93.30821172959713,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 100000.0,
+      "final_usd": 193308.21172959713,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 0.0,
+        "fx": 0.0,
+        "half_spread": 0.0,
+        "slippage": 0.0,
+        "total": 0.0
+      },
+      "average_initial_exposure_pct": 100.0,
+      "sum_traded_notional_over_period_start_nav": 2.9330821172959713,
+      "cost_configuration": {
+        "name": "zero_diagnostic",
+        "commission": 0.0,
+        "minimum_usd": 0.0,
+        "fx": 0.0,
+        "half_spread": 0.0,
+        "slippage": 0.0
+      }
+    },
+    "fee_only_lower_bound__100000": {
+      "net_return_pct": 91.38474693626779,
+      "daily_drawdown_pct": -18.998906889856915,
+      "initial_usd": 100000.0,
+      "final_usd": 191384.7469362678,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 729.6224172378038,
+        "fx": 729.6224172378038,
+        "half_spread": 0.0,
+        "slippage": 0.0,
+        "total": 1459.2448344756076
+      },
+      "average_initial_exposure_pct": 99.50248756218906,
+      "sum_traded_notional_over_period_start_nav": 2.918489668951215,
+      "cost_configuration": {
+        "name": "fee_only_lower_bound",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0,
+        "slippage": 0.0
+      }
+    },
+    "central_assumption__100000": {
+      "net_return_pct": 91.00234836900549,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 100000.0,
+      "final_usd": 191002.34836900549,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 728.8971464453209,
+        "fx": 728.8971464453209,
+        "half_spread": 145.77942928906418,
+        "slippage": 145.77942928906418,
+        "total": 1749.3531514687702
+      },
+      "average_initial_exposure_pct": 99.40357852882704,
+      "sum_traded_notional_over_period_start_nav": 2.9155885857812835,
+      "cost_configuration": {
+        "name": "central_assumption",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0005,
+        "slippage": 0.0005
+      }
+    },
+    "execution_stress__100000": {
+      "net_return_pct": 89.48032634881302,
+      "daily_drawdown_pct": -18.998906889856904,
+      "initial_usd": 100000.0,
+      "final_usd": 189480.32634881302,
+      "positions": 1,
+      "market_orders": 2,
+      "cash_settlements": 0,
+      "total_cost_usd": {
+        "commission": 726.0104250732602,
+        "fx": 726.0104250732602,
+        "half_spread": 726.0104250732602,
+        "slippage": 726.0104250732602,
+        "total": 2904.041700293041
+      },
+      "average_initial_exposure_pct": 99.00990099009901,
+      "sum_traded_notional_over_period_start_nav": 2.904041700293041,
+      "cost_configuration": {
+        "name": "execution_stress",
+        "commission": 0.0025,
+        "minimum_usd": 1.0,
+        "fx": 0.0025,
+        "half_spread": 0.0025,
+        "slippage": 0.0025
+      }
+    }
+  },
+  "limitations": [
+    "Previously inspected data, no independent holdout.",
+    "Dated stale-close convention from v3; unknown gaps block affected variants.",
+    "Fee rates, account sizes, half-spread and slippage are scenarios, not confirmed user fills/tariff.",
+    "No dividends, cash interest, taxes, USD/SEK market returns or whole-share constraints.",
+    "M combines monthly entry gate and daily exit; its subcomponents are not isolated."
+  ],
+  "source_sha256": {
+    "run_momentum_components_v4.py": "a853d726993b56e9afbaaac48a540c8bdaff8cfa3252ac36a209a2f46b1efcec",
+    "momentum_order_ledger.py": "9bce8613c2ea4654fd7eff5b6f193a5e1a2c58f1809978457ab3947b8a51424b",
+    "docs/momentum_components_v4_spec.md": "3df52fe071b1b459deb272a18cca0148faba8bbb7cd449a6e4ba178287b1aea2",
+    "momentum_selection_v3.py": "b4aadc7dba1b17dd60785029d4f2034888f6b7f35ef9a31b77ecd885d76586d8",
+    "selection_v3_execution.py": "5479420afbade0a3fd1ac335682791a930d2ba0ae4f6b8ab2f027742d1371202"
+  }
+}

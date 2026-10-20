@@ -1,0 +1,107 @@
+{
+  "model": "robust-momentum-v1",
+  "configuration": {
+    "product_name": "MomentumCloud Robust Momentum",
+    "selection_model": "robust-momentum-v1",
+    "position_count": 15,
+    "candidate_count": 50,
+    "min_price_usd": 5.0,
+    "min_adv20_usd": 2000000.0,
+    "stop_loss_pct": 10.0,
+    "trend_lookback_sessions": 252,
+    "weight_rank_12_1": 0.5,
+    "weight_rank_6_1": 0.3,
+    "weight_rank_3_1": 0.2,
+    "eligible_security_types": [
+      "CS"
+    ],
+    "eligible_primary_exchanges": [
+      "XNAS",
+      "XNYS",
+      "XASE"
+    ],
+    "rebalance_frequency": "monthly",
+    "market_regime": "SPY > SMA200",
+    "limitation": "Current limitation: survivorship bias"
+  },
+  "status": "COMPLETE_RESEARCH_REPLAY",
+  "approval": "UNVALIDATED",
+  "holdout": "All historical periods have already been examined; no new holdout.",
+  "limitations": [
+    "Historical adjusted OHLCV signal basis matches the existing live ranker; raw price/liquidity parity is not approved.",
+    "Fixed 0.30% cost per invested month; actual spread, slippage and turnover are not measured.",
+    "Universe classification and dated issuer continuity require separate evidence checks.",
+    "Monthly SPY signals only; live daily regime transitions and intramonth reentries are not replayed.",
+    "Fractional equal-weight lots; live whole-share affordability and first-session calendar scheduling are not replayed."
+  ],
+  "metrics": {
+    "RebalanceMonths": 1,
+    "Periods": 43,
+    "AvgNetReturn_pct": -1.632899439190202,
+    "TotalReturn_pct": -57.84148894194847,
+    "SPYTotalReturn_pct": 93.30821172959708,
+    "TotalEdgeVsSPY_pct": -151.14970067154553,
+    "WinningPeriods": 13,
+    "LosingPeriods": 30,
+    "PeriodHitRate_pct": 30.23255813953488,
+    "BestPeriod_pct": 18.43157706324436,
+    "WorstPeriod_pct": -17.965184326003538,
+    "RebalancePointMaxDrawdown_pct": -63.07020063206199,
+    "DailyMaxDrawdown_pct": -64.91730805468802,
+    "ExitRule": "stop",
+    "TopN": 15,
+    "SelectionModel": "robust-momentum-v1",
+    "PortfolioValue_USD": 10000.0,
+    "LiquidityRule": "FIXED_MIN_ADV20_2M_USD",
+    "EffectiveMinADV20_USD": 2000000.0,
+    "EntryExecution": "next-open",
+    "ExitExecution": "next-open",
+    "RebalanceExitExecution": "next-open",
+    "StopLoss_pct": 10.0,
+    "CashPeriods": 4,
+    "DataQualityExclusionCount": 0,
+    "DataQualityExcludedTickers": "",
+    "EarlyExitPositions": 358,
+    "Execution": "SIGNAL_CLOSE_ENTRY_NEXT-OPEN_REBALANCE_NEXT-OPEN",
+    "Universe": "POINT_IN_TIME_US_COMMON_STOCKS",
+    "UniverseSignalDates": 43,
+    "UniverseMinTickers": 4966,
+    "UniverseMaxTickers": 5227,
+    "SignalConvention": "MONTH_END_CLOSE"
+  },
+  "positions": 585,
+  "unique_tickers": 308,
+  "checks": {
+    "independent_position_and_capital_aggregation": "PASS",
+    "baseline_reproduction": "NOT_APPLICABLE",
+    "periods": 43,
+    "spy_price_return_pct": 93.30821172959709
+  },
+  "gross_return_pct": -52.470977229337024,
+  "spy_same_fixed_cost_return_pct": 70.20238513471013,
+  "previously_examined_later_segment_start": "2025-03-31",
+  "previously_examined_later_segment": {
+    "Periods": 18,
+    "TotalReturn_pct": 4.223277513190138,
+    "SPYTotalReturn_pct": 37.11723024486504,
+    "TotalEdgeVsSPY_pct": -32.8939527316749,
+    "PeriodHitRate_pct": 27.77777777777778
+  },
+  "inputs": {
+    "full_history_tickers": 409,
+    "successor_execution_days": {
+      "XWIN": 15,
+      "ARIS": 8
+    }
+  },
+  "finalization": "The numeric replay and CSV outputs completed. The JSON export alone rejected an empty text field parsed as NaN. This record was reconstructed from the three completed CSV outputs with independent capital reconciliation; no numerical replay or parameter change.",
+  "source_sha256": {
+    "backtest_momentum_v3.py": "62daf04e9ebe30bca657e7f3a005b84c977b151d7ed8229e94a752324fbc68b0",
+    "momentum_strategy.py": "3eb5293f80dce0098008e1a2f5edbcde4b83c85e8928135fdbff430d51fe725c",
+    "momentum_config.py": "4b7f9d916b36f55f37fa99f7f8061ed3764819c5b0de91798034dfdd2f6ec1dd",
+    "run_one_verified_gap_model.py": "880e1562e811d8db430cf9958019b61dcde1f48adc28e3f30315bf8f03f6cc8f",
+    "audit_action_price_install.py": "ca2b8bad3691fa0f7941226a2a0ffff04d161c89ef218f0ebbc5a2ca975ab9eb",
+    "run_locked_robust_offline.py": "abd72a32498d3cd1606a627b13c049076d48824ab27d35aa031bd15102165ed6"
+  },
+  "replay_runner_source": "audit_evidence/robust_locked_20261019/source_used/run_locked_robust_offline.py"
+}

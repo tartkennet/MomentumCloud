@@ -1,0 +1,21 @@
+{
+  "checked_date": "2026-10-19",
+  "request": {
+    "path": "/v1/open-close/RNAZ/2025-12-01",
+    "params": {
+      "adjusted": "false"
+    }
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"1120667b-38d9-42a5-982c-94e6645ab072\",\"message\":\"Data not found.\"}"
+      }
+    ],
+    "structuredContent": {
+      "result": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"1120667b-38d9-42a5-982c-94e6645ab072\",\"message\":\"Data not found.\"}"
+    },
+    "isError": false
+  }
+}

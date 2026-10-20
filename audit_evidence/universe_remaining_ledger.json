@@ -1,0 +1,2068 @@
+[
+  {
+    "signal": "2023-02-28",
+    "ticker": "SIVB",
+    "issue": "exit from 2023-04-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-02-28",
+    "ticker": "UMPQ",
+    "issue": "entry from 2023-03-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-03-31",
+    "ticker": "FRC",
+    "issue": "exit from 2023-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "NO_OBSERVED_PRICE_ON_FIXED_EXIT_DAY_2023_05_01"
+  },
+  {
+    "signal": "2023-03-31",
+    "ticker": "PRVB",
+    "issue": "exit from 2023-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-03-31",
+    "ticker": "SJR",
+    "issue": "exit from 2023-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "BLOCKED_REQUIRES_OBSERVED_USD_CONVERSION_AND_PAYMENT_DATE"
+  },
+  {
+    "signal": "2023-05-31",
+    "ticker": "BLU",
+    "issue": "exit from 2023-07-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-05-31",
+    "ticker": "ROCC",
+    "issue": "exit from 2023-07-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-06-30",
+    "ticker": "ABST",
+    "issue": "exit from 2023-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-06-30",
+    "ticker": "RE",
+    "issue": "exit from 2023-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-07-31",
+    "ticker": "AEPPZ",
+    "issue": "exit from 2023-09-01",
+    "reviewed_action_record_available": false,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-07-31",
+    "ticker": "DICE",
+    "issue": "exit 2026-09-09 outside period ending 2023-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-08-31",
+    "ticker": "BKI",
+    "issue": "exit from 2023-10-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-08-31",
+    "ticker": "MMP",
+    "issue": "exit from 2023-10-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-08-31",
+    "ticker": "SYNH",
+    "issue": "exit from 2023-10-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-08-31",
+    "ticker": "TRTN",
+    "issue": "exit from 2023-10-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2023-08-31",
+    "ticker": "WWE",
+    "issue": "exit from 2023-10-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1091907/0001193125-23-233499.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2023-09-29",
+    "ticker": "ESTE",
+    "issue": "exit from 2023-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-09-29",
+    "ticker": "NCR",
+    "issue": "exit from 2023-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "BLOCKED_REQUIRES_BOTH_PARENT_AND_SPINOFF_VALUATION"
+  },
+  {
+    "signal": "2023-10-31",
+    "ticker": "DEN",
+    "issue": "exit from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-10-31",
+    "ticker": "ESTE",
+    "issue": "entry from 2023-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-10-31",
+    "ticker": "HEP",
+    "issue": "exit from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1283140/0001193125-23-287465.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2023-10-31",
+    "ticker": "OSTK",
+    "issue": "exit from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-10-31",
+    "ticker": "VMW",
+    "issue": "exit from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2023-11-30",
+    "ticker": "GHL",
+    "issue": "entry from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-11-30",
+    "ticker": "HEP",
+    "issue": "entry from 2023-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1283140/0001193125-23-287465.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2023-11-30",
+    "ticker": "PNT",
+    "issue": "exit from 2024-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-11-30",
+    "ticker": "RPT",
+    "issue": "exit 2024-12-03 outside period ending 2024-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-12-29",
+    "ticker": "CDAY",
+    "issue": "exit from 2024-02-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-12-29",
+    "ticker": "ESMT",
+    "issue": "exit from 2024-02-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-12-29",
+    "ticker": "LTHM",
+    "issue": "exit from 2024-02-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2023-12-29",
+    "ticker": "RPT",
+    "issue": "entry from 2024-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2023-12-29",
+    "ticker": "SRC",
+    "issue": "exit from 2024-02-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-01-31",
+    "ticker": "CDAY",
+    "issue": "entry from 2024-02-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-01-31",
+    "ticker": "DOC",
+    "issue": "exit 2024-03-04 outside period ending 2024-03-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2024-01-31",
+    "ticker": "ICVX",
+    "issue": "exit from 2024-03-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-02-29",
+    "ticker": "PEAK",
+    "issue": "exit from 2024-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2024-03-28",
+    "ticker": "EGLE",
+    "issue": "exit 2025-04-16 outside period ending 2024-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-03-28",
+    "ticker": "KAMN",
+    "issue": "exit from 2024-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-03-28",
+    "ticker": "MDC",
+    "issue": "exit from 2024-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "AGTI",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "ALCC",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "BRP",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "CNHI",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "DOOR",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "ERF",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "LBAI",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "NS",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "PXD",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "SP",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-04-30",
+    "ticker": "SWAV",
+    "issue": "exit from 2024-06-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-05-31",
+    "ticker": "AIRC",
+    "issue": "exit from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-05-31",
+    "ticker": "DCPH",
+    "issue": "exit from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-05-31",
+    "ticker": "MODN",
+    "issue": "exit from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-05-31",
+    "ticker": "SNPO",
+    "issue": "exit from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-05-31",
+    "ticker": "TNP",
+    "issue": "exit from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "CERE",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "HIBB",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "HOLI",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "SBOW",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "SIX",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/701374/0001193125-24-173426.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "TNP",
+    "issue": "entry from 2024-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2024-06-28",
+    "ticker": "WIRE",
+    "issue": "exit from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "ATRI",
+    "issue": "exit from 2024-09-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "CERE",
+    "issue": "entry from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "GPS",
+    "issue": "exit from 2024-09-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "MCBC",
+    "issue": "entry from 2024-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "MORF",
+    "issue": "exit from 2024-09-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-07-31",
+    "ticker": "UCBI",
+    "issue": "exit from 2024-09-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "DO",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "HA",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "LSXMA",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1560385/0001104659-24-098251.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "LSXMK",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1560385/0001104659-24-098251.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "SILK",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-08-30",
+    "ticker": "WKME",
+    "issue": "exit from 2024-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-09-30",
+    "ticker": "CHK",
+    "issue": "exit from 2024-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-09-30",
+    "ticker": "CHUY",
+    "issue": "exit from 2024-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-09-30",
+    "ticker": "PETQ",
+    "issue": "exit from 2024-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-09-30",
+    "ticker": "SGH",
+    "issue": "exit from 2024-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-09-30",
+    "ticker": "VGR",
+    "issue": "exit from 2024-11-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-10-31",
+    "ticker": "MRO",
+    "issue": "exit from 2024-12-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-10-31",
+    "ticker": "PRMW",
+    "issue": "exit from 2024-12-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2024-10-31",
+    "ticker": "VSTO",
+    "issue": "exit from 2024-12-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1616318/0001616318-24-000122.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "AGR",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "AY",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "BOWL",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "BSIG",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "IBTX",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-11-29",
+    "ticker": "NAPA",
+    "issue": "exit from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "ARCH",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "B",
+    "issue": "exit 2025-05-09 outside period ending 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "BSIG",
+    "issue": "entry from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "CEIX",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "ENLC",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "GATO",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "HTLF",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "IBTX",
+    "issue": "entry from 2025-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "JBT",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "NEP",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "SQ",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2024-12-31",
+    "ticker": "USAP",
+    "issue": "exit from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "CDMO",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "HTLF",
+    "issue": "entry from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "NARI",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "NEP",
+    "issue": "entry from 2025-02-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "PFC",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "ROIC",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "SILV",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1659520/000095014225000380/eh250591256_ex9901.htm",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-01-31",
+    "ticker": "SUM",
+    "issue": "exit from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "AZPN",
+    "issue": "exit from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "EDR",
+    "issue": "exit from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "FBMS",
+    "issue": "exit from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "PFC",
+    "issue": "entry from 2025-03-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "PTVE",
+    "issue": "exit from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-02-28",
+    "ticker": "SASR",
+    "issue": "exit from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "ATSG",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "BECN",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "BERY",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "ENFN",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "FBMS",
+    "issue": "entry from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "FNA",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "ITCI",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "ML",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "PDCO",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "PTVE",
+    "issue": "entry from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "PYCR",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "SASR",
+    "issue": "entry from 2025-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-03-31",
+    "ticker": "SWI",
+    "issue": "exit from 2025-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "DESP",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1703141/000094787125000525/ss4830126_ex9901.htm",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "DFS",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "GOLD",
+    "issue": "exit 2025-12-02 outside period ending 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "HEES",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "JNVR",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.nasdaq.com/press-release/defi-development-corp-announces-ticker-symbol-change-dfdv-2025-05-02",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "JWN",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-04-30",
+    "ticker": "SJW",
+    "issue": "exit from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "AZEK",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1782754/0001193125-25-154115.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "CSWI",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://cswindustrials.gcs-web.com/news-releases/news-release-details/csw-industrials-announces-commencement-trading-new-york-stock",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "HEES",
+    "issue": "entry from 2025-06-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "LANC",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "LSEA",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "SWTX",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-05-30",
+    "ticker": "X",
+    "issue": "exit from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "ANSS",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "AZEK",
+    "issue": "entry from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1782754/0001193125-25-154115.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "BPMC",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "CHX",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "EYEN",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1682639/0001104659-25-065294.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "FARO",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "HES",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "IGT",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "JNPR",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "LANC",
+    "issue": "entry from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "RDFN",
+    "issue": "entry from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "RDUS",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "SWTX",
+    "issue": "entry from 2025-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-06-30",
+    "ticker": "VERV",
+    "issue": "exit from 2025-08-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "BRDG",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "ITOS",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "NVEE",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "PARA",
+    "issue": "exit 2026-08-07 outside period ending 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "PPBI",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "STR",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-07-31",
+    "ticker": "USM",
+    "issue": "exit from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "COOP",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "FL",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "GMS",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "KLG",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "MAG",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "OLO",
+    "issue": "exit from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "PPBI",
+    "issue": "entry from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-08-29",
+    "ticker": "VERB",
+    "issue": "entry from 2025-09-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1566610/0001493152-25-012461.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "ARIS",
+    "issue": "exit 2026-02-19 outside period ending 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "COOP",
+    "issue": "entry from 2025-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "ETNB",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "MLNK",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "MTAL",
+    "issue": "exit 2026-04-14 outside period ending 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_PAYMENT_TIMING"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "PBPB",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "TRML",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "VBTX",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-09-30",
+    "ticker": "WNS",
+    "issue": "exit from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "FI",
+    "issue": "exit from 2025-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "HONE",
+    "issue": "entry from 2025-11-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "IPG",
+    "issue": "exit from 2025-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "LNW",
+    "issue": "exit from 2025-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "MRC",
+    "issue": "exit from 2025-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "RNAZ",
+    "issue": "exit 2025-12-02 outside period ending 2025-12-01",
+    "reviewed_action_record_available": false,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-10-31",
+    "ticker": "VRNT",
+    "issue": "exit from 2025-12-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "AKRO",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "AMRK",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "DOOO",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1748797/000119312526125055/d76000dex991.htm",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "HSII",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "IAS",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "K",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "KAR",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "MRUS",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "PRO",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "SCS",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1050825/0001193125-25-315864.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "SNV",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/18349/0001140361-26-000049.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "SPR",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-11-28",
+    "ticker": "VTLE",
+    "issue": "exit from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "CADE",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "CIVI",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "CMA",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "CMPO",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1823144/000162828026017266/cmpo-20251231.htm",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "JAMF",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "MMC",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "MNMD",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "PCH",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "PLYM",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "REVG",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "SMLR",
+    "issue": "exit from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1554859/0001104659-26-004581.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2025-12-31",
+    "ticker": "SNV",
+    "issue": "entry from 2026-01-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/18349/0001140361-26-000049.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "CADE",
+    "issue": "entry from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "CMA",
+    "issue": "entry from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "CYBR",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "DAY",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "DVAX",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "MOFG",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "PCH",
+    "issue": "entry from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "PX",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1841968/000119312526010556/d28146d8k.htm",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "REVG",
+    "issue": "entry from 2026-02-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "RYI",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-01-30",
+    "ticker": "THS",
+    "issue": "exit from 2026-03-02",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-02-27",
+    "ticker": "ALEX",
+    "issue": "exit from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-02-27",
+    "ticker": "CFLT",
+    "issue": "exit from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2026-02-27",
+    "ticker": "GLDD",
+    "issue": "exit from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-02-27",
+    "ticker": "OS",
+    "issue": "exit from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-02-27",
+    "ticker": "TGNA",
+    "issue": "exit from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "ACLX",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "CWEN.A",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "DAWN",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "FOLD",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "GLDD",
+    "issue": "entry from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "HOLX",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "HTBK",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "OS",
+    "issue": "entry from 2026-04-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "PSTG",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.everpuredata.com/uk/company/newsroom/press-releases/everpure-to-change-ticker-symbol.html",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "SEE",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-03-31",
+    "ticker": "SEMR",
+    "issue": "exit from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "AMWD",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "APLS",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "BK",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "CTLP",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "CTRA",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "CVGW",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "CWEN.A",
+    "issue": "entry from 2026-05-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "FIHL",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "MEG",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "NVRI",
+    "issue": "exit 2026-06-02 outside period ending 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "SLNO",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "SNCY",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "TPH",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-04-30",
+    "ticker": "VRE",
+    "issue": "exit from 2026-06-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "ASRT",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "BLD",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "FDP",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "IAC",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "KALV",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "KW",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "LC",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "PRA",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "SATS",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "SCVL",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "SEM",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "SILA",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-05-29",
+    "ticker": "VSCO",
+    "issue": "exit from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "BLD",
+    "issue": "entry from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "CCRN",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "CEPT",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_DATED_IDENTITY_AND_DELIVERY"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "CPRX",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "NSA",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "NUVL",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "SEM",
+    "issue": "entry from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "SILA",
+    "issue": "entry from 2026-07-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "TBRG",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "TMHC",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-06-30",
+    "ticker": "XOMA",
+    "issue": "exit from 2026-08-03",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "AVB",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "CRNX",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "EQR",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "FBRX",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "ISSC",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_FORMATION_IDENTITY"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "LBRDA",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1611983/0001140361-26-033932.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "LBRDK",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY",
+    "reviewed_terms_source": "https://www.sec.gov/Archives/edgar/data/1611983/0001140361-26-033932.txt",
+    "reviewed_terms_batch": "2026-10-12"
+  },
+  {
+    "signal": "2026-07-31",
+    "ticker": "TWO",
+    "issue": "exit from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-08-31",
+    "ticker": "CRNX",
+    "issue": "entry from 2026-09-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-08-31",
+    "ticker": "DBRG",
+    "issue": "exit from 2026-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  },
+  {
+    "signal": "2026-08-31",
+    "ticker": "HLX",
+    "issue": "exit from 2026-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "PENDING_FULL_MODEL_PRICE_BASIS_AND_DATED_IDENTITY"
+  },
+  {
+    "signal": "2026-08-31",
+    "ticker": "TBPH",
+    "issue": "exit from 2026-10-01",
+    "reviewed_action_record_available": true,
+    "execution_status": "UNVERIFIED"
+  }
+]

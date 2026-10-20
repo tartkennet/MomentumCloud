@@ -1,0 +1,23 @@
+{
+  "status": "OBSERVED_RAW_ADJUSTED_PAIR",
+  "ticker": "TEN",
+  "day": "2024-07-01",
+  "request_paths": [
+    "/v2/aggs/ticker/TEN/range/1/day/2024-07-01/2024-07-01"
+  ],
+  "bases": [
+    "false",
+    "true"
+  ],
+  "bar": {
+    "v": 155196,
+    "vw": 29.6197,
+    "o": 30.4,
+    "c": 29.73,
+    "h": 30.4,
+    "l": 29.13,
+    "t": 1719806400000,
+    "n": 2271
+  },
+  "notice": "Additional pair reconstructed from current action plan. Both bases directly observed; short windows do not replace formation histories."
+}

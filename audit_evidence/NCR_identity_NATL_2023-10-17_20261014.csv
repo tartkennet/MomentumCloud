@@ -1,0 +1,3 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,cik,composite_figi,share_class_figi,phone_number,address_address1,address_city,address_state,address_postal_code,sic_code,sic_description,ticker_root,round_lot
+NATL,NCR Atleos Corporation,stocks,us,XNYS,CS,true,usd,0001974138,BBG019Y0WP19,BBG019Y0WP28,(937) 445-1936,864 SPRING STREET NW,ATLANTA,GA,30308,3578,CALCULATING & ACCOUNTING MACHINES (NO ELECTRONIC COMPUTERS),NATL,100
+

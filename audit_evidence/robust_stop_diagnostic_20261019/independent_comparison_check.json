@@ -1,0 +1,8 @@
+{
+  "status": "PASS_INDEPENDENT_PLAIN_CSV_AGGREGATION",
+  "lots": 585,
+  "unchanged_non_stop_exits": 243,
+  "original_keys_entries_ranks_weights_preserved": true,
+  "no_stop_net_return_pct": -68.29065961637404,
+  "aggregate_difference_tolerance": 1e-08
+}

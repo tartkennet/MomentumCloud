@@ -4,9 +4,13 @@ import unittest
 from pathlib import Path
 
 from model_validation import load_model_validation
+from validate_production_backtest import VALIDATION_EXIT_RULE
 
 
 class ModelValidationTests(unittest.TestCase):
+    def test_pr13_validation_uses_pre_registered_fixed_stop_only(self):
+        self.assertEqual(VALIDATION_EXIT_RULE, "stop")
+
     def test_missing_decision_is_unvalidated(self):
         with tempfile.TemporaryDirectory() as directory:
             decision = load_model_validation(Path(directory) / "missing.json")
@@ -17,7 +21,7 @@ class ModelValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "decision.json"
             path.write_text(json.dumps({
-                "model": "v4-balanced",
+                "model": "robust-momentum-v1",
                 "universe": "POINT_IN_TIME_US_COMMON_STOCKS",
                 "status": "GO",
                 "gates": {
@@ -26,6 +30,10 @@ class ModelValidationTests(unittest.TestCase):
                     "beats_spy": True,
                     "daily_max_drawdown_at_most_20_pct": True,
                     "hit_rate_at_least_50_pct": True,
+                    "oos_at_least_12_periods": True,
+                    "oos_positive_net_return": True,
+                    "oos_beats_spy": True,
+                    "oos_hit_rate_at_least_50_pct": True,
                 },
             }), encoding="utf-8")
             decision = load_model_validation(path)

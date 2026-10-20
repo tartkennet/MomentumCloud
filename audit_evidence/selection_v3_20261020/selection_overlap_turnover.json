@@ -1,0 +1,20 @@
+{
+  "strict_v2": {
+    "mean_selected_name_addition_share_including_first_and_restart": 0.6964102564102564,
+    "mean_selected_name_addition_share_consecutive_invested_signals": 0.6617142857142857,
+    "mean_overlap_with_strict_selected_share": 1.0,
+    "definition": "Name counts, not weighted turnover or executed fills; a cash signal resets prior choices."
+  },
+  "broad_momentum": {
+    "mean_selected_name_addition_share_including_first_and_restart": 0.6410256410256411,
+    "mean_selected_name_addition_share_consecutive_invested_signals": 0.6,
+    "mean_overlap_with_strict_selected_share": 0.06256410256410257,
+    "definition": "Name counts, not weighted turnover or executed fills; a cash signal resets prior choices."
+  },
+  "broad_risk_adjusted": {
+    "mean_selected_name_addition_share_including_first_and_restart": 0.7374358974358974,
+    "mean_selected_name_addition_share_consecutive_invested_signals": 0.7074285714285715,
+    "mean_overlap_with_strict_selected_share": 0.38974358974358975,
+    "definition": "Name counts, not weighted turnover or executed fills; a cash signal resets prior choices."
+  }
+}

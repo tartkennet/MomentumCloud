@@ -1,0 +1,44 @@
+[
+  {
+    "day": "2023-06-22",
+    "request": {
+      "path": "/v1/open-close/CVII/2023-06-22",
+      "params": {
+        "adjusted": true
+      }
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"0e06fb23-764e-4553-94ae-bbacbefe57f9\",\"message\":\"Data not found.\"}"
+        }
+      ],
+      "structuredContent": {
+        "result": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"0e06fb23-764e-4553-94ae-bbacbefe57f9\",\"message\":\"Data not found.\"}"
+      },
+      "isError": false
+    }
+  },
+  {
+    "day": "2023-06-23",
+    "request": {
+      "path": "/v1/open-close/CVII/2023-06-23",
+      "params": {
+        "adjusted": true
+      }
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"62cbd3f3-a3fe-429f-b43b-0ce5f0052239\",\"message\":\"Data not found.\"}"
+        }
+      ],
+      "structuredContent": {
+        "result": "Error [HTTP]: HTTP 404 — {\"status\":\"NOT_FOUND\",\"request_id\":\"62cbd3f3-a3fe-429f-b43b-0ce5f0052239\",\"message\":\"Data not found.\"}"
+      },
+      "isError": false
+    }
+  }
+]

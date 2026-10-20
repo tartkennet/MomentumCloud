@@ -1,0 +1,322 @@
+[
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__equal_reference",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__M",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__S",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__SM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__W",
+    "signal": "2024-11-29",
+    "intended_weight": 0.014585990413936288
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.014585990413936288
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WS",
+    "signal": "2024-11-29",
+    "intended_weight": 0.014585990413936288
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WSM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.014585990413936288
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__equal_reference",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__M",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__S",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__SM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__W",
+    "signal": "2024-11-29",
+    "intended_weight": 0.018333838863310654
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.018333838863310654
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WS",
+    "signal": "2024-11-29",
+    "intended_weight": 0.018333838863310654
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2024-12-02",
+    "ticker": "LBPH",
+    "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WSM",
+    "signal": "2024-11-29",
+    "intended_weight": 0.018333838863310654
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__equal_reference",
+    "signal": "2025-06-30",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__M",
+    "signal": "2025-06-30",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__S",
+    "signal": "2025-06-30",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__SM",
+    "signal": "2025-06-30",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__W",
+    "signal": "2025-06-30",
+    "intended_weight": 0.024904545393806668
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WM",
+    "signal": "2025-06-30",
+    "intended_weight": 0.024904545393806668
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WS",
+    "signal": "2025-06-30",
+    "intended_weight": 0.024904545393806668
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2025-07-01",
+    "ticker": "EVRI",
+    "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_risk_adjusted__WSM",
+    "signal": "2025-06-30",
+    "intended_weight": 0.024904545393806668
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__equal_reference",
+    "signal": "2026-08-31",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__M",
+    "signal": "2026-08-31",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__S",
+    "signal": "2026-08-31",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__SM",
+    "signal": "2026-08-31",
+    "intended_weight": 0.04
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__W",
+    "signal": "2026-08-31",
+    "intended_weight": 0.008251532012658169
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WM",
+    "signal": "2026-08-31",
+    "intended_weight": 0.008251532012658169
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WS",
+    "signal": "2026-08-31",
+    "intended_weight": 0.008251532012658169
+  },
+  {
+    "status": "DOCUMENTED_UNFILLED_ORDER",
+    "entry_day": "2026-09-01",
+    "ticker": "CRNX",
+    "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+    "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+    "variant": "broad_momentum__WSM",
+    "signal": "2026-08-31",
+    "intended_weight": 0.008251532012658169
+  }
+]

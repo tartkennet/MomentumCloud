@@ -575,7 +575,7 @@ def _write_workbook(
         [
             ("Product", PRODUCTION.product_name),
             ("Selection model", PRODUCTION.selection_model),
-            ("Freshness rule", "1m and 3m positive and above SPY"),
+            ("Selection rule", "Persistent 12-2 market leaders, 8 positive months, trend-efficiency rank"),
             ("Market date", latest_date),
             ("Regime", risk["status"]),
             ("Positions", PRODUCTION.position_count),
@@ -593,16 +593,16 @@ def _write_workbook(
 def validate_payload(payload: dict) -> None:
     config = payload["config"]
     expected = {
-        "selection_model": "v4-balanced",
-        "position_count": 15,
-        "min_price_usd": 10.0,
-        "min_adv20_usd": 5_000_000.0,
-        "stop_loss_pct": 10.0,
+        "selection_model": PRODUCTION.selection_model,
+        "position_count": PRODUCTION.position_count,
+        "min_price_usd": PRODUCTION.min_price_usd,
+        "min_adv20_usd": PRODUCTION.min_adv20_usd,
+        "stop_loss_pct": PRODUCTION.stop_loss_pct,
     }
     for key, value in expected.items():
         if config.get(key) != value:
             raise RuntimeError(f"Production config mismatch: {key}={config.get(key)!r}")
-    if payload["limitation"] != "Current limitation: survivorship bias":
+    if payload["limitation"] != PRODUCTION.limitation:
         raise RuntimeError("Required survivorship-bias limitation is missing")
 
     validation = payload.get("model_validation") or {}
@@ -620,6 +620,10 @@ def validate_payload(payload: dict) -> None:
         "beats_spy",
         "daily_max_drawdown_at_most_20_pct",
         "hit_rate_at_least_50_pct",
+        "oos_at_least_12_periods",
+        "oos_positive_net_return",
+        "oos_beats_spy",
+        "oos_hit_rate_at_least_50_pct",
     }
     if validation.get("status") != "APPROVED" or not all(
         validation.get("gates", {}).get(gate) is True for gate in required_gates
@@ -631,7 +635,7 @@ def validate_payload(payload: dict) -> None:
         raise RuntimeError("RISK OFF output must not contain targets or Buy Now orders")
     if risk_on:
         if len(target) != PRODUCTION.position_count:
-            raise RuntimeError("RISK ON requires exactly 15 executable target positions")
+            raise RuntimeError("RISK ON requires exactly the locked number of executable target positions")
         if len({row["ticker"] for row in target}) != PRODUCTION.position_count:
             raise RuntimeError("Target portfolio contains duplicate tickers")
         if any(int(row.get("quantity") or 0) < 1 for row in target):
@@ -640,14 +644,12 @@ def validate_payload(payload: dict) -> None:
             raise RuntimeError("Target portfolio contains a stock below the price floor")
         if any(float(row["adv20_usd"]) < PRODUCTION.min_adv20_usd for row in target):
             raise RuntimeError("Target portfolio contains a stock below the ADV20 floor")
-        if any(float(row["return_1m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock with non-positive 1-month return")
-        if any(float(row["return_3m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock with non-positive 3-month return")
-        if any(float(row["relative_1m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock lagging SPY over 1 month")
-        if any(float(row["relative_3m_pct"]) <= 0.0 for row in target):
-            raise RuntimeError("Target portfolio contains a stock lagging SPY over 3 months")
+        if any(float(row["mom12_2_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 12-2 momentum")
+        if any(float(row["mom6_2_pct"]) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 6-2 momentum")
+        if any(float(row.get("mom3_1_pct", 0.0)) <= 0.0 for row in target):
+            raise RuntimeError("Target portfolio contains a stock with non-positive 3-1 momentum")
         if abs(sum(float(row["weight_pct"]) for row in target) - 100.0) > 0.01:
             raise RuntimeError("Target weights do not sum to 100 percent")
     target_tickers = {row["ticker"] for row in target}
@@ -655,7 +657,7 @@ def validate_payload(payload: dict) -> None:
         raise RuntimeError("Buy Now contains a ticker outside the locked target portfolio")
     if any(row.get("buy_signal") != "BUY" for row in buys):
         raise RuntimeError("Buy Now may contain actionable BUY orders only")
-    if len(buys) > 15 or len(payload["candidates"]) > 50:
+    if len(buys) > PRODUCTION.position_count or len(payload["candidates"]) > PRODUCTION.candidate_count:
         raise RuntimeError("Production portfolio or candidate limit exceeded")
 
 def main() -> None:
@@ -666,9 +668,11 @@ def main() -> None:
     PRODUCTION.validate()
 
     client = PolygonClient(api_key)
-    template_universe = read_universe(TEMPLATE_FILE)
     security_master = fetch_security_master(client)
-    eligible = [ticker for ticker in template_universe if normalize_ticker(ticker) in security_master]
+    # Live selection must start from the full current common-stock master, not
+    # from a hand-maintained workbook list. Historical validation uses the
+    # separate point-in-time master in backtest_momentum_v3.py.
+    eligible = sorted(security_master)
     if len(eligible) < PRODUCTION.position_count:
         raise RuntimeError(
             f"Only {len(eligible)} eligible US common stocks remain after security filtering"
@@ -710,6 +714,7 @@ def main() -> None:
             True,
             portfolio_value_sek=portfolio_value_sek,
             usdsek=fx,
+            previous_tickers=previous_state.get("target_tickers", []),
         )
     elif risk["risk_on"] and model_validation["approved"]:
         target = [dict(row) for row in previous_state["target_portfolio"]]
@@ -770,7 +775,7 @@ def main() -> None:
             "github_action_status": "SUCCESS",
             "github_action_url": run_url,
             "polygon_status": "CONNECTED",
-            "universe_input_count": len(template_universe),
+            "universe_input_count": len(security_master),
             "eligible_security_count": len(eligible),
             "ranked_candidate_count": len(ranked),
             "usdsek": round(float(fx), 6),

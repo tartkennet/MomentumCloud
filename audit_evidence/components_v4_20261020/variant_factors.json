@@ -1,0 +1,98 @@
+{
+  "broad_momentum__equal_reference": {
+    "selector": "broad_momentum",
+    "weights": false,
+    "stop": false,
+    "market": false
+  },
+  "broad_momentum__M": {
+    "selector": "broad_momentum",
+    "weights": false,
+    "stop": false,
+    "market": true
+  },
+  "broad_momentum__S": {
+    "selector": "broad_momentum",
+    "weights": false,
+    "stop": true,
+    "market": false
+  },
+  "broad_momentum__SM": {
+    "selector": "broad_momentum",
+    "weights": false,
+    "stop": true,
+    "market": true
+  },
+  "broad_momentum__W": {
+    "selector": "broad_momentum",
+    "weights": true,
+    "stop": false,
+    "market": false
+  },
+  "broad_momentum__WM": {
+    "selector": "broad_momentum",
+    "weights": true,
+    "stop": false,
+    "market": true
+  },
+  "broad_momentum__WS": {
+    "selector": "broad_momentum",
+    "weights": true,
+    "stop": true,
+    "market": false
+  },
+  "broad_momentum__WSM": {
+    "selector": "broad_momentum",
+    "weights": true,
+    "stop": true,
+    "market": true
+  },
+  "broad_risk_adjusted__equal_reference": {
+    "selector": "broad_risk_adjusted",
+    "weights": false,
+    "stop": false,
+    "market": false
+  },
+  "broad_risk_adjusted__M": {
+    "selector": "broad_risk_adjusted",
+    "weights": false,
+    "stop": false,
+    "market": true
+  },
+  "broad_risk_adjusted__S": {
+    "selector": "broad_risk_adjusted",
+    "weights": false,
+    "stop": true,
+    "market": false
+  },
+  "broad_risk_adjusted__SM": {
+    "selector": "broad_risk_adjusted",
+    "weights": false,
+    "stop": true,
+    "market": true
+  },
+  "broad_risk_adjusted__W": {
+    "selector": "broad_risk_adjusted",
+    "weights": true,
+    "stop": false,
+    "market": false
+  },
+  "broad_risk_adjusted__WM": {
+    "selector": "broad_risk_adjusted",
+    "weights": true,
+    "stop": false,
+    "market": true
+  },
+  "broad_risk_adjusted__WS": {
+    "selector": "broad_risk_adjusted",
+    "weights": true,
+    "stop": true,
+    "market": false
+  },
+  "broad_risk_adjusted__WSM": {
+    "selector": "broad_risk_adjusted",
+    "weights": true,
+    "stop": true,
+    "market": true
+  }
+}

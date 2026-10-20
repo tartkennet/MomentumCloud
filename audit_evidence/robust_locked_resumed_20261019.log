@@ -1,0 +1,71 @@
+INFO Signal 2023-02-28, trade 2023-03-01 to 2023-04-03: -11.43% net, SPY 3.40%
+INFO Signal 2023-03-31, trade 2023-04-03 to 2023-05-01: -1.23% net, SPY 1.62%
+INFO Signal 2023-04-28, trade 2023-05-01 to 2023-06-01: -0.42% net, SPY 0.63%
+INFO Signal 2023-05-31, trade 2023-06-01 to 2023-07-03: -8.52% net, SPY 5.94%
+INFO Signal 2023-06-30, trade 2023-07-03 to 2023-08-01: 4.09% net, SPY 3.01%
+INFO Signal 2023-07-31, trade 2023-08-01 to 2023-09-01: -1.98% net, SPY -0.68%
+INFO Signal 2023-08-31, trade 2023-09-01 to 2023-10-02: -8.22% net, SPY -5.86%
+INFO Signal 2023-09-29, trade 2023-10-02 to 2023-11-01: -9.93% net, SPY -1.74%
+INFO Breakout risk-off market regime on 2023-10-31: hold cash
+INFO Signal 2023-10-31, trade 2023-11-01 to 2023-12-01: 0.00% net, SPY 8.72%
+INFO Signal 2023-11-30, trade 2023-12-01 to 2024-01-02: 2.93% net, SPY 3.60%
+INFO Signal 2023-12-29, trade 2024-01-02 to 2024-02-01: -8.56% net, SPY 2.64%
+INFO Signal 2024-01-31, trade 2024-02-01 to 2024-03-01: 12.43% net, SPY 5.02%
+INFO Signal 2024-02-29, trade 2024-03-01 to 2024-04-01: -5.23% net, SPY 2.92%
+INFO Signal 2024-03-28, trade 2024-04-01 to 2024-05-01: -12.98% net, SPY -4.29%
+INFO Signal 2024-04-30, trade 2024-05-01 to 2024-06-03: 6.31% net, SPY 5.51%
+INFO Signal 2024-05-31, trade 2024-06-03 to 2024-07-01: -9.68% net, SPY 3.14%
+INFO Signal 2024-06-28, trade 2024-07-01 to 2024-08-01: 6.99% net, SPY 1.27%
+INFO Signal 2024-07-31, trade 2024-08-01 to 2024-09-03: -8.00% net, SPY 1.43%
+INFO Signal 2024-08-30, trade 2024-09-03 to 2024-10-01: 4.52% net, SPY 2.31%
+INFO Signal 2024-09-30, trade 2024-10-01 to 2024-11-01: 5.18% net, SPY -0.36%
+INFO Signal 2024-10-31, trade 2024-11-01 to 2024-12-02: -0.45% net, SPY 5.54%
+INFO Signal 2024-11-29, trade 2024-12-02 to 2025-01-02: -13.58% net, SPY -2.25%
+INFO Signal 2024-12-31, trade 2025-01-02 to 2025-02-03: -8.81% net, SPY 0.56%
+INFO Signal 2025-01-31, trade 2025-02-03 to 2025-03-03: 2.80% net, SPY 0.59%
+INFO Signal 2025-02-28, trade 2025-03-03 to 2025-04-01: -17.71% net, SPY -6.50%
+INFO Breakout risk-off market regime on 2025-03-31: hold cash
+INFO Signal 2025-03-31, trade 2025-04-01 to 2025-05-01: 0.00% net, SPY 0.52%
+INFO Breakout risk-off market regime on 2025-04-30: hold cash
+INFO Signal 2025-04-30, trade 2025-05-01 to 2025-06-02: 0.00% net, SPY 4.89%
+INFO Signal 2025-05-30, trade 2025-06-02 to 2025-07-01: -1.11% net, SPY 4.87%
+INFO Signal 2025-06-30, trade 2025-07-01 to 2025-08-01: -5.40% net, SPY 1.61%
+INFO Signal 2025-07-31, trade 2025-08-01 to 2025-09-02: -2.40% net, SPY 1.79%
+INFO Signal 2025-08-29, trade 2025-09-02 to 2025-10-01: 17.70% net, SPY 4.03%
+INFO Signal 2025-09-30, trade 2025-10-01 to 2025-11-03: 18.43% net, SPY 3.39%
+INFO Signal 2025-10-31, trade 2025-11-03 to 2025-12-01: -17.97% net, SPY -1.00%
+INFO Signal 2025-11-28, trade 2025-12-01 to 2026-01-02: -4.63% net, SPY 1.02%
+INFO Signal 2025-12-31, trade 2026-01-02 to 2026-02-02: -1.18% net, SPY 0.56%
+INFO Signal 2026-01-30, trade 2026-02-02 to 2026-03-02: 17.67% net, SPY -1.58%
+INFO Signal 2026-02-27, trade 2026-03-02 to 2026-04-01: -1.44% net, SPY -3.65%
+INFO Breakout risk-off market regime on 2026-03-31: hold cash
+INFO Signal 2026-03-31, trade 2026-04-01 to 2026-05-01: 0.00% net, SPY 10.30%
+INFO Signal 2026-04-30, trade 2026-05-01 to 2026-06-01: -1.31% net, SPY 4.73%
+INFO Signal 2026-05-29, trade 2026-06-01 to 2026-07-01: 3.62% net, SPY -1.37%
+INFO Signal 2026-06-30, trade 2026-07-01 to 2026-08-03: -9.62% net, SPY 0.60%
+INFO Signal 2026-07-31, trade 2026-08-03 to 2026-09-01: 2.24% net, SPY 1.68%
+INFO Signal 2026-08-31, trade 2026-09-01 to 2026-10-01: -3.35% net, SPY 0.31%
+ RebalanceMonths  Periods  AvgNetReturn_pct  TotalReturn_pct  SPYTotalReturn_pct  TotalEdgeVsSPY_pct  WinningPeriods  LosingPeriods  PeriodHitRate_pct  BestPeriod_pct  WorstPeriod_pct  RebalancePointMaxDrawdown_pct  DailyMaxDrawdown_pct ExitRule  TopN     SelectionModel  PortfolioValue_USD          LiquidityRule  EffectiveMinADV20_USD EntryExecution ExitExecution RebalanceExitExecution  StopLoss_pct  CashPeriods  DataQualityExclusionCount DataQualityExcludedTickers  EarlyExitPositions                                        Execution                       Universe  UniverseSignalDates  UniverseMinTickers  UniverseMaxTickers SignalConvention
+               1       43         -1.632899       -57.841489           93.308212         -151.149701              13             30          30.232558       18.431577       -17.965184                     -63.070201            -64.917308     stop    15 robust-momentum-v1             10000.0 FIXED_MIN_ADV20_2M_USD              2000000.0      next-open     next-open              next-open          10.0            4                          0                                            358 SIGNAL_CLOSE_ENTRY_NEXT-OPEN_REBALANCE_NEXT-OPEN POINT_IN_TIME_US_COMMON_STOCKS                   43                4966                5227  MONTH_END_CLOSE
+Traceback (most recent call last):
+  File "/workspace/scratch/c79cf0445865/MomentumCloud/run_locked_robust_offline.py", line 100, in <module>
+    main()
+  File "/workspace/scratch/c79cf0445865/MomentumCloud/run_locked_robust_offline.py", line 96, in main
+    path.write_text(json.dumps(record, indent=2, default=str, allow_nan=False) + "\n")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py", line 398, in _iterencode_dict
+    yield _floatstr(value)
+          ^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py", line 240, in floatstr
+    raise ValueError(
+ValueError: Out of range float values are not JSON compliant: nan

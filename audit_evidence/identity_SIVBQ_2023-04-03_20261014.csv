@@ -1,0 +1,2 @@
+ticker,name,market,locale,primary_exchange,type,active,currency_name,composite_figi,share_class_figi,description,ticker_root,ticker_suffix
+SIVBQ,SVB FINCL GROUP,otc,us,OTC Link,CS,true,USD,BBG000BT0CM2,BBG001S5W3B1,SVB FINCL GROUP,SIVB,Q

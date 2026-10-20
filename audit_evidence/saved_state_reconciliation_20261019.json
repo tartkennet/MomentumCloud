@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-19",
+  "status": "SAVED_STATE_RECONCILED_MODEL_RERUN_REQUIRED",
+  "verified_source_head": "3aa19d4cec7c7414c7aec4db8e2c9fe8b884d2fb",
+  "local_workspace_before_recovery": "EMPTY",
+  "documentation_coverage": {
+    "total": 288,
+    "covered": 286,
+    "uncovered": [
+      "AEPPZ",
+      "RNAZ"
+    ],
+    "execution_approval": false
+  },
+  "saved_bulk_price_csv": 558,
+  "saved_test_checkpoint_count": 121,
+  "fresh_model_or_test_run": false,
+  "saved_selection_replay": {
+    "status": "PASS_FRESH_MODEL_REPLAY_AFTER_GOLD_REINTRODUCTION_AND_FOUR_FULL_HISTORIES",
+    "positions": 645,
+    "tickers": 230,
+    "periods": 43,
+    "identical_position_keys": true,
+    "exact_price_and_date_matches": true,
+    "independent_net_return_pct": -0.5460050227673818,
+    "net_return_pct": -0.5460050227673818,
+    "daily_max_drawdown_pct": -50.38013190677646,
+    "spy_matched_fixed_cost_return_pct": 70.20238513471013,
+    "independent_capital_aggregation": "PASS",
+    "regression_tests": 115,
+    "universe_complete": false
+  },
+  "last_saved_diagnostic": {
+    "status": "BLOCKED_NO_VALID_UNIVERSE_RETURN",
+    "basis_issues": [
+      {
+        "ticker": "PARA",
+        "target_day": "2025-09-02",
+        "entry_day": "2025-08-01",
+        "reason": "Action basis disagrees with execution cache: PSKY 2025-08-07"
+      }
+    ],
+    "unresolved_executions": "No executable price or verified corporate-action settlement for: 2023-02-28: SIVB(exit from 2023-04-03) | 2023-03-31: FRC(exit from 2023-05-01), SJR(exit from 2023-05-01) | 2023-07-31: AEPPZ(exit from 2023-09-01) | 2023-09-29: NCR(exit from 2023-11-01) | 2025-07-31: PARA(exit from 2025-09-02) | 2025-10-31: LNW(exit from 2025-12-01), RNAZ(exit 2025-12-02 outside period ending 2025-12-01) | 2026-08-31: HLX(exit from 2026-10-01)",
+    "universe_return": null,
+    "ranking_value_added": null,
+    "stage": "Last verified completed diagnostic, before four successor-history installations"
+  },
+  "handoff_only_not_restored": {
+    "test_count": 123,
+    "unresolved_tickers": [
+      "FRC",
+      "SJR",
+      "AEPPZ",
+      "RNAZ"
+    ],
+    "basis_issues": 0,
+    "requires_fresh_saved_reproduction": true
+  },
+  "missing_final_artifacts": [
+    "123-test final log and two additional tests",
+    "selection replay after complete NCR batch",
+    "four-case universe diagnostic",
+    "full 291-pair preflight",
+    "SJR payment/currency evidence update",
+    "RNAZ fixed-day endpoint evidence",
+    "NCR independent valuation check"
+  ],
+  "next_step": "Restore saved code and frozen inputs; run one combined local verification of already installed batch, save complete outputs before more event changes.",
+  "decision": "NO_GO",
+  "universe_return": null,
+  "ranking_value_added": null
+}

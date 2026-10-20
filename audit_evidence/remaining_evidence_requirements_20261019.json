@@ -1,0 +1,92 @@
+{
+  "checked_date": "2026-10-19",
+  "source_head": "2aa1715e5d4b2249a442168f7161bb153062d429",
+  "status": "FOUR_ORIGINAL_EXECUTIONS_STILL_BLOCKED",
+  "historical_executions_closed": 0,
+  "requirements": [
+    {
+      "ticker": "FRC",
+      "signal": "2023-03-31",
+      "planned_exit": "2023-05-01",
+      "required_original_test": [
+        "Observed raw and adjusted fixed-day executable quote with timestamp, positive volume and dated issuer identity, or verified applicable fixed-day shareholder settlement"
+      ],
+      "later_observation": "FRCB from 2023-05-03 must retain actual date; not a May 1 execution",
+      "access_limitation": "Connected historical trades endpoint returned NOT_ENTITLED; original retained daily endpoints returned 404",
+      "alternative_accounting": "A delayed-exit scenario requires a global funding ledger, allocation treatment when cash is unavailable, and explicit daily marks. Isolated ledger now exists; integration and policy are not complete."
+    },
+    {
+      "ticker": "SJR",
+      "signal": "2023-03-31",
+      "planned_exit": "2023-05-01",
+      "legal_cash": {
+        "amount": "40.50",
+        "currency": "CAD",
+        "per": "Class B non-voting common share"
+      },
+      "required": [
+        "Final CDS/depositary payment confirmation and applicable credited amount/currency/date/time for modeled holder class",
+        "Documented CAD/USD conversion cash legs and date/time, or explicit CAD holding/valuation policy",
+        "Timestamp-compatible daily receivable marks, preserving publication availability"
+      ],
+      "clearing_identifiers": {
+        "event_id": "E119202124603",
+        "bulletin": "2023.01688M",
+        "released": "2023-04-05",
+        "anticipated_payment": "2023-04-06",
+        "final_payment_verified": false
+      },
+      "insufficient": [
+        "Anticipated payable date",
+        "OCC option cash deliverable",
+        "Bank of Canada daily indicative average as an opening FX execution"
+      ]
+    },
+    {
+      "ticker": "AEPPZ",
+      "signal": "2023-07-31",
+      "planned_exit": "2023-09-01",
+      "cusip": "02557T307",
+      "issuer_cik": "4904",
+      "contract_settlement": "2023-08-15",
+      "required": [
+        "Final applicable per-unit stock settlement/delivery rate and adjustments",
+        "Residual cash, coupon/contract payments, fractional-share treatment and delivery timing",
+        "Evidence identifying holder elections or default terms actually applicable"
+      ],
+      "insufficient": [
+        "Original maximum/minimum formula rate alone",
+        "Aggregate shares issued divided by original units",
+        "An extra $50 cash credit in addition to shares",
+        "Form 25 without a conversion attachment"
+      ]
+    },
+    {
+      "ticker": "RNAZ",
+      "signal": "2025-10-31",
+      "planned_exit": "2025-12-01",
+      "required_original_test": [
+        "Observed raw/adjusted fixed-day executable quote with timestamp, positive volume and dated issuer identity, or verified applicable fixed-day settlement"
+      ],
+      "later_observation": {
+        "date": "2025-12-02",
+        "raw_open": "8.91",
+        "adjusted_open": "8.91",
+        "fixed_day_execution": false
+      },
+      "insufficient": [
+        "Flat carried reference bar without trading volume",
+        "Empty public history window also omitting known traded dates",
+        "Treating data-plan entitlement error as proof of a market halt"
+      ]
+    }
+  ],
+  "constraints": {
+    "no_data_purchase": true,
+    "no_loser_removal": true,
+    "no_price_or_cvr_invention": true,
+    "no_parameter_change": true,
+    "no_fixed_exit_backdating": true
+  },
+  "next_model_run_condition": "New verified evidence changes model inputs, or a separately specified and reviewed delayed-execution scenario is implemented. Do not rerun unchanged model simply to repeat four blockers."
+}

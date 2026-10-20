@@ -1,0 +1,108 @@
+{
+  "source_head": "b1d0fb51c381b2e47c73286382451cf4fe74a091",
+  "status": "NO_NEW_MODEL_INPUTS_OR_EXECUTIONS",
+  "files": [
+    {
+      "path": "audit_evidence/AEPPZ_August_8K_search_20261019.json",
+      "bytes": 6517,
+      "sha256": "8d3bdf87f667b118b0eb7c129c7d58a3f67d176783e458a76848013d1b2475ce",
+      "git_blob_sha1": "44cb34dbd6b37891c49a5ae8c7549342af5cdad4"
+    },
+    {
+      "path": "audit_evidence/CDS_enhanced_bulletins_20261019.html",
+      "bytes": 52972,
+      "sha256": "5215b8aab19ff3f077a678e483a8623da6b73ef317ee596e0c200bc05a12c11f",
+      "git_blob_sha1": "07358566b97d0e24cf552d47797f2602c916b350"
+    },
+    {
+      "path": "audit_evidence/CDS_public_bulletins_20261019.html",
+      "bytes": 269,
+      "sha256": "a14f7b0876401fdc3313e38660b5643a0964583c09574c0d1a4b75db75f83fbe",
+      "git_blob_sha1": "686f8d3a13fda97380d4d396beafd19de68009d0"
+    },
+    {
+      "path": "audit_evidence/final_source_batch_20261019.json",
+      "bytes": 10585,
+      "sha256": "299fabab22a9c1cbc3d0aee3c0f6c9438ff2020b0759281d7a277de3fee96b5b",
+      "git_blob_sha1": "a0595661c645b41a8d1873b25177a389563bd996"
+    },
+    {
+      "path": "audit_evidence/minute_exit_FRC_0_raw_20261019.json",
+      "bytes": 19434,
+      "sha256": "1c3f5b429b9fa5ee2615b159e92002a0e2aa3a5a173be87e1fb0714ce8270f74",
+      "git_blob_sha1": "d427cc6b38a200073f028c4fccd46f5703ceb231"
+    },
+    {
+      "path": "audit_evidence/minute_exit_FRC_1_adjusted_20261019.json",
+      "bytes": 19433,
+      "sha256": "26650807dd54bc99a4512862dbbbf7b7cebc0ec9ff6c5a9e594ae78abae7779c",
+      "git_blob_sha1": "bf3c436646e14aea3f37c78d35a2ff555592eead"
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_2_raw_20261019.json",
+      "bytes": 601,
+      "sha256": "6cbedc546b794d534b10fa2edec4b0bd44a1a8401dd7dbb159c79f31d0e087e5",
+      "git_blob_sha1": "db065e09021230c5c1434b822ea251fa81060982"
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_3_adjusted_20261019.json",
+      "bytes": 600,
+      "sha256": "40bae7fbc0a2bc156edd765fa0d9e0e8069f17ac61adc8309cf25042a6a97cc0",
+      "git_blob_sha1": "ea87f5be13cbf0fe2a493adc2c17422d8d107a31"
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_4_raw_20261019.json",
+      "bytes": 2111,
+      "sha256": "c67b300818d28808bf70228bff8bc0eae00e03514f12a6c87403cf479ed0b98e",
+      "git_blob_sha1": "5264e3c6e851d625e122117bc358608671809e3c"
+    },
+    {
+      "path": "audit_evidence/opening_minute_FRC_adjusted_20261019.json",
+      "bytes": 605,
+      "sha256": "6c9a13ceca580af049c4e08c000b3ed72c14a2f111c30ea16bbf9ef62f5ed072",
+      "git_blob_sha1": "41de0c9c5548ba3d7dff1eb1b0ed54a4377c6c64"
+    },
+    {
+      "path": "audit_evidence/opening_minute_FRC_raw_20261019.json",
+      "bytes": 606,
+      "sha256": "80beb6cfc343053dc6817874b9525ca4b6243150d25ffdad0d9715e1f12034a9",
+      "git_blob_sha1": "28e93c4cd4091f631735ecc2eb74ff1c6e4b025b"
+    },
+    {
+      "path": "audit_evidence/opening_minute_RNAZ_adjusted_20261019.json",
+      "bytes": 606,
+      "sha256": "d09fbc79ddd4fea0f75076a9ee85111896ffa12845f8538304f8496f8154f13c",
+      "git_blob_sha1": "583ab9f5f7dca4f7bc5c048c39b92ad5ca25979b"
+    },
+    {
+      "path": "audit_evidence/opening_minute_RNAZ_raw_20261019.json",
+      "bytes": 607,
+      "sha256": "f760d6d6bd8a1ac2fba96051204cb34a07298aab6797d825aec886b5d087dbc4",
+      "git_blob_sha1": "e4ca29f0d95c6060fcbcdb5c472eabdff57be68c"
+    },
+    {
+      "path": "audit_evidence/selection_reaggregation_final_source_review_20261019.json",
+      "bytes": 549,
+      "sha256": "de0fc8334b8009ba9fffbaa40b09fd3ecde7ad487fc6a627187954020899caa9",
+      "git_blob_sha1": "219b5b8ac94b211654a79edf9d79dbccf7d5838f"
+    },
+    {
+      "path": "audit_evidence/settlement_access_check_20261019.json",
+      "bytes": 544,
+      "sha256": "5ad8bc6e2398f63b065bee94c39f836ccbba9e4a55b7cf6a5432dce410099b9c",
+      "git_blob_sha1": "20e1fcbb8d337d78c6d0f0227ca2b307c9a516b9"
+    },
+    {
+      "path": "docs/MomentumCloud_urvalsgranskning.md",
+      "bytes": 64894,
+      "sha256": "a3abf5c51cfb85c3e3a0bc5d50dd938ea3620722b0b4086a895e9550b40bb8d9",
+      "git_blob_sha1": "14aa34f0d1c2e178df174a352df2c11f1016e31c"
+    },
+    {
+      "path": "docs/external_evidence_requests_20261019.md",
+      "bytes": 2988,
+      "sha256": "b826e3bdccf221f5571f702769aa91c6cb2c691b4c9995471299685071805421",
+      "git_blob_sha1": "55d67cce02388a94d6d16388cb38c94dfc5cc321"
+    }
+  ]
+}

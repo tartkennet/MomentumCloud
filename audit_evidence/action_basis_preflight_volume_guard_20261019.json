@@ -1,0 +1,8740 @@
+{
+  "status": "COMPLETE_PREFLIGHT_NOT_MODEL_EXECUTION",
+  "requested_pairs": 291,
+  "observed_pairs": 291,
+  "missing_pairs": 0,
+  "missing_individual_requests": 0,
+  "full_universe_complete": false,
+  "records": [
+    {
+      "ticker": "CIR",
+      "day": "2023-10-17",
+      "purpose": "original-basis",
+      "action": "CIR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 55.98,
+            "h": 56,
+            "l": 55.97,
+            "c": 56,
+            "v": 3161722,
+            "t": 1697515200000
+          }
+        ],
+        "raw": [
+          {
+            "o": 55.98,
+            "h": 56,
+            "l": 55.97,
+            "c": 56,
+            "v": 3161722,
+            "t": 1697515200000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FPAC",
+      "day": "2023-03-07",
+      "purpose": "original-basis",
+      "action": "FPAC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.2,
+            "h": 10.21,
+            "l": 10.2,
+            "c": 10.21,
+            "v": 9508272.0,
+            "t": 1678165200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.2,
+            "h": 10.21,
+            "l": 10.2,
+            "c": 10.21,
+            "v": 9508272.0,
+            "t": 1678165200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NATI",
+      "day": "2023-10-10",
+      "purpose": "original-basis",
+      "action": "NATI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 59.98,
+            "h": 59.99,
+            "l": 59.98,
+            "c": 59.98,
+            "v": 5083626.0,
+            "t": 1696910400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 59.98,
+            "h": 59.99,
+            "l": 59.98,
+            "c": 59.98,
+            "v": 5083626.0,
+            "t": 1696910400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ARGO",
+      "day": "2023-11-15",
+      "purpose": "original-basis",
+      "action": "ARGO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.0,
+            "h": 30.0,
+            "l": 29.99,
+            "c": 29.99,
+            "v": 881726.0,
+            "t": 1700024400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.0,
+            "h": 30.0,
+            "l": 29.99,
+            "c": 29.99,
+            "v": 881726.0,
+            "t": 1700024400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CCF",
+      "day": "2023-11-14",
+      "purpose": "original-basis",
+      "action": "CCF",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 127.49,
+            "h": 127.51,
+            "l": 127.48,
+            "c": 127.49,
+            "v": 278900.0,
+            "t": 1699938000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 127.49,
+            "h": 127.51,
+            "l": 127.48,
+            "c": 127.49,
+            "v": 278900.0,
+            "t": 1699938000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NWLI",
+      "day": "2024-07-08",
+      "purpose": "original-basis",
+      "action": "NWLI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 499.7,
+            "h": 499.99,
+            "l": 499.57,
+            "c": 499.98,
+            "v": 98806.0,
+            "t": 1720411200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 499.7,
+            "h": 499.99,
+            "l": 499.57,
+            "c": 499.98,
+            "v": 98806.0,
+            "t": 1720411200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AXNX",
+      "day": "2024-11-14",
+      "purpose": "original-basis",
+      "action": "AXNX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 70.5,
+            "h": 71.05,
+            "l": 70.37,
+            "c": 70.98,
+            "v": 4233308.0,
+            "t": 1731560400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 70.5,
+            "h": 71.05,
+            "l": 70.37,
+            "c": 70.98,
+            "v": 4233308.0,
+            "t": 1731560400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HCP",
+      "day": "2025-02-26",
+      "purpose": "original-basis",
+      "action": "HCP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 34.8,
+            "h": 34.82,
+            "l": 34.77,
+            "c": 34.78,
+            "v": 9199011.0,
+            "t": 1740546000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 34.8,
+            "h": 34.82,
+            "l": 34.77,
+            "c": 34.78,
+            "v": 9199011.0,
+            "t": 1740546000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EVRI",
+      "day": "2025-06-30",
+      "purpose": "original-basis",
+      "action": "EVRI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.25,
+            "h": 14.25,
+            "l": 14.23,
+            "c": 14.24,
+            "v": 2170273.0,
+            "t": 1751256000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.25,
+            "h": 14.25,
+            "l": 14.23,
+            "c": 14.24,
+            "v": 2170273.0,
+            "t": 1751256000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ESGR",
+      "day": "2025-07-01",
+      "purpose": "original-basis",
+      "action": "ESGR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 336.36,
+            "h": 338.1,
+            "l": 335.9,
+            "c": 337.91,
+            "v": 237945.0,
+            "t": 1751342400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 336.36,
+            "h": 338.1,
+            "l": 335.9,
+            "c": 337.91,
+            "v": 237945.0,
+            "t": 1751342400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FYBR",
+      "day": "2026-01-16",
+      "purpose": "original-basis",
+      "action": "FYBR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 38.47,
+            "h": 38.49,
+            "l": 38.47,
+            "c": 38.49,
+            "v": 13032829.0,
+            "t": 1768539600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 38.47,
+            "h": 38.49,
+            "l": 38.47,
+            "c": 38.49,
+            "v": 13032829.0,
+            "t": 1768539600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AL",
+      "day": "2026-04-07",
+      "purpose": "original-basis",
+      "action": "AL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 64.98,
+            "h": 65.0,
+            "l": 64.97,
+            "c": 65.0,
+            "v": 2291309.548258,
+            "t": 1775534400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 64.98,
+            "h": 65.0,
+            "l": 64.97,
+            "c": 65.0,
+            "v": 2291309.548258,
+            "t": 1775534400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GTLS",
+      "day": "2026-07-15",
+      "purpose": "original-basis",
+      "action": "GTLS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 209.94,
+            "h": 209.96,
+            "l": 209.81,
+            "c": 209.9,
+            "v": 4653026.435895,
+            "t": 1784088000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 209.94,
+            "h": 209.96,
+            "l": 209.81,
+            "c": 209.9,
+            "v": 4653026.435895,
+            "t": 1784088000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TRHC",
+      "day": "2023-11-02",
+      "purpose": "original-basis",
+      "action": "TRHC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.41,
+            "h": 10.5,
+            "l": 10.41,
+            "c": 10.5,
+            "v": 1306793.0,
+            "t": 1698897600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.41,
+            "h": 10.5,
+            "l": 10.41,
+            "c": 10.5,
+            "v": 1306793.0,
+            "t": 1698897600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RFP",
+      "day": "2023-02-28",
+      "purpose": "original-basis",
+      "action": "RFP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 22.0,
+            "h": 22.0999,
+            "l": 21.9,
+            "c": 21.92,
+            "v": 14960418.0,
+            "t": 1677560400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 22.0,
+            "h": 22.0999,
+            "l": 21.9,
+            "c": 21.92,
+            "v": 14960418.0,
+            "t": 1677560400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EVOP",
+      "day": "2023-03-23",
+      "purpose": "original-basis",
+      "action": "EVOP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 33.85,
+            "h": 34.01,
+            "l": 33.845,
+            "c": 33.99,
+            "v": 2954136.0,
+            "t": 1679544000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 33.85,
+            "h": 34.01,
+            "l": 33.845,
+            "c": 33.99,
+            "v": 2954136.0,
+            "t": 1679544000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SOVO",
+      "day": "2024-03-11",
+      "purpose": "original-basis",
+      "action": "SOVO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 22.96,
+            "h": 23.0,
+            "l": 22.96,
+            "c": 22.98,
+            "v": 6870571.0,
+            "t": 1710129600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 22.96,
+            "h": 23.0,
+            "l": 22.96,
+            "c": 22.98,
+            "v": 6870571.0,
+            "t": 1710129600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NVEI",
+      "day": "2024-11-14",
+      "purpose": "original-basis",
+      "action": "NVEI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 33.98,
+            "h": 33.99,
+            "l": 33.98,
+            "c": 33.98,
+            "v": 2139915.0,
+            "t": 1731560400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 33.98,
+            "h": 33.99,
+            "l": 33.98,
+            "c": 33.98,
+            "v": 2139915.0,
+            "t": 1731560400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FRGE",
+      "day": "2026-02-27",
+      "purpose": "original-basis",
+      "action": "FRGE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 45.0,
+            "h": 45.03,
+            "l": 44.98,
+            "c": 45.0,
+            "v": 631686.765994,
+            "t": 1772168400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 45.0,
+            "h": 45.03,
+            "l": 44.98,
+            "c": 45.0,
+            "v": 631686.765994,
+            "t": 1772168400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OSH",
+      "day": "2023-05-01",
+      "purpose": "original-basis",
+      "action": "OSH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 38.98,
+            "h": 39.0,
+            "l": 38.98,
+            "c": 39.0,
+            "v": 2860706.0,
+            "t": 1682913600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 38.98,
+            "h": 39.0,
+            "l": 38.98,
+            "c": 39.0,
+            "v": 2860706.0,
+            "t": 1682913600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ISEE",
+      "day": "2023-07-10",
+      "purpose": "original-basis",
+      "action": "ISEE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 39.86,
+            "h": 39.99,
+            "l": 39.85,
+            "c": 39.95,
+            "v": 10999110.0,
+            "t": 1688961600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 39.86,
+            "h": 39.99,
+            "l": 39.85,
+            "c": 39.95,
+            "v": 10999110.0,
+            "t": 1688961600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ROVR",
+      "day": "2024-02-26",
+      "purpose": "original-basis",
+      "action": "ROVR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.99,
+            "h": 11,
+            "l": 10.99,
+            "c": 10.99,
+            "v": 2163226,
+            "t": 1708923600000
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.99,
+            "h": 11,
+            "l": 10.99,
+            "c": 10.99,
+            "v": 2163226,
+            "t": 1708923600000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CBAY",
+      "day": "2024-03-21",
+      "purpose": "original-basis",
+      "action": "CBAY",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 32.49,
+            "h": 32.5,
+            "l": 32.48,
+            "c": 32.48,
+            "v": 8356254.0,
+            "t": 1710993600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 32.49,
+            "h": 32.5,
+            "l": 32.48,
+            "c": 32.48,
+            "v": 8356254.0,
+            "t": 1710993600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALPN",
+      "day": "2024-05-17",
+      "purpose": "original-basis",
+      "action": "ALPN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 64.98,
+            "h": 65,
+            "l": 64.97,
+            "c": 64.97,
+            "v": 4288333,
+            "t": 1715918400000
+          }
+        ],
+        "raw": [
+          {
+            "o": 64.98,
+            "h": 65,
+            "l": 64.97,
+            "c": 64.97,
+            "v": 4288333,
+            "t": 1715918400000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RGLS",
+      "day": "2025-06-24",
+      "purpose": "original-basis",
+      "action": "RGLS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.15,
+            "h": 8.18,
+            "l": 8.07,
+            "c": 8.16,
+            "v": 9342413.0,
+            "t": 1750737600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.15,
+            "h": 8.18,
+            "l": 8.07,
+            "c": 8.16,
+            "v": 9342413.0,
+            "t": 1750737600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TERN",
+      "day": "2026-05-04",
+      "purpose": "original-basis",
+      "action": "TERN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 52.97,
+            "h": 52.98,
+            "l": 52.94,
+            "c": 52.95,
+            "v": 6347046.461057,
+            "t": 1777867200000
+          }
+        ],
+        "raw": [
+          {
+            "o": 52.97,
+            "h": 52.98,
+            "l": 52.94,
+            "c": 52.95,
+            "v": 6347046.461057,
+            "t": 1777867200000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HSKA",
+      "day": "2023-06-12",
+      "purpose": "original-basis",
+      "action": "HSKA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 119.96,
+            "h": 120.03,
+            "l": 119.96,
+            "c": 119.99,
+            "v": 394433.0,
+            "t": 1686542400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 119.96,
+            "h": 120.03,
+            "l": 119.96,
+            "c": 119.99,
+            "v": 394433.0,
+            "t": 1686542400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EXAS",
+      "day": "2026-03-20",
+      "purpose": "original-basis",
+      "action": "EXAS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 104.93,
+            "h": 104.98,
+            "l": 104.9,
+            "c": 104.91,
+            "v": 21561523.063591,
+            "t": 1773979200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 104.93,
+            "h": 104.98,
+            "l": 104.9,
+            "c": 104.91,
+            "v": 21561523.063591,
+            "t": 1773979200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VVNT",
+      "day": "2023-03-09",
+      "purpose": "original-basis",
+      "action": "VVNT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.99,
+            "h": 12.015,
+            "l": 11.99,
+            "c": 12.0,
+            "v": 5165704.0,
+            "t": 1678338000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.99,
+            "h": 12.015,
+            "l": 11.99,
+            "c": 12.0,
+            "v": 5165704.0,
+            "t": 1678338000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MYOV",
+      "day": "2023-03-09",
+      "purpose": "original-basis",
+      "action": "MYOV",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.99,
+            "h": 27.0,
+            "l": 26.98,
+            "c": 26.98,
+            "v": 2256078.0,
+            "t": 1678338000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.99,
+            "h": 27.0,
+            "l": 26.98,
+            "c": 26.98,
+            "v": 2256078.0,
+            "t": 1678338000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AIMC",
+      "day": "2023-03-24",
+      "purpose": "original-basis",
+      "action": "AIMC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 61.99,
+            "h": 62.01,
+            "l": 61.98,
+            "c": 61.98,
+            "v": 1844123.0,
+            "t": 1679630400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 61.99,
+            "h": 62.01,
+            "l": 61.98,
+            "c": 61.98,
+            "v": 1844123.0,
+            "t": 1679630400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "APEN",
+      "day": "2023-04-03",
+      "purpose": "original-basis",
+      "action": "APEN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.93,
+            "h": 10.0,
+            "l": 9.92,
+            "c": 10.0,
+            "v": 1658846.0,
+            "t": 1680494400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.93,
+            "h": 10.0,
+            "l": 9.92,
+            "c": 10.0,
+            "v": 1658846.0,
+            "t": 1680494400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TA",
+      "day": "2023-05-12",
+      "purpose": "original-basis",
+      "action": "TA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 86.03,
+            "h": 86.03,
+            "l": 85.99,
+            "c": 86.0,
+            "v": 1111573.0,
+            "t": 1683864000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 86.03,
+            "h": 86.03,
+            "l": 85.99,
+            "c": 86.0,
+            "v": 1111573.0,
+            "t": 1683864000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MAXR",
+      "day": "2023-05-02",
+      "purpose": "original-basis",
+      "action": "MAXR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 52.98,
+            "h": 52.99,
+            "l": 52.98,
+            "c": 52.99,
+            "v": 3111722.0,
+            "t": 1683000000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 52.98,
+            "h": 52.99,
+            "l": 52.98,
+            "c": 52.99,
+            "v": 3111722.0,
+            "t": 1683000000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SUMO",
+      "day": "2023-05-11",
+      "purpose": "original-basis",
+      "action": "SUMO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.04,
+            "h": 12.05,
+            "l": 12.04,
+            "c": 12.04,
+            "v": 5262677.0,
+            "t": 1683777600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.04,
+            "h": 12.05,
+            "l": 12.04,
+            "c": 12.04,
+            "v": 5262677.0,
+            "t": 1683777600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CVT",
+      "day": "2023-06-14",
+      "purpose": "original-basis",
+      "action": "CVT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.5,
+            "h": 8.5399,
+            "l": 8.5,
+            "c": 8.52,
+            "v": 12363916.0,
+            "t": 1686715200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.5,
+            "h": 8.5399,
+            "l": 8.5,
+            "c": 8.52,
+            "v": 12363916.0,
+            "t": 1686715200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XM",
+      "day": "2023-06-27",
+      "purpose": "original-basis",
+      "action": "XM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.14,
+            "h": 18.15,
+            "l": 18.14,
+            "c": 18.14,
+            "v": 3206200.0,
+            "t": 1687838400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.14,
+            "h": 18.15,
+            "l": 18.14,
+            "c": 18.14,
+            "v": 3206200.0,
+            "t": 1687838400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DSEY",
+      "day": "2023-07-03",
+      "purpose": "original-basis",
+      "action": "DSEY",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.39,
+            "h": 8.4,
+            "l": 8.39,
+            "c": 8.39,
+            "v": 441147.0,
+            "t": 1688356800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.39,
+            "h": 8.4,
+            "l": 8.39,
+            "c": 8.39,
+            "v": 441147.0,
+            "t": 1688356800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ARCE",
+      "day": "2023-12-06",
+      "purpose": "original-basis",
+      "action": "ARCE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 13.98,
+            "h": 13.99,
+            "l": 13.97,
+            "c": 13.98,
+            "v": 471062.0,
+            "t": 1701838800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 13.98,
+            "h": 13.99,
+            "l": 13.97,
+            "c": 13.98,
+            "v": 471062.0,
+            "t": 1701838800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "THRN",
+      "day": "2023-10-13",
+      "purpose": "original-basis",
+      "action": "THRN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.19,
+            "h": 10.2,
+            "l": 10.19,
+            "c": 10.19,
+            "v": 84687.0,
+            "t": 1697169600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.19,
+            "h": 10.2,
+            "l": 10.19,
+            "c": 10.19,
+            "v": 84687.0,
+            "t": 1697169600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SGEN",
+      "day": "2023-12-13",
+      "purpose": "original-basis",
+      "action": "SGEN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 228.93,
+            "h": 228.96,
+            "l": 228.74,
+            "c": 228.74,
+            "v": 20075430.0,
+            "t": 1702443600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 228.93,
+            "h": 228.96,
+            "l": 228.74,
+            "c": 228.74,
+            "v": 20075430.0,
+            "t": 1702443600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CHS",
+      "day": "2024-01-04",
+      "purpose": "original-basis",
+      "action": "CHS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 7.6,
+            "h": 7.6,
+            "l": 7.59,
+            "c": 7.59,
+            "v": 7324122.0,
+            "t": 1704344400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 7.6,
+            "h": 7.6,
+            "l": 7.59,
+            "c": 7.59,
+            "v": 7324122.0,
+            "t": 1704344400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MRTX",
+      "day": "2024-01-22",
+      "purpose": "original-basis",
+      "action": "MRTX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 58.86,
+            "h": 58.99,
+            "l": 58.54,
+            "c": 58.7,
+            "v": 20994430.0,
+            "t": 1705899600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 58.86,
+            "h": 58.99,
+            "l": 58.54,
+            "c": 58.7,
+            "v": 20994430.0,
+            "t": 1705899600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AYX",
+      "day": "2024-03-12",
+      "purpose": "original-basis",
+      "action": "AYX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 48.23,
+            "h": 48.24,
+            "l": 48.23,
+            "c": 48.23,
+            "v": 2104168.0,
+            "t": 1710216000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 48.23,
+            "h": 48.24,
+            "l": 48.23,
+            "c": 48.23,
+            "v": 2104168.0,
+            "t": 1710216000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TGH",
+      "day": "2024-03-13",
+      "purpose": "original-basis",
+      "action": "TGH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 49.97,
+            "h": 50.0,
+            "l": 49.97,
+            "c": 49.99,
+            "v": 1175984.0,
+            "t": 1710302400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 49.97,
+            "h": 50.0,
+            "l": 49.97,
+            "c": 49.99,
+            "v": 1175984.0,
+            "t": 1710302400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SPLK",
+      "day": "2024-03-15",
+      "purpose": "original-basis",
+      "action": "SPLK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 156.95,
+            "h": 156.97,
+            "l": 156.9,
+            "c": 156.9,
+            "v": 18211874.0,
+            "t": 1710475200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 156.95,
+            "h": 156.97,
+            "l": 156.9,
+            "c": 156.9,
+            "v": 18211874.0,
+            "t": 1710475200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "KRTX",
+      "day": "2024-03-15",
+      "purpose": "original-basis",
+      "action": "KRTX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 329.75,
+            "h": 329.99,
+            "l": 329.75,
+            "c": 329.83,
+            "v": 1868526.0,
+            "t": 1710475200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 329.75,
+            "h": 329.99,
+            "l": 329.75,
+            "c": 329.83,
+            "v": 1868526.0,
+            "t": 1710475200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PGTI",
+      "day": "2024-03-27",
+      "purpose": "original-basis",
+      "action": "PGTI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 41.99,
+            "h": 42.0,
+            "l": 41.98,
+            "c": 41.99,
+            "v": 2229851.0,
+            "t": 1711512000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 41.99,
+            "h": 42.0,
+            "l": 41.98,
+            "c": 41.99,
+            "v": 2229851.0,
+            "t": 1711512000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DSKE",
+      "day": "2024-03-28",
+      "purpose": "original-basis",
+      "action": "DSKE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.3,
+            "h": 8.3,
+            "l": 8.29,
+            "c": 8.3,
+            "v": 348930.0,
+            "t": 1711598400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.3,
+            "h": 8.3,
+            "l": 8.29,
+            "c": 8.3,
+            "v": 348930.0,
+            "t": 1711598400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TCN",
+      "day": "2024-04-30",
+      "purpose": "original-basis",
+      "action": "TCN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.235,
+            "h": 11.2485,
+            "l": 11.23,
+            "c": 11.23,
+            "v": 6702372.0,
+            "t": 1714449600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.235,
+            "h": 11.2485,
+            "l": 11.23,
+            "c": 11.23,
+            "v": 6702372.0,
+            "t": 1714449600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TAST",
+      "day": "2024-05-15",
+      "purpose": "original-basis",
+      "action": "TAST",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.55,
+            "h": 9.56,
+            "l": 9.54,
+            "c": 9.54,
+            "v": 3523490.0,
+            "t": 1715745600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.55,
+            "h": 9.56,
+            "l": 9.54,
+            "c": 9.54,
+            "v": 3523490.0,
+            "t": 1715745600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SLCA",
+      "day": "2024-07-30",
+      "purpose": "original-basis",
+      "action": "SLCA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 15.5,
+            "h": 15.51,
+            "l": 15.49,
+            "c": 15.5,
+            "v": 5628267.0,
+            "t": 1722312000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 15.5,
+            "h": 15.51,
+            "l": 15.49,
+            "c": 15.5,
+            "v": 5628267.0,
+            "t": 1722312000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EVBG",
+      "day": "2024-07-01",
+      "purpose": "original-basis",
+      "action": "EVBG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 34.99,
+            "h": 35.01,
+            "l": 34.99,
+            "c": 35.0,
+            "v": 2364113.0,
+            "t": 1719806400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 34.99,
+            "h": 35.01,
+            "l": 34.99,
+            "c": 35.0,
+            "v": 2364113.0,
+            "t": 1719806400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AAN",
+      "day": "2024-10-02",
+      "purpose": "original-basis",
+      "action": "AAN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.95,
+            "h": 10.02,
+            "l": 9.925,
+            "c": 9.99,
+            "v": 518114.0,
+            "t": 1727841600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.95,
+            "h": 10.02,
+            "l": 9.925,
+            "c": 9.99,
+            "v": 518114.0,
+            "t": 1727841600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PWSC",
+      "day": "2024-09-30",
+      "purpose": "original-basis",
+      "action": "PWSC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 22.81,
+            "h": 22.92,
+            "l": 22.81,
+            "c": 22.81,
+            "v": 25766406.0,
+            "t": 1727668800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 22.81,
+            "h": 22.92,
+            "l": 22.81,
+            "c": 22.81,
+            "v": 25766406.0,
+            "t": 1727668800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PRFT",
+      "day": "2024-10-01",
+      "purpose": "original-basis",
+      "action": "PRFT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 76.0,
+            "h": 76.01,
+            "l": 75.96,
+            "c": 75.96,
+            "v": 3144470.0,
+            "t": 1727755200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 76.0,
+            "h": 76.01,
+            "l": 75.96,
+            "c": 75.96,
+            "v": 3144470.0,
+            "t": 1727755200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SQSP",
+      "day": "2024-10-16",
+      "purpose": "original-basis",
+      "action": "SQSP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 46.65,
+            "h": 46.65,
+            "l": 46.545,
+            "c": 46.57,
+            "v": 4162627.0,
+            "t": 1729051200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 46.65,
+            "h": 46.65,
+            "l": 46.545,
+            "c": 46.57,
+            "v": 4162627.0,
+            "t": 1729051200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ITI",
+      "day": "2024-10-31",
+      "purpose": "original-basis",
+      "action": "ITI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 7.19,
+            "h": 7.2001,
+            "l": 7.19,
+            "c": 7.19,
+            "v": 645850.0,
+            "t": 1730347200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 7.19,
+            "h": 7.2001,
+            "l": 7.19,
+            "c": 7.19,
+            "v": 645850.0,
+            "t": 1730347200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SRCL",
+      "day": "2024-11-01",
+      "purpose": "original-basis",
+      "action": "SRCL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 61.97,
+            "h": 61.99,
+            "l": 61.94,
+            "c": 61.98,
+            "v": 5241236.0,
+            "t": 1730433600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 61.97,
+            "h": 61.99,
+            "l": 61.94,
+            "c": 61.98,
+            "v": 5241236.0,
+            "t": 1730433600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "INST",
+      "day": "2024-11-12",
+      "purpose": "original-basis",
+      "action": "INST",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 23.58,
+            "h": 23.62,
+            "l": 23.58,
+            "c": 23.6,
+            "v": 2693523.0,
+            "t": 1731387600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 23.58,
+            "h": 23.62,
+            "l": 23.58,
+            "c": 23.6,
+            "v": 2693523.0,
+            "t": 1731387600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RCM",
+      "day": "2024-11-18",
+      "purpose": "original-basis",
+      "action": "RCM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.3,
+            "h": 14.32,
+            "l": 14.3,
+            "c": 14.31,
+            "v": 13784869.0,
+            "t": 1731906000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.3,
+            "h": 14.32,
+            "l": 14.3,
+            "c": 14.31,
+            "v": 13784869.0,
+            "t": 1731906000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SMAR",
+      "day": "2025-01-21",
+      "purpose": "original-basis",
+      "action": "SMAR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 56.48,
+            "h": 56.5,
+            "l": 56.47,
+            "c": 56.47,
+            "v": 17559109.0,
+            "t": 1737435600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 56.48,
+            "h": 56.5,
+            "l": 56.47,
+            "c": 56.47,
+            "v": 17559109.0,
+            "t": 1737435600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ZUO",
+      "day": "2025-02-13",
+      "purpose": "original-basis",
+      "action": "ZUO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.0,
+            "h": 10.1,
+            "l": 10.0,
+            "c": 10.02,
+            "v": 26639062.0,
+            "t": 1739422800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.0,
+            "h": 10.1,
+            "l": 10.0,
+            "c": 10.02,
+            "v": 26639062.0,
+            "t": 1739422800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALTR",
+      "day": "2025-03-25",
+      "purpose": "original-basis",
+      "action": "ALTR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 111.8,
+            "h": 111.91,
+            "l": 111.6982,
+            "c": 111.85,
+            "v": 1023492.0,
+            "t": 1742875200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 111.8,
+            "h": 111.91,
+            "l": 111.6982,
+            "c": 111.85,
+            "v": 1023492.0,
+            "t": 1742875200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PLYA",
+      "day": "2025-06-13",
+      "purpose": "original-basis",
+      "action": "PLYA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 13.49,
+            "h": 13.5,
+            "l": 13.48,
+            "c": 13.48,
+            "v": 836842.0,
+            "t": 1749787200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 13.49,
+            "h": 13.5,
+            "l": 13.48,
+            "c": 13.48,
+            "v": 836842.0,
+            "t": 1749787200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TGI",
+      "day": "2025-07-23",
+      "purpose": "original-basis",
+      "action": "TGI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.85,
+            "h": 25.85,
+            "l": 25.82,
+            "c": 25.85,
+            "v": 1039324.0,
+            "t": 1753243200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.85,
+            "h": 25.85,
+            "l": 25.82,
+            "c": 25.85,
+            "v": 1039324.0,
+            "t": 1753243200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VIGL",
+      "day": "2025-08-04",
+      "purpose": "original-basis",
+      "action": "VIGL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.05,
+            "h": 8.095,
+            "l": 8.04,
+            "c": 8.05,
+            "v": 5506711.0,
+            "t": 1754280000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.05,
+            "h": 8.095,
+            "l": 8.04,
+            "c": 8.05,
+            "v": 5506711.0,
+            "t": 1754280000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SPTN",
+      "day": "2025-09-19",
+      "purpose": "original-basis",
+      "action": "SPTN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.9,
+            "h": 27.07,
+            "l": 26.83,
+            "c": 26.9,
+            "v": 3796470.0,
+            "t": 1758254400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.9,
+            "h": 27.07,
+            "l": 26.83,
+            "c": 26.9,
+            "v": 3796470.0,
+            "t": 1758254400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BASE",
+      "day": "2025-09-23",
+      "purpose": "original-basis",
+      "action": "BASE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 24.5,
+            "h": 24.53,
+            "l": 24.5,
+            "c": 24.51,
+            "v": 4928075.0,
+            "t": 1758600000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 24.5,
+            "h": 24.53,
+            "l": 24.5,
+            "c": 24.51,
+            "v": 4928075.0,
+            "t": 1758600000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AVDX",
+      "day": "2025-10-14",
+      "purpose": "original-basis",
+      "action": "AVDX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.0,
+            "h": 10.01,
+            "l": 9.99,
+            "c": 10.0,
+            "v": 4499926.0,
+            "t": 1760414400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.0,
+            "h": 10.01,
+            "l": 9.99,
+            "c": 10.0,
+            "v": 4499926.0,
+            "t": 1760414400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ZIMV",
+      "day": "2025-10-17",
+      "purpose": "original-basis",
+      "action": "ZIMV",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.99,
+            "h": 19.0,
+            "l": 18.99,
+            "c": 18.99,
+            "v": 653573.0,
+            "t": 1760673600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.99,
+            "h": 19.0,
+            "l": 18.99,
+            "c": 18.99,
+            "v": 653573.0,
+            "t": 1760673600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "INFA",
+      "day": "2025-11-17",
+      "purpose": "original-basis",
+      "action": "INFA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 24.77,
+            "h": 24.82,
+            "l": 24.76,
+            "c": 24.79,
+            "v": 2896678.0,
+            "t": 1763355600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 24.77,
+            "h": 24.82,
+            "l": 24.76,
+            "c": 24.79,
+            "v": 2896678.0,
+            "t": 1763355600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ODP",
+      "day": "2025-12-09",
+      "purpose": "original-basis",
+      "action": "ODP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 27.99,
+            "h": 28.0,
+            "l": 27.99,
+            "c": 28.0,
+            "v": 2108684.0,
+            "t": 1765256400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 27.99,
+            "h": 28.0,
+            "l": 27.99,
+            "c": 28.0,
+            "v": 2108684.0,
+            "t": 1765256400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SPNS",
+      "day": "2025-12-16",
+      "purpose": "original-basis",
+      "action": "SPNS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 43.46,
+            "h": 43.49,
+            "l": 43.43,
+            "c": 43.45,
+            "v": 1330122.0,
+            "t": 1765861200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 43.46,
+            "h": 43.49,
+            "l": 43.43,
+            "c": 43.45,
+            "v": 1330122.0,
+            "t": 1765861200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CIO",
+      "day": "2026-01-08",
+      "purpose": "original-basis",
+      "action": "CIO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 6.99,
+            "h": 7.0,
+            "l": 6.99,
+            "c": 6.99,
+            "v": 1264247.0,
+            "t": 1767848400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 6.99,
+            "h": 7.0,
+            "l": 6.99,
+            "c": 6.99,
+            "v": 1264247.0,
+            "t": 1767848400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GES",
+      "day": "2026-01-22",
+      "purpose": "original-basis",
+      "action": "GES",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 16.88,
+            "h": 16.9,
+            "l": 16.78,
+            "c": 16.81,
+            "v": 9116658.0,
+            "t": 1769058000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 16.88,
+            "h": 16.9,
+            "l": 16.78,
+            "c": 16.81,
+            "v": 9116658.0,
+            "t": 1769058000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HI",
+      "day": "2026-02-09",
+      "purpose": "original-basis",
+      "action": "HI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 32.0,
+            "h": 32.0,
+            "l": 31.98,
+            "c": 31.98,
+            "v": 3260274.0,
+            "t": 1770613200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 32.0,
+            "h": 32.0,
+            "l": 31.98,
+            "c": 31.98,
+            "v": 3260274.0,
+            "t": 1770613200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PKST",
+      "day": "2026-05-05",
+      "purpose": "original-basis",
+      "action": "PKST",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 20.98,
+            "h": 20.995,
+            "l": 20.98,
+            "c": 20.99,
+            "v": 878137.53361,
+            "t": 1777953600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 20.98,
+            "h": 20.995,
+            "l": 20.98,
+            "c": 20.99,
+            "v": 878137.53361,
+            "t": 1777953600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CSGS",
+      "day": "2026-05-13",
+      "purpose": "original-basis",
+      "action": "CSGS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 80.66,
+            "h": 80.73,
+            "l": 80.66,
+            "c": 80.69,
+            "v": 792324.89222,
+            "t": 1778644800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 80.66,
+            "h": 80.73,
+            "l": 80.66,
+            "c": 80.69,
+            "v": 792324.89222,
+            "t": 1778644800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EHAB",
+      "day": "2026-05-14",
+      "purpose": "original-basis",
+      "action": "EHAB",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 13.79,
+            "h": 13.81,
+            "l": 13.79,
+            "c": 13.8,
+            "v": 1382540.909952,
+            "t": 1778731200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 13.79,
+            "h": 13.81,
+            "l": 13.79,
+            "c": 13.8,
+            "v": 1382540.909952,
+            "t": 1778731200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MASI",
+      "day": "2026-06-09",
+      "purpose": "original-basis",
+      "action": "MASI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 179.95,
+            "h": 179.99,
+            "l": 179.95,
+            "c": 179.95,
+            "v": 3160100.540464,
+            "t": 1780977600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 179.95,
+            "h": 179.99,
+            "l": 179.95,
+            "c": 179.95,
+            "v": 3160100.540464,
+            "t": 1780977600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "JHG",
+      "day": "2026-06-29",
+      "purpose": "original-basis",
+      "action": "JHG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 51.97,
+            "h": 51.98,
+            "l": 51.95,
+            "c": 51.97,
+            "v": 2605517.87849,
+            "t": 1782705600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 51.97,
+            "h": 51.98,
+            "l": 51.95,
+            "c": 51.97,
+            "v": 2605517.87849,
+            "t": 1782705600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AVNS",
+      "day": "2026-07-24",
+      "purpose": "original-basis",
+      "action": "AVNS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 24.98,
+            "h": 25.0,
+            "l": 24.98,
+            "c": 24.99,
+            "v": 2075760.2369,
+            "t": 1784865600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 24.98,
+            "h": 25.0,
+            "l": 24.98,
+            "c": 24.99,
+            "v": 2075760.2369,
+            "t": 1784865600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TALK",
+      "day": "2026-08-14",
+      "purpose": "original-basis",
+      "action": "TALK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 5.25,
+            "h": 5.25,
+            "l": 5.24,
+            "c": 5.25,
+            "v": 2409426.046714,
+            "t": 1786680000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 5.25,
+            "h": 5.25,
+            "l": 5.24,
+            "c": 5.25,
+            "v": 2409426.046714,
+            "t": 1786680000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALOT",
+      "day": "2026-08-26",
+      "purpose": "original-basis",
+      "action": "ALOT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 28.99,
+            "h": 29.0,
+            "l": 28.98,
+            "c": 28.99,
+            "v": 249492.442983,
+            "t": 1787716800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 28.99,
+            "h": 29.0,
+            "l": 28.98,
+            "c": 28.99,
+            "v": 249492.442983,
+            "t": 1787716800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "APGE",
+      "day": "2026-09-02",
+      "purpose": "original-basis",
+      "action": "APGE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 135.08,
+            "h": 135.09,
+            "l": 135.06,
+            "c": 135.07,
+            "v": 5142068.458567,
+            "t": 1788321600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 135.08,
+            "h": 135.09,
+            "l": 135.06,
+            "c": 135.07,
+            "v": 5142068.458567,
+            "t": 1788321600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WSR",
+      "day": "2026-07-13",
+      "purpose": "original-basis",
+      "action": "WSR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.99,
+            "h": 19.0,
+            "l": 18.98,
+            "c": 18.99,
+            "v": 1869815.541599,
+            "t": 1783915200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.99,
+            "h": 19.0,
+            "l": 18.98,
+            "c": 18.99,
+            "v": 1869815.541599,
+            "t": 1783915200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SGFY",
+      "day": "2023-03-28",
+      "purpose": "original-basis",
+      "action": "SGFY",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.485,
+            "h": 30.5,
+            "l": 30.48,
+            "c": 30.49,
+            "v": 9629873.0,
+            "t": 1679976000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.485,
+            "h": 30.5,
+            "l": 30.48,
+            "c": 30.49,
+            "v": 9629873.0,
+            "t": 1679976000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AAWW",
+      "day": "2023-03-16",
+      "purpose": "original-basis",
+      "action": "AAWW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 102.43,
+            "h": 102.48,
+            "l": 102.43,
+            "c": 102.46,
+            "v": 996196.0,
+            "t": 1678939200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 102.43,
+            "h": 102.48,
+            "l": 102.43,
+            "c": 102.46,
+            "v": 996196.0,
+            "t": 1678939200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COWN",
+      "day": "2023-02-28",
+      "purpose": "original-basis",
+      "action": "COWN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 38.99,
+            "h": 39.01,
+            "l": 38.99,
+            "c": 38.99,
+            "v": 983583.0,
+            "t": 1677560400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 38.99,
+            "h": 39.01,
+            "l": 38.99,
+            "c": 38.99,
+            "v": 983583.0,
+            "t": 1677560400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ATCO",
+      "day": "2023-03-27",
+      "purpose": "original-basis",
+      "action": "ATCO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 15.49,
+            "h": 15.51,
+            "l": 15.48,
+            "c": 15.48,
+            "v": 2295603.0,
+            "t": 1679889600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 15.49,
+            "h": 15.51,
+            "l": 15.48,
+            "c": 15.48,
+            "v": 2295603.0,
+            "t": 1679889600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "INDT",
+      "day": "2023-06-28",
+      "purpose": "original-basis",
+      "action": "INDT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 67.0,
+            "h": 67.05,
+            "l": 66.98,
+            "c": 66.99,
+            "v": 260611.0,
+            "t": 1687924800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 67.0,
+            "h": 67.05,
+            "l": 66.98,
+            "c": 66.99,
+            "v": 260611.0,
+            "t": 1687924800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "UNVR",
+      "day": "2023-07-31",
+      "purpose": "original-basis",
+      "action": "UNVR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 35.99,
+            "h": 36.15,
+            "l": 35.94,
+            "c": 36.14,
+            "v": 5281540.0,
+            "t": 1690776000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 35.99,
+            "h": 36.15,
+            "l": 35.94,
+            "c": 36.14,
+            "v": 5281540.0,
+            "t": 1690776000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GLOP",
+      "day": "2023-07-12",
+      "purpose": "original-basis",
+      "action": "GLOP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.64,
+            "h": 8.645,
+            "l": 8.63,
+            "c": 8.63,
+            "v": 1006421.0,
+            "t": 1689134400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.64,
+            "h": 8.645,
+            "l": 8.63,
+            "c": 8.63,
+            "v": 1006421.0,
+            "t": 1689134400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FRG",
+      "day": "2023-08-18",
+      "purpose": "original-basis",
+      "action": "FRG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 29.9,
+            "h": 29.92,
+            "l": 29.86,
+            "c": 29.88,
+            "v": 1883992.0,
+            "t": 1692331200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 29.9,
+            "h": 29.92,
+            "l": 29.86,
+            "c": 29.88,
+            "v": 1883992.0,
+            "t": 1692331200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AMK",
+      "day": "2024-09-04",
+      "purpose": "original-basis",
+      "action": "AMK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 35.26,
+            "h": 35.27,
+            "l": 35.24,
+            "c": 35.24,
+            "v": 1471672.0,
+            "t": 1725422400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 35.26,
+            "h": 35.27,
+            "l": 35.24,
+            "c": 35.24,
+            "v": 1471672.0,
+            "t": 1725422400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ENV",
+      "day": "2024-11-22",
+      "purpose": "original-basis",
+      "action": "ENV",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 63.14,
+            "h": 63.5,
+            "l": 63.13,
+            "c": 63.14,
+            "v": 5144809.0,
+            "t": 1732251600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 63.14,
+            "h": 63.5,
+            "l": 63.13,
+            "c": 63.14,
+            "v": 5144809.0,
+            "t": 1732251600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HAYN",
+      "day": "2024-11-20",
+      "purpose": "original-basis",
+      "action": "HAYN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 60.98,
+            "h": 61.01,
+            "l": 60.93,
+            "c": 60.99,
+            "v": 1035748.0,
+            "t": 1732078800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 60.98,
+            "h": 61.01,
+            "l": 60.93,
+            "c": 60.99,
+            "v": 1035748.0,
+            "t": 1732078800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VZIO",
+      "day": "2024-12-02",
+      "purpose": "original-basis",
+      "action": "VZIO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.37,
+            "h": 11.39,
+            "l": 11.32,
+            "c": 11.35,
+            "v": 2722154.0,
+            "t": 1733115600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.37,
+            "h": 11.39,
+            "l": 11.32,
+            "c": 11.35,
+            "v": 2722154.0,
+            "t": 1733115600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CTLT",
+      "day": "2024-12-17",
+      "purpose": "original-basis",
+      "action": "CTLT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 63.49,
+            "h": 63.5,
+            "l": 63.435,
+            "c": 63.48,
+            "v": 13882060.0,
+            "t": 1734411600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 63.49,
+            "h": 63.5,
+            "l": 63.435,
+            "c": 63.48,
+            "v": 13882060.0,
+            "t": 1734411600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SCWX",
+      "day": "2025-01-31",
+      "purpose": "original-basis",
+      "action": "SCWX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.49,
+            "h": 8.53,
+            "l": 8.49,
+            "c": 8.51,
+            "v": 2158196.0,
+            "t": 1738299600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.49,
+            "h": 8.53,
+            "l": 8.49,
+            "c": 8.51,
+            "v": 2158196.0,
+            "t": 1738299600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "INFN",
+      "day": "2025-02-27",
+      "purpose": "original-basis",
+      "action": "INFN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 6.66,
+            "h": 6.66,
+            "l": 6.64,
+            "c": 6.64,
+            "v": 8838922.0,
+            "t": 1740632400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 6.66,
+            "h": 6.66,
+            "l": 6.64,
+            "c": 6.64,
+            "v": 8838922.0,
+            "t": 1740632400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AGS",
+      "day": "2025-06-27",
+      "purpose": "original-basis",
+      "action": "AGS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.47,
+            "h": 12.51,
+            "l": 12.445,
+            "c": 12.48,
+            "v": 2309093.0,
+            "t": 1750996800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.47,
+            "h": 12.51,
+            "l": 12.445,
+            "c": 12.48,
+            "v": 2309093.0,
+            "t": 1750996800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WBA",
+      "day": "2025-08-27",
+      "purpose": "original-basis",
+      "action": "WBA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.915,
+            "h": 12.11,
+            "l": 11.9,
+            "c": 11.98,
+            "v": 452081061.0,
+            "t": 1756267200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.915,
+            "h": 12.11,
+            "l": 11.9,
+            "c": 11.98,
+            "v": 452081061.0,
+            "t": 1756267200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AMED",
+      "day": "2025-08-13",
+      "purpose": "original-basis",
+      "action": "AMED",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 100.96,
+            "h": 101.0,
+            "l": 100.73,
+            "c": 100.98,
+            "v": 592706.0,
+            "t": 1755057600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 100.96,
+            "h": 101.0,
+            "l": 100.73,
+            "c": 100.98,
+            "v": 592706.0,
+            "t": 1755057600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SKX",
+      "day": "2025-09-11",
+      "purpose": "original-basis",
+      "action": "SKX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 63.25,
+            "h": 63.37,
+            "l": 63.13,
+            "c": 63.13,
+            "v": 41107186.0,
+            "t": 1757563200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 63.25,
+            "h": 63.37,
+            "l": 63.13,
+            "c": 63.13,
+            "v": 41107186.0,
+            "t": 1757563200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WOW",
+      "day": "2025-12-30",
+      "purpose": "original-basis",
+      "action": "WOW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 5.2,
+            "h": 5.21,
+            "l": 5.2,
+            "c": 5.2,
+            "v": 573270.0,
+            "t": 1767070800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 5.2,
+            "h": 5.21,
+            "l": 5.2,
+            "c": 5.2,
+            "v": 573270.0,
+            "t": 1767070800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALE",
+      "day": "2025-12-12",
+      "purpose": "original-basis",
+      "action": "ALE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 67.97,
+            "h": 67.99,
+            "l": 67.88,
+            "c": 67.9,
+            "v": 4394128.0,
+            "t": 1765515600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 67.97,
+            "h": 67.99,
+            "l": 67.88,
+            "c": 67.9,
+            "v": 4394128.0,
+            "t": 1765515600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2026-06-24",
+      "purpose": "original-basis",
+      "action": "CWAN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 24.55,
+            "h": 24.56,
+            "l": 24.54,
+            "c": 24.56,
+            "v": 24707635.392043,
+            "t": 1782273600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 24.55,
+            "h": 24.56,
+            "l": 24.54,
+            "c": 24.56,
+            "v": 24707635.392043,
+            "t": 1782273600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EA",
+      "day": "2026-08-03",
+      "purpose": "original-basis",
+      "action": "EA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 209.91,
+            "h": 209.97,
+            "l": 209.89,
+            "c": 209.91,
+            "v": 4432655.029976,
+            "t": 1785729600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 209.91,
+            "h": 209.97,
+            "l": 209.89,
+            "c": 209.91,
+            "v": 4432655.029976,
+            "t": 1785729600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GBTG",
+      "day": "2026-09-28",
+      "purpose": "original-basis",
+      "action": "GBTG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.5,
+            "h": 9.51,
+            "l": 9.49,
+            "c": 9.5,
+            "v": 3938240.125304,
+            "t": 1790568000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.5,
+            "h": 9.51,
+            "l": 9.49,
+            "c": 9.5,
+            "v": 3938240.125304,
+            "t": 1790568000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NGD",
+      "day": "2026-03-19",
+      "purpose": "original-basis",
+      "action": "NGD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 8.73,
+            "h": 9.14,
+            "l": 8.46,
+            "c": 9.08,
+            "v": 25347686.218013,
+            "t": 1773892800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 8.73,
+            "h": 9.14,
+            "l": 8.46,
+            "c": 9.08,
+            "v": 25347686.218013,
+            "t": 1773892800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CDE",
+      "day": "2026-03-20",
+      "purpose": "successor-basis",
+      "action": "NGD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.61,
+            "h": 18.61,
+            "l": 17.51,
+            "c": 17.67,
+            "v": 54510736.00722,
+            "t": 1773979200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.61,
+            "h": 18.61,
+            "l": 17.51,
+            "c": 17.67,
+            "v": 54510736.00722,
+            "t": 1773979200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NFBK",
+      "day": "2026-07-20",
+      "purpose": "original-basis",
+      "action": "NFBK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.96,
+            "h": 15.605,
+            "l": 14.76,
+            "c": 15.31,
+            "v": 1111066.567716,
+            "t": 1784520000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.96,
+            "h": 15.605,
+            "l": 14.76,
+            "c": 15.31,
+            "v": 1111066.567716,
+            "t": 1784520000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CLBK",
+      "day": "2026-07-21",
+      "purpose": "successor-basis",
+      "action": "NFBK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.75,
+            "h": 11.08,
+            "l": 10.7,
+            "c": 11.08,
+            "v": 57510099.252646,
+            "t": 1784606400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.75,
+            "h": 11.08,
+            "l": 10.7,
+            "c": 11.08,
+            "v": 57510099.252646,
+            "t": 1784606400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AEL",
+      "day": "2024-05-01",
+      "purpose": "original-basis",
+      "action": "AEL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 56.02,
+            "h": 56.53,
+            "l": 55.95,
+            "c": 56.16,
+            "v": 3933968.0,
+            "t": 1714536000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 56.02,
+            "h": 56.53,
+            "l": 55.95,
+            "c": 56.16,
+            "v": 3933968.0,
+            "t": 1714536000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BAM",
+      "day": "2024-05-02",
+      "purpose": "successor-basis",
+      "action": "AEL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 38.71,
+            "h": 38.71,
+            "l": 38.07,
+            "c": 38.57,
+            "v": 6077772.0,
+            "t": 1714622400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 38.71,
+            "h": 38.71,
+            "l": 38.07,
+            "c": 38.57,
+            "v": 6077772.0,
+            "t": 1714622400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SAND",
+      "day": "2025-10-17",
+      "purpose": "original-basis",
+      "action": "SAND",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.78,
+            "h": 12.78,
+            "l": 12.0535,
+            "c": 12.12,
+            "v": 14508762.0,
+            "t": 1760673600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.78,
+            "h": 12.78,
+            "l": 12.0535,
+            "c": 12.12,
+            "v": 14508762.0,
+            "t": 1760673600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RGLD",
+      "day": "2025-10-20",
+      "purpose": "successor-basis",
+      "action": "SAND",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 196.65,
+            "h": 199.16,
+            "l": 193.84,
+            "c": 194.12,
+            "v": 1836998.0,
+            "t": 1760932800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 196.65,
+            "h": 199.16,
+            "l": 193.84,
+            "c": 194.12,
+            "v": 1836998.0,
+            "t": 1760932800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HOUS",
+      "day": "2026-01-08",
+      "purpose": "original-basis",
+      "action": "HOUS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 17.02,
+            "h": 17.7,
+            "l": 16.35,
+            "c": 17.64,
+            "v": 11481598,
+            "t": 1767848400000
+          }
+        ],
+        "raw": [
+          {
+            "o": 17.02,
+            "h": 17.7,
+            "l": 16.35,
+            "c": 17.64,
+            "v": 11481598,
+            "t": 1767848400000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COMP",
+      "day": "2026-01-09",
+      "purpose": "successor-basis",
+      "action": "HOUS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.56,
+            "h": 13.53,
+            "l": 12.55,
+            "c": 12.84,
+            "v": 50024973,
+            "t": 1767934800000
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.56,
+            "h": 13.53,
+            "l": 12.55,
+            "c": 12.84,
+            "v": 50024973,
+            "t": 1767934800000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "THR",
+      "day": "2026-05-29",
+      "purpose": "original-basis",
+      "action": "THR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 66.42,
+            "h": 66.68,
+            "l": 59.95,
+            "c": 61.14,
+            "v": 2871549.290603,
+            "t": 1780027200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 66.42,
+            "h": 66.68,
+            "l": 59.95,
+            "c": 61.14,
+            "v": 2871549.290603,
+            "t": 1780027200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CECO",
+      "day": "2026-06-01",
+      "purpose": "successor-basis",
+      "action": "THR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 75.22,
+            "h": 79.735,
+            "l": 74.1,
+            "c": 79.03,
+            "v": 1620953.504867,
+            "t": 1780286400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 75.22,
+            "h": 79.735,
+            "l": 74.1,
+            "c": 79.03,
+            "v": 1620953.504867,
+            "t": 1780286400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DWAC",
+      "day": "2024-03-22",
+      "purpose": "original-basis",
+      "action": "DWAC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 44.2,
+            "h": 48.01,
+            "l": 36.44,
+            "c": 36.94,
+            "v": 9915264.0,
+            "t": 1711080000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 44.2,
+            "h": 48.01,
+            "l": 36.44,
+            "c": 36.94,
+            "v": 9915264.0,
+            "t": 1711080000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DJT",
+      "day": "2024-03-26",
+      "purpose": "successor-basis",
+      "action": "DWAC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 70.9,
+            "h": 79.38,
+            "l": 57.25,
+            "c": 57.99,
+            "v": 55523528.0,
+            "t": 1711425600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 70.9,
+            "h": 79.38,
+            "l": 57.25,
+            "c": 57.99,
+            "v": 55523528.0,
+            "t": 1711425600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ARMN",
+      "day": "2026-02-18",
+      "purpose": "original-basis",
+      "action": "ARMN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.9,
+            "h": 19.33,
+            "l": 18.62,
+            "c": 19.16,
+            "v": 1744469.0,
+            "t": 1771390800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.9,
+            "h": 19.33,
+            "l": 18.62,
+            "c": 19.16,
+            "v": 1744469.0,
+            "t": 1771390800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DFDV",
+      "day": "2025-05-05",
+      "purpose": "successor-basis",
+      "action": "JNVR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.3623,
+            "h": 10.0,
+            "l": 8.3234,
+            "c": 9.3364,
+            "v": 876313.9,
+            "t": 1746417600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 72.09,
+            "h": 76.9999,
+            "l": 64.09,
+            "c": 71.89,
+            "v": 113807.0,
+            "t": 1746417600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HYPD",
+      "day": "2025-07-03",
+      "purpose": "successor-basis",
+      "action": "EYEN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 16.3,
+            "h": 16.35,
+            "l": 13.0,
+            "c": 14.36,
+            "v": 1323701.0,
+            "t": 1751515200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 16.3,
+            "h": 16.35,
+            "l": 13.0,
+            "c": 14.36,
+            "v": 1323701.0,
+            "t": 1751515200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CSW",
+      "day": "2025-06-09",
+      "purpose": "successor-basis",
+      "action": "CSWI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 308.0,
+            "h": 311.21,
+            "l": 303.0,
+            "c": 303.0,
+            "v": 74096.0,
+            "t": 1749441600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 308.0,
+            "h": 311.21,
+            "l": 303.0,
+            "c": 303.0,
+            "v": 74096.0,
+            "t": 1749441600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RPC",
+      "day": "2026-02-11",
+      "purpose": "successor-basis",
+      "action": "PX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.16,
+            "h": 11.29,
+            "l": 10.28,
+            "c": 10.58,
+            "v": 493469.0,
+            "t": 1770786000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.16,
+            "h": 11.29,
+            "l": 10.28,
+            "c": 10.58,
+            "v": 493469.0,
+            "t": 1770786000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TONX",
+      "day": "2025-09-02",
+      "purpose": "successor-basis",
+      "action": "VERB",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.84,
+            "h": 13.8961,
+            "l": 12.3008,
+            "c": 12.36,
+            "v": 138664.0,
+            "t": 1756785600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.84,
+            "h": 13.8961,
+            "l": 12.3008,
+            "c": 12.36,
+            "v": 138664.0,
+            "t": 1756785600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "P",
+      "day": "2026-04-17",
+      "purpose": "successor-basis",
+      "action": "PSTG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 68.0,
+            "h": 69.1,
+            "l": 66.97,
+            "c": 66.97,
+            "v": 2043666.891827,
+            "t": 1776398400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 68.0,
+            "h": 69.1,
+            "l": 66.97,
+            "c": 66.97,
+            "v": 2043666.891827,
+            "t": 1776398400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DOO",
+      "day": "2025-12-08",
+      "purpose": "successor-basis",
+      "action": "DOOO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 81.67,
+            "h": 81.67,
+            "l": 74.54,
+            "c": 74.74,
+            "v": 74295.0,
+            "t": 1765170000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 81.67,
+            "h": 81.67,
+            "l": 74.54,
+            "c": 74.74,
+            "v": 74295.0,
+            "t": 1765170000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CDE",
+      "day": "2025-02-14",
+      "purpose": "successor-basis",
+      "action": "SILV",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 7.245,
+            "h": 7.325,
+            "l": 6.55,
+            "c": 6.61,
+            "v": 29847331.0,
+            "t": 1739509200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 7.245,
+            "h": 7.325,
+            "l": 6.55,
+            "c": 6.61,
+            "v": 29847331.0,
+            "t": 1739509200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HNI",
+      "day": "2025-12-10",
+      "purpose": "successor-basis",
+      "action": "SCS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 40.22,
+            "h": 43.05,
+            "l": 40.13,
+            "c": 42.54,
+            "v": 1264920.0,
+            "t": 1765342800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 40.22,
+            "h": 43.05,
+            "l": 40.13,
+            "c": 42.54,
+            "v": 1264920.0,
+            "t": 1765342800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PNFP",
+      "day": "2026-01-02",
+      "purpose": "successor-basis",
+      "action": "SNV",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 95.01,
+            "h": 99.82,
+            "l": 92.16,
+            "c": 95.1,
+            "v": 2266045.0,
+            "t": 1767330000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 95.01,
+            "h": 99.82,
+            "l": 92.16,
+            "c": 95.1,
+            "v": 2266045.0,
+            "t": 1767330000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ASST",
+      "day": "2026-01-16",
+      "purpose": "successor-basis",
+      "action": "SMLR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.44,
+            "h": 19.742,
+            "l": 18.64,
+            "c": 18.962,
+            "v": 3157403.75,
+            "t": 1768539600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 0.972,
+            "h": 0.9871,
+            "l": 0.932,
+            "c": 0.9481,
+            "v": 63148075.0,
+            "t": 1768539600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SIRI",
+      "day": "2024-09-10",
+      "purpose": "successor-basis",
+      "action": "LSXMK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.25,
+            "h": 28.11,
+            "l": 24.43,
+            "c": 27.38,
+            "v": 15696906.0,
+            "t": 1725940800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.25,
+            "h": 28.11,
+            "l": 24.43,
+            "c": 27.38,
+            "v": 15696906.0,
+            "t": 1725940800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CHTR",
+      "day": "2026-08-20",
+      "purpose": "successor-basis",
+      "action": "LBRDK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 152.0,
+            "h": 153.97,
+            "l": 144.82,
+            "c": 147.76,
+            "v": 3606139.072566,
+            "t": 1787198400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 152.0,
+            "h": 153.97,
+            "l": 144.82,
+            "c": 147.76,
+            "v": 3606139.072566,
+            "t": 1787198400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DINO",
+      "day": "2023-12-01",
+      "purpose": "successor-basis",
+      "action": "HEP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 52.43,
+            "h": 54.82,
+            "l": 52.35,
+            "c": 54.34,
+            "v": 5127384.0,
+            "t": 1701406800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 52.43,
+            "h": 54.82,
+            "l": 52.35,
+            "c": 54.34,
+            "v": 5127384.0,
+            "t": 1701406800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "JHX",
+      "day": "2025-07-01",
+      "purpose": "successor-basis",
+      "action": "AZEK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.95,
+            "h": 28.29,
+            "l": 26.5,
+            "c": 28.08,
+            "v": 19849236.0,
+            "t": 1751342400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.95,
+            "h": 28.29,
+            "l": 26.5,
+            "c": 28.08,
+            "v": 19849236.0,
+            "t": 1751342400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TKO",
+      "day": "2023-09-12",
+      "purpose": "successor-basis",
+      "action": "WWE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 102.0,
+            "h": 103.98,
+            "l": 100.0,
+            "c": 103.05,
+            "v": 617793.0,
+            "t": 1694491200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 102.0,
+            "h": 103.98,
+            "l": 100.0,
+            "c": 103.05,
+            "v": 617793.0,
+            "t": 1694491200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GPGI",
+      "day": "2026-01-23",
+      "purpose": "successor-basis",
+      "action": "CMPO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.06,
+            "h": 25.93,
+            "l": 24.09,
+            "c": 25.05,
+            "v": 847914.0,
+            "t": 1769144400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.06,
+            "h": 25.93,
+            "l": 24.09,
+            "c": 25.05,
+            "v": 847914.0,
+            "t": 1769144400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FUN",
+      "day": "2024-07-02",
+      "purpose": "successor-basis",
+      "action": "SIX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 53.49,
+            "h": 55.37,
+            "l": 52.64,
+            "c": 54.89,
+            "v": 17759673.0,
+            "t": 1719892800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 53.49,
+            "h": 55.37,
+            "l": 52.64,
+            "c": 54.89,
+            "v": 17759673.0,
+            "t": 1719892800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GEAR",
+      "day": "2024-11-27",
+      "purpose": "successor-basis",
+      "action": "VSTO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.15,
+            "h": 19.15,
+            "l": 18.9,
+            "c": 19.0,
+            "v": 312967.0,
+            "t": 1732683600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 19.15,
+            "h": 19.15,
+            "l": 18.9,
+            "c": 19.0,
+            "v": 312967.0,
+            "t": 1732683600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PPLI",
+      "day": "2026-06-04",
+      "purpose": "successor-basis",
+      "action": "IAC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 42.72,
+            "h": 43.67,
+            "l": 41.635,
+            "c": 43.55,
+            "v": 1448726.112967,
+            "t": 1780545600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 42.72,
+            "h": 43.67,
+            "l": 41.635,
+            "c": 43.55,
+            "v": 1448726.112967,
+            "t": 1780545600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SSB",
+      "day": "2025-01-02",
+      "purpose": "successor-basis",
+      "action": "IBTX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 100.5,
+            "h": 100.5,
+            "l": 96.62,
+            "c": 97.0,
+            "v": 4812287.0,
+            "t": 1735794000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 100.5,
+            "h": 100.5,
+            "l": 96.62,
+            "c": 97.0,
+            "v": 4812287.0,
+            "t": 1735794000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WTFC",
+      "day": "2024-08-01",
+      "purpose": "successor-basis",
+      "action": "MCBC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 108.13,
+            "h": 108.48,
+            "l": 103.85,
+            "c": 105.09,
+            "v": 532283.0,
+            "t": 1722484800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 108.13,
+            "h": 108.48,
+            "l": 103.85,
+            "c": 105.09,
+            "v": 532283.0,
+            "t": 1722484800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VNOM",
+      "day": "2025-08-19",
+      "purpose": "successor-basis",
+      "action": "STR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 37.12,
+            "h": 38.1899,
+            "l": 37.1,
+            "c": 37.37,
+            "v": 2335033.0,
+            "t": 1755576000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 37.12,
+            "h": 38.1899,
+            "l": 37.1,
+            "c": 37.37,
+            "v": 2335033.0,
+            "t": 1755576000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NIC",
+      "day": "2026-02-17",
+      "purpose": "successor-basis",
+      "action": "MOFG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 155.66,
+            "h": 158.82,
+            "l": 155.66,
+            "c": 157.68,
+            "v": 270519.0,
+            "t": 1771304400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 155.66,
+            "h": 158.82,
+            "l": 155.66,
+            "c": 157.68,
+            "v": 270519.0,
+            "t": 1771304400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CVBF",
+      "day": "2026-04-20",
+      "purpose": "successor-basis",
+      "action": "HTBK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 20.6,
+            "h": 21.04,
+            "l": 20.55,
+            "c": 20.76,
+            "v": 2451788.767596,
+            "t": 1776657600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 20.6,
+            "h": 21.04,
+            "l": 20.55,
+            "c": 20.76,
+            "v": 2451788.767596,
+            "t": 1776657600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MRSH",
+      "day": "2026-01-14",
+      "purpose": "successor-basis",
+      "action": "MMC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 182.81,
+            "h": 184.66,
+            "l": 182.03,
+            "c": 183.27,
+            "v": 1696847.0,
+            "t": 1768366800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 182.81,
+            "h": 184.66,
+            "l": 182.03,
+            "c": 183.27,
+            "v": 1696847.0,
+            "t": 1768366800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XIFR",
+      "day": "2025-02-03",
+      "purpose": "successor-basis",
+      "action": "NEP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.23,
+            "h": 10.24,
+            "l": 9.38,
+            "c": 9.82,
+            "v": 4094916.0,
+            "t": 1738558800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.23,
+            "h": 10.24,
+            "l": 9.38,
+            "c": 9.82,
+            "v": 4094916.0,
+            "t": 1738558800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "UCB",
+      "day": "2024-08-06",
+      "purpose": "successor-basis",
+      "action": "UCBI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 27.88,
+            "h": 28.31,
+            "l": 27.56,
+            "c": 28.09,
+            "v": 509094.0,
+            "t": 1722916800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 27.88,
+            "h": 28.31,
+            "l": 27.56,
+            "c": 28.09,
+            "v": 509094.0,
+            "t": 1722916800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CNH",
+      "day": "2024-05-20",
+      "purpose": "successor-basis",
+      "action": "CNHI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.46,
+            "h": 11.4655,
+            "l": 11.13,
+            "c": 11.14,
+            "v": 4860474.0,
+            "t": 1716177600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.46,
+            "h": 11.4655,
+            "l": 11.13,
+            "c": 11.14,
+            "v": 4860474.0,
+            "t": 1716177600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PLGO",
+      "day": "2026-05-12",
+      "purpose": "successor-basis",
+      "action": "FIHL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 20.0,
+            "h": 20.74,
+            "l": 20.0,
+            "c": 20.35,
+            "v": 560700.010853,
+            "t": 1778558400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 20.0,
+            "h": 20.74,
+            "l": 20.0,
+            "c": 20.35,
+            "v": 560700.010853,
+            "t": 1778558400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AVO",
+      "day": "2026-05-28",
+      "purpose": "successor-basis",
+      "action": "CVGW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.48,
+            "h": 11.55,
+            "l": 11.225,
+            "c": 11.25,
+            "v": 1181943.514372,
+            "t": 1779940800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.48,
+            "h": 11.55,
+            "l": 11.225,
+            "c": 11.25,
+            "v": 1181943.514372,
+            "t": 1779940800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PANW",
+      "day": "2026-02-11",
+      "purpose": "successor-basis",
+      "action": "CYBR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 167.195,
+            "h": 168.28,
+            "l": 163.49,
+            "c": 165.3,
+            "v": 43667315.0,
+            "t": 1770786000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 167.195,
+            "h": 168.28,
+            "l": 163.49,
+            "c": 165.3,
+            "v": 43667315.0,
+            "t": 1770786000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MBC",
+      "day": "2026-05-28",
+      "purpose": "successor-basis",
+      "action": "AMWD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.1,
+            "h": 9.685,
+            "l": 9.06,
+            "c": 9.08,
+            "v": 5265864.184171,
+            "t": 1779940800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.1,
+            "h": 9.685,
+            "l": 9.06,
+            "c": 9.08,
+            "v": 5265864.184171,
+            "t": 1779940800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HTO",
+      "day": "2025-05-06",
+      "purpose": "successor-basis",
+      "action": "SJW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 53.2,
+            "h": 55.94,
+            "l": 53.2,
+            "c": 55.07,
+            "v": 139951.0,
+            "t": 1746504000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 53.2,
+            "h": 55.94,
+            "l": 53.2,
+            "c": 55.07,
+            "v": 139951.0,
+            "t": 1746504000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EG",
+      "day": "2023-07-10",
+      "purpose": "successor-basis",
+      "action": "RE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 349.79,
+            "h": 351.895,
+            "l": 344.58,
+            "c": 347.06,
+            "v": 151490.0,
+            "t": 1688961600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 349.79,
+            "h": 351.895,
+            "l": 344.58,
+            "c": 347.06,
+            "v": 151490.0,
+            "t": 1688961600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AAMI",
+      "day": "2025-01-02",
+      "purpose": "successor-basis",
+      "action": "BSIG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.83,
+            "h": 26.83,
+            "l": 25.51,
+            "c": 25.79,
+            "v": 127170.0,
+            "t": 1735794000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.83,
+            "h": 26.83,
+            "l": 25.51,
+            "c": 25.79,
+            "v": 127170.0,
+            "t": 1735794000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COP",
+      "day": "2024-11-22",
+      "purpose": "successor-basis",
+      "action": "MRO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 112.17,
+            "h": 112.7299,
+            "l": 111.13,
+            "c": 111.75,
+            "v": 7516628.0,
+            "t": 1732251600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 112.17,
+            "h": 112.7299,
+            "l": 111.13,
+            "c": 111.75,
+            "v": 7516628.0,
+            "t": 1732251600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RYN",
+      "day": "2026-02-02",
+      "purpose": "successor-basis",
+      "action": "PCH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 22.61,
+            "h": 22.9,
+            "l": 22.395,
+            "c": 22.57,
+            "v": 4023432.0,
+            "t": 1770008400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 22.61,
+            "h": 22.9,
+            "l": 22.395,
+            "c": 22.57,
+            "v": 4023432.0,
+            "t": 1770008400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OKLO",
+      "day": "2024-05-10",
+      "purpose": "successor-basis",
+      "action": "ALCC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 15.5,
+            "h": 15.7001,
+            "l": 7.77,
+            "c": 8.45,
+            "v": 25611898.0,
+            "t": 1715313600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 15.5,
+            "h": 15.7001,
+            "l": 7.77,
+            "c": 8.45,
+            "v": 25611898.0,
+            "t": 1715313600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "LUCK",
+      "day": "2024-12-12",
+      "purpose": "successor-basis",
+      "action": "BOWL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.58,
+            "h": 11.99,
+            "l": 11.35,
+            "c": 11.46,
+            "v": 405069.0,
+            "t": 1733979600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.58,
+            "h": 11.99,
+            "l": 11.35,
+            "c": 11.46,
+            "v": 405069.0,
+            "t": 1733979600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BWIN",
+      "day": "2024-05-20",
+      "purpose": "successor-basis",
+      "action": "BRP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 32.75,
+            "h": 34.14,
+            "l": 32.19,
+            "c": 33.97,
+            "v": 274192.0,
+            "t": 1716177600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 32.75,
+            "h": 34.14,
+            "l": 32.19,
+            "c": 33.97,
+            "v": 274192.0,
+            "t": 1716177600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GAP",
+      "day": "2024-08-22",
+      "purpose": "successor-basis",
+      "action": "GPS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 23.6,
+            "h": 24.54,
+            "l": 23.5,
+            "c": 24.44,
+            "v": 4067177.0,
+            "t": 1724299200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 23.6,
+            "h": 24.54,
+            "l": 23.5,
+            "c": 24.44,
+            "v": 4067177.0,
+            "t": 1724299200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XYZ",
+      "day": "2025-01-21",
+      "purpose": "successor-basis",
+      "action": "SQ",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 88.06,
+            "h": 89.84,
+            "l": 87.63,
+            "c": 89.5,
+            "v": 4269116.0,
+            "t": 1737435600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 88.06,
+            "h": 89.84,
+            "l": 87.63,
+            "c": 89.5,
+            "v": 4269116.0,
+            "t": 1737435600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COLB",
+      "day": "2025-09-02",
+      "purpose": "successor-basis",
+      "action": "PPBI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.505,
+            "h": 27.1,
+            "l": 26.27,
+            "c": 27.03,
+            "v": 14401076.0,
+            "t": 1756785600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.505,
+            "h": 27.1,
+            "l": 26.27,
+            "c": 27.03,
+            "v": 14401076.0,
+            "t": 1756785600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "JBTM",
+      "day": "2025-01-03",
+      "purpose": "successor-basis",
+      "action": "JBT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 128.0,
+            "h": 131.37,
+            "l": 125.01,
+            "c": 127.62,
+            "v": 3537153.0,
+            "t": 1735880400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 128.0,
+            "h": 131.37,
+            "l": 125.01,
+            "c": 127.62,
+            "v": 3537153.0,
+            "t": 1735880400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DFTX",
+      "day": "2026-01-15",
+      "purpose": "successor-basis",
+      "action": "MNMD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 15.11,
+            "h": 15.49,
+            "l": 14.75,
+            "c": 15.38,
+            "v": 1019196.0,
+            "t": 1768453200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 15.11,
+            "h": 15.49,
+            "l": 14.75,
+            "c": 15.38,
+            "v": 1019196.0,
+            "t": 1768453200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MZTI",
+      "day": "2025-07-01",
+      "purpose": "successor-basis",
+      "action": "LANC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 173.77,
+            "h": 183.635,
+            "l": 165.16,
+            "c": 180.33,
+            "v": 146731.0,
+            "t": 1751342400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 173.77,
+            "h": 183.635,
+            "l": 165.16,
+            "c": 180.33,
+            "v": 146731.0,
+            "t": 1751342400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EXE",
+      "day": "2024-10-02",
+      "purpose": "successor-basis",
+      "action": "CHK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 83.35,
+            "h": 83.41,
+            "l": 81.66,
+            "c": 83.24,
+            "v": 2127651.0,
+            "t": 1727841600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 83.35,
+            "h": 83.41,
+            "l": 81.66,
+            "c": 83.24,
+            "v": 2127651.0,
+            "t": 1727841600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BYON",
+      "day": "2023-11-06",
+      "purpose": "successor-basis",
+      "action": "OSTK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 17.25,
+            "h": 17.5,
+            "l": 15.62,
+            "c": 16.2,
+            "v": 2333978.0,
+            "t": 1699246800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 17.25,
+            "h": 17.5,
+            "l": 15.62,
+            "c": 16.2,
+            "v": 2333978.0,
+            "t": 1699246800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WES",
+      "day": "2025-10-15",
+      "purpose": "successor-basis",
+      "action": "ARIS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 37.39,
+            "h": 38.12,
+            "l": 37.39,
+            "c": 37.72,
+            "v": 1921946.0,
+            "t": 1760500800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 37.39,
+            "h": 38.12,
+            "l": 37.39,
+            "c": 37.72,
+            "v": 1921946.0,
+            "t": 1760500800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PSA",
+      "day": "2026-07-22",
+      "purpose": "successor-basis",
+      "action": "NSA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 311.0,
+            "h": 312.27,
+            "l": 309.43,
+            "c": 311.7,
+            "v": 1136153.922362,
+            "t": 1784692800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 311.0,
+            "h": 312.27,
+            "l": 309.43,
+            "c": 311.7,
+            "v": 1136153.922362,
+            "t": 1784692800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BA",
+      "day": "2025-12-08",
+      "purpose": "successor-basis",
+      "action": "SPR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 203.61,
+            "h": 206.86,
+            "l": 202.56,
+            "c": 206.27,
+            "v": 8823854.0,
+            "t": 1765170000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 203.61,
+            "h": 206.86,
+            "l": 202.56,
+            "c": 206.27,
+            "v": 8823854.0,
+            "t": 1765170000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CVX",
+      "day": "2025-07-18",
+      "purpose": "successor-basis",
+      "action": "HES",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 155.02,
+            "h": 155.91,
+            "l": 146.53,
+            "c": 150.04,
+            "v": 45782636.0,
+            "t": 1752811200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 155.02,
+            "h": 155.91,
+            "l": 146.53,
+            "c": 150.04,
+            "v": 45782636.0,
+            "t": 1752811200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-10-01",
+      "purpose": "successor-basis",
+      "action": "COOP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.76,
+            "h": 20.62,
+            "l": 19.25,
+            "c": 19.59,
+            "v": 95607916.0,
+            "t": 1759291200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 19.76,
+            "h": 20.62,
+            "l": 19.25,
+            "c": 19.59,
+            "v": 95607916.0,
+            "t": 1759291200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PR",
+      "day": "2023-11-01",
+      "purpose": "successor-basis",
+      "action": "ESTE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.67,
+            "h": 14.73,
+            "l": 14.1416,
+            "c": 14.33,
+            "v": 11144633.0,
+            "t": 1698811200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.67,
+            "h": 14.73,
+            "l": 14.1416,
+            "c": 14.33,
+            "v": 11144633.0,
+            "t": 1698811200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SUN",
+      "day": "2024-05-03",
+      "purpose": "successor-basis",
+      "action": "NS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 55.68,
+            "h": 56.17,
+            "l": 55.32,
+            "c": 55.91,
+            "v": 613216.0,
+            "t": 1714708800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 55.68,
+            "h": 56.17,
+            "l": 55.32,
+            "c": 55.91,
+            "v": 613216.0,
+            "t": 1714708800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALTM",
+      "day": "2024-01-04",
+      "purpose": "successor-basis",
+      "action": "LTHM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 6.71,
+            "h": 7.27,
+            "l": 6.5,
+            "c": 6.81,
+            "v": 130283268.0,
+            "t": 1704344400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 6.71,
+            "h": 7.27,
+            "l": 6.5,
+            "c": 6.81,
+            "v": 130283268.0,
+            "t": 1704344400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HRI",
+      "day": "2025-06-02",
+      "purpose": "successor-basis",
+      "action": "HEES",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 124.35,
+            "h": 124.635,
+            "l": 113.218,
+            "c": 115.78,
+            "v": 827895.0,
+            "t": 1748836800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 124.35,
+            "h": 124.635,
+            "l": 113.218,
+            "c": 115.78,
+            "v": 827895.0,
+            "t": 1748836800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DVN",
+      "day": "2026-05-07",
+      "purpose": "successor-basis",
+      "action": "CTRA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 45.67,
+            "h": 45.855,
+            "l": 44.2,
+            "c": 45.31,
+            "v": 26624593.884846,
+            "t": 1778126400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 45.67,
+            "h": 45.855,
+            "l": 44.2,
+            "c": 45.31,
+            "v": 26624593.884846,
+            "t": 1778126400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OKE",
+      "day": "2023-09-25",
+      "purpose": "successor-basis",
+      "action": "MMP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 65.7,
+            "h": 66.895,
+            "l": 65.52,
+            "c": 66.54,
+            "v": 59253281.0,
+            "t": 1695614400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 65.7,
+            "h": 66.895,
+            "l": 65.52,
+            "c": 66.54,
+            "v": 59253281.0,
+            "t": 1695614400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XOM",
+      "day": "2023-11-02",
+      "purpose": "successor-basis",
+      "action": "DEN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 105.88,
+            "h": 109.19,
+            "l": 105.5,
+            "c": 109.11,
+            "v": 25212686.0,
+            "t": 1698897600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 105.88,
+            "h": 109.19,
+            "l": 105.5,
+            "c": 109.11,
+            "v": 25212686.0,
+            "t": 1698897600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NE",
+      "day": "2024-09-04",
+      "purpose": "successor-basis",
+      "action": "DO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 36.36,
+            "h": 36.885,
+            "l": 35.06,
+            "c": 35.19,
+            "v": 4672654.0,
+            "t": 1725422400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 36.36,
+            "h": 36.885,
+            "l": 35.06,
+            "c": 35.19,
+            "v": 4672654.0,
+            "t": 1725422400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OMC",
+      "day": "2025-11-28",
+      "purpose": "successor-basis",
+      "action": "IPG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 71.06,
+            "h": 72.69,
+            "l": 70.89,
+            "c": 71.62,
+            "v": 9216804.0,
+            "t": 1764306000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 71.06,
+            "h": 72.69,
+            "l": 70.89,
+            "c": 71.62,
+            "v": 9216804.0,
+            "t": 1764306000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ALGT",
+      "day": "2026-05-13",
+      "purpose": "successor-basis",
+      "action": "SNCY",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 76.2,
+            "h": 77.3325,
+            "l": 75.2,
+            "c": 75.21,
+            "v": 763745.916325,
+            "t": 1778644800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 76.2,
+            "h": 77.3325,
+            "l": 75.2,
+            "c": 75.21,
+            "v": 763745.916325,
+            "t": 1778644800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WSBC",
+      "day": "2025-03-03",
+      "purpose": "successor-basis",
+      "action": "PFC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 35.8,
+            "h": 35.85,
+            "l": 34.72,
+            "c": 35.01,
+            "v": 829759.0,
+            "t": 1740978000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 35.8,
+            "h": 35.85,
+            "l": 34.72,
+            "c": 35.01,
+            "v": 829759.0,
+            "t": 1740978000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COF",
+      "day": "2025-05-19",
+      "purpose": "successor-basis",
+      "action": "DFS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 195.79,
+            "h": 200.0,
+            "l": 194.5,
+            "c": 197.41,
+            "v": 6054384.0,
+            "t": 1747627200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 195.79,
+            "h": 200.0,
+            "l": 194.5,
+            "c": 197.41,
+            "v": 6054384.0,
+            "t": 1747627200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SLB",
+      "day": "2025-07-16",
+      "purpose": "successor-basis",
+      "action": "CHX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 35.0,
+            "h": 35.19,
+            "l": 34.3,
+            "c": 34.59,
+            "v": 19849626.0,
+            "t": 1752638400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 35.0,
+            "h": 35.19,
+            "l": 34.3,
+            "c": 34.59,
+            "v": 19849626.0,
+            "t": 1752638400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PFS",
+      "day": "2024-05-16",
+      "purpose": "successor-basis",
+      "action": "LBAI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 16.02,
+            "h": 16.45,
+            "l": 15.97,
+            "c": 16.11,
+            "v": 12169367.0,
+            "t": 1715832000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 16.02,
+            "h": 16.45,
+            "l": 15.97,
+            "c": 16.11,
+            "v": 12169367.0,
+            "t": 1715832000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DNOW",
+      "day": "2025-11-06",
+      "purpose": "successor-basis",
+      "action": "MRC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.27,
+            "h": 14.5,
+            "l": 12.905,
+            "c": 13.57,
+            "v": 6179817.0,
+            "t": 1762405200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.27,
+            "h": 14.5,
+            "l": 12.905,
+            "c": 13.57,
+            "v": 6179817.0,
+            "t": 1762405200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RKT",
+      "day": "2025-07-01",
+      "purpose": "successor-basis",
+      "action": "RDFN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.18,
+            "h": 14.7,
+            "l": 14.1304,
+            "c": 14.48,
+            "v": 14617167.0,
+            "t": 1751342400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.18,
+            "h": 14.7,
+            "l": 14.1304,
+            "c": 14.48,
+            "v": 14617167.0,
+            "t": 1751342400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TIC",
+      "day": "2025-08-04",
+      "purpose": "successor-basis",
+      "action": "NVEE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.72,
+            "h": 10.79,
+            "l": 10.18,
+            "c": 10.5,
+            "v": 5363460.0,
+            "t": 1754280000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.72,
+            "h": 10.79,
+            "l": 10.18,
+            "c": 10.5,
+            "v": 5363460.0,
+            "t": 1754280000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XOM",
+      "day": "2024-05-03",
+      "purpose": "successor-basis",
+      "action": "PXD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 116.0,
+            "h": 116.07,
+            "l": 114.13,
+            "c": 116.0,
+            "v": 28023313.0,
+            "t": 1714708800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 116.0,
+            "h": 116.07,
+            "l": 114.13,
+            "c": 116.0,
+            "v": 28023313.0,
+            "t": 1714708800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OKE",
+      "day": "2025-01-31",
+      "purpose": "successor-basis",
+      "action": "ENLC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 99.95,
+            "h": 101.45,
+            "l": 96.82,
+            "c": 97.17,
+            "v": 5956594.0,
+            "t": 1738299600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 99.95,
+            "h": 101.45,
+            "l": 96.82,
+            "c": 97.17,
+            "v": 5956594.0,
+            "t": 1738299600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SM",
+      "day": "2026-01-30",
+      "purpose": "successor-basis",
+      "action": "CIVI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 18.81,
+            "h": 19.62,
+            "l": 18.53,
+            "c": 19.47,
+            "v": 10689306.0,
+            "t": 1769749200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 18.81,
+            "h": 19.62,
+            "l": 18.53,
+            "c": 19.47,
+            "v": 10689306.0,
+            "t": 1769749200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "UMBF",
+      "day": "2025-02-03",
+      "purpose": "successor-basis",
+      "action": "HTLF",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 114.09,
+            "h": 116.11,
+            "l": 111.49,
+            "c": 113.24,
+            "v": 1812135.0,
+            "t": 1738558800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 114.09,
+            "h": 116.11,
+            "l": 111.49,
+            "c": 113.24,
+            "v": 1812135.0,
+            "t": 1738558800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AMCR",
+      "day": "2025-04-30",
+      "purpose": "successor-basis",
+      "action": "BERY",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 46.35,
+            "h": 46.725,
+            "l": 45.35,
+            "c": 46.0,
+            "v": 46081598.6,
+            "t": 1745985600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.27,
+            "h": 9.345,
+            "l": 9.07,
+            "c": 9.2,
+            "v": 230407993.0,
+            "t": 1745985600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2025-10-20",
+      "purpose": "successor-basis",
+      "action": "VBTX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 15.8,
+            "h": 15.87,
+            "l": 15.6,
+            "c": 15.84,
+            "v": 28011130.0,
+            "t": 1760932800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 15.8,
+            "h": 15.87,
+            "l": 15.6,
+            "c": 15.84,
+            "v": 28011130.0,
+            "t": 1760932800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AUB",
+      "day": "2025-04-01",
+      "purpose": "successor-basis",
+      "action": "SASR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.9,
+            "h": 31.05,
+            "l": 29.965,
+            "c": 30.24,
+            "v": 1869274.0,
+            "t": 1743480000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.9,
+            "h": 31.05,
+            "l": 29.965,
+            "c": 30.24,
+            "v": 1869274.0,
+            "t": 1743480000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SNPS",
+      "day": "2025-07-17",
+      "purpose": "successor-basis",
+      "action": "ANSS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 567.505,
+            "h": 590.0,
+            "l": 562.995,
+            "c": 589.01,
+            "v": 3621099.0,
+            "t": 1752724800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 567.505,
+            "h": 590.0,
+            "l": 562.995,
+            "c": 589.01,
+            "v": 3621099.0,
+            "t": 1752724800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "APO",
+      "day": "2025-09-02",
+      "purpose": "successor-basis",
+      "action": "BRDG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 134.35,
+            "h": 135.98,
+            "l": 132.28,
+            "c": 135.84,
+            "v": 3697135.0,
+            "t": 1756785600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 134.35,
+            "h": 135.98,
+            "l": 132.28,
+            "c": 135.84,
+            "v": 3697135.0,
+            "t": 1756785600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "O",
+      "day": "2024-01-23",
+      "purpose": "successor-basis",
+      "action": "SRC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 55.8,
+            "h": 56.09,
+            "l": 55.41,
+            "c": 55.99,
+            "v": 12145083.0,
+            "t": 1705986000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 55.8,
+            "h": 56.09,
+            "l": 55.41,
+            "c": 55.99,
+            "v": 12145083.0,
+            "t": 1705986000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PENG",
+      "day": "2024-10-15",
+      "purpose": "successor-basis",
+      "action": "SGH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 20.05,
+            "h": 21.62,
+            "l": 20.05,
+            "c": 20.41,
+            "v": 901431.0,
+            "t": 1728964800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 20.05,
+            "h": 21.62,
+            "l": 20.05,
+            "c": 20.41,
+            "v": 901431.0,
+            "t": 1728964800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SBLK",
+      "day": "2024-04-09",
+      "purpose": "successor-basis",
+      "action": "EGLE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 23.88,
+            "h": 23.88,
+            "l": 23.38,
+            "c": 23.7,
+            "v": 2472287.0,
+            "t": 1712635200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 23.88,
+            "h": 23.88,
+            "l": 23.38,
+            "c": 23.7,
+            "v": 2472287.0,
+            "t": 1712635200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "KIM",
+      "day": "2024-01-02",
+      "purpose": "successor-basis",
+      "action": "RPT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 21.24,
+            "h": 21.565,
+            "l": 21.1,
+            "c": 21.28,
+            "v": 12644443.0,
+            "t": 1704171600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 21.24,
+            "h": 21.565,
+            "l": 21.1,
+            "c": 21.28,
+            "v": 12644443.0,
+            "t": 1704171600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COLB",
+      "day": "2023-03-01",
+      "purpose": "successor-basis",
+      "action": "UMPQ",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.11,
+            "h": 30.11,
+            "l": 29.59,
+            "c": 29.95,
+            "v": 4144705.0,
+            "t": 1677646800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.11,
+            "h": 30.11,
+            "l": 29.59,
+            "c": 29.95,
+            "v": 4144705.0,
+            "t": 1677646800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RYZ",
+      "day": "2026-02-24",
+      "purpose": "successor-basis",
+      "action": "RYI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 27.82,
+            "h": 28.82,
+            "l": 27.01,
+            "c": 27.23,
+            "v": 510221.858357,
+            "t": 1771909200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 27.82,
+            "h": 28.82,
+            "l": 27.01,
+            "c": 27.23,
+            "v": 510221.858357,
+            "t": 1771909200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SHOE",
+      "day": "2026-06-12",
+      "purpose": "successor-basis",
+      "action": "SCVL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 17.43,
+            "h": 17.68,
+            "l": 16.88,
+            "c": 17.37,
+            "v": 302491.316086,
+            "t": 1781236800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 17.43,
+            "h": 17.68,
+            "l": 16.88,
+            "c": 17.37,
+            "v": 302491.316086,
+            "t": 1781236800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AD",
+      "day": "2025-08-12",
+      "purpose": "successor-basis",
+      "action": "USM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 77.41,
+            "h": 77.655,
+            "l": 74.17,
+            "c": 75.98,
+            "v": 764355.0,
+            "t": 1754971200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 77.41,
+            "h": 77.655,
+            "l": 74.17,
+            "c": 75.98,
+            "v": 764355.0,
+            "t": 1754971200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BTE",
+      "day": "2023-06-20",
+      "purpose": "successor-basis",
+      "action": "ROCC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 3.31,
+            "h": 3.31,
+            "l": 3.11,
+            "c": 3.22,
+            "v": 6831167.0,
+            "t": 1687233600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 3.31,
+            "h": 3.31,
+            "l": 3.11,
+            "c": 3.22,
+            "v": 6831167.0,
+            "t": 1687233600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CNR",
+      "day": "2025-01-15",
+      "purpose": "successor-basis",
+      "action": "CEIX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 99.0,
+            "h": 103.39,
+            "l": 97.995,
+            "c": 101.91,
+            "v": 529079.0,
+            "t": 1736899200000
+          }
+        ],
+        "raw": [
+          {
+            "o": 99.0,
+            "h": 103.39,
+            "l": 97.995,
+            "c": 101.91,
+            "v": 529079.0,
+            "t": 1736899200000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RNST",
+      "day": "2025-04-01",
+      "purpose": "successor-basis",
+      "action": "FBMS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 33.63,
+            "h": 34.32,
+            "l": 33.4,
+            "c": 34.09,
+            "v": 1171433.0,
+            "t": 1743480000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 33.63,
+            "h": 34.32,
+            "l": 33.4,
+            "c": 34.09,
+            "v": 1171433.0,
+            "t": 1743480000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "AG",
+      "day": "2025-01-16",
+      "purpose": "successor-basis",
+      "action": "GATO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 5.68,
+            "h": 5.78,
+            "l": 5.55,
+            "c": 5.56,
+            "v": 17050517.0,
+            "t": 1737003600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 5.68,
+            "h": 5.78,
+            "l": 5.55,
+            "c": 5.56,
+            "v": 17050517.0,
+            "t": 1737003600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2025-12-15",
+      "purpose": "successor-basis",
+      "action": "VTLE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.45,
+            "h": 9.47,
+            "l": 8.9,
+            "c": 8.92,
+            "v": 6012680.0,
+            "t": 1765774800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.45,
+            "h": 9.47,
+            "l": 8.9,
+            "c": 8.92,
+            "v": 6012680.0,
+            "t": 1765774800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FITB",
+      "day": "2026-02-02",
+      "purpose": "successor-basis",
+      "action": "CMA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 49.415,
+            "h": 52.02,
+            "l": 49.415,
+            "c": 51.95,
+            "v": 22331907.0,
+            "t": 1770008400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 49.415,
+            "h": 52.02,
+            "l": 49.415,
+            "c": 51.95,
+            "v": 22331907.0,
+            "t": 1770008400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SJM",
+      "day": "2023-11-07",
+      "purpose": "successor-basis",
+      "action": "TWNK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 112.0,
+            "h": 112.0,
+            "l": 109.64,
+            "c": 110.14,
+            "v": 1716714.0,
+            "t": 1699333200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 112.0,
+            "h": 112.0,
+            "l": 109.64,
+            "c": 110.14,
+            "v": 1716714.0,
+            "t": 1699333200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "GMED",
+      "day": "2023-09-01",
+      "purpose": "successor-basis",
+      "action": "NUVA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 53.9,
+            "h": 54.34,
+            "l": 52.935,
+            "c": 54.23,
+            "v": 2740154.0,
+            "t": 1693540800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 53.9,
+            "h": 54.34,
+            "l": 52.935,
+            "c": 54.23,
+            "v": 2740154.0,
+            "t": 1693540800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CVX",
+      "day": "2023-08-07",
+      "purpose": "successor-basis",
+      "action": "PDCE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 161.01,
+            "h": 161.38,
+            "l": 159.08,
+            "c": 159.89,
+            "v": 13927388.0,
+            "t": 1691380800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 161.01,
+            "h": 161.38,
+            "l": 159.08,
+            "c": 159.89,
+            "v": 13927388.0,
+            "t": 1691380800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OBDC",
+      "day": "2023-07-06",
+      "purpose": "successor-basis",
+      "action": "ORCC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 13.37,
+            "h": 14.25,
+            "l": 13.28,
+            "c": 13.55,
+            "v": 1502836.0,
+            "t": 1688616000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 13.37,
+            "h": 14.25,
+            "l": 13.28,
+            "c": 13.55,
+            "v": 1502836.0,
+            "t": 1688616000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RVTY",
+      "day": "2023-05-16",
+      "purpose": "successor-basis",
+      "action": "PKI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 115.65,
+            "h": 116.735,
+            "l": 113.17,
+            "c": 114.21,
+            "v": 553006.0,
+            "t": 1684209600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 115.65,
+            "h": 116.735,
+            "l": 113.17,
+            "c": 114.21,
+            "v": 553006.0,
+            "t": 1684209600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PTEN",
+      "day": "2023-09-01",
+      "purpose": "successor-basis",
+      "action": "NEX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.42,
+            "h": 15.27,
+            "l": 14.31,
+            "c": 14.91,
+            "v": 5826103.0,
+            "t": 1693540800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.42,
+            "h": 15.27,
+            "l": 14.31,
+            "c": 14.91,
+            "v": 5826103.0,
+            "t": 1693540800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HNI",
+      "day": "2023-06-01",
+      "purpose": "successor-basis",
+      "action": "KBAL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.78,
+            "h": 25.97,
+            "l": 25.26,
+            "c": 25.62,
+            "v": 356894.0,
+            "t": 1685592000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.78,
+            "h": 25.97,
+            "l": 25.26,
+            "c": 25.62,
+            "v": 356894.0,
+            "t": 1685592000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EXR",
+      "day": "2023-07-20",
+      "purpose": "successor-basis",
+      "action": "LSI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 149.18,
+            "h": 150.39,
+            "l": 146.65,
+            "c": 146.82,
+            "v": 2171795.0,
+            "t": 1689825600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 149.18,
+            "h": 150.39,
+            "l": 146.65,
+            "c": 146.82,
+            "v": 2171795.0,
+            "t": 1689825600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "XYL",
+      "day": "2023-05-24",
+      "purpose": "successor-basis",
+      "action": "AQUA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 104.19,
+            "h": 104.19,
+            "l": 100.99,
+            "c": 101.06,
+            "v": 4165600.0,
+            "t": 1684900800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 104.19,
+            "h": 104.19,
+            "l": 100.99,
+            "c": 101.06,
+            "v": 4165600.0,
+            "t": 1684900800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "RBA",
+      "day": "2023-03-20",
+      "purpose": "successor-basis",
+      "action": "IAA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 52.61,
+            "h": 53.83,
+            "l": 52.33,
+            "c": 52.79,
+            "v": 6621256.0,
+            "t": 1679284800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 52.61,
+            "h": 53.83,
+            "l": 52.33,
+            "c": 52.79,
+            "v": 6621256.0,
+            "t": 1679284800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "APA",
+      "day": "2024-04-01",
+      "purpose": "successor-basis",
+      "action": "CPE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 34.53,
+            "h": 35.485,
+            "l": 34.305,
+            "c": 35.43,
+            "v": 8326077.0,
+            "t": 1711944000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 34.53,
+            "h": 35.485,
+            "l": 34.305,
+            "c": 35.43,
+            "v": 8326077.0,
+            "t": 1711944000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ET",
+      "day": "2023-11-03",
+      "purpose": "successor-basis",
+      "action": "CEQP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 13.67,
+            "h": 13.68,
+            "l": 13.45,
+            "c": 13.66,
+            "v": 16727692.0,
+            "t": 1698984000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 13.67,
+            "h": 13.68,
+            "l": 13.45,
+            "c": 13.66,
+            "v": 16727692.0,
+            "t": 1698984000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CVSA",
+      "day": "2026-02-24",
+      "purpose": "successor-basis",
+      "action": "ATGE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 98.53,
+            "h": 99.8,
+            "l": 94.11,
+            "c": 99.59,
+            "v": 324441.871567,
+            "t": 1771909200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 98.53,
+            "h": 99.8,
+            "l": 94.11,
+            "c": 99.59,
+            "v": 324441.871567,
+            "t": 1771909200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BBT",
+      "day": "2025-09-02",
+      "purpose": "successor-basis",
+      "action": "BRKL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 26.4,
+            "h": 27.43,
+            "l": 26.045,
+            "c": 26.39,
+            "v": 997700.0,
+            "t": 1756785600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 26.4,
+            "h": 27.43,
+            "l": 26.045,
+            "c": 26.39,
+            "v": 997700.0,
+            "t": 1756785600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FLG",
+      "day": "2024-10-28",
+      "purpose": "successor-basis",
+      "action": "NYCB",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.55,
+            "h": 10.8,
+            "l": 10.28,
+            "c": 10.61,
+            "v": 8108283.0,
+            "t": 1730088000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.55,
+            "h": 10.8,
+            "l": 10.28,
+            "c": 10.61,
+            "v": 8108283.0,
+            "t": 1730088000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TXNM",
+      "day": "2024-08-05",
+      "purpose": "successor-basis",
+      "action": "PNM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 41.1,
+            "h": 41.1,
+            "l": 39.6,
+            "c": 40.24,
+            "v": 613112.0,
+            "t": 1722830400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 41.1,
+            "h": 41.1,
+            "l": 39.6,
+            "c": 40.24,
+            "v": 613112.0,
+            "t": 1722830400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COR",
+      "day": "2023-08-30",
+      "purpose": "successor-basis",
+      "action": "ABC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 180.49,
+            "h": 180.65,
+            "l": 178.025,
+            "c": 178.9,
+            "v": 720499.0,
+            "t": 1693368000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 180.49,
+            "h": 180.65,
+            "l": 178.025,
+            "c": 178.9,
+            "v": 720499.0,
+            "t": 1693368000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PRKS",
+      "day": "2024-02-13",
+      "purpose": "successor-basis",
+      "action": "SEAS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 48.79,
+            "h": 50.58,
+            "l": 47.61,
+            "c": 48.49,
+            "v": 468220.0,
+            "t": 1707800400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 48.79,
+            "h": 50.58,
+            "l": 47.61,
+            "c": 48.49,
+            "v": 468220.0,
+            "t": 1707800400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PRSU",
+      "day": "2025-01-02",
+      "purpose": "successor-basis",
+      "action": "VVI",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 41.28,
+            "h": 42.8,
+            "l": 41.04,
+            "c": 41.63,
+            "v": 161005.0,
+            "t": 1735794000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 41.28,
+            "h": 42.8,
+            "l": 41.04,
+            "c": 41.63,
+            "v": 161005.0,
+            "t": 1735794000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CDP",
+      "day": "2023-09-15",
+      "purpose": "successor-basis",
+      "action": "OFC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.31,
+            "h": 25.8,
+            "l": 24.68,
+            "c": 24.81,
+            "v": 1422792.0,
+            "t": 1694750400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.31,
+            "h": 25.8,
+            "l": 24.68,
+            "c": 24.81,
+            "v": 1422792.0,
+            "t": 1694750400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ASTH",
+      "day": "2024-02-26",
+      "purpose": "successor-basis",
+      "action": "AMEH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 42.21,
+            "h": 43.87,
+            "l": 42.01,
+            "c": 42.79,
+            "v": 273944.0,
+            "t": 1708923600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 42.21,
+            "h": 43.87,
+            "l": 42.01,
+            "c": 42.79,
+            "v": 273944.0,
+            "t": 1708923600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EFOR",
+      "day": "2026-04-24",
+      "purpose": "successor-basis",
+      "action": "ASGN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 20.1,
+            "h": 20.27,
+            "l": 18.5,
+            "c": 18.97,
+            "v": 2569039.119638,
+            "t": 1777003200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 20.1,
+            "h": 20.27,
+            "l": 18.5,
+            "c": 18.97,
+            "v": 2569039.119638,
+            "t": 1777003200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CALY",
+      "day": "2026-01-16",
+      "purpose": "successor-basis",
+      "action": "MODG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.81,
+            "h": 15.255,
+            "l": 14.67,
+            "c": 15.14,
+            "v": 2844725.0,
+            "t": 1768539600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.81,
+            "h": 15.255,
+            "l": 14.67,
+            "c": 15.14,
+            "v": 2844725.0,
+            "t": 1768539600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HHH",
+      "day": "2023-08-14",
+      "purpose": "successor-basis",
+      "action": "HHC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 79.48,
+            "h": 80.33,
+            "l": 78.03,
+            "c": 78.17,
+            "v": 121207.0,
+            "t": 1691985600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 79.48,
+            "h": 80.33,
+            "l": 78.03,
+            "c": 78.17,
+            "v": 121207.0,
+            "t": 1691985600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WKC",
+      "day": "2023-06-16",
+      "purpose": "successor-basis",
+      "action": "INT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.1,
+            "h": 25.1,
+            "l": 23.3,
+            "c": 23.48,
+            "v": 1047575.0,
+            "t": 1686888000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.1,
+            "h": 25.1,
+            "l": 23.3,
+            "c": 23.48,
+            "v": 1047575.0,
+            "t": 1686888000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CPAY",
+      "day": "2024-03-25",
+      "purpose": "successor-basis",
+      "action": "FLT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 319.94,
+            "h": 319.94,
+            "l": 304.8,
+            "c": 307.66,
+            "v": 156352.0,
+            "t": 1711339200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 319.94,
+            "h": 319.94,
+            "l": 304.8,
+            "c": 307.66,
+            "v": 156352.0,
+            "t": 1711339200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SGI",
+      "day": "2025-02-18",
+      "purpose": "successor-basis",
+      "action": "TPX",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 68.0,
+            "h": 69.87,
+            "l": 67.3827,
+            "c": 69.15,
+            "v": 1578562.0,
+            "t": 1739854800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 68.0,
+            "h": 69.87,
+            "l": 67.3827,
+            "c": 69.15,
+            "v": 1578562.0,
+            "t": 1739854800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WRK",
+      "day": "2024-07-03",
+      "purpose": "original-basis",
+      "action": "WRK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 49.55,
+            "h": 50.24,
+            "l": 49.34,
+            "c": 49.75,
+            "v": 4435075.0,
+            "t": 1719979200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 49.55,
+            "h": 50.24,
+            "l": 49.34,
+            "c": 49.75,
+            "v": 4435075.0,
+            "t": 1719979200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SW",
+      "day": "2024-07-08",
+      "purpose": "successor-basis",
+      "action": "WRK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 47.4,
+            "h": 47.6,
+            "l": 44.9,
+            "c": 46.22,
+            "v": 67456794.0,
+            "t": 1720411200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 47.4,
+            "h": 47.6,
+            "l": 44.9,
+            "c": 46.22,
+            "v": 67456794.0,
+            "t": 1720411200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ETRN",
+      "day": "2024-07-19",
+      "purpose": "original-basis",
+      "action": "ETRN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.36,
+            "h": 12.57,
+            "l": 12.23,
+            "c": 12.42,
+            "v": 194273745.0,
+            "t": 1721361600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.36,
+            "h": 12.57,
+            "l": 12.23,
+            "c": 12.42,
+            "v": 194273745.0,
+            "t": 1721361600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "EQT",
+      "day": "2024-07-22",
+      "purpose": "successor-basis",
+      "action": "ETRN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 36.29,
+            "h": 36.67,
+            "l": 35.52,
+            "c": 35.67,
+            "v": 13474265.0,
+            "t": 1721620800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 36.29,
+            "h": 36.67,
+            "l": 35.52,
+            "c": 35.67,
+            "v": 13474265.0,
+            "t": 1721620800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SKYT",
+      "day": "2026-07-30",
+      "purpose": "original-basis",
+      "action": "SKYT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 31.34,
+            "h": 32.66,
+            "l": 31.11,
+            "c": 32.46,
+            "v": 2243844.139786,
+            "t": 1785384000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 31.34,
+            "h": 32.66,
+            "l": 31.11,
+            "c": 32.46,
+            "v": 2243844.139786,
+            "t": 1785384000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "IONQ",
+      "day": "2026-07-31",
+      "purpose": "successor-basis",
+      "action": "SKYT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 36.49,
+            "h": 37.645,
+            "l": 35.584,
+            "c": 36.44,
+            "v": 18218447.841577,
+            "t": 1785470400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 36.49,
+            "h": 37.645,
+            "l": 35.584,
+            "c": 36.44,
+            "v": 18218447.841577,
+            "t": 1785470400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "COMM",
+      "day": "2026-01-13",
+      "purpose": "original-basis",
+      "action": "COMM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.655,
+            "h": 19.765,
+            "l": 19.1,
+            "c": 19.58,
+            "v": 5105240.0,
+            "t": 1768280400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 19.655,
+            "h": 19.765,
+            "l": 19.1,
+            "c": 19.58,
+            "v": 5105240.0,
+            "t": 1768280400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VISN",
+      "day": "2026-01-14",
+      "purpose": "successor-basis",
+      "action": "COMM",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.2,
+            "h": 19.54,
+            "l": 18.28,
+            "c": 19.03,
+            "v": 3420649.0,
+            "t": 1768366800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 19.2,
+            "h": 19.54,
+            "l": 18.28,
+            "c": 19.03,
+            "v": 3420649.0,
+            "t": 1768366800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ATXS",
+      "day": "2026-01-22",
+      "purpose": "original-basis",
+      "action": "ATXS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.48,
+            "h": 12.59,
+            "l": 12.445,
+            "c": 12.58,
+            "v": 3199309.0,
+            "t": 1769058000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.48,
+            "h": 12.59,
+            "l": 12.445,
+            "c": 12.58,
+            "v": 3199309.0,
+            "t": 1769058000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BCRX",
+      "day": "2026-01-23",
+      "purpose": "successor-basis",
+      "action": "ATXS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 6.72,
+            "h": 7.15,
+            "l": 6.7,
+            "c": 6.79,
+            "v": 4811164.0,
+            "t": 1769144400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 6.72,
+            "h": 7.15,
+            "l": 6.7,
+            "c": 6.79,
+            "v": 4811164.0,
+            "t": 1769144400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CDXC",
+      "day": "2025-03-18",
+      "purpose": "original-basis",
+      "action": "CDXC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 7.91,
+            "h": 7.92,
+            "l": 7.745,
+            "c": 7.87,
+            "v": 554833.0,
+            "t": 1742270400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 7.91,
+            "h": 7.92,
+            "l": 7.745,
+            "c": 7.87,
+            "v": 554833.0,
+            "t": 1742270400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "NAGE",
+      "day": "2025-03-19",
+      "purpose": "successor-basis",
+      "action": "CDXC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 7.9,
+            "h": 8.0,
+            "l": 7.68,
+            "c": 7.74,
+            "v": 357688.0,
+            "t": 1742356800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 7.9,
+            "h": 8.0,
+            "l": 7.68,
+            "c": 7.74,
+            "v": 357688.0,
+            "t": 1742356800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "MFH",
+      "day": "2025-11-12",
+      "purpose": "original-basis",
+      "action": "MFH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.01,
+            "h": 11.6,
+            "l": 10.82,
+            "c": 11.35,
+            "v": 176548,
+            "t": 1762923600000
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.01,
+            "h": 11.6,
+            "l": 10.82,
+            "c": 11.35,
+            "v": 176548,
+            "t": 1762923600000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CD",
+      "day": "2025-11-13",
+      "purpose": "successor-basis",
+      "action": "MFH",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 10.78,
+            "h": 11.125,
+            "l": 8.5101,
+            "c": 8.59,
+            "v": 252168,
+            "t": 1763010000000
+          }
+        ],
+        "raw": [
+          {
+            "o": 10.78,
+            "h": 11.125,
+            "l": 8.5101,
+            "c": 8.59,
+            "v": 252168,
+            "t": 1763010000000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "STEL",
+      "day": "2026-06-30",
+      "purpose": "original-basis",
+      "action": "STEL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 39.25,
+            "h": 39.32,
+            "l": 38.78,
+            "c": 39.32,
+            "v": 5942588.519754,
+            "t": 1782792000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 39.25,
+            "h": 39.32,
+            "l": 38.78,
+            "c": 39.32,
+            "v": 5942588.519754,
+            "t": 1782792000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PB",
+      "day": "2026-07-01",
+      "purpose": "successor-basis",
+      "action": "STEL",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 73.12,
+            "h": 73.98,
+            "l": 72.59,
+            "c": 73.37,
+            "v": 1950693.565145,
+            "t": 1782878400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 73.12,
+            "h": 73.98,
+            "l": 72.59,
+            "c": 73.37,
+            "v": 1950693.565145,
+            "t": 1782878400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "WBS",
+      "day": "2026-08-19",
+      "purpose": "original-basis",
+      "action": "WBS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 78.03,
+            "h": 78.135,
+            "l": 77.35,
+            "c": 77.57,
+            "v": 91317275.968194,
+            "t": 1787112000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 78.03,
+            "h": 78.135,
+            "l": 77.35,
+            "c": 77.57,
+            "v": 91317275.968194,
+            "t": 1787112000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SAN",
+      "day": "2026-08-20",
+      "purpose": "successor-basis",
+      "action": "WBS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 14.295,
+            "h": 14.35,
+            "l": 14.14,
+            "c": 14.21,
+            "v": 22721792.656326,
+            "t": 1787198400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 14.295,
+            "h": 14.35,
+            "l": 14.14,
+            "c": 14.21,
+            "v": 22721792.656326,
+            "t": 1787198400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SLMT",
+      "day": "2025-10-03",
+      "purpose": "successor-basis",
+      "action": "BREA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 237.9,
+            "h": 258,
+            "l": 235,
+            "c": 248.8,
+            "v": 49381.1,
+            "t": 1759464000000
+          }
+        ],
+        "raw": [
+          {
+            "o": 23.79,
+            "h": 25.8,
+            "l": 23.5,
+            "c": 24.88,
+            "v": 493811,
+            "t": 1759464000000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "FWDI",
+      "day": "2025-11-17",
+      "purpose": "successor-basis",
+      "action": "FORD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 9.08,
+            "h": 9.43,
+            "l": 8.32,
+            "c": 8.5,
+            "v": 508382,
+            "t": 1763355600000
+          }
+        ],
+        "raw": [
+          {
+            "o": 9.08,
+            "h": 9.43,
+            "l": 8.32,
+            "c": 8.5,
+            "v": 508382,
+            "t": 1763355600000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DMRA",
+      "day": "2026-03-10",
+      "purpose": "successor-basis",
+      "action": "GLTO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 27.99,
+            "h": 29.22,
+            "l": 25,
+            "c": 25.51,
+            "v": 216715.218,
+            "t": 1773115200000
+          }
+        ],
+        "raw": [
+          {
+            "o": 27.99,
+            "h": 29.22,
+            "l": 25,
+            "c": 25.51,
+            "v": 216715.218,
+            "t": 1773115200000
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BNY",
+      "day": "2026-05-21",
+      "purpose": "successor-basis",
+      "action": "BK",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 136.46,
+            "h": 139.57,
+            "l": 135.22,
+            "c": 138.98,
+            "v": 3011321.902439,
+            "t": 1779336000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 136.46,
+            "h": 139.57,
+            "l": 135.22,
+            "c": 138.98,
+            "v": 3011321.902439,
+            "t": 1779336000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VMRK",
+      "day": "2026-08-18",
+      "purpose": "successor-basis",
+      "action": "EQR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 64.16,
+            "h": 65.05,
+            "l": 63.69,
+            "c": 64.03,
+            "v": 6385282.813976,
+            "t": 1787025600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 64.16,
+            "h": 65.05,
+            "l": 63.69,
+            "c": 64.03,
+            "v": 6385282.813976,
+            "t": 1787025600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HAPN",
+      "day": "2026-06-22",
+      "purpose": "successor-basis",
+      "action": "LC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 19.4,
+            "h": 19.4,
+            "l": 18.55,
+            "c": 18.62,
+            "v": 1181074.171402,
+            "t": 1782100800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 19.4,
+            "h": 19.4,
+            "l": 18.55,
+            "c": 18.62,
+            "v": 1181074.171402,
+            "t": 1782100800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ONT",
+      "day": "2026-05-04",
+      "purpose": "successor-basis",
+      "action": "MEG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 21.39,
+            "h": 21.67,
+            "l": 20.73,
+            "c": 21.33,
+            "v": 350032.382287,
+            "t": 1777867200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 21.39,
+            "h": 21.67,
+            "l": 20.73,
+            "c": 21.33,
+            "v": 350032.382287,
+            "t": 1777867200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "VSXY",
+      "day": "2026-06-02",
+      "purpose": "successor-basis",
+      "action": "VSCO",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 78.53,
+            "h": 81.28,
+            "l": 74.26,
+            "c": 80.06,
+            "v": 9958377.983049,
+            "t": 1780372800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 78.53,
+            "h": 81.28,
+            "l": 74.26,
+            "c": 80.06,
+            "v": 9958377.983049,
+            "t": 1780372800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "ECHO",
+      "day": "2026-06-24",
+      "purpose": "successor-basis",
+      "action": "SATS",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 101.16,
+            "h": 102.31,
+            "l": 98.25,
+            "c": 99.86,
+            "v": 8741763.263513,
+            "t": 1782273600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 101.16,
+            "h": 102.31,
+            "l": 98.25,
+            "c": 99.86,
+            "v": 8741763.263513,
+            "t": 1782273600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "OPLN",
+      "day": "2025-12-26",
+      "purpose": "successor-basis",
+      "action": "KAR",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.82,
+            "h": 31.07,
+            "l": 30.525,
+            "c": 31.02,
+            "v": 362183.0,
+            "t": 1766725200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.82,
+            "h": 31.07,
+            "l": 30.525,
+            "c": 31.02,
+            "v": 362183.0,
+            "t": 1766725200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CWEN",
+      "day": "2026-05-01",
+      "purpose": "successor-basis",
+      "action": "CWEN.A",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 40.31,
+            "h": 40.66,
+            "l": 39.9,
+            "c": 40.3,
+            "v": 954803.782728,
+            "t": 1777608000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 40.31,
+            "h": 40.66,
+            "l": 39.9,
+            "c": 40.3,
+            "v": 954803.782728,
+            "t": 1777608000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "DMC",
+      "day": "2026-06-29",
+      "purpose": "successor-basis",
+      "action": "FDP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 29.0,
+            "h": 29.22,
+            "l": 28.205,
+            "c": 28.59,
+            "v": 354803.866904,
+            "t": 1782705600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 29.0,
+            "h": 29.22,
+            "l": 28.205,
+            "c": 28.59,
+            "v": 354803.866904,
+            "t": 1782705600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CWAN",
+      "day": "2025-04-21",
+      "purpose": "successor-basis",
+      "action": "ENFN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 22.83,
+            "h": 22.96,
+            "l": 21.125,
+            "c": 21.33,
+            "v": 2087049.0,
+            "t": 1745208000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 22.83,
+            "h": 22.96,
+            "l": 21.125,
+            "c": 21.33,
+            "v": 2087049.0,
+            "t": 1745208000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PSKY",
+      "day": "2025-08-07",
+      "purpose": "successor-basis",
+      "action": "PARA",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.64,
+            "h": 12.79,
+            "l": 10.57,
+            "c": 11.74,
+            "v": 43107823.0,
+            "t": 1754539200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.64,
+            "h": 12.79,
+            "l": 10.57,
+            "c": 11.74,
+            "v": 43107823.0,
+            "t": 1754539200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CHRD",
+      "day": "2024-05-31",
+      "purpose": "successor-basis",
+      "action": "ERF",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 180.47,
+            "h": 185.89,
+            "l": 179.01,
+            "c": 185.41,
+            "v": 5195523.0,
+            "t": 1717128000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 180.47,
+            "h": 185.89,
+            "l": 179.01,
+            "c": 185.41,
+            "v": 5195523.0,
+            "t": 1717128000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "HBAN",
+      "day": "2026-02-02",
+      "purpose": "successor-basis",
+      "action": "CADE",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 17.36,
+            "h": 17.94,
+            "l": 17.265,
+            "c": 17.88,
+            "v": 47527199.0,
+            "t": 1770008400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 17.36,
+            "h": 17.94,
+            "l": 17.265,
+            "c": 17.88,
+            "v": 47527199.0,
+            "t": 1770008400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TEX",
+      "day": "2026-02-02",
+      "purpose": "successor-basis",
+      "action": "REVG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 56.47,
+            "h": 60.39,
+            "l": 56.42,
+            "c": 58.99,
+            "v": 10414940.0,
+            "t": 1770008400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 56.47,
+            "h": 60.39,
+            "l": 56.42,
+            "c": 58.99,
+            "v": 10414940.0,
+            "t": 1770008400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PRMB",
+      "day": "2024-11-11",
+      "purpose": "successor-basis",
+      "action": "PRMW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.0,
+            "h": 25.63,
+            "l": 24.41,
+            "c": 25.5,
+            "v": 1525419.0,
+            "t": 1731301200000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.0,
+            "h": 25.63,
+            "l": 24.41,
+            "c": 25.5,
+            "v": 1525419.0,
+            "t": 1731301200000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "CRGY",
+      "day": "2024-07-30",
+      "purpose": "successor-basis",
+      "action": "SBOW",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 11.65,
+            "h": 11.95,
+            "l": 11.59,
+            "c": 11.82,
+            "v": 2709965.0,
+            "t": 1722312000000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 11.65,
+            "h": 11.95,
+            "l": 11.59,
+            "c": 11.82,
+            "v": 2709965.0,
+            "t": 1722312000000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "IA",
+      "day": "2026-08-18",
+      "purpose": "successor-basis",
+      "action": "ISSC",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 25.08,
+            "h": 25.08,
+            "l": 22.5,
+            "c": 23.07,
+            "v": 326227.431647,
+            "t": 1787025600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 25.08,
+            "h": 25.08,
+            "l": 22.5,
+            "c": 23.07,
+            "v": 326227.431647,
+            "t": 1787025600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BIPC",
+      "day": "2023-09-28",
+      "purpose": "successor-basis",
+      "action": "TRTN",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 35.79,
+            "h": 36.37,
+            "l": 35.34,
+            "c": 36.2,
+            "v": 2083172.0,
+            "t": 1695873600000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 35.79,
+            "h": 36.37,
+            "l": 35.34,
+            "c": 36.2,
+            "v": 2083172.0,
+            "t": 1695873600000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "QXO",
+      "day": "2026-07-01",
+      "purpose": "successor-basis",
+      "action": "BLD",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 17.28,
+            "h": 18.115,
+            "l": 16.46,
+            "c": 16.54,
+            "v": 26063077.793473,
+            "t": 1782878400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 17.28,
+            "h": 18.115,
+            "l": 16.46,
+            "c": 16.54,
+            "v": 26063077.793473,
+            "t": 1782878400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "SECZ",
+      "day": "2026-07-02",
+      "purpose": "successor-basis",
+      "action": "CEPT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 12.45,
+            "h": 13.7,
+            "l": 12.04,
+            "c": 12.3,
+            "v": 853519.889883,
+            "t": 1782964800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 12.45,
+            "h": 13.7,
+            "l": 12.04,
+            "c": 12.3,
+            "v": 853519.889883,
+            "t": 1782964800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "BRSL",
+      "day": "2025-07-02",
+      "purpose": "successor-basis",
+      "action": "IGT",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 16.3,
+            "h": 16.64,
+            "l": 16.01,
+            "c": 16.6,
+            "v": 2675137.0,
+            "t": 1751428800000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 16.3,
+            "h": 16.64,
+            "l": 16.01,
+            "c": 16.6,
+            "v": 2675137.0,
+            "t": 1751428800000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "PAAS",
+      "day": "2025-09-04",
+      "purpose": "successor-basis",
+      "action": "MAG",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 33.5,
+            "h": 34.05,
+            "l": 33.332,
+            "c": 33.58,
+            "v": 4856931.0,
+            "t": 1756958400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 33.5,
+            "h": 34.05,
+            "l": 33.332,
+            "c": 33.58,
+            "v": 4856931.0,
+            "t": 1756958400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    },
+    {
+      "ticker": "TEN",
+      "day": "2024-07-01",
+      "purpose": "successor-basis",
+      "action": "TNP",
+      "status": "OBSERVED_PAIR_ONLY",
+      "observations": {
+        "adjusted": [
+          {
+            "o": 30.4,
+            "h": 30.4,
+            "l": 29.13,
+            "c": 29.73,
+            "v": 155196.0,
+            "t": 1719806400000.0
+          }
+        ],
+        "raw": [
+          {
+            "o": 30.4,
+            "h": 30.4,
+            "l": 29.13,
+            "c": 29.73,
+            "v": 155196.0,
+            "t": 1719806400000.0
+          }
+        ]
+      },
+      "missing_requests": []
+    }
+  ]
+}

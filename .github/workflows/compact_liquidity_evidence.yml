@@ -1,0 +1,25 @@
+name: Compact raw-liquidity audit evidence
+on:
+  pull_request:
+    branches: [main]
+    paths: [.github/workflows/compact_liquidity_evidence.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  compact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: MomentumCloud_relaxed_selection_audit
+          run-id: 37438747197
+          github-token: ${{ github.token }}
+          path: evidence
+      - name: Keep diagnostic results, leave full raw input in source artifact
+        run: rm evidence/raw_dollar_volume.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MomentumCloud_raw_liquidity_compact_evidence
+          path: evidence/

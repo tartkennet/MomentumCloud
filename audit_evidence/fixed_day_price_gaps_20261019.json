@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-19",
+  "status": "VERIFIED_FROZEN_SOURCE_GAPS_NOT_PROOF_OF_NO_MARKET_TRADES",
+  "records": [
+    {
+      "ticker": "FRC",
+      "fixed_exit": "2023-05-01",
+      "source_path": "universe_evidence/histories_7.json",
+      "source_file_sha256": "b9fd2a71c3e54cf9cd324c72254f3882055ccc73baf84421b5023b6f5c0d9c0a",
+      "bases": {
+        "false": {
+          "history_rows": 392,
+          "exact_day_rows": [],
+          "last_before": {
+            "date": "2023-04-28",
+            "v": 176848332.0,
+            "vw": 3.6947,
+            "o": 6.59,
+            "c": 3.51,
+            "h": 6.6,
+            "l": 2.985,
+            "t": 1682654400000,
+            "n": 522368
+          },
+          "first_after": null
+        },
+        "true": {
+          "history_rows": 392,
+          "exact_day_rows": [],
+          "last_before": {
+            "date": "2023-04-28",
+            "v": 176848332.0,
+            "vw": 3.6947,
+            "o": 6.59,
+            "c": 3.51,
+            "h": 6.6,
+            "l": 2.985,
+            "t": 1682654400000,
+            "n": 522368
+          },
+          "first_after": null
+        }
+      },
+      "conclusion": "NO_OBSERVED_FIXED_DAY_PAIR_IN_PRESERVED_SOURCE",
+      "global_trading_halt_proven": false,
+      "price_substituted": false
+    },
+    {
+      "ticker": "RNAZ",
+      "fixed_exit": "2025-12-01",
+      "source_path": "universe_evidence/histories_1.json",
+      "source_file_sha256": "2c0795d84cd6f9f0e401f63d1bac831c060c3bd3511b4f46954ab6c720f356b5",
+      "bases": {
+        "false": {
+          "history_rows": 1249,
+          "exact_day_rows": [],
+          "last_before": {
+            "date": "2025-11-28",
+            "v": 1211,
+            "vw": 9.2669,
+            "o": 9.3,
+            "c": 9.29,
+            "h": 9.3,
+            "l": 9.29,
+            "t": 1764306000000,
+            "n": 62
+          },
+          "first_after": {
+            "date": "2025-12-02",
+            "v": 6415,
+            "vw": 8.8812,
+            "o": 8.91,
+            "c": 8.95,
+            "h": 9,
+            "l": 8.51,
+            "t": 1764651600000,
+            "n": 203
+          }
+        },
+        "true": {
+          "history_rows": 1249,
+          "exact_day_rows": [],
+          "last_before": {
+            "date": "2025-11-28",
+            "v": 1211,
+            "vw": 9.2669,
+            "o": 9.3,
+            "c": 9.29,
+            "h": 9.3,
+            "l": 9.29,
+            "t": 1764306000000,
+            "n": 62
+          },
+          "first_after": {
+            "date": "2025-12-02",
+            "v": 6415,
+            "vw": 8.8812,
+            "o": 8.91,
+            "c": 8.95,
+            "h": 9,
+            "l": 8.51,
+            "t": 1764651600000,
+            "n": 203
+          }
+        }
+      },
+      "conclusion": "NO_OBSERVED_FIXED_DAY_PAIR_IN_PRESERVED_SOURCE",
+      "global_trading_halt_proven": false,
+      "price_substituted": false
+    }
+  ],
+  "limitation": "Audits preserved raw/adjusted histories, not all venues or a fresh API result. Interrupted endpoint calls produced no retained response and are not claimed as HTTP evidence."
+}

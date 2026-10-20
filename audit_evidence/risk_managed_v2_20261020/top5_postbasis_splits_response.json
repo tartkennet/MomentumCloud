@@ -1,0 +1,13 @@
+{
+  "request": {
+    "path": "/stocks/v1/splits",
+    "params": {
+      "ticker.any_of": "APLS,ZETA,REZI,ENVA,KGS",
+      "execution_date.gt": "2026-10-06",
+      "execution_date.lte": "2026-10-20",
+      "limit": 1000,
+      "sort": "execution_date.asc"
+    }
+  },
+  "response": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period."
+}

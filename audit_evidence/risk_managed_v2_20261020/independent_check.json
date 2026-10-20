@@ -1,0 +1,139 @@
+{
+  "status": "PASS_INDEPENDENT_CSV_RECONCILIATION",
+  "checks": {
+    "selection_equal": {
+      "status": "PASS",
+      "positions": 975,
+      "periods": 43,
+      "nav_marks": 943,
+      "net_return_pct": -11.818655805487865,
+      "daily_drawdown_pct": -28.721772014506463
+    },
+    "selection_sized": {
+      "status": "PASS",
+      "positions": 975,
+      "periods": 43,
+      "nav_marks": 943,
+      "net_return_pct": -3.3835654958957804,
+      "daily_drawdown_pct": -21.45580307786441
+    },
+    "full_v2": {
+      "status": "PASS",
+      "positions": 975,
+      "periods": 43,
+      "nav_marks": 943,
+      "net_return_pct": -3.16085127657945,
+      "daily_drawdown_pct": -21.301746728491665
+    },
+    "spy_buy_hold": {
+      "status": "PASS",
+      "positions": 43,
+      "periods": 43,
+      "nav_marks": 943,
+      "net_return_pct": 70.20238513471003,
+      "daily_drawdown_pct": -19.537340479253864
+    },
+    "spy_matched_risk": {
+      "status": "PASS",
+      "positions": 39,
+      "periods": 43,
+      "nav_marks": 943,
+      "net_return_pct": 28.938443913468575,
+      "daily_drawdown_pct": -8.52626542561411
+    }
+  },
+  "same_choices_and_component_contracts": true,
+  "by_signal_year": {
+    "selection_equal": {
+      "2023": {
+        "signal_months": 11,
+        "net_return_pct": -2.996419395934291
+      },
+      "2024": {
+        "signal_months": 12,
+        "net_return_pct": 17.25129190593173
+      },
+      "2025": {
+        "signal_months": 12,
+        "net_return_pct": -0.702221816610582
+      },
+      "2026": {
+        "signal_months": 8,
+        "net_return_pct": -21.921442397568224
+      }
+    },
+    "selection_sized": {
+      "2023": {
+        "signal_months": 11,
+        "net_return_pct": -0.1880558102190122
+      },
+      "2024": {
+        "signal_months": 12,
+        "net_return_pct": 15.164214648947638
+      },
+      "2025": {
+        "signal_months": 12,
+        "net_return_pct": -0.8531072884205848
+      },
+      "2026": {
+        "signal_months": 8,
+        "net_return_pct": -15.224212415977123
+      }
+    },
+    "full_v2": {
+      "2023": {
+        "signal_months": 11,
+        "net_return_pct": -0.7126468849330769
+      },
+      "2024": {
+        "signal_months": 12,
+        "net_return_pct": 15.164214648947638
+      },
+      "2025": {
+        "signal_months": 12,
+        "net_return_pct": -0.2950644840856165
+      },
+      "2026": {
+        "signal_months": 8,
+        "net_return_pct": -15.057933443600046
+      }
+    },
+    "spy_buy_hold": {
+      "2023": {
+        "signal_months": 11,
+        "net_return_pct": 18.648776209989173
+      },
+      "2024": {
+        "signal_months": 12,
+        "net_return_pct": 18.031762890709068
+      },
+      "2025": {
+        "signal_months": 12,
+        "net_return_pct": 12.28022541485898
+      },
+      "2026": {
+        "signal_months": 8,
+        "net_return_pct": 8.243096891177771
+      }
+    },
+    "spy_matched_risk": {
+      "2023": {
+        "signal_months": 11,
+        "net_return_pct": 5.530405617009171
+      },
+      "2024": {
+        "signal_months": 12,
+        "net_return_pct": 15.890648425793884
+      },
+      "2025": {
+        "signal_months": 12,
+        "net_return_pct": 5.8524606004001
+      },
+      "2026": {
+        "signal_months": 8,
+        "net_return_pct": -0.40088796401615
+      }
+    }
+  },
+  "limitation": "Checks exported arithmetic/contracts. Does not independently source market prices or prove future alpha."
+}

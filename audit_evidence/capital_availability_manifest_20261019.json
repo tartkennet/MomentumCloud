@@ -1,0 +1,84 @@
+{
+  "source_head": "2aa1715e5d4b2249a442168f7161bb153062d429",
+  "package_versions": {
+    "pandas": "2.2.2",
+    "numpy": "2.0.1",
+    "pyarrow": "17.0.0",
+    "requests": "2.32.3",
+    "openpyxl": "3.1.5"
+  },
+  "files": [
+    {
+      "path": "audit_capital_availability.py",
+      "bytes": 7291,
+      "sha256": "29e100b61c68522408370d60268eab368a7eaf7c0ee4df8527d3de42f038aec1",
+      "git_blob_sha1": "db88e37c6b87a77a40fa678f3904b69343b732ea"
+    },
+    {
+      "path": "tests/test_capital_availability.py",
+      "bytes": 5780,
+      "sha256": "8851eba6d5615f1b1aac78d5600476165415977569bae4bb8f050983cfaeb3cf",
+      "git_blob_sha1": "58425d8819d92735c3b899e3e6de4ef1fa2edbcd"
+    },
+    {
+      "path": "tests/fixtures/capital_availability/late_exit_synthetic.json",
+      "bytes": 504,
+      "sha256": "d9e1475bd13ba19d7b22b4be0fc8f2d68ff748ff108ea173396cac1a2a0d20d6",
+      "git_blob_sha1": "2405f01805a414c58069d82ae39b1e183e204962"
+    },
+    {
+      "path": "tests/fixtures/capital_availability/cad_receipt_synthetic.json",
+      "bytes": 671,
+      "sha256": "b720e0a8403c304907a186aec470b1c7a25887d83471ef62b66d49b47ce106d7",
+      "git_blob_sha1": "faa5dc0ef7255af9acd563fa32aca0458f939a38"
+    },
+    {
+      "path": "docs/capital_availability_audit.md",
+      "bytes": 2049,
+      "sha256": "f0db82caa2a3d2847529c8844d7ee604dd762b57d48d3cd4c48505381b06319a",
+      "git_blob_sha1": "13cbcb53e955c8c7f88360c2a6bf4ce09bb3d87b"
+    },
+    {
+      "path": "docs/MomentumCloud_urvalsgranskning.md",
+      "bytes": 61036,
+      "sha256": "740f04a87c9ac47ad46c3abdeb3f2dae788ee9cf73aa2970ae29997dff7590cf",
+      "git_blob_sha1": "c05260e312cd32d903ab3e9a369de15ed90fcaa1"
+    },
+    {
+      "path": "audit_evidence/tests_capital_batch_20261019.log",
+      "bytes": 23117,
+      "sha256": "51bd3cbd6f87810d2abfe51f49ca5aef479687893de2cf0d879e15c72be445e2",
+      "git_blob_sha1": "951cc04f912c12f29285d4e5d7b8ef2c8ac1a36f"
+    },
+    {
+      "path": "audit_evidence/capital_late_exit_synthetic_20261019.json",
+      "bytes": 219,
+      "sha256": "2306a6c72049bd0f4eadfc4c9e4e2a161667494ff24fc32c909a9629c92eb677",
+      "git_blob_sha1": "9b4d1156b72aa094072e22be37d65af74771f29e"
+    },
+    {
+      "path": "audit_evidence/capital_cad_receipt_synthetic_20261019.json",
+      "bytes": 1339,
+      "sha256": "b809bf40571ce98af4d0a5d84df09b1eb492a5b4fd7f976579acef2c59804e6b",
+      "git_blob_sha1": "58a09a1a30289f66ef5c313b317bb5394b5ee812"
+    },
+    {
+      "path": "audit_evidence/remaining_evidence_requirements_20261019.json",
+      "bytes": 3891,
+      "sha256": "8549615e81a175be3794b693e473c3ccb4a5d04b7feab5c9c0ab1bb3919db1ae",
+      "git_blob_sha1": "71736d4772ad8964af638d4d948788c8a41dba62"
+    },
+    {
+      "path": "audit_evidence/capital_availability_batch_20261019.json",
+      "bytes": 3117,
+      "sha256": "1623462fca9d573c4aadc947aff46feb4640bdbba29034d876ae2ad2d6ddee84",
+      "git_blob_sha1": "9dec5bf715c1fe7c1865b0f0df5e884c46a9711f"
+    },
+    {
+      "path": "audit_evidence/SJR_CDS_FAQ_20261019.html",
+      "bytes": 89095,
+      "sha256": "66d5b53fee4d10b1cab8b7b7666eeb2612c4f0e6e17f2168771c60822ffd77eb",
+      "git_blob_sha1": "4ca5712ed0ac9a3fae4cce2bd9b1028966d4fc12"
+    }
+  ]
+}

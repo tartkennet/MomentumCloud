@@ -1,0 +1,142 @@
+{
+    "terms": {
+        "url": "https://www.bankofcanada.ca/terms/"
+    },
+    "seriesDetail": {
+        "FXUSDCAD": {
+            "label": "USD/CAD",
+            "description": "Daily average exchange rate of the US dollar in Canadian dollars.",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            },
+            "dateFormat": "daily",
+            "metadata": {
+                "unit": "Canadian dollars per US dollar",
+                "frequency": "Business daily"
+            }
+        }
+    },
+    "observations": [
+        {
+            "d": "2023-04-03",
+            "FXUSDCAD": {
+                "v": "1.3438"
+            }
+        },
+        {
+            "d": "2023-04-04",
+            "FXUSDCAD": {
+                "v": "1.3447"
+            }
+        },
+        {
+            "d": "2023-04-05",
+            "FXUSDCAD": {
+                "v": "1.3457"
+            }
+        },
+        {
+            "d": "2023-04-06",
+            "FXUSDCAD": {
+                "v": "1.3478"
+            }
+        },
+        {
+            "d": "2023-04-10",
+            "FXUSDCAD": {
+                "v": "1.3527"
+            }
+        },
+        {
+            "d": "2023-04-11",
+            "FXUSDCAD": {
+                "v": "1.3483"
+            }
+        },
+        {
+            "d": "2023-04-12",
+            "FXUSDCAD": {
+                "v": "1.3447"
+            }
+        },
+        {
+            "d": "2023-04-13",
+            "FXUSDCAD": {
+                "v": "1.3359"
+            }
+        },
+        {
+            "d": "2023-04-14",
+            "FXUSDCAD": {
+                "v": "1.3362"
+            }
+        },
+        {
+            "d": "2023-04-17",
+            "FXUSDCAD": {
+                "v": "1.3398"
+            }
+        },
+        {
+            "d": "2023-04-18",
+            "FXUSDCAD": {
+                "v": "1.3387"
+            }
+        },
+        {
+            "d": "2023-04-19",
+            "FXUSDCAD": {
+                "v": "1.3445"
+            }
+        },
+        {
+            "d": "2023-04-20",
+            "FXUSDCAD": {
+                "v": "1.3469"
+            }
+        },
+        {
+            "d": "2023-04-21",
+            "FXUSDCAD": {
+                "v": "1.3539"
+            }
+        },
+        {
+            "d": "2023-04-24",
+            "FXUSDCAD": {
+                "v": "1.3542"
+            }
+        },
+        {
+            "d": "2023-04-25",
+            "FXUSDCAD": {
+                "v": "1.3623"
+            }
+        },
+        {
+            "d": "2023-04-26",
+            "FXUSDCAD": {
+                "v": "1.3625"
+            }
+        },
+        {
+            "d": "2023-04-27",
+            "FXUSDCAD": {
+                "v": "1.3612"
+            }
+        },
+        {
+            "d": "2023-04-28",
+            "FXUSDCAD": {
+                "v": "1.3578"
+            }
+        },
+        {
+            "d": "2023-05-01",
+            "FXUSDCAD": {
+                "v": "1.3546"
+            }
+        }
+    ]
+}

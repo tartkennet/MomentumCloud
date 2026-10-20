@@ -1,0 +1,16 @@
+{
+  "model": "risk-managed-momentum-v2",
+  "status": "REJECTED_AS_BUY_MODEL",
+  "implementation": "COMPLETE_RESEARCH_IMPLEMENTATION_AND_FIXED_COMPARISON",
+  "net_return_positive": false,
+  "daily_drawdown_within_20pct": false,
+  "beats_spy_net_return": false,
+  "net_improvement_vs_v1_pp": 54.68063766536902,
+  "daily_drawdown_improvement_vs_v1_pp": 43.61556132619636,
+  "conclusion": "Selection and risk redesign materially improves on v1 but still fails both predeclared goals and trails both SPY controls. Do not promote or fit more thresholds to manufacture historical profit.",
+  "untouched_holdout": false,
+  "price_audit_complete": false,
+  "matched_individual_point_checks": 260,
+  "missing_individual_point_checks": 2660,
+  "app_integration": "Not activated: failed research design. Existing app behavior is not represented as v2 validated."
+}

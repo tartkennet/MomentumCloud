@@ -1,71 +1,68 @@
-name: Production model validation
+name: Trend-pullback validation
 
 on:
+  pull_request:
+    paths:
+      - "momentum_config.py"
+      - "momentum_strategy.py"
+      - "backtest_momentum_v3.py"
+      - "run_trend_pullback_candidate.py"
+      - "validate_production_backtest.py"
+      - "data_access_preflight.py"
+      - "model_validation.py"
+      - "docs/TREND_PULLBACK_V1_PREREGISTRATION.md"
+      - ".github/workflows/momentum_validation.yml"
   workflow_dispatch:
-    inputs:
-      start_date:
-        description: "Validation start, YYYY-MM-DD"
-        required: true
-        default: "2024-01-01"
-      end_date:
-        description: "Validation end, YYYY-MM-DD"
-        required: true
-        default: "2026-09-01"
   push:
     branches: [main]
     paths:
       - "momentum_config.py"
       - "momentum_strategy.py"
       - "backtest_momentum_v3.py"
+      - "run_trend_pullback_candidate.py"
       - "validate_production_backtest.py"
       - "data_access_preflight.py"
       - "model_validation.py"
+      - "docs/TREND_PULLBACK_V1_PREREGISTRATION.md"
       - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  group: momentum-production-validation
-  cancel-in-progress: true
+  group: momentum-trend-pullback-validation-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   validate:
+    name: Point-in-time validation
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 40
+    env:
+      POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+      START_DATE: "2023-02-01"
+      END_DATE: "2026-09-25"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-          cache: pip
-      - run: python -m pip install -r requirements.txt
-      - run: python -m unittest discover -s tests -v
-      - name: Restore locked validation cache
-        uses: actions/cache@v4
-        with:
-          path: .momentum_backtest_cache.json
-          key: momentum-production-validation-${{ github.run_id }}
-          restore-keys: momentum-production-validation-
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
       - name: Verify historical data access
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python data_access_preflight.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
-      - name: Validate locked production model
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python validate_production_backtest.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
-          --end "${{ inputs.end_date || '2026-09-01' }}"
-      - uses: actions/upload-artifact@v4
+        run: python data_access_preflight.py --start "$START_DATE"
+      - name: Validate preregistered trend-pullback candidate
+        run: python run_trend_pullback_candidate.py --start "$START_DATE" --end "$END_DATE"
+      - name: Upload validation evidence
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: MomentumCloud_Production_v1_validation
+          name: MomentumCloud_Trend_Pullback_validation
+          if-no-files-found: warn
           path: |
             Momentum_backtest_results.csv
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
-            Momentum_validation_decision.json
+            Momentum_trend_pullback_validation_decision.json

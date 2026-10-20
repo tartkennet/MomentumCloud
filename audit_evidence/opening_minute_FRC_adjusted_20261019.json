@@ -1,0 +1,22 @@
+{
+  "request": {
+    "path": "/v2/aggs/ticker/FRC/range/1/minute/1682947800000/1682947859999",
+    "params": {
+      "adjusted": true,
+      "sort": "asc",
+      "limit": 50000
+    }
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period."
+      }
+    ],
+    "structuredContent": {
+      "result": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period."
+    },
+    "isError": false
+  }
+}

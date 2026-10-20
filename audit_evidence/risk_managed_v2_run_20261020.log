@@ -1,0 +1,188 @@
+COMPLETE_SIGNAL 2023-02-28 278 25 0.09952274731029065
+COMPLETE_SIGNAL 2023-03-31 302 25 0.3543072282367844
+COMPLETE_SIGNAL 2023-04-28 236 25 0.15270435560898177
+COMPLETE_SIGNAL 2023-05-31 248 25 3.3306690738754696e-16
+COMPLETE_SIGNAL 2023-06-30 313 25 2.220446049250313e-16
+COMPLETE_SIGNAL 2023-07-31 404 25 0.005200448756237486
+COMPLETE_SIGNAL 2023-08-31 481 25 0.24365005418910834
+COMPLETE_SIGNAL 2023-09-29 386 25 1.1102230246251565e-16
+COMPLETE_SIGNAL 2023-10-31 161 0 1.0
+COMPLETE_SIGNAL 2023-11-30 116 25 3.3306690738754696e-16
+COMPLETE_SIGNAL 2023-12-29 410 25 0.08109265012638722
+COMPLETE_SIGNAL 2024-01-31 570 25 0.14670260319343642
+COMPLETE_SIGNAL 2024-02-29 611 25 0.07687480293638627
+COMPLETE_SIGNAL 2024-03-28 592 25 0.1388427634109879
+COMPLETE_SIGNAL 2024-04-30 619 25 0.2433584661209438
+COMPLETE_SIGNAL 2024-05-31 395 25 2.220446049250313e-16
+COMPLETE_SIGNAL 2024-06-28 360 25 0.09058228466642182
+COMPLETE_SIGNAL 2024-07-31 447 25 2.220446049250313e-16
+COMPLETE_SIGNAL 2024-08-30 549 25 4.440892098500626e-16
+COMPLETE_SIGNAL 2024-09-30 703 25 4.440892098500626e-16
+COMPLETE_SIGNAL 2024-10-31 670 25 4.440892098500626e-16
+COMPLETE_SIGNAL 2024-11-29 547 25 2.220446049250313e-16
+COMPLETE_SIGNAL 2024-12-31 654 25 0.23359651273752358
+COMPLETE_SIGNAL 2025-01-31 407 25 0.11318437683594318
+COMPLETE_SIGNAL 2025-02-28 288 25 0.1262185856411988
+COMPLETE_SIGNAL 2025-03-31 345 0 1.0
+COMPLETE_SIGNAL 2025-04-30 213 0 1.0
+COMPLETE_SIGNAL 2025-05-30 149 25 0.27794561929444384
+COMPLETE_SIGNAL 2025-06-30 334 25 0.25179476257133626
+COMPLETE_SIGNAL 2025-07-31 371 25 3.3306690738754696e-16
+COMPLETE_SIGNAL 2025-08-29 401 25 0.10820131446230485
+COMPLETE_SIGNAL 2025-09-30 437 25 2.220446049250313e-16
+COMPLETE_SIGNAL 2025-10-31 452 25 0.20031365769125564
+COMPLETE_SIGNAL 2025-11-28 341 25 0.3263763850313949
+COMPLETE_SIGNAL 2025-12-31 434 25 0.08339040693528543
+COMPLETE_SIGNAL 2026-01-30 441 25 0.03715522672273319
+COMPLETE_SIGNAL 2026-02-27 502 25 0.40524641048149
+COMPLETE_SIGNAL 2026-03-31 533 0 1.0
+COMPLETE_SIGNAL 2026-04-30 353 25 0.11694470673567148
+COMPLETE_SIGNAL 2026-05-29 396 25 0.24318934693858751
+COMPLETE_SIGNAL 2026-06-30 486 25 0.3512366693599588
+COMPLETE_SIGNAL 2026-07-31 510 25 0.12951216126462062
+COMPLETE_SIGNAL 2026-08-31 480 25 2.220446049250313e-16
+{
+  "status": "COMPLETE_PREREGISTERED_RESEARCH_REPLAY",
+  "approval": "RESEARCH_ONLY_UNVALIDATED",
+  "configuration": {
+    "model": "risk-managed-momentum-v2",
+    "position_count": 25,
+    "min_raw_price": 10.0,
+    "min_raw_adv20": 20000000.0,
+    "max_volatility": 0.6,
+    "max_daily_move": 0.25,
+    "max_sma50_extension": 0.25,
+    "max_weight": 0.05,
+    "target_portfolio_volatility": 0.15,
+    "stop_loss": 0.1,
+    "fixed_monthly_cost": 0.003
+  },
+  "variants_predeclared": [
+    "selection_equal",
+    "selection_sized",
+    "full_v2"
+  ],
+  "spec_sha256_before_returns": "699edf3703332638e650deebb5453abe1aa88befe56886019e4bbb4f43c44891",
+  "holdout": "All 43 periods were previously inspected; this is exploratory redesign, not unseen validation.",
+  "inputs": {
+    "full_history_tickers": 409
+  },
+  "price_basis": "2026-10-06",
+  "models": {
+    "selection_equal": {
+      "net_return_pct": -11.818655805487865,
+      "gross_return_pct": -0.8369472296725462,
+      "cost_stress_060_return_pct": -21.612064063144842,
+      "daily_drawdown_pct": -28.721772014506463,
+      "annualized_return_pct": -3.4491075440867824,
+      "monthly_annualized_volatility_pct": 17.89042167471497,
+      "positive_months": 18,
+      "invested_months": 39,
+      "positions": 975,
+      "unique_tickers": 486,
+      "average_initial_exposure_pct": 90.69767441860465,
+      "max_initial_weight_pct": 4.0,
+      "worst_lot_return_pct": -40.10891309179818,
+      "stop_exits": 261,
+      "market_exits": 0,
+      "cash_action_exits": 4,
+      "positive_net_and_drawdown_within_20pct": false
+    },
+    "selection_sized": {
+      "net_return_pct": -3.3835654958957804,
+      "gross_return_pct": 8.612729116881624,
+      "cost_stress_060_return_pct": -14.085198541457686,
+      "daily_drawdown_pct": -21.45580307786441,
+      "annualized_return_pct": -0.9559962716380821,
+      "monthly_annualized_volatility_pct": 14.620761864107717,
+      "positive_months": 18,
+      "invested_months": 39,
+      "positions": 975,
+      "unique_tickers": 486,
+      "average_initial_exposure_pct": 79.91361733195414,
+      "max_initial_weight_pct": 5.0,
+      "worst_lot_return_pct": -40.10891309179818,
+      "stop_exits": 261,
+      "market_exits": 0,
+      "cash_action_exits": 4,
+      "positive_net_and_drawdown_within_20pct": false
+    },
+    "full_v2": {
+      "net_return_pct": -3.16085127657945,
+      "gross_return_pct": 8.862115704889234,
+      "cost_stress_060_return_pct": -13.886371378595356,
+      "daily_drawdown_pct": -21.301746728491665,
+      "annualized_return_pct": -0.8923346965372003,
+      "monthly_annualized_volatility_pct": 14.505935168760619,
+      "positive_months": 18,
+      "invested_months": 39,
+      "positions": 975,
+      "unique_tickers": 486,
+      "average_initial_exposure_pct": 79.91361733195414,
+      "max_initial_weight_pct": 5.0,
+      "worst_lot_return_pct": -40.10891309179818,
+      "stop_exits": 229,
+      "market_exits": 72,
+      "cash_action_exits": 4,
+      "positive_net_and_drawdown_within_20pct": false
+    }
+  },
+  "benchmarks": {
+    "spy_buy_hold": {
+      "net_return_pct": 70.20238513471003,
+      "gross_return_pct": 93.3082117295971,
+      "cost_stress_060_return_pct": 49.80166548439132,
+      "daily_drawdown_pct": -19.537340479253864,
+      "annualized_return_pct": 15.999342592525823,
+      "monthly_annualized_volatility_pct": 11.901147464460225,
+      "positive_months": 32,
+      "invested_months": 43,
+      "positions": 43,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 100.0,
+      "max_initial_weight_pct": 100.0,
+      "worst_lot_return_pct": -6.4963601596833005,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    },
+    "spy_matched_risk": {
+      "net_return_pct": 28.938443913468575,
+      "gross_return_pct": 44.81265212016996,
+      "cost_stress_060_return_pct": 14.764528253967143,
+      "daily_drawdown_pct": -8.52626542561411,
+      "annualized_return_pct": 7.350580584790012,
+      "monthly_annualized_volatility_pct": 8.659513047871886,
+      "positive_months": 27,
+      "invested_months": 39,
+      "positions": 39,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 79.91361733195414,
+      "max_initial_weight_pct": 99.99999999999997,
+      "worst_lot_return_pct": -6.169277734912271,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    }
+  },
+  "old_robust_v1": {
+    "net_return_pct": -57.84148894194847,
+    "daily_drawdown_pct": -64.91730805468802
+  },
+  "data_gaps": [],
+  "limitations": [
+    "Full v2 is a separate research implementation, not the app's existing v1 execution behavior.",
+    "Fractional share weights, zero cash interest, fixed invested-month cost; actual fills/fees not measured.",
+    "Split-adjusted price returns only; dividends, tax and USD/SEK are not simulated.",
+    "Individual reference audit of every new lot and dated issuer identity audit remain separate.",
+    "Research risk targets and 5% initial cap are not guarantees against gaps or later weight drift.",
+    "No untouched holdout or claim of future outperformance; no parameter grid was run."
+  ],
+  "source_sha256": {
+    "risk_managed_momentum.py": "47075e897089a8185b0f6a62ac911c4b8a560a9fa8ad14b491544bf98f3a5d75",
+    "run_risk_managed_research.py": "cd176ba7c5ec86d6bf35b04c5dc56dd4998abd8f39e3ba2f816f63265ae4f39c",
+    "docs/risk_managed_momentum_v2_spec.md": "699edf3703332638e650deebb5453abe1aa88befe56886019e4bbb4f43c44891"
+  }
+}

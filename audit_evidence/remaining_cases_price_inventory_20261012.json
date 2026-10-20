@@ -1,0 +1,952 @@
+{
+  "status": "COMPLETE_INVENTORY_ONLY",
+  "cases": 41,
+  "status_counts": {
+    "SCHEDULED_PAIR_MISSING": 41
+  },
+  "records": [
+    {
+      "signal": "2023-03-31",
+      "ticker": "SJR",
+      "issue": "exit from 2023-05-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2023-05-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 374,
+          "first": "2021-10-07",
+          "last": "2023-04-03",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 374,
+          "first": "2021-10-07",
+          "last": "2023-04-03",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2023-07-31",
+      "ticker": "AEPPZ",
+      "issue": "exit from 2023-09-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2023-09-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 465,
+          "first": "2021-10-07",
+          "last": "2023-08-14",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 465,
+          "first": "2021-10-07",
+          "last": "2023-08-14",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2023-08-31",
+      "ticker": "TRTN",
+      "issue": "exit from 2023-10-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2023-10-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 496,
+          "first": "2021-10-07",
+          "last": "2023-09-27",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 496,
+          "first": "2021-10-07",
+          "last": "2023-09-27",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2023-09-29",
+      "ticker": "NCR",
+      "issue": "exit from 2023-11-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2023-11-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 509,
+          "first": "2021-10-07",
+          "last": "2023-10-16",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 509,
+          "first": "2021-10-07",
+          "last": "2023-10-16",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2023-10-31",
+      "ticker": "VMW",
+      "issue": "exit from 2023-12-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2023-12-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 535,
+          "first": "2021-10-07",
+          "last": "2023-11-21",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 535,
+          "first": "2021-10-07",
+          "last": "2023-11-21",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-01-31",
+      "ticker": "DOC",
+      "issue": "exit 2024-03-04 outside period ending 2024-03-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-03-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1251,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1251,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-02-29",
+      "ticker": "PEAK",
+      "issue": "exit from 2024-04-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-04-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 603,
+          "first": "2021-10-07",
+          "last": "2024-03-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 603,
+          "first": "2021-10-07",
+          "last": "2024-03-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-04-30",
+      "ticker": "ERF",
+      "issue": "exit from 2024-06-03",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-06-03",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 665,
+          "first": "2021-10-07",
+          "last": "2024-05-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 665,
+          "first": "2021-10-07",
+          "last": "2024-05-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-05-31",
+      "ticker": "TNP",
+      "issue": "exit from 2024-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 685,
+          "first": "2021-10-07",
+          "last": "2024-06-28",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 685,
+          "first": "2021-10-07",
+          "last": "2024-06-28",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-06-28",
+      "ticker": "SBOW",
+      "issue": "exit from 2024-08-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-08-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 705,
+          "first": "2021-10-07",
+          "last": "2024-07-29",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 705,
+          "first": "2021-10-07",
+          "last": "2024-07-29",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-06-28",
+      "ticker": "TNP",
+      "issue": "entry from 2024-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 685,
+          "first": "2021-10-07",
+          "last": "2024-06-28",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 685,
+          "first": "2021-10-07",
+          "last": "2024-06-28",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2024-10-31",
+      "ticker": "PRMW",
+      "issue": "exit from 2024-12-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2024-12-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 778,
+          "first": "2021-10-07",
+          "last": "2024-11-08",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 778,
+          "first": "2021-10-07",
+          "last": "2024-11-08",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-03-31",
+      "ticker": "ENFN",
+      "issue": "exit from 2025-05-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-05-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 876,
+          "first": "2021-10-21",
+          "last": "2025-04-17",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 876,
+          "first": "2021-10-21",
+          "last": "2025-04-17",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-04-30",
+      "ticker": "GOLD",
+      "issue": "exit 2025-12-02 outside period ending 2025-06-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-06-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1110,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1110,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-06-30",
+      "ticker": "IGT",
+      "issue": "exit from 2025-08-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-08-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 936,
+          "first": "2021-10-07",
+          "last": "2025-07-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 936,
+          "first": "2021-10-07",
+          "last": "2025-07-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-07-31",
+      "ticker": "PARA",
+      "issue": "exit 2026-08-07 outside period ending 2025-09-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-09-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 909,
+          "first": "2022-02-17",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 909,
+          "first": "2022-02-17",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-08-29",
+      "ticker": "MAG",
+      "issue": "exit from 2025-10-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-10-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 980,
+          "first": "2021-10-07",
+          "last": "2025-09-03",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 980,
+          "first": "2021-10-07",
+          "last": "2025-09-03",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-09-30",
+      "ticker": "MTAL",
+      "issue": "exit 2026-04-14 outside period ending 2025-11-03",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-11-03",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1021,
+          "first": "2021-10-07",
+          "last": "2026-10-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1021,
+          "first": "2021-10-07",
+          "last": "2026-10-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-10-31",
+      "ticker": "FI",
+      "issue": "exit from 2025-12-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-12-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 610,
+          "first": "2023-06-07",
+          "last": "2025-11-10",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 610,
+          "first": "2023-06-07",
+          "last": "2025-11-10",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-10-31",
+      "ticker": "LNW",
+      "issue": "exit from 2025-12-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-12-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 889,
+          "first": "2022-04-29",
+          "last": "2025-11-12",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 889,
+          "first": "2022-04-29",
+          "last": "2025-11-12",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-10-31",
+      "ticker": "RNAZ",
+      "issue": "exit 2025-12-02 outside period ending 2025-12-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2025-12-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1249,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1249,
+          "first": "2021-10-07",
+          "last": "2026-10-02",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-11-28",
+      "ticker": "KAR",
+      "issue": "exit from 2026-01-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-01-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1059,
+          "first": "2021-10-07",
+          "last": "2025-12-24",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1059,
+          "first": "2021-10-07",
+          "last": "2025-12-24",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-12-31",
+      "ticker": "CADE",
+      "issue": "exit from 2026-02-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-02-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2025-12-31",
+      "ticker": "REVG",
+      "issue": "exit from 2026-02-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-02-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-01-30",
+      "ticker": "CADE",
+      "issue": "entry from 2026-02-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-02-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-01-30",
+      "ticker": "REVG",
+      "issue": "entry from 2026-02-02",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-02-02",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1083,
+          "first": "2021-10-07",
+          "last": "2026-01-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-03-31",
+      "ticker": "CWEN.A",
+      "issue": "exit from 2026-05-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-05-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1145,
+          "first": "2021-10-07",
+          "last": "2026-04-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1145,
+          "first": "2021-10-07",
+          "last": "2026-04-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-04-30",
+      "ticker": "BK",
+      "issue": "exit from 2026-06-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-06-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1159,
+          "first": "2021-10-07",
+          "last": "2026-05-20",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1159,
+          "first": "2021-10-07",
+          "last": "2026-05-20",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-04-30",
+      "ticker": "CWEN.A",
+      "issue": "entry from 2026-05-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-05-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1145,
+          "first": "2021-10-07",
+          "last": "2026-04-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1145,
+          "first": "2021-10-07",
+          "last": "2026-04-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-04-30",
+      "ticker": "MEG",
+      "issue": "exit from 2026-06-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-06-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1146,
+          "first": "2021-10-07",
+          "last": "2026-05-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1146,
+          "first": "2021-10-07",
+          "last": "2026-05-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-05-29",
+      "ticker": "BLD",
+      "issue": "exit from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1186,
+          "first": "2021-10-07",
+          "last": "2026-06-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1186,
+          "first": "2021-10-07",
+          "last": "2026-06-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-05-29",
+      "ticker": "FDP",
+      "issue": "exit from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1184,
+          "first": "2021-10-07",
+          "last": "2026-06-26",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1184,
+          "first": "2021-10-07",
+          "last": "2026-06-26",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-05-29",
+      "ticker": "LC",
+      "issue": "exit from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1179,
+          "first": "2021-10-07",
+          "last": "2026-06-18",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1179,
+          "first": "2021-10-07",
+          "last": "2026-06-18",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-05-29",
+      "ticker": "SATS",
+      "issue": "exit from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1181,
+          "first": "2021-10-07",
+          "last": "2026-06-23",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1181,
+          "first": "2021-10-07",
+          "last": "2026-06-23",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-05-29",
+      "ticker": "VSCO",
+      "issue": "exit from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1166,
+          "first": "2021-10-07",
+          "last": "2026-06-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1166,
+          "first": "2021-10-07",
+          "last": "2026-06-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-06-30",
+      "ticker": "BLD",
+      "issue": "entry from 2026-07-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-07-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1186,
+          "first": "2021-10-07",
+          "last": "2026-06-30",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1186,
+          "first": "2021-10-07",
+          "last": "2026-06-30",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-06-30",
+      "ticker": "CEPT",
+      "issue": "exit from 2026-08-03",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-08-03",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 292,
+          "first": "2025-05-02",
+          "last": "2026-07-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 292,
+          "first": "2025-05-02",
+          "last": "2026-07-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-07-31",
+      "ticker": "AVB",
+      "issue": "exit from 2026-09-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-09-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1218,
+          "first": "2021-10-07",
+          "last": "2026-08-14",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1218,
+          "first": "2021-10-07",
+          "last": "2026-08-14",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-07-31",
+      "ticker": "EQR",
+      "issue": "exit from 2026-09-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-09-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1219,
+          "first": "2021-10-07",
+          "last": "2026-08-17",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1219,
+          "first": "2021-10-07",
+          "last": "2026-08-17",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-07-31",
+      "ticker": "ISSC",
+      "issue": "exit from 2026-09-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-09-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1219,
+          "first": "2021-10-07",
+          "last": "2026-08-17",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1219,
+          "first": "2021-10-07",
+          "last": "2026-08-17",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    },
+    {
+      "signal": "2026-08-31",
+      "ticker": "HLX",
+      "issue": "exit from 2026-10-01",
+      "reviewed_action_record_available": false,
+      "execution_status": "UNVERIFIED",
+      "fixed_target_date": "2026-10-01",
+      "individual_history_bases": {
+        "raw": {
+          "bars": 1230,
+          "first": "2021-10-07",
+          "last": "2026-09-01",
+          "fixed_target_observed": false
+        },
+        "adjusted": {
+          "bars": 1230,
+          "first": "2021-10-07",
+          "last": "2026-09-01",
+          "fixed_target_observed": false
+        }
+      },
+      "price_observation_status": "SCHEDULED_PAIR_MISSING"
+    }
+  ]
+}

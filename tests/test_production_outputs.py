@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 
+from momentum_config import PRODUCTION
 from update_paper_portfolio import refresh_payload
 from momentum_production import (
     _initialize_paper_portfolio, _paper_portfolio, _signals, _write_workbook, fetch_security_master, validate_payload,
@@ -128,7 +129,7 @@ class ProductionOutputTests(unittest.TestCase):
 
     def test_risk_off_liquidates_and_never_buys(self):
         holdings = [{"ticker": "ABC", "stop_triggered": False}]
-        target = [{"ticker": "XYZ", "rank": 1, "score": 99, "weight_pct": 100 / 15}]
+        target = [{"ticker": "XYZ", "rank": 1, "score": 99, "weight_pct": 100 / 12}]
         self.assertEqual(
             _signals(holdings, target, risk_on=False, rebalance_due=True),
             [{"ticker": "ABC", "action": "SELL", "reason": "RISK_OFF"}],
@@ -141,9 +142,9 @@ class ProductionOutputTests(unittest.TestCase):
             {"ticker": "STOP", "stop_triggered": True},
         ]
         target = [
-            {"ticker": "KEEP", "rank": 1, "score": 99, "weight_pct": 100 / 15},
-            {"ticker": "NEW", "rank": 2, "score": 98, "weight_pct": 100 / 15},
-            {"ticker": "STOP", "rank": 3, "score": 97, "weight_pct": 100 / 15},
+            {"ticker": "KEEP", "rank": 1, "score": 99, "weight_pct": 100 / 12},
+            {"ticker": "NEW", "rank": 2, "score": 98, "weight_pct": 100 / 12},
+            {"ticker": "STOP", "rank": 3, "score": 97, "weight_pct": 100 / 12},
         ]
         signals = _signals(holdings, target, risk_on=True, rebalance_due=True)
         action = {row["ticker"]: (row["action"], row["reason"]) for row in signals}
@@ -155,7 +156,7 @@ class ProductionOutputTests(unittest.TestCase):
     def test_unfilled_monthly_buy_remains_actionable(self):
         target = [{
             "ticker": "NEW", "rank": 1, "target_rank": 1,
-            "score": 99, "weight_pct": 100 / 15,
+            "score": 99, "weight_pct": 100 / 12,
             "quantity": 3, "price_usd": 20,
         }]
         self.assertEqual(
@@ -164,7 +165,7 @@ class ProductionOutputTests(unittest.TestCase):
                 "ticker": "NEW", "action": "BUY",
                 "reason": "PENDING_MONTHLY_REBALANCE", "rank": 1,
                 "target_rank": 1, "score": 99,
-                "weight_pct": 100 / 15, "quantity": 3,
+                "weight_pct": 100 / 12, "quantity": 3,
                 "price_usd": 20,
             }],
         )
@@ -172,7 +173,7 @@ class ProductionOutputTests(unittest.TestCase):
     def test_stopped_position_is_not_rebought_during_same_month(self):
         target = [{
             "ticker": "STOP", "rank": 1, "target_rank": 1,
-            "score": 99, "weight_pct": 100 / 15,
+            "score": 99, "weight_pct": 100 / 12,
             "quantity": 3, "price_usd": 20,
         }]
         self.assertEqual(
@@ -191,8 +192,12 @@ class ProductionOutputTests(unittest.TestCase):
                 "adv20_usd": 6_000_000.0,
                 "return_1m_pct": 5.0,
                 "return_3m_pct": 10.0,
+                "mom12_2_pct": 12.0,
+                "mom6_2_pct": 8.0,
+                "mom3_1_pct": 5.0,
                 "relative_1m_pct": 3.0,
                 "relative_3m_pct": 6.0,
+                "positive_months": 9,
                 "quantity": 1,
                 "weight_pct": 100 / 15,
             }
@@ -200,13 +205,13 @@ class ProductionOutputTests(unittest.TestCase):
         ]
         payload = {
             "config": {
-                "selection_model": "v4-balanced",
+                "selection_model": PRODUCTION.selection_model,
                 "position_count": 15,
-                "min_price_usd": 10.0,
-                "min_adv20_usd": 5_000_000.0,
+                "min_price_usd": PRODUCTION.min_price_usd,
+                "min_adv20_usd": PRODUCTION.min_adv20_usd,
                 "stop_loss_pct": 10.0,
             },
-            "limitation": "Current limitation: survivorship bias",
+            "limitation": PRODUCTION.limitation,
             "model_validation": {
                 "approved": True,
                 "status": "APPROVED",
@@ -216,6 +221,10 @@ class ProductionOutputTests(unittest.TestCase):
                     "beats_spy": True,
                     "daily_max_drawdown_at_most_20_pct": True,
                     "hit_rate_at_least_50_pct": True,
+                    "oos_at_least_12_periods": True,
+                    "oos_positive_net_return": True,
+                    "oos_beats_spy": True,
+                    "oos_hit_rate_at_least_50_pct": True,
                 },
             },
             "risk": {"status": "RISK ON"},
@@ -231,13 +240,13 @@ class ProductionOutputTests(unittest.TestCase):
     def test_unvalidated_model_cannot_publish_buy_now(self):
         payload = {
             "config": {
-                "selection_model": "v4-balanced",
+                "selection_model": PRODUCTION.selection_model,
                 "position_count": 15,
-                "min_price_usd": 10.0,
-                "min_adv20_usd": 5_000_000.0,
+                "min_price_usd": PRODUCTION.min_price_usd,
+                "min_adv20_usd": PRODUCTION.min_adv20_usd,
                 "stop_loss_pct": 10.0,
             },
-            "limitation": "Current limitation: survivorship bias",
+            "limitation": PRODUCTION.limitation,
             "model_validation": {"approved": False, "status": "UNVALIDATED"},
             "risk": {"status": "RISK ON"},
             "buy_now": [{"ticker": "SHOULD_NOT_APPEAR"}],

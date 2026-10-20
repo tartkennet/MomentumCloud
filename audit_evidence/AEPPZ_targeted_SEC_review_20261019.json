@@ -1,0 +1,115 @@
+{
+  "checked_date": "2026-10-19",
+  "issuer_cik": "0000004904",
+  "submissions_source": "https://data.sec.gov/submissions/CIK0000004904.json",
+  "submissions_sha256": "7a15703202c0fd04a4dfb14898d1034a6ddf067cfa2ff3484e8f8a8725701f36",
+  "targeted_period_filings": [
+    {
+      "accessionNumber": "0000004904-23-000110",
+      "filingDate": "2023-09-19",
+      "form": "8-K",
+      "primaryDocument": "aep-20230915.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000107",
+      "filingDate": "2023-08-21",
+      "form": "8-K",
+      "primaryDocument": "aep-20230816.htm"
+    },
+    {
+      "accessionNumber": "0001354457-23-000582",
+      "filingDate": "2023-08-14",
+      "form": "25-NSE",
+      "primaryDocument": "xslF25X02/primary_doc.xml"
+    },
+    {
+      "accessionNumber": "0000004904-23-000104",
+      "filingDate": "2023-07-27",
+      "form": "10-Q",
+      "primaryDocument": "aep-20230630.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000103",
+      "filingDate": "2023-07-27",
+      "form": "8-K",
+      "primaryDocument": "aep-20230727.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000094",
+      "filingDate": "2023-06-02",
+      "form": "8-K",
+      "primaryDocument": "aep-20230602.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000091",
+      "filingDate": "2023-06-01",
+      "form": "424B2",
+      "primaryDocument": "a06-2023aep424b2.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000087",
+      "filingDate": "2023-05-31",
+      "form": "FWP",
+      "primaryDocument": "a05-2023aepfwp.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000084",
+      "filingDate": "2023-05-31",
+      "form": "424B5",
+      "primaryDocument": "a06-2023aep424b5.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000081",
+      "filingDate": "2023-05-26",
+      "form": "8-K",
+      "primaryDocument": "aep-20230526_d2.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000072",
+      "filingDate": "2023-05-04",
+      "form": "10-Q",
+      "primaryDocument": "aep-20230331.htm"
+    },
+    {
+      "accessionNumber": "0000004904-23-000071",
+      "filingDate": "2023-05-04",
+      "form": "8-K",
+      "primaryDocument": "aep-20230504.htm"
+    }
+  ],
+  "reviewed_complete_documents": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/4904/000000490423000107/0000004904-23-000107.txt",
+      "bytes": 210182,
+      "sha256": "a83e4ea84b9b7b37e5ba945a3b305acbef32ed5714886e18ecc851b4fe88e453",
+      "retained_document_path": null
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/4904/000135445723000582/0001354457-23-000582.txt",
+      "bytes": 2969,
+      "sha256": "611be4b785c68d79449ae0d76a0889e9233a0eb49a1c080faed0a409b658b052",
+      "retained_document_path": "audit_evidence/AEPPZ_form25_20230814_20261019.txt"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/4904/000000490423000094/0000004904-23-000094.txt",
+      "bytes": 487516,
+      "sha256": "37b70325ba116db7146f0834730d53b367a1d3ba7ee39868ef57a430b11086a5",
+      "retained_document_path": null
+    }
+  ],
+  "form25": {
+    "accession": "0001354457-23-000582",
+    "filed_by": "Nasdaq Stock Market LLC",
+    "filed_date": "2023-08-14",
+    "class": "Corporate Unit",
+    "rule": "17 CFR 240.12d2-2(a)(2)",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/4904/000135445723000582/0001354457-23-000582.txt",
+    "attached_exhibit": "aeppz-form25.txt contains only the label Aeppz-form25; no settlement rate supplied"
+  },
+  "august_21_8k_scope": "Board appointment; not a final per-unit settlement notice",
+  "june_2_8k_scope": "Completed debt remarketing and collateral funding; not a final stock conversion rate",
+  "settlement_rate_verified": false,
+  "extra_cash_usd_verified": false,
+  "installed_in_model": false,
+  "remaining_requirement": "Final holder-applicable conversion/delivery record, including any residual cash, coupons and fractional treatment; aggregate share issuance and prospectus bounds are insufficient."
+}

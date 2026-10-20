@@ -1,0 +1,29 @@
+{
+  "status": "OBSERVED_DAILY_REFERENCE_FX_NOT_EXECUTION_OR_CASH_CREDIT",
+  "source_url": "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2023-04-03&end_date=2023-05-01",
+  "source_sha256": "d05cb1edfa41459c58391559b532b8b29088e64eaec7687f6230969b0a15ade3",
+  "observations": 20,
+  "currency_units": "CAD per USD",
+  "valuation_formula": "40.50 CAD divided by CAD per USD",
+  "publication_cutoff_source": "https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates-lookup/",
+  "publication_time": "16:30 ET on business days",
+  "rate_type": "indicative daily average, not executable opening or closing quote",
+  "source_currency_basis": "one legal common share, not engine adjusted-price units",
+  "installed_in_model": false,
+  "remaining_requirements": [
+    "cash availability and applicable conversion timing",
+    "matching valuation timestamp and original-share adjustment basis"
+  ],
+  "first": {
+    "date": "2023-04-03",
+    "cad_per_usd": "1.3438",
+    "cad_entitlement_per_share": "40.50",
+    "usd_reference_value_per_share": "30.13841345438309272213126953"
+  },
+  "last": {
+    "date": "2023-05-01",
+    "cad_per_usd": "1.3546",
+    "cad_entitlement_per_share": "40.50",
+    "usd_reference_value_per_share": "29.89812490772183670456223239"
+  }
+}

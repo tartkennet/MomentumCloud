@@ -1,0 +1,60 @@
+{
+  "status": "COMPLETE_INPUT_RECOVERY_PENDING_FINAL_UNIVERSE_DIAGNOSTIC",
+  "date": "2026-10-14",
+  "new_daily_csv": 558,
+  "original_recovery_csv_target": 556,
+  "original_target_completed": true,
+  "additional_TEN_pair": true,
+  "raw_adjusted_preflight": {
+    "requested": 291,
+    "observed": 291,
+    "missing": 0
+  },
+  "regression_tests": 121,
+  "documentary_coverage": {
+    "covered": 286,
+    "total": 288,
+    "undocumented_tickers": [
+      "AEPPZ",
+      "RNAZ"
+    ]
+  },
+  "targeted_formation_identity": {
+    "records": 177,
+    "matching_dated_cik": 174,
+    "corporate_units_wrongly_typed_CS": 3
+  },
+  "selected_replay_after_gold_fix": {
+    "status": "PASS_FRESH_MODEL_REPLAY_AFTER_GOLD_REINTRODUCTION_AND_FOUR_FULL_HISTORIES",
+    "positions": 645,
+    "tickers": 230,
+    "periods": 43,
+    "identical_position_keys": true,
+    "exact_price_and_date_matches": true,
+    "independent_net_return_pct": -0.5460050227673818,
+    "net_return_pct": -0.5460050227673818,
+    "daily_max_drawdown_pct": -50.38013190677646,
+    "spy_matched_fixed_cost_return_pct": 70.20238513471013,
+    "independent_capital_aggregation": "PASS",
+    "regression_tests": 115,
+    "universe_complete": false
+  },
+  "multileg_NCR": {
+    "test_cases": 6,
+    "legs": [
+      "VYX",
+      "NATL"
+    ],
+    "legal_ratio": [
+      1,
+      0.5
+    ],
+    "execution_only_observed_days_per_leg": 12,
+    "source_dated_cik": [
+      "70866",
+      "1974138"
+    ],
+    "universe_replay": "RUNNING_NOT_YET_VERIFIED"
+  },
+  "decision": "NO_GO"
+}

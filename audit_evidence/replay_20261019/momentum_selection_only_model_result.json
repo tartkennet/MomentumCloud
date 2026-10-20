@@ -1,0 +1,29 @@
+{
+  "scenario": "momentum_selection_only",
+  "status": "COMPLETE",
+  "metrics": {
+    "Periods": 43,
+    "TotalReturn_pct": -0.5460050227673818,
+    "SPYTotalReturn_pct": 93.30821172959709,
+    "TotalEdgeVsSPY_pct": -93.85421675236447,
+    "PeriodHitRate_pct": 58.139534883720934,
+    "DailyMaxDrawdown_pct": -50.38013190677646
+  },
+  "out_of_sample_metrics": {
+    "Periods": 18,
+    "TotalReturn_pct": 5.266413937034997,
+    "SPYTotalReturn_pct": 37.11723024486504,
+    "TotalEdgeVsSPY_pct": -31.850816307830044,
+    "PeriodHitRate_pct": 72.22222222222221,
+    "DailyMaxDrawdown_pct": -42.19152493361894
+  },
+  "checks": {
+    "independent_position_and_capital_aggregation": "PASS",
+    "baseline_reproduction": "NOT_APPLICABLE",
+    "periods": 43,
+    "spy_price_return_pct": 93.30821172959709
+  },
+  "removed_position_keys": 0,
+  "added_position_keys": 645,
+  "spy_matched_monthly_fixed_cost_return_pct": 70.20238513471013
+}

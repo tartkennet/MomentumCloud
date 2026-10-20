@@ -1,0 +1,61 @@
+{
+  "status": "PASS_AVAILABLE_REFERENCES_INCOMPLETE_FULL_COVERAGE",
+  "top5": [
+    {
+      "ticker": "APLS",
+      "signal": "2023-06-30",
+      "result": "PASS",
+      "gross_return_pct": -40.10891309179818,
+      "initial_weight_pct": 2.635643003409645,
+      "portfolio_contribution_pp": -1.0571277616476338,
+      "first_stop_signal": "2023-07-17",
+      "next_open_exit": "2023-07-18"
+    },
+    {
+      "ticker": "ZETA",
+      "signal": "2024-10-31",
+      "result": "PASS",
+      "gross_return_pct": -31.272465851905107,
+      "initial_weight_pct": 2.005265085479199,
+      "portfolio_contribution_pp": -0.6270958390966582,
+      "first_stop_signal": "2024-11-13",
+      "next_open_exit": "2024-11-14"
+    },
+    {
+      "ticker": "REZI",
+      "signal": "2025-10-31",
+      "result": "PASS",
+      "gross_return_pct": -28.541374474053292,
+      "initial_weight_pct": 2.9248976193716616,
+      "portfolio_contribution_pp": -0.8348059825275358,
+      "first_stop_signal": "2025-11-06",
+      "next_open_exit": "2025-11-07"
+    },
+    {
+      "ticker": "ENVA",
+      "signal": "2026-08-31",
+      "result": "PASS",
+      "gross_return_pct": -23.615894039735107,
+      "initial_weight_pct": 3.0023201987168053,
+      "portfolio_contribution_pp": -0.7090247568625253,
+      "first_stop_signal": "2026-09-15",
+      "next_open_exit": "2026-09-16"
+    },
+    {
+      "ticker": "KGS",
+      "signal": "2025-02-28",
+      "result": "PASS",
+      "gross_return_pct": -23.31869655650567,
+      "initial_weight_pct": 2.749199421591704,
+      "portfolio_contribution_pp": -0.6410774708541785,
+      "first_stop_signal": "2025-03-06",
+      "next_open_exit": "2025-03-07"
+    }
+  ],
+  "top5_price_and_raw_signal_checks": 20,
+  "matched_individual_point_checks": 260,
+  "missing_individual_point_checks": 2660,
+  "corporate_action_exit_units_require_converter": 5,
+  "mismatches": [],
+  "limitation": "Same-vendor individual endpoints; not independent-provider or fill evidence. No claim of all-lot reference coverage."
+}

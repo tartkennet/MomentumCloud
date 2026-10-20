@@ -1,0 +1,33 @@
+{
+  "initial_cash": {
+    "USD": "100"
+  },
+  "events": [
+    {
+      "id": "entry",
+      "at": "2023-04-03T13:30:00Z",
+      "kind": "BUY",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "lot_id": "held",
+      "currency": "USD",
+      "amount": "100"
+    },
+    {
+      "id": "entitlement",
+      "at": "2023-04-04T13:30:00Z",
+      "kind": "EXIT",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "lot_id": "held",
+      "receivable_id": "claim",
+      "currency": "CAD",
+      "amount": "120"
+    },
+    {
+      "id": "receipt",
+      "at": "2023-04-06T20:00:00Z",
+      "kind": "RECEIVE",
+      "source": "SYNTHETIC_TEST_ONLY",
+      "receivable_id": "claim"
+    }
+  ]
+}

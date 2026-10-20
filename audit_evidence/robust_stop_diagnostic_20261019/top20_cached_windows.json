@@ -1,0 +1,3776 @@
+{
+  "basis": "2026-10-06",
+  "windows": [
+    {
+      "lot": {
+        "SignalDate": "2024-03-28",
+        "PlannedEntryDate": "2024-04-01",
+        "EntryDate": "2024-04-01",
+        "ExitDate": "2024-04-10",
+        "PlannedExitDate": "2024-05-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "VINC",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 7,
+        "Ticker": "VINC",
+        "SignalPrice_USD": 101.2,
+        "EntryPrice_USD": 97.8,
+        "ExitPrice_USD": 20.0,
+        "GrossReturn_pct": -79.55010224948876
+      },
+      "cache": {
+        "2024-03-28": {
+          "open": 119.8,
+          "high": 121.6,
+          "low": 99.0,
+          "close": 101.2,
+          "volume": 30290.0
+        },
+        "2024-04-01": {
+          "open": 97.8,
+          "high": 119.8,
+          "low": 91.8,
+          "close": 117.0,
+          "volume": 47026.8
+        },
+        "2024-04-02": {
+          "open": 111.4,
+          "high": 128.8,
+          "low": 111.132,
+          "close": 127.4,
+          "volume": 35384.9
+        },
+        "2024-04-03": {
+          "open": 128.4,
+          "high": 136.8,
+          "low": 120.2,
+          "close": 132.0,
+          "volume": 20881.7
+        },
+        "2024-04-04": {
+          "open": 132.4,
+          "high": 136.8,
+          "low": 117.2,
+          "close": 118.4,
+          "volume": 21808.3
+        },
+        "2024-04-05": {
+          "open": 118.4,
+          "high": 121.4,
+          "low": 96.6,
+          "close": 111.0,
+          "volume": 34357.6
+        },
+        "2024-04-08": {
+          "open": 111.2,
+          "high": 113.4,
+          "low": 93.8,
+          "close": 95.6,
+          "volume": 110980.7
+        },
+        "2024-04-09": {
+          "open": 32.8,
+          "high": 33.074,
+          "low": 21.0,
+          "close": 21.2,
+          "volume": 769638.75
+        },
+        "2024-04-10": {
+          "open": 20.0,
+          "high": 23.2,
+          "low": 19.402,
+          "close": 20.0,
+          "volume": 203920.05
+        },
+        "2024-04-11": {
+          "open": 20.0,
+          "high": 20.8,
+          "low": 18.1,
+          "close": 20.0,
+          "volume": 116199.85
+        },
+        "2024-04-12": {
+          "open": 20.2,
+          "high": 20.2,
+          "low": 19.0,
+          "close": 19.6,
+          "volume": 45662.25
+        },
+        "2024-04-15": {
+          "open": 19.0,
+          "high": 19.402,
+          "low": 15.0,
+          "close": 17.4,
+          "volume": 63280.9
+        },
+        "2024-04-16": {
+          "open": 17.178,
+          "high": 19.336,
+          "low": 17.0,
+          "close": 18.794,
+          "volume": 45559.9
+        },
+        "2024-04-17": {
+          "open": 18.6,
+          "high": 19.608,
+          "low": 18.2,
+          "close": 19.004,
+          "volume": 17906.9
+        },
+        "2024-04-18": {
+          "open": 18.998,
+          "high": 18.998,
+          "low": 17.052,
+          "close": 18.0,
+          "volume": 26568.05
+        },
+        "2024-04-19": {
+          "open": 17.534,
+          "high": 18.142,
+          "low": 16.518,
+          "close": 17.0,
+          "volume": 17801.5
+        },
+        "2024-04-22": {
+          "open": 17.6,
+          "high": 17.6,
+          "low": 16.4,
+          "close": 17.38,
+          "volume": 16250.15
+        },
+        "2024-04-23": {
+          "open": 17.4,
+          "high": 19.79,
+          "low": 17.38,
+          "close": 19.0,
+          "volume": 21043.2
+        },
+        "2024-04-24": {
+          "open": 19.316,
+          "high": 19.884,
+          "low": 18.0,
+          "close": 18.6,
+          "volume": 22902.2
+        },
+        "2024-04-25": {
+          "open": 18.4,
+          "high": 18.6,
+          "low": 17.6,
+          "close": 17.934,
+          "volume": 30462.35
+        },
+        "2024-04-26": {
+          "open": 15.8,
+          "high": 16.92,
+          "low": 13.214,
+          "close": 14.6,
+          "volume": 86436.55
+        },
+        "2024-04-29": {
+          "open": 14.74,
+          "high": 17.6,
+          "low": 14.74,
+          "close": 16.802,
+          "volume": 36431.95
+        },
+        "2024-04-30": {
+          "open": 17.18,
+          "high": 18.078,
+          "low": 16.3,
+          "close": 16.54,
+          "volume": 15943.35
+        },
+        "2024-05-01": {
+          "open": 16.4,
+          "high": 17.784,
+          "low": 16.0,
+          "close": 17.784,
+          "volume": 15041.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-11-29",
+        "PlannedEntryDate": "2024-12-02",
+        "EntryDate": "2024-12-02",
+        "ExitDate": "2024-12-19",
+        "PlannedExitDate": "2025-01-02",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "FTEL",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 9,
+        "Ticker": "FTEL",
+        "SignalPrice_USD": 458.08,
+        "EntryPrice_USD": 464.0,
+        "ExitPrice_USD": 106.88,
+        "GrossReturn_pct": -76.96551724137932
+      },
+      "cache": {
+        "2024-11-29": {
+          "open": 448.16,
+          "high": 458.08,
+          "low": 432.96,
+          "close": 458.08,
+          "volume": 8202.75
+        },
+        "2024-12-02": {
+          "open": 464.0,
+          "high": 464.0,
+          "low": 426.4592,
+          "close": 451.52,
+          "volume": 4105.0
+        },
+        "2024-12-03": {
+          "open": 454.24,
+          "high": 480.0,
+          "low": 440.16,
+          "close": 464.8,
+          "volume": 3570.375
+        },
+        "2024-12-04": {
+          "open": 468.16,
+          "high": 478.696,
+          "low": 449.28,
+          "close": 470.24,
+          "volume": 6103.1875
+        },
+        "2024-12-05": {
+          "open": 476.32,
+          "high": 483.2,
+          "low": 449.6,
+          "close": 464.8,
+          "volume": 1699.6875
+        },
+        "2024-12-06": {
+          "open": 466.88,
+          "high": 538.24,
+          "low": 451.68,
+          "close": 528.0,
+          "volume": 10362.3125
+        },
+        "2024-12-09": {
+          "open": 528.0,
+          "high": 542.08,
+          "low": 471.04,
+          "close": 512.96,
+          "volume": 13387.4375
+        },
+        "2024-12-10": {
+          "open": 526.4,
+          "high": 548.48,
+          "low": 496.16,
+          "close": 514.24,
+          "volume": 4316.25
+        },
+        "2024-12-11": {
+          "open": 539.68,
+          "high": 584.0,
+          "low": 504.0,
+          "close": 525.28,
+          "volume": 24107.4375
+        },
+        "2024-12-12": {
+          "open": 525.28,
+          "high": 556.16,
+          "low": 438.4,
+          "close": 464.16,
+          "volume": 33819.375
+        },
+        "2024-12-13": {
+          "open": 467.36,
+          "high": 478.7184,
+          "low": 440.0,
+          "close": 458.08,
+          "volume": 11597.25
+        },
+        "2024-12-16": {
+          "open": 452.64,
+          "high": 492.0,
+          "low": 433.6,
+          "close": 478.4,
+          "volume": 7914.75
+        },
+        "2024-12-17": {
+          "open": 485.12,
+          "high": 614.24,
+          "low": 392.48,
+          "close": 614.24,
+          "volume": 32731.5625
+        },
+        "2024-12-18": {
+          "open": 447.04,
+          "high": 792.0,
+          "low": 80.0,
+          "close": 112.0,
+          "volume": 105698.8125
+        },
+        "2024-12-19": {
+          "open": 106.88,
+          "high": 126.4,
+          "low": 73.92,
+          "close": 84.32,
+          "volume": 110831.0
+        },
+        "2024-12-20": {
+          "open": 82.08,
+          "high": 94.24,
+          "low": 79.84,
+          "close": 92.8,
+          "volume": 12535.75
+        },
+        "2024-12-23": {
+          "open": 96.0,
+          "high": 175.04,
+          "low": 96.0,
+          "close": 153.12,
+          "volume": 46847.5
+        },
+        "2024-12-24": {
+          "open": 152.16,
+          "high": 156.8976,
+          "low": 128.16,
+          "close": 135.36,
+          "volume": 11217.375
+        },
+        "2024-12-26": {
+          "open": 136.48,
+          "high": 146.24,
+          "low": 123.12,
+          "close": 137.6,
+          "volume": 7285.8125
+        },
+        "2024-12-27": {
+          "open": 140.48,
+          "high": 148.96,
+          "low": 136.16,
+          "close": 138.88,
+          "volume": 3294.4375
+        },
+        "2024-12-30": {
+          "open": 136.8,
+          "high": 148.08,
+          "low": 121.6,
+          "close": 144.64,
+          "volume": 4396.4375
+        },
+        "2024-12-31": {
+          "open": 144.8,
+          "high": 150.8096,
+          "low": 137.12,
+          "close": 139.84,
+          "volume": 2499.3125
+        },
+        "2025-01-02": {
+          "open": 139.36,
+          "high": 158.4,
+          "low": 139.2,
+          "close": 154.4,
+          "volume": 5391.75
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2026-08-31",
+        "PlannedEntryDate": "2026-09-01",
+        "EntryDate": "2026-09-01",
+        "ExitDate": "2026-10-01",
+        "PlannedExitDate": "2026-10-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "LQDA",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 12,
+        "Ticker": "LQDA",
+        "SignalPrice_USD": 68.17,
+        "EntryPrice_USD": 67.7,
+        "ExitPrice_USD": 23.96,
+        "GrossReturn_pct": -64.6085672082718
+      },
+      "cache": {
+        "2026-08-31": {
+          "open": 67.102,
+          "high": 68.27,
+          "low": 66.1,
+          "close": 68.17,
+          "volume": 1055078.27287
+        },
+        "2026-09-01": {
+          "open": 67.7,
+          "high": 69.0,
+          "low": 66.1,
+          "close": 66.91,
+          "volume": 1410012.930967
+        },
+        "2026-09-02": {
+          "open": 67.4,
+          "high": 70.1269,
+          "low": 66.73,
+          "close": 69.68,
+          "volume": 1282658.472198
+        },
+        "2026-09-03": {
+          "open": 69.27,
+          "high": 70.75,
+          "low": 68.15,
+          "close": 68.63,
+          "volume": 932021.261219
+        },
+        "2026-09-04": {
+          "open": 67.91,
+          "high": 69.465,
+          "low": 67.4001,
+          "close": 68.66,
+          "volume": 902384.469235
+        },
+        "2026-09-08": {
+          "open": 68.0,
+          "high": 69.21,
+          "low": 67.07,
+          "close": 67.68,
+          "volume": 1330043.826564
+        },
+        "2026-09-09": {
+          "open": 67.39,
+          "high": 69.385,
+          "low": 67.3501,
+          "close": 69.12,
+          "volume": 997253.10181
+        },
+        "2026-09-10": {
+          "open": 67.87,
+          "high": 68.35,
+          "low": 66.62,
+          "close": 67.85,
+          "volume": 955031.681062
+        },
+        "2026-09-11": {
+          "open": 68.66,
+          "high": 69.9399,
+          "low": 66.68,
+          "close": 66.74,
+          "volume": 778798.82429
+        },
+        "2026-09-14": {
+          "open": 66.79,
+          "high": 66.895,
+          "low": 65.1301,
+          "close": 65.305,
+          "volume": 1074364.553941
+        },
+        "2026-09-15": {
+          "open": 65.31,
+          "high": 65.93,
+          "low": 62.86,
+          "close": 65.72,
+          "volume": 1372091.635127
+        },
+        "2026-09-16": {
+          "open": 65.67,
+          "high": 69.87,
+          "low": 65.34,
+          "close": 68.45,
+          "volume": 1296635.789304
+        },
+        "2026-09-17": {
+          "open": 69.51,
+          "high": 70.81,
+          "low": 67.41,
+          "close": 68.39,
+          "volume": 1082265.584577
+        },
+        "2026-09-18": {
+          "open": 68.08,
+          "high": 68.72,
+          "low": 66.57,
+          "close": 66.88,
+          "volume": 3896374.543516
+        },
+        "2026-09-21": {
+          "open": 67.18,
+          "high": 67.41,
+          "low": 65.74,
+          "close": 66.43,
+          "volume": 1010233.04259
+        },
+        "2026-09-22": {
+          "open": 66.59,
+          "high": 68.76,
+          "low": 66.0,
+          "close": 68.64,
+          "volume": 1139041.8815
+        },
+        "2026-09-23": {
+          "open": 68.6,
+          "high": 68.6,
+          "low": 67.1,
+          "close": 67.49,
+          "volume": 766175.435704
+        },
+        "2026-09-24": {
+          "open": 67.04,
+          "high": 71.41,
+          "low": 66.75,
+          "close": 70.95,
+          "volume": 1026910.420281
+        },
+        "2026-09-25": {
+          "open": 71.6,
+          "high": 71.805,
+          "low": 67.545,
+          "close": 68.43,
+          "volume": 967527.260169
+        },
+        "2026-09-28": {
+          "open": 68.05,
+          "high": 74.74,
+          "low": 67.655,
+          "close": 73.67,
+          "volume": 1206348.811878
+        },
+        "2026-09-29": {
+          "open": 72.49,
+          "high": 73.145,
+          "low": 68.74,
+          "close": 70.69,
+          "volume": 1533175.121956
+        },
+        "2026-09-30": {
+          "open": 70.54,
+          "high": 71.93,
+          "low": 29.86,
+          "close": 30.26,
+          "volume": 22953195.587487
+        },
+        "2026-10-01": {
+          "open": 23.96,
+          "high": 28.1,
+          "low": 22.31,
+          "close": 27.99,
+          "volume": 21573271.146351
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-12-31",
+        "PlannedEntryDate": "2026-01-02",
+        "EntryDate": "2026-01-02",
+        "ExitDate": "2026-01-06",
+        "PlannedExitDate": "2026-02-02",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "ZBIO",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 14,
+        "Ticker": "ZBIO",
+        "SignalPrice_USD": 36.31,
+        "EntryPrice_USD": 36.31,
+        "ExitPrice_USD": 15.75,
+        "GrossReturn_pct": -56.62351969154504
+      },
+      "cache": {
+        "2025-12-31": {
+          "open": 36.37,
+          "high": 36.53,
+          "low": 34.69,
+          "close": 36.31,
+          "volume": 381142.0
+        },
+        "2026-01-02": {
+          "open": 36.31,
+          "high": 36.64,
+          "low": 34.05,
+          "close": 34.5,
+          "volume": 201613.0
+        },
+        "2026-01-05": {
+          "open": 16.77,
+          "high": 17.5,
+          "low": 13.5,
+          "close": 16.61,
+          "volume": 8145054.0
+        },
+        "2026-01-06": {
+          "open": 15.75,
+          "high": 16.145,
+          "low": 13.74,
+          "close": 15.2,
+          "volume": 3137810.0
+        },
+        "2026-01-07": {
+          "open": 15.05,
+          "high": 17.1,
+          "low": 14.656,
+          "close": 16.51,
+          "volume": 2041105.0
+        },
+        "2026-01-08": {
+          "open": 16.37,
+          "high": 17.15,
+          "low": 15.8,
+          "close": 16.41,
+          "volume": 813534.0
+        },
+        "2026-01-09": {
+          "open": 16.64,
+          "high": 17.36,
+          "low": 15.9025,
+          "close": 16.08,
+          "volume": 532887.0
+        },
+        "2026-01-12": {
+          "open": 17.235,
+          "high": 19.9462,
+          "low": 17.235,
+          "close": 19.78,
+          "volume": 1919767.0
+        },
+        "2026-01-13": {
+          "open": 20.1,
+          "high": 21.64,
+          "low": 19.0216,
+          "close": 21.57,
+          "volume": 1414577.0
+        },
+        "2026-01-14": {
+          "open": 21.475,
+          "high": 22.6,
+          "low": 20.3242,
+          "close": 22.56,
+          "volume": 774343.0
+        },
+        "2026-01-15": {
+          "open": 22.49,
+          "high": 22.49,
+          "low": 19.51,
+          "close": 19.93,
+          "volume": 1573345.0
+        },
+        "2026-01-16": {
+          "open": 20.21,
+          "high": 21.095,
+          "low": 19.795,
+          "close": 20.16,
+          "volume": 699535.0
+        },
+        "2026-01-20": {
+          "open": 19.76,
+          "high": 21.01,
+          "low": 19.2,
+          "close": 20.88,
+          "volume": 723653.0
+        },
+        "2026-01-21": {
+          "open": 20.87,
+          "high": 21.39,
+          "low": 19.4,
+          "close": 19.59,
+          "volume": 831500.0
+        },
+        "2026-01-22": {
+          "open": 19.68,
+          "high": 20.78,
+          "low": 19.49,
+          "close": 20.4,
+          "volume": 900863.0
+        },
+        "2026-01-23": {
+          "open": 20.29,
+          "high": 20.515,
+          "low": 19.545,
+          "close": 20.09,
+          "volume": 454055.0
+        },
+        "2026-01-26": {
+          "open": 19.8,
+          "high": 19.84,
+          "low": 19.0,
+          "close": 19.32,
+          "volume": 433253.0
+        },
+        "2026-01-27": {
+          "open": 19.32,
+          "high": 20.11,
+          "low": 19.15,
+          "close": 20.07,
+          "volume": 388569.0
+        },
+        "2026-01-28": {
+          "open": 19.97,
+          "high": 21.6,
+          "low": 19.3,
+          "close": 21.47,
+          "volume": 470455.0
+        },
+        "2026-01-29": {
+          "open": 21.05,
+          "high": 22.7,
+          "low": 20.42,
+          "close": 20.88,
+          "volume": 480833.0
+        },
+        "2026-01-30": {
+          "open": 20.64,
+          "high": 21.17,
+          "low": 18.24,
+          "close": 18.37,
+          "volume": 483405.0
+        },
+        "2026-02-02": {
+          "open": 18.33,
+          "high": 18.715,
+          "low": 17.6,
+          "close": 18.15,
+          "volume": 855035.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-02-28",
+        "PlannedEntryDate": "2025-03-03",
+        "EntryDate": "2025-03-03",
+        "ExitDate": "2025-03-07",
+        "PlannedExitDate": "2025-04-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "LUNR",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 15,
+        "Ticker": "LUNR",
+        "SignalPrice_USD": 14.58,
+        "EntryPrice_USD": 14.805,
+        "ExitPrice_USD": 7.26,
+        "GrossReturn_pct": -50.96251266464032
+      },
+      "cache": {
+        "2025-02-28": {
+          "open": 13.181,
+          "high": 14.9,
+          "low": 13.02,
+          "close": 14.58,
+          "volume": 17615573.0
+        },
+        "2025-03-03": {
+          "open": 14.805,
+          "high": 15.13,
+          "low": 13.17,
+          "close": 13.46,
+          "volume": 12873504.0
+        },
+        "2025-03-04": {
+          "open": 12.82,
+          "high": 14.1,
+          "low": 12.55,
+          "close": 13.47,
+          "volume": 12892820.0
+        },
+        "2025-03-05": {
+          "open": 13.86,
+          "high": 14.2,
+          "low": 13.45,
+          "close": 14.11,
+          "volume": 10215747.0
+        },
+        "2025-03-06": {
+          "open": 13.65,
+          "high": 14.08,
+          "low": 10.25,
+          "close": 11.26,
+          "volume": 51019533.0
+        },
+        "2025-03-07": {
+          "open": 7.26,
+          "high": 9.55,
+          "low": 7.05,
+          "close": 8.77,
+          "volume": 52216421.0
+        },
+        "2025-03-10": {
+          "open": 7.79,
+          "high": 7.8908,
+          "low": 6.64,
+          "close": 6.78,
+          "volume": 25083668.0
+        },
+        "2025-03-11": {
+          "open": 6.72,
+          "high": 7.04,
+          "low": 6.26,
+          "close": 6.48,
+          "volume": 20201721.0
+        },
+        "2025-03-12": {
+          "open": 6.825,
+          "high": 7.65,
+          "low": 6.53,
+          "close": 7.42,
+          "volume": 21057429.0
+        },
+        "2025-03-13": {
+          "open": 7.26,
+          "high": 7.35,
+          "low": 6.58,
+          "close": 6.7,
+          "volume": 13775786.0
+        },
+        "2025-03-14": {
+          "open": 6.905,
+          "high": 7.34,
+          "low": 6.81,
+          "close": 7.31,
+          "volume": 11262944.0
+        },
+        "2025-03-17": {
+          "open": 7.33,
+          "high": 8.13,
+          "low": 7.2119,
+          "close": 7.91,
+          "volume": 13046310.0
+        },
+        "2025-03-18": {
+          "open": 7.61,
+          "high": 7.6472,
+          "low": 7.01,
+          "close": 7.01,
+          "volume": 9642056.0
+        },
+        "2025-03-19": {
+          "open": 7.15,
+          "high": 7.42,
+          "low": 6.9108,
+          "close": 7.26,
+          "volume": 8549651.0
+        },
+        "2025-03-20": {
+          "open": 7.14,
+          "high": 7.35,
+          "low": 7.0,
+          "close": 7.11,
+          "volume": 6655786.0
+        },
+        "2025-03-21": {
+          "open": 6.81,
+          "high": 7.2387,
+          "low": 6.81,
+          "close": 7.09,
+          "volume": 12831089.0
+        },
+        "2025-03-24": {
+          "open": 7.64,
+          "high": 9.35,
+          "low": 7.64,
+          "close": 9.22,
+          "volume": 28891480.0
+        },
+        "2025-03-25": {
+          "open": 9.395,
+          "high": 9.4808,
+          "low": 8.6301,
+          "close": 9.2,
+          "volume": 16847976.0
+        },
+        "2025-03-26": {
+          "open": 9.14,
+          "high": 9.43,
+          "low": 8.56,
+          "close": 8.79,
+          "volume": 11672102.0
+        },
+        "2025-03-27": {
+          "open": 8.5,
+          "high": 8.7799,
+          "low": 8.22,
+          "close": 8.27,
+          "volume": 7723473.0
+        },
+        "2025-03-28": {
+          "open": 8.23,
+          "high": 8.4,
+          "low": 7.81,
+          "close": 8.07,
+          "volume": 7257396.0
+        },
+        "2025-03-31": {
+          "open": 7.76,
+          "high": 7.86,
+          "low": 7.38,
+          "close": 7.45,
+          "volume": 9679121.0
+        },
+        "2025-04-01": {
+          "open": 7.55,
+          "high": 7.591,
+          "low": 7.16,
+          "close": 7.47,
+          "volume": 7435766.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-12-31",
+        "PlannedEntryDate": "2025-01-02",
+        "EntryDate": "2025-01-02",
+        "ExitDate": "2025-01-10",
+        "PlannedExitDate": "2025-02-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "QUBT",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 3,
+        "Ticker": "QUBT",
+        "SignalPrice_USD": 16.55,
+        "EntryPrice_USD": 16.69,
+        "ExitPrice_USD": 10.27,
+        "GrossReturn_pct": -38.466147393648896
+      },
+      "cache": {
+        "2024-12-31": {
+          "open": 18.26,
+          "high": 18.34,
+          "low": 16.01,
+          "close": 16.55,
+          "volume": 17976502.0
+        },
+        "2025-01-02": {
+          "open": 16.69,
+          "high": 18.77,
+          "low": 15.2,
+          "close": 18.755,
+          "volume": 24714912.0
+        },
+        "2025-01-03": {
+          "open": 17.99,
+          "high": 19.2,
+          "low": 16.98,
+          "close": 17.5,
+          "volume": 22526347.0
+        },
+        "2025-01-06": {
+          "open": 17.3,
+          "high": 20.3596,
+          "low": 16.66,
+          "close": 18.09,
+          "volume": 43227009.0
+        },
+        "2025-01-07": {
+          "open": 17.97,
+          "high": 18.1,
+          "low": 16.37,
+          "close": 17.49,
+          "volume": 35612489.0
+        },
+        "2025-01-08": {
+          "open": 11.7,
+          "high": 12.73,
+          "low": 8.5,
+          "close": 9.91,
+          "volume": 75349211.0
+        },
+        "2025-01-10": {
+          "open": 10.27,
+          "high": 10.45,
+          "low": 8.8,
+          "close": 8.98,
+          "volume": 30082983.0
+        },
+        "2025-01-13": {
+          "open": 8.01,
+          "high": 8.58,
+          "low": 6.41,
+          "close": 6.52,
+          "volume": 36703360.0
+        },
+        "2025-01-14": {
+          "open": 7.15,
+          "high": 8.05,
+          "low": 6.59,
+          "close": 7.43,
+          "volume": 43059187.0
+        },
+        "2025-01-15": {
+          "open": 8.78,
+          "high": 11.6,
+          "low": 8.51,
+          "close": 11.55,
+          "volume": 113754440.0
+        },
+        "2025-01-16": {
+          "open": 12.35,
+          "high": 12.7,
+          "low": 10.22,
+          "close": 10.88,
+          "volume": 106907638.0
+        },
+        "2025-01-17": {
+          "open": 10.12,
+          "high": 10.6,
+          "low": 9.46,
+          "close": 9.83,
+          "volume": 41524326.0
+        },
+        "2025-01-21": {
+          "open": 9.935,
+          "high": 11.5,
+          "low": 9.8,
+          "close": 11.49,
+          "volume": 44210298.0
+        },
+        "2025-01-22": {
+          "open": 12.075,
+          "high": 12.47,
+          "low": 10.91,
+          "close": 11.1,
+          "volume": 33087001.0
+        },
+        "2025-01-23": {
+          "open": 10.72,
+          "high": 11.94,
+          "low": 10.55,
+          "close": 11.12,
+          "volume": 19573123.0
+        },
+        "2025-01-24": {
+          "open": 11.21,
+          "high": 12.48,
+          "low": 10.75,
+          "close": 10.93,
+          "volume": 35265934.0
+        },
+        "2025-01-27": {
+          "open": 9.96,
+          "high": 10.78,
+          "low": 9.49,
+          "close": 9.94,
+          "volume": 16824898.0
+        },
+        "2025-01-28": {
+          "open": 10.22,
+          "high": 10.36,
+          "low": 9.26,
+          "close": 10.2,
+          "volume": 13401923.0
+        },
+        "2025-01-29": {
+          "open": 10.0,
+          "high": 10.45,
+          "low": 9.72,
+          "close": 10.13,
+          "volume": 11234531.0
+        },
+        "2025-01-30": {
+          "open": 10.16,
+          "high": 10.66,
+          "low": 9.79,
+          "close": 10.0,
+          "volume": 10592080.0
+        },
+        "2025-01-31": {
+          "open": 10.01,
+          "high": 11.45,
+          "low": 9.95,
+          "close": 10.38,
+          "volume": 23196848.0
+        },
+        "2025-02-03": {
+          "open": 9.75,
+          "high": 10.2,
+          "low": 9.37,
+          "close": 9.95,
+          "volume": 13245576.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-07-31",
+        "PlannedEntryDate": "2025-08-01",
+        "EntryDate": "2025-08-01",
+        "ExitDate": "2025-08-11",
+        "PlannedExitDate": "2025-09-02",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "SEZL",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 2,
+        "Ticker": "SEZL",
+        "SignalPrice_USD": 154.84,
+        "EntryPrice_USD": 144.93,
+        "ExitPrice_USD": 92.01,
+        "GrossReturn_pct": -36.5141792589526
+      },
+      "cache": {
+        "2025-07-31": {
+          "open": 151.35,
+          "high": 160.48,
+          "low": 150.0,
+          "close": 154.84,
+          "volume": 744120.0
+        },
+        "2025-08-01": {
+          "open": 144.93,
+          "high": 150.7499,
+          "low": 137.08,
+          "close": 144.0,
+          "volume": 968762.0
+        },
+        "2025-08-04": {
+          "open": 148.95,
+          "high": 156.99,
+          "low": 147.3125,
+          "close": 156.99,
+          "volume": 657047.0
+        },
+        "2025-08-05": {
+          "open": 158.0,
+          "high": 159.4999,
+          "low": 147.03,
+          "close": 151.94,
+          "volume": 833924.0
+        },
+        "2025-08-06": {
+          "open": 152.59,
+          "high": 152.59,
+          "low": 131.002,
+          "close": 142.41,
+          "volume": 1782156.0
+        },
+        "2025-08-07": {
+          "open": 145.37,
+          "high": 148.2,
+          "low": 132.23,
+          "close": 139.33,
+          "volume": 2159527.0
+        },
+        "2025-08-08": {
+          "open": 103.51,
+          "high": 106.0,
+          "low": 90.99,
+          "close": 91.51,
+          "volume": 5323515.0
+        },
+        "2025-08-11": {
+          "open": 92.01,
+          "high": 93.85,
+          "low": 86.2548,
+          "close": 87.31,
+          "volume": 2029540.0
+        },
+        "2025-08-12": {
+          "open": 88.21,
+          "high": 91.5841,
+          "low": 83.51,
+          "close": 89.14,
+          "volume": 1715569.0
+        },
+        "2025-08-13": {
+          "open": 92.31,
+          "high": 94.83,
+          "low": 89.25,
+          "close": 92.17,
+          "volume": 1383932.0
+        },
+        "2025-08-14": {
+          "open": 89.65,
+          "high": 92.83,
+          "low": 87.6,
+          "close": 91.47,
+          "volume": 1107073.0
+        },
+        "2025-08-15": {
+          "open": 92.25,
+          "high": 92.71,
+          "low": 88.7311,
+          "close": 91.87,
+          "volume": 905725.0
+        },
+        "2025-08-18": {
+          "open": 91.73,
+          "high": 95.5,
+          "low": 89.9,
+          "close": 93.23,
+          "volume": 860140.0
+        },
+        "2025-08-19": {
+          "open": 92.02,
+          "high": 92.633,
+          "low": 86.411,
+          "close": 88.85,
+          "volume": 1274886.0
+        },
+        "2025-08-20": {
+          "open": 87.36,
+          "high": 89.52,
+          "low": 84.5,
+          "close": 88.77,
+          "volume": 893756.0
+        },
+        "2025-08-21": {
+          "open": 87.94,
+          "high": 90.51,
+          "low": 87.0,
+          "close": 88.58,
+          "volume": 473519.0
+        },
+        "2025-08-22": {
+          "open": 87.95,
+          "high": 97.68,
+          "low": 87.2228,
+          "close": 95.67,
+          "volume": 1257451.0
+        },
+        "2025-08-25": {
+          "open": 95.7,
+          "high": 97.5,
+          "low": 92.24,
+          "close": 92.3,
+          "volume": 933737.0
+        },
+        "2025-08-26": {
+          "open": 92.24,
+          "high": 94.05,
+          "low": 90.8,
+          "close": 93.24,
+          "volume": 642860.0
+        },
+        "2025-08-27": {
+          "open": 93.74,
+          "high": 95.06,
+          "low": 91.658,
+          "close": 92.7,
+          "volume": 775033.0
+        },
+        "2025-08-28": {
+          "open": 92.89,
+          "high": 96.26,
+          "low": 92.34,
+          "close": 95.81,
+          "volume": 863015.0
+        },
+        "2025-08-29": {
+          "open": 98.18,
+          "high": 98.2,
+          "low": 92.75,
+          "close": 94.6,
+          "volume": 1183484.0
+        },
+        "2025-09-02": {
+          "open": 91.53,
+          "high": 94.6,
+          "low": 88.19,
+          "close": 90.48,
+          "volume": 847266.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-07-31",
+        "PlannedEntryDate": "2024-08-01",
+        "EntryDate": "2024-08-01",
+        "ExitDate": "2024-09-03",
+        "PlannedExitDate": "2024-09-03",
+        "ExitReason": "REBALANCE",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "DYN",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 15,
+        "Ticker": "DYN",
+        "SignalPrice_USD": 42.91,
+        "EntryPrice_USD": 42.71,
+        "ExitPrice_USD": 27.77,
+        "GrossReturn_pct": -34.980098337625854
+      },
+      "cache": {
+        "2024-07-31": {
+          "open": 43.61,
+          "high": 44.2,
+          "low": 42.21,
+          "close": 42.91,
+          "volume": 756060.0
+        },
+        "2024-08-01": {
+          "open": 42.71,
+          "high": 43.105,
+          "low": 41.87,
+          "close": 42.08,
+          "volume": 1003814.0
+        },
+        "2024-08-02": {
+          "open": 38.84,
+          "high": 41.025,
+          "low": 38.08,
+          "close": 40.83,
+          "volume": 770720.0
+        },
+        "2024-08-05": {
+          "open": 36.29,
+          "high": 41.25,
+          "low": 36.21,
+          "close": 41.21,
+          "volume": 1725655.0
+        },
+        "2024-08-06": {
+          "open": 42.21,
+          "high": 44.84,
+          "low": 41.075,
+          "close": 43.38,
+          "volume": 972337.0
+        },
+        "2024-08-07": {
+          "open": 44.8,
+          "high": 44.81,
+          "low": 41.84,
+          "close": 42.19,
+          "volume": 666491.0
+        },
+        "2024-08-08": {
+          "open": 42.64,
+          "high": 43.27,
+          "low": 40.51,
+          "close": 43.07,
+          "volume": 1970491.0
+        },
+        "2024-08-09": {
+          "open": 43.51,
+          "high": 44.22,
+          "low": 41.87,
+          "close": 43.6,
+          "volume": 803910.0
+        },
+        "2024-08-12": {
+          "open": 43.6,
+          "high": 44.04,
+          "low": 41.8007,
+          "close": 43.07,
+          "volume": 584165.0
+        },
+        "2024-08-13": {
+          "open": 44.24,
+          "high": 44.24,
+          "low": 41.9,
+          "close": 43.64,
+          "volume": 962308.0
+        },
+        "2024-08-14": {
+          "open": 43.89,
+          "high": 44.07,
+          "low": 43.11,
+          "close": 43.88,
+          "volume": 716856.0
+        },
+        "2024-08-15": {
+          "open": 45.01,
+          "high": 46.0,
+          "low": 44.55,
+          "close": 45.74,
+          "volume": 1260609.0
+        },
+        "2024-08-16": {
+          "open": 45.36,
+          "high": 46.39,
+          "low": 44.0,
+          "close": 45.39,
+          "volume": 819904.0
+        },
+        "2024-08-19": {
+          "open": 45.46,
+          "high": 46.74,
+          "low": 44.51,
+          "close": 46.12,
+          "volume": 1586457.0
+        },
+        "2024-08-20": {
+          "open": 45.82,
+          "high": 47.45,
+          "low": 45.19,
+          "close": 46.82,
+          "volume": 867334.0
+        },
+        "2024-08-21": {
+          "open": 46.48,
+          "high": 47.39,
+          "low": 45.75,
+          "close": 47.04,
+          "volume": 962381.0
+        },
+        "2024-08-22": {
+          "open": 47.06,
+          "high": 47.06,
+          "low": 45.43,
+          "close": 45.49,
+          "volume": 836576.0
+        },
+        "2024-08-23": {
+          "open": 45.79,
+          "high": 46.805,
+          "low": 45.13,
+          "close": 46.53,
+          "volume": 605491.0
+        },
+        "2024-08-26": {
+          "open": 45.88,
+          "high": 46.16,
+          "low": 44.69,
+          "close": 44.88,
+          "volume": 1000709.0
+        },
+        "2024-08-27": {
+          "open": 44.61,
+          "high": 45.5,
+          "low": 43.72,
+          "close": 44.03,
+          "volume": 685745.0
+        },
+        "2024-08-28": {
+          "open": 44.0,
+          "high": 45.13,
+          "low": 43.71,
+          "close": 45.01,
+          "volume": 749940.0
+        },
+        "2024-08-29": {
+          "open": 44.79,
+          "high": 46.08,
+          "low": 44.555,
+          "close": 45.26,
+          "volume": 645935.0
+        },
+        "2024-08-30": {
+          "open": 45.49,
+          "high": 46.26,
+          "low": 44.8,
+          "close": 46.09,
+          "volume": 613342.0
+        },
+        "2024-09-03": {
+          "open": 27.77,
+          "high": 33.61,
+          "low": 23.5455,
+          "close": 31.94,
+          "volume": 13729353.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-07-31",
+        "PlannedEntryDate": "2024-08-01",
+        "EntryDate": "2024-08-01",
+        "ExitDate": "2024-08-05",
+        "PlannedExitDate": "2024-09-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "MSTR",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 12,
+        "Ticker": "MSTR",
+        "SignalPrice_USD": 161.444,
+        "EntryPrice_USD": 161.5,
+        "ExitPrice_USD": 105.165,
+        "GrossReturn_pct": -34.882352941176464
+      },
+      "cache": {
+        "2024-07-31": {
+          "open": 164.603,
+          "high": 168.5,
+          "low": 160.8552,
+          "close": 161.444,
+          "volume": 7533810.0
+        },
+        "2024-08-01": {
+          "open": 161.5,
+          "high": 163.436,
+          "low": 148.202,
+          "close": 151.181,
+          "volume": 11930000.0
+        },
+        "2024-08-02": {
+          "open": 148.581,
+          "high": 159.14,
+          "low": 141.71,
+          "close": 144.799,
+          "volume": 14126190.0
+        },
+        "2024-08-05": {
+          "open": 105.165,
+          "high": 135.427,
+          "low": 102.402,
+          "close": 130.9,
+          "volume": 22677550.0
+        },
+        "2024-08-06": {
+          "open": 132.6,
+          "high": 139.494,
+          "low": 126.218,
+          "close": 136.921,
+          "volume": 12260230.0
+        },
+        "2024-08-07": {
+          "open": 140.878,
+          "high": 142.158,
+          "low": 124.013,
+          "close": 124.685,
+          "volume": 10933850.0
+        },
+        "2024-08-08": {
+          "open": 130.23,
+          "high": 136.76,
+          "low": 128.06,
+          "close": 135.99,
+          "volume": 10378305.0
+        },
+        "2024-08-09": {
+          "open": 135.89,
+          "high": 136.685,
+          "low": 129.55,
+          "close": 135.37,
+          "volume": 7330433.0
+        },
+        "2024-08-12": {
+          "open": 133.49,
+          "high": 139.2129,
+          "low": 129.22,
+          "close": 131.46,
+          "volume": 6932336.0
+        },
+        "2024-08-13": {
+          "open": 132.28,
+          "high": 140.0,
+          "low": 130.26,
+          "close": 135.38,
+          "volume": 8123111.0
+        },
+        "2024-08-14": {
+          "open": 136.37,
+          "high": 137.4,
+          "low": 129.33,
+          "close": 130.37,
+          "volume": 8535928.0
+        },
+        "2024-08-15": {
+          "open": 132.7,
+          "high": 139.0,
+          "low": 130.73,
+          "close": 131.93,
+          "volume": 10856852.0
+        },
+        "2024-08-16": {
+          "open": 133.25,
+          "high": 136.32,
+          "low": 126.59,
+          "close": 133.04,
+          "volume": 11360411.0
+        },
+        "2024-08-19": {
+          "open": 133.7,
+          "high": 137.44,
+          "low": 131.16,
+          "close": 135.35,
+          "volume": 6595737.0
+        },
+        "2024-08-20": {
+          "open": 139.735,
+          "high": 141.36,
+          "low": 130.63,
+          "close": 133.69,
+          "volume": 11274578.0
+        },
+        "2024-08-21": {
+          "open": 134.34,
+          "high": 142.58,
+          "low": 132.87,
+          "close": 141.42,
+          "volume": 11774541.0
+        },
+        "2024-08-22": {
+          "open": 141.39,
+          "high": 141.78,
+          "low": 133.69,
+          "close": 133.81,
+          "volume": 7963436.0
+        },
+        "2024-08-23": {
+          "open": 137.4,
+          "high": 151.81,
+          "low": 135.51,
+          "close": 150.01,
+          "volume": 17791304.0
+        },
+        "2024-08-26": {
+          "open": 148.12,
+          "high": 152.35,
+          "low": 146.6,
+          "close": 146.9,
+          "volume": 10418753.0
+        },
+        "2024-08-27": {
+          "open": 144.48,
+          "high": 145.238,
+          "low": 138.19,
+          "close": 140.01,
+          "volume": 10943128.0
+        },
+        "2024-08-28": {
+          "open": 138.16,
+          "high": 138.4,
+          "low": 130.73,
+          "close": 132.09,
+          "volume": 8860102.0
+        },
+        "2024-08-29": {
+          "open": 137.0,
+          "high": 139.43,
+          "low": 131.0,
+          "close": 132.56,
+          "volume": 8431380.0
+        },
+        "2024-08-30": {
+          "open": 134.0,
+          "high": 135.2499,
+          "low": 128.3,
+          "close": 132.42,
+          "volume": 7802999.0
+        },
+        "2024-09-03": {
+          "open": 132.0,
+          "high": 132.73,
+          "low": 122.19,
+          "close": 122.32,
+          "volume": 8058810.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-12-31",
+        "PlannedEntryDate": "2025-01-02",
+        "EntryDate": "2025-01-02",
+        "ExitDate": "2025-01-08",
+        "PlannedExitDate": "2025-02-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "XCUR",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 1,
+        "Ticker": "XCUR",
+        "SignalPrice_USD": 13.67,
+        "EntryPrice_USD": 13.9,
+        "ExitPrice_USD": 9.2,
+        "GrossReturn_pct": -33.81294964028778
+      },
+      "cache": {
+        "2024-12-31": {
+          "open": 15.34,
+          "high": 15.78,
+          "low": 13.28,
+          "close": 13.67,
+          "volume": 120485.0
+        },
+        "2025-01-02": {
+          "open": 13.9,
+          "high": 15.34,
+          "low": 13.9,
+          "close": 15.18,
+          "volume": 97017.0
+        },
+        "2025-01-03": {
+          "open": 14.67,
+          "high": 15.1981,
+          "low": 13.83,
+          "close": 14.36,
+          "volume": 23348.0
+        },
+        "2025-01-06": {
+          "open": 14.0,
+          "high": 14.01,
+          "low": 12.74,
+          "close": 12.84,
+          "volume": 76498.0
+        },
+        "2025-01-07": {
+          "open": 12.77,
+          "high": 12.77,
+          "low": 8.78,
+          "close": 9.21,
+          "volume": 141367.0
+        },
+        "2025-01-08": {
+          "open": 9.2,
+          "high": 9.8,
+          "low": 8.9,
+          "close": 8.99,
+          "volume": 65579.0
+        },
+        "2025-01-10": {
+          "open": 10.25,
+          "high": 10.67,
+          "low": 9.4,
+          "close": 9.46,
+          "volume": 76289.0
+        },
+        "2025-01-13": {
+          "open": 9.42,
+          "high": 10.41,
+          "low": 7.7,
+          "close": 7.9,
+          "volume": 149276.0
+        },
+        "2025-01-14": {
+          "open": 7.96,
+          "high": 8.96,
+          "low": 7.96,
+          "close": 8.62,
+          "volume": 22159.0
+        },
+        "2025-01-15": {
+          "open": 9.9,
+          "high": 11.37,
+          "low": 9.01,
+          "close": 9.14,
+          "volume": 125847.0
+        },
+        "2025-01-16": {
+          "open": 8.84,
+          "high": 9.0,
+          "low": 8.5073,
+          "close": 8.89,
+          "volume": 22888.0
+        },
+        "2025-01-17": {
+          "open": 9.12,
+          "high": 12.34,
+          "low": 9.11,
+          "close": 10.07,
+          "volume": 485205.0
+        },
+        "2025-01-21": {
+          "open": 10.18,
+          "high": 12.65,
+          "low": 10.1201,
+          "close": 12.21,
+          "volume": 107935.0
+        },
+        "2025-01-22": {
+          "open": 11.38,
+          "high": 11.8096,
+          "low": 10.15,
+          "close": 10.37,
+          "volume": 533909.0
+        },
+        "2025-01-23": {
+          "open": 15.25,
+          "high": 15.25,
+          "low": 12.21,
+          "close": 13.66,
+          "volume": 570785.0
+        },
+        "2025-01-24": {
+          "open": 13.2,
+          "high": 13.5,
+          "low": 12.0172,
+          "close": 12.02,
+          "volume": 99434.0
+        },
+        "2025-01-27": {
+          "open": 11.47,
+          "high": 12.22,
+          "low": 11.02,
+          "close": 11.72,
+          "volume": 22337.0
+        },
+        "2025-01-28": {
+          "open": 11.52,
+          "high": 11.8,
+          "low": 11.3285,
+          "close": 11.52,
+          "volume": 27574.0
+        },
+        "2025-01-29": {
+          "open": 11.41,
+          "high": 11.41,
+          "low": 10.2,
+          "close": 10.73,
+          "volume": 23822.0
+        },
+        "2025-01-30": {
+          "open": 10.72,
+          "high": 11.31,
+          "low": 10.2245,
+          "close": 10.81,
+          "volume": 16374.0
+        },
+        "2025-01-31": {
+          "open": 10.95,
+          "high": 11.4,
+          "low": 10.26,
+          "close": 11.23,
+          "volume": 34976.0
+        },
+        "2025-02-03": {
+          "open": 11.23,
+          "high": 11.23,
+          "low": 10.51,
+          "close": 10.67,
+          "volume": 7263.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-10-31",
+        "PlannedEntryDate": "2024-11-01",
+        "EntryDate": "2024-11-01",
+        "ExitDate": "2024-11-14",
+        "PlannedExitDate": "2024-12-02",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "INSG",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 13,
+        "Ticker": "INSG",
+        "SignalPrice_USD": 16.84,
+        "EntryPrice_USD": 16.86,
+        "ExitPrice_USD": 11.44,
+        "GrossReturn_pct": -32.14709371293001
+      },
+      "cache": {
+        "2024-10-31": {
+          "open": 17.45,
+          "high": 17.45,
+          "low": 16.12,
+          "close": 16.84,
+          "volume": 335579.0
+        },
+        "2024-11-01": {
+          "open": 16.86,
+          "high": 17.42,
+          "low": 16.6967,
+          "close": 17.38,
+          "volume": 136584.0
+        },
+        "2024-11-04": {
+          "open": 17.11,
+          "high": 17.31,
+          "low": 16.52,
+          "close": 16.64,
+          "volume": 122089.0
+        },
+        "2024-11-05": {
+          "open": 16.63,
+          "high": 17.54,
+          "low": 16.63,
+          "close": 17.05,
+          "volume": 166468.0
+        },
+        "2024-11-06": {
+          "open": 17.48,
+          "high": 17.48,
+          "low": 16.11,
+          "close": 16.28,
+          "volume": 203791.0
+        },
+        "2024-11-07": {
+          "open": 16.5,
+          "high": 17.3889,
+          "low": 16.1,
+          "close": 17.06,
+          "volume": 271085.0
+        },
+        "2024-11-08": {
+          "open": 17.06,
+          "high": 18.51,
+          "low": 16.75,
+          "close": 18.2,
+          "volume": 238138.0
+        },
+        "2024-11-11": {
+          "open": 18.5,
+          "high": 19.745,
+          "low": 17.7081,
+          "close": 19.66,
+          "volume": 216108.0
+        },
+        "2024-11-12": {
+          "open": 19.73,
+          "high": 19.74,
+          "low": 18.05,
+          "close": 18.16,
+          "volume": 352216.0
+        },
+        "2024-11-13": {
+          "open": 13.6,
+          "high": 13.95,
+          "low": 10.52,
+          "close": 10.83,
+          "volume": 1583392.0
+        },
+        "2024-11-14": {
+          "open": 11.44,
+          "high": 13.115,
+          "low": 11.4001,
+          "close": 12.31,
+          "volume": 909650.0
+        },
+        "2024-11-15": {
+          "open": 11.82,
+          "high": 12.8002,
+          "low": 11.55,
+          "close": 11.88,
+          "volume": 360043.0
+        },
+        "2024-11-18": {
+          "open": 12.2,
+          "high": 13.48,
+          "low": 12.2,
+          "close": 12.84,
+          "volume": 415978.0
+        },
+        "2024-11-19": {
+          "open": 12.78,
+          "high": 13.24,
+          "low": 12.5,
+          "close": 12.805,
+          "volume": 241596.0
+        },
+        "2024-11-20": {
+          "open": 12.8,
+          "high": 12.84,
+          "low": 12.2515,
+          "close": 12.42,
+          "volume": 193672.0
+        },
+        "2024-11-21": {
+          "open": 12.42,
+          "high": 12.6,
+          "low": 11.9,
+          "close": 12.21,
+          "volume": 197097.0
+        },
+        "2024-11-22": {
+          "open": 12.26,
+          "high": 12.57,
+          "low": 12.0306,
+          "close": 12.17,
+          "volume": 126046.0
+        },
+        "2024-11-25": {
+          "open": 12.03,
+          "high": 12.83,
+          "low": 11.68,
+          "close": 12.59,
+          "volume": 251836.0
+        },
+        "2024-11-26": {
+          "open": 12.49,
+          "high": 12.78,
+          "low": 12.11,
+          "close": 12.24,
+          "volume": 144319.0
+        },
+        "2024-11-27": {
+          "open": 12.44,
+          "high": 12.58,
+          "low": 11.82,
+          "close": 11.98,
+          "volume": 136639.0
+        },
+        "2024-11-29": {
+          "open": 12.03,
+          "high": 12.415,
+          "low": 11.94,
+          "close": 11.94,
+          "volume": 85967.0
+        },
+        "2024-12-02": {
+          "open": 11.98,
+          "high": 12.6428,
+          "low": 11.98,
+          "close": 12.29,
+          "volume": 276133.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-10-31",
+        "PlannedEntryDate": "2025-11-03",
+        "EntryDate": "2025-11-03",
+        "ExitDate": "2025-11-07",
+        "PlannedExitDate": "2025-12-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "OPEN",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 3,
+        "Ticker": "OPEN",
+        "SignalPrice_USD": 7.5194,
+        "EntryPrice_USD": 7.4323,
+        "ExitPrice_USD": 5.1581,
+        "GrossReturn_pct": -30.598872489000705
+      },
+      "cache": {
+        "2025-10-31": {
+          "open": 7.1806,
+          "high": 7.7613,
+          "low": 7.1245,
+          "close": 7.5194,
+          "volume": 124853592.233333
+        },
+        "2025-11-03": {
+          "open": 7.4323,
+          "high": 7.5097,
+          "low": 7.1516,
+          "close": 7.3452,
+          "volume": 90705163.0
+        },
+        "2025-11-04": {
+          "open": 7.0113,
+          "high": 7.1419,
+          "low": 6.6387,
+          "close": 6.6968,
+          "volume": 97415508.766667
+        },
+        "2025-11-05": {
+          "open": 6.9097,
+          "high": 7.2774,
+          "low": 6.7548,
+          "close": 6.9968,
+          "volume": 77148191.333333
+        },
+        "2025-11-06": {
+          "open": 7.1226,
+          "high": 7.1323,
+          "low": 6.3097,
+          "close": 6.3484,
+          "volume": 130494075.3
+        },
+        "2025-11-07": {
+          "open": 5.1581,
+          "high": 6.3774,
+          "low": 5.071,
+          "close": 6.3484,
+          "volume": 221641974.1
+        },
+        "2025-11-10": {
+          "open": 6.6194,
+          "high": 7.8581,
+          "low": 6.4742,
+          "close": 7.7129,
+          "volume": 229420374.233333
+        },
+        "2025-11-11": {
+          "open": 7.7032,
+          "high": 8.3419,
+          "low": 7.529,
+          "close": 8.2065,
+          "volume": 233173754.0
+        },
+        "2025-11-12": {
+          "open": 8.2161,
+          "high": 9.15,
+          "low": 7.9548,
+          "close": 9.0677,
+          "volume": 258792753.333333
+        },
+        "2025-11-13": {
+          "open": 8.6806,
+          "high": 8.9903,
+          "low": 8.1774,
+          "close": 8.2839,
+          "volume": 213330780.066667
+        },
+        "2025-11-14": {
+          "open": 7.8194,
+          "high": 8.671,
+          "low": 7.5968,
+          "close": 7.8581,
+          "volume": 190240865.1
+        },
+        "2025-11-17": {
+          "open": 7.7855,
+          "high": 7.8774,
+          "low": 7.2484,
+          "close": 7.5871,
+          "volume": 160569699.733333
+        },
+        "2025-11-18": {
+          "open": 7.45,
+          "high": 7.75,
+          "low": 7.02,
+          "close": 7.52,
+          "volume": 124084775.0
+        },
+        "2025-11-19": {
+          "open": 7.365,
+          "high": 7.42,
+          "low": 6.55,
+          "close": 6.69,
+          "volume": 126391799.0
+        },
+        "2025-11-20": {
+          "open": 6.955,
+          "high": 6.9699,
+          "low": 6.14,
+          "close": 6.16,
+          "volume": 111665847.0
+        },
+        "2025-11-21": {
+          "open": 6.23,
+          "high": 7.03,
+          "low": 6.23,
+          "close": 6.75,
+          "volume": 160430891.0
+        },
+        "2025-11-24": {
+          "open": 6.75,
+          "high": 8.08,
+          "low": 6.74,
+          "close": 7.69,
+          "volume": 156549018.0
+        },
+        "2025-11-25": {
+          "open": 7.65,
+          "high": 8.07,
+          "low": 7.47,
+          "close": 7.74,
+          "volume": 142896123.0
+        },
+        "2025-11-26": {
+          "open": 7.855,
+          "high": 7.94,
+          "low": 7.42,
+          "close": 7.78,
+          "volume": 108779194.0
+        },
+        "2025-11-28": {
+          "open": 7.92,
+          "high": 8.26,
+          "low": 7.63,
+          "close": 7.7,
+          "volume": 55880636.0
+        },
+        "2025-12-01": {
+          "open": 7.52,
+          "high": 7.525,
+          "low": 7.09,
+          "close": 7.14,
+          "volume": 91035982.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2023-05-31",
+        "PlannedEntryDate": "2023-06-01",
+        "EntryDate": "2023-06-01",
+        "ExitDate": "2023-06-28",
+        "PlannedExitDate": "2023-07-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "TERN",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 14,
+        "Ticker": "TERN",
+        "SignalPrice_USD": 10.61,
+        "EntryPrice_USD": 10.59,
+        "ExitPrice_USD": 7.63,
+        "GrossReturn_pct": -27.950897072710102
+      },
+      "cache": {
+        "2023-05-31": {
+          "open": 10.9,
+          "high": 11.37,
+          "low": 10.46,
+          "close": 10.61,
+          "volume": 1323642.0
+        },
+        "2023-06-01": {
+          "open": 10.59,
+          "high": 11.46,
+          "low": 10.33,
+          "close": 11.3,
+          "volume": 503000.0
+        },
+        "2023-06-02": {
+          "open": 11.41,
+          "high": 11.975,
+          "low": 11.39,
+          "close": 11.6,
+          "volume": 377023.0
+        },
+        "2023-06-05": {
+          "open": 11.85,
+          "high": 12.55,
+          "low": 11.67,
+          "close": 12.2,
+          "volume": 454681.0
+        },
+        "2023-06-06": {
+          "open": 12.12,
+          "high": 12.18,
+          "low": 11.44,
+          "close": 11.63,
+          "volume": 363549.0
+        },
+        "2023-06-07": {
+          "open": 12.19,
+          "high": 12.3511,
+          "low": 11.705,
+          "close": 11.87,
+          "volume": 394791.0
+        },
+        "2023-06-08": {
+          "open": 11.88,
+          "high": 12.57,
+          "low": 11.77,
+          "close": 12.48,
+          "volume": 697584.0
+        },
+        "2023-06-09": {
+          "open": 12.5,
+          "high": 12.5,
+          "low": 11.925,
+          "close": 11.98,
+          "volume": 395330.0
+        },
+        "2023-06-12": {
+          "open": 11.93,
+          "high": 12.525,
+          "low": 11.92,
+          "close": 12.05,
+          "volume": 438732.0
+        },
+        "2023-06-13": {
+          "open": 12.11,
+          "high": 12.7199,
+          "low": 11.9,
+          "close": 12.29,
+          "volume": 819824.0
+        },
+        "2023-06-14": {
+          "open": 12.19,
+          "high": 12.9199,
+          "low": 11.35,
+          "close": 11.77,
+          "volume": 1292949.0
+        },
+        "2023-06-15": {
+          "open": 11.69,
+          "high": 11.69,
+          "low": 11.13,
+          "close": 11.48,
+          "volume": 522470.0
+        },
+        "2023-06-16": {
+          "open": 11.56,
+          "high": 11.72,
+          "low": 10.63,
+          "close": 10.92,
+          "volume": 1213390.0
+        },
+        "2023-06-20": {
+          "open": 10.71,
+          "high": 11.75,
+          "low": 10.1,
+          "close": 11.74,
+          "volume": 1972434.0
+        },
+        "2023-06-21": {
+          "open": 11.63,
+          "high": 12.02,
+          "low": 11.205,
+          "close": 11.86,
+          "volume": 554105.0
+        },
+        "2023-06-22": {
+          "open": 12.15,
+          "high": 13.03,
+          "low": 11.69,
+          "close": 11.85,
+          "volume": 959103.0
+        },
+        "2023-06-23": {
+          "open": 11.69,
+          "high": 11.8185,
+          "low": 10.74,
+          "close": 10.94,
+          "volume": 6226494.0
+        },
+        "2023-06-26": {
+          "open": 10.66,
+          "high": 10.67,
+          "low": 9.11,
+          "close": 9.61,
+          "volume": 1957516.0
+        },
+        "2023-06-27": {
+          "open": 9.64,
+          "high": 9.64,
+          "low": 6.91,
+          "close": 7.35,
+          "volume": 3666448.0
+        },
+        "2023-06-28": {
+          "open": 7.63,
+          "high": 8.76,
+          "low": 7.13,
+          "close": 8.705,
+          "volume": 2482699.0
+        },
+        "2023-06-29": {
+          "open": 8.62,
+          "high": 9.18,
+          "low": 8.11,
+          "close": 8.47,
+          "volume": 1101149.0
+        },
+        "2023-06-30": {
+          "open": 8.5,
+          "high": 9.15,
+          "low": 8.36,
+          "close": 8.75,
+          "volume": 2076758.0
+        },
+        "2023-07-03": {
+          "open": 8.75,
+          "high": 8.75,
+          "low": 8.25,
+          "close": 8.27,
+          "volume": 606636.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-10-31",
+        "PlannedEntryDate": "2025-11-03",
+        "EntryDate": "2025-11-03",
+        "ExitDate": "2025-11-14",
+        "PlannedExitDate": "2025-12-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "BE",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 2,
+        "Ticker": "BE",
+        "SignalPrice_USD": 132.16,
+        "EntryPrice_USD": 132.52,
+        "ExitPrice_USD": 95.88,
+        "GrossReturn_pct": -27.648656806519774
+      },
+      "cache": {
+        "2025-10-31": {
+          "open": 131.69,
+          "high": 135.01,
+          "low": 121.3,
+          "close": 132.16,
+          "volume": 17365236.0
+        },
+        "2025-11-03": {
+          "open": 132.52,
+          "high": 147.82,
+          "low": 131.5,
+          "close": 142.37,
+          "volume": 17283214.0
+        },
+        "2025-11-04": {
+          "open": 132.52,
+          "high": 139.88,
+          "low": 128.01,
+          "close": 129.05,
+          "volume": 17492406.0
+        },
+        "2025-11-05": {
+          "open": 133.85,
+          "high": 146.45,
+          "low": 133.3,
+          "close": 141.41,
+          "volume": 14957902.0
+        },
+        "2025-11-06": {
+          "open": 141.01,
+          "high": 144.42,
+          "low": 133.8301,
+          "close": 136.86,
+          "volume": 10155159.0
+        },
+        "2025-11-07": {
+          "open": 131.71,
+          "high": 135.94,
+          "low": 123.24,
+          "close": 135.21,
+          "volume": 15629730.0
+        },
+        "2025-11-10": {
+          "open": 141.97,
+          "high": 147.86,
+          "low": 135.51,
+          "close": 139.23,
+          "volume": 10819596.0
+        },
+        "2025-11-11": {
+          "open": 136.64,
+          "high": 136.75,
+          "low": 125.55,
+          "close": 127.07,
+          "volume": 11211905.0
+        },
+        "2025-11-12": {
+          "open": 130.34,
+          "high": 131.015,
+          "low": 118.64,
+          "close": 126.72,
+          "volume": 10322274.0
+        },
+        "2025-11-13": {
+          "open": 123.42,
+          "high": 124.0,
+          "low": 98.39,
+          "close": 103.55,
+          "volume": 28921745.0
+        },
+        "2025-11-14": {
+          "open": 95.88,
+          "high": 118.65,
+          "low": 93.8693,
+          "close": 111.89,
+          "volume": 23932699.0
+        },
+        "2025-11-17": {
+          "open": 107.15,
+          "high": 113.75,
+          "low": 103.66,
+          "close": 107.11,
+          "volume": 11691600.0
+        },
+        "2025-11-18": {
+          "open": 103.67,
+          "high": 112.07,
+          "low": 103.0,
+          "close": 104.97,
+          "volume": 13050644.0
+        },
+        "2025-11-19": {
+          "open": 105.0,
+          "high": 115.38,
+          "low": 103.35,
+          "close": 108.93,
+          "volume": 13815263.0
+        },
+        "2025-11-20": {
+          "open": 113.1,
+          "high": 118.58,
+          "low": 92.36,
+          "close": 93.38,
+          "volume": 20221962.0
+        },
+        "2025-11-21": {
+          "open": 94.02,
+          "high": 94.5,
+          "low": 76.0,
+          "close": 89.99,
+          "volume": 37673045.0
+        },
+        "2025-11-24": {
+          "open": 90.13,
+          "high": 97.3,
+          "low": 89.1901,
+          "close": 95.56,
+          "volume": 27792563.0
+        },
+        "2025-11-25": {
+          "open": 92.69,
+          "high": 94.91,
+          "low": 85.2,
+          "close": 94.29,
+          "volume": 12313941.0
+        },
+        "2025-11-26": {
+          "open": 99.86,
+          "high": 102.65,
+          "low": 92.0,
+          "close": 101.14,
+          "volume": 13297213.0
+        },
+        "2025-11-28": {
+          "open": 104.2,
+          "high": 109.25,
+          "low": 102.5,
+          "close": 109.24,
+          "volume": 8135564.0
+        },
+        "2025-12-01": {
+          "open": 107.08,
+          "high": 110.84,
+          "low": 98.905,
+          "close": 98.93,
+          "volume": 13076038.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2023-05-31",
+        "PlannedEntryDate": "2023-06-01",
+        "EntryDate": "2023-06-01",
+        "ExitDate": "2023-06-27",
+        "PlannedExitDate": "2023-07-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "BMEA",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 3,
+        "Ticker": "BMEA",
+        "SignalPrice_USD": 33.96,
+        "EntryPrice_USD": 33.95,
+        "ExitPrice_USD": 24.61,
+        "GrossReturn_pct": -27.511045655375565
+      },
+      "cache": {
+        "2023-05-31": {
+          "open": 33.88,
+          "high": 34.93,
+          "low": 32.82,
+          "close": 33.96,
+          "volume": 1131485.0
+        },
+        "2023-06-01": {
+          "open": 33.95,
+          "high": 35.84,
+          "low": 33.29,
+          "close": 35.66,
+          "volume": 515346.0
+        },
+        "2023-06-02": {
+          "open": 36.69,
+          "high": 36.7,
+          "low": 35.03,
+          "close": 35.8,
+          "volume": 464053.0
+        },
+        "2023-06-05": {
+          "open": 35.13,
+          "high": 37.74,
+          "low": 35.13,
+          "close": 37.54,
+          "volume": 657266.0
+        },
+        "2023-06-06": {
+          "open": 37.54,
+          "high": 39.17,
+          "low": 37.54,
+          "close": 38.24,
+          "volume": 1144676.0
+        },
+        "2023-06-07": {
+          "open": 38.39,
+          "high": 39.96,
+          "low": 38.125,
+          "close": 39.73,
+          "volume": 973492.0
+        },
+        "2023-06-08": {
+          "open": 40.2,
+          "high": 43.69,
+          "low": 39.74,
+          "close": 41.8,
+          "volume": 1558625.0
+        },
+        "2023-06-09": {
+          "open": 41.8,
+          "high": 43.0,
+          "low": 40.35,
+          "close": 40.9,
+          "volume": 1089653.0
+        },
+        "2023-06-12": {
+          "open": 41.22,
+          "high": 41.6899,
+          "low": 40.17,
+          "close": 40.19,
+          "volume": 641637.0
+        },
+        "2023-06-13": {
+          "open": 40.15,
+          "high": 40.68,
+          "low": 39.23,
+          "close": 39.77,
+          "volume": 761759.0
+        },
+        "2023-06-14": {
+          "open": 39.62,
+          "high": 40.83,
+          "low": 38.7,
+          "close": 38.9,
+          "volume": 659097.0
+        },
+        "2023-06-15": {
+          "open": 38.84,
+          "high": 38.84,
+          "low": 35.84,
+          "close": 36.82,
+          "volume": 995362.0
+        },
+        "2023-06-16": {
+          "open": 36.71,
+          "high": 36.85,
+          "low": 34.36,
+          "close": 34.95,
+          "volume": 3917329.0
+        },
+        "2023-06-20": {
+          "open": 34.59,
+          "high": 37.09,
+          "low": 34.59,
+          "close": 36.47,
+          "volume": 854891.0
+        },
+        "2023-06-21": {
+          "open": 36.04,
+          "high": 36.95,
+          "low": 34.0501,
+          "close": 35.185,
+          "volume": 674018.0
+        },
+        "2023-06-22": {
+          "open": 35.0,
+          "high": 36.3571,
+          "low": 32.56,
+          "close": 32.59,
+          "volume": 1544873.0
+        },
+        "2023-06-23": {
+          "open": 32.27,
+          "high": 32.33,
+          "low": 29.85,
+          "close": 30.67,
+          "volume": 3813548.0
+        },
+        "2023-06-26": {
+          "open": 33.0,
+          "high": 33.0,
+          "low": 23.31,
+          "close": 24.415,
+          "volume": 5482302.0
+        },
+        "2023-06-27": {
+          "open": 24.61,
+          "high": 24.61,
+          "low": 21.46,
+          "close": 21.85,
+          "volume": 2638632.0
+        },
+        "2023-06-28": {
+          "open": 21.89,
+          "high": 23.3,
+          "low": 21.65,
+          "close": 22.81,
+          "volume": 1500971.0
+        },
+        "2023-06-29": {
+          "open": 22.56,
+          "high": 23.42,
+          "low": 21.15,
+          "close": 21.66,
+          "volume": 1230966.0
+        },
+        "2023-06-30": {
+          "open": 21.82,
+          "high": 22.64,
+          "low": 21.53,
+          "close": 21.95,
+          "volume": 784239.0
+        },
+        "2023-07-03": {
+          "open": 21.42,
+          "high": 21.98,
+          "low": 20.86,
+          "close": 21.44,
+          "volume": 453451.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-12-31",
+        "PlannedEntryDate": "2025-01-02",
+        "EntryDate": "2025-01-02",
+        "ExitDate": "2025-01-13",
+        "PlannedExitDate": "2025-02-03",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "RCAT",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 2,
+        "Ticker": "RCAT",
+        "SignalPrice_USD": 12.85,
+        "EntryPrice_USD": 12.89,
+        "ExitPrice_USD": 9.531,
+        "GrossReturn_pct": -26.0589604344453
+      },
+      "cache": {
+        "2024-12-31": {
+          "open": 13.8,
+          "high": 13.8,
+          "low": 12.1,
+          "close": 12.85,
+          "volume": 9801663.0
+        },
+        "2025-01-02": {
+          "open": 12.89,
+          "high": 12.96,
+          "low": 11.31,
+          "close": 11.93,
+          "volume": 8479056.0
+        },
+        "2025-01-03": {
+          "open": 12.32,
+          "high": 13.98,
+          "low": 12.0519,
+          "close": 13.2,
+          "volume": 11874911.0
+        },
+        "2025-01-06": {
+          "open": 13.5,
+          "high": 15.2737,
+          "low": 12.84,
+          "close": 14.19,
+          "volume": 16451680.0
+        },
+        "2025-01-07": {
+          "open": 14.28,
+          "high": 14.96,
+          "low": 12.87,
+          "close": 13.06,
+          "volume": 12426241.0
+        },
+        "2025-01-08": {
+          "open": 12.26,
+          "high": 13.1299,
+          "low": 11.35,
+          "close": 11.83,
+          "volume": 9840992.0
+        },
+        "2025-01-10": {
+          "open": 11.5,
+          "high": 11.6,
+          "low": 9.9301,
+          "close": 10.03,
+          "volume": 10300860.0
+        },
+        "2025-01-13": {
+          "open": 9.531,
+          "high": 9.7873,
+          "low": 8.98,
+          "close": 9.33,
+          "volume": 7212638.0
+        },
+        "2025-01-14": {
+          "open": 9.89,
+          "high": 10.2,
+          "low": 9.0,
+          "close": 9.37,
+          "volume": 7144311.0
+        },
+        "2025-01-15": {
+          "open": 10.18,
+          "high": 11.1573,
+          "low": 10.0301,
+          "close": 10.91,
+          "volume": 12277720.0
+        },
+        "2025-01-16": {
+          "open": 11.0,
+          "high": 11.25,
+          "low": 9.59,
+          "close": 10.105,
+          "volume": 12797485.0
+        },
+        "2025-01-17": {
+          "open": 10.1,
+          "high": 10.1,
+          "low": 8.29,
+          "close": 8.555,
+          "volume": 13262663.0
+        },
+        "2025-01-21": {
+          "open": 8.56,
+          "high": 8.89,
+          "low": 8.11,
+          "close": 8.46,
+          "volume": 9411524.0
+        },
+        "2025-01-22": {
+          "open": 8.915,
+          "high": 9.44,
+          "low": 8.47,
+          "close": 8.75,
+          "volume": 12814711.0
+        },
+        "2025-01-23": {
+          "open": 8.71,
+          "high": 9.61,
+          "low": 8.25,
+          "close": 8.31,
+          "volume": 9685232.0
+        },
+        "2025-01-24": {
+          "open": 8.41,
+          "high": 9.83,
+          "low": 8.29,
+          "close": 8.63,
+          "volume": 12973874.0
+        },
+        "2025-01-27": {
+          "open": 8.34,
+          "high": 8.36,
+          "low": 7.72,
+          "close": 8.05,
+          "volume": 8352934.0
+        },
+        "2025-01-28": {
+          "open": 8.06,
+          "high": 9.34,
+          "low": 7.82,
+          "close": 9.255,
+          "volume": 8010593.0
+        },
+        "2025-01-29": {
+          "open": 9.11,
+          "high": 9.865,
+          "low": 9.11,
+          "close": 9.35,
+          "volume": 9721910.0
+        },
+        "2025-01-30": {
+          "open": 9.5,
+          "high": 9.545,
+          "low": 8.71,
+          "close": 8.71,
+          "volume": 6021170.0
+        },
+        "2025-01-31": {
+          "open": 8.75,
+          "high": 9.69,
+          "low": 8.565,
+          "close": 8.79,
+          "volume": 8047740.0
+        },
+        "2025-02-03": {
+          "open": 8.2,
+          "high": 8.9,
+          "low": 7.82,
+          "close": 8.82,
+          "volume": 8473731.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-02-28",
+        "PlannedEntryDate": "2025-03-03",
+        "EntryDate": "2025-03-03",
+        "ExitDate": "2025-03-04",
+        "PlannedExitDate": "2025-04-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "UMAC",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 7,
+        "Ticker": "UMAC",
+        "SignalPrice_USD": 7.18,
+        "EntryPrice_USD": 7.47,
+        "ExitPrice_USD": 5.57,
+        "GrossReturn_pct": -25.435073627844705
+      },
+      "cache": {
+        "2025-02-28": {
+          "open": 6.53,
+          "high": 7.46,
+          "low": 6.46,
+          "close": 7.18,
+          "volume": 1181529.0
+        },
+        "2025-03-03": {
+          "open": 7.47,
+          "high": 7.4788,
+          "low": 5.9,
+          "close": 6.05,
+          "volume": 1074711.0
+        },
+        "2025-03-04": {
+          "open": 5.57,
+          "high": 6.17,
+          "low": 5.45,
+          "close": 5.84,
+          "volume": 1330050.0
+        },
+        "2025-03-05": {
+          "open": 5.87,
+          "high": 6.28,
+          "low": 5.53,
+          "close": 6.19,
+          "volume": 1066791.0
+        },
+        "2025-03-06": {
+          "open": 5.97,
+          "high": 6.26,
+          "low": 5.685,
+          "close": 5.73,
+          "volume": 621029.0
+        },
+        "2025-03-07": {
+          "open": 5.57,
+          "high": 6.25,
+          "low": 5.3004,
+          "close": 6.17,
+          "volume": 1181260.0
+        },
+        "2025-03-10": {
+          "open": 5.88,
+          "high": 6.0,
+          "low": 5.35,
+          "close": 5.48,
+          "volume": 761953.0
+        },
+        "2025-03-11": {
+          "open": 5.53,
+          "high": 5.75,
+          "low": 5.21,
+          "close": 5.69,
+          "volume": 658600.0
+        },
+        "2025-03-12": {
+          "open": 6.06,
+          "high": 6.24,
+          "low": 5.71,
+          "close": 6.1,
+          "volume": 537308.0
+        },
+        "2025-03-13": {
+          "open": 6.11,
+          "high": 6.57,
+          "low": 5.6,
+          "close": 5.66,
+          "volume": 956905.0
+        },
+        "2025-03-14": {
+          "open": 5.8,
+          "high": 6.46,
+          "low": 5.79,
+          "close": 6.4,
+          "volume": 728637.0
+        },
+        "2025-03-17": {
+          "open": 6.79,
+          "high": 7.98,
+          "low": 6.76,
+          "close": 7.95,
+          "volume": 2395280.0
+        },
+        "2025-03-18": {
+          "open": 7.51,
+          "high": 7.73,
+          "low": 7.12,
+          "close": 7.4,
+          "volume": 740151.0
+        },
+        "2025-03-19": {
+          "open": 7.63,
+          "high": 7.9,
+          "low": 7.05,
+          "close": 7.17,
+          "volume": 826792.0
+        },
+        "2025-03-20": {
+          "open": 7.0,
+          "high": 7.36,
+          "low": 6.6,
+          "close": 6.89,
+          "volume": 693724.0
+        },
+        "2025-03-21": {
+          "open": 6.85,
+          "high": 7.64,
+          "low": 6.85,
+          "close": 7.34,
+          "volume": 909746.0
+        },
+        "2025-03-24": {
+          "open": 7.51,
+          "high": 7.7,
+          "low": 7.05,
+          "close": 7.68,
+          "volume": 951722.0
+        },
+        "2025-03-25": {
+          "open": 7.61,
+          "high": 7.62,
+          "low": 7.12,
+          "close": 7.23,
+          "volume": 486449.0
+        },
+        "2025-03-26": {
+          "open": 7.16,
+          "high": 7.3,
+          "low": 6.78,
+          "close": 6.94,
+          "volume": 365014.0
+        },
+        "2025-03-27": {
+          "open": 6.72,
+          "high": 7.3498,
+          "low": 6.6,
+          "close": 7.19,
+          "volume": 592165.0
+        },
+        "2025-03-28": {
+          "open": 6.66,
+          "high": 6.8194,
+          "low": 6.2,
+          "close": 6.68,
+          "volume": 763725.0
+        },
+        "2025-03-31": {
+          "open": 6.08,
+          "high": 6.43,
+          "low": 5.8644,
+          "close": 6.4,
+          "volume": 434473.0
+        },
+        "2025-04-01": {
+          "open": 6.3,
+          "high": 6.3,
+          "low": 5.72,
+          "close": 6.15,
+          "volume": 767863.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-10-31",
+        "PlannedEntryDate": "2024-11-01",
+        "EntryDate": "2024-11-01",
+        "ExitDate": "2024-11-08",
+        "PlannedExitDate": "2024-12-02",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "COMM",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 7,
+        "Ticker": "COMM",
+        "SignalPrice_USD": 6.73,
+        "EntryPrice_USD": 6.78,
+        "ExitPrice_USD": 5.14,
+        "GrossReturn_pct": -24.188790560471983
+      },
+      "cache": {
+        "2024-10-31": {
+          "open": 6.94,
+          "high": 6.9999,
+          "low": 6.52,
+          "close": 6.73,
+          "volume": 4510140.0
+        },
+        "2024-11-01": {
+          "open": 6.78,
+          "high": 7.07,
+          "low": 6.68,
+          "close": 6.79,
+          "volume": 3281637.0
+        },
+        "2024-11-04": {
+          "open": 6.71,
+          "high": 6.975,
+          "low": 6.28,
+          "close": 6.42,
+          "volume": 4974201.0
+        },
+        "2024-11-05": {
+          "open": 6.44,
+          "high": 6.715,
+          "low": 6.418,
+          "close": 6.64,
+          "volume": 2973908.0
+        },
+        "2024-11-06": {
+          "open": 7.05,
+          "high": 7.19,
+          "low": 6.625,
+          "close": 6.95,
+          "volume": 4264061.0
+        },
+        "2024-11-07": {
+          "open": 6.005,
+          "high": 6.08,
+          "low": 4.76,
+          "close": 5.2,
+          "volume": 20972633.0
+        },
+        "2024-11-08": {
+          "open": 5.14,
+          "high": 5.17,
+          "low": 4.535,
+          "close": 4.7,
+          "volume": 11247208.0
+        },
+        "2024-11-11": {
+          "open": 4.72,
+          "high": 4.8,
+          "low": 4.395,
+          "close": 4.745,
+          "volume": 5399412.0
+        },
+        "2024-11-12": {
+          "open": 4.7,
+          "high": 4.79,
+          "low": 4.43,
+          "close": 4.68,
+          "volume": 4348045.0
+        },
+        "2024-11-13": {
+          "open": 4.6,
+          "high": 4.65,
+          "low": 4.34,
+          "close": 4.47,
+          "volume": 5927430.0
+        },
+        "2024-11-14": {
+          "open": 4.5,
+          "high": 4.745,
+          "low": 4.43,
+          "close": 4.44,
+          "volume": 3303756.0
+        },
+        "2024-11-15": {
+          "open": 4.45,
+          "high": 4.48,
+          "low": 4.135,
+          "close": 4.15,
+          "volume": 3615464.0
+        },
+        "2024-11-18": {
+          "open": 4.12,
+          "high": 4.23,
+          "low": 4.1,
+          "close": 4.12,
+          "volume": 2960561.0
+        },
+        "2024-11-19": {
+          "open": 4.09,
+          "high": 4.545,
+          "low": 4.07,
+          "close": 4.53,
+          "volume": 3870908.0
+        },
+        "2024-11-20": {
+          "open": 4.53,
+          "high": 4.58,
+          "low": 4.24,
+          "close": 4.34,
+          "volume": 3663892.0
+        },
+        "2024-11-21": {
+          "open": 4.33,
+          "high": 4.565,
+          "low": 4.22,
+          "close": 4.38,
+          "volume": 3282570.0
+        },
+        "2024-11-22": {
+          "open": 4.46,
+          "high": 4.74,
+          "low": 4.38,
+          "close": 4.68,
+          "volume": 3516991.0
+        },
+        "2024-11-25": {
+          "open": 4.72,
+          "high": 5.365,
+          "low": 4.72,
+          "close": 5.09,
+          "volume": 11191296.0
+        },
+        "2024-11-26": {
+          "open": 5.02,
+          "high": 5.09,
+          "low": 4.875,
+          "close": 4.97,
+          "volume": 3245280.0
+        },
+        "2024-11-27": {
+          "open": 5.02,
+          "high": 5.14,
+          "low": 4.9,
+          "close": 5.08,
+          "volume": 2725779.0
+        },
+        "2024-11-29": {
+          "open": 5.1,
+          "high": 5.22,
+          "low": 4.77,
+          "close": 4.77,
+          "volume": 1623197.0
+        },
+        "2024-12-02": {
+          "open": 4.83,
+          "high": 5.01,
+          "low": 4.775,
+          "close": 4.86,
+          "volume": 3313599.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2024-09-30",
+        "PlannedEntryDate": "2024-10-01",
+        "EntryDate": "2024-10-01",
+        "ExitDate": "2024-10-03",
+        "PlannedExitDate": "2024-11-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "LASE",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 9,
+        "Ticker": "LASE",
+        "SignalPrice_USD": 16.31,
+        "EntryPrice_USD": 15.43,
+        "ExitPrice_USD": 11.74,
+        "GrossReturn_pct": -23.91445236552171
+      },
+      "cache": {
+        "2024-09-30": {
+          "open": 15.16,
+          "high": 17.1899,
+          "low": 14.8,
+          "close": 16.31,
+          "volume": 1583473.0
+        },
+        "2024-10-01": {
+          "open": 15.43,
+          "high": 15.65,
+          "low": 13.24,
+          "close": 14.26,
+          "volume": 1423871.0
+        },
+        "2024-10-02": {
+          "open": 13.78,
+          "high": 14.5,
+          "low": 11.47,
+          "close": 12.43,
+          "volume": 1309048.0
+        },
+        "2024-10-03": {
+          "open": 11.74,
+          "high": 11.8,
+          "low": 9.04,
+          "close": 9.18,
+          "volume": 1488100.0
+        },
+        "2024-10-04": {
+          "open": 8.91,
+          "high": 9.0,
+          "low": 6.89,
+          "close": 7.06,
+          "volume": 1725144.0
+        },
+        "2024-10-07": {
+          "open": 4.15,
+          "high": 5.7,
+          "low": 4.14,
+          "close": 4.32,
+          "volume": 15952278.0
+        },
+        "2024-10-08": {
+          "open": 4.16,
+          "high": 9.42,
+          "low": 4.16,
+          "close": 7.93,
+          "volume": 68968829.0
+        },
+        "2024-10-09": {
+          "open": 9.39,
+          "high": 10.15,
+          "low": 7.9601,
+          "close": 8.75,
+          "volume": 26263298.0
+        },
+        "2024-10-10": {
+          "open": 8.11,
+          "high": 8.65,
+          "low": 7.22,
+          "close": 8.3,
+          "volume": 4182462.0
+        },
+        "2024-10-11": {
+          "open": 8.35,
+          "high": 9.2299,
+          "low": 8.35,
+          "close": 8.53,
+          "volume": 3236821.0
+        },
+        "2024-10-14": {
+          "open": 9.1,
+          "high": 9.3199,
+          "low": 8.47,
+          "close": 8.6,
+          "volume": 1559008.0
+        },
+        "2024-10-15": {
+          "open": 8.67,
+          "high": 8.98,
+          "low": 8.5,
+          "close": 8.6,
+          "volume": 1519412.0
+        },
+        "2024-10-16": {
+          "open": 8.6,
+          "high": 8.74,
+          "low": 7.8508,
+          "close": 8.03,
+          "volume": 1229922.0
+        },
+        "2024-10-17": {
+          "open": 7.85,
+          "high": 7.85,
+          "low": 5.86,
+          "close": 6.38,
+          "volume": 2304029.0
+        },
+        "2024-10-18": {
+          "open": 6.39,
+          "high": 7.37,
+          "low": 6.2,
+          "close": 6.23,
+          "volume": 1844666.0
+        },
+        "2024-10-21": {
+          "open": 6.3,
+          "high": 6.6972,
+          "low": 5.39,
+          "close": 5.83,
+          "volume": 2420729.0
+        },
+        "2024-10-22": {
+          "open": 6.02,
+          "high": 6.55,
+          "low": 5.7,
+          "close": 5.75,
+          "volume": 1428965.0
+        },
+        "2024-10-23": {
+          "open": 5.55,
+          "high": 6.16,
+          "low": 5.55,
+          "close": 5.99,
+          "volume": 982972.0
+        },
+        "2024-10-24": {
+          "open": 5.95,
+          "high": 6.24,
+          "low": 5.507,
+          "close": 5.89,
+          "volume": 921807.0
+        },
+        "2024-10-25": {
+          "open": 6.08,
+          "high": 6.14,
+          "low": 5.72,
+          "close": 5.86,
+          "volume": 686001.0
+        },
+        "2024-10-28": {
+          "open": 5.79,
+          "high": 5.8,
+          "low": 5.1,
+          "close": 5.29,
+          "volume": 1032472.0
+        },
+        "2024-10-29": {
+          "open": 5.3,
+          "high": 5.465,
+          "low": 5.12,
+          "close": 5.19,
+          "volume": 434928.0
+        },
+        "2024-10-30": {
+          "open": 5.19,
+          "high": 5.4077,
+          "low": 4.93,
+          "close": 5.22,
+          "volume": 441608.0
+        },
+        "2024-10-31": {
+          "open": 5.18,
+          "high": 5.57,
+          "low": 4.9,
+          "close": 5.35,
+          "volume": 687837.0
+        },
+        "2024-11-01": {
+          "open": 5.42,
+          "high": 5.53,
+          "low": 5.02,
+          "close": 5.14,
+          "volume": 271792.0
+        }
+      }
+    },
+    {
+      "lot": {
+        "SignalDate": "2025-10-31",
+        "PlannedEntryDate": "2025-11-03",
+        "EntryDate": "2025-11-03",
+        "ExitDate": "2025-11-07",
+        "PlannedExitDate": "2025-12-01",
+        "ExitReason": "STOP_LOSS",
+        "CorporateAction": "",
+        "CorporateActionNote": "",
+        "CorporateActionTicker": "ONDS",
+        "CorporateActionRatio": 1.0,
+        "EntryExecution": "next-open",
+        "ExitExecution": "next-open",
+        "EntryDelaySessions": 0,
+        "ExitDelaySessions": 0,
+        "StopLoss_pct": 10.0,
+        "RebalanceMonths": 1,
+        "TopN": 15,
+        "SelectionModel": "robust-momentum-v1",
+        "Rank": 1,
+        "Ticker": "ONDS",
+        "SignalPrice_USD": 6.44,
+        "EntryPrice_USD": 6.575,
+        "ExitPrice_USD": 5.04,
+        "GrossReturn_pct": -23.346007604562736
+      },
+      "cache": {
+        "2025-10-31": {
+          "open": 6.25,
+          "high": 6.5,
+          "low": 6.12,
+          "close": 6.44,
+          "volume": 103817473.0
+        },
+        "2025-11-03": {
+          "open": 6.575,
+          "high": 6.69,
+          "low": 5.78,
+          "close": 6.15,
+          "volume": 118255300.0
+        },
+        "2025-11-04": {
+          "open": 5.78,
+          "high": 6.57,
+          "low": 5.77,
+          "close": 5.96,
+          "volume": 94632814.0
+        },
+        "2025-11-05": {
+          "open": 5.98,
+          "high": 6.25,
+          "low": 5.83,
+          "close": 6.0,
+          "volume": 59378971.0
+        },
+        "2025-11-06": {
+          "open": 5.92,
+          "high": 5.93,
+          "low": 5.215,
+          "close": 5.25,
+          "volume": 80144143.0
+        },
+        "2025-11-07": {
+          "open": 5.04,
+          "high": 5.895,
+          "low": 4.95,
+          "close": 5.81,
+          "volume": 106625548.0
+        },
+        "2025-11-10": {
+          "open": 6.37,
+          "high": 6.39,
+          "low": 5.77,
+          "close": 5.88,
+          "volume": 134984665.0
+        },
+        "2025-11-11": {
+          "open": 5.85,
+          "high": 6.095,
+          "low": 5.6,
+          "close": 5.8,
+          "volume": 78854827.0
+        },
+        "2025-11-12": {
+          "open": 5.985,
+          "high": 6.165,
+          "low": 5.48,
+          "close": 5.51,
+          "volume": 78885047.0
+        },
+        "2025-11-13": {
+          "open": 6.32,
+          "high": 7.34,
+          "low": 6.31,
+          "close": 6.56,
+          "volume": 220750768.0
+        },
+        "2025-11-14": {
+          "open": 6.165,
+          "high": 7.86,
+          "low": 6.1,
+          "close": 7.18,
+          "volume": 184392866.0
+        },
+        "2025-11-17": {
+          "open": 7.51,
+          "high": 7.515,
+          "low": 5.98,
+          "close": 6.255,
+          "volume": 154574537.0
+        },
+        "2025-11-18": {
+          "open": 6.155,
+          "high": 7.92,
+          "low": 6.15,
+          "close": 7.84,
+          "volume": 179789721.0
+        },
+        "2025-11-19": {
+          "open": 7.465,
+          "high": 8.035,
+          "low": 7.26,
+          "close": 7.5,
+          "volume": 127492284.0
+        },
+        "2025-11-20": {
+          "open": 7.92,
+          "high": 7.97,
+          "low": 6.25,
+          "close": 6.27,
+          "volume": 118297615.0
+        },
+        "2025-11-21": {
+          "open": 6.56,
+          "high": 6.85,
+          "low": 5.93,
+          "close": 6.735,
+          "volume": 130550985.0
+        },
+        "2025-11-24": {
+          "open": 6.785,
+          "high": 8.8,
+          "low": 6.67,
+          "close": 8.72,
+          "volume": 177027557.0
+        },
+        "2025-11-25": {
+          "open": 8.48,
+          "high": 8.88,
+          "low": 8.07,
+          "close": 8.44,
+          "volume": 119701685.0
+        },
+        "2025-11-26": {
+          "open": 8.61,
+          "high": 8.68,
+          "low": 7.685,
+          "close": 8.24,
+          "volume": 114826080.0
+        },
+        "2025-11-28": {
+          "open": 8.28,
+          "high": 8.4694,
+          "low": 7.8,
+          "close": 7.9,
+          "volume": 32682566.0
+        },
+        "2025-12-01": {
+          "open": 7.88,
+          "high": 8.07,
+          "low": 7.47,
+          "close": 7.58,
+          "volume": 50531600.0
+        }
+      }
+    }
+  ]
+}

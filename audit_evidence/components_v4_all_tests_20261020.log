@@ -1,0 +1,13 @@
+....................WARNING:root:Discarding unsafe backtest cache: cache has an unknown split basis or universe scope
+..WARNING:root:Discarding unsafe backtest cache: cache has an unknown split basis or universe scope
+......................................................WARNING:root:Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
+WARNING:root:Discarding unsafe Momentum history cache: legacy cache has an unknown split-adjustment basis
+.........WARNING:root:Normalized split-like open for UNKNOWN 17.3300 to 86.6500 on 2026-08-04 (factor 5, source verified-split)
+...../workspace/scratch/8fe769060391/MomentumCloud/momentum_master_v3.py:648: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  history = pd.concat([history, pd.DataFrame(new_rows)], ignore_index=True)
+.......................................WARNING:root:Discarding unsafe universe cache: unsupported point-in-time universe cache
+..................................................
+----------------------------------------------------------------------
+Ran 179 tests in 0.167s
+
+OK

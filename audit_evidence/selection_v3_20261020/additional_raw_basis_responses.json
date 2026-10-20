@@ -1,0 +1,28 @@
+[
+  {
+    "ticker": "ROVR",
+    "day": "2024-02-26",
+    "request": {
+      "path": "/v2/aggs/ticker/ROVR/range/1/day/2024-02-26/2024-02-26",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n2163226.0,10.9918,10.99,10.99,11,10.99,1708923600000,4828\n"
+  },
+  {
+    "ticker": "ALPN",
+    "day": "2024-05-17",
+    "request": {
+      "path": "/v2/aggs/ticker/ALPN/range/1/day/2024-05-17/2024-05-17",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n4288333.0,64.9758,64.98,64.97,65,64.97,1715918400000,5911\n"
+  }
+]

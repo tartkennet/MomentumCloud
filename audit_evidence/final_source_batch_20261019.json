@@ -1,0 +1,287 @@
+{
+  "date": "2026-10-19",
+  "source_head": "b1d0fb51c381b2e47c73286382451cf4fe74a091",
+  "status": "SOURCE_BATCH_COMPLETED_ORIGINAL_UNIVERSE_REMAINS_BLOCKED",
+  "minute_observations": [
+    {
+      "path": "audit_evidence/minute_exit_FRC_0_raw_20261019.json",
+      "request": {
+        "path": "/v2/aggs/ticker/FRC/range/1/minute/2023-05-01/2023-05-01",
+        "params": {
+          "adjusted": false,
+          "sort": "asc",
+          "limit": 50000
+        }
+      },
+      "response_bar_count": 180,
+      "session_counts": {
+        "premarket": 163,
+        "regular": 0,
+        "postmarket": 17
+      },
+      "first_at_et": "2023-05-01T04:00:00-04:00",
+      "last_at_et": "2023-05-01T16:36:00-04:00",
+      "error": false,
+      "empty_warning": null,
+      "installed_in_model": false
+    },
+    {
+      "path": "audit_evidence/minute_exit_FRC_1_adjusted_20261019.json",
+      "request": {
+        "path": "/v2/aggs/ticker/FRC/range/1/minute/2023-05-01/2023-05-01",
+        "params": {
+          "adjusted": true,
+          "sort": "asc",
+          "limit": 50000
+        }
+      },
+      "response_bar_count": 180,
+      "session_counts": {
+        "premarket": 163,
+        "regular": 0,
+        "postmarket": 17
+      },
+      "first_at_et": "2023-05-01T04:00:00-04:00",
+      "last_at_et": "2023-05-01T16:36:00-04:00",
+      "error": false,
+      "empty_warning": null,
+      "installed_in_model": false
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_2_raw_20261019.json",
+      "request": {
+        "path": "/v2/aggs/ticker/RNAZ/range/1/minute/2025-12-01/2025-12-01",
+        "params": {
+          "adjusted": false,
+          "sort": "asc",
+          "limit": 50000
+        }
+      },
+      "response_bar_count": 0,
+      "session_counts": {
+        "premarket": 0,
+        "regular": 0,
+        "postmarket": 0
+      },
+      "first_at_et": null,
+      "last_at_et": null,
+      "error": false,
+      "empty_warning": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period.",
+      "installed_in_model": false
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_3_adjusted_20261019.json",
+      "request": {
+        "path": "/v2/aggs/ticker/RNAZ/range/1/minute/2025-12-01/2025-12-01",
+        "params": {
+          "adjusted": true,
+          "sort": "asc",
+          "limit": 50000
+        }
+      },
+      "response_bar_count": 0,
+      "session_counts": {
+        "premarket": 0,
+        "regular": 0,
+        "postmarket": 0
+      },
+      "first_at_et": null,
+      "last_at_et": null,
+      "error": false,
+      "empty_warning": "Warning [EMPTY]: API returned 0 records. The ticker may be invalid, delisted, or have no data for the requested period.",
+      "installed_in_model": false
+    },
+    {
+      "path": "audit_evidence/minute_exit_RNAZ_4_raw_20261019.json",
+      "request": {
+        "path": "/v2/aggs/ticker/RNAZ/range/1/minute/2025-12-02/2025-12-02",
+        "params": {
+          "adjusted": false,
+          "sort": "asc",
+          "limit": 50000
+        }
+      },
+      "response_bar_count": 18,
+      "session_counts": {
+        "premarket": 0,
+        "regular": 18,
+        "postmarket": 0
+      },
+      "first_at_et": "2025-12-02T09:30:00-05:00",
+      "last_at_et": "2025-12-02T15:41:00-05:00",
+      "error": false,
+      "empty_warning": null,
+      "installed_in_model": false
+    }
+  ],
+  "opening_minute_requests": {
+    "FRC": "2023-05-01 09:30:00-09:30:59.999 America/New_York",
+    "RNAZ": "2025-12-01 09:30:00-09:30:59.999 America/New_York",
+    "results": "All four raw/adjusted requests returned EMPTY",
+    "evidence_limit": "Aggregate absence does not prove no trades on any venue or a global halt"
+  },
+  "archive_review": [
+    {
+      "name": "filings.json",
+      "bytes": 8393924,
+      "sha256": "3f226fc8cf29ab13fb74b43e9715525001241fa31ddd4782c308f486bdcadde6",
+      "relevant_keys": {
+        "AEPPZ|2023-07-31": {
+          "keys": [
+            "ticker",
+            "as_of",
+            "details",
+            "events_status"
+          ],
+          "contains_final_settlement_notice": false
+        },
+        "SJR|2023-03-31": {
+          "keys": [
+            "ticker",
+            "as_of",
+            "details",
+            "events_by_historical_figi",
+            "primary_filings"
+          ],
+          "contains_final_settlement_notice": false
+        }
+      },
+      "finding": "AEPPZ entry is historical security metadata without a filing; SJR primary_filings results are empty. Filename does not prove document completeness."
+    },
+    {
+      "name": "MomentumCloud_full_primary_evidence.zip",
+      "bytes": 1310256,
+      "sha256": "3ce455c92f5c48c118178d41921d3fd250a480b9c222ff1301400eefa773e73f",
+      "members": 343,
+      "reviewed_RNAZ_filings": [
+        {
+          "member": "filings/0001104659-25-120146.json",
+          "sha256": "e076a6161cca392b4f07aa3b1f1f4e44550523b43cdb9f33761612a918a72b9c",
+          "filing_date": "2025-12-11",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1829635/0001104659-25-120146.txt",
+          "finding": "Clinical or board disclosure; no observed fixed-exit-day price supplied"
+        },
+        {
+          "member": "filings/0001104659-25-123500.json",
+          "sha256": "a9ac58ab03631393512cb6ec8e17647a8ffe83db2d4da0b1dfed72dbe5d86ef6",
+          "filing_date": "2025-12-22",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1829635/0001104659-25-123500.txt",
+          "finding": "Clinical or board disclosure; no observed fixed-exit-day price supplied"
+        },
+        {
+          "member": "filings/0001104659-26-001097.json",
+          "sha256": "d87e0640693a00a782d6908fd0004544aaf79ff14d2f8eff08628325f8ae3dd6",
+          "filing_date": "2026-01-06",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1829635/0001104659-26-001097.txt",
+          "finding": "Clinical or board disclosure; no observed fixed-exit-day price supplied"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "total": 288,
+    "reviewed": 286,
+    "remaining": [
+      {
+        "signal": "2023-07-31",
+        "ticker": "AEPPZ",
+        "issue": "exit from 2023-09-01",
+        "reviewed_action_record_available": false,
+        "execution_status": "UNVERIFIED"
+      },
+      {
+        "signal": "2025-10-31",
+        "ticker": "RNAZ",
+        "issue": "exit 2025-12-02 outside period ending 2025-12-01",
+        "reviewed_action_record_available": false,
+        "execution_status": "UNVERIFIED"
+      }
+    ],
+    "is_execution_pass_rate": false
+  },
+  "AEPPZ_new_SEC_review": {
+    "files": [
+      {
+        "local_research_filename": "AEPPZ_2023Q3_original.html",
+        "bytes": 10877576,
+        "sha256": "535ddb1dac33e23f4292d25bdb063479b5a3eaad35450b0a19c45992162c2876",
+        "retained_in_commit": false
+      },
+      {
+        "local_research_filename": "AEPPZ_2023Q3_directory.json",
+        "bytes": 10779,
+        "sha256": "66fab6a4ee73a0fc67b91307a964dddeb4bf7aae094332125076ec918e011bed",
+        "retained_in_commit": false
+      },
+      {
+        "local_research_filename": "AEPPZ_companyfacts.json",
+        "bytes": 5279111,
+        "sha256": "c9040e99381d768142f28e73688dbd888766a5619dd7f701d653a7905d17b84d",
+        "retained_in_commit": false
+      }
+    ],
+    "quarterly_source_url": "https://www.sec.gov/Archives/edgar/data/4904/000000490423000121/aep-20230930.htm",
+    "finding": "Complete 2023Q3 original reports aggregate 10048668 shares and $850m; no final per-unit settlement-rate disclosure found. No ratio inferred. Companyfacts exposes dei/us-gaap/ffd, no issuer custom taxonomy or applicable settlement rate found. August 8-K search returns board changes, no final rate.",
+    "full_model_inputs_changed": false
+  },
+  "external_access": {
+    "CDS": {
+      "url": "https://services.cds.ca/applications/bulletins/bulletinsP.nsf/welcome-EN-?ReadForm",
+      "search_reader": "User login page",
+      "direct_http": "HTTP 200 with Request Rejected body, not a successful bulletin fetch",
+      "enhanced_product_url": "https://www.cds.ca/bulletins-and-resources/bulletins-and-alerts/cds-enhanced-bulletins",
+      "product_description": "Online corporate-action service; pricing inquiry offered",
+      "event_id": "E119202124603",
+      "final_event_notice_obtained": false
+    },
+    "DTCC": {
+      "url": "https://www.dtcc.com/products-and-services/asset-services/issuer-services/legal-notice-system-lens",
+      "published_access_terms": "Registered login needed to view LENS notices; non-DTC access requires a contract",
+      "AEPPZ_final_notice_obtained": false,
+      "do_not_infer": "A particular AEPPZ document is not proven present in LENS merely because the repository exists"
+    }
+  },
+  "independent_selection_reaggregation": "audit_evidence/selection_reaggregation_final_source_review_20261019.json",
+  "conclusion": {
+    "historical_blockers_closed": 0,
+    "unresolved_tickers": [
+      "FRC",
+      "SJR",
+      "AEPPZ",
+      "RNAZ"
+    ],
+    "all_four_absent_from_645_selection_positions": true,
+    "valid_universe_return": null,
+    "ranking_value_added": null,
+    "decision": "NO_GO",
+    "full_audit_completed": false,
+    "next_required_evidence": "New fixed-day regular-session price evidence for FRC/RNAZ; final applicable AEPPZ delivery terms; SJR common-share payment/conversion evidence. No new prices or returns can be inferred from the current data.",
+    "next_step_requiring_explicit_user_authorization": "Send prepared no-charge evidence inquiries to AEP investor relations, TSX Trust shareholder inquiries and Massive support. No messages have been sent; no paid access or subscription is authorized."
+  },
+  "model_replayed": false,
+  "strategy_changed": false,
+  "new_code_or_tests_added": false,
+  "previous_regression_checkpoint": {
+    "tests": 140,
+    "status": "PASS",
+    "rerun_this_batch": false
+  },
+  "saved_git_input_anchors": [
+    {
+      "path": "audit_evidence/universe_remaining_ledger.json",
+      "sha": "df2fe674aca8f99c2c0c0a7bb61ed52a0ff1c10c"
+    },
+    {
+      "path": "audit_evidence/replay_20261019/momentum_selection_only_positions.csv",
+      "sha": "9f69f424154db56e888eea5b5e555832aea598ca"
+    },
+    {
+      "path": "audit_evidence/replay_20261019/momentum_selection_only_model_result.json",
+      "sha": "0608770096bc918fd8fed868f706e5a5bd3f34fd"
+    },
+    {
+      "path": "audit_evidence/selection_loss_attribution_20261012.json",
+      "sha": "f3a9043104d7dd3e331f2240c081102f9fc64f63"
+    }
+  ]
+}

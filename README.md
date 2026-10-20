@@ -1,7 +1,7 @@
 # MomentumCloud Production v1
 
 MomentumCloud är ett mobilanpassat beslutsstöd för en låst, lång amerikansk
-portfölj med färskt 1–3-månadersmomentum. Systemet hämtar marknadsdata från Polygon, skapar tydliga
+portfölj med datumkorrekt 12–2-, 6–2- och 3-månadersmomentum. Systemet hämtar marknadsdata från Massive, skapar tydliga
 köp- och säljsignaler, uppdaterar Excel och publicerar samma verifierade
 snapshot till dashboardens API.
 
@@ -9,25 +9,29 @@ snapshot till dashboardens API.
 
 | Regel | Låst värde |
 |---|---|
-| Modell | `fresh-momentum-1-3m` |
-| Portfölj | 15 aktier, lika vikt och minst 1 hel aktie per position |
+| Modell | `core-momentum-v1` |
+| Portfölj | 12 aktier, lika vikt och minst 1 hel aktie per position |
 | Omsättning | Månadsvis omallokering |
-| Prisfilter | Minst 10 USD |
+| Prisfilter | Minst 5 USD |
 | Likviditet | ADV20 minst 5 000 000 USD |
 | Instrument | Aktiva USA-noterade common stocks |
 | Exkluderas | ETF, SPAC, ADR, preferensaktier |
 | Marknadsregim | `SPY > SMA200` = RISK ON, annars 100 % kassa |
 | Stop loss | 10 % |
-| Ranking | 30 % 1 månad, 40 % 3 månader, 15 % 6 månader, 10 % låg volatilitet, 5 % låg SMA50-extension |
-| Färskhetskrav | Positiv 1 och 3 månader, samt bättre än SPY under båda perioderna |
-| Trendkrav | Kurs > SMA20 > SMA50 > SMA200; SMA50 och SMA200 ska stiga |
-| Riskfilter | Högst 80 % annualiserad volatilitet och högst 20 % över SMA50 |
+| Ranking | 50 % 12–2-momentum, 30 % 6–2-momentum, 20 % 3-månadersmomentum |
+| Trendkrav | Kurs över en stigande SMA200 |
+| Daglig exit | 10 % stop-loss eller kurs under SMA200 |
+| Månadsvis omallokering | Ny topp-12-portfölj vid månadsskifte |
 
 `Current limitation: survivorship bias`
 
-Det befintliga universumet i arbetsboken används som startmängd och korsas
-med Polygons aktuella instrumentregister. Begränsningen visas i dashboard,
-Excel och valideringsresultat.
+Live-urvalet använder hela det aktuella amerikanska common-stock-registret.
+Backtestet använder en separat point-in-time-snapshot per signalmånad och
+sparar det dataarkiv som krävs för reproducering.
+
+Den första valideringen på Stocks Starter använder formningsdata från hösten
+2021 och testperiod från 1 februari 2023. Det ger över 30 kompletta
+månadsperioder utan att begära data utanför femårsplanens gräns.
 
 ## Körning
 
@@ -47,8 +51,8 @@ köp som fortfarande är möjliga och inte finns i `Momentum_portfolio.csv`;
 ett oexekverat månadsköp ligger därför kvar tills innehavet registreras.
 Stoppade aktier blockeras från återköp till nästa månadsurval.
 
-`Momentum_portfolio.csv` är den registrerade faktiska portföljen och
-signalerna är beslutsunderlaget för nästa handelsöppning.
+`Momentum_portfolio.csv` är den registrerade manuella portföljen och
+signalerna är beslutsunderlag. Systemet skickar aldrig order.
 
 Den separata modellvalideringen använder point-in-time-universum och ger
 `GO` endast vid minst 30 perioder, positiv nettoavkastning, bättre resultat

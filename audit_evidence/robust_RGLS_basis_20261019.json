@@ -1,0 +1,27 @@
+{
+  "checked_date": "2026-10-19",
+  "provider": "Massive connected Stocks Custom Bars",
+  "purpose": "Observed paired action basis for locked robust replay; no change to legal consideration or strategy",
+  "ticker": "RGLS",
+  "day": "2025-06-24",
+  "requests": [
+    {
+      "path": "/v2/aggs/ticker/RGLS/range/1/day/2025-06-24/2025-06-24",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n9342413.0,8.1258,8.15,8.16,8.18,8.07,1750737600000,17003\n"
+    },
+    {
+      "path": "/v2/aggs/ticker/RGLS/range/1/day/2025-06-24/2025-06-24",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      },
+      "response": "v,vw,o,c,h,l,t,n\n9342413.0,8.1258,8.15,8.16,8.18,8.07,1750737600000,17003\n"
+    }
+  ]
+}

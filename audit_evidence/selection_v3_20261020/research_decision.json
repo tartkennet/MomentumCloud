@@ -1,0 +1,15 @@
+{
+  "status": "RESEARCH_ONLY_NOT_BUY_APPROVED",
+  "selection_rebuilt": true,
+  "strict_baseline_reproduced": true,
+  "minimum_numeric_goal_broad_risk_adjusted": true,
+  "approval_reasons_against": [
+    "Near-zero total net return",
+    "Underperforms exposure-matched SPY",
+    "Negative return under doubled fixed costs",
+    "Three stock-days use disclosed stale quotes; stop signals cannot be verified there",
+    "Individual price and issuer validation incomplete",
+    "No untouched holdout"
+  ],
+  "production_activated": false
+}

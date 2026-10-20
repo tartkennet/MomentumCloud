@@ -1,0 +1,27 @@
+{
+  "status": "PASS_FRESH_FIXED_SELECTION_REPLAY",
+  "input_head": "6625c1f5e8a6723ff9d97ab5df8f98335ca98d90",
+  "positions": 645,
+  "tickers": 230,
+  "periods": 43,
+  "position_keys_identical_to_archive": true,
+  "signal_entry_exit_prices_identical_to_archive": true,
+  "metrics": {
+    "Periods": 43,
+    "TotalReturn_pct": -0.5460050227673818,
+    "SPYTotalReturn_pct": 93.30821172959709,
+    "TotalEdgeVsSPY_pct": -93.85421675236447,
+    "PeriodHitRate_pct": 58.139534883720934,
+    "DailyMaxDrawdown_pct": -50.38013190677646
+  },
+  "spy_matched_monthly_fixed_cost_return_pct": 70.20238513471013,
+  "independent_checks": {
+    "independent_position_and_capital_aggregation": "PASS",
+    "baseline_reproduction": "NOT_APPLICABLE",
+    "periods": 43,
+    "spy_price_return_pct": 93.30821172959709
+  },
+  "new_action_dates_cross_selected_windows": 0,
+  "new_actions_not_used_in_selection_replay": true,
+  "full_universe_complete": false
+}

@@ -1,0 +1,11 @@
+{
+  "request": {
+    "path": "/v2/aggs/ticker/COMP/range/1/day/2026-01-09/2026-01-09",
+    "params": {
+      "adjusted": "false",
+      "sort": "asc",
+      "limit": 10
+    }
+  },
+  "response": "v,vw,o,c,h,l,t,n\n50024973.0,13.0904,12.56,12.84,13.53,12.55,1767934800000,183120\n"
+}

@@ -12,6 +12,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlparse, parse_qs
 
 import numpy as np
 import pandas as pd
@@ -144,11 +145,17 @@ class PolygonClient:
         return float(results[-1]["c"])
 
     def fetch_recent_splits(self, start_date: str, end_date: str) -> List[Dict]:
-        data = self._get(
-            "/stocks/v1/splits",
-            {"execution_date.gte": start_date, "execution_date.lte": end_date, "limit": 5000, "sort": "execution_date.asc"},
-        )
-        return data.get("results", []) or []
+        path = "/stocks/v1/splits"
+        params = {"execution_date.gte": start_date, "execution_date.lte": end_date, "limit": 5000, "sort": "execution_date.asc"}
+        events = []
+        while True:
+            data = self._get(path, params)
+            events.extend(data.get("results", []) or [])
+            if not data.get("next_url"):
+                return events
+            parsed = urlparse(str(data["next_url"]))
+            path = parsed.path
+            params = {key: values[-1] for key, values in parse_qs(parsed.query).items() if key.lower() != "apikey" and values}
 
     def fetch_grouped_stocks(self, date_str: str) -> Dict[str, Dict[str, float]]:
         if date_str in self.grouped_cache:
@@ -172,6 +179,22 @@ class PolygonClient:
                 }
         self.grouped_cache[date_str] = out
         return out
+
+    def fetch_unadjusted_signal_closes(self, date_str: str) -> Dict[str, float]:
+        """Actual historical prices for absolute eligibility floors.
+
+        Split-adjusted prices are appropriate for return ratios, but future
+        reverse splits must not make a historical penny stock pass a $10 floor.
+        """
+        data = self._get(
+            f"/v2/aggs/grouped/locale/us/market/stocks/{date_str}",
+            {"adjusted": "false"},
+        )
+        return {
+            str(row['T']).upper().strip(): float(row['c'])
+            for row in data.get('results', []) or []
+            if row.get('T') and row.get('c') is not None
+        }
 
     def fetch_daily_open_close(self, ticker: str, date_str: str) -> Dict[str, float]:
         """Fetch one verified US daily close for narrow live portfolio tracking.
