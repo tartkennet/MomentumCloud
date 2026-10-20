@@ -1,3 +1,106 @@
+# MomentumCloud – komponenter och affärskostnader, uppdaterad 20 oktober 2026
+
+## Vad rankning, riskregler och kostnader bidrar med
+
+**Den stegvisa jämförelsen är färdig. Riskvikterna hjälper konsekvent. Marknadspolicyn försämrar avkastningen i de flesta jämförelser. Den tydligaste praktiska flaskhalsen är många små affärer med courtage och växling; den gamla fasta kostnaden var för låg för det här deklarerade avgiftsscenariot.** Detta är fortfarande ett preliminärt historiskt forskningstest, inte en färdig köpmodell.
+
+### Avgränsning och metod
+
+Samma breda v3-urval och båda tidigare definierade momentumrankningar används. För varje rankning prövas exakt åtta på förhand angivna kombinationer av tre komponenter, totalt 16 modellfall. **W** är tidigare riskvikter med femprocentsgräns och obelånat 15-procentigt kovariansmål. **S** är tidigare tioprocentsstopp, observerat vid stängning och exekverat nästa faktiska öppning. **M** är den kombinerade månatliga SPY-inträdesregeln och dagliga SPY-utträdesregeln utan återinträde under månaden. M:s två delregler isoleras inte var för sig här.
+
+Referensen har 25 lika viktade platser, inget aktiestopp och inget marknadsfilter. Alla 43 signaler 2023-02-28 till 2026-08-31 används; därför väljs även aktier vid de fyra signaler som tidigare gav kassa. M-fallen behåller exakt de gamla 39 investerade signalernas val. Första köp är 2023-03-01, sista exit 2026-10-01. Ingen rankningshorisont eller risktröskel har optimerats efter resultaten. Båda fulla WSM-fallen reproducerar v3:s tidigare val, priser, vikter och gamla kostnadsresultat.
+
+### Kostnad per faktisk modellerad order
+
+Samma aktie som behålls vid ombalansering säljs och återköps inte på papperet. Endast nettoändringen av antalet aktier belastas med en orderkostnad. Tidigare stopp och marknadsutträden är riktiga modellerade försäljningar. Courtage, växling, halva spreaden och slippage dras på orderdatum för både köp och sälj. Minimiavgift räknas per order. Köpbudgeten reserverar avgifterna så att portföljen inte lånar till dem. Kvarvarande innehav slutlikvideras en gång. Kontantfusioner behandlas som vederlag med enbart den antagna växlingskostnaden, utan påhittad börsförsäljning.
+
+Alla fall körs med två **illustrativa** startkapital, 10 000 och 100 000 USD. De är inte användarens kända kapital. Huvudtabellerna nedan använder 10 000 USD. Följande tre scenarier låstes före resultaten:
+
+| Kostnad per sida | Avgiftsgolv utan spread/slippage | Huvudscenario | Exekveringsstress |
+|---|---:|---:|---:|
+| Courtage | 0,25 %, minst 1 USD | 0,25 %, minst 1 USD | 0,25 %, minst 1 USD |
+| Automatisk växling | 0,25 % | 0,25 % | 0,25 % |
+| Halv spread | 0 | 0,05 % | 0,25 % |
+| Slippage | 0 | 0,05 % | 0,25 % |
+
+Växlingsantagandet stöds av [Avanzas aktuellt hämtade förklaring](https://blogg.avanza.se/kopa-utlandska-aktier-har-ar-allt-du-behover-veta/). Courtage och minimiavgift är ett deklarerat Mini-liknande scenario med stöd i ett [äldre officiellt besked](https://investors.avanza.se/media/press/2015/lanserar-ny-mobil-app-och-sanker-courtaget-pa-utlandshandel/). Den aktuella USA-tabellen gick inte att läsa ut och användarens courtageklass har inte verifierats. Spread och slippage är känslighetsantaganden, inte observerade orderboksdata. Siffrorna är därför **scenarieresultat, inte användarens faktiska avgifter eller orderfyllnader**. Prisavkastning redovisas i USD; marknadsförändringen i USD/SEK, skatt, utdelning, kontantränta, särskilda regulatoriska avgifter och krav på hela aktier ingår inte.
+
+### Brett riskjusterat momentum, alla åtta kombinationer
+
+Avkastningarna är sammanlagda över hela testet. Nedgången beräknas med dagliga värden efter orderkostnader. WSM är den tidigare fulla modellen, men med ny finansierad orderkostnad i stället för schablonen.
+
+| Komponenter | Före kostnader | Efter huvudscenariots kostnader | Största dagliga nedgång |
+|---|---:|---:|---:|
+| equal_reference | +6,49 % | -30,35 % | -38,50 % |
+| M | -15,78 % | -44,24 % | -45,79 % |
+| S | +18,02 % | -26,43 % | -31,52 % |
+| SM | +7,46 % | -30,63 % | -32,11 % |
+| W | +24,02 % | -11,38 % | -22,28 % |
+| WM | +11,13 % | -19,16 % | -22,03 % |
+| WS | +15,15 % | -20,81 % | -23,02 % |
+| WSM | +12,50 % | -20,03 % | -20,58 % |
+
+Det enklare W-fallet ger **+24,02 procent före kostnader men −11,38 procent efter huvudscenariots kostnader**. Det fulla WSM-fallet ger +12,50 respektive −20,03 procent. W-fallet har alltså ett bättre testresultat men är fortfarande olönsamt efter dessa antaganden och missar även det tidigare nedgångsmålet om högst 20 procent. Det godkänns inte för köp.
+
+### Brett vanligt momentum, samma åtta kombinationer
+
+| Komponenter | Före kostnader | Efter huvudscenariots kostnader | Största dagliga nedgång |
+|---|---:|---:|---:|
+| equal_reference | -19,35 % | -47,41 % | -55,76 % |
+| M | -46,50 % | -65,50 % | -67,63 % |
+| S | -5,23 % | -44,21 % | -56,62 % |
+| SM | -19,25 % | -50,30 % | -56,66 % |
+| W | +10,20 % | -15,52 % | -22,27 % |
+| WM | -1,47 % | -23,54 % | -25,06 % |
+| WS | +8,42 % | -21,19 % | -27,07 % |
+| WSM | +4,47 % | -21,78 % | -26,75 % |
+
+### Vilka delar hjälper?
+
+* **Riskjusterad rankning slår vanlig rankning i samtliga åtta matchade regelkombinationer**, både före kostnader och i huvudscenariot efter kostnader. Det stöder att behålla risk som mjuk rangordning i fortsatt forskning, men visar inte överavkastning mot index.
+* **W förbättrar både nettoavkastning och största nedgång i alla åtta par** över båda rankningarna. Storleksreglerna är alltså inte bara en broms som bör tas bort för att investera mer kapital.
+* **M sänker bruttoavkastningen i alla åtta par och nettoavkastningen i sju av åtta.** Den förbättrar nedgången i tre av åtta par. Ett undantag efter kostnader är riskjusterat WS till WSM, +0,78 procentenheter med mindre nedgång. Därför är påståendet att marknadsfiltret alltid försämrar nettot för starkt. Underlaget gäller den kombinerade månatliga/dagliga policyn och just denna historik.
+* **S ger blandade resultat:** bättre netto i fem av åtta par och mindre nedgång i fyra av åtta. Med riskvikter men utan M försämrar stoppet netto med 5,67 procentenheter för vanlig rankning och 9,43 för riskjusterad. Ett generellt nyttovärde för just detta stopp kan inte påstås.
+
+Detta är parade historiska jämförelser med fasta komponenter, inte säkerställda framtida effekter. Alla varianter går minus i huvudscenariot, för båda illustrativa kapitalstorlekarna. Det dyrare stresscenariot försämrar resultaten ytterligare. En enstaka positiv rad i det billigaste känslighetsfallet är inte en godkänd modell.
+
+### Var kostnaderna uppstår
+
+Riskjusterat W gör **1 826 marknadsorder på 43 månader**, trots nettning av kvarvarande innehav. I 10 000-dollarsfallet är genomsnittsordern cirka 215 USD och 1 721 order är mindre än 400 USD. Under den angivna tariffen är detta nivån där minimiavgiften 1 USD överstiger det proportionella courtaget.
+
+W-fallet betalar sammanlagt cirka **3 213 USD** i modellerade kostnader: courtage 1 835, växling 986, halv spread 196 och slippage 196. Ungefär 855 USD av courtaget är tillägg från minimiavgiften utöver 0,25 procent av omsatt marknadsbelopp. Växlingssumman omfattar även cash-vederlagens modellerade växling. Kostnad i dollar är summan av kassaflöden under vägen, inte samma sak som skillnaden mellan två slutavkastningar.
+
+| Riskjusterat W | Avgiftsgolv | Huvudscenario | Stress |
+|---|---:|---:|---:|
+| Illustrativt startkapital 10 000 USD | −7,28 % | −11,38 % | −26,19 % |
+| Illustrativt startkapital 100 000 USD | +0,88 % | −3,18 % | −17,85 % |
+
+Det större kontot minskar minimiavgiftens relativa belastning. Det innebär inte att mer kapital löser modellen; huvudscenariot är fortfarande negativt. Dagens månatliga namnbyten och små viktjusteringar kostar för mycket i förhållande till den avkastning urvalet ger. Nästa modelländring bör därför inriktas på färre onödiga affärer, inte bara nya momentumvikter eller fler filter. Inga nya omsättningströsklar har provats ut i denna körning.
+
+### Indexkontroller med samma orderkostnader
+
+SPY köp och behåll får nu en initial köporder och en avslutande säljorder, i stället för fiktiv fast avgift varje månad. Det ger **+91,00 procent netto** och −19,00 procents största nedgång i huvudscenariot, från +93,31 procent före kostnader. Den gamla SPY-siffran +70,20 procent hade samma gamla månatliga kostnadsschablon och ska inte jämföras som om kostnadsmodellen vore oförändrad.
+
+SPY med W-fallets initiala månadsexponering ger +50,47 procent netto, jämfört med W-aktiemodellens −11,38. SPY med fulla WSM-fallets exponering och marknadspolicy ger +23,46, jämfört med −20,03 för aktiemodellen. Exponeringsmatchningen efterliknar inte varje akties efterföljande stopp eller hela kursdriften. Den visar ändå att varken kostnader eller låg exponering ensamma räcker som förklaring till det svaga aktieurvalets resultat. Underlagen för samtliga modellfall och kontroller är sparade.
+
+### Datagränser och verifiering
+
+Samma tre saknade aktiedagar som i v3 kvarstår: CVII 2023-06-22 och 2023-06-23 samt MGRT 2026-09-14. Senast observerade stängning används med sin ursprungliga datering; inget nytt pris eller verklig orderfyllnad uppfinns. De berörda nettovärdena och eventuellt missade stoppsignalerna är därför preliminära. Individuell pris-/identitetsverifiering är fortfarande ofullständig för hela urvalet. Inga nya okända dataluckor återstår som blockerar just denna faktoriella beräkning, vilket inte är samma sak som fullständig marknadsprisvalidering.
+
+När marknadsfiltret och stoppet stängs av behövs några längre innehavsvägar än tidigare. Fjorton nya individuella råa/justerade API-svar kompletterar endast observerade enhetsunderlag. CMRX:s kontantfusion 2025-04-21 till 8,55 USD stöds av [SEC-handlingen](https://www.sec.gov/Archives/edgar/data/1117480/000119312525087237/d942664d8k.htm) och [Nasdaqs uppgift om sista handelsdag](https://nasdaqtrader.com/TraderNews.aspx?id=ECA2025-196). Det är en forskningskomplettering av exekveringsdata, inte ett nytt filter eller en ändring av tidigare produktionsregler. Första partiella körningarna med dataluckor har ersatts av den fulla körningen; inga trösklar ändrades för att påverka resultaten.
+
+**179 tester passerar. En separat kontroll utan strategibibliotek räknar om 232 sparade kostnads- och kontrollböcker**, inklusive nettoorder, antalsförändringar, minimiavgifter, köp/sälj, daglig kassa, innehavsvärde, finansiering, månadsresultat och nedgång. Både gamla fulla v3-fall återges exakt under den gamla kostnadskonventionen. Prisspår, alla 16 utfall, tre avgiftsscenarier, två kapitalstorlekar, kontroller, källsvar och beslut är sparade. Kontrollräkning är inte ett bevis på verkliga avgifter eller framtida lönsamhet.
+
+### Beslut och frysning
+
+Brett riskjusterat urval och riskvikter har tydligast stöd som fortsatta forskningskomponenter. Marknadspolicyn bör inte längre förutsättas hjälpa; stoppet måste bedömas tillsammans med övriga regler. Ingen testad kombination är godkänd som färdig köpmodell. Kod, specifikation och indatahashar är frysta i `frozen_experiment_and_decision.json`. Alla 43 gamla perioder är redan använda för utveckling och kan inte döpas om till ett oberoende test. Varje ny modell för lägre handelsomsättning behöver först en låst definition; senare observationer efter frysningen måste användas för verkligt nytt test. Ingen handel, driftsättning eller automation har startats.
+
+Kod: `momentum_order_ledger.py`, `run_momentum_components_v4.py`, `verify_momentum_components_v4.py`, `tests/test_momentum_order_ledger.py`. Specifikation: `docs/momentum_components_v4_spec.md`. Sammanställning och faktoreffekter: `audit_evidence/components_v4_20261020/`. De stora underlagen med alla orderböcker och prisspår paketeras också i ett hashkontrollerat arkiv för återställning.
+
+Tidigare rapportavsnitt bevaras nedan som historik. Kostnadsresultat från olika redovisningskonventioner får inte blandas.
+
+---
+
 # MomentumCloud – ombyggt aktieurval, uppdaterad 20 oktober 2026
 
 ## Ombyggt, friare aktieurval – 20 oktober 2026

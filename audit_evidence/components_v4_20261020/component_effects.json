@@ -1,0 +1,216 @@
+{
+  "broad_momentum": {
+    "weights": {
+      "pairs": [
+        {
+          "off": "broad_momentum__equal_reference",
+          "on": "broad_momentum__W",
+          "net_change_pp": 31.88770784321752,
+          "drawdown_change_pp": 33.497858657097424,
+          "gross_change_pp": 29.55072973861506
+        },
+        {
+          "off": "broad_momentum__M",
+          "on": "broad_momentum__WM",
+          "net_change_pp": 41.95898999351907,
+          "drawdown_change_pp": 42.566493025536644,
+          "gross_change_pp": 45.03111450402859
+        },
+        {
+          "off": "broad_momentum__S",
+          "on": "broad_momentum__WS",
+          "net_change_pp": 23.02177487928998,
+          "drawdown_change_pp": 29.54854447704731,
+          "gross_change_pp": 13.647963090715734
+        },
+        {
+          "off": "broad_momentum__SM",
+          "on": "broad_momentum__WSM",
+          "net_change_pp": 28.518080415586837,
+          "drawdown_change_pp": 29.909552556951866,
+          "gross_change_pp": 23.724396186392326
+        }
+      ],
+      "positive_net_pairs": 4,
+      "less_drawdown_pairs": 4,
+      "positive_gross_pairs": 4
+    },
+    "stop": {
+      "pairs": [
+        {
+          "off": "broad_momentum__equal_reference",
+          "on": "broad_momentum__S",
+          "net_change_pp": 3.1993810848747657,
+          "drawdown_change_pp": -0.8537983395527462,
+          "gross_change_pp": 14.12187359497652
+        },
+        {
+          "off": "broad_momentum__M",
+          "on": "broad_momentum__SM",
+          "net_change_pp": 15.198197600088662,
+          "drawdown_change_pp": 10.96491631369534,
+          "gross_change_pp": 27.24544714096306
+        },
+        {
+          "off": "broad_momentum__W",
+          "on": "broad_momentum__WS",
+          "net_change_pp": -5.666551879052774,
+          "drawdown_change_pp": -4.803112519602859,
+          "gross_change_pp": -1.7808930529228064
+        },
+        {
+          "off": "broad_momentum__WM",
+          "on": "broad_momentum__WSM",
+          "net_change_pp": 1.757288022156434,
+          "drawdown_change_pp": -1.6920241548894381,
+          "gross_change_pp": 5.938728823326798
+        }
+      ],
+      "positive_net_pairs": 3,
+      "less_drawdown_pairs": 1,
+      "positive_gross_pairs": 3
+    },
+    "market": {
+      "pairs": [
+        {
+          "off": "broad_momentum__equal_reference",
+          "on": "broad_momentum__M",
+          "net_change_pp": -18.08731706599835,
+          "drawdown_change_pp": -11.865209629925744,
+          "gross_change_pp": -27.15034259189752
+        },
+        {
+          "off": "broad_momentum__S",
+          "on": "broad_momentum__SM",
+          "net_change_pp": -6.0885005507844525,
+          "drawdown_change_pp": -0.04649497667765701,
+          "gross_change_pp": -14.026769045910982
+        },
+        {
+          "off": "broad_momentum__W",
+          "on": "broad_momentum__WM",
+          "net_change_pp": -8.016034915696801,
+          "drawdown_change_pp": -2.796575261486524,
+          "gross_change_pp": -11.669957826483994
+        },
+        {
+          "off": "broad_momentum__WS",
+          "on": "broad_momentum__WSM",
+          "net_change_pp": -0.5921950144875936,
+          "drawdown_change_pp": 0.3145131032268971,
+          "gross_change_pp": -3.9503359502343898
+        }
+      ],
+      "positive_net_pairs": 0,
+      "less_drawdown_pairs": 1,
+      "positive_gross_pairs": 0
+    }
+  },
+  "broad_risk_adjusted": {
+    "weights": {
+      "pairs": [
+        {
+          "off": "broad_risk_adjusted__equal_reference",
+          "on": "broad_risk_adjusted__W",
+          "net_change_pp": 18.97378124361726,
+          "drawdown_change_pp": 16.22023254333856,
+          "gross_change_pp": 17.533645080166124
+        },
+        {
+          "off": "broad_risk_adjusted__M",
+          "on": "broad_risk_adjusted__WM",
+          "net_change_pp": 25.082417158116687,
+          "drawdown_change_pp": 23.758464987770175,
+          "gross_change_pp": 26.913728188387225
+        },
+        {
+          "off": "broad_risk_adjusted__S",
+          "on": "broad_risk_adjusted__WS",
+          "net_change_pp": 5.620416361997449,
+          "drawdown_change_pp": 8.504369523180621,
+          "gross_change_pp": -2.8640037874465634
+        },
+        {
+          "off": "broad_risk_adjusted__SM",
+          "on": "broad_risk_adjusted__WSM",
+          "net_change_pp": 10.599580301719733,
+          "drawdown_change_pp": 11.529639691693056,
+          "gross_change_pp": 5.037392207151711
+        }
+      ],
+      "positive_net_pairs": 4,
+      "less_drawdown_pairs": 4,
+      "positive_gross_pairs": 3
+    },
+    "stop": {
+      "pairs": [
+        {
+          "off": "broad_risk_adjusted__equal_reference",
+          "on": "broad_risk_adjusted__S",
+          "net_change_pp": 3.9225625286666848,
+          "drawdown_change_pp": 6.98349636101084,
+          "gross_change_pp": 11.529959829350773
+        },
+        {
+          "off": "broad_risk_adjusted__M",
+          "on": "broad_risk_adjusted__SM",
+          "net_change_pp": 13.608706416670515,
+          "drawdown_change_pp": 13.678291414514021,
+          "gross_change_pp": 23.244327733441267
+        },
+        {
+          "off": "broad_risk_adjusted__W",
+          "on": "broad_risk_adjusted__WS",
+          "net_change_pp": -9.430802352953128,
+          "drawdown_change_pp": -0.7323666591471003,
+          "gross_change_pp": -8.867689038261915
+        },
+        {
+          "off": "broad_risk_adjusted__WM",
+          "on": "broad_risk_adjusted__WSM",
+          "net_change_pp": -0.8741304397264393,
+          "drawdown_change_pp": 1.4494661184369022,
+          "gross_change_pp": 1.3679917522057536
+        }
+      ],
+      "positive_net_pairs": 2,
+      "less_drawdown_pairs": 3,
+      "positive_gross_pairs": 3
+    },
+    "market": {
+      "pairs": [
+        {
+          "off": "broad_risk_adjusted__equal_reference",
+          "on": "broad_risk_adjusted__M",
+          "net_change_pp": -13.88370427519665,
+          "drawdown_change_pp": -7.284555895532463,
+          "gross_change_pp": -22.268039196470838
+        },
+        {
+          "off": "broad_risk_adjusted__S",
+          "on": "broad_risk_adjusted__SM",
+          "net_change_pp": -4.197560387192819,
+          "drawdown_change_pp": -0.5897608420292819,
+          "gross_change_pp": -10.553671292380344
+        },
+        {
+          "off": "broad_risk_adjusted__W",
+          "on": "broad_risk_adjusted__WM",
+          "net_change_pp": -7.775068360697224,
+          "drawdown_change_pp": 0.2536765488991506,
+          "gross_change_pp": -12.887956088249737
+        },
+        {
+          "off": "broad_risk_adjusted__WS",
+          "on": "broad_risk_adjusted__WSM",
+          "net_change_pp": 0.7816035525294645,
+          "drawdown_change_pp": 2.435509326483153,
+          "gross_change_pp": -2.6522752977820687
+        }
+      ],
+      "positive_net_pairs": 1,
+      "less_drawdown_pairs": 2,
+      "positive_gross_pairs": 0
+    }
+  }
+}

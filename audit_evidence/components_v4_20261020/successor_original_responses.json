@@ -1,0 +1,54 @@
+[
+  {
+    "ticker": "CD",
+    "adjusted": "true",
+    "request": {
+      "path": "/v2/aggs/ticker/CD/range/1/day/2025-11-13/2025-11-13",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n252168,9.4816,10.78,8.59,11.125,8.5101,1763010000000,3080\n"
+  },
+  {
+    "ticker": "CD",
+    "adjusted": "false",
+    "request": {
+      "path": "/v2/aggs/ticker/CD/range/1/day/2025-11-13/2025-11-13",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n252168,9.4816,10.78,8.59,11.125,8.5101,1763010000000,3080\n"
+  },
+  {
+    "ticker": "CDE",
+    "adjusted": "true",
+    "request": {
+      "path": "/v2/aggs/ticker/CDE/range/1/day/2026-03-20/2026-03-20",
+      "params": {
+        "adjusted": "true",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n54510736.00722,17.8306,18.61,17.67,18.61,17.51,1773979200000,219330\n"
+  },
+  {
+    "ticker": "CDE",
+    "adjusted": "false",
+    "request": {
+      "path": "/v2/aggs/ticker/CDE/range/1/day/2026-03-20/2026-03-20",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n54510736.00722,17.8306,18.61,17.67,18.61,17.51,1773979200000,219330\n"
+  }
+]

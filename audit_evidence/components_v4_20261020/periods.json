@@ -1,0 +1,217 @@
+[
+  {
+    "SignalDate": "2023-02-28",
+    "EntryDate": "2023-03-01",
+    "ExitDate": "2023-04-03"
+  },
+  {
+    "SignalDate": "2023-03-31",
+    "EntryDate": "2023-04-03",
+    "ExitDate": "2023-05-01"
+  },
+  {
+    "SignalDate": "2023-04-28",
+    "EntryDate": "2023-05-01",
+    "ExitDate": "2023-06-01"
+  },
+  {
+    "SignalDate": "2023-05-31",
+    "EntryDate": "2023-06-01",
+    "ExitDate": "2023-07-03"
+  },
+  {
+    "SignalDate": "2023-06-30",
+    "EntryDate": "2023-07-03",
+    "ExitDate": "2023-08-01"
+  },
+  {
+    "SignalDate": "2023-07-31",
+    "EntryDate": "2023-08-01",
+    "ExitDate": "2023-09-01"
+  },
+  {
+    "SignalDate": "2023-08-31",
+    "EntryDate": "2023-09-01",
+    "ExitDate": "2023-10-02"
+  },
+  {
+    "SignalDate": "2023-09-29",
+    "EntryDate": "2023-10-02",
+    "ExitDate": "2023-11-01"
+  },
+  {
+    "SignalDate": "2023-10-31",
+    "EntryDate": "2023-11-01",
+    "ExitDate": "2023-12-01"
+  },
+  {
+    "SignalDate": "2023-11-30",
+    "EntryDate": "2023-12-01",
+    "ExitDate": "2024-01-02"
+  },
+  {
+    "SignalDate": "2023-12-29",
+    "EntryDate": "2024-01-02",
+    "ExitDate": "2024-02-01"
+  },
+  {
+    "SignalDate": "2024-01-31",
+    "EntryDate": "2024-02-01",
+    "ExitDate": "2024-03-01"
+  },
+  {
+    "SignalDate": "2024-02-29",
+    "EntryDate": "2024-03-01",
+    "ExitDate": "2024-04-01"
+  },
+  {
+    "SignalDate": "2024-03-28",
+    "EntryDate": "2024-04-01",
+    "ExitDate": "2024-05-01"
+  },
+  {
+    "SignalDate": "2024-04-30",
+    "EntryDate": "2024-05-01",
+    "ExitDate": "2024-06-03"
+  },
+  {
+    "SignalDate": "2024-05-31",
+    "EntryDate": "2024-06-03",
+    "ExitDate": "2024-07-01"
+  },
+  {
+    "SignalDate": "2024-06-28",
+    "EntryDate": "2024-07-01",
+    "ExitDate": "2024-08-01"
+  },
+  {
+    "SignalDate": "2024-07-31",
+    "EntryDate": "2024-08-01",
+    "ExitDate": "2024-09-03"
+  },
+  {
+    "SignalDate": "2024-08-30",
+    "EntryDate": "2024-09-03",
+    "ExitDate": "2024-10-01"
+  },
+  {
+    "SignalDate": "2024-09-30",
+    "EntryDate": "2024-10-01",
+    "ExitDate": "2024-11-01"
+  },
+  {
+    "SignalDate": "2024-10-31",
+    "EntryDate": "2024-11-01",
+    "ExitDate": "2024-12-02"
+  },
+  {
+    "SignalDate": "2024-11-29",
+    "EntryDate": "2024-12-02",
+    "ExitDate": "2025-01-02"
+  },
+  {
+    "SignalDate": "2024-12-31",
+    "EntryDate": "2025-01-02",
+    "ExitDate": "2025-02-03"
+  },
+  {
+    "SignalDate": "2025-01-31",
+    "EntryDate": "2025-02-03",
+    "ExitDate": "2025-03-03"
+  },
+  {
+    "SignalDate": "2025-02-28",
+    "EntryDate": "2025-03-03",
+    "ExitDate": "2025-04-01"
+  },
+  {
+    "SignalDate": "2025-03-31",
+    "EntryDate": "2025-04-01",
+    "ExitDate": "2025-05-01"
+  },
+  {
+    "SignalDate": "2025-04-30",
+    "EntryDate": "2025-05-01",
+    "ExitDate": "2025-06-02"
+  },
+  {
+    "SignalDate": "2025-05-30",
+    "EntryDate": "2025-06-02",
+    "ExitDate": "2025-07-01"
+  },
+  {
+    "SignalDate": "2025-06-30",
+    "EntryDate": "2025-07-01",
+    "ExitDate": "2025-08-01"
+  },
+  {
+    "SignalDate": "2025-07-31",
+    "EntryDate": "2025-08-01",
+    "ExitDate": "2025-09-02"
+  },
+  {
+    "SignalDate": "2025-08-29",
+    "EntryDate": "2025-09-02",
+    "ExitDate": "2025-10-01"
+  },
+  {
+    "SignalDate": "2025-09-30",
+    "EntryDate": "2025-10-01",
+    "ExitDate": "2025-11-03"
+  },
+  {
+    "SignalDate": "2025-10-31",
+    "EntryDate": "2025-11-03",
+    "ExitDate": "2025-12-01"
+  },
+  {
+    "SignalDate": "2025-11-28",
+    "EntryDate": "2025-12-01",
+    "ExitDate": "2026-01-02"
+  },
+  {
+    "SignalDate": "2025-12-31",
+    "EntryDate": "2026-01-02",
+    "ExitDate": "2026-02-02"
+  },
+  {
+    "SignalDate": "2026-01-30",
+    "EntryDate": "2026-02-02",
+    "ExitDate": "2026-03-02"
+  },
+  {
+    "SignalDate": "2026-02-27",
+    "EntryDate": "2026-03-02",
+    "ExitDate": "2026-04-01"
+  },
+  {
+    "SignalDate": "2026-03-31",
+    "EntryDate": "2026-04-01",
+    "ExitDate": "2026-05-01"
+  },
+  {
+    "SignalDate": "2026-04-30",
+    "EntryDate": "2026-05-01",
+    "ExitDate": "2026-06-01"
+  },
+  {
+    "SignalDate": "2026-05-29",
+    "EntryDate": "2026-06-01",
+    "ExitDate": "2026-07-01"
+  },
+  {
+    "SignalDate": "2026-06-30",
+    "EntryDate": "2026-07-01",
+    "ExitDate": "2026-08-03"
+  },
+  {
+    "SignalDate": "2026-07-31",
+    "EntryDate": "2026-08-03",
+    "ExitDate": "2026-09-01"
+  },
+  {
+    "SignalDate": "2026-08-31",
+    "EntryDate": "2026-09-01",
+    "ExitDate": "2026-10-01"
+  }
+]

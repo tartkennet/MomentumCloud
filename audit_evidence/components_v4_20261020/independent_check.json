@@ -1,0 +1,1631 @@
+{
+  "status": "PASS_INDEPENDENT_ORDER_CASH_AND_NAV_RECONCILIATION",
+  "ledgers": 232,
+  "checks": {
+    "broad_momentum__M__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -60.95430273266933
+    },
+    "broad_momentum__M__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -65.49864038067092
+    },
+    "broad_momentum__M__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -68.29132693686336
+    },
+    "broad_momentum__M__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -72.97532184031475
+    },
+    "broad_momentum__M__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -58.86930134961741
+    },
+    "broad_momentum__M__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -63.364300352696624
+    },
+    "broad_momentum__SM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -45.163999721739145
+    },
+    "broad_momentum__SM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -50.30044278058226
+    },
+    "broad_momentum__SM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -57.577935410351856
+    },
+    "broad_momentum__SM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -63.23401380471716
+    },
+    "broad_momentum__SM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -41.5318963623978
+    },
+    "broad_momentum__SM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -46.49539505865692
+    },
+    "broad_momentum__S__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -37.564090395172336
+    },
+    "broad_momentum__S__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -44.211942229797806
+    },
+    "broad_momentum__S__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -52.66150528552633
+    },
+    "broad_momentum__S__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -59.90489444143687
+    },
+    "broad_momentum__S__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -33.09336845496944
+    },
+    "broad_momentum__S__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -39.52960743301198
+    },
+    "broad_momentum__WM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -13.145346241332911
+    },
+    "broad_momentum__WM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -23.539650387151855
+    },
+    "broad_momentum__WM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -20.04297654166728
+    },
+    "broad_momentum__WM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -30.262568109174005
+    },
+    "broad_momentum__WM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -11.330117468589906
+    },
+    "broad_momentum__WM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1602,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -21.767633709280144
+    },
+    "broad_momentum__WSM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -9.984902344675906
+    },
+    "broad_momentum__WSM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -21.78236236499542
+    },
+    "broad_momentum__WSM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -18.421441060827913
+    },
+    "broad_momentum__WSM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -30.008112862351275
+    },
+    "broad_momentum__WSM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -7.743293051029731
+    },
+    "broad_momentum__WSM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -19.592183670861253
+    },
+    "broad_momentum__WS__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -7.644449258319252
+    },
+    "broad_momentum__WS__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -21.190167350507828
+    },
+    "broad_momentum__WS__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -16.924151396195708
+    },
+    "broad_momentum__WS__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -30.187895160524413
+    },
+    "broad_momentum__WS__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -5.167353590001
+    },
+    "broad_momentum__WS__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1943,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -18.782324788542038
+    },
+    "broad_momentum__W__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -3.420449870255182
+    },
+    "broad_momentum__W__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -15.523615471455054
+    },
+    "broad_momentum__W__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -11.418384659403857
+    },
+    "broad_momentum__W__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -23.28981677309715
+    },
+    "broad_momentum__W__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -1.310784415834465
+    },
+    "broad_momentum__W__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -13.471458164053962
+    },
+    "broad_momentum__equal_reference__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -41.938115138012535
+    },
+    "broad_momentum__equal_reference__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -47.41132331467257
+    },
+    "broad_momentum__equal_reference__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -53.270795999728946
+    },
+    "broad_momentum__equal_reference__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -59.000963549216536
+    },
+    "broad_momentum__equal_reference__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -38.69999110571942
+    },
+    "broad_momentum__equal_reference__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1725,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -44.08671529950111
+    },
+    "broad_risk_adjusted__M__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -40.84914598415848
+    },
+    "broad_risk_adjusted__M__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -44.23825686973579
+    },
+    "broad_risk_adjusted__M__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -53.21261219610992
+    },
+    "broad_risk_adjusted__M__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -57.129589935059876
+    },
+    "broad_risk_adjusted__M__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -37.27897422747972
+    },
+    "broad_risk_adjusted__M__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -40.51572677714718
+    },
+    "broad_risk_adjusted__SM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -27.126336369790316
+    },
+    "broad_risk_adjusted__SM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -30.629550453065278
+    },
+    "broad_risk_adjusted__SM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -43.704550968133596
+    },
+    "broad_risk_adjusted__SM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -48.100016030775336
+    },
+    "broad_risk_adjusted__SM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -22.27094429615819
+    },
+    "broad_risk_adjusted__SM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -25.5018023836427
+    },
+    "broad_risk_adjusted__S__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -22.487978893940785
+    },
+    "broad_risk_adjusted__S__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -26.43199006587246
+    },
+    "broad_risk_adjusted__S__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -41.3785190308277
+    },
+    "broad_risk_adjusted__S__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -46.389374114075856
+    },
+    "broad_risk_adjusted__S__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -16.88436784621724
+    },
+    "broad_risk_adjusted__S__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -20.501990500030963
+    },
+    "broad_risk_adjusted__WM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -11.814686282767218
+    },
+    "broad_risk_adjusted__WM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -19.155839711619105
+    },
+    "broad_risk_adjusted__WM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -24.367175166237242
+    },
+    "broad_risk_adjusted__WM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -31.83377515440767
+    },
+    "broad_risk_adjusted__WM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -8.36433464189421
+    },
+    "broad_risk_adjusted__WM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1695,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -15.666644122367723
+    },
+    "broad_risk_adjusted__WSM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -12.136191521187122
+    },
+    "broad_risk_adjusted__WSM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -20.029970151345545
+    },
+    "broad_risk_adjusted__WSM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -25.447254318665745
+    },
+    "broad_risk_adjusted__WSM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -33.507090837273424
+    },
+    "broad_risk_adjusted__WSM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -8.453319640817602
+    },
+    "broad_risk_adjusted__WSM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1780,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -16.2931606694533
+    },
+    "broad_risk_adjusted__WS__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -12.016191212939608
+    },
+    "broad_risk_adjusted__WS__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -20.81157370387501
+    },
+    "broad_risk_adjusted__WS__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -26.42426963048593
+    },
+    "broad_risk_adjusted__WS__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -35.39029807050862
+    },
+    "broad_risk_adjusted__WS__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -7.994335531363383
+    },
+    "broad_risk_adjusted__WS__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1946,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -16.732962463383917
+    },
+    "broad_risk_adjusted__W__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -3.177146845247658
+    },
+    "broad_risk_adjusted__W__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -11.380771350921881
+    },
+    "broad_risk_adjusted__W__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -17.849563694581562
+    },
+    "broad_risk_adjusted__W__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -26.19255335904723
+    },
+    "broad_risk_adjusted__W__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 0.8824121984991162
+    },
+    "broad_risk_adjusted__W__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -7.2794789271287685
+    },
+    "broad_risk_adjusted__equal_reference__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -26.78323762000261
+    },
+    "broad_risk_adjusted__equal_reference__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -30.354552594539143
+    },
+    "broad_risk_adjusted__equal_reference__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -42.89684986524799
+    },
+    "broad_risk_adjusted__equal_reference__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -47.13079050261708
+    },
+    "broad_risk_adjusted__equal_reference__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -22.09050744197717
+    },
+    "broad_risk_adjusted__equal_reference__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 1836,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": -25.513791507762583
+    },
+    "spy_buy_hold__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 91.00234836900549
+    },
+    "spy_buy_hold__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 91.00234836900549
+    },
+    "spy_buy_hold__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 89.48032634881302
+    },
+    "spy_buy_hold__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 89.480326348813
+    },
+    "spy_buy_hold__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 91.38474693626779
+    },
+    "spy_buy_hold__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 91.38474693626779
+    },
+    "spy_buy_hold__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 93.30821172959713
+    },
+    "spy_buy_hold__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 2,
+      "months": 1,
+      "daily_marks": 901,
+      "net_return_pct": 93.30821172959709
+    },
+    "spy_matched_broad_momentum__M__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.865612873891344
+    },
+    "spy_matched_broad_momentum__M__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.54067956231943
+    },
+    "spy_matched_broad_momentum__M__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.37613617899664
+    },
+    "spy_matched_broad_momentum__M__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.05589765690211
+    },
+    "spy_matched_broad_momentum__M__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 40.27287372333734
+    },
+    "spy_matched_broad_momentum__M__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 39.946753409542744
+    },
+    "spy_matched_broad_momentum__M__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 13,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.562723660505846
+    },
+    "spy_matched_broad_momentum__M__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 13,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.562723660505846
+    },
+    "spy_matched_broad_momentum__SM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.865612873891344
+    },
+    "spy_matched_broad_momentum__SM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.54067956231943
+    },
+    "spy_matched_broad_momentum__SM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.37613617899664
+    },
+    "spy_matched_broad_momentum__SM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.05589765690211
+    },
+    "spy_matched_broad_momentum__SM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 40.27287372333734
+    },
+    "spy_matched_broad_momentum__SM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 39.946753409542744
+    },
+    "spy_matched_broad_momentum__SM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 13,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.562723660505846
+    },
+    "spy_matched_broad_momentum__SM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 13,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.562723660505846
+    },
+    "spy_matched_broad_momentum__S__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.00796194679734
+    },
+    "spy_matched_broad_momentum__S__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.52169162878681
+    },
+    "spy_matched_broad_momentum__S__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 89.424070483594
+    },
+    "spy_matched_broad_momentum__S__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 88.93789788783182
+    },
+    "spy_matched_broad_momentum__S__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.40598503837279
+    },
+    "spy_matched_broad_momentum__S__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.91969029239063
+    },
+    "spy_matched_broad_momentum__S__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 5,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.46257583635776
+    },
+    "spy_matched_broad_momentum__S__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 5,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.46257583635769
+    },
+    "spy_matched_broad_momentum__WM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 14.406272867298453
+    },
+    "spy_matched_broad_momentum__WM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 14.342628200788422
+    },
+    "spy_matched_broad_momentum__WM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 11.291529075649521
+    },
+    "spy_matched_broad_momentum__WM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 11.227894697395936
+    },
+    "spy_matched_broad_momentum__WM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 15.19845240646729
+    },
+    "spy_matched_broad_momentum__WM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 15.134785341085522
+    },
+    "spy_matched_broad_momentum__WM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 19.243018798315404
+    },
+    "spy_matched_broad_momentum__WM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 19.243018798315383
+    },
+    "spy_matched_broad_momentum__WSM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 14.406272867298453
+    },
+    "spy_matched_broad_momentum__WSM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 14.342628200788422
+    },
+    "spy_matched_broad_momentum__WSM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 11.291529075649521
+    },
+    "spy_matched_broad_momentum__WSM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 11.227894697395936
+    },
+    "spy_matched_broad_momentum__WSM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 15.19845240646729
+    },
+    "spy_matched_broad_momentum__WSM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 15.134785341085522
+    },
+    "spy_matched_broad_momentum__WSM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 19.243018798315404
+    },
+    "spy_matched_broad_momentum__WSM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 19.243018798315383
+    },
+    "spy_matched_broad_momentum__WS__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 30.92053378316344
+    },
+    "spy_matched_broad_momentum__WS__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 30.85005857368712
+    },
+    "spy_matched_broad_momentum__WS__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 28.870444501191784
+    },
+    "spy_matched_broad_momentum__WS__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 28.80011599323593
+    },
+    "spy_matched_broad_momentum__WS__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 31.438078799726377
+    },
+    "spy_matched_broad_momentum__WS__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 31.367567567156975
+    },
+    "spy_matched_broad_momentum__WS__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 34.05722896108061
+    },
+    "spy_matched_broad_momentum__WS__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 34.057228961080654
+    },
+    "spy_matched_broad_momentum__W__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 30.92053378316344
+    },
+    "spy_matched_broad_momentum__W__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 30.85005857368712
+    },
+    "spy_matched_broad_momentum__W__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 28.870444501191784
+    },
+    "spy_matched_broad_momentum__W__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 28.80011599323593
+    },
+    "spy_matched_broad_momentum__W__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 31.438078799726377
+    },
+    "spy_matched_broad_momentum__W__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 31.367567567156975
+    },
+    "spy_matched_broad_momentum__W__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 34.05722896108061
+    },
+    "spy_matched_broad_momentum__W__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 34.057228961080654
+    },
+    "spy_matched_broad_momentum__equal_reference__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.00796194679734
+    },
+    "spy_matched_broad_momentum__equal_reference__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.52169162878681
+    },
+    "spy_matched_broad_momentum__equal_reference__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 89.424070483594
+    },
+    "spy_matched_broad_momentum__equal_reference__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 88.93789788783182
+    },
+    "spy_matched_broad_momentum__equal_reference__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.40598503837279
+    },
+    "spy_matched_broad_momentum__equal_reference__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.91969029239063
+    },
+    "spy_matched_broad_momentum__equal_reference__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 5,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.46257583635776
+    },
+    "spy_matched_broad_momentum__equal_reference__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 5,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.46257583635769
+    },
+    "spy_matched_broad_risk_adjusted__M__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.72971323016685
+    },
+    "spy_matched_broad_risk_adjusted__M__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.41583865426519
+    },
+    "spy_matched_broad_risk_adjusted__M__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.20337895105796
+    },
+    "spy_matched_broad_risk_adjusted__M__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.894103168930556
+    },
+    "spy_matched_broad_risk_adjusted__M__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 40.1467010566154
+    },
+    "spy_matched_broad_risk_adjusted__M__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 39.83166328635828
+    },
+    "spy_matched_broad_risk_adjusted__M__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 14,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.48718279198927
+    },
+    "spy_matched_broad_risk_adjusted__M__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 14,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.48718279198933
+    },
+    "spy_matched_broad_risk_adjusted__SM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.72971323016685
+    },
+    "spy_matched_broad_risk_adjusted__SM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 38.41583865426519
+    },
+    "spy_matched_broad_risk_adjusted__SM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 33.20337895105796
+    },
+    "spy_matched_broad_risk_adjusted__SM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.894103168930556
+    },
+    "spy_matched_broad_risk_adjusted__SM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 40.1467010566154
+    },
+    "spy_matched_broad_risk_adjusted__SM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 39.83166328635828
+    },
+    "spy_matched_broad_risk_adjusted__SM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 14,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.48718279198927
+    },
+    "spy_matched_broad_risk_adjusted__SM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 14,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 47.48718279198933
+    },
+    "spy_matched_broad_risk_adjusted__S__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.82082897010709
+    },
+    "spy_matched_broad_risk_adjusted__S__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.34796661175308
+    },
+    "spy_matched_broad_risk_adjusted__S__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 89.17848382035913
+    },
+    "spy_matched_broad_risk_adjusted__S__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 88.70582830023544
+    },
+    "spy_matched_broad_risk_adjusted__S__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.23362145847484
+    },
+    "spy_matched_broad_risk_adjusted__S__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.76070738153071
+    },
+    "spy_matched_broad_risk_adjusted__S__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 6,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.3635377416304
+    },
+    "spy_matched_broad_risk_adjusted__S__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 6,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.36353774163031
+    },
+    "spy_matched_broad_risk_adjusted__WM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 23.497930441055193
+    },
+    "spy_matched_broad_risk_adjusted__WM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 23.456429014118328
+    },
+    "spy_matched_broad_risk_adjusted__WM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 17.926264230051437
+    },
+    "spy_matched_broad_risk_adjusted__WM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 17.885199549210927
+    },
+    "spy_matched_broad_risk_adjusted__WM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 24.931433788277047
+    },
+    "spy_matched_broad_risk_adjusted__WM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 24.889825697119193
+    },
+    "spy_matched_broad_risk_adjusted__WM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.35237008785501
+    },
+    "spy_matched_broad_risk_adjusted__WM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.35237008785501
+    },
+    "spy_matched_broad_risk_adjusted__WSM__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 23.497930441055193
+    },
+    "spy_matched_broad_risk_adjusted__WSM__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 23.456429014118328
+    },
+    "spy_matched_broad_risk_adjusted__WSM__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 17.926264230051437
+    },
+    "spy_matched_broad_risk_adjusted__WSM__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 17.885199549210927
+    },
+    "spy_matched_broad_risk_adjusted__WSM__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 24.931433788277047
+    },
+    "spy_matched_broad_risk_adjusted__WSM__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 24.889825697119193
+    },
+    "spy_matched_broad_risk_adjusted__WSM__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.35237008785501
+    },
+    "spy_matched_broad_risk_adjusted__WSM__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 32.35237008785501
+    },
+    "spy_matched_broad_risk_adjusted__WS__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 50.51152796247682
+    },
+    "spy_matched_broad_risk_adjusted__WS__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 50.469144242854604
+    },
+    "spy_matched_broad_risk_adjusted__WS__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 46.05584199297523
+    },
+    "spy_matched_broad_risk_adjusted__WS__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 46.013917407802566
+    },
+    "spy_matched_broad_risk_adjusted__WS__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 51.64642310955332
+    },
+    "spy_matched_broad_risk_adjusted__WS__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 51.60392487250696
+    },
+    "spy_matched_broad_risk_adjusted__WS__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 57.45028205799287
+    },
+    "spy_matched_broad_risk_adjusted__WS__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 57.45028205799292
+    },
+    "spy_matched_broad_risk_adjusted__W__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 50.51152796247682
+    },
+    "spy_matched_broad_risk_adjusted__W__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 50.469144242854604
+    },
+    "spy_matched_broad_risk_adjusted__W__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 46.05584199297523
+    },
+    "spy_matched_broad_risk_adjusted__W__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 46.013917407802566
+    },
+    "spy_matched_broad_risk_adjusted__W__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 51.64642310955332
+    },
+    "spy_matched_broad_risk_adjusted__W__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 51.60392487250696
+    },
+    "spy_matched_broad_risk_adjusted__W__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 57.45028205799287
+    },
+    "spy_matched_broad_risk_adjusted__W__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 57.45028205799292
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__central_assumption__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.82082897010709
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__central_assumption__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.34796661175308
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__execution_stress__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 89.17848382035913
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__execution_stress__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 88.70582830023544
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__fee_only_lower_bound__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 91.23362145847484
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__fee_only_lower_bound__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 44,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 90.76070738153071
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__zero_diagnostic__100000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 6,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.3635377416304
+    },
+    "spy_matched_broad_risk_adjusted__equal_reference__zero_diagnostic__10000_ledger.json.gz": {
+      "status": "PASS",
+      "orders": 6,
+      "months": 43,
+      "daily_marks": 943,
+      "net_return_pct": 93.36353774163031
+    }
+  },
+  "limitation": "Accounting and frozen-path validation, not independently verified market fills or unseen performance."
+}
