@@ -208,3 +208,4 @@ def allocation(selected: Sequence[Candidate], recent_maps, asof, config=CONFIG):
         "forecast_volatility": forecast * scale, "unscaled_forecast_volatility": forecast,
         "scale": scale, "cash_weight": 1.0 - float(weights.sum()),
     }
+

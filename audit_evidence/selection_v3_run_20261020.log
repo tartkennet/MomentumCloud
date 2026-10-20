@@ -1,0 +1,362 @@
+COMPLETE_SIGNAL 2023-02-28 strict 278 broad 2634 evidence_gaps 0
+COMPLETE_SIGNAL 2023-03-31 strict 302 broad 2643 evidence_gaps 0
+COMPLETE_SIGNAL 2023-04-28 strict 236 broad 2521 evidence_gaps 0
+COMPLETE_SIGNAL 2023-05-31 strict 248 broad 2562 evidence_gaps 0
+COMPLETE_SIGNAL 2023-06-30 strict 313 broad 2679 evidence_gaps 0
+COMPLETE_SIGNAL 2023-07-31 strict 404 broad 2567 evidence_gaps 0
+COMPLETE_SIGNAL 2023-08-31 strict 481 broad 2553 evidence_gaps 0
+COMPLETE_SIGNAL 2023-09-29 strict 386 broad 2510 evidence_gaps 0
+COMPLETE_SIGNAL 2023-10-31 strict 161 broad 2412 evidence_gaps 0
+COMPLETE_SIGNAL 2023-11-30 strict 116 broad 2497 evidence_gaps 0
+COMPLETE_SIGNAL 2023-12-29 strict 410 broad 2627 evidence_gaps 0
+COMPLETE_SIGNAL 2024-01-31 strict 570 broad 2549 evidence_gaps 0
+COMPLETE_SIGNAL 2024-02-29 strict 611 broad 2592 evidence_gaps 0
+COMPLETE_SIGNAL 2024-03-28 strict 592 broad 2627 evidence_gaps 0
+COMPLETE_SIGNAL 2024-04-30 strict 619 broad 2531 evidence_gaps 0
+COMPLETE_SIGNAL 2024-05-31 strict 395 broad 2566 evidence_gaps 0
+COMPLETE_SIGNAL 2024-06-28 strict 360 broad 2598 evidence_gaps 0
+COMPLETE_SIGNAL 2024-07-31 strict 447 broad 2601 evidence_gaps 0
+COMPLETE_SIGNAL 2024-08-30 strict 549 broad 2582 evidence_gaps 0
+COMPLETE_SIGNAL 2024-09-30 strict 703 broad 2612 evidence_gaps 0
+COMPLETE_SIGNAL 2024-10-31 strict 670 broad 2548 evidence_gaps 0
+COMPLETE_SIGNAL 2024-11-29 strict 547 broad 2664 evidence_gaps 0
+COMPLETE_SIGNAL 2024-12-31 strict 654 broad 2640 evidence_gaps 0
+COMPLETE_SIGNAL 2025-01-31 strict 407 broad 2620 evidence_gaps 0
+COMPLETE_SIGNAL 2025-02-28 strict 288 broad 2601 evidence_gaps 0
+COMPLETE_SIGNAL 2025-03-31 strict 345 broad 2579 evidence_gaps 0
+COMPLETE_SIGNAL 2025-04-30 strict 213 broad 2552 evidence_gaps 0
+COMPLETE_SIGNAL 2025-05-30 strict 149 broad 2555 evidence_gaps 0
+COMPLETE_SIGNAL 2025-06-30 strict 334 broad 2667 evidence_gaps 0
+COMPLETE_SIGNAL 2025-07-31 strict 371 broad 2635 evidence_gaps 0
+COMPLETE_SIGNAL 2025-08-29 strict 401 broad 2675 evidence_gaps 0
+COMPLETE_SIGNAL 2025-09-30 strict 437 broad 2728 evidence_gaps 0
+COMPLETE_SIGNAL 2025-10-31 strict 452 broad 2713 evidence_gaps 0
+COMPLETE_SIGNAL 2025-11-28 strict 341 broad 2707 evidence_gaps 0
+COMPLETE_SIGNAL 2025-12-31 strict 434 broad 2709 evidence_gaps 0
+COMPLETE_SIGNAL 2026-01-30 strict 441 broad 2715 evidence_gaps 0
+COMPLETE_SIGNAL 2026-02-27 strict 502 broad 2729 evidence_gaps 0
+COMPLETE_SIGNAL 2026-03-31 strict 533 broad 2717 evidence_gaps 0
+COMPLETE_SIGNAL 2026-04-30 strict 353 broad 2731 evidence_gaps 0
+COMPLETE_SIGNAL 2026-05-29 strict 396 broad 2779 evidence_gaps 0
+COMPLETE_SIGNAL 2026-06-30 strict 486 broad 2794 evidence_gaps 0
+COMPLETE_SIGNAL 2026-07-31 strict 510 broad 2724 evidence_gaps 0
+COMPLETE_SIGNAL 2026-08-31 strict 480 broad 2762 evidence_gaps 0
+{
+  "status": "COMPLETE_FIXED_RISK_SELECTION_COMPARISON",
+  "approval": "RESEARCH_ONLY_UNVALIDATED",
+  "selection_configuration": {
+    "min_raw_price": 5.0,
+    "min_raw_adv20": 2000000.0
+  },
+  "risk_configuration_unchanged": {
+    "model": "risk-managed-momentum-v2",
+    "position_count": 25,
+    "min_raw_price": 10.0,
+    "min_raw_adv20": 20000000.0,
+    "max_volatility": 0.6,
+    "max_daily_move": 0.25,
+    "max_sma50_extension": 0.25,
+    "max_weight": 0.05,
+    "target_portfolio_volatility": 0.15,
+    "stop_loss": 0.1,
+    "fixed_monthly_cost": 0.003
+  },
+  "variants_predeclared": [
+    "strict_v2",
+    "broad_momentum",
+    "broad_risk_adjusted"
+  ],
+  "spec_sha256_before_returns": "9b1178fcb56e86605e6835c7cd30ec83ae456ab703dd4df21fa0e70b434bb765",
+  "holdout": "Previously examined data; not fresh out-of-sample or a production recommendation.",
+  "input_install": {
+    "full_history_tickers": 409
+  },
+  "price_basis": "2026-10-06",
+  "blocked_variants": {},
+  "models": {
+    "strict_v2": {
+      "net_return_pct": -3.16085127657945,
+      "gross_return_pct": 8.862115704889234,
+      "cost_stress_060_return_pct": -13.886371378595356,
+      "daily_drawdown_pct": -21.301746728491665,
+      "annualized_return_pct": -0.8923346965372003,
+      "monthly_annualized_volatility_pct": 14.505935168760619,
+      "positive_months": 18,
+      "invested_months": 39,
+      "positions": 975,
+      "unique_tickers": 486,
+      "average_initial_exposure_pct": 79.91361733195414,
+      "max_initial_weight_pct": 5.0,
+      "worst_lot_return_pct": -40.10891309179818,
+      "stop_exits": 229,
+      "market_exits": 72,
+      "cash_action_exits": 4,
+      "positive_net_and_drawdown_within_20pct": false
+    },
+    "broad_momentum": {
+      "net_return_pct": -7.0726838249076,
+      "gross_return_pct": 4.471173020397799,
+      "cost_stress_060_return_pct": -17.370134018713102,
+      "daily_drawdown_pct": -19.16969151815232,
+      "annualized_return_pct": -2.026237979369816,
+      "monthly_annualized_volatility_pct": 9.74579747187981,
+      "positive_months": 19,
+      "invested_months": 39,
+      "positions": 973,
+      "unique_tickers": 458,
+      "average_initial_exposure_pct": 34.198096546240876,
+      "max_initial_weight_pct": 4.021930539175756,
+      "worst_lot_return_pct": -79.55010224948876,
+      "stop_exits": 509,
+      "market_exits": 53,
+      "cash_action_exits": 19,
+      "positive_net_and_drawdown_within_20pct": false
+    },
+    "broad_risk_adjusted": {
+      "net_return_pct": 0.08921872626503102,
+      "gross_return_pct": 12.50101072522591,
+      "cost_stress_060_return_pct": -10.984561633706022,
+      "daily_drawdown_pct": -13.214253037405943,
+      "annualized_return_pct": 0.024890245949560352,
+      "monthly_annualized_volatility_pct": 12.309798798770794,
+      "positive_months": 20,
+      "invested_months": 39,
+      "positions": 973,
+      "unique_tickers": 559,
+      "average_initial_exposure_pct": 57.59549712392283,
+      "max_initial_weight_pct": 4.863359272686001,
+      "worst_lot_return_pct": -64.6085672082718,
+      "stop_exits": 349,
+      "market_exits": 58,
+      "cash_action_exits": 9,
+      "positive_net_and_drawdown_within_20pct": true
+    }
+  },
+  "benchmarks": {
+    "spy_buy_hold": {
+      "net_return_pct": 70.20238513471003,
+      "gross_return_pct": 93.3082117295971,
+      "cost_stress_060_return_pct": 49.80166548439132,
+      "daily_drawdown_pct": -19.537340479253864,
+      "annualized_return_pct": 15.999342592525823,
+      "monthly_annualized_volatility_pct": 11.901147464460225,
+      "positive_months": 32,
+      "invested_months": 43,
+      "positions": 43,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 100.0,
+      "max_initial_weight_pct": 100.0,
+      "worst_lot_return_pct": -6.4963601596833005,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    },
+    "spy_matched_strict_v2": {
+      "net_return_pct": 28.938443913468575,
+      "gross_return_pct": 44.81265212016996,
+      "cost_stress_060_return_pct": 14.764528253967143,
+      "daily_drawdown_pct": -8.52626542561411,
+      "annualized_return_pct": 7.350580584790012,
+      "monthly_annualized_volatility_pct": 8.659513047871886,
+      "positive_months": 27,
+      "invested_months": 39,
+      "positions": 39,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 79.91361733195414,
+      "max_initial_weight_pct": 99.99999999999997,
+      "worst_lot_return_pct": -6.169277734912271,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    },
+    "spy_matched_broad_momentum": {
+      "net_return_pct": 6.113407511672719,
+      "gross_return_pct": 19.24301879831549,
+      "cost_stress_060_return_pct": -5.603575580200726,
+      "daily_drawdown_pct": -5.396232313026461,
+      "annualized_return_pct": 1.669737133420246,
+      "monthly_annualized_volatility_pct": 3.8414905077275945,
+      "positive_months": 20,
+      "invested_months": 39,
+      "positions": 39,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 34.198096546240876,
+      "max_initial_weight_pct": 80.43861078351509,
+      "worst_lot_return_pct": -6.169277734912271,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    },
+    "spy_matched_broad_risk_adjusted": {
+      "net_return_pct": 17.814222152750986,
+      "gross_return_pct": 32.352370087855036,
+      "cost_stress_060_return_pct": 4.836480759429989,
+      "daily_drawdown_pct": -7.916926487378195,
+      "annualized_return_pct": 4.6813057560318505,
+      "monthly_annualized_volatility_pct": 6.703275926969813,
+      "positive_months": 23,
+      "invested_months": 39,
+      "positions": 39,
+      "unique_tickers": 1,
+      "average_initial_exposure_pct": 57.59549712392283,
+      "max_initial_weight_pct": 97.26718545371997,
+      "worst_lot_return_pct": -6.169277734912271,
+      "stop_exits": 0,
+      "market_exits": 0,
+      "cash_action_exits": 0,
+      "positive_net_and_drawdown_within_20pct": true
+    }
+  },
+  "strict_v2_parity": "PASS_EXACT_POLICY_AND_MONTHLY_RESULTS",
+  "breadth": {
+    "strict_v2": {
+      "mean_eligible": 416.86046511627904,
+      "minimum_eligible": 116,
+      "maximum_eligible": 703,
+      "chosen_lots_ineligible_under_strict_v2": 0
+    },
+    "broad_momentum": {
+      "mean_eligible": 2628.0697674418607,
+      "minimum_eligible": 2412,
+      "maximum_eligible": 2794,
+      "chosen_lots_ineligible_under_strict_v2": 914
+    },
+    "broad_risk_adjusted": {
+      "mean_eligible": 2628.0697674418607,
+      "minimum_eligible": 2412,
+      "maximum_eligible": 2794,
+      "chosen_lots_ineligible_under_strict_v2": 595
+    }
+  },
+  "unfilled_orders": [
+    {
+      "status": "DOCUMENTED_UNFILLED_ORDER",
+      "entry_day": "2024-12-02",
+      "ticker": "LBPH",
+      "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+      "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+      "variant": "broad_momentum",
+      "signal": "2024-11-29",
+      "intended_weight": 0.014585990413936288
+    },
+    {
+      "status": "DOCUMENTED_UNFILLED_ORDER",
+      "entry_day": "2024-12-02",
+      "ticker": "LBPH",
+      "source": "https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589",
+      "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+      "variant": "broad_risk_adjusted",
+      "signal": "2024-11-29",
+      "intended_weight": 0.018333838863310654
+    },
+    {
+      "status": "DOCUMENTED_UNFILLED_ORDER",
+      "entry_day": "2025-07-01",
+      "ticker": "EVRI",
+      "source": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+      "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+      "variant": "broad_risk_adjusted",
+      "signal": "2025-06-30",
+      "intended_weight": 0.024904545393806668
+    },
+    {
+      "status": "DOCUMENTED_UNFILLED_ORDER",
+      "entry_day": "2026-09-01",
+      "ticker": "CRNX",
+      "source": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628",
+      "reason": "Trading ceased before the intended entry; allocation remains cash, no replacement.",
+      "variant": "broad_momentum",
+      "signal": "2026-08-31",
+      "intended_weight": 0.008251532012658169
+    }
+  ],
+  "stale_marks": [
+    {
+      "variant": "broad_risk_adjusted",
+      "stage": "STOP_MONITORING",
+      "ticker": "CVII",
+      "day": "2023-06-22",
+      "entry": "2023-06-01",
+      "last_observed_day": "2023-06-21",
+      "last_observed_close": 10.3,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    },
+    {
+      "variant": "broad_risk_adjusted",
+      "stage": "STOP_MONITORING",
+      "ticker": "CVII",
+      "day": "2023-06-23",
+      "entry": "2023-06-01",
+      "last_observed_day": "2023-06-21",
+      "last_observed_close": 10.3,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    },
+    {
+      "variant": "broad_momentum",
+      "stage": "STOP_MONITORING",
+      "ticker": "MGRT",
+      "day": "2026-09-14",
+      "entry": "2026-09-01",
+      "last_observed_day": "2026-09-11",
+      "last_observed_close": 120.425,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    },
+    {
+      "variant": "broad_momentum",
+      "stage": "NAV",
+      "ticker": "MGRT",
+      "day": "2026-09-14",
+      "entry": "2026-09-01",
+      "last_observed_day": "2026-09-11",
+      "last_observed_close": 120.425,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    },
+    {
+      "variant": "broad_risk_adjusted",
+      "stage": "NAV",
+      "ticker": "CVII",
+      "day": "2023-06-22",
+      "entry": "2023-06-01",
+      "last_observed_day": "2023-06-21",
+      "last_observed_close": 10.3,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    },
+    {
+      "variant": "broad_risk_adjusted",
+      "stage": "NAV",
+      "ticker": "CVII",
+      "day": "2023-06-23",
+      "entry": "2023-06-01",
+      "last_observed_day": "2023-06-21",
+      "last_observed_close": 10.3,
+      "fresh_close_observed": false,
+      "convention": "Last reported mark carried; no new price or execution inferred."
+    }
+  ],
+  "observed_only_validation": false,
+  "limitations": [
+    "All periods already examined; this exploratory comparison does not establish unseen outperformance.",
+    "Only price return and fractional weights, fixed monthly cost and zero cash interest are modeled.",
+    "Raw price/liquidity gates are looser as well as the removed trend/volatility/extension gates.",
+    "Different selected stocks naturally produce different realized weights and stop dates under the same risk policy.",
+    "Individual market-price and dated-issuer evidence is not complete for all newly selected lots.",
+    "Disclosed last-reported marks on paired-source-confirmed missing closes estimate NAV; fresh closes and missed stop signals cannot be verified there.",
+    "Initial exposure matched SPY does not duplicate every stock's subsequent stop path."
+  ],
+  "source_sha256": {
+    "momentum_selection_v3.py": "b4aadc7dba1b17dd60785029d4f2034888f6b7f35ef9a31b77ecd885d76586d8",
+    "run_momentum_selection_v3.py": "833d0044d821a0eba65fdccc88cd3bb779e8780cf133b2fa6a90e0dc1fa13766",
+    "risk_managed_momentum.py": "22603a2e3bfd43b67d581a8d494e1a4965b9c4442944fed78d0d894bcd815236",
+    "run_risk_managed_research.py": "665ab4aa7b6b30c5932b014c34e4de752032f050ff8182ecf0b4b619eb67b12f",
+    "selection_v3_execution.py": "5479420afbade0a3fd1ac335682791a930d2ba0ae4f6b8ab2f027742d1371202",
+    "docs/momentum_selection_v3_spec.md": "9b1178fcb56e86605e6835c7cd30ec83ae456ab703dd4df21fa0e70b434bb765"
+  }
+}

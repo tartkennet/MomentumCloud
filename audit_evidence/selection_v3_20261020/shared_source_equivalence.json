@@ -1,0 +1,12 @@
+{
+  "risk_managed_momentum.py": {
+    "archived_sha256": "47075e897089a8185b0f6a62ac911c4b8a560a9fa8ad14b491544bf98f3a5d75",
+    "replayed_sha256": "22603a2e3bfd43b67d581a8d494e1a4965b9c4442944fed78d0d894bcd815236",
+    "identical_except_trailing_newlines": true
+  },
+  "run_risk_managed_research.py": {
+    "archived_sha256": "cd176ba7c5ec86d6bf35b04c5dc56dd4998abd8f39e3ba2f816f63265ae4f39c",
+    "replayed_sha256": "665ab4aa7b6b30c5932b014c34e4de752032f050ff8182ecf0b4b619eb67b12f",
+    "identical_except_trailing_newlines": true
+  }
+}

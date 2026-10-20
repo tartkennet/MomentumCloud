@@ -1,3 +1,72 @@
+# MomentumCloud – ombyggt aktieurval, uppdaterad 20 oktober 2026
+
+## Ombyggt, friare aktieurval – 20 oktober 2026
+
+**Urvalet är omgjort. Antalet godkända kandidater ökar från i genomsnitt 417 till 2 628, men testet visar fortfarande ingen tillräckligt stark köpmodell.** Vanlig momentumrankning ger −7,07 procent netto. Den breda riskjusterade rankningen ger endast +0,09 procent. Resultaten är preliminära eftersom färska stängningspriser saknas på tre aktiedagar; tidigare observerade priser har då använts öppet redovisat.
+
+### Vad som har ändrats
+
+Samma historiskt daterade universum av amerikanska stamaktier används. Kraven på positivt momentum vid alla tre horisonter, kurs över stigande 200-dagars medelvärde, högst 60 procents volatilitet, högst 25 procents enskild dagsrörelse och högst 25 procents avstånd över 50-dagars medelvärde är borttagna. Rå kursgräns sänks från 10 till 5 dollar och rå genomsnittlig dagsomsättning från 20 till 2 miljoner dollar över 20 sessioner. Fullständig kurshistorik och beräkningsbar positiv volatilitet krävs fortfarande.
+
+Två på förhand angivna rankningar jämförs på **exakt samma breda kandidatgrupp**: vanlig relativ momentumrankning och relativ momentumrankning där avkastningen först delas med 126-dagars volatilitet. Båda kombinerar avslutade 12–1-, 6–1- och 3–1-månadersperioder med vikterna 50/30/20. Risk påverkar därmed ordningen utan en hård övre volatilitetsspärr. De senaste 21 sessionerna ingår inte i dessa momentumavkastningar. Inga nya trösklar har justerats efter att de nya samlade avkastningarna blivit synliga.
+
+Riskreglerna behålls: 25 platser, inversa volatilitetsvikter, högst 5 procent initialt per aktie, obelånat 15-procentigt kovariansmål, samma 10-procentsstopp vid stängning med nästa faktiska öppningskurs och samma dagliga SPY-marknadsutträde. Ingen återinträdeshandel inom månaden. Fast kostnad är 0,30 procent av portföljen per investerad månad, även när bara en del av kapitalet är investerat. Det är en modellkonvention, inte uppmätta verkliga handelsutgifter. Förtydliganden av uteblivna order och saknade stängningar redovisas nedan; därför ska jämförelsen inte beskrivas som helt observerad prisvalidering.
+
+### Samma 43 månadsperioder
+
+Signaler 2023-02-28 till 2026-08-31; första köp 2023-03-01 och sista planerade exit 2026-10-01. Nedgång mäts med dagliga portföljvärden. Avkastningen nedan är sammanlagd, inte årlig. Utdelningar och ränta på kontanter ingår inte.
+
+| Modell | Netto efter fast kostnad | Före fast kostnad | Största dagliga nedgång | Genomsnittligt initialt investerat |
+|---|---:|---:|---:|---:|
+| Tidigare strikt v2, omkörd | −3,160851 % | +8,862116 % | −21,301747 % | 79,91 % |
+| Brett vanligt momentum, preliminärt | **−7,072684 %** | +4,471173 % | **−19,169692 %** | 34,20 % |
+| Brett riskjusterat momentum, preliminärt | **+0,089219 %** | +12,501011 % | **−13,214253 %** | 57,60 % |
+| SPY, köp och behåll med samma kostnadsmodell | +70,202385 % | +93,308212 % | −19,537340 % | 100,00 % |
+| SPY med vanliga breda modellens initiala exponering och marknadsregel | +6,113408 % | — | −5,396232 % | 34,20 % |
+| SPY med riskjusterade breda modellens initiala exponering och marknadsregel | +17,814222 % | — | −7,916926 % | 57,60 % |
+
+SPY-kontrollerna matchar initial exponering och portföljens marknadsregel, men inte varje akties efterföljande stopp. De isolerar därför inte en ren orsakseffekt eller bevisad överavkastning. Vid dubblerad fast månadskostnad till 0,60 procent faller vanlig bred momentum till −17,37 procent och bred riskjusterad till −10,98 procent.
+
+Den riskjusterade breda modellen passerar rent aritmetiskt de tidigare minimikraven om positiv nettoavkastning och högst 20 procents nedgång. **+0,09 procent över hela testet är emellertid för svagt för ett godkännande**, särskilt med dessa dataluckor, kostnadskänsligheten, sämre resultat än SPY-kontrollen och avsaknad av oanvänd testperiod. Ingen variant aktiveras för köp.
+
+### Vad det friare urvalet faktiskt innebär
+
+| Urvalsmått | Strikt v2 | Brett vanligt | Brett riskjusterat |
+|---|---:|---:|---:|
+| Godkända kandidater, medel över 43 signaler | 416,86 | 2 628,07 | 2 628,07 |
+| Minsta–största kandidatgrupp | 116–703 | 2 412–2 794 | 2 412–2 794 |
+| Valda aktieperioder | 975 | 975 | 975 |
+| Faktiskt exekverade aktieperioder | 975 | 973 | 973 |
+| Exekverade unika tickers | 486 | 458 | 559 |
+| Val som inte klarat det gamla strikta kandidatfiltret | 0 | 914 | 595 |
+| Exekverade perioder över gammal volatilitetsgräns | 0 | 872 | 422 |
+| Exekverade perioder över gammal kursavståndsgräns | 0 | 234 | 118 |
+
+Endast 6,26 procent av vanliga breda modellens val och 38,97 procent av riskjusterade breda modellens val sammanfaller i genomsnitt med den strikta modellens val. Vid två intilliggande investerade signaler är andelen nya namn 60,00 respektive 70,74 procent, jämfört med 66,17 procent för strikt v2. Detta är namnbyten, inte viktad portföljomsättning eller uppmätta handelsutgifter.
+
+Det är alltså en omfattande förändring av urvalet. Samtidigt skalar samma riskmål ned vikterna när de nya aktiernas beräknade portföljrisk är hög. Det förklarar att mer kapital blir kontanter trots fler tillåtna kandidater. Att ta bort urvalsfilter tar inte bort riskbudgetens begränsning.
+
+### Öppet redovisade exekverings- och prisbegränsningar
+
+Fyra dokumenterade order över båda breda varianterna kan inte fyllas eftersom handeln upphör före avsedd köpöppning: LBPH 2024-12-02 i båda, EVRI 2025-07-01 i riskjusterad och CRNX 2026-09-01 i vanlig. Namnen ligger kvar bland valen; deras tänkta vikter blir kontanter utan ersättningsaktie eller omfördelning. Därför finns 973 exekverade perioder per bred variant. Källor: [Nasdaq LBPH](https://nasdaqtrader.com/TraderNews.aspx?id=ECA2024-589), [Everis SEC-publicering](https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm), [Nasdaq CRNX](https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-628).
+
+USX hanteras med dokumenterad kontantfusion och rå ersättning 6,15 dollar. [SEC-handlingen](https://www.sec.gov/Archives/edgar/data/923571/000110465923078157/tm2320467d1_8k.htm) skiljer tillträdesdagen 30 juni från den rättsliga konverteringen 1 juli 2023. Befintlig enhetsomräkning används och helgkonverteringen förs till nästa session. Denna forskningskomplettering ändrar inte produktionsmodulens globala händelselista.
+
+Parvisa individuella råa och justerade API-serier saknar stängning för **CVII 2023-06-22 och 2023-06-23** samt **MGRT 2026-09-14**. För dessa använder testet senast faktiskt observerade stängning: CVII 10,30 från 21 juni och MGRT 120,425 från 11 september. Det är en uttrycklig preliminär värderingskonvention, inte en ny observerad kurs, ett bevis på utebliven handel eller ett antaget exekveringspris. Samma markering används i stoppövervakning och dagligt portföljvärde: sex användningar av tre saknade aktiedagar. Eventuella missade stoppsignaler och verklig nedgång på just dessa dagar kan inte verifieras. Okända luckor och saknade exekveringspriser blockerar fortfarande beräkningen.
+
+Individuella prisreferenser från samma leverantör matchar 1 627 prispunkter för vanlig bred modell och 897 för riskjusterad. Ytterligare 1 270 respektive 2 011 prispunkter saknar sådan individuell referens i tillgängligt material; bolagshändelseexiter kontrolleras separat med enhetsomräkning. Inga jämförbara punkter avviker. Detta validerar inte alla affärer, varje dagskurs, en andra leverantör eller verkliga orderfyllnader.
+
+### Kontroll och sparade underlag
+
+Alla **170 tester passerar**. En fristående CSV-kontroll räknar om 43 månader och 943 dagliga värderingspunkter per modell/kontroll, kostnader, vikter, val, uteblivna order, slutvärden och nedgångar. Strikt v2 återskapar tidigare månadsresultat och sammanlagda mått exakt. De två delade källfilerna skiljer sig från arkiverad v2 endast i avslutande radbrytningar; detta har verifierats mot hashkontrollerade referenskopior. Inga riskinställningar har ändrats för att förbättra resultaten.
+
+Kod: `momentum_selection_v3.py`, `selection_v3_execution.py`, `run_momentum_selection_v3.py`, `verify_momentum_selection_v3.py`, `audit_momentum_selection_v3_prices.py` och nya tester. Förhandsdefinition: `docs/momentum_selection_v3_spec.md`. Fulla val, affärer, dagliga värden, månadssiffror, API-svar, prisgranskning, uteblivna order, gamla kursmarkeringar och kontrollräkning finns under `audit_evidence/selection_v3_20261020/`.
+
+**Beslut: urvalets ombyggnad är genomförd och jämförd. Den breda riskjusterade varianten är ett fortsatt forskningsspår; ingen av de nya varianterna är godkänd som färdig köpmodell.** Historiken är redan använd för modellarbete och ger inget nytt oberoende test. Tidigare granskningsavsnitt nedan är bevarade som historik och ersätts av detta avsnitt där lägesbedömningarna skiljer sig.
+
+---
+
+
 # MomentumCloud – urval och risk, uppdaterad 20 oktober 2026
 
 ## Omarbetat aktieurval och riskhantering, färdig v2-körning – 20 oktober 2026

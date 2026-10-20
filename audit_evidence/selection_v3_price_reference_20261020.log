@@ -1,0 +1,22 @@
+{
+  "status": "PASS_AVAILABLE_PRICE_REFERENCES_INCOMPLETE_COVERAGE",
+  "summaries": {
+    "strict_v2": {
+      "matched_point_checks": 250,
+      "missing_point_checks": 2670,
+      "corporate_action_exits_requiring_unit_converter": 5
+    },
+    "broad_momentum": {
+      "matched_point_checks": 1627,
+      "missing_point_checks": 1270,
+      "corporate_action_exits_requiring_unit_converter": 22
+    },
+    "broad_risk_adjusted": {
+      "matched_point_checks": 897,
+      "missing_point_checks": 2011,
+      "corporate_action_exits_requiring_unit_converter": 11
+    }
+  },
+  "mismatches": [],
+  "limitation": "Same-vendor individual endpoints. This does not validate fresh closes on stale-mark days, every issuer identity, or actual fills."
+}

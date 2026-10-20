@@ -1,0 +1,28 @@
+[
+  {
+    "ticker": "HOUS",
+    "day": "2026-01-08",
+    "request": {
+      "path": "/v2/aggs/ticker/HOUS/range/1/day/2026-01-08/2026-01-08",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n11481598.0,17.0947,17.02,17.64,17.7,16.35,1767848400000,76914\n"
+  },
+  {
+    "ticker": "TERN",
+    "day": "2026-05-04",
+    "request": {
+      "path": "/v2/aggs/ticker/TERN/range/1/day/2026-05-04/2026-05-04",
+      "params": {
+        "adjusted": "false",
+        "sort": "asc",
+        "limit": 10
+      }
+    },
+    "response": "v,vw,o,c,h,l,t,n\n6347046.461057,52.9563,52.97,52.95,52.98,52.94,1777867200000,11898\n"
+  }
+]

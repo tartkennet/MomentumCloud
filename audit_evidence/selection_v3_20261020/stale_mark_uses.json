@@ -1,0 +1,68 @@
+[
+  {
+    "variant": "broad_risk_adjusted",
+    "stage": "STOP_MONITORING",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted",
+    "stage": "STOP_MONITORING",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum",
+    "stage": "STOP_MONITORING",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_momentum",
+    "stage": "NAV",
+    "ticker": "MGRT",
+    "day": "2026-09-14",
+    "entry": "2026-09-01",
+    "last_observed_day": "2026-09-11",
+    "last_observed_close": 120.425,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted",
+    "stage": "NAV",
+    "ticker": "CVII",
+    "day": "2023-06-22",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  },
+  {
+    "variant": "broad_risk_adjusted",
+    "stage": "NAV",
+    "ticker": "CVII",
+    "day": "2023-06-23",
+    "entry": "2023-06-01",
+    "last_observed_day": "2023-06-21",
+    "last_observed_close": 10.3,
+    "fresh_close_observed": false,
+    "convention": "Last reported mark carried; no new price or execution inferred."
+  }
+]
