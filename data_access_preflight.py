@@ -14,14 +14,19 @@ from datetime import date, timedelta
 
 import requests
 
+from backtest_momentum_v3 import fetch_spy_trading_calendar
+from momentum_master_v3 import PolygonClient
+
 API_BASE = "https://api.polygon.io"
 MIN_EXPECTED_TICKERS = 1_000
 
 
-def first_weekday_on_or_after(value: date) -> date:
-    while value.weekday() >= 5:
-        value += timedelta(days=1)
-    return value
+def first_trading_day_on_or_after(client: PolygonClient, value: date) -> date:
+    """Use observed SPY sessions, including exchange holidays and closures."""
+    sessions = fetch_spy_trading_calendar(
+        client, value.isoformat(), (value + timedelta(days=14)).isoformat()
+    )
+    return date.fromisoformat(sessions[0])
 
 
 def main() -> None:
@@ -31,7 +36,7 @@ def main() -> None:
     parser.add_argument(
         "--start",
         required=True,
-        help="First validation date, YYYY-MM-DD. The first weekday on or after it is checked.",
+        help="First validation date, YYYY-MM-DD. The first SPY trading session is checked.",
     )
     args = parser.parse_args()
 
@@ -42,9 +47,11 @@ def main() -> None:
         )
 
     try:
-        requested_date = first_weekday_on_or_after(date.fromisoformat(args.start))
+        start_date = date.fromisoformat(args.start)
     except ValueError as exc:
         raise RuntimeError(f"Invalid validation start date: {args.start!r}") from exc
+
+    requested_date = first_trading_day_on_or_after(PolygonClient(api_key), start_date)
 
     url = (
         f"{API_BASE}/v2/aggs/grouped/locale/us/market/stocks/"

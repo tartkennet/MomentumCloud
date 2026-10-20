@@ -36,8 +36,9 @@ class BacktestConfigurationTests(unittest.TestCase):
         self.assertEqual(execution_price(row, "next-open"), 98.0)
         self.assertEqual(execution_price(row, "next-close"), 101.0)
 
-    def test_next_open_falls_back_to_close_when_open_is_unavailable(self):
-        self.assertEqual(execution_price({"close": 101.0}, "next-open"), 101.0)
+    def test_next_open_rejects_missing_open_instead_of_using_future_close(self):
+        with self.assertRaisesRegex(RuntimeError, "Missing open"):
+            execution_price({"close": 101.0}, "next-open")
 
     def test_missing_execution_day_moves_to_first_tradable_session(self):
         days = ["2026-02-03", "2026-02-04", "2026-02-05"]

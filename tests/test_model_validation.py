@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from model_validation import load_model_validation
+from model_validation import load_model_validation, validation_source_fingerprint
 
 
 class ModelValidationTests(unittest.TestCase):
@@ -20,6 +20,12 @@ class ModelValidationTests(unittest.TestCase):
                 "model": "v4-balanced",
                 "universe": "POINT_IN_TIME_US_COMMON_STOCKS",
                 "status": "GO",
+                "source_fingerprint": validation_source_fingerprint(),
+                "metrics": {
+                    "Periods": 30, "TotalReturn_pct": 10.0,
+                    "SPYTotalReturn_pct": 5.0, "TotalEdgeVsSPY_pct": 5.0,
+                    "DailyMaxDrawdown_pct": -20.0, "PeriodHitRate_pct": 50.0,
+                },
                 "gates": {
                     "at_least_30_periods": True,
                     "positive_net_return": True,

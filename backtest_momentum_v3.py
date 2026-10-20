@@ -26,12 +26,13 @@ from momentum_master_v3 import (
     read_universe,
 )
 from momentum_config import PRODUCTION
+from momentum_strategy import rank_universe
 
 CACHE_FILE = ".momentum_backtest_cache.json"
 UNIVERSE_CACHE_FILE = ".momentum_point_in_time_universe.json"
 DEFAULT_TOP_N = 10
 ROUND_TRIP_COST_PCT = 0.30
-BACKTEST_CACHE_VERSION = 3
+BACKTEST_CACHE_VERSION = 4
 UNIVERSE_CACHE_VERSION = 1
 RESEARCH_MIN_ADV20_USD = PRODUCTION.min_adv20_usd
 POINT_IN_TIME_UNIVERSE_LABEL = "POINT_IN_TIME_US_COMMON_STOCKS"
@@ -277,6 +278,14 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    # Rover's 2024-02-27 Form 8-K: each share became an $11 cash claim.
+    # https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
+    "ROVR": {
+        "effective_date": "2024-02-27",
+        "cash_per_share": 11.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
     "FRGE": {
         "effective_date": "2026-03-02",
         "cash_per_share": 45.0,
@@ -317,6 +326,9 @@ def valuation_identity(ticker, day):
 
 def position_close_on_day(cache, ticker, day):
     """Value one original share across an audited stock-for-stock merger."""
+    cash_action = CASH_CORPORATE_ACTIONS.get(ticker)
+    if cash_action and str(day) >= str(cash_action["effective_date"]):
+        return float(cash_action["cash_per_share"]), cash_action
     value_ticker, ratio, action = valuation_identity(ticker, day)
     row = get_from_map(cache.get(day, {}), value_ticker)
     if not row:
@@ -409,7 +421,7 @@ def research_exit(
     for index, signal_day in enumerate(sessions[:-1]):
         close, _ = position_close_on_day(cache, ticker, signal_day)
         if close is None:
-            continue
+            raise RuntimeError(f"Missing stop valuation for {ticker} on {signal_day}")
         triggered = False
         reason = "REBALANCE"
         if exit_rule == "stop":
@@ -459,7 +471,6 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
         period_end = max(planned_exit, final_exit)
         period_days = [day for day in trading_day_strings if entry <= day <= period_end]
         last_value = period_start_value
-        last_prices = {}
         for day in period_days:
             returns = []
             for _, position in group.iterrows():
@@ -472,9 +483,9 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
                     price = float(position["ExitPrice_USD"])
                 else:
                     close, _ = position_close_on_day(cache, ticker, day)
-                    if close is not None:
-                        last_prices[ticker] = close
-                    price = last_prices.get(ticker, float(position["EntryPrice_USD"]))
+                    if close is None or not math.isfinite(close) or close <= 0:
+                        raise RuntimeError(f"Missing daily valuation for {ticker} on {day}")
+                    price = close
                 returns.append(price / float(position["EntryPrice_USD"]) - 1.0)
             last_value = period_start_value * (
                 1.0 + sum(returns) / len(returns) - ROUND_TRIP_COST_PCT / 100.0
@@ -882,12 +893,20 @@ def choose_top(
         ):
             logging.info("Fresh-momentum risk-off market regime on %s: hold cash", asof)
             return []
+        if selection_model == "v4-balanced":
+            if min_adv20_usd != PRODUCTION.min_adv20_usd:
+                raise ValueError("v4-balanced requires the locked ADV20 minimum")
+            # Reuse the live filters, 20-day volume rule, ranks and tie break.
+            return [
+                SimpleNamespace(
+                    ticker=metric.ticker,
+                    price_usd=metric.price_usd,
+                    total_score=metric.score,
+                )
+                for metric in rank_universe(tickers, history)[:top_n]
+            ]
         metrics = build_prior_2_12_metrics(
-            tickers,
-            signal_map,
-            history,
-            selection_model,
-            min_adv20_usd,
+            tickers, signal_map, history, selection_model, min_adv20_usd
         )
     else:
         metrics, _, _ = build_metrics(tickers, signal_map, history)
@@ -915,7 +934,11 @@ def execution_price(
     ratios can manufacture returns and is therefore forbidden.
     """
     field = "open" if execution == "next-open" else "close"
-    price = float(row.get(field, row["close"]))
+    if field not in row or row[field] is None:
+        raise RuntimeError(f"Missing {field} execution price for {ticker or 'UNKNOWN'}")
+    price = float(row[field])
+    if not math.isfinite(price) or price <= 0:
+        raise RuntimeError(f"Invalid {field} execution price for {ticker or 'UNKNOWN'}")
     if execution != "next-open":
         return price
 
@@ -974,7 +997,7 @@ def find_unverified_split_basis_tickers(
             row = get_from_map(cache.get(day, {}), ticker)
             if not row:
                 continue
-            open_price = float(row.get("open", row["close"]))
+            open_price = float(row["open"]) if row.get("open") is not None else float(row["close"])
             close_price = float(row["close"])
             if prior_close and open_price > 0 and prior_close > 0:
                 raw_gap = abs(math.log(open_price / prior_close))
@@ -1241,10 +1264,16 @@ def run(
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
     for signal, entry, exit_day in periods:
+        # Later bad prints must never remove a stock from an earlier universe.
+        exclusions_asof_signal = {
+            ticker
+            for ticker, details in split_basis_exclusions.items()
+            if any(detail[:10] <= signal for detail in details)
+        }
         signal_tickers = [
             ticker
             for ticker in universes_by_signal[signal]
-            if ticker not in split_basis_exclusions
+            if ticker not in exclusions_asof_signal
         ]
         picks = choose_top(
             client,
@@ -1298,6 +1327,11 @@ def run(
             if not exit_row or resolved_exit <= actual_entry:
                 missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
                 continue
+            if resolved_exit > exit_day:
+                raise RuntimeError(
+                    f"Exit for {pick.ticker} on {resolved_exit} overlaps the next "
+                    f"portfolio period starting {exit_day}; capital cannot be reused"
+                )
             if corporate_action and corporate_action["reason"] == "CASH_MERGER":
                 exit_reason = str(corporate_action["reason"])
                 applied_exit_execution = str(corporate_action["execution"])
