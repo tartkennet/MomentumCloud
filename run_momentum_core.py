@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import csv
 import hashlib
 import json
@@ -23,6 +24,7 @@ SOURCE_FILES = ("momentum_core.py", "momentum_core_data.py", "run_momentum_core.
                 "momentum_master_v3.py", "backtest_momentum_v3.py", "momentum_strategy.py",
                 "momentum_config.py", "requirements.txt", "docs/MOMENTUM_CORE_PROTOCOL.md")
 FORWARD_START = "2026-10-27"
+FIRST_PAPER_DEADLINE = datetime(2026, 10, 28, 12, tzinfo=timezone.utc)
 
 
 def source_fingerprint():
@@ -66,6 +68,23 @@ def verify_forward_prefix(strategy, previous, end):
                 raise DataBlocked(f"Forward {field} changed before {cutoff}; historical revision blocked")
 
 
+def resume_paper(data, checkpoint, config=CONFIG, *, stress=False):
+    prefix = "stress_" if stress else ""
+    old_strategy, old_benchmark = checkpoint[prefix + "strategy"], checkpoint[prefix + "benchmark"]
+    strategy = Ledger(**copy.deepcopy(old_strategy))
+    benchmark = Ledger(**copy.deepcopy(old_benchmark))
+    if strategy.last_date != benchmark.last_date:
+        raise DataBlocked("Strategy and benchmark checkpoint dates differ")
+    for day in data.sessions:
+        benchmark.step(data, day, config, benchmark=True)
+        strategy.step(data, day, config)
+    cutoff = data.sessions[-1] if data.sessions else strategy.last_date
+    verify_forward_prefix(strategy, old_strategy, cutoff)
+    verify_forward_prefix(benchmark, old_benchmark, cutoff)
+    result, periods = metrics(strategy, benchmark)
+    return strategy, benchmark, result, periods
+
+
 def base_decision(start, end, mode):
     return {"model": MODEL, "source_fingerprint": source_fingerprint(),
             "source_commit": os.getenv("GITHUB_SHA"), "start": start, "end": end,
@@ -81,7 +100,8 @@ def run(start, end, output_dir, cache_dir, mode="development"):
     decision = base_decision(start, end, mode)
     decision_path = output / "Momentum_core_decision.json"
     state_path = output / "Momentum_core_state.json"
-    previous_paper = None
+    checkpoint_path = output / "Momentum_core_paper_checkpoint.json"
+    checkpoint = None
     # Invalidate stale success before touching any market input.
     decision.update(status="RUNNING", metrics={}, gates=[])
     atomic_json(decision_path, decision)
@@ -91,12 +111,17 @@ def run(start, end, output_dir, cache_dir, mode="development"):
     for name in ("daily", "trades", "periods"):
         write_csv(output / f"Momentum_core_{name}.csv", [])
     try:
-        if mode == "paper" and state_path.exists():
-            previous_paper = json.loads(state_path.read_text(encoding="utf-8"))
+        if mode == "paper" and checkpoint_path.exists():
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            if checkpoint.get("source_fingerprint") != decision["source_fingerprint"]:
+                raise DataBlocked("Forward checkpoint source changed; preserve prior record")
         if mode == "paper" and start != FORWARD_START:
             raise ValueError(f"Forward paper start is frozen at {FORWARD_START}")
         if mode == "paper" and end < start:
             decision["status"] = "PAPER_WAITING_FOR_SESSIONS"
+            atomic_json(output / "Momentum_core_paper_orders.json", {
+                "status": decision["status"], "live_approved": False,
+                "broker_orders_enabled": False, "intentions_for_next_observed_session": None})
             atomic_json(decision_path, decision)
             return decision
         if end >= date.today().isoformat():
@@ -114,11 +139,24 @@ def run(start, end, output_dir, cache_dir, mode="development"):
             else:
                 atomic_json(identity_path, {"model": MODEL, "start": start,
                                            "source_fingerprint": decision["source_fingerprint"]})
-        data = CoreData(PolygonClient(key), start, end, cache_dir)
-        strategy, benchmark, result, periods = replay(data)
-        verify_forward_prefix(strategy, previous_paper, end)
+            if checkpoint is None and datetime.now(timezone.utc) > FIRST_PAPER_DEADLINE:
+                raise DataBlocked("Missing original forward checkpoint; retrospective paper reconstruction forbidden")
+        input_start = start
+        if checkpoint:
+            previous_day = date.fromisoformat(checkpoint["strategy"]["last_date"])
+            input_start = (previous_day + timedelta(days=1)).isoformat()
+            if end < previous_day.isoformat():
+                raise DataBlocked("Forward record cannot move backwards")
+        data = CoreData(PolygonClient(key), input_start, end, cache_dir, allow_empty=bool(checkpoint))
         stress_config = replace(CONFIG, one_way_cost=CONFIG.one_way_cost * 2)
-        _, _, stress_result, _ = replay(data, stress_config)
+        if checkpoint:
+            strategy, benchmark, result, periods = resume_paper(data, checkpoint)
+            stress, stress_benchmark, stress_result, _ = resume_paper(data, checkpoint, stress_config, stress=True)
+        else:
+            strategy, benchmark, result, periods = replay(data)
+            stress, stress_benchmark, stress_result, _ = replay(data, stress_config)
+        if mode == "paper" and checkpoint is None and datetime.now(timezone.utc) > FIRST_PAPER_DEADLINE:
+            raise DataBlocked("Initial paper intentions were not recorded before the bootstrap deadline")
         checks = gates(result)
         stress_checks = gates(stress_result)
         passed = all(item["pass"] for item in checks)
@@ -128,7 +166,7 @@ def run(start, end, output_dir, cache_dir, mode="development"):
             historical_gates_passed=passed, metrics=result, gates=checks,
             double_cost_metrics=stress_result, double_cost_gates=stress_checks,
             input_fingerprint=data.input_fingerprint(), input_files=len(data.used_inputs),
-            actual_first_session=data.sessions[0], actual_last_session=data.sessions[-1],
+            actual_first_session=strategy.equity[0]["date"], actual_last_session=strategy.last_date,
             unresolved_cash_claims=strategy.receivables,
             limitations=["Development history is not an untouched holdout.",
                          "No live approval; independent forward evidence is required.",
@@ -145,10 +183,14 @@ def run(start, end, output_dir, cache_dir, mode="development"):
         atomic_json(state_path, strategy.to_dict())
         atomic_json(output / "Momentum_core_inputs.json", data.used_inputs)
         atomic_json(output / "Momentum_core_paper_orders.json", {
-            "model": MODEL, "as_of": data.sessions[-1], "paper_only": True,
+            "model": MODEL, "as_of": strategy.last_date, "paper_only": True,
             "live_approved": False, "broker_orders_enabled": False,
             "intentions_for_next_observed_session": strategy.pending})
         atomic_json(output / "Momentum_core_data_errors.json", {"errors": []})
+        if mode == "paper":
+            atomic_json(checkpoint_path, {"source_fingerprint": decision["source_fingerprint"],
+                        "strategy": strategy.to_dict(), "benchmark": benchmark.to_dict(),
+                        "stress_strategy": stress.to_dict(), "stress_benchmark": stress_benchmark.to_dict()})
         atomic_json(decision_path, decision)
         print(json.dumps(decision, indent=2, allow_nan=False))
         return decision

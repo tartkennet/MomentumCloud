@@ -64,7 +64,7 @@ class CoreData:
     cash_actions = CASH_CORPORATE_ACTIONS
     stock_actions = STOCK_CORPORATE_ACTIONS
 
-    def __init__(self, client, start, end, cache_dir=".momentum_core_cache"):
+    def __init__(self, client, start, end, cache_dir=".momentum_core_cache", *, allow_empty=False):
         self.client = client
         self.root = Path(cache_dir)
         self.root.mkdir(parents=True, exist_ok=True)
@@ -75,7 +75,7 @@ class CoreData:
         logging.info("Core calendar: requested %s..%s; observed %s..%s (%d days); replay %s (%d days)",
                      warmup, end, self.days[0], self.days[-1], len(self.days),
                      self.sessions[0] if self.sessions else None, len(self.sessions))
-        if not self.sessions or self.index[self.sessions[0]] < 252:
+        if (not self.sessions and not allow_empty) or (self.sessions and self.index[self.sessions[0]] < 252):
             raise DataBlocked(
                 f"Incomplete calendar: requested {warmup}..{end}; observed "
                 f"{self.days[0]}..{self.days[-1]} ({len(self.days)} days); "
@@ -100,6 +100,8 @@ class CoreData:
         ).hexdigest()
 
     def _events(self, kind, start, end):
+        if start > end:
+            return []
         path = self.root / f"{kind}-{start}-{end}-v1.json.gz"
         column = "execution_date" if kind == "splits" else "ex_dividend_date"
         if path.exists():

@@ -66,6 +66,12 @@ v4 validation decision or feed Core paper orders into v4 Buy Now/dashboard.
 Replay uses the same decision/ledger functions as incremental paper replay.
 Source hashes invalidate changed paper checkpoints. The forward paper record
 also rejects any revision to previously recorded daily NAV, trades or targets.
+Daily paper resumes the saved base/stress strategy and benchmark ledgers,
+loading only new sessions plus the rolling signal warmup; it does not depend
+on re-downloading the entire paper history as the API's two-year window moves.
+The full checkpoint is included in each artifact and recovered if the cache is
+evicted. A missing original checkpoint after 2026-10-28 12:00 UTC blocks the
+record: retrospective reconstruction cannot masquerade as forward evidence.
 It starts only after the frozen code is published; historical replay is labelled
 DEVELOPMENT. Historical gates retain the five existing economic thresholds:
 at least 30 complete monthly periods, positive net return, positive total edge

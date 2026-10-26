@@ -164,6 +164,7 @@ class Ledger:
     targets: list[dict] = field(default_factory=list)
     equity: list[dict] = field(default_factory=list)
     fees: float = 0.0
+    first_is_month_boundary: bool = False
 
     def _price(self, bars, ticker, index, day):
         bar = bars.get(ticker)
