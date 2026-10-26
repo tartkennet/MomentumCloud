@@ -1,4 +1,31 @@
-# MomentumCloud Production v1
+# MomentumCloud — Core-kandidat och historisk v4
+
+Det aktiva omarbetningsarbetet är `momentum-core-v1`. Kandidaten ersätter
+v4:s blandade ranking och individuella fasta stoppar med en enkel
+12–2-ranking, volatilitetsstyrd storlek och daglig SPY-riskkontroll. Historik
+och pappershandel använder samma handelsmotor, råpriser, utdelningar och
+kostnad på faktiskt handlat belopp. Regler och begränsningar är frysta i
+[`docs/MOMENTUM_CORE_PROTOCOL.md`](docs/MOMENTUM_CORE_PROTOCOL.md).
+
+```bash
+python run_momentum_core.py --start 2024-01-01 --end 2026-09-01
+python run_momentum_core.py --paper --start 2026-10-27 --output-dir core_paper_results
+```
+
+Workflowet **Momentum Core candidate** kör tester, historisk replay och dubbel
+handelskostnad på PR. Efter införande på main kör det framåtriktad
+pappershandel på morgonen efter USA-sessionen. `Momentum_core_decision.json`
+visar varje ekonomiskt krav och uppnått värde; samtliga affärer, dagligt NAV,
+mål och källfingeravtryck sparas i workflowets artifact. `NO_GO` är ett giltigt
+ekonomiskt testresultat; datafel ger `DATA_BLOCKED` och ett misslyckat jobb.
+Grön CI betyder att beräkningen körde färdigt, inte att modellen fick GO.
+
+Redan granskad historik är utvecklingsdata. Kandidaten har ingen automatisk
+livebehörighet och dess pappersorder matas inte in i gamla Buy Now.
+`v4-balanced` nedan bevaras som den tidigare implementationen och jämförelsen;
+dess tidigare NO-GO får inte döpas om till ett Core-godkännande.
+
+## Tidigare Production v1 / v4-balanced
 
 MomentumCloud är ett mobilanpassat beslutsstöd för en låst, lång amerikansk
 portfölj enligt v4-balanced med 12–2- och 6–2-månadersmomentum. Systemet hämtar marknadsdata från Polygon, skapar tydliga
