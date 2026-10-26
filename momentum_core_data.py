@@ -75,14 +75,7 @@ class CoreData:
         logging.info("Core calendar: requested %s..%s; observed %s..%s (%d days); replay %s (%d days)",
                      warmup, end, self.days[0], self.days[-1], len(self.days),
                      self.sessions[0] if self.sessions else None, len(self.sessions))
-        if len(self.sessions) < 2 or self.index[self.sessions[0]] < 252:
-            # Diagnose entitlement separately: aggregate and grouped endpoints
-            # can expose different historical depths. Never shorten the test.
-            probe = self.client._get("/v2/aggs/grouped/locale/us/market/stocks/2023-01-03",
-                                     {"adjusted": "false", "include_otc": "false"})
-            logging.info("Core older raw-data probe 2023-01-03: %d rows, SPY=%s", 
-                         len(probe.get("results", [])),
-                         any(r.get("T") == "SPY" for r in probe.get("results", [])))
+        if not self.sessions or self.index[self.sessions[0]] < 252:
             raise DataBlocked(
                 f"Incomplete calendar: requested {warmup}..{end}; observed "
                 f"{self.days[0]}..{self.days[-1]} ({len(self.days)} days); "
@@ -140,10 +133,10 @@ class CoreData:
                                         {"adjusted": "false", "include_otc": "false"})
             result = {r["T"]: [r.get("o"), r.get("c"), r.get("v")]
                       for r in response.get("results", []) if r.get("T")}
-            if "SPY" not in result:
-                raise DataBlocked(f"No SPY in raw grouped session {day}")
             atomic_json(path, {"basis": "RAW", "version": 1, "date": day, "bars": result})
             logging.info("Core raw session %s: %d securities", day, len(result))
+        if "SPY" not in result or len(result) < 1000:
+            raise DataBlocked(f"Incomplete raw grouped session {day}: {len(result)} rows")
         self._remember(f"raw/{day}", result)
         return result
 
@@ -166,10 +159,10 @@ class CoreData:
                                {"market": "stocks", "type": "CS", "date": day,
                                 "active": "true", "order": "asc", "limit": 1000,
                                 "sort": "ticker"})
-            if not records:
-                raise DataBlocked(f"Empty historical universe {day}")
             atomic_json(path, {"basis": "PIT_REFERENCE_V1", "date": day, "records": records})
             logging.info("Core point-in-time universe %s: %d records", day, len(records))
+        if len(records) < 1000:
+            raise DataBlocked(f"Incomplete historical universe {day}: {len(records)} records")
         self._remember(f"universe/{day}", records)
         return records
 

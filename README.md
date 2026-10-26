@@ -24,6 +24,9 @@ Redan granskad historik är utvecklingsdata. Kandidaten har ingen automatisk
 livebehörighet och dess pappersorder matas inte in i gamla Buy Now.
 `v4-balanced` nedan bevaras som den tidigare implementationen och jämförelsen;
 dess tidigare NO-GO får inte döpas om till ett Core-godkännande.
+Efter införandet är de två gamla v4-workflowen manuella. De startar inte
+längre dagliga snapshot- eller valideringsloopar. Den befintliga dashboarden
+visar ett historiskt v4-snapshot tills en separat verifierad publicering finns.
 
 ## Tidigare Production v1 / v4-balanced
 

@@ -55,6 +55,17 @@ def replay(data, config=CONFIG):
     return strategy, benchmark, result, periods
 
 
+def verify_forward_prefix(strategy, previous, end):
+    if previous:
+        cutoff = previous["last_date"]
+        if end < cutoff:
+            raise DataBlocked("Forward record cannot move backwards")
+        for field, date_key in (("equity", "date"), ("trades", "date"), ("targets", "date")):
+            actual = [row for row in getattr(strategy, field) if row[date_key] <= cutoff]
+            if actual != previous[field]:
+                raise DataBlocked(f"Forward {field} changed before {cutoff}; historical revision blocked")
+
+
 def base_decision(start, end, mode):
     return {"model": MODEL, "source_fingerprint": source_fingerprint(),
             "source_commit": os.getenv("GITHUB_SHA"), "start": start, "end": end,
@@ -69,10 +80,19 @@ def run(start, end, output_dir, cache_dir, mode="development"):
     output.mkdir(parents=True, exist_ok=True)
     decision = base_decision(start, end, mode)
     decision_path = output / "Momentum_core_decision.json"
+    state_path = output / "Momentum_core_state.json"
+    previous_paper = None
     # Invalidate stale success before touching any market input.
     decision.update(status="RUNNING", metrics={}, gates=[])
     atomic_json(decision_path, decision)
+    atomic_json(output / "Momentum_core_paper_orders.json", {
+        "status": "RUNNING", "live_approved": False, "broker_orders_enabled": False,
+        "intentions_for_next_observed_session": None})
+    for name in ("daily", "trades", "periods"):
+        write_csv(output / f"Momentum_core_{name}.csv", [])
     try:
+        if mode == "paper" and state_path.exists():
+            previous_paper = json.loads(state_path.read_text(encoding="utf-8"))
         if mode == "paper" and start != FORWARD_START:
             raise ValueError(f"Forward paper start is frozen at {FORWARD_START}")
         if mode == "paper" and end < start:
@@ -96,13 +116,15 @@ def run(start, end, output_dir, cache_dir, mode="development"):
                                            "source_fingerprint": decision["source_fingerprint"]})
         data = CoreData(PolygonClient(key), start, end, cache_dir)
         strategy, benchmark, result, periods = replay(data)
+        verify_forward_prefix(strategy, previous_paper, end)
         stress_config = replace(CONFIG, one_way_cost=CONFIG.one_way_cost * 2)
         _, _, stress_result, _ = replay(data, stress_config)
         checks = gates(result)
         stress_checks = gates(stress_result)
         passed = all(item["pass"] for item in checks)
         decision.update(
-            status="PAPER_ONLY" if passed else "NO_GO",
+            status=("PAPER_COLLECTING" if mode == "paper" and result["Periods"] < 30
+                    else "PAPER_ONLY" if passed else "NO_GO"),
             historical_gates_passed=passed, metrics=result, gates=checks,
             double_cost_metrics=stress_result, double_cost_gates=stress_checks,
             input_fingerprint=data.input_fingerprint(), input_files=len(data.used_inputs),
@@ -120,7 +142,7 @@ def run(start, end, output_dir, cache_dir, mode="development"):
         write_csv(output / "Momentum_core_trades.csv", strategy.trades)
         write_csv(output / "Momentum_core_periods.csv", periods)
         atomic_json(output / "Momentum_core_targets.json", strategy.targets)
-        atomic_json(output / "Momentum_core_state.json", strategy.to_dict())
+        atomic_json(state_path, strategy.to_dict())
         atomic_json(output / "Momentum_core_inputs.json", data.used_inputs)
         atomic_json(output / "Momentum_core_paper_orders.json", {
             "model": MODEL, "as_of": data.sessions[-1], "paper_only": True,
@@ -139,6 +161,9 @@ def run(start, end, output_dir, cache_dir, mode="development"):
         decision.update(status="DATA_BLOCKED", error=message,
                         error_type=type(exc).__name__, historical_gates_passed=False)
         atomic_json(output / "Momentum_core_data_errors.json", {"errors": [message]})
+        atomic_json(output / "Momentum_core_paper_orders.json", {
+            "status": "DATA_BLOCKED", "live_approved": False, "broker_orders_enabled": False,
+            "intentions_for_next_observed_session": None, "error": message})
         atomic_json(decision_path, decision)
         print(json.dumps(decision, indent=2, allow_nan=False))
         raise DataBlocked(message) from None

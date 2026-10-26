@@ -56,12 +56,13 @@ jobs:
           mkdir -p core_results
           set -o pipefail
           python run_momentum_core.py --start 2024-01-01 --end 2026-09-01 2>&1 | tee core_results/replay.log
-      - name: Restore immutable forward paper identity
+      - name: Restore frozen forward paper record
         if: github.event_name == 'schedule'
         uses: actions/cache/restore@v4
         with:
-          path: core_paper_results/Momentum_core_paper_identity.json
-          key: momentum-core-forward-identity-v1
+          path: core_paper_results
+          key: momentum-core-forward-v1-${{ github.run_id }}
+          restore-keys: momentum-core-forward-v1-
       - name: Forward paper replay from frozen start
         if: github.event_name == 'schedule'
         env:
@@ -78,8 +79,8 @@ jobs:
       - uses: actions/cache/save@v4
         if: always() && github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_identity.json') != ''
         with:
-          path: core_paper_results/Momentum_core_paper_identity.json
-          key: momentum-core-forward-identity-v1
+          path: core_paper_results
+          key: momentum-core-forward-v1-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

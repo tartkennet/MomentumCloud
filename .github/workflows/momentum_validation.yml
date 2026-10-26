@@ -1,4 +1,4 @@
-name: Production model validation
+name: Legacy v4 validation (manual)
 
 on:
   workflow_dispatch:
@@ -11,27 +11,6 @@ on:
         description: "Validation end, YYYY-MM-DD"
         required: true
         default: "2026-09-01"
-  push:
-    branches: [main]
-    paths:
-      - "momentum_config.py"
-      - "momentum_strategy.py"
-      - "backtest_momentum_v3.py"
-      - "validate_production_backtest.py"
-      - "data_access_preflight.py"
-      - "model_validation.py"
-      - "momentum_production.py"
-      - "momentum_master_v3.py"
-      - "requirements.txt"
-      - "Momentum mall fil.xlsx"
-      - ".github/workflows/momentum_validation.yml"
-  pull_request:
-    branches: [main]
-    paths:
-      - "*.py"
-      - "requirements.txt"
-      - "Momentum mall fil.xlsx"
-      - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
@@ -42,8 +21,6 @@ concurrency:
 
 jobs:
   validate:
-    # A Core PR validates Core instead of re-running a rejected v4 strategy.
-    if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && !startsWith(github.head_ref, 'codex/momentum-core-')
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:

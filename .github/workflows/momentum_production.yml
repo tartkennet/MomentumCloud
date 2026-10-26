@@ -1,18 +1,7 @@
-name: MomentumCloud Production v1
+name: Legacy v4 snapshots (manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/momentum_production.yml"
-  schedule:
-    # Production snapshots also persist the paper-portfolio state; this workflow never places broker orders.
-    # Every US trading evening. Monthly rotation is enforced by state;
-    # daily runs keep stops, holdings, prices and regime status current.
-    # 21:30 UTC is after the US close year-round and remains the same Swedish date.
-    - cron: "30 21 * * 1-5"
 
 permissions:
   contents: write

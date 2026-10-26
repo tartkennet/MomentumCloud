@@ -99,10 +99,10 @@ def risk_on(data, day):
 def capped_weights(inverse_vols, cap, budget=1.0):
     """Water-fill remaining budget; never inflate a sleeve beyond the cap."""
     remaining = set(inverse_vols)
-    weights = {key: 0.0 for key in remaining}
+    weights = {key: 0.0 for key in sorted(remaining)}
     while remaining and budget > 1e-12:
-        total = sum(inverse_vols[k] for k in remaining)
-        proposed = {k: budget * inverse_vols[k] / total for k in remaining}
+        total = sum(inverse_vols[k] for k in sorted(remaining))
+        proposed = {k: budget * inverse_vols[k] / total for k in sorted(remaining)}
         capped = {k for k in remaining if proposed[k] > cap}
         if not capped:
             weights.update(proposed)
@@ -319,7 +319,7 @@ class Ledger:
 
 
 def metrics(ledger, benchmark):
-    if len(ledger.equity) < 2 or len(benchmark.equity) != len(ledger.equity):
+    if not ledger.equity or len(benchmark.equity) != len(ledger.equity):
         raise DataBlocked("Not enough aligned strategy/benchmark sessions")
     initial = ledger.equity[0]["nav"]
     total = 100 * (ledger.equity[-1]["nav"] / initial - 1)

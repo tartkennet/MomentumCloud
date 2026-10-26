@@ -1,6 +1,8 @@
 import json
 import math
 import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from dataclasses import replace
@@ -12,8 +14,8 @@ from momentum_core import (
     CONFIG, DataBlocked, Ledger, adjusted_history, capped_weights, gates,
     metrics, risk_on, select_targets,
 )
-from momentum_core_data import paginate
-from run_momentum_core import run
+from momentum_core_data import CoreData, paginate
+from run_momentum_core import replay, run, verify_forward_prefix
 
 
 class MemoryData:
@@ -104,6 +106,14 @@ class SelectionTests(unittest.TestCase):
         self.assertAlmostEqual(sum(weights.values()), 2 / 15)
         self.assertLessEqual(weights["A"], .1)
         self.assertEqual(capped_weights({}, .1), {})
+
+    def test_weights_stable_across_python_process_hash_seeds(self):
+        code = ("import json; from momentum_core import capped_weights; "
+                "print(json.dumps(capped_weights({f'S{k}': 10**(k/13) for k in range(15)}, .1), sort_keys=True))")
+        outputs = [subprocess.check_output([sys.executable, "-c", code],
+                   env=dict(os.environ, PYTHONHASHSEED=str(seed))) for seed in (1, 2, 3)]
+        self.assertEqual(outputs[0], outputs[1])
+        self.assertEqual(outputs[1], outputs[2])
 
     def test_risk_off_and_incomplete_spy_fail(self):
         data = long_data()
@@ -233,6 +243,48 @@ class LedgerTests(unittest.TestCase):
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_clipped_vendor_history_blocks_instead_of_moving_start_forward(self):
+        client = unittest.mock.Mock()
+        with tempfile.TemporaryDirectory() as directory:
+            with patch("momentum_core_data.fetch_spy_trading_calendar",
+                       return_value=["2024-10-28", "2024-10-29", "2024-10-30"]):
+                with self.assertRaisesRegex(DataBlocked, "prior sessions=0"):
+                    CoreData(client, "2024-01-01", "2026-09-01", directory)
+        client._get.assert_not_called()
+
+    def test_batch_replay_equals_serialized_daily_paper_ledger(self):
+        data = long_data()
+        data.sessions = data.days[-45:]
+        data.first_is_month_boundary = lambda: False
+        batch, benchmark, result, _ = replay(data)
+        paper = Ledger()
+        halfway = len(data.sessions) // 2
+        for day in data.sessions[:halfway]:
+            paper.step(data, day)
+        old = json.loads(json.dumps(paper.to_dict()))
+        paper = Ledger(**json.loads(json.dumps(old)))
+        for day in data.sessions[halfway:]:
+            paper.step(data, day)
+        self.assertEqual(paper.to_dict(), batch.to_dict())
+        self.assertGreater(len(batch.trades), 0)
+        self.assertTrue(math.isfinite(result["TotalReturn_pct"]))
+        self.assertEqual(len(benchmark.equity), len(batch.equity))
+        verify_forward_prefix(batch, old, data.sessions[-1])
+        old["equity"][0]["nav"] += 1
+        with self.assertRaisesRegex(DataBlocked, "historical revision"):
+            verify_forward_prefix(batch, old, data.sessions[-1])
+
+    def test_first_paper_session_records_next_open_intentions_without_invented_returns(self):
+        data = long_data()
+        data.sessions = data.days[-1:]
+        data.first_is_month_boundary = lambda: False
+        ledger, _, result, _ = replay(data)
+        self.assertEqual(ledger.trades, [])
+        self.assertTrue(ledger.pending["targets"])
+        self.assertEqual(result["Periods"], 0)
+        self.assertEqual(result["TotalReturn_pct"], 0)
+        self.assertFalse(gates(result)[0]["pass"])
+
     def test_gate_boundary_and_nan_cannot_pass(self):
         values = {"Periods": 30, "TotalReturn_pct": 1, "SPYTotalReturn_pct": 0,
                   "TotalEdgeVsSPY_pct": 1, "DailyMaxDrawdown_pct": -20,
@@ -272,6 +324,8 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual(record["status"], "DATA_BLOCKED")
             self.assertFalse(record["live_approved"])
             self.assertNotIn("secret-key", path.read_text())
+            orders = json.loads((Path(directory) / "Momentum_core_paper_orders.json").read_text())
+            self.assertIsNone(orders["intentions_for_next_observed_session"])
 
 
 if __name__ == "__main__":

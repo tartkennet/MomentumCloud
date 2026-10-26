@@ -65,7 +65,8 @@ daily equity, decisions, targets and model/source hashes. Never overwrite the
 v4 validation decision or feed Core paper orders into v4 Buy Now/dashboard.
 Replay uses the same decision/ledger functions as incremental paper replay.
 Source hashes invalidate changed paper checkpoints. The forward paper record
-starts only after the frozen code is published; historical replay is labelled
+also rejects any revision to previously recorded daily NAV, trades or targets.
+It starts only after the frozen code is published; historical replay is labelled
 DEVELOPMENT. Historical gates retain the five existing economic thresholds:
 at least 30 complete monthly periods, positive net return, positive total edge
 versus SPY, daily drawdown no worse than -20%, monthly hit rate >= 50%.
