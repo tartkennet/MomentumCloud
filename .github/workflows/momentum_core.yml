@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: momentum-core-${{ github.head_ref || github.ref }}
@@ -63,6 +64,39 @@ jobs:
           path: core_paper_results
           key: momentum-core-forward-v1-${{ github.run_id }}
           restore-keys: momentum-core-forward-v1-
+      - name: Locate previous main paper artifact if cache was evicted
+        if: github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_checkpoint.json') == ''
+        id: previous_paper
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data} = await github.rest.actions.listWorkflowRuns({
+              ...context.repo, workflow_id: 'momentum_core.yml', branch: 'main',
+              event: 'schedule', status: 'completed', per_page: 1
+            });
+            const run = data.workflow_runs[0];
+            if (!run || run.head_repository?.full_name !== `${context.repo.owner}/${context.repo.repo}`) return;
+            const {data: files} = await github.rest.actions.listWorkflowRunArtifacts({...context.repo, run_id: run.id});
+            if (files.artifacts.some(a => a.name === 'Momentum_Core_evidence' && !a.expired)) {
+              core.setOutput('run_id', String(run.id));
+            }
+      - name: Recover the recorded checkpoint from the previous paper artifact
+        if: steps.previous_paper.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: Momentum_Core_evidence
+          run-id: ${{ steps.previous_paper.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: .core_previous_evidence
+      - name: Restore only paper identity and ledger checkpoint
+        if: steps.previous_paper.outputs.run_id != ''
+        run: |
+          mkdir -p core_paper_results
+          for file in Momentum_core_paper_identity.json Momentum_core_paper_checkpoint.json; do
+            if [ -f ".core_previous_evidence/core_paper_results/$file" ]; then
+              cp ".core_previous_evidence/core_paper_results/$file" "core_paper_results/$file"
+            fi
+          done
       - name: Forward paper replay from frozen start
         if: github.event_name == 'schedule'
         env:

@@ -21,3 +21,4 @@ backups/
 .momentum_core_cache/
 core_results/
 core_paper_results/
+.core_previous_evidence/

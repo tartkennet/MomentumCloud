@@ -6,7 +6,7 @@ import sys
 import tempfile
 import unittest
 from dataclasses import replace
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -15,7 +15,7 @@ from momentum_core import (
     metrics, risk_on, select_targets,
 )
 from momentum_core_data import CoreData, paginate
-from run_momentum_core import replay, run, verify_forward_prefix
+from run_momentum_core import replay, resume_paper, run, verify_forward_prefix
 
 
 class MemoryData:
@@ -41,8 +41,8 @@ class MemoryData:
         return self.records
 
 
-def long_data():
-    days = [(date(2023, 1, 1) + timedelta(days=i)).isoformat() for i in range(300)]
+def long_data(year=2023):
+    days = [(date(year, 1, 1) + timedelta(days=i)).isoformat() for i in range(300)]
     records = [{"ticker": f"S{k:02}", "type": "CS", "active": True,
                 "primary_exchange": "XNYS", "name": f"Company {k}"} for k in range(20)]
     bars = []
@@ -243,6 +243,69 @@ class LedgerTests(unittest.TestCase):
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_resumed_base_and_stress_match_complete_replay(self):
+        data = long_data()
+        sessions = data.days[-45:]
+        data.first_is_month_boundary = lambda: False
+        data.sessions = sessions
+        full, full_benchmark, _, _ = replay(data)
+        stress_config = replace(CONFIG, one_way_cost=.003)
+        full_stress, full_stress_benchmark, _, _ = replay(data, stress_config)
+        data.sessions = sessions[:22]
+        first, benchmark, _, _ = replay(data)
+        stress, stress_benchmark, _, _ = replay(data, stress_config)
+        checkpoint = {"strategy": first.to_dict(), "benchmark": benchmark.to_dict(),
+                      "stress_strategy": stress.to_dict(), "stress_benchmark": stress_benchmark.to_dict()}
+        frozen = json.dumps(checkpoint, sort_keys=True)
+        data.sessions = sessions[22:]
+        resumed, resumed_benchmark, _, _ = resume_paper(data, checkpoint)
+        resumed_stress, resumed_stress_benchmark, _, _ = resume_paper(data, checkpoint, stress_config, stress=True)
+        self.assertEqual(full.to_dict(), resumed.to_dict())
+        self.assertEqual(full_benchmark.to_dict(), resumed_benchmark.to_dict())
+        self.assertEqual(full_stress.to_dict(), resumed_stress.to_dict())
+        self.assertEqual(full_stress_benchmark.to_dict(), resumed_stress_benchmark.to_dict())
+        self.assertEqual(frozen, json.dumps(checkpoint, sort_keys=True))
+
+    def test_paper_runner_resumes_four_ledgers_and_blocks_lost_original_record(self):
+        data = long_data(2026)
+        first_day = data.days[-1]
+        self.assertEqual(first_day, "2026-10-27")
+        data.first_is_month_boundary = lambda: False
+        data.used_inputs = {"fixture": "synthetic; not performance evidence"}
+        data.input_fingerprint = lambda: "synthetic-fixture"
+        data.sessions = [first_day]
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.dict(os.environ, {"POLYGON_API_KEY": "fixture-key"}), \
+                 patch("run_momentum_core.CoreData", return_value=data) as factory, \
+                 patch("run_momentum_core.date") as clock_date, \
+                 patch("run_momentum_core.datetime") as clock, patch("builtins.print"):
+                clock_date.today.return_value = date(2026, 10, 28)
+                clock_date.fromisoformat.side_effect = date.fromisoformat
+                clock.now.return_value = datetime(2026, 10, 28, 6, 30, tzinfo=timezone.utc)
+                initial = run(first_day, first_day, directory, directory, "paper")
+                self.assertEqual(initial["status"], "PAPER_COLLECTING")
+                path = Path(directory) / "Momentum_core_paper_checkpoint.json"
+                old = json.loads(path.read_text())
+                data.days.append("2026-10-28")
+                data.by_day["2026-10-28"] = {ticker: list(bar) for ticker, bar in data.by_day[first_day].items()}
+                data.sessions = ["2026-10-28"]
+                data.first_is_month_boundary = lambda: self.fail("Resuming must not restart replay")
+                clock_date.today.return_value = date(2026, 10, 29)
+                clock.now.return_value = datetime(2026, 10, 29, 6, 30, tzinfo=timezone.utc)
+                updated = run(first_day, "2026-10-28", directory, directory, "paper")
+                new = json.loads(path.read_text())
+                self.assertEqual(factory.call_args.args[1], "2026-10-28")
+                self.assertEqual(new["strategy"]["equity"][:1], old["strategy"]["equity"])
+                self.assertGreater(updated["metrics"]["ActualFees_USD"], 0)
+                self.assertGreater(updated["double_cost_metrics"]["ActualFees_USD"],
+                                   updated["metrics"]["ActualFees_USD"])
+                self.assertFalse(updated["live_approved"])
+                path.unlink()
+                factory.reset_mock()
+                with self.assertRaisesRegex(DataBlocked, "retrospective paper reconstruction forbidden"):
+                    run(first_day, "2026-10-28", directory, directory, "paper")
+                factory.assert_not_called()
+
     def test_clipped_vendor_history_blocks_instead_of_moving_start_forward(self):
         client = unittest.mock.Mock()
         with tempfile.TemporaryDirectory() as directory:
