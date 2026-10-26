@@ -72,8 +72,15 @@ class CoreData:
         self.days = fetch_spy_trading_calendar(client, warmup, end)
         self.index = {day: i for i, day in enumerate(self.days)}
         self.sessions = [day for day in self.days if start <= day <= end]
+        logging.info("Core calendar: requested %s..%s; observed %s..%s (%d days); replay %s (%d days)",
+                     warmup, end, self.days[0], self.days[-1], len(self.days),
+                     self.sessions[0] if self.sessions else None, len(self.sessions))
         if len(self.sessions) < 2 or self.index[self.sessions[0]] < 252:
-            raise DataBlocked("Requested dates lack 253-session warmup or two replay sessions")
+            raise DataBlocked(
+                f"Incomplete calendar: requested {warmup}..{end}; observed "
+                f"{self.days[0]}..{self.days[-1]} ({len(self.days)} days); "
+                f"replay count={len(self.sessions)}, prior sessions="
+                f"{self.index[self.sessions[0]] if self.sessions else 0}")
         self.used_inputs = {}
         self.splits = self._events("splits", warmup, end)
         self.dividends = self._events("dividends", start, end)
