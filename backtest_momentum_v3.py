@@ -278,6 +278,21 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "EVRI": {
+        "effective_date": "2025-07-01", "cash_per_share": 14.25,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1318568/000119312525153550/d159300dex991.htm",
+    },
+    "OLO": {
+        "effective_date": "2025-09-12", "cash_per_share": 10.25,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.thomabravo.com/press-releases/thoma-bravo-completes-acquisition-of-olo",
+    },
+    "TERN": {
+        "effective_date": "2026-05-05", "cash_per_share": 53.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.merck.com/news/merck-completes-acquisition-of-terns-pharmaceuticals-inc/",
+    },
     # PGT Innovations' closing 8-K: cash entitlement replaces the delisted stock.
     # https://www.sec.gov/Archives/edgar/data/1354327/000095010324004518/dp208795_8k.htm
     "PGTI": {
@@ -299,6 +314,7 @@ CASH_CORPORATE_ACTIONS = {
         "cash_per_share": 45.0,
         "reason": "CASH_MERGER",
         "execution": "cash-settlement",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1827821/000182782126000010/forge8-kschwabmergerclose.htm",
     },
 }
 
@@ -310,6 +326,16 @@ CASH_CORPORATE_ACTIONS = {
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
 STOCK_CORPORATE_ACTIONS = {
+    "COMM": {
+        "effective_date": "2026-01-14", "successor_ticker": "VISN",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1517228/000119312526072523/R31.htm",
+    },
+    "ARMN": {
+        "effective_date": "2026-02-19", "successor_ticker": "ARIS",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.aris-mining.com/news/detail/87/aris-mining-approved-for-nyse-uplisting",
+    },
     "HOUS": {
         "effective_date": "2026-01-09",
         "successor_ticker": "COMP",
@@ -475,13 +501,17 @@ def daily_portfolio_max_drawdown(position_rows, cache, trading_day_strings):
     for (_, _), group in positions.groupby([period_key, "PlannedExitDate"], sort=True):
         entry = str(group.iloc[0].get("PlannedEntryDate", group.iloc[0]["EntryDate"]))
         planned_exit = str(group.iloc[0]["PlannedExitDate"])
-        final_exit = max(str(value) for value in group["ExitDate"])
+        final_exit = max((str(value) for value in group["ExitDate"] if pd.notna(value)),
+                         default=planned_exit)
         period_end = max(planned_exit, final_exit)
         period_days = [day for day in trading_day_strings if entry <= day <= period_end]
         last_value = period_start_value
         for day in period_days:
             returns = []
             for _, position in group.iterrows():
+                if position.get("PositionStatus") == "UNFILLED":
+                    returns.append(0.0)
+                    continue
                 ticker = str(position["Ticker"])
                 actual_entry = str(position["EntryDate"])
                 if day < actual_entry:
@@ -1314,6 +1344,27 @@ def run(
                     cache, trading_day_strings, pick.ticker, entry, exit_day
                 )
                 if not entry_row or actual_entry >= exit_day:
+                    action = CASH_CORPORATE_ACTIONS.get(pick.ticker)
+                    if action and signal < str(action["effective_date"]) <= entry:
+                        # No stock was bought, so there is no cash-merger windfall.
+                        # Keep the original sleeve as cash, without hindsight reranking.
+                        stock_returns.append(0.0)
+                        position_rows.append({
+                            "SignalDate": signal, "PlannedEntryDate": entry,
+                            "EntryDate": None, "ExitDate": None,
+                            "PlannedExitDate": exit_day, "PositionStatus": "UNFILLED",
+                            "ExitReason": "ORDER_CANCELLED_CASH_MERGER",
+                            "CorporateAction": action["reason"],
+                            "CorporateActionSource": action.get("source_url", ""),
+                            "Ticker": pick.ticker, "Rank": rank,
+                            "RebalanceMonths": rebalance_months, "TopN": top_n,
+                            "SelectionModel": selection_model, "StopLoss_pct": stop_loss_pct,
+                            "SignalPrice_USD": pick.price_usd,
+                            "EntryPrice_USD": None, "ExitPrice_USD": None,
+                            "GrossReturn_pct": 0.0,
+                            "EntryExecution": "unfilled", "ExitExecution": "cash",
+                        })
+                        continue
                     missing_executions.append(f"{pick.ticker}(entry from {entry})")
                     continue
                 actual_exit, exit_reason = research_exit(
@@ -1417,6 +1468,8 @@ def run(
                     "ExitDate": resolved_exit,
                     "PlannedExitDate": exit_day,
                     "ExitReason": exit_reason,
+                    "PositionStatus": "FILLED",
+                    "CorporateActionSource": corporate_action.get("source_url", "") if corporate_action else "",
                     "CorporateAction": (
                         str(corporate_action["reason"]) if corporate_action else ""
                     ),
@@ -1542,7 +1595,11 @@ def run(
     summary["EarlyExitPositions"] = (
         0
         if positions_frame.empty
-        else int((positions_frame["ExitReason"] != "REBALANCE").sum())
+        else int(((positions_frame["ExitReason"] != "REBALANCE") &
+                  positions_frame["EntryDate"].notna()).sum())
+    )
+    summary["UnfilledOrders"] = (
+        0 if positions_frame.empty else int((positions_frame["PositionStatus"] == "UNFILLED").sum())
     )
     summary["Execution"] = (
         f"SIGNAL_CLOSE_ENTRY_{entry_execution.upper()}_REBALANCE_{rebalance_exit_execution.upper()}"

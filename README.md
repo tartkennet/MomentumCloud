@@ -1,7 +1,7 @@
 # MomentumCloud Production v1
 
 MomentumCloud är ett mobilanpassat beslutsstöd för en låst, lång amerikansk
-portfölj med färskt 1–3-månadersmomentum. Systemet hämtar marknadsdata från Polygon, skapar tydliga
+portfölj enligt v4-balanced med 12–2- och 6–2-månadersmomentum. Systemet hämtar marknadsdata från Polygon, skapar tydliga
 köp- och säljsignaler, uppdaterar Excel och publicerar samma verifierade
 snapshot till dashboardens API.
 
@@ -9,7 +9,7 @@ snapshot till dashboardens API.
 
 | Regel | Låst värde |
 |---|---|
-| Modell | `fresh-momentum-1-3m` |
+| Modell | `v4-balanced` |
 | Portfölj | 15 aktier, lika vikt och minst 1 hel aktie per position |
 | Omsättning | Månadsvis omallokering |
 | Prisfilter | Minst 10 USD |
@@ -18,10 +18,11 @@ snapshot till dashboardens API.
 | Exkluderas | ETF, SPAC, ADR, preferensaktier |
 | Marknadsregim | `SPY > SMA200` = RISK ON, annars 100 % kassa |
 | Stop loss | 10 % |
-| Ranking | 30 % 1 månad, 40 % 3 månader, 15 % 6 månader, 10 % låg volatilitet, 5 % låg SMA50-extension |
-| Färskhetskrav | Positiv 1 och 3 månader, samt bättre än SPY under båda perioderna |
-| Trendkrav | Kurs > SMA20 > SMA50 > SMA200; SMA50 och SMA200 ska stiga |
-| Riskfilter | Högst 80 % annualiserad volatilitet och högst 20 % över SMA50 |
+| Ranking | 55 % 12–2 momentum, 20 % 6–2 momentum, 15 % låg volatilitet, 10 % låg SMA50-extension |
+| Momentumkrav | Positiv 12–2 och 6–2; den senaste månaden ingår inte i dessa signaler |
+| Trendkrav | Kurs över både SMA50 och SMA200; SMA200 ska stiga |
+
+Reglernas källa är `momentum_config.py` och `momentum_strategy.py`.
 
 `Current limitation: survivorship bias`
 
@@ -56,6 +57,16 @@ Den separata modellvalideringen använder point-in-time-universum och ger
 träffsäkerhet. Ett misslyckat krav ger `NO-GO`; resultatet optimeras inte om
 i efterhand.
 
+`validate_production_backtest.py` skriver `Momentum_validation_decision.json`.
+Ett avbrott är `VALIDATION_ERROR`, inte ett numeriskt `NO-GO`. Olösta
+positionsdata sammanställs i `Momentum_validation_data_errors.json`; inga
+partiella prestationsmått får då användas för godkännande. Workflowet sparar
+beslut och loggar även vid fel. Datacachen sparas separat för återanvändning.
+
+Produktionen hämtar senaste avslutade main-valideringens artifact. Endast ett
+GO med matchande källfingeravtryck och verifierade mått får godkännas av
+`model_validation.py`; annars är Buy Now spärrat.
+
 ## App och API
 
 - Dashboard: `public/index.html`
@@ -69,6 +80,12 @@ i efterhand.
 - `MomentumCloud Production v1`: vardagskvällar efter USA-stängning. Modellen
   roterar endast månadsvis men uppdaterar priser, riskregim och stoppsignaler
   varje handelsdag.
-- `Production model validation`: manuell backtest av exakt samma v4-modell.
+- `Production model validation`: manuellt samt vid relevanta kodändringar på
+  main och PR från samma repo. Den använder samma v4-rankare som produktionen.
+
+Återstående valideringsbegränsningar: det historiska backtestet och liveflödet
+har ännu inte avstämts för malluniversum, dagliga regimbyten, tidpunkt för
+månadsrotation och helaktieavrundning. Ett resultat för månadsbacktestet är
+inte ensamt ett bevis för den exakta liveportföljens historik.
 
 Full arkitektur, repo-audit och driftsinstruktioner finns i `docs/`.

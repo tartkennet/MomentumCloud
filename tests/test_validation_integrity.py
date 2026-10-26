@@ -212,6 +212,30 @@ class ValidationIntegrityTests(unittest.TestCase):
         self.assertEqual((day, row["close"]), ("2024-03-28", 42.0))
         self.assertEqual(action["reason"], "CASH_MERGER")
 
+    def test_remaining_confirmed_cash_mergers_have_dated_cash_valuation(self):
+        for ticker, day, cash in (("EVRI", "2025-07-01", 14.25),
+                                 ("OLO", "2025-09-12", 10.25),
+                                 ("TERN", "2026-05-05", 53.0)):
+            with self.subTest(ticker=ticker):
+                value, action = backtest.position_close_on_day({}, ticker, day)
+                self.assertEqual(value, cash)
+                self.assertEqual(action["effective_date"], day)
+
+    def test_ticker_changes_preserve_the_original_share_without_inventing_a_sale(self):
+        for old, new, before, after in (("COMM", "VISN", "2026-01-13", "2026-01-14"),
+                                        ("ARMN", "ARIS", "2026-02-18", "2026-02-19")):
+            with self.subTest(ticker=old):
+                cache = {before: {old: {"open": 19.0, "close": 20.0}},
+                         after: {new: {"open": 21.0, "close": 22.0}}}
+                self.assertEqual(backtest.position_close_on_day(cache, old, before)[0], 20.0)
+                self.assertEqual(backtest.position_close_on_day(cache, old, after)[0], 22.0)
+                day, row, action = backtest.resolve_exit_execution(
+                    cache, [before, after], old, after, "2026-01-02", after
+                )
+                self.assertEqual((day, row["open"]), (after, 21.0))
+                self.assertEqual(action["reason"], "TICKER_CHANGE")
+                self.assertEqual(action["valuation_ticker"], new)
+
     def test_missing_daily_price_cannot_manufacture_a_low_drawdown(self):
         positions = [{
             "SignalDate": "2024-01-31", "EntryDate": "2024-02-01",
@@ -319,6 +343,45 @@ class ValidationIntegrityTests(unittest.TestCase):
             self.assertEqual({issue["ticker"] for issue in audit["errors"]}, {"BAD1", "BAD2"})
             self.assertFalse(Path("Momentum_backtest_results.csv").exists())
             self.assertFalse(Path("Momentum_backtest_summary.csv").exists())
+
+    def test_delisted_entry_remains_cash_without_a_merger_windfall_or_replacement(self):
+        days = ["2026-02-27", "2026-03-02", "2026-03-31", "2026-04-01",
+                "2026-04-30", "2026-05-01"]
+        cache = {day: {"SPY": {"open": 100.0, "close": 100.0, "volume": 1e6},
+                       "GOOD": {"open": 20.0, "close": 20.0, "volume": 1e6}}
+                 for day in days}
+        cache[days[0]]["FRGE"] = {"open": 44.9, "close": 44.9, "volume": 1e6}
+        universes = {day: (["FRGE"] if day == days[0] else ["GOOD"]) for day in days}
+        def choose(client, prices, tickers, signal, *args):
+            return [SimpleNamespace(ticker=tickers[0], price_usd=44.9 if tickers[0] == "FRGE" else 20.0,
+                                    total_score=100.0)]
+        client = Mock()
+        client.fetch_recent_splits.return_value = []
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory):
+            with contextlib.ExitStack() as stack:
+                stack.enter_context(patch.dict(os.environ, {"POLYGON_API_KEY": "test"}))
+                stack.enter_context(patch.object(backtest, "PolygonClient", return_value=client))
+                stack.enter_context(patch.object(backtest, "fetch_spy_trading_calendar", return_value=days))
+                stack.enter_context(patch.object(backtest, "load_backtest_cache", return_value=(cache, "9999-12-31")))
+                stack.enter_context(patch.object(backtest, "save_backtest_cache"))
+                stack.enter_context(patch.object(backtest, "point_in_time_universes", return_value=universes))
+                stack.enter_context(patch.object(backtest, "find_unverified_split_basis_tickers", return_value={}))
+                stack.enter_context(patch.object(backtest, "choose_top", side_effect=choose))
+                backtest.run("2026-02-01", "2026-05-01", 1, top_n=1,
+                             selection_model="v4-balanced", entry_execution="next-open",
+                             rebalance_exit_execution="next-open", exit_rule="stop", stop_loss_pct=10)
+            positions = pd.read_csv("Momentum_backtest_positions.csv")
+            unfilled = positions.iloc[0]
+            self.assertEqual(unfilled["Ticker"], "FRGE")
+            self.assertEqual(unfilled["PositionStatus"], "UNFILLED")
+            self.assertTrue(pd.isna(unfilled["EntryPrice_USD"]))
+            self.assertTrue(pd.isna(unfilled["EntryDate"]))
+            self.assertEqual(unfilled["GrossReturn_pct"], 0.0)
+            results = pd.read_csv("Momentum_backtest_results.csv")
+            self.assertEqual(results.iloc[0]["TopTickers"], "FRGE")
+            self.assertEqual(results.iloc[0]["GrossReturn_pct"], 0.0)
+            totals = pd.read_csv("Momentum_backtest_summary.csv").iloc[0]
+            self.assertEqual(totals["UnfilledOrders"], 1)
 
 
 if __name__ == "__main__":
