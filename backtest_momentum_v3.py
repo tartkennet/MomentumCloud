@@ -278,6 +278,14 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    # PGT Innovations' closing 8-K: cash entitlement replaces the delisted stock.
+    # https://www.sec.gov/Archives/edgar/data/1354327/000095010324004518/dp208795_8k.htm
+    "PGTI": {
+        "effective_date": "2024-03-28",
+        "cash_per_share": 42.0,
+        "reason": "CASH_MERGER",
+        "execution": "cash-settlement",
+    },
     # Rover's 2024-02-27 Form 8-K: each share became an $11 cash claim.
     # https://www.sec.gov/Archives/edgar/data/1826018/000162828024007068/rovr-20240227.htm
     "ROVR": {
@@ -1263,6 +1271,7 @@ def run(
         )
 
     rows, position_rows, equity, spy_equity = [], [], 1.0, 1.0
+    data_errors = []
     for signal, entry, exit_day in periods:
         # Later bad prints must never remove a stock from an earlier universe.
         exclusions_asof_signal = {
@@ -1292,144 +1301,151 @@ def run(
             regime_check = market_regime_is_risk_on if selection_model == "v5-regime" else core_market_regime_is_risk_on
             cash_period = not regime_check(cache[signal], signal_history)
         if len(picks) < top_n and not cash_period:
-            raise RuntimeError(f"Only {len(picks)} qualified names on {signal}")
+            data_errors.append({"signal": signal, "ticker": None,
+                                "error": f"Only {len(picks)} qualified names; {top_n} required"})
+            continue
         entry_map = cache[entry]
         exit_map = cache[exit_day]
         stock_returns = []
         missing_executions = []
         for rank, pick in enumerate(picks, start=1):
-            actual_entry, entry_row = first_tradable_row(
-                cache, trading_day_strings, pick.ticker, entry, exit_day
-            )
-            if not entry_row or actual_entry >= exit_day:
-                missing_executions.append(f"{pick.ticker}(entry from {entry})")
-                continue
-            actual_exit, exit_reason = research_exit(
-                cache,
-                trading_day_strings,
-                pick.ticker,
-                actual_entry,
-                exit_day,
-                exit_rule,
-                stop_loss_pct,
-                entry_execution,
-                split_events_by_ticker.get(pick.ticker, []),
-                pick.price_usd,
-            )
-            resolved_exit, exit_row, corporate_action = resolve_exit_execution(
-                cache,
-                trading_day_strings,
-                pick.ticker,
-                actual_exit,
-                actual_entry,
-                trading_day_strings[-1],
-            )
-            if not exit_row or resolved_exit <= actual_entry:
-                missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
-                continue
-            if resolved_exit > exit_day:
-                raise RuntimeError(
-                    f"Exit for {pick.ticker} on {resolved_exit} overlaps the next "
-                    f"portfolio period starting {exit_day}; capital cannot be reused"
+            try:
+                actual_entry, entry_row = first_tradable_row(
+                    cache, trading_day_strings, pick.ticker, entry, exit_day
                 )
-            if corporate_action and corporate_action["reason"] == "CASH_MERGER":
-                exit_reason = str(corporate_action["reason"])
-                applied_exit_execution = str(corporate_action["execution"])
-            else:
-                applied_exit_execution = (
-                    exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
-                )
-            split_events = split_events_by_ticker.get(pick.ticker, [])
-            entry_price = execution_price(
-                entry_row,
-                entry_execution,
-                split_events,
-                actual_entry,
-                pick.price_usd,
-                pick.ticker,
-            )
-            exit_valuation_ticker = (
-                str(corporate_action.get("valuation_ticker", pick.ticker))
-                if corporate_action
-                else pick.ticker
-            )
-            exit_conversion_ratio = (
-                float(corporate_action.get("shares_per_share", 1.0))
-                if corporate_action
-                else 1.0
-            )
-            exit_split_events = split_events_by_ticker.get(exit_valuation_ticker, [])
-            prior_exit_reference = None
-            exit_index = trading_day_strings.index(resolved_exit)
-            if exit_index > 0:
-                prior_exit_row = get_from_map(
-                    cache[trading_day_strings[exit_index - 1]], exit_valuation_ticker
-                )
-                if prior_exit_row:
-                    prior_exit_reference = (
-                        float(prior_exit_row["close"]) * exit_conversion_ratio
-                    )
-            exit_price = (
-                float(exit_row["close"])
-                if corporate_action and corporate_action["reason"] == "CASH_MERGER"
-                else execution_price(
-                    exit_row,
-                    applied_exit_execution,
-                    exit_split_events,
-                    resolved_exit,
-                    prior_exit_reference,
-                    exit_valuation_ticker,
-                )
-            )
-            stock_return = exit_price / entry_price - 1
-            stock_returns.append(stock_return)
-            entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
-            exit_delay = (
-                0
-                if corporate_action and corporate_action["reason"] == "CASH_MERGER"
-                else trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
-            )
-            if entry_delay or exit_delay:
-                logging.warning(
-                    "%s execution delayed: entry %s->%s, exit %s->%s",
+                if not entry_row or actual_entry >= exit_day:
+                    missing_executions.append(f"{pick.ticker}(entry from {entry})")
+                    continue
+                actual_exit, exit_reason = research_exit(
+                    cache,
+                    trading_day_strings,
                     pick.ticker,
-                    entry,
                     actual_entry,
-                    actual_exit,
-                    resolved_exit,
+                    exit_day,
+                    exit_rule,
+                    stop_loss_pct,
+                    entry_execution,
+                    split_events_by_ticker.get(pick.ticker, []),
+                    pick.price_usd,
                 )
-            position_rows.append({
-                "SignalDate": signal,
-                "PlannedEntryDate": entry,
-                "EntryDate": actual_entry,
-                "ExitDate": resolved_exit,
-                "PlannedExitDate": exit_day,
-                "ExitReason": exit_reason,
-                "CorporateAction": (
-                    str(corporate_action["reason"]) if corporate_action else ""
-                ),
-                "CorporateActionTicker": exit_valuation_ticker,
-                "CorporateActionRatio": exit_conversion_ratio,
-                "EntryExecution": entry_execution,
-                "ExitExecution": applied_exit_execution,
-                "EntryDelaySessions": entry_delay,
-                "ExitDelaySessions": exit_delay,
-                "StopLoss_pct": stop_loss_pct,
-                "RebalanceMonths": rebalance_months,
-                "TopN": top_n,
-                "SelectionModel": selection_model,
-                "Rank": rank,
-                "Ticker": pick.ticker,
-                "SignalPrice_USD": pick.price_usd,
-                "EntryPrice_USD": entry_price,
-                "ExitPrice_USD": exit_price,
-                "GrossReturn_pct": stock_return * 100,
-            })
+                resolved_exit, exit_row, corporate_action = resolve_exit_execution(
+                    cache,
+                    trading_day_strings,
+                    pick.ticker,
+                    actual_exit,
+                    actual_entry,
+                    trading_day_strings[-1],
+                )
+                if not exit_row or resolved_exit <= actual_entry:
+                    missing_executions.append(f"{pick.ticker}(exit from {actual_exit})")
+                    continue
+                if resolved_exit > exit_day:
+                    raise RuntimeError(
+                        f"Exit for {pick.ticker} on {resolved_exit} overlaps the next "
+                        f"portfolio period starting {exit_day}; capital cannot be reused"
+                    )
+                if corporate_action and corporate_action["reason"] == "CASH_MERGER":
+                    exit_reason = str(corporate_action["reason"])
+                    applied_exit_execution = str(corporate_action["execution"])
+                else:
+                    applied_exit_execution = (
+                        exit_execution if exit_reason != "REBALANCE" else rebalance_exit_execution
+                    )
+                split_events = split_events_by_ticker.get(pick.ticker, [])
+                entry_price = execution_price(
+                    entry_row,
+                    entry_execution,
+                    split_events,
+                    actual_entry,
+                    pick.price_usd,
+                    pick.ticker,
+                )
+                exit_valuation_ticker = (
+                    str(corporate_action.get("valuation_ticker", pick.ticker))
+                    if corporate_action
+                    else pick.ticker
+                )
+                exit_conversion_ratio = (
+                    float(corporate_action.get("shares_per_share", 1.0))
+                    if corporate_action
+                    else 1.0
+                )
+                exit_split_events = split_events_by_ticker.get(exit_valuation_ticker, [])
+                prior_exit_reference = None
+                exit_index = trading_day_strings.index(resolved_exit)
+                if exit_index > 0:
+                    prior_exit_row = get_from_map(
+                        cache[trading_day_strings[exit_index - 1]], exit_valuation_ticker
+                    )
+                    if prior_exit_row:
+                        prior_exit_reference = (
+                            float(prior_exit_row["close"]) * exit_conversion_ratio
+                        )
+                exit_price = (
+                    float(exit_row["close"])
+                    if corporate_action and corporate_action["reason"] == "CASH_MERGER"
+                    else execution_price(
+                        exit_row,
+                        applied_exit_execution,
+                        exit_split_events,
+                        resolved_exit,
+                        prior_exit_reference,
+                        exit_valuation_ticker,
+                    )
+                )
+                stock_return = exit_price / entry_price - 1
+                stock_returns.append(stock_return)
+                entry_delay = trading_day_strings.index(actual_entry) - trading_day_strings.index(entry)
+                exit_delay = (
+                    0
+                    if corporate_action and corporate_action["reason"] == "CASH_MERGER"
+                    else trading_day_strings.index(resolved_exit) - trading_day_strings.index(actual_exit)
+                )
+                if entry_delay or exit_delay:
+                    logging.warning(
+                        "%s execution delayed: entry %s->%s, exit %s->%s",
+                        pick.ticker,
+                        entry,
+                        actual_entry,
+                        actual_exit,
+                        resolved_exit,
+                    )
+                position_rows.append({
+                    "SignalDate": signal,
+                    "PlannedEntryDate": entry,
+                    "EntryDate": actual_entry,
+                    "ExitDate": resolved_exit,
+                    "PlannedExitDate": exit_day,
+                    "ExitReason": exit_reason,
+                    "CorporateAction": (
+                        str(corporate_action["reason"]) if corporate_action else ""
+                    ),
+                    "CorporateActionTicker": exit_valuation_ticker,
+                    "CorporateActionRatio": exit_conversion_ratio,
+                    "EntryExecution": entry_execution,
+                    "ExitExecution": applied_exit_execution,
+                    "EntryDelaySessions": entry_delay,
+                    "ExitDelaySessions": exit_delay,
+                    "StopLoss_pct": stop_loss_pct,
+                    "RebalanceMonths": rebalance_months,
+                    "TopN": top_n,
+                    "SelectionModel": selection_model,
+                    "Rank": rank,
+                    "Ticker": pick.ticker,
+                    "SignalPrice_USD": pick.price_usd,
+                    "EntryPrice_USD": entry_price,
+                    "ExitPrice_USD": exit_price,
+                    "GrossReturn_pct": stock_return * 100,
+                })
+            except RuntimeError as exc:
+                missing_executions.append(f"{pick.ticker}({exc})")
         if not cash_period and len(stock_returns) < top_n:
             details = ", ".join(missing_executions) or "unknown ticker"
-            raise RuntimeError(
-                f"No executable price through available history for {signal}: {details}"
-            )
+            if missing_executions:
+                data_errors.extend({"signal": signal, "ticker": item.split("(")[0],
+                                    "error": item} for item in missing_executions)
+            logging.error("Incomplete execution data for %s: %s", signal, details)
+            continue
 
         gross = 0.0 if cash_period else sum(stock_returns) / top_n
         net = 0.0 if cash_period else gross - ROUND_TRIP_COST_PCT / 100
@@ -1469,6 +1485,17 @@ def run(
         })
         logging.info("Signal %s, trade %s to %s: %.2f%% net, SPY %.2f%%", signal, entry, exit_day, net * 100, spy_return * 100)
 
+    if data_errors:
+        Path("Momentum_validation_data_errors.json").write_text(json.dumps({
+            "status": "VALIDATION_ERROR", "error_count": len(data_errors),
+            "errors": data_errors,
+        }, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+        for issue in data_errors:
+            logging.error("VALIDATION_DATA_ERROR %s", json.dumps(issue, sort_keys=True))
+        raise RuntimeError(
+            f"Validation has {len(data_errors)} unresolved data errors; "
+            "see Momentum_validation_data_errors.json. No performance decision was computed."
+        )
     result = pd.DataFrame(rows)
     result.to_csv("Momentum_backtest_results.csv", index=False)
     positions_frame = pd.DataFrame(position_rows)

@@ -197,6 +197,21 @@ class ValidationIntegrityTests(unittest.TestCase):
             (None, None, None),
         )
 
+    def test_pgti_cash_claim_prevents_false_missing_stop_price_after_merger(self):
+        days = ["2024-03-01", "2024-03-27", "2024-03-28", "2024-04-01"]
+        cache = {day: {"PGTI": {"open": 41.9, "close": 41.9}}
+                 for day in days[:2]}
+        exit_day, reason = backtest.research_exit(
+            cache, days, "PGTI", "2024-03-01", "2024-04-01", "stop", 10.0,
+            entry_execution="next-open",
+        )
+        self.assertEqual((exit_day, reason), ("2024-04-01", "REBALANCE"))
+        day, row, action = backtest.resolve_exit_execution(
+            cache, days, "PGTI", exit_day, "2024-03-01", "2024-04-01"
+        )
+        self.assertEqual((day, row["close"]), ("2024-03-28", 42.0))
+        self.assertEqual(action["reason"], "CASH_MERGER")
+
     def test_missing_daily_price_cannot_manufacture_a_low_drawdown(self):
         positions = [{
             "SignalDate": "2024-01-31", "EntryDate": "2024-02-01",
@@ -272,6 +287,38 @@ class ValidationIntegrityTests(unittest.TestCase):
                              rebalance_exit_execution="next-open")
         self.assertIn("LATER_BAD", seen["2024-01-31"])
         self.assertNotIn("LATER_BAD", seen["2024-02-29"])
+
+    def test_data_audit_collects_all_bad_positions_without_partial_performance(self):
+        days = ["2024-01-31", "2024-02-01", "2024-02-29", "2024-03-01",
+                "2024-03-28", "2024-04-01", "2024-04-30", "2024-05-01"]
+        cache = {day: {ticker: {"open": 100.0, "close": 100.0, "volume": 1e6}
+                       for ticker in ("BAD1", "BAD2", "SPY")} for day in days}
+        picks = [SimpleNamespace(ticker=ticker, price_usd=100.0, total_score=100.0)
+                 for ticker in ("BAD1", "BAD2")]
+        client = Mock()
+        client.fetch_recent_splits.return_value = []
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory):
+            with contextlib.ExitStack() as stack:
+                stack.enter_context(patch.dict(os.environ, {"POLYGON_API_KEY": "test"}))
+                stack.enter_context(patch.object(backtest, "PolygonClient", return_value=client))
+                stack.enter_context(patch.object(backtest, "fetch_spy_trading_calendar", return_value=days))
+                stack.enter_context(patch.object(backtest, "load_backtest_cache", return_value=(cache, "9999-12-31")))
+                stack.enter_context(patch.object(backtest, "save_backtest_cache"))
+                stack.enter_context(patch.object(backtest, "point_in_time_universes",
+                    return_value={d: ["BAD1", "BAD2"] for d in days}))
+                stack.enter_context(patch.object(backtest, "find_unverified_split_basis_tickers", return_value={}))
+                stack.enter_context(patch.object(backtest, "choose_top", return_value=picks))
+                stack.enter_context(patch.object(backtest, "research_exit", side_effect=RuntimeError("Missing stop valuation")))
+                with self.assertRaisesRegex(RuntimeError, "6 unresolved data errors"):
+                    backtest.run("2024-01-01", "2024-05-01", 1, top_n=2,
+                                 selection_model="v4-balanced", entry_execution="next-open",
+                                 rebalance_exit_execution="next-open")
+            audit = json.loads(Path("Momentum_validation_data_errors.json").read_text())
+            self.assertEqual(audit["status"], "VALIDATION_ERROR")
+            self.assertEqual(audit["error_count"], 6)
+            self.assertEqual({issue["ticker"] for issue in audit["errors"]}, {"BAD1", "BAD2"})
+            self.assertFalse(Path("Momentum_backtest_results.csv").exists())
+            self.assertFalse(Path("Momentum_backtest_summary.csv").exists())
 
 
 if __name__ == "__main__":

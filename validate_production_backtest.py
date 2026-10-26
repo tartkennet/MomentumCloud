@@ -86,6 +86,7 @@ def main() -> None:
     for name in (
         "Momentum_validation_decision.json", "Momentum_backtest_results.csv",
         "Momentum_backtest_positions.csv", "Momentum_backtest_summary.csv",
+        "Momentum_validation_data_errors.json",
     ):
         Path(name).unlink(missing_ok=True)
     try:
