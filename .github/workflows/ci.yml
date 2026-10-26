@@ -33,7 +33,8 @@ jobs:
         run: >-
           python -m py_compile momentum_config.py momentum_strategy.py
           momentum_production.py backtest_momentum_v3.py
-          validate_production_backtest.py
+          validate_production_backtest.py momentum_core.py
+          momentum_core_data.py run_momentum_core.py
       - name: Compile dashboard functions
         run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js
       - name: Unit tests

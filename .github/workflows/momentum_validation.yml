@@ -1,4 +1,4 @@
-name: Production model validation
+name: Legacy v4 validation (manual)
 
 on:
   workflow_dispatch:
@@ -11,22 +11,12 @@ on:
         description: "Validation end, YYYY-MM-DD"
         required: true
         default: "2026-09-01"
-  push:
-    branches: [main]
-    paths:
-      - "momentum_config.py"
-      - "momentum_strategy.py"
-      - "backtest_momentum_v3.py"
-      - "validate_production_backtest.py"
-      - "data_access_preflight.py"
-      - "model_validation.py"
-      - ".github/workflows/momentum_validation.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  group: momentum-production-validation
+  group: momentum-production-validation-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -42,24 +32,29 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s tests -v
       - name: Restore locked validation cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: .momentum_backtest_cache.json
-          key: momentum-production-validation-${{ github.run_id }}
-          restore-keys: momentum-production-validation-
+          key: momentum-production-validation-v4-${{ github.run_id }}
+          restore-keys: momentum-production-validation-v4-
       - name: Verify historical data access
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python data_access_preflight.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
+        run: |
+          set -o pipefail
+          python data_access_preflight.py --start "${{ inputs.start_date || '2024-01-01' }}" 2>&1 | tee validation_preflight.log
       - name: Validate locked production model
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: >-
-          python validate_production_backtest.py
-          --start "${{ inputs.start_date || '2024-01-01' }}"
-          --end "${{ inputs.end_date || '2026-09-01' }}"
+        run: |
+          set -o pipefail
+          python validate_production_backtest.py --start "${{ inputs.start_date || '2024-01-01' }}" --end "${{ inputs.end_date || '2026-09-01' }}" 2>&1 | tee validation_run.log
+      - name: Save verified price inputs even if validation is blocked
+        if: always() && hashFiles('.momentum_backtest_cache.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .momentum_backtest_cache.json
+          key: momentum-production-validation-v4-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,3 +64,7 @@ jobs:
             Momentum_backtest_summary.csv
             Momentum_backtest_positions.csv
             Momentum_validation_decision.json
+            Momentum_validation_data_errors.json
+            validation_preflight.log
+            validation_run.log
+          if-no-files-found: error

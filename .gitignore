@@ -16,3 +16,8 @@ Momentum_backtest_*.csv
 # Historical binary dumps do not belong in the active product tree
 backups/
 *.zip
+
+# Core raw-price caches and generated evidence are uploaded by its workflow.
+.momentum_core_cache/
+core_results/
+core_paper_results/
