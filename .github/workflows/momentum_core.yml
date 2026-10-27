@@ -77,6 +77,24 @@ jobs:
         run: |
           mkdir -p core_results
           set -o pipefail
+          # Preserve the complete frozen experiment inputs even if a later
+          # held corporate event interrupts the accounting replay.
+          python - <<'PY'
+          import os
+          from momentum_core import risk_on
+          from momentum_core_data import CoreData
+          from momentum_master_v3 import PolygonClient
+          data = CoreData(PolygonClient(os.environ['POLYGON_API_KEY']), '2024-01-01', '2026-09-01')
+          for day in data.days[data.index[data.sessions[0]] - 252:]:
+              data.bars(day)
+          previous, month = False, ''
+          for day in data.sessions:
+              allowed = risk_on(data, day)
+              if allowed and (month != day[:7] or not previous):
+                  data.universe(day)
+                  month = day[:7]
+              previous = allowed
+          PY
           python run_momentum_core.py --start 2024-01-01 --end 2026-09-01 2>&1 | tee core_results/replay.log
       - name: Restore frozen forward paper record
         if: github.event_name == 'schedule'
