@@ -251,6 +251,15 @@ class LedgerTests(unittest.TestCase):
         self.assertAlmostEqual(ledger.shares["B"], 14.36)
         self.assertAlmostEqual(ledger.close_value(self.data, self.days[1])[0], 1000)
 
+    def test_brea_rename_keeps_shares_and_uses_successor_quote(self):
+        day = "2025-10-03"
+        data = MemoryData([day], [{"SLMT": [25, 26, 1_000_000]}],
+                          stock_actions=CoreData.stock_actions)
+        ledger = Ledger(cash=0, shares={"BREA": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {"SLMT": 10})
+        self.assertEqual(ledger.close_value(data, day)[0], 260)
+
     def test_daily_gate_sells_next_open_and_no_10_percent_stock_stop(self):
         ledger = Ledger(cash=0, shares={"A": 10}, previous_risk=True, selection_month="2024-01")
         self.data.by_day[self.days[0]]["A"][1] = 80
