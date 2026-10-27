@@ -364,6 +364,11 @@ CASH_CORPORATE_ACTIONS = {
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
 STOCK_CORPORATE_ACTIONS = {
+    "MFH": {
+        "effective_date": "2025-11-13", "successor_ticker": "CD",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1527762/000149315225021857/ex99-1.htm",
+    },
     "BREA": {
         "effective_date": "2025-10-03", "successor_ticker": "SLMT",
         "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",

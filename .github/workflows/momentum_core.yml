@@ -7,6 +7,11 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "backtest_momentum_v3.py"
+      - "momentum_master_v3.py"
+      - "momentum_strategy.py"
+      - "momentum_config.py"
+      - "requirements.txt"
       - "archive_momentum_inputs.py"
       - "docs/validation_archive_recipient.pem"
       - "tests/test_momentum_core.py"
@@ -17,6 +22,11 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "backtest_momentum_v3.py"
+      - "momentum_master_v3.py"
+      - "momentum_strategy.py"
+      - "momentum_config.py"
+      - "requirements.txt"
       - "archive_momentum_inputs.py"
       - "docs/validation_archive_recipient.pem"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"

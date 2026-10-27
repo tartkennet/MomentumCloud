@@ -260,6 +260,15 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {"SLMT": 10})
         self.assertEqual(ledger.close_value(data, day)[0], 260)
 
+    def test_mfh_rename_preserves_share_count(self):
+        day = "2025-11-13"
+        data = MemoryData([day], [{"CD": [11, 12, 1_000_000]}],
+                          stock_actions=CoreData.stock_actions)
+        ledger = Ledger(cash=0, shares={"MFH": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {"CD": 10})
+        self.assertEqual(ledger.close_value(data, day)[0], 120)
+
     def test_daily_gate_sells_next_open_and_no_10_percent_stock_stop(self):
         ledger = Ledger(cash=0, shares={"A": 10}, previous_risk=True, selection_month="2024-01")
         self.data.by_day[self.days[0]]["A"][1] = 80
