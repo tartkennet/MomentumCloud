@@ -56,7 +56,10 @@ Verified stock exchanges convert shares; fractional consideration remains a
 valued, non-tradable fraction (no invented cash-in-lieu fill). Unknown missing
 prices for held securities block the run. A missing buy open cancels that
 order and leaves cash; it does not cause a hindsight replacement. Missing sell
-opens block the run. Ticker changes do not splice unverified signal histories. Documented 1:1\nrenames preserve the same issuer's pre-change bars and applicable split\nhistory, only once the change is effective. Reused symbols from another\nissuer and stock-merger target/acquirer histories are never joined.
+opens block the run. Ticker changes do not splice unverified signal histories. Documented 1:1
+renames preserve the same issuer's pre-change bars and applicable split
+history, only once the change is effective. Reused symbols from another
+issuer and stock-merger target/acquirer histories are never joined.
 Non-tradable contingent merger rights are recorded separately at zero carrying
 value, with their contractual maximum disclosed; they are not guaranteed cash.
 An old merger/ticker conversion cannot cancel or rename a new issuer's order

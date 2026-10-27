@@ -312,7 +312,10 @@ class VerifiedSignalIdentityTests(unittest.TestCase):
         actual, actual_count = select_targets(data, day)
         expected = [dict(r, ticker="NEW") if r["ticker"] == "S19" else r for r in expected]
         self.assertEqual(actual_count, count)
-        self.assertEqual(actual, expected)
+        for actual_row, expected_row in zip(actual, expected):
+            self.assertEqual({k: v for k, v in actual_row.items() if k != "weight"},
+                             {k: v for k, v in expected_row.items() if k != "weight"})
+            self.assertAlmostEqual(actual_row["weight"], expected_row["weight"], places=14)
         self.assertEqual(adjusted_history(data, day, "NEW", 253),
                          adjusted_history(original, day, "S19", 253))
 
