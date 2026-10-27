@@ -39,7 +39,7 @@ on:
     - cron: "30 6 * * 2-6"
 
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 concurrency:
@@ -213,6 +213,64 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
+      - name: Preserve the frozen research package in a private draft release
+        if: success() && github.event_name != 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(python -c "import json; print('core-research-20261027-' + json.load(open('core_results/Momentum_core_decision.json'))['source_fingerprint'][:12])")
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url --jq .url; then
+            exit 0
+          fi
+          mkdir -p research_export
+          cp .momentum_core_cache.sealed research_export/Momentum_core_cache.sealed
+          git archive --format=tar.gz HEAD > research_export/Momentum_core_source.tar.gz
+          tar --exclude='*.p7m' -czf research_export/Momentum_core_results.tar.gz -C core_results .
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('research_export')
+          readme = """# MomentumCloud Core: frozen research package
+          
+          The cache is encrypted and authenticated. No API credential is stored
+          in this package. Keep the ORIGINAL Massive/Polygon API credential
+          privately if you want to recover this cache after rotating that key.
+          An active paid subscription is NOT required for local decryption.
+          
+          Extract these files, then run from their directory with Python 3.12:
+          
+              mkdir -p source
+              tar -xzf Momentum_core_source.tar.gz -C source
+              python -m pip install -r source/requirements.txt
+              export POLYGON_API_KEY='<original private key>'
+              python source/cache_momentum_inputs.py unseal --sealed Momentum_core_cache.sealed --cache-dir research_cache
+              unset POLYGON_API_KEY
+              python source/run_momentum_core.py --offline --start 2024-01-01 --end 2026-09-01 --cache-dir research_cache --output-dir replay
+              python source/audit_momentum_core.py research_cache replay
+          
+          Decryption and offline market replay make no API calls. Installing
+          Python packages may need internet. Original results are in
+          Momentum_core_results.tar.gz. Metric values, gates, trades, daily NAV,
+          targets, input fingerprint and source fingerprint must match; run
+          timestamps, offline flag and GITHUB_SHA environment metadata can differ.
+          
+          Development history is not independent forward evidence and does
+          not authorize real-money purchases. The draft is intentionally
+          unpublished. Downloaded files remain usable without a data plan.
+          """
+          (root / 'Momentum_core_reproduce.md').write_text(readme)
+          decision = json.loads(Path('core_results/Momentum_core_decision.json').read_text())
+          manifest = {k: decision[k] for k in ('model', 'start', 'end', 'status', 'config', 'source_fingerprint', 'input_fingerprint', 'metrics', 'double_cost_metrics')}
+          manifest['source_commit'] = os.environ['GITHUB_SHA']
+          manifest['files_sha256'] = {}
+          for path in sorted(root.iterdir()):
+              with path.open('rb') as stream:
+                  manifest['files_sha256'][path.name] = hashlib.file_digest(stream, 'sha256').hexdigest()
+          (root / 'Momentum_core_manifest.json').write_text(json.dumps(manifest, indent=2))
+          PY
+          gh release create "$tag" research_export/* --repo "$GITHUB_REPOSITORY" \
+            --draft --target "$GITHUB_SHA" --title "Momentum Core frozen research 2026-10-27" \
+            --notes "Encrypted input cache, exact source, validated results, offline instructions and SHA-256 manifest. No live trading approval."
       - name: Remove superseded unencrypted research caches
         if: success() && github.event_name != 'schedule'
         uses: actions/github-script@v7
