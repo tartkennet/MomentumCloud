@@ -14,6 +14,7 @@ on:
       - "requirements.txt"
       - "archive_momentum_inputs.py"
       - "cache_momentum_inputs.py"
+      - "audit_momentum_core.py"
       - "docs/validation_archive_recipient.pem"
       - "tests/test_momentum_core.py"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
@@ -30,6 +31,7 @@ on:
       - "requirements.txt"
       - "archive_momentum_inputs.py"
       - "cache_momentum_inputs.py"
+      - "audit_momentum_core.py"
       - "docs/validation_archive_recipient.pem"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
@@ -96,6 +98,30 @@ jobs:
               previous = allowed
           PY
           python run_momentum_core.py --start 2024-01-01 --end 2026-09-01 2>&1 | tee core_results/replay.log
+      - name: Reproduce historical result without a data API and reconcile accounting
+        if: github.event_name != 'schedule'
+        run: |
+          python run_momentum_core.py --offline --start 2024-01-01 --end 2026-09-01 --output-dir core_offline_results > core_results/offline_replay.log 2>&1
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          a, b = Path('core_results'), Path('core_offline_results')
+          first = json.loads((a / 'Momentum_core_decision.json').read_text())
+          other = json.loads((b / 'Momentum_core_decision.json').read_text())
+          fields = ('config', 'status', 'metrics', 'gates', 'double_cost_metrics', 'double_cost_gates', 'source_fingerprint', 'input_fingerprint', 'unresolved_cash_claims')
+          for field in fields:
+              assert first[field] == other[field], field
+          names = ('daily.csv', 'trades.csv', 'periods.csv', 'targets.json', 'state.json', 'inputs.json', 'paper_orders.json')
+          hashes = {}
+          for suffix in names:
+              name = 'Momentum_core_' + suffix
+              assert (a / name).read_bytes() == (b / name).read_bytes(), name
+              hashes[name] = hashlib.sha256((a / name).read_bytes()).hexdigest()
+          report = {'status': 'PASS', 'api_access': False, 'decision_fields_compared': fields, 'identical_files_sha256': hashes}
+          (a / 'Momentum_core_offline_audit.json').write_text(json.dumps(report, indent=2))
+          print(json.dumps(report, indent=2))
+          PY
+          python audit_momentum_core.py .momentum_core_cache core_results
       - name: Restore frozen forward paper record
         if: github.event_name == 'schedule'
         uses: actions/cache/restore@v4
@@ -181,9 +207,12 @@ jobs:
         if: always() && hashFiles('core_results/Momentum_core_inputs.p7m') != ''
         with:
           name: Momentum_Core_private_inputs
-          path: core_results/Momentum_core_inputs.p7m
+          path: |
+            core_results/Momentum_core_inputs.p7m
+            .momentum_core_cache.sealed
+          include-hidden-files: true
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 90
       - name: Remove superseded unencrypted research caches
         if: success() && github.event_name != 'schedule'
         uses: actions/github-script@v7

@@ -1,4 +1,42 @@
-# Production v1 runbook
+# MomentumCloud runbook
+
+## Aktiv Core-pappersdrift
+
+Det aktiva workflowet heter `Momentum Core candidate`. PR/push och manuell
+start kör utvecklingstestet 2024-01-01–2026-09-01 samt dubbel handelskostnad.
+Schemat tisdag–lördag 06:30 UTC registrerar föregående avslutade USA-session
+som framåtriktad pappershandel från 2026-10-27.
+
+`run_momentum_core.py` skriver `Momentum_core_decision.json`. `DATA_BLOCKED`
+betyder beräkningsstopp; `NO_GO` betyder ett fullföljt ekonomiskt underkännande.
+Ett historiskt `PAPER_ONLY` ger ingen livebehörighet. Läs måtten och gatesen i
+`Momentum_Core_evidence`; workflowets färg är inget investeringsbeslut.
+
+Paper-kontot, dess identitet och dubbelkostnadskontot återställs före nästa
+session. Ändrad källidentitet eller förlorad ursprunglig checkpoint efter
+startfristen blockerar evidensen. Bevara tidigare resultat; rekonstruera
+inte gammal paper-historik och kalla den framåtriktad.
+
+Rådatacachen autentiseras och krypteras med befintlig API-credential.
+`Momentum_Core_private_inputs` innehåller både mottagarkrypterat forskningsarkiv
+och den autentiserade krypterade cachen. Ingen privat nyckel finns i repot.
+Den krypterade cachen kan öppnas med `cache_momentum_inputs.py unseal` och den
+ursprungliga API-nyckeln i miljövariabeln `POLYGON_API_KEY`; ingen nätkontakt
+eller aktiv betalplan behövs för dekrypteringen. Spara nyckeln privat om detta
+återställningssätt ska användas efter en nyckelrotation.
+
+Ett fullständigt uppackat underlag körs med `--offline` utan marknadsdata-API.
+Workflowet kontrollerar identiska filer och mått vid offlineåterkörning, och
+`audit_momentum_core.py` stämmer av kassa, aktier, fordringar, faktiska
+öppningskurser, avgifter, SPY och prestationsmått separat från replaymotorn.
+
+Core skickar inga brokerorder och uppdaterar inte gamla Buy Now eller
+dashboarden. Dashboarden visar ett historiskt v4-snapshot.
+
+## Historisk v4 — endast manuell drift
+
+Anvisningarna nedan gäller den tidigare v4-implementationen. Dess två workflow
+är manuella och ingår inte i Core-pappersdriften.
 
 ## Första driftsättning
 

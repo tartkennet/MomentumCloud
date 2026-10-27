@@ -278,6 +278,10 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "VTYX": {
+        "effective_date": "2026-03-04", "cash_per_share": 14.0,
+        "source_url": "https://beta.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-127",
+    },
     "CDTX": {
         "effective_date": "2026-01-07", "cash_per_share": 221.50,
         "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-2",
