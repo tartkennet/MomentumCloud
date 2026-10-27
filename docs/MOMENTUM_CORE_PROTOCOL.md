@@ -57,6 +57,11 @@ valued, non-tradable fraction (no invented cash-in-lieu fill). Unknown missing
 prices for held securities block the run. A missing buy open cancels that
 order and leaves cash; it does not cause a hindsight replacement. Missing sell
 opens block the run. Ticker changes do not splice unverified signal histories.
+Non-tradable contingent merger rights are recorded separately at zero carrying
+value, with their contractual maximum disclosed; they are not guaranteed cash.
+An old merger/ticker conversion cannot cancel or rename a new issuer's order
+formed after that event. Corporate-action cancellation applies across the
+signal-to-execution interval, not indefinitely to a symbol that can be reused.
 
 ## Evidence and approval
 

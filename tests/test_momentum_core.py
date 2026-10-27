@@ -169,6 +169,18 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {})
         self.assertEqual(ledger.trades[0]["side"], "BUY_CANCELLED_NO_OPEN")
 
+    def test_past_corporate_action_does_not_block_a_reused_ticker(self):
+        for kind in ("cash", "stock"):
+            with self.subTest(kind=kind):
+                data = MemoryData(self.days, [{"A": [100, 100, 1_000_000]} for _ in self.days])
+                if kind == "cash":
+                    data.cash_actions = {"A": {"effective_date": "2023-01-01", "cash_per_share": 10}}
+                else:
+                    data.stock_actions = {"A": {"effective_date": "2023-01-01", "successor_ticker": "OLD", "shares_per_share": 1}}
+                ledger = Ledger(cash=1000, pending=order(self.days[0], 1000, A=.5))
+                ledger.execute_open(data, self.days[1])
+                self.assertEqual(ledger.shares, {"A": 5})
+
     def test_missing_sell_and_held_close_block(self):
         ledger = Ledger(cash=0, shares={"MISSING": 10}, pending=order(self.days[0], 1000))
         with self.assertRaises(DataBlocked):
@@ -217,6 +229,18 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {})
         self.assertEqual(ledger.cash, 0)
         self.assertEqual(ledger.close_value(self.data, self.days[1])[0], 1100)
+
+    def test_fusn_contingent_right_is_preserved_without_inventing_three_dollars(self):
+        day = "2024-06-04"
+        data = MemoryData([day], [{}], cash_actions=CoreData.cash_actions)
+        ledger = Ledger(cash=0, shares={"FUSN": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {})
+        self.assertEqual(ledger.cash, 0)
+        self.assertEqual(ledger.close_value(data, day)[0], 210)
+        right = next(r for r in ledger.receivables if r["reason"] == "CONTINGENT_VALUE_RIGHT_UNPRICED")
+        self.assertEqual(right["maximum_amount"], 30)
+        self.assertEqual(right["amount"], 0)
 
     def test_stock_exchange_preserves_economic_interest(self):
         self.data.stock_actions = {"A": {"effective_date": self.days[1],

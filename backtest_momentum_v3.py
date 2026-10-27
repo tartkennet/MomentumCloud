@@ -278,6 +278,13 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "FUSN": {
+        "effective_date": "2024-06-04", "cash_per_share": 21.0,
+        "contingent_cash_per_share": 3.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.astrazeneca.com/media-centre/press-releases/2024/acquisition-of-fusion-completed.html",
+        "terms_source_url": "https://www.sec.gov/Archives/edgar/data/1805890/000119312524113909/d794805ddefm14a.htm",
+    },
     "ALPN": {
         "effective_date": "2024-05-20", "cash_per_share": 65.0,
         "reason": "CASH_MERGER", "execution": "cash-settlement",

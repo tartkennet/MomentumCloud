@@ -176,6 +176,7 @@ def run(start, end, output_dir, cache_dir, mode="development", *, offline=False)
                          "USD gross of tax, zero cash interest; no SEK performance claim.",
                          "Historical reference/bar revisions and ticker reuse need independent audit.",
                          "Cash merger claims without pay dates are not reinvested.",
+                         "Unpriced contingent merger rights are recorded separately at zero; their maximum is not cash.",
                          "Stock-merger fractions are valued but not traded."])
         write_csv(output / "Momentum_core_daily.csv", [
             dict(row, spy_nav=other["nav"]) for row, other in zip(strategy.equity, benchmark.equity)])
