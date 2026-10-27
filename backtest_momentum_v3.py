@@ -364,6 +364,11 @@ CASH_CORPORATE_ACTIONS = {
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
 STOCK_CORPORATE_ACTIONS = {
+    "FORD": {
+        "effective_date": "2025-11-17", "successor_ticker": "FWDI",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.nasdaq.com/press-release/forward-industries-announces-nasdaq-ticker-symbol-change-fwdi-effective-november-17",
+    },
     "MFH": {
         "effective_date": "2025-11-13", "successor_ticker": "CD",
         "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",

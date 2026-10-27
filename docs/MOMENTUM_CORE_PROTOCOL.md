@@ -104,3 +104,7 @@ and dividends are preserved with the source revision and input hashes.
 silently fetching or replacing it. The workflow exports the research inputs
 encrypted to a private recipient; no raw input archive is published in the
 public evidence artifact. This changes input preservation, not the strategy.
+Actions raw-input caches are authenticated and encrypted with the existing
+credential before upload; superseded unencrypted Core caches are removed after
+a successful export. The separate recipient-encrypted archive supports offline
+research even after an API credential is rotated.
