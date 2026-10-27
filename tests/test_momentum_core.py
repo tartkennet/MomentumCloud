@@ -289,6 +289,20 @@ class EvidenceTests(unittest.TestCase):
         self.assertAlmostEqual(ledger.close_value(data, "2024-02-12")[0], 312.6)
         self.assertEqual(ledger.cash, 0)
 
+    def test_verified_cash_mergers_do_not_invent_market_fills_or_payment_dates(self):
+        cases = [("AMAM", "2024-03-07", 28.0), ("HARP", "2024-03-11", 23.0),
+                 ("ALPN", "2024-05-20", 65.0), ("LBPH", "2024-12-02", 60.0),
+                 ("SLNO", "2026-05-18", 53.0)]
+        for ticker, day, consideration in cases:
+            with self.subTest(ticker=ticker):
+                data = MemoryData([day], [{}], cash_actions=CoreData.cash_actions)
+                ledger = Ledger(cash=0, shares={ticker: 10})
+                ledger.events_before_open(data, day)
+                self.assertAlmostEqual(ledger.close_value(data, day)[0], 10 * consideration)
+                self.assertEqual(ledger.cash, 0)
+                self.assertEqual(ledger.fees, 0)
+                self.assertIsNone(ledger.receivables[0]["pay_date"])
+
     def test_resumed_base_and_stress_match_complete_replay(self):
         data = long_data()
         sessions = data.days[-45:]

@@ -278,6 +278,21 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "ALPN": {
+        "effective_date": "2024-05-20", "cash_per_share": 65.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-229",
+    },
+    "LBPH": {
+        "effective_date": "2024-12-02", "cash_per_share": 60.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://mb.cision.com/Main/18215/4074636/3146423.pdf",
+    },
+    "SLNO": {
+        "effective_date": "2026-05-18", "cash_per_share": 53.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1484565/000119312526228016/d143266d8k.htm",
+    },
     "AMAM": {
         "effective_date": "2024-03-07", "cash_per_share": 28.0,
         "reason": "CASH_MERGER", "execution": "cash-settlement",
