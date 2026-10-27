@@ -7,6 +7,8 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "archive_momentum_inputs.py"
+      - "docs/validation_archive_recipient.pem"
       - "tests/test_momentum_core.py"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
@@ -15,6 +17,8 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "archive_momentum_inputs.py"
+      - "docs/validation_archive_recipient.pem"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
   schedule:
@@ -115,6 +119,14 @@ jobs:
         with:
           path: core_paper_results
           key: momentum-core-forward-v1-${{ github.run_id }}
+      - name: Preserve encrypted research inputs and exact source
+        if: always() && github.event_name != 'schedule' && hashFiles('.momentum_core_cache/**/*.gz') != ''
+        run: |
+          python archive_momentum_inputs.py --output "$RUNNER_TEMP/Momentum_core_inputs.tar.gz"
+          openssl cms -encrypt -aes-256-cbc -binary -outform DER \
+            -in "$RUNNER_TEMP/Momentum_core_inputs.tar.gz" \
+            -out core_results/Momentum_core_inputs.p7m \
+            docs/validation_archive_recipient.pem
       - uses: actions/upload-artifact@v4
         if: always()
         with:

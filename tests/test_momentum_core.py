@@ -14,7 +14,7 @@ from momentum_core import (
     CONFIG, DataBlocked, Ledger, adjusted_history, capped_weights, gates,
     metrics, risk_on, select_targets,
 )
-from momentum_core_data import CoreData, paginate
+from momentum_core_data import CoreData, atomic_json, paginate
 from run_momentum_core import replay, resume_paper, run, verify_forward_prefix
 
 
@@ -243,6 +243,52 @@ class LedgerTests(unittest.TestCase):
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_saved_inputs_replay_without_a_client_or_calendar_request(self):
+        days = long_data().days
+        day = days[-1]
+        rows = [{"ticker": f"S{k}", "name": f"Company {k}", "type": "CS",
+                 "active": True, "primary_exchange": "XNYS"} for k in range(1000)]
+        prices = {f"S{k}": [100, 101, 100_000] for k in range(1000)}
+        prices["SPY"] = [400, 401, 1_000_000]
+        client = unittest.mock.Mock()
+        client._get.return_value = {"status": "OK", "results": []}
+        with tempfile.TemporaryDirectory() as directory:
+            with patch("momentum_core_data.fetch_spy_trading_calendar", return_value=days):
+                online = CoreData(client, day, day, directory)
+            for stamp in days[-2:]:
+                atomic_json(Path(directory) / "raw-v1" / f"{stamp}.json.gz",
+                            {"basis": "RAW", "version": 1, "date": stamp, "bars": prices})
+            atomic_json(Path(directory) / "universe-v1" / f"{day}.json.gz",
+                        {"basis": "PIT_REFERENCE_V1", "date": day, "records": rows})
+            expected = online.history(day, "SPY", 2)
+            online.universe(day)
+            forbidden = unittest.mock.Mock()
+            forbidden._get.side_effect = AssertionError("Offline must not call an API")
+            with patch("momentum_core_data.fetch_spy_trading_calendar", side_effect=AssertionError("No calendar API")):
+                offline = CoreData(forbidden, day, day, directory, offline=True)
+                self.assertEqual(offline.history(day, "SPY", 2), expected)
+                self.assertEqual(offline.universe(day), rows)
+                self.assertEqual(online.input_fingerprint(), offline.input_fingerprint())
+            forbidden._get.assert_not_called()
+            (Path(directory) / "universe-v1" / f"{day}.json.gz").unlink()
+            with self.assertRaisesRegex(DataBlocked, "Offline input missing: universe"):
+                offline.universe(day)
+
+    def test_offline_cannot_substitute_a_new_calendar_for_missing_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(DataBlocked, "Offline input missing"):
+                CoreData(None, "2024-01-01", "2026-09-01", directory, offline=True)
+
+    def test_actual_imgn_merger_resolves_the_observed_missing_close(self):
+        data = MemoryData(["2024-02-09", "2024-02-12"],
+                          [{"IMGN": [31.2, 31.2, 100_000]}, {}],
+                          cash_actions=CoreData.cash_actions)
+        ledger = Ledger(cash=0, shares={"IMGN": 10})
+        ledger.events_before_open(data, "2024-02-12")
+        self.assertEqual(ledger.shares, {})
+        self.assertAlmostEqual(ledger.close_value(data, "2024-02-12")[0], 312.6)
+        self.assertEqual(ledger.cash, 0)
+
     def test_resumed_base_and_stress_match_complete_replay(self):
         data = long_data()
         sessions = data.days[-45:]

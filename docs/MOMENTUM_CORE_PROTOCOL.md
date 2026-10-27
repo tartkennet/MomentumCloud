@@ -90,3 +90,12 @@ live_approved is false. No broker order submission exists in this candidate.
 The cost assumption, market-close risk gate, open fills, and gross-of-tax
 dividends are explicit modelling limitations, not guaranteed execution or
 capital protection. Performance is not used to retune the frozen candidate.
+
+## Reproducibility with one paid data period
+
+The observed session calendar, raw prices, dated instrument records, splits
+and dividends are preserved with the source revision and input hashes.
+`--offline` makes no API calls and blocks on any missing input rather than
+silently fetching or replacing it. The workflow exports the research inputs
+encrypted to a private recipient; no raw input archive is published in the
+public evidence artifact. This changes input preservation, not the strategy.
