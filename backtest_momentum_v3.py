@@ -278,6 +278,17 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "AMAM": {
+        "effective_date": "2024-03-07", "cash_per_share": 28.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-103",
+    },
+    "HARP": {
+        "effective_date": "2024-03-11", "cash_per_share": 23.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.merck.com/news/merck-completes-acquisition-of-harpoon-therapeutics-inc/",
+        "terms_source_url": "https://www.merck.com/news/merck-to-acquire-harpoon-therapeutics-further-diversifying-oncology-pipeline/",
+    },
     "IMGN": {
         "effective_date": "2024-02-12", "cash_per_share": 31.26,
         "reason": "CASH_MERGER", "execution": "cash-settlement",
