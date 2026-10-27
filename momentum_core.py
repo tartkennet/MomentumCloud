@@ -70,9 +70,13 @@ def adjusted_history(data: MarketData, day, ticker, count):
     rows = data.history(day, ticker, count)
     if len(rows) != count:
         return []
-    source = getattr(data, "splits_by_ticker", {}).get(ticker, []) if hasattr(data, "splits_by_ticker") else data.splits
-    events = [e for e in source if e.get("ticker") == ticker
-              and rows[-1][0] < e["execution_date"] <= day]
+    if hasattr(data, "signal_splits"):
+        source = data.signal_splits(day, ticker)
+        events = [e for e in source if rows[-1][0] < e["execution_date"] <= day]
+    else:
+        source = getattr(data, "splits_by_ticker", {}).get(ticker, []) if hasattr(data, "splits_by_ticker") else data.splits
+        events = [e for e in source if e.get("ticker") == ticker
+                  and rows[-1][0] < e["execution_date"] <= day]
     result = []
     for stamp, bar in rows:
         close = number(bar[1]) if bar else None

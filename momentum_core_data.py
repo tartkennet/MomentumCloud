@@ -163,11 +163,51 @@ class CoreData:
         self._remember(f"raw/{day}", result)
         return result
 
+    @lru_cache(maxsize=16384)
+    def _signal_lineage(self, day, ticker):
+        """Only verified 1:1 renames already effective on the signal date."""
+        lineage, seen = [], {ticker}
+        current, cutoff = ticker, day
+        while True:
+            matches = [(old, event) for old, event in self.stock_actions.items()
+                       if event.get("reason") == "TICKER_CHANGE"
+                       and event.get("shares_per_share") == 1.0
+                       and event.get("successor_ticker") == current
+                       and event["effective_date"] <= cutoff]
+            if not matches:
+                return tuple(lineage)
+            if len(matches) != 1:
+                raise DataBlocked(f"Ambiguous verified ticker lineage {ticker} {day}")
+            old, event = matches[0]
+            if old in seen:
+                raise DataBlocked(f"Cyclic ticker lineage {ticker} {day}")
+            lineage.append((event["effective_date"], old))
+            seen.add(old)
+            current, cutoff = old, event["effective_date"]
+
+    @staticmethod
+    def _historical_symbol(ticker, stamp, lineage):
+        for effective, predecessor in lineage:
+            if stamp < effective:
+                ticker = predecessor
+            else:
+                break
+        return ticker
+
+    def signal_splits(self, day, ticker):
+        lineage = self._signal_lineage(day, ticker)
+        names = (ticker,) + tuple(old for _, old in lineage)
+        return [event for name in names for event in self.splits_by_ticker.get(name, [])
+                if event["execution_date"] <= day
+                and event["ticker"] == self._historical_symbol(ticker, event["execution_date"], lineage)]
+
     def history(self, day, ticker, count):
         end = self.index[day]
         if end + 1 < count:
             return []
-        return [(stamp, self.bars(stamp).get(ticker))
+        lineage = self._signal_lineage(day, ticker)
+        return [(stamp, self.bars(stamp).get(
+                    self._historical_symbol(ticker, stamp, lineage) if lineage else ticker))
                 for stamp in reversed(self.days[end + 1 - count:end + 1])]
 
     def universe(self, day):

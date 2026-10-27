@@ -284,6 +284,67 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {})
 
 
+
+class VerifiedSignalIdentityTests(unittest.TestCase):
+    def data(self, days, bars, actions, splits=()):
+        data = object.__new__(CoreData)
+        data.days = days
+        data.index = {day: i for i, day in enumerate(days)}
+        data.stock_actions = actions
+        data.bars = lambda day: bars[day]
+        data.splits = list(splits)
+        data.splits_by_ticker = {}
+        for event in splits:
+            data.splits_by_ticker.setdefault(event["ticker"], []).append(event)
+        return data
+
+    def test_verified_rename_does_not_reset_momentum_or_position_weights(self):
+        original = long_data()
+        before, day = original.days[280], original.days[-1]
+        bars = {stamp: dict(rows) for stamp, rows in original.by_day.items()}
+        for stamp in original.days[280:]:
+            bars[stamp]["NEW"] = bars[stamp].pop("S19")
+        action = {"S19": {"effective_date": before, "successor_ticker": "NEW",
+                          "shares_per_share": 1.0, "reason": "TICKER_CHANGE"}}
+        data = self.data(original.days, bars, action)
+        data.universe = lambda _: [dict(r, ticker="NEW") if r["ticker"] == "S19" else r for r in original.records]
+        expected, count = select_targets(original, day)
+        actual, actual_count = select_targets(data, day)
+        expected = [dict(r, ticker="NEW") if r["ticker"] == "S19" else r for r in expected]
+        self.assertEqual(actual_count, count)
+        self.assertEqual(actual, expected)
+        self.assertEqual(adjusted_history(data, day, "NEW", 253),
+                         adjusted_history(original, day, "S19", 253))
+
+    def test_reused_aris_history_and_splits_do_not_contaminate_armn(self):
+        days = ["2026-02-17", "2026-02-18", "2026-02-19"]
+        bars = {days[0]: {"ARMN": [10, 10, 100], "ARIS": [999, 999, 100]},
+                days[1]: {"ARMN": [11, 11, 100], "ARIS": [888, 888, 100]},
+                days[2]: {"ARIS": [12, 12, 100]}}
+        unrelated = {"ticker": "ARIS", "execution_date": days[1], "split_from": 100, "split_to": 1}
+        data = self.data(days, bars, CoreData.stock_actions, [unrelated])
+        self.assertEqual(adjusted_history(data, days[2], "ARIS", 3), [12, 11, 10])
+        self.assertEqual(adjusted_history(data, days[1], "ARMN", 2), [11, 10])
+        self.assertEqual(adjusted_history(data, days[1], "ARIS", 2), [888, 99900])
+
+    def test_predecessor_split_is_preserved_and_future_split_is_ignored(self):
+        days = ["2026-02-17", "2026-02-18", "2026-02-19"]
+        bars = {days[0]: {"OLD": [20, 20, 100]},
+                days[1]: {"OLD": [10, 10, 200]}, days[2]: {"NEW": [11, 11, 200]}}
+        actions = {"OLD": {"effective_date": days[2], "successor_ticker": "NEW",
+                            "shares_per_share": 1.0, "reason": "TICKER_CHANGE"}}
+        splits = [{"ticker": "OLD", "execution_date": days[1], "split_from": 1, "split_to": 2},
+                  {"ticker": "NEW", "execution_date": "2026-02-20", "split_from": 1, "split_to": 10}]
+        data = self.data(days, bars, actions, splits)
+        self.assertEqual(adjusted_history(data, days[2], "NEW", 3), [11, 10, 10])
+
+    def test_stock_merger_does_not_splice_acquirer_and_target_histories(self):
+        days = ["2026-01-08", "2026-01-09"]
+        bars = {days[0]: {"HOUS": [10, 10, 100], "COMP": [100, 100, 100]},
+                days[1]: {"COMP": [101, 101, 100]}}
+        data = self.data(days, bars, CoreData.stock_actions)
+        self.assertEqual(adjusted_history(data, days[1], "COMP", 2), [101, 100])
+
 class EvidenceTests(unittest.TestCase):
     def test_saved_inputs_replay_without_a_client_or_calendar_request(self):
         days = long_data().days
