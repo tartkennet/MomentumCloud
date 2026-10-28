@@ -1,0 +1,1593 @@
+{
+  "protocol_sha256": "3fe59b565a5342552c69bf0a68a647e0f1dedbc94643b67bb383c5984bcb039f",
+  "model_source_fingerprint": "c88761ba2ca70c42298a647b641a3f5e4a98fcb6592f0b76d7817daaee1008e2",
+  "baseline_input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+  "source_commit": "f768f813f8e6cb74e1a0edffc74c8ca9c7c74eb9",
+  "evidence_class": "DEVELOPMENT_SENSITIVITY",
+  "live_approved": false,
+  "broker_orders_enabled": false,
+  "payment_dates_verified": false,
+  "selection_or_gates_changed": false,
+  "delays_fixed_before_run": [
+    null,
+    0,
+    1,
+    5,
+    20
+  ],
+  "attempts": [
+    {
+      "name": "baseline_15bps",
+      "assumed_delay_sessions": null,
+      "one_way_cost": 0.0015,
+      "payment_assumptions": [],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "d312790457363d174257b0593385ed26744fbf42a0e0dda89654399c5ad36f1b",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 44.305365408499895,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -21.137134435500073,
+        "DailyMaxDrawdown_pct": -37.52383373192537,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 4365.930991500002,
+        "FinalNAV_USD": 144305.3654084999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.305365408499895,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -21.137134435500073,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.52383373192537,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "IMGN",
+          "amount": 4595.22,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "AMAM",
+          "amount": 4928.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "ALPN",
+          "amount": 7020.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "FUSN",
+          "amount": 3297.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 471.0
+        },
+        {
+          "ticker": "LBPH",
+          "amount": 6060.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "CDTX",
+          "amount": 4430.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "VTYX",
+          "amount": 9492.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "TERN",
+          "amount": 12561.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        }
+      ],
+      "baseline_byte_parity": {
+        "Momentum_core_daily.csv": "5de126ba2fbbc1a7be65040c1b7b34100e1e0cc843cbe45d7bfb467976ff4a74",
+        "Momentum_core_trades.csv": "2beb5f65cc1cd1e593b5572ba181cac9e3db4840734474d90e2aded3547d733b",
+        "Momentum_core_periods.csv": "bb47e09ee7f13bcc12e2a2895a0261da6b1abcff927dae235398bea3c5869dc6",
+        "Momentum_core_targets.json": "92866c1505ef16437c5b45eab570115dd83c4ab38e1b39ac5a483aec80bd1217",
+        "Momentum_core_state.json": "fafd7ce48c8c03b9aaf23e2ea7fc77075ffece30ca4e08c4a81629ff77095177"
+      },
+      "independent_accounting_audit": "PASS",
+      "mean_stock_exposure_pct": 72.64782472538067,
+      "maximum_drawdown_interval": {
+        "peak_date": "2024-11-13",
+        "trough_date": "2025-03-27",
+        "peak_nav_usd": 143808.34396749997,
+        "trough_nav_usd": 89845.94008449995
+      },
+      "mean_stock_exposure_during_drawdown_pct": 69.36691916095108,
+      "max_observed_stock_weight_pct": 20.60906679398004,
+      "max_nav_error_usd": 0.0
+    },
+    {
+      "name": "baseline_30bps",
+      "assumed_delay_sessions": null,
+      "one_way_cost": 0.003,
+      "payment_assumptions": [],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "353bd40555d18a2c754cb1b1292c9f9395f8b3a5b0b67b5a79400a904d75d77e",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 39.54028368460003,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -25.444634027399957,
+        "DailyMaxDrawdown_pct": -37.86827649850489,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 8518.713155400006,
+        "FinalNAV_USD": 139540.28368460003
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 39.54028368460003,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -25.444634027399957,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.86827649850489,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "IMGN",
+          "amount": 4595.22,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "AMAM",
+          "amount": 4928.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "ALPN",
+          "amount": 6955.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "FUSN",
+          "amount": 3255.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 465.0
+        },
+        {
+          "ticker": "LBPH",
+          "amount": 6000.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "CDTX",
+          "amount": 4430.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "VTYX",
+          "amount": 9128.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        },
+        {
+          "ticker": "TERN",
+          "amount": 11978.0,
+          "pay_date": null,
+          "reason": "CASH_MERGER"
+        }
+      ],
+      "mean_stock_exposure_pct": 72.37845295359035
+    },
+    {
+      "name": "assumed_0_sessions_15bps",
+      "assumed_delay_sessions": 0,
+      "one_way_cost": 0.0015,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-04",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-07",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-04",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-20",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-02",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-18",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-07",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-11",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-12",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-01",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-12",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-05",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-03-28",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-02-27",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-02",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "be6756787416d33c35eeda7982a7acf664c9381575568546dfdc20d8adc9b6d4",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.45504634819997,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.9874534958,
+        "DailyMaxDrawdown_pct": -47.38774381991081,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5482.127251800003,
+        "FinalNAV_USD": 125455.04634819996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.45504634819997,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.9874534958,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.38774381991081,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 510.0
+        }
+      ],
+      "independent_accounting_audit": "PASS",
+      "mean_stock_exposure_pct": 89.43409615770463,
+      "maximum_drawdown_interval": {
+        "peak_date": "2024-11-13",
+        "trough_date": "2025-03-27",
+        "peak_nav_usd": 144824.81087749996,
+        "trough_nav_usd": 76195.60051119995
+      },
+      "mean_stock_exposure_during_drawdown_pct": 86.35122812779993,
+      "max_observed_stock_weight_pct": 25.30178626624611,
+      "max_nav_error_usd": 0.0
+    },
+    {
+      "name": "assumed_0_sessions_30bps",
+      "assumed_delay_sessions": 0,
+      "one_way_cost": 0.003,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-04",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-07",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-04",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-20",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-02",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-18",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-07",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-11",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-12",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-01",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-12",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-05",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-03-28",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-02-27",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-02",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "bf72b2400e02fe56792a27d8dc414453f634d9a046a8d3c9b47b709328f840d3",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.685967209199905,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.29895050280008,
+        "DailyMaxDrawdown_pct": -47.95461067168425,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10716.432910799998,
+        "FinalNAV_USD": 119685.96720919991
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.685967209199905,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.29895050280008,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95461067168425,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 507.0
+        }
+      ],
+      "mean_stock_exposure_pct": 89.5259530374335
+    },
+    {
+      "name": "assumed_1_sessions_15bps",
+      "assumed_delay_sessions": 1,
+      "one_way_cost": 0.0015,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-05",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-08",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-05",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-21",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-03",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-19",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-08",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-12",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-13",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-02",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-15",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-06",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-01",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-02-28",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-03",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "757461dd0c57eadc4c12220fce1687f53a7733955c8041a7f6989e79e95c68d8",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.51106803549996,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.93143180850001,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5481.342364500009,
+        "FinalNAV_USD": 125511.06803549996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.51106803549996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.93143180850001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 510.0
+        }
+      ],
+      "independent_accounting_audit": "PASS",
+      "mean_stock_exposure_pct": 89.40325738151938,
+      "maximum_drawdown_interval": {
+        "peak_date": "2024-11-13",
+        "trough_date": "2025-03-27",
+        "peak_nav_usd": 144990.84329750002,
+        "trough_nav_usd": 76297.98444099998
+      },
+      "mean_stock_exposure_during_drawdown_pct": 86.36849550122805,
+      "max_observed_stock_weight_pct": 25.284649963935717,
+      "max_nav_error_usd": 0.0
+    },
+    {
+      "name": "assumed_1_sessions_30bps",
+      "assumed_delay_sessions": 1,
+      "one_way_cost": 0.003,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-05",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-08",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-05",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-21",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-03",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-19",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-08",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-12",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-13",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-02",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-15",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-06",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-01",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-02-28",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-03",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "f18e809ce15ffbc55e628b7bd4d4217f770809825e6bbdf1b55a661e2bd77d31",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.581560521200014,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.403357190799966,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10706.796718800011,
+        "FinalNAV_USD": 119581.56052120002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.581560521200014,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.403357190799966,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 507.0
+        }
+      ],
+      "mean_stock_exposure_pct": 89.47406979257384
+    },
+    {
+      "name": "assumed_5_sessions_15bps",
+      "assumed_delay_sessions": 5,
+      "one_way_cost": 0.0015,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-11",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-14",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-11",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-28",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-09",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-26",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-14",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-18",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-20",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-09",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-19",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-12",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-05",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-03-05",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-09",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "13430b195f76c8fc3c1b1e59fbfea0b74fae4a4d813eac51eb5761054d24f9a1",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.51106803549996,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.93143180850001,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5481.342364500009,
+        "FinalNAV_USD": 125511.06803549996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.51106803549996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.93143180850001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 510.0
+        }
+      ],
+      "independent_accounting_audit": "PASS",
+      "mean_stock_exposure_pct": 89.40325738151938,
+      "maximum_drawdown_interval": {
+        "peak_date": "2024-11-13",
+        "trough_date": "2025-03-27",
+        "peak_nav_usd": 144990.84329750002,
+        "trough_nav_usd": 76297.98444099998
+      },
+      "mean_stock_exposure_during_drawdown_pct": 86.36849550122805,
+      "max_observed_stock_weight_pct": 25.284649963935717,
+      "max_nav_error_usd": 0.0
+    },
+    {
+      "name": "assumed_5_sessions_30bps",
+      "assumed_delay_sessions": 5,
+      "one_way_cost": 0.003,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-03-11",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-01-14",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-06-11",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-05-28",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-09",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-05-26",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-03-14",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-03-18",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-02-20",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-09",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-09-19",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-05-12",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-05",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-03-05",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-09",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "61d20ce672e177cda876a6f1c703fa3950b3f7c8cfc9eb27862d51b8a2ac9f59",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.581560521200014,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.403357190799966,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10706.796718800011,
+        "FinalNAV_USD": 119581.56052120002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.581560521200014,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.403357190799966,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 507.0
+        }
+      ],
+      "mean_stock_exposure_pct": 89.47406979257384
+    },
+    {
+      "name": "assumed_20_sessions_15bps",
+      "assumed_delay_sessions": 20,
+      "one_way_cost": 0.0015,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-04-01",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-02-05",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-07-03",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-06-18",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-31",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-06-16",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-04-05",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-04-09",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-03-12",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-30",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-10-10",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-06-03",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-26",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-03-26",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-30",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "393f693a41978d506dab6faa03f586646e8dd67ab80bcb5055a545c53fd98710",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 26.73420549409997,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -38.7082943499,
+        "DailyMaxDrawdown_pct": -47.33864683645119,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5446.168545900002,
+        "FinalNAV_USD": 126734.20549409998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 26.73420549409997,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -38.7082943499,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.33864683645119,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 510.0
+        }
+      ],
+      "independent_accounting_audit": "PASS",
+      "mean_stock_exposure_pct": 88.58152421869208,
+      "maximum_drawdown_interval": {
+        "peak_date": "2024-11-13",
+        "trough_date": "2025-03-27",
+        "peak_nav_usd": 146466.1764075,
+        "trough_nav_usd": 77131.07042309997
+      },
+      "mean_stock_exposure_during_drawdown_pct": 86.28974136200061,
+      "max_observed_stock_weight_pct": 25.238134397928725,
+      "max_nav_error_usd": 0.0
+    },
+    {
+      "name": "assumed_20_sessions_30bps",
+      "assumed_delay_sessions": 20,
+      "one_way_cost": 0.003,
+      "payment_assumptions": [
+        {
+          "ticker": "VTYX",
+          "effective_date": "2026-03-04",
+          "assumed_pay_date": "2026-04-01",
+          "verified": false
+        },
+        {
+          "ticker": "CDTX",
+          "effective_date": "2026-01-07",
+          "assumed_pay_date": "2026-02-05",
+          "verified": false
+        },
+        {
+          "ticker": "FUSN",
+          "effective_date": "2024-06-04",
+          "assumed_pay_date": "2024-07-03",
+          "verified": false
+        },
+        {
+          "ticker": "ALPN",
+          "effective_date": "2024-05-20",
+          "assumed_pay_date": "2024-06-18",
+          "verified": false
+        },
+        {
+          "ticker": "LBPH",
+          "effective_date": "2024-12-02",
+          "assumed_pay_date": "2024-12-31",
+          "verified": false
+        },
+        {
+          "ticker": "SLNO",
+          "effective_date": "2026-05-18",
+          "assumed_pay_date": "2026-06-16",
+          "verified": false
+        },
+        {
+          "ticker": "AMAM",
+          "effective_date": "2024-03-07",
+          "assumed_pay_date": "2024-04-05",
+          "verified": false
+        },
+        {
+          "ticker": "HARP",
+          "effective_date": "2024-03-11",
+          "assumed_pay_date": "2024-04-09",
+          "verified": false
+        },
+        {
+          "ticker": "IMGN",
+          "effective_date": "2024-02-12",
+          "assumed_pay_date": "2024-03-12",
+          "verified": false
+        },
+        {
+          "ticker": "EVRI",
+          "effective_date": "2025-07-01",
+          "assumed_pay_date": "2025-07-30",
+          "verified": false
+        },
+        {
+          "ticker": "OLO",
+          "effective_date": "2025-09-12",
+          "assumed_pay_date": "2025-10-10",
+          "verified": false
+        },
+        {
+          "ticker": "TERN",
+          "effective_date": "2026-05-05",
+          "assumed_pay_date": "2026-06-03",
+          "verified": false
+        },
+        {
+          "ticker": "PGTI",
+          "effective_date": "2024-03-28",
+          "assumed_pay_date": "2024-04-26",
+          "verified": false
+        },
+        {
+          "ticker": "ROVR",
+          "effective_date": "2024-02-27",
+          "assumed_pay_date": "2024-03-26",
+          "verified": false
+        },
+        {
+          "ticker": "FRGE",
+          "effective_date": "2026-03-02",
+          "assumed_pay_date": "2026-03-30",
+          "verified": false
+        }
+      ],
+      "status": "COMPLETE",
+      "live_approved": false,
+      "experiment_fingerprint": "2fe722ba81a42665d1324967700378ba9c3c75a6612f7af87363b3b6acf2d0f3",
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 21.629281782399957,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -43.35563592960003,
+        "DailyMaxDrawdown_pct": -47.95225005651324,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10656.133857600003,
+        "FinalNAV_USD": 121629.28178239996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 21.629281782399957,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -43.35563592960003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95225005651324,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "all_economic_gates_pass": false,
+      "unresolved_cash_claims": [
+        {
+          "ticker": "FUSN",
+          "amount": 0.0,
+          "pay_date": null,
+          "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+          "maximum_amount": 507.0
+        }
+      ],
+      "mean_stock_exposure_pct": 88.66069558328175
+    }
+  ],
+  "batch_completed": true,
+  "executed_script_sha256": "e9f8bead2799b39f9920898e58787216ffe076cd2d8e73dbbeb625e7530c96d0",
+  "verification": {
+    "baseline_byte_identical_exports": 5,
+    "baseline_base_and_stress_metrics_exact": true,
+    "same_target_files_in_all_ten_cases": true,
+    "same_used_input_fingerprint_in_all_cases": true,
+    "base_cost_accounting_audits_passed": 5,
+    "unit_tests_passed": 129,
+    "market_network_connections_allowed": false,
+    "python": "3.12.14"
+  }
+}
