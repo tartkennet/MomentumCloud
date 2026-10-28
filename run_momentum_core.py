@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parent
 SOURCE_FILES = ("momentum_core.py", "momentum_core_data.py", "run_momentum_core.py",
                 "momentum_master_v3.py", "backtest_momentum_v3.py", "momentum_strategy.py",
                 "momentum_config.py", "requirements.txt", "docs/MOMENTUM_CORE_PROTOCOL.md")
-FORWARD_START = "2026-10-27"
-FIRST_PAPER_DEADLINE = datetime(2026, 10, 28, 12, tzinfo=timezone.utc)
+FORWARD_START = "2026-10-29"
+FIRST_PAPER_DEADLINE = datetime(2026, 10, 30, 12, tzinfo=timezone.utc)
 
 
 def source_fingerprint():

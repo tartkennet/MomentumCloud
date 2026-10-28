@@ -434,8 +434,11 @@ class EvidenceTests(unittest.TestCase):
 
     def test_paper_runner_resumes_four_ledgers_and_blocks_lost_original_record(self):
         data = long_data(2026)
+        for stamp in ('2026-10-28', '2026-10-29'):
+            data.by_day[stamp] = {ticker: list(bar) for ticker, bar in data.by_day[data.days[-1]].items()}
+            data.days.append(stamp)
         first_day = data.days[-1]
-        self.assertEqual(first_day, "2026-10-27")
+        self.assertEqual(first_day, "2026-10-29")
         data.first_is_month_boundary = lambda: False
         data.used_inputs = {"fixture": "synthetic; not performance evidence"}
         data.input_fingerprint = lambda: "synthetic-fixture"
@@ -445,22 +448,22 @@ class EvidenceTests(unittest.TestCase):
                  patch("run_momentum_core.CoreData", return_value=data) as factory, \
                  patch("run_momentum_core.date") as clock_date, \
                  patch("run_momentum_core.datetime") as clock, patch("builtins.print"):
-                clock_date.today.return_value = date(2026, 10, 28)
+                clock_date.today.return_value = date(2026, 10, 30)
                 clock_date.fromisoformat.side_effect = date.fromisoformat
-                clock.now.return_value = datetime(2026, 10, 28, 6, 30, tzinfo=timezone.utc)
+                clock.now.return_value = datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc)
                 initial = run(first_day, first_day, directory, directory, "paper")
                 self.assertEqual(initial["status"], "PAPER_COLLECTING")
                 path = Path(directory) / "Momentum_core_paper_checkpoint.json"
                 old = json.loads(path.read_text())
-                data.days.append("2026-10-28")
-                data.by_day["2026-10-28"] = {ticker: list(bar) for ticker, bar in data.by_day[first_day].items()}
-                data.sessions = ["2026-10-28"]
+                data.days.append("2026-10-30")
+                data.by_day["2026-10-30"] = {ticker: list(bar) for ticker, bar in data.by_day[first_day].items()}
+                data.sessions = ["2026-10-30"]
                 data.first_is_month_boundary = lambda: self.fail("Resuming must not restart replay")
-                clock_date.today.return_value = date(2026, 10, 29)
-                clock.now.return_value = datetime(2026, 10, 29, 6, 30, tzinfo=timezone.utc)
-                updated = run(first_day, "2026-10-28", directory, directory, "paper")
+                clock_date.today.return_value = date(2026, 10, 31)
+                clock.now.return_value = datetime(2026, 10, 31, 6, 30, tzinfo=timezone.utc)
+                updated = run(first_day, "2026-10-30", directory, directory, "paper")
                 new = json.loads(path.read_text())
-                self.assertEqual(factory.call_args.args[1], "2026-10-28")
+                self.assertEqual(factory.call_args.args[1], "2026-10-30")
                 self.assertEqual(new["strategy"]["equity"][:1], old["strategy"]["equity"])
                 self.assertGreater(updated["metrics"]["ActualFees_USD"], 0)
                 self.assertGreater(updated["double_cost_metrics"]["ActualFees_USD"],
@@ -469,7 +472,7 @@ class EvidenceTests(unittest.TestCase):
                 path.unlink()
                 factory.reset_mock()
                 with self.assertRaisesRegex(DataBlocked, "retrospective paper reconstruction forbidden"):
-                    run(first_day, "2026-10-28", directory, directory, "paper")
+                    run(first_day, "2026-10-30", directory, directory, "paper")
                 factory.assert_not_called()
 
     def test_clipped_vendor_history_blocks_instead_of_moving_start_forward(self):

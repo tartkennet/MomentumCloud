@@ -36,7 +36,7 @@ on:
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
   schedule:
-    - cron: "30 6 * * 2-6"
+    - cron: "20 0,3,6,9 * * 2-6"
 
 permissions:
   contents: write
@@ -127,8 +127,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: core_paper_results
-          key: momentum-core-forward-v1-${{ github.run_id }}
-          restore-keys: momentum-core-forward-v1-
+          key: momentum-core-forward-v2-${{ github.run_id }}
+          restore-keys: momentum-core-forward-v2-
       - name: Locate previous main paper artifact if cache was evicted
         if: github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_checkpoint.json') == ''
         id: previous_paper
@@ -142,14 +142,14 @@ jobs:
             const run = data.workflow_runs[0];
             if (!run || run.head_repository?.full_name !== `${context.repo.owner}/${context.repo.repo}`) return;
             const {data: files} = await github.rest.actions.listWorkflowRunArtifacts({...context.repo, run_id: run.id});
-            if (files.artifacts.some(a => a.name === 'Momentum_Core_evidence' && !a.expired)) {
+            if (files.artifacts.some(a => a.name === 'Momentum_Core_paper_v2_evidence' && !a.expired)) {
               core.setOutput('run_id', String(run.id));
             }
       - name: Recover the recorded checkpoint from the previous paper artifact
         if: steps.previous_paper.outputs.run_id != ''
         uses: actions/download-artifact@v4
         with:
-          name: Momentum_Core_evidence
+          name: Momentum_Core_paper_v2_evidence
           run-id: ${{ steps.previous_paper.outputs.run_id }}
           github-token: ${{ github.token }}
           path: .core_previous_evidence
@@ -169,7 +169,7 @@ jobs:
         run: |
           mkdir -p core_paper_results
           set -o pipefail
-          python run_momentum_core.py --paper --start 2026-10-27 --output-dir core_paper_results 2>&1 | tee core_paper_results/replay.log
+          python run_momentum_core.py --paper --start 2026-10-29 --output-dir core_paper_results 2>&1 | tee core_paper_results/replay.log
       - name: Seal raw inputs before caching
         if: always() && hashFiles('.momentum_core_cache/**') != ''
         env:
@@ -184,7 +184,7 @@ jobs:
         if: always() && github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_identity.json') != ''
         with:
           path: core_paper_results
-          key: momentum-core-forward-v1-${{ github.run_id }}
+          key: momentum-core-forward-v2-${{ github.run_id }}
       - name: Preserve encrypted research inputs and exact source
         if: always() && github.event_name != 'schedule' && hashFiles('.momentum_core_cache/**/*.gz') != ''
         run: |
@@ -196,7 +196,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Momentum_Core_evidence
+          name: ${{ github.event_name == 'schedule' && 'Momentum_Core_paper_v2_evidence' || 'Momentum_Core_evidence' }}
           path: |
             core_results/
             core_paper_results/

@@ -4,8 +4,8 @@
 
 Det aktiva workflowet heter `Momentum Core candidate`. PR/push och manuell
 start kör utvecklingstestet 2024-01-01–2026-09-01 samt dubbel handelskostnad.
-Schemat tisdag–lördag 06:30 UTC registrerar föregående avslutade USA-session
-som framåtriktad pappershandel från 2026-10-27.
+Schemat tisdag–lördag 00:20, 03:20, 06:20 och 09:20 UTC registrerar föregående avslutade USA-session
+som framåtriktad pappershandel från 2026-10-29.
 
 `run_momentum_core.py` skriver `Momentum_core_decision.json`. `DATA_BLOCKED`
 betyder beräkningsstopp; `NO_GO` betyder ett fullföljt ekonomiskt underkännande.
@@ -80,3 +80,14 @@ En positiv historisk avkastning garanteras inte och får inte tillverkas genom
 efterhandsoptimering. Systemets aktiva regler ändras endast genom ny explicit
 produktversion.
 
+
+## Bevarad misslyckad första paper-start
+
+Den ursprungliga starten 2026-10-27 fick ingen giltig första checkpoint:
+GitHub körde schemat 2026-10-28 13:18 UTC, efter dess startfrist. Den gamla
+artifacten bevaras. Ny cohort v2 börjar först med signal 2026-10-29 och
+registreras senast 2026-10-30 12:00 UTC. Artefakten heter
+`Momentum_Core_paper_v2_evidence`; den gamla cohortens cache eller identitet
+får inte användas. Körförsöken sker 01:20, 04:20, 07:20 och 10:20 svensk
+vintertid. Upprepade körningar återanvänder samma checkpoint och skapar inte
+extra historik. Missas även denna frist ska den riktiga förseningen redovisas.

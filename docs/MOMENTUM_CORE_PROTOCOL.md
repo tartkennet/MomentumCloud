@@ -78,7 +78,7 @@ Daily paper resumes the saved base/stress strategy and benchmark ledgers,
 loading only new sessions plus the rolling signal warmup; it does not depend
 on re-downloading the entire paper history as the API's two-year window moves.
 The full checkpoint is included in each artifact and recovered if the cache is
-evicted. A missing original checkpoint after 2026-10-28 12:00 UTC blocks the
+evicted. A missing original checkpoint after 2026-10-30 12:00 UTC blocks the
 record: retrospective reconstruction cannot masquerade as forward evidence.
 It starts only after the frozen code is published; historical replay is labelled
 DEVELOPMENT. Historical gates retain the five existing economic thresholds:
@@ -111,3 +111,16 @@ Actions raw-input caches are authenticated and encrypted with the existing
 credential before upload; superseded unencrypted Core caches are removed after
 a successful export. The separate recipient-encrypted archive supports offline
 research even after an API credential is rotated.
+
+## Forward cohort v2 (operational restart, 2026-10-28)
+
+The original 2026-10-27 cohort never acquired its first checkpoint: the
+2026-10-28 scheduled job started at 13:18 UTC, after its 12:00 UTC bootstrap
+deadline. That failed record is preserved; it is not reconstructed as paper.
+The corrected source is frozen before a new first signal on 2026-10-29.
+Its original checkpoint must be recorded by 2026-10-30 12:00 UTC. A separate
+v2 cache and artifact prevent adoption of the failed cohort's identity.
+Four scheduled attempts (00:20, 03:20, 06:20 and 09:20 UTC, Tuesday–Saturday)
+reduce dependence on one delayed GitHub schedule. A late first record still
+blocks; no retrospective or fabricated forward history is permitted.
+Historical replay dates, model parameters and economic gates are unchanged.
