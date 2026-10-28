@@ -44,7 +44,7 @@ permissions:
 
 concurrency:
   group: momentum-core-${{ github.head_ref || github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   replay:
