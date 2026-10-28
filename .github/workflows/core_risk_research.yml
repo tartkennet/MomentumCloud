@@ -1,0 +1,103 @@
+name: Fixed Core risk research
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'research_core_stop.py'
+      - 'run_core_risk_research.py'
+      - 'audit_core_risk_research.py'
+      - 'tests/test_core_stop_research.py'
+      - 'docs/CORE_STOP10_PROTOCOL_20261029.md'
+      - '.github/workflows/core_risk_research.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: fixed-core-risk-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  research:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      PYTHONUNBUFFERED: '1'
+      POLYGON_MAX_RETRIES: '8'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Verify original and candidate mechanics
+        run: python -m unittest discover -s tests -v
+      - name: Restore authenticated saved market inputs
+        uses: actions/cache/restore@v4
+        with:
+          path: .momentum_core_cache.sealed
+          key: core-risk-sealed-${{ github.run_id }}
+          restore-keys: |
+            core-risk-sealed-
+            momentum-core-sealed-v1-
+      - name: Open saved input cache
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal
+      - name: Retrieve the immutable original baseline evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: Momentum_Core_evidence
+          run-id: 40772049150
+          github-token: ${{ github.token }}
+          path: .risk_baseline
+      - name: Fixed historical experiment and separately reported extension
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p risk_results
+          set -o pipefail
+          python run_core_risk_research.py \
+            --cache-dir .momentum_core_cache \
+            --baseline-dir .risk_baseline/core_results \
+            --output-dir risk_results \
+            --end 2026-10-28 2>&1 | tee risk_results/study.log
+      - name: Seal reusable input cache
+        if: always() && hashFiles('.momentum_core_cache/**/*.gz') != ''
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py seal
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('.momentum_core_cache.sealed') != ''
+        with:
+          path: .momentum_core_cache.sealed
+          key: core-risk-sealed-${{ github.run_id }}
+      - name: Preserve encrypted inputs and exact study source
+        if: always() && hashFiles('risk_results/**/Momentum_core_decision.json') != ''
+        run: |
+          mkdir -p risk_private
+          decision=$(python -c "from pathlib import Path; print(sorted(Path('risk_results').rglob('Momentum_core_decision.json'))[0])")
+          python archive_momentum_inputs.py --cache-dir .momentum_core_cache \
+            --decision "$decision" --output "$RUNNER_TEMP/core_risk_inputs.tar.gz"
+          openssl cms -encrypt -aes-256-cbc -binary -outform DER \
+            -in "$RUNNER_TEMP/core_risk_inputs.tar.gz" -out risk_private/core_risk_inputs.p7m \
+            docs/validation_archive_recipient.pem
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Momentum_Core_fixed_risk_evidence
+          path: risk_results/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('risk_private/core_risk_inputs.p7m') != ''
+        with:
+          name: Momentum_Core_fixed_risk_private_inputs
+          path: risk_private/core_risk_inputs.p7m
+          if-no-files-found: error
+          retention-days: 90
