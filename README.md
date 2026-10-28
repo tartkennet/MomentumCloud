@@ -1,5 +1,13 @@
 # MomentumCloud — Core-kandidat och historisk v4
 
+Senaste fullständiga Core-testet, 2024-01-01–2026-09-01: **NO_GO**.
+Modellen gav **+44,305365 %**, SPY **+65,442500 %** och maximal daglig
+nedgång var **−37,523834 %**. SPY- och drawdownkraven fallerar. De 129
+funktionstesterna, offlineåterkörningen och den separata redovisningskontrollen
+passerar i [den verifierade körningen](https://github.com/tartkennet/MomentumCloud/actions/runs/40772049150).
+Paper-cohort v2 börjar först med signal 2026-10-29; den missade ursprungliga
+starten bevaras som ett misslyckat försök. Verkliga köp är inte godkända.
+
 Det aktiva omarbetningsarbetet är `momentum-core-v1`. Kandidaten ersätter
 v4:s blandade ranking och individuella fasta stoppar med en enkel
 12–2-ranking, volatilitetsstyrd storlek och daglig SPY-riskkontroll. Historik
@@ -9,7 +17,7 @@ kostnad på faktiskt handlat belopp. Regler och begränsningar är frysta i
 
 ```bash
 python run_momentum_core.py --start 2024-01-01 --end 2026-09-01
-python run_momentum_core.py --paper --start 2026-10-27 --output-dir core_paper_results
+python run_momentum_core.py --paper --start 2026-10-29 --output-dir core_paper_results
 ```
 
 Workflowet **Momentum Core candidate** kör tester, historisk replay och dubbel
