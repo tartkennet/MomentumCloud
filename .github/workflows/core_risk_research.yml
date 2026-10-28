@@ -40,16 +40,19 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - name: Verify original and candidate mechanics
         run: python -m unittest discover -s tests -v
-      - name: Restore the exact immutable baseline input vintage
-        uses: actions/cache/restore@v4
+      - name: Download the immutable original encrypted input artifact
+        uses: actions/download-artifact@v4
         with:
-          path: .momentum_core_cache.sealed
-          key: momentum-core-sealed-v1-40772049150
-          fail-on-cache-miss: true
+          name: Momentum_Core_private_inputs
+          run-id: 40772049150
+          github-token: ${{ github.token }}
+          path: .risk_frozen_inputs
       - name: Open saved input cache
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python cache_momentum_inputs.py unseal
+        run: |
+          cp .risk_frozen_inputs/.momentum_core_cache.sealed .momentum_core_cache.sealed
+          python cache_momentum_inputs.py unseal
       - name: Retrieve the immutable original baseline evidence
         uses: actions/download-artifact@v4
         with:
