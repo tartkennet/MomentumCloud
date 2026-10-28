@@ -147,6 +147,7 @@ def extension_metrics(strategy, benchmark):
     first = next(i for i, row in enumerate(strategy.equity) if row['date'] == CUTOFF)
     s, b = core.Ledger(), core.Ledger()
     s.equity, b.equity = strategy.equity[first:], benchmark.equity[first:]
+    s.fees = strategy.fees - strategy.equity[first]['fees_cumulative']
     s.first_is_month_boundary = True
     result, _ = core.metrics(s, b)
     return dict(result, sessions_after_cutoff=len(s.equity) - 1,

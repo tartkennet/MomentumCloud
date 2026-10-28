@@ -40,19 +40,16 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - name: Verify original and candidate mechanics
         run: python -m unittest discover -s tests -v
-      - name: Download the immutable original encrypted input artifact
-        uses: actions/download-artifact@v4
+      - name: Restore pinned complete inputs for offline verification
+        uses: actions/cache/restore@v4
         with:
-          name: Momentum_Core_private_inputs
-          run-id: 40772049150
-          github-token: ${{ github.token }}
-          path: .risk_frozen_inputs
+          path: .momentum_core_cache.sealed
+          key: core-risk-sealed-40788221889
+          fail-on-cache-miss: true
       - name: Open saved input cache
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: |
-          cp .risk_frozen_inputs/.momentum_core_cache.sealed .momentum_core_cache.sealed
-          python cache_momentum_inputs.py unseal
+        run: python cache_momentum_inputs.py unseal
       - name: Retrieve the immutable original baseline evidence
         uses: actions/download-artifact@v4
         with:
@@ -70,7 +67,7 @@ jobs:
             --cache-dir .momentum_core_cache \
             --baseline-dir .risk_baseline/core_results \
             --output-dir risk_v2_results \
-            --end 2026-10-28 2>&1 | tee risk_v2_results/study.log
+            --end 2026-10-28 --offline 2>&1 | tee risk_v2_results/study.log
       - name: Seal reusable input cache
         if: always() && hashFiles('.momentum_core_cache/**/*.gz') != ''
         env:

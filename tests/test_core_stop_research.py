@@ -180,5 +180,24 @@ class StopResearchTests(unittest.TestCase):
             self.held().step(Data({}), '2024-01-30', benchmark=True)
 
 
+class ExtensionMetadataTests(unittest.TestCase):
+    def test_extension_fees_are_actual_increment_not_default_zero(self):
+        from run_core_risk_research import extension_metrics
+        strategy, benchmark = Ledger(), Ledger()
+        strategy.equity = [
+            {'date': '2026-09-01', 'nav': 1000.0, 'fees_cumulative': 300.0},
+            {'date': '2026-09-02', 'nav': 990.0, 'fees_cumulative': 315.0},
+            {'date': '2026-10-01', 'nav': 1005.0, 'fees_cumulative': 340.0}]
+        benchmark.equity = [
+            {'date': '2026-09-01', 'nav': 1000.0},
+            {'date': '2026-09-02', 'nav': 1001.0},
+            {'date': '2026-10-01', 'nav': 1005.0}]
+        strategy.fees = 340.0
+        result = extension_metrics(strategy, benchmark)
+        self.assertEqual(result['ActualFees_USD'], 40.0)
+        self.assertAlmostEqual(result['TotalReturn_pct'], .5)
+        self.assertEqual(result['sessions_after_cutoff'], 2)
+
+
 if __name__ == '__main__':
     unittest.main()
