@@ -7,6 +7,15 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "backtest_momentum_v3.py"
+      - "momentum_master_v3.py"
+      - "momentum_strategy.py"
+      - "momentum_config.py"
+      - "requirements.txt"
+      - "archive_momentum_inputs.py"
+      - "cache_momentum_inputs.py"
+      - "audit_momentum_core.py"
+      - "docs/validation_archive_recipient.pem"
       - "tests/test_momentum_core.py"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
@@ -15,18 +24,27 @@ on:
     paths:
       - "momentum_core*.py"
       - "run_momentum_core.py"
+      - "backtest_momentum_v3.py"
+      - "momentum_master_v3.py"
+      - "momentum_strategy.py"
+      - "momentum_config.py"
+      - "requirements.txt"
+      - "archive_momentum_inputs.py"
+      - "cache_momentum_inputs.py"
+      - "audit_momentum_core.py"
+      - "docs/validation_archive_recipient.pem"
       - "docs/MOMENTUM_CORE_PROTOCOL.md"
       - ".github/workflows/momentum_core.yml"
   schedule:
-    - cron: "30 6 * * 2-6"
+    - cron: "20 0,3,6,9 * * 2-6"
 
 permissions:
-  contents: read
-  actions: read
+  contents: write
+  actions: write
 
 concurrency:
   group: momentum-core-${{ github.head_ref || github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   replay:
@@ -46,9 +64,14 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - uses: actions/cache/restore@v4
         with:
-          path: .momentum_core_cache
-          key: momentum-core-raw-v1-${{ github.run_id }}
-          restore-keys: momentum-core-raw-v1-
+          path: .momentum_core_cache.sealed
+          key: momentum-core-sealed-v1-${{ github.run_id }}
+          restore-keys: momentum-core-sealed-v1-
+      - name: Open authenticated private input cache
+        if: hashFiles('.momentum_core_cache.sealed') != ''
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal
       - name: Development replay and double-cost stress
         if: github.event_name != 'schedule'
         env:
@@ -56,14 +79,56 @@ jobs:
         run: |
           mkdir -p core_results
           set -o pipefail
+          # Preserve the complete frozen experiment inputs even if a later
+          # held corporate event interrupts the accounting replay.
+          python - <<'PY'
+          import os
+          from momentum_core import risk_on
+          from momentum_core_data import CoreData
+          from momentum_master_v3 import PolygonClient
+          data = CoreData(PolygonClient(os.environ['POLYGON_API_KEY']), '2024-01-01', '2026-09-01')
+          for day in data.days[data.index[data.sessions[0]] - 252:]:
+              data.bars(day)
+          previous, month = False, ''
+          for day in data.sessions:
+              allowed = risk_on(data, day)
+              if allowed and (month != day[:7] or not previous):
+                  data.universe(day)
+                  month = day[:7]
+              previous = allowed
+          PY
           python run_momentum_core.py --start 2024-01-01 --end 2026-09-01 2>&1 | tee core_results/replay.log
+      - name: Reproduce historical result without a data API and reconcile accounting
+        if: github.event_name != 'schedule'
+        run: |
+          python run_momentum_core.py --offline --start 2024-01-01 --end 2026-09-01 --output-dir core_offline_results > core_results/offline_replay.log 2>&1
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          a, b = Path('core_results'), Path('core_offline_results')
+          first = json.loads((a / 'Momentum_core_decision.json').read_text())
+          other = json.loads((b / 'Momentum_core_decision.json').read_text())
+          fields = ('config', 'status', 'metrics', 'gates', 'double_cost_metrics', 'double_cost_gates', 'source_fingerprint', 'input_fingerprint', 'unresolved_cash_claims')
+          for field in fields:
+              assert first[field] == other[field], field
+          names = ('daily.csv', 'trades.csv', 'periods.csv', 'targets.json', 'state.json', 'inputs.json', 'paper_orders.json')
+          hashes = {}
+          for suffix in names:
+              name = 'Momentum_core_' + suffix
+              assert (a / name).read_bytes() == (b / name).read_bytes(), name
+              hashes[name] = hashlib.sha256((a / name).read_bytes()).hexdigest()
+          report = {'status': 'PASS', 'api_access': False, 'decision_fields_compared': fields, 'identical_files_sha256': hashes}
+          (a / 'Momentum_core_offline_audit.json').write_text(json.dumps(report, indent=2))
+          print(json.dumps(report, indent=2))
+          PY
+          python audit_momentum_core.py .momentum_core_cache core_results
       - name: Restore frozen forward paper record
         if: github.event_name == 'schedule'
         uses: actions/cache/restore@v4
         with:
           path: core_paper_results
-          key: momentum-core-forward-v1-${{ github.run_id }}
-          restore-keys: momentum-core-forward-v1-
+          key: momentum-core-forward-v2-${{ github.run_id }}
+          restore-keys: momentum-core-forward-v2-
       - name: Locate previous main paper artifact if cache was evicted
         if: github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_checkpoint.json') == ''
         id: previous_paper
@@ -77,14 +142,14 @@ jobs:
             const run = data.workflow_runs[0];
             if (!run || run.head_repository?.full_name !== `${context.repo.owner}/${context.repo.repo}`) return;
             const {data: files} = await github.rest.actions.listWorkflowRunArtifacts({...context.repo, run_id: run.id});
-            if (files.artifacts.some(a => a.name === 'Momentum_Core_evidence' && !a.expired)) {
+            if (files.artifacts.some(a => a.name === 'Momentum_Core_paper_v2_evidence' && !a.expired)) {
               core.setOutput('run_id', String(run.id));
             }
       - name: Recover the recorded checkpoint from the previous paper artifact
         if: steps.previous_paper.outputs.run_id != ''
         uses: actions/download-artifact@v4
         with:
-          name: Momentum_Core_evidence
+          name: Momentum_Core_paper_v2_evidence
           run-id: ${{ steps.previous_paper.outputs.run_id }}
           github-token: ${{ github.token }}
           path: .core_previous_evidence
@@ -104,23 +169,116 @@ jobs:
         run: |
           mkdir -p core_paper_results
           set -o pipefail
-          python run_momentum_core.py --paper --start 2026-10-27 --output-dir core_paper_results 2>&1 | tee core_paper_results/replay.log
-      - uses: actions/cache/save@v4
+          python run_momentum_core.py --paper --start 2026-10-29 --output-dir core_paper_results 2>&1 | tee core_paper_results/replay.log
+      - name: Seal raw inputs before caching
         if: always() && hashFiles('.momentum_core_cache/**') != ''
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py seal
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('.momentum_core_cache.sealed') != ''
         with:
-          path: .momentum_core_cache
-          key: momentum-core-raw-v1-${{ github.run_id }}
+          path: .momentum_core_cache.sealed
+          key: momentum-core-sealed-v1-${{ github.run_id }}
       - uses: actions/cache/save@v4
         if: always() && github.event_name == 'schedule' && hashFiles('core_paper_results/Momentum_core_paper_identity.json') != ''
         with:
           path: core_paper_results
-          key: momentum-core-forward-v1-${{ github.run_id }}
+          key: momentum-core-forward-v2-${{ github.run_id }}
+      - name: Preserve encrypted research inputs and exact source
+        if: always() && github.event_name != 'schedule' && hashFiles('.momentum_core_cache/**/*.gz') != ''
+        run: |
+          python archive_momentum_inputs.py --output "$RUNNER_TEMP/Momentum_core_inputs.tar.gz"
+          openssl cms -encrypt -aes-256-cbc -binary -outform DER \
+            -in "$RUNNER_TEMP/Momentum_core_inputs.tar.gz" \
+            -out core_results/Momentum_core_inputs.p7m \
+            docs/validation_archive_recipient.pem
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Momentum_Core_evidence
+          name: ${{ github.event_name == 'schedule' && 'Momentum_Core_paper_v2_evidence' || 'Momentum_Core_evidence' }}
           path: |
             core_results/
             core_paper_results/
+            !core_results/*.p7m
           if-no-files-found: error
           retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('core_results/Momentum_core_inputs.p7m') != ''
+        with:
+          name: Momentum_Core_private_inputs
+          path: |
+            core_results/Momentum_core_inputs.p7m
+            .momentum_core_cache.sealed
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve the frozen research package in a private draft release
+        if: success() && github.event_name != 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(python -c "import json; print('core-research-20261027-' + json.load(open('core_results/Momentum_core_decision.json'))['source_fingerprint'][:12])")
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url --jq .url; then
+            exit 0
+          fi
+          mkdir -p research_export
+          cp .momentum_core_cache.sealed research_export/Momentum_core_cache.sealed
+          git archive --format=tar.gz HEAD > research_export/Momentum_core_source.tar.gz
+          tar --exclude='*.p7m' -czf research_export/Momentum_core_results.tar.gz -C core_results .
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('research_export')
+          readme = """# MomentumCloud Core: frozen research package
+          
+          The cache is encrypted and authenticated. No API credential is stored
+          in this package. Keep the ORIGINAL Massive/Polygon API credential
+          privately if you want to recover this cache after rotating that key.
+          An active paid subscription is NOT required for local decryption.
+          
+          Extract these files, then run from their directory with Python 3.12:
+          
+              mkdir -p source
+              tar -xzf Momentum_core_source.tar.gz -C source
+              python -m pip install -r source/requirements.txt
+              export POLYGON_API_KEY='<original private key>'
+              python source/cache_momentum_inputs.py unseal --sealed Momentum_core_cache.sealed --cache-dir research_cache
+              unset POLYGON_API_KEY
+              python source/run_momentum_core.py --offline --start 2024-01-01 --end 2026-09-01 --cache-dir research_cache --output-dir replay
+              python source/audit_momentum_core.py research_cache replay
+          
+          Decryption and offline market replay make no API calls. Installing
+          Python packages may need internet. Original results are in
+          Momentum_core_results.tar.gz. Metric values, gates, trades, daily NAV,
+          targets, input fingerprint and source fingerprint must match; run
+          timestamps, offline flag and GITHUB_SHA environment metadata can differ.
+          
+          Development history is not independent forward evidence and does
+          not authorize real-money purchases. The draft is intentionally
+          unpublished. Downloaded files remain usable without a data plan.
+          """
+          (root / 'Momentum_core_reproduce.md').write_text(readme)
+          decision = json.loads(Path('core_results/Momentum_core_decision.json').read_text())
+          manifest = {k: decision[k] for k in ('model', 'start', 'end', 'status', 'config', 'source_fingerprint', 'input_fingerprint', 'metrics', 'double_cost_metrics')}
+          manifest['source_commit'] = os.environ['GITHUB_SHA']
+          manifest['files_sha256'] = {}
+          for path in sorted(root.iterdir()):
+              with path.open('rb') as stream:
+                  manifest['files_sha256'][path.name] = hashlib.file_digest(stream, 'sha256').hexdigest()
+          (root / 'Momentum_core_manifest.json').write_text(json.dumps(manifest, indent=2))
+          PY
+          gh release create "$tag" research_export/* --repo "$GITHUB_REPOSITORY" \
+            --draft --target "$GITHUB_SHA" --title "Momentum Core frozen research 2026-10-27" \
+            --notes "Encrypted input cache, exact source, validated results, offline instructions and SHA-256 manifest. No live trading approval."
+      - name: Remove superseded unencrypted research caches
+        if: success() && github.event_name != 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const caches = await github.paginate(github.rest.actions.getActionsCacheList, {...context.repo, per_page: 100});
+            for (const cache of caches) {
+              if (cache.key.startsWith('momentum-core-raw-v1-')) {
+                await github.rest.actions.deleteActionsCacheById({...context.repo, cache_id: cache.id});
+              }
+            }

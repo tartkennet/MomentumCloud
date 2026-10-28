@@ -64,12 +64,25 @@ class CoreData:
     cash_actions = CASH_CORPORATE_ACTIONS
     stock_actions = STOCK_CORPORATE_ACTIONS
 
-    def __init__(self, client, start, end, cache_dir=".momentum_core_cache", *, allow_empty=False):
-        self.client = client
+    def __init__(self, client, start, end, cache_dir=".momentum_core_cache", *, allow_empty=False, offline=False):
+        self.client = None if offline else client
         self.root = Path(cache_dir)
         self.root.mkdir(parents=True, exist_ok=True)
         warmup = (date.fromisoformat(start) - timedelta(days=550)).isoformat()
-        self.days = fetch_spy_trading_calendar(client, warmup, end)
+        self.used_inputs = {}
+        calendar_path = self.root / "calendar-v1" / f"{warmup}_{end}.json.gz"
+        if calendar_path.exists():
+            calendar = read_json(calendar_path)
+            if (calendar.get("version") != 1 or calendar.get("source") != "SPY_OBSERVED_SESSIONS"
+                    or calendar.get("start") != warmup or calendar.get("end") != end):
+                raise DataBlocked("Calendar snapshot metadata does not match the requested range")
+            self.days = calendar["sessions"]
+        else:
+            if self.client is None:
+                raise DataBlocked(f"Offline input missing: {calendar_path.name}")
+            self.days = fetch_spy_trading_calendar(self.client, warmup, end)
+        if not self.days or self.days != sorted(set(self.days)):
+            raise DataBlocked("Empty, duplicate or unordered session calendar")
         self.index = {day: i for i, day in enumerate(self.days)}
         self.sessions = [day for day in self.days if start <= day <= end]
         logging.info("Core calendar: requested %s..%s; observed %s..%s (%d days); replay %s (%d days)",
@@ -81,7 +94,11 @@ class CoreData:
                 f"{self.days[0]}..{self.days[-1]} ({len(self.days)} days); "
                 f"replay count={len(self.sessions)}, prior sessions="
                 f"{self.index[self.sessions[0]] if self.sessions else 0}")
-        self.used_inputs = {}
+        calendar = {"version": 1, "source": "SPY_OBSERVED_SESSIONS", "start": warmup,
+                    "end": end, "sessions": self.days}
+        if not calendar_path.exists():
+            atomic_json(calendar_path, calendar)
+        self._remember(f"calendar/{warmup}/{end}", calendar)
         self.splits = self._events("splits", warmup, end)
         self.dividends = self._events("dividends", start, end)
         for event in self.splits:
@@ -107,6 +124,8 @@ class CoreData:
         if path.exists():
             events = read_json(path)
         else:
+            if self.client is None:
+                raise DataBlocked(f"Offline input missing: {path.name}")
             events = paginate(self.client, f"/stocks/v1/{kind}",
                               {column + ".gte": start, column + ".lte": end,
                                "sort": column + ".asc", "limit": 5000})
@@ -131,6 +150,8 @@ class CoreData:
                 raise DataBlocked(f"Invalid raw cache metadata {day}")
             result = payload["bars"]
         else:
+            if self.client is None:
+                raise DataBlocked(f"Offline input missing: raw/{day}")
             response = self.client._get(f"/v2/aggs/grouped/locale/us/market/stocks/{day}",
                                         {"adjusted": "false", "include_otc": "false"})
             result = {r["T"]: [r.get("o"), r.get("c"), r.get("v")]
@@ -142,11 +163,51 @@ class CoreData:
         self._remember(f"raw/{day}", result)
         return result
 
+    @lru_cache(maxsize=16384)
+    def _signal_lineage(self, day, ticker):
+        """Only verified 1:1 renames already effective on the signal date."""
+        lineage, seen = [], {ticker}
+        current, cutoff = ticker, day
+        while True:
+            matches = [(old, event) for old, event in self.stock_actions.items()
+                       if event.get("reason") == "TICKER_CHANGE"
+                       and event.get("shares_per_share") == 1.0
+                       and event.get("successor_ticker") == current
+                       and event["effective_date"] <= cutoff]
+            if not matches:
+                return tuple(lineage)
+            if len(matches) != 1:
+                raise DataBlocked(f"Ambiguous verified ticker lineage {ticker} {day}")
+            old, event = matches[0]
+            if old in seen:
+                raise DataBlocked(f"Cyclic ticker lineage {ticker} {day}")
+            lineage.append((event["effective_date"], old))
+            seen.add(old)
+            current, cutoff = old, event["effective_date"]
+
+    @staticmethod
+    def _historical_symbol(ticker, stamp, lineage):
+        for effective, predecessor in lineage:
+            if stamp < effective:
+                ticker = predecessor
+            else:
+                break
+        return ticker
+
+    def signal_splits(self, day, ticker):
+        lineage = self._signal_lineage(day, ticker)
+        names = (ticker,) + tuple(old for _, old in lineage)
+        return [event for name in names for event in self.splits_by_ticker.get(name, [])
+                if event["execution_date"] <= day
+                and event["ticker"] == self._historical_symbol(ticker, event["execution_date"], lineage)]
+
     def history(self, day, ticker, count):
         end = self.index[day]
         if end + 1 < count:
             return []
-        return [(stamp, self.bars(stamp).get(ticker))
+        lineage = self._signal_lineage(day, ticker)
+        return [(stamp, self.bars(stamp).get(
+                    self._historical_symbol(ticker, stamp, lineage) if lineage else ticker))
                 for stamp in reversed(self.days[end + 1 - count:end + 1])]
 
     def universe(self, day):
@@ -157,6 +218,8 @@ class CoreData:
                 raise DataBlocked(f"Invalid historical universe cache {day}")
             records = payload["records"]
         else:
+            if self.client is None:
+                raise DataBlocked(f"Offline input missing: universe/{day}")
             records = paginate(self.client, "/v3/reference/tickers",
                                {"market": "stocks", "type": "CS", "date": day,
                                 "active": "true", "order": "asc", "limit": 1000,

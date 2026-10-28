@@ -14,7 +14,7 @@ from momentum_core import (
     CONFIG, DataBlocked, Ledger, adjusted_history, capped_weights, gates,
     metrics, risk_on, select_targets,
 )
-from momentum_core_data import CoreData, paginate
+from momentum_core_data import CoreData, atomic_json, paginate
 from run_momentum_core import replay, resume_paper, run, verify_forward_prefix
 
 
@@ -169,6 +169,18 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {})
         self.assertEqual(ledger.trades[0]["side"], "BUY_CANCELLED_NO_OPEN")
 
+    def test_past_corporate_action_does_not_block_a_reused_ticker(self):
+        for kind in ("cash", "stock"):
+            with self.subTest(kind=kind):
+                data = MemoryData(self.days, [{"A": [100, 100, 1_000_000]} for _ in self.days])
+                if kind == "cash":
+                    data.cash_actions = {"A": {"effective_date": "2023-01-01", "cash_per_share": 10}}
+                else:
+                    data.stock_actions = {"A": {"effective_date": "2023-01-01", "successor_ticker": "OLD", "shares_per_share": 1}}
+                ledger = Ledger(cash=1000, pending=order(self.days[0], 1000, A=.5))
+                ledger.execute_open(data, self.days[1])
+                self.assertEqual(ledger.shares, {"A": 5})
+
     def test_missing_sell_and_held_close_block(self):
         ledger = Ledger(cash=0, shares={"MISSING": 10}, pending=order(self.days[0], 1000))
         with self.assertRaises(DataBlocked):
@@ -218,6 +230,18 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.cash, 0)
         self.assertEqual(ledger.close_value(self.data, self.days[1])[0], 1100)
 
+    def test_fusn_contingent_right_is_preserved_without_inventing_three_dollars(self):
+        day = "2024-06-04"
+        data = MemoryData([day], [{}], cash_actions=CoreData.cash_actions)
+        ledger = Ledger(cash=0, shares={"FUSN": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {})
+        self.assertEqual(ledger.cash, 0)
+        self.assertEqual(ledger.close_value(data, day)[0], 210)
+        right = next(r for r in ledger.receivables if r["reason"] == "CONTINGENT_VALUE_RIGHT_UNPRICED")
+        self.assertEqual(right["maximum_amount"], 30)
+        self.assertEqual(right["amount"], 0)
+
     def test_stock_exchange_preserves_economic_interest(self):
         self.data.stock_actions = {"A": {"effective_date": self.days[1],
                                          "successor_ticker": "B", "shares_per_share": 1.436}}
@@ -226,6 +250,24 @@ class LedgerTests(unittest.TestCase):
         ledger.events_before_open(self.data, self.days[1])
         self.assertAlmostEqual(ledger.shares["B"], 14.36)
         self.assertAlmostEqual(ledger.close_value(self.data, self.days[1])[0], 1000)
+
+    def test_brea_rename_keeps_shares_and_uses_successor_quote(self):
+        day = "2025-10-03"
+        data = MemoryData([day], [{"SLMT": [25, 26, 1_000_000]}],
+                          stock_actions=CoreData.stock_actions)
+        ledger = Ledger(cash=0, shares={"BREA": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {"SLMT": 10})
+        self.assertEqual(ledger.close_value(data, day)[0], 260)
+
+    def test_mfh_rename_preserves_share_count(self):
+        day = "2025-11-13"
+        data = MemoryData([day], [{"CD": [11, 12, 1_000_000]}],
+                          stock_actions=CoreData.stock_actions)
+        ledger = Ledger(cash=0, shares={"MFH": 10})
+        ledger.events_before_open(data, day)
+        self.assertEqual(ledger.shares, {"CD": 10})
+        self.assertEqual(ledger.close_value(data, day)[0], 120)
 
     def test_daily_gate_sells_next_open_and_no_10_percent_stock_stop(self):
         ledger = Ledger(cash=0, shares={"A": 10}, previous_risk=True, selection_month="2024-01")
@@ -242,7 +284,131 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(ledger.shares, {})
 
 
+
+class VerifiedSignalIdentityTests(unittest.TestCase):
+    def data(self, days, bars, actions, splits=()):
+        data = object.__new__(CoreData)
+        data.days = days
+        data.index = {day: i for i, day in enumerate(days)}
+        data.stock_actions = actions
+        data.bars = lambda day: bars[day]
+        data.splits = list(splits)
+        data.splits_by_ticker = {}
+        for event in splits:
+            data.splits_by_ticker.setdefault(event["ticker"], []).append(event)
+        return data
+
+    def test_verified_rename_does_not_reset_momentum_or_position_weights(self):
+        original = long_data()
+        before, day = original.days[280], original.days[-1]
+        bars = {stamp: dict(rows) for stamp, rows in original.by_day.items()}
+        for stamp in original.days[280:]:
+            bars[stamp]["NEW"] = bars[stamp].pop("S19")
+        action = {"S19": {"effective_date": before, "successor_ticker": "NEW",
+                          "shares_per_share": 1.0, "reason": "TICKER_CHANGE"}}
+        data = self.data(original.days, bars, action)
+        data.universe = lambda _: [dict(r, ticker="NEW") if r["ticker"] == "S19" else r for r in original.records]
+        expected, count = select_targets(original, day)
+        actual, actual_count = select_targets(data, day)
+        expected = [dict(r, ticker="NEW") if r["ticker"] == "S19" else r for r in expected]
+        self.assertEqual(actual_count, count)
+        for actual_row, expected_row in zip(actual, expected):
+            self.assertEqual({k: v for k, v in actual_row.items() if k != "weight"},
+                             {k: v for k, v in expected_row.items() if k != "weight"})
+            self.assertAlmostEqual(actual_row["weight"], expected_row["weight"], places=14)
+        self.assertEqual(adjusted_history(data, day, "NEW", 253),
+                         adjusted_history(original, day, "S19", 253))
+
+    def test_reused_aris_history_and_splits_do_not_contaminate_armn(self):
+        days = ["2026-02-17", "2026-02-18", "2026-02-19"]
+        bars = {days[0]: {"ARMN": [10, 10, 100], "ARIS": [999, 999, 100]},
+                days[1]: {"ARMN": [11, 11, 100], "ARIS": [888, 888, 100]},
+                days[2]: {"ARIS": [12, 12, 100]}}
+        unrelated = {"ticker": "ARIS", "execution_date": days[1], "split_from": 100, "split_to": 1}
+        data = self.data(days, bars, CoreData.stock_actions, [unrelated])
+        self.assertEqual(adjusted_history(data, days[2], "ARIS", 3), [12, 11, 10])
+        self.assertEqual(adjusted_history(data, days[1], "ARMN", 2), [11, 10])
+        self.assertEqual(adjusted_history(data, days[1], "ARIS", 2), [888, 99900])
+
+    def test_predecessor_split_is_preserved_and_future_split_is_ignored(self):
+        days = ["2026-02-17", "2026-02-18", "2026-02-19"]
+        bars = {days[0]: {"OLD": [20, 20, 100]},
+                days[1]: {"OLD": [10, 10, 200]}, days[2]: {"NEW": [11, 11, 200]}}
+        actions = {"OLD": {"effective_date": days[2], "successor_ticker": "NEW",
+                            "shares_per_share": 1.0, "reason": "TICKER_CHANGE"}}
+        splits = [{"ticker": "OLD", "execution_date": days[1], "split_from": 1, "split_to": 2},
+                  {"ticker": "NEW", "execution_date": "2026-02-20", "split_from": 1, "split_to": 10}]
+        data = self.data(days, bars, actions, splits)
+        self.assertEqual(adjusted_history(data, days[2], "NEW", 3), [11, 10, 10])
+
+    def test_stock_merger_does_not_splice_acquirer_and_target_histories(self):
+        days = ["2026-01-08", "2026-01-09"]
+        bars = {days[0]: {"HOUS": [10, 10, 100], "COMP": [100, 100, 100]},
+                days[1]: {"COMP": [101, 101, 100]}}
+        data = self.data(days, bars, CoreData.stock_actions)
+        self.assertEqual(adjusted_history(data, days[1], "COMP", 2), [101, 100])
+
 class EvidenceTests(unittest.TestCase):
+    def test_saved_inputs_replay_without_a_client_or_calendar_request(self):
+        days = long_data().days
+        day = days[-1]
+        rows = [{"ticker": f"S{k}", "name": f"Company {k}", "type": "CS",
+                 "active": True, "primary_exchange": "XNYS"} for k in range(1000)]
+        prices = {f"S{k}": [100, 101, 100_000] for k in range(1000)}
+        prices["SPY"] = [400, 401, 1_000_000]
+        client = unittest.mock.Mock()
+        client._get.return_value = {"status": "OK", "results": []}
+        with tempfile.TemporaryDirectory() as directory:
+            with patch("momentum_core_data.fetch_spy_trading_calendar", return_value=days):
+                online = CoreData(client, day, day, directory)
+            for stamp in days[-2:]:
+                atomic_json(Path(directory) / "raw-v1" / f"{stamp}.json.gz",
+                            {"basis": "RAW", "version": 1, "date": stamp, "bars": prices})
+            atomic_json(Path(directory) / "universe-v1" / f"{day}.json.gz",
+                        {"basis": "PIT_REFERENCE_V1", "date": day, "records": rows})
+            expected = online.history(day, "SPY", 2)
+            online.universe(day)
+            forbidden = unittest.mock.Mock()
+            forbidden._get.side_effect = AssertionError("Offline must not call an API")
+            with patch("momentum_core_data.fetch_spy_trading_calendar", side_effect=AssertionError("No calendar API")):
+                offline = CoreData(forbidden, day, day, directory, offline=True)
+                self.assertEqual(offline.history(day, "SPY", 2), expected)
+                self.assertEqual(offline.universe(day), rows)
+                self.assertEqual(online.input_fingerprint(), offline.input_fingerprint())
+            forbidden._get.assert_not_called()
+            (Path(directory) / "universe-v1" / f"{day}.json.gz").unlink()
+            with self.assertRaisesRegex(DataBlocked, "Offline input missing: universe"):
+                offline.universe(day)
+
+    def test_offline_cannot_substitute_a_new_calendar_for_missing_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(DataBlocked, "Offline input missing"):
+                CoreData(None, "2024-01-01", "2026-09-01", directory, offline=True)
+
+    def test_actual_imgn_merger_resolves_the_observed_missing_close(self):
+        data = MemoryData(["2024-02-09", "2024-02-12"],
+                          [{"IMGN": [31.2, 31.2, 100_000]}, {}],
+                          cash_actions=CoreData.cash_actions)
+        ledger = Ledger(cash=0, shares={"IMGN": 10})
+        ledger.events_before_open(data, "2024-02-12")
+        self.assertEqual(ledger.shares, {})
+        self.assertAlmostEqual(ledger.close_value(data, "2024-02-12")[0], 312.6)
+        self.assertEqual(ledger.cash, 0)
+
+    def test_verified_cash_mergers_do_not_invent_market_fills_or_payment_dates(self):
+        cases = [("AMAM", "2024-03-07", 28.0), ("HARP", "2024-03-11", 23.0),
+                 ("ALPN", "2024-05-20", 65.0), ("LBPH", "2024-12-02", 60.0),
+                 ("SLNO", "2026-05-18", 53.0)]
+        for ticker, day, consideration in cases:
+            with self.subTest(ticker=ticker):
+                data = MemoryData([day], [{}], cash_actions=CoreData.cash_actions)
+                ledger = Ledger(cash=0, shares={ticker: 10})
+                ledger.events_before_open(data, day)
+                self.assertAlmostEqual(ledger.close_value(data, day)[0], 10 * consideration)
+                self.assertEqual(ledger.cash, 0)
+                self.assertEqual(ledger.fees, 0)
+                self.assertIsNone(ledger.receivables[0]["pay_date"])
+
     def test_resumed_base_and_stress_match_complete_replay(self):
         data = long_data()
         sessions = data.days[-45:]
@@ -268,8 +434,11 @@ class EvidenceTests(unittest.TestCase):
 
     def test_paper_runner_resumes_four_ledgers_and_blocks_lost_original_record(self):
         data = long_data(2026)
+        for stamp in ('2026-10-28', '2026-10-29'):
+            data.by_day[stamp] = {ticker: list(bar) for ticker, bar in data.by_day[data.days[-1]].items()}
+            data.days.append(stamp)
         first_day = data.days[-1]
-        self.assertEqual(first_day, "2026-10-27")
+        self.assertEqual(first_day, "2026-10-29")
         data.first_is_month_boundary = lambda: False
         data.used_inputs = {"fixture": "synthetic; not performance evidence"}
         data.input_fingerprint = lambda: "synthetic-fixture"
@@ -279,22 +448,22 @@ class EvidenceTests(unittest.TestCase):
                  patch("run_momentum_core.CoreData", return_value=data) as factory, \
                  patch("run_momentum_core.date") as clock_date, \
                  patch("run_momentum_core.datetime") as clock, patch("builtins.print"):
-                clock_date.today.return_value = date(2026, 10, 28)
+                clock_date.today.return_value = date(2026, 10, 30)
                 clock_date.fromisoformat.side_effect = date.fromisoformat
-                clock.now.return_value = datetime(2026, 10, 28, 6, 30, tzinfo=timezone.utc)
+                clock.now.return_value = datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc)
                 initial = run(first_day, first_day, directory, directory, "paper")
                 self.assertEqual(initial["status"], "PAPER_COLLECTING")
                 path = Path(directory) / "Momentum_core_paper_checkpoint.json"
                 old = json.loads(path.read_text())
-                data.days.append("2026-10-28")
-                data.by_day["2026-10-28"] = {ticker: list(bar) for ticker, bar in data.by_day[first_day].items()}
-                data.sessions = ["2026-10-28"]
+                data.days.append("2026-10-30")
+                data.by_day["2026-10-30"] = {ticker: list(bar) for ticker, bar in data.by_day[first_day].items()}
+                data.sessions = ["2026-10-30"]
                 data.first_is_month_boundary = lambda: self.fail("Resuming must not restart replay")
-                clock_date.today.return_value = date(2026, 10, 29)
-                clock.now.return_value = datetime(2026, 10, 29, 6, 30, tzinfo=timezone.utc)
-                updated = run(first_day, "2026-10-28", directory, directory, "paper")
+                clock_date.today.return_value = date(2026, 10, 31)
+                clock.now.return_value = datetime(2026, 10, 31, 6, 30, tzinfo=timezone.utc)
+                updated = run(first_day, "2026-10-30", directory, directory, "paper")
                 new = json.loads(path.read_text())
-                self.assertEqual(factory.call_args.args[1], "2026-10-28")
+                self.assertEqual(factory.call_args.args[1], "2026-10-30")
                 self.assertEqual(new["strategy"]["equity"][:1], old["strategy"]["equity"])
                 self.assertGreater(updated["metrics"]["ActualFees_USD"], 0)
                 self.assertGreater(updated["double_cost_metrics"]["ActualFees_USD"],
@@ -303,7 +472,7 @@ class EvidenceTests(unittest.TestCase):
                 path.unlink()
                 factory.reset_mock()
                 with self.assertRaisesRegex(DataBlocked, "retrospective paper reconstruction forbidden"):
-                    run(first_day, "2026-10-28", directory, directory, "paper")
+                    run(first_day, "2026-10-30", directory, directory, "paper")
                 factory.assert_not_called()
 
     def test_clipped_vendor_history_blocks_instead_of_moving_start_forward(self):

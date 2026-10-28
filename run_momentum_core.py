@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parent
 SOURCE_FILES = ("momentum_core.py", "momentum_core_data.py", "run_momentum_core.py",
                 "momentum_master_v3.py", "backtest_momentum_v3.py", "momentum_strategy.py",
                 "momentum_config.py", "requirements.txt", "docs/MOMENTUM_CORE_PROTOCOL.md")
-FORWARD_START = "2026-10-27"
-FIRST_PAPER_DEADLINE = datetime(2026, 10, 28, 12, tzinfo=timezone.utc)
+FORWARD_START = "2026-10-29"
+FIRST_PAPER_DEADLINE = datetime(2026, 10, 30, 12, tzinfo=timezone.utc)
 
 
 def source_fingerprint():
@@ -94,10 +94,11 @@ def base_decision(start, end, mode):
             "historical_pass_is_live_approval": False}
 
 
-def run(start, end, output_dir, cache_dir, mode="development"):
+def run(start, end, output_dir, cache_dir, mode="development", *, offline=False):
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     decision = base_decision(start, end, mode)
+    decision["offline"] = offline
     decision_path = output / "Momentum_core_decision.json"
     state_path = output / "Momentum_core_state.json"
     checkpoint_path = output / "Momentum_core_paper_checkpoint.json"
@@ -127,7 +128,7 @@ def run(start, end, output_dir, cache_dir, mode="development"):
         if end >= date.today().isoformat():
             raise ValueError("End date must precede the current UTC date: only completed EOD inputs")
         key = os.getenv("POLYGON_API_KEY")
-        if not key:
+        if not key and not offline:
             raise DataBlocked("POLYGON_API_KEY is missing")
         # Forbid silently replacing an existing forward record after changing code.
         identity_path = output / "Momentum_core_paper_identity.json"
@@ -147,7 +148,8 @@ def run(start, end, output_dir, cache_dir, mode="development"):
             input_start = (previous_day + timedelta(days=1)).isoformat()
             if end < previous_day.isoformat():
                 raise DataBlocked("Forward record cannot move backwards")
-        data = CoreData(PolygonClient(key), input_start, end, cache_dir, allow_empty=bool(checkpoint))
+        data = CoreData(None if offline else PolygonClient(key), input_start, end, cache_dir,
+                        allow_empty=bool(checkpoint), offline=offline)
         stress_config = replace(CONFIG, one_way_cost=CONFIG.one_way_cost * 2)
         if checkpoint:
             strategy, benchmark, result, periods = resume_paper(data, checkpoint)
@@ -174,6 +176,7 @@ def run(start, end, output_dir, cache_dir, mode="development"):
                          "USD gross of tax, zero cash interest; no SEK performance claim.",
                          "Historical reference/bar revisions and ticker reuse need independent audit.",
                          "Cash merger claims without pay dates are not reinvested.",
+                         "Unpriced contingent merger rights are recorded separately at zero; their maximum is not cash.",
                          "Stock-merger fractions are valued but not traded."])
         write_csv(output / "Momentum_core_daily.csv", [
             dict(row, spy_nav=other["nav"]) for row, other in zip(strategy.equity, benchmark.equity)])
@@ -218,11 +221,12 @@ def main():
     parser.add_argument("--output-dir", default="core_results")
     parser.add_argument("--cache-dir", default=".momentum_core_cache")
     parser.add_argument("--paper", action="store_true")
+    parser.add_argument("--offline", action="store_true", help="Use only a complete saved input snapshot; make no API calls")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     try:
         run(args.start, args.end, args.output_dir, args.cache_dir,
-            "paper" if args.paper else "development")
+            "paper" if args.paper else "development", offline=args.offline)
     except DataBlocked:
         raise SystemExit(1)
 

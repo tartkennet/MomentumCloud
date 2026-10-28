@@ -278,6 +278,52 @@ def adjust_cached_history_for_splits(
 # https://pressroom.aboutschwab.com/press-releases/press-release/2026/Charles-Schwab-Completes-Acquisition-of-Forge-Global/default.aspx
 # https://www.sec.gov/Archives/edgar/data/1827821/000114036125044598/ny20058741x1_prem14a.htm
 CASH_CORPORATE_ACTIONS = {
+    "VTYX": {
+        "effective_date": "2026-03-04", "cash_per_share": 14.0,
+        "source_url": "https://beta.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-127",
+    },
+    "CDTX": {
+        "effective_date": "2026-01-07", "cash_per_share": 221.50,
+        "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-2",
+    },
+    "FUSN": {
+        "effective_date": "2024-06-04", "cash_per_share": 21.0,
+        "contingent_cash_per_share": 3.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.astrazeneca.com/media-centre/press-releases/2024/acquisition-of-fusion-completed.html",
+        "terms_source_url": "https://www.sec.gov/Archives/edgar/data/1805890/000119312524113909/d794805ddefm14a.htm",
+    },
+    "ALPN": {
+        "effective_date": "2024-05-20", "cash_per_share": 65.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-229",
+    },
+    "LBPH": {
+        "effective_date": "2024-12-02", "cash_per_share": 60.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://mb.cision.com/Main/18215/4074636/3146423.pdf",
+    },
+    "SLNO": {
+        "effective_date": "2026-05-18", "cash_per_share": 53.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1484565/000119312526228016/d143266d8k.htm",
+    },
+    "AMAM": {
+        "effective_date": "2024-03-07", "cash_per_share": 28.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2024-103",
+    },
+    "HARP": {
+        "effective_date": "2024-03-11", "cash_per_share": 23.0,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://www.merck.com/news/merck-completes-acquisition-of-harpoon-therapeutics-inc/",
+        "terms_source_url": "https://www.merck.com/news/merck-to-acquire-harpoon-therapeutics-further-diversifying-oncology-pipeline/",
+    },
+    "IMGN": {
+        "effective_date": "2024-02-12", "cash_per_share": 31.26,
+        "reason": "CASH_MERGER", "execution": "cash-settlement",
+        "source_url": "https://news.abbvie.com/2024-02-12-AbbVie-Completes-Acquisition-of-ImmunoGen",
+    },
     "EVRI": {
         "effective_date": "2025-07-01", "cash_per_share": 14.25,
         "reason": "CASH_MERGER", "execution": "cash-settlement",
@@ -326,6 +372,21 @@ CASH_CORPORATE_ACTIONS = {
 # https://www.sec.gov/Archives/edgar/data/1398987/000119312526008327/d33443d8k.htm
 # https://www.sec.gov/Archives/edgar/data/1563190/000162828025054790/compassinc-424b3.htm
 STOCK_CORPORATE_ACTIONS = {
+    "FORD": {
+        "effective_date": "2025-11-17", "successor_ticker": "FWDI",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.nasdaq.com/press-release/forward-industries-announces-nasdaq-ticker-symbol-change-fwdi-effective-november-17",
+    },
+    "MFH": {
+        "effective_date": "2025-11-13", "successor_ticker": "CD",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1527762/000149315225021857/ex99-1.htm",
+    },
+    "BREA": {
+        "effective_date": "2025-10-03", "successor_ticker": "SLMT",
+        "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1939965/000121390026057974/R9.htm",
+    },
     "COMM": {
         "effective_date": "2026-01-14", "successor_ticker": "VISN",
         "shares_per_share": 1.0, "reason": "TICKER_CHANGE", "execution": "successor-market",

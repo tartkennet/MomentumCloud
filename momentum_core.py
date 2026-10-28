@@ -70,9 +70,13 @@ def adjusted_history(data: MarketData, day, ticker, count):
     rows = data.history(day, ticker, count)
     if len(rows) != count:
         return []
-    source = getattr(data, "splits_by_ticker", {}).get(ticker, []) if hasattr(data, "splits_by_ticker") else data.splits
-    events = [e for e in source if e.get("ticker") == ticker
-              and rows[-1][0] < e["execution_date"] <= day]
+    if hasattr(data, "signal_splits"):
+        source = data.signal_splits(day, ticker)
+        events = [e for e in source if rows[-1][0] < e["execution_date"] <= day]
+    else:
+        source = getattr(data, "splits_by_ticker", {}).get(ticker, []) if hasattr(data, "splits_by_ticker") else data.splits
+        events = [e for e in source if e.get("ticker") == ticker
+                  and rows[-1][0] < e["execution_date"] <= day]
     result = []
     for stamp, bar in rows:
         close = number(bar[1]) if bar else None
@@ -210,6 +214,12 @@ class Ledger:
                 qty = self.shares.pop(ticker)
                 self._cash_claim(day, ticker, qty * event["cash_per_share"],
                                  event.get("pay_date"), "CASH_MERGER")
+                if event.get("contingent_cash_per_share", 0) > 0:
+                    # Preserve the contractual right without inventing its
+                    # market value, milestone achievement or cash payment.
+                    self.receivables.append({"ticker": ticker, "amount": 0.0,
+                        "pay_date": None, "reason": "CONTINGENT_VALUE_RIGHT_UNPRICED",
+                        "maximum_amount": qty * event["contingent_cash_per_share"]})
                 self.trades.append({"date": day, "ticker": ticker, "side": "CASH_MERGER_CLAIM",
                                     "quantity": qty, "price": event["cash_per_share"], "fee": 0.0})
         for ticker, event in data.stock_actions.items():
@@ -228,10 +238,10 @@ class Ledger:
         for row in self.pending["targets"]:
             ticker = row["ticker"]
             cash_event = data.cash_actions.get(ticker)
-            if cash_event and cash_event["effective_date"] <= day:
+            if cash_event and self.pending["signal_date"] <= cash_event["effective_date"] <= day:
                 continue
             stock_event = data.stock_actions.get(ticker)
-            if stock_event and stock_event["effective_date"] <= day:
+            if stock_event and self.pending["signal_date"] <= stock_event["effective_date"] <= day:
                 ticker = stock_event["successor_ticker"]
             bar = bars.get(ticker)
             opening = number(bar[0]) if bar else None
