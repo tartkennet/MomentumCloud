@@ -6,10 +6,13 @@ on:
     branches: [main]
     paths:
       - 'research_core_stop.py'
+      - 'research_core_trailing.py'
       - 'run_core_risk_research.py'
       - 'audit_core_risk_research.py'
       - 'tests/test_core_stop_research.py'
+      - 'tests/test_core_trailing_research.py'
       - 'docs/CORE_STOP10_PROTOCOL_20261029.md'
+      - 'docs/CORE_RISK_V2_PROTOCOL_20261029.md'
       - '.github/workflows/core_risk_research.yml'
 
 permissions:
@@ -58,13 +61,13 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
-          mkdir -p risk_results
+          mkdir -p risk_v2_results
           set -o pipefail
           python run_core_risk_research.py \
             --cache-dir .momentum_core_cache \
             --baseline-dir .risk_baseline/core_results \
-            --output-dir risk_results \
-            --end 2026-10-28 2>&1 | tee risk_results/study.log
+            --output-dir risk_v2_results \
+            --end 2026-10-28 2>&1 | tee risk_v2_results/study.log
       - name: Seal reusable input cache
         if: always() && hashFiles('.momentum_core_cache/**/*.gz') != ''
         env:
@@ -76,10 +79,10 @@ jobs:
           path: .momentum_core_cache.sealed
           key: core-risk-sealed-${{ github.run_id }}
       - name: Preserve encrypted inputs and exact study source
-        if: always() && hashFiles('risk_results/**/Momentum_core_decision.json') != ''
+        if: always() && hashFiles('risk_v2_results/**/Momentum_core_decision.json') != ''
         run: |
           mkdir -p risk_private
-          decision=$(python -c "from pathlib import Path; print(sorted(Path('risk_results').rglob('Momentum_core_decision.json'))[0])")
+          decision=$(python -c "from pathlib import Path; print(sorted(Path('risk_v2_results').rglob('Momentum_core_decision.json'))[0])")
           python archive_momentum_inputs.py --cache-dir .momentum_core_cache \
             --decision "$decision" --output "$RUNNER_TEMP/core_risk_inputs.tar.gz"
           openssl cms -encrypt -aes-256-cbc -binary -outform DER \
@@ -88,14 +91,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Momentum_Core_fixed_risk_evidence
-          path: risk_results/
+          name: Momentum_Core_fixed_risk_v2_evidence
+          path: risk_v2_results/
           if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@v4
         if: always() && hashFiles('risk_private/core_risk_inputs.p7m') != ''
         with:
-          name: Momentum_Core_fixed_risk_private_inputs
+          name: Momentum_Core_fixed_risk_v2_private_inputs
           path: risk_private/core_risk_inputs.p7m
           if-no-files-found: error
           retention-days: 90

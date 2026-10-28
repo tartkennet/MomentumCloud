@@ -26,13 +26,15 @@ import momentum_core as core
 from momentum_core_data import CoreData, atomic_json
 from momentum_master_v3 import PolygonClient
 from research_core_stop import MODEL, StopLedger
+from research_core_trailing import MODEL as TRAILING_MODEL, TrailingLedger
 from run_momentum_core import source_fingerprint, write_csv
 
 ROOT = Path(__file__).resolve().parent
 START, CUTOFF, EXTENSION_END = '2024-01-01', '2026-09-01', '2026-10-28'
 DELAYS = (None, 0, 1, 5, 20)
 STUDY_FILES = ('research_core_stop.py', 'run_core_risk_research.py',
-               'docs/CORE_STOP10_PROTOCOL_20261029.md')
+               'docs/CORE_STOP10_PROTOCOL_20261029.md',
+               'research_core_trailing.py', 'docs/CORE_RISK_V2_PROTOCOL_20261029.md')
 
 
 def sha(value):
@@ -108,7 +110,8 @@ def exports(folder, data, strategy, benchmark, result, periods, config, metadata
     folder.mkdir(parents=True, exist_ok=True)
     checks = core.gates(result)
     decision = dict(metadata, start=START, end=end,
-                    model=MODEL if isinstance(strategy, StopLedger) else core.MODEL,
+                    model=(MODEL if isinstance(strategy, StopLedger) else TRAILING_MODEL
+                           if isinstance(strategy, TrailingLedger) else core.MODEL),
                     status='PAPER_ONLY' if all(g['pass'] for g in checks) else 'NO_GO',
                     metrics=result, gates=checks, config=asdict(config),
                     source_fingerprint=source_fingerprint(), study_fingerprint=study_fingerprint(),
@@ -182,7 +185,7 @@ def run(args):
     expected_cases = json.loads((ROOT / 'docs/CORE_CASH_TIMING_RESULTS_20261028.json').read_text())
     expected = {x['name']: x for x in expected_cases['attempts']}
     checkpoints = {}
-    for family, cls in (('baseline', core.Ledger), ('stop10', StopLedger)):
+    for family, cls in (('baseline', core.Ledger), ('stop10', StopLedger), ('trailing10', TrailingLedger)):
         for delay in DELAYS:
             data.cash_actions, assumptions = policy_actions(data, delay)
             for cost in (.0015, .003):
