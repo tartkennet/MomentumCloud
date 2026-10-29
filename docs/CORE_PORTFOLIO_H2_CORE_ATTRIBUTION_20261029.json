@@ -1,0 +1,189 @@
+{
+  "status": "PASS",
+  "peak": "2025-02-18",
+  "trough": "2025-04-08",
+  "drawdown_core_pnl_usd": -17750.902538000006,
+  "drawdown_other_pnl_usd": -13372.0841025,
+  "drawdown_net_pnl_usd": -31122.986640500007,
+  "risk_off_sessions_in_episode": 20,
+  "sessions_in_episode": 35,
+  "overall_core_pnl_usd": 53200.85345800004,
+  "daily_episode_core_pnl": [
+    {
+      "date": "2025-02-19",
+      "core_pnl_usd": 246.23999999996184,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-20",
+      "core_pnl_usd": -436.04999999997733,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-21",
+      "core_pnl_usd": -1785.2399999999882,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-24",
+      "core_pnl_usd": -466.8300000000061,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-25",
+      "core_pnl_usd": -507.8699999999902,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-26",
+      "core_pnl_usd": 51.29999999998909,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-27",
+      "core_pnl_usd": -1622.7900000000104,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-02-28",
+      "core_pnl_usd": 1561.2299999999948,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-03",
+      "core_pnl_usd": -1780.1099999999901,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-04",
+      "core_pnl_usd": -1169.7273899999816,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-05",
+      "core_pnl_usd": 1022.9999999999809,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-06",
+      "core_pnl_usd": -1707.7499999999868,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-07",
+      "core_pnl_usd": 529.6499999999842,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-10",
+      "core_pnl_usd": -2531.0999999999804,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-11",
+      "core_pnl_usd": -753.0546000000096,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-12",
+      "core_pnl_usd": 469.0500000000022,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-13",
+      "core_pnl_usd": -1184.5500000000022,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-14",
+      "core_pnl_usd": 1811.0099999999916,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-17",
+      "core_pnl_usd": 690.0599999999939,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-18",
+      "core_pnl_usd": -974.6699999999972,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-19",
+      "core_pnl_usd": 971.4900000000083,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-20",
+      "core_pnl_usd": -260.7599999999917,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-21",
+      "core_pnl_usd": 29.498952000003783,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-24",
+      "core_pnl_usd": 1605.8999999999883,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-25",
+      "core_pnl_usd": 209.19050000000595,
+      "risk_on_at_close": true
+    },
+    {
+      "date": "2025-03-26",
+      "core_pnl_usd": -1023.6300000000056,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-27",
+      "core_pnl_usd": -224.98999999998878,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-28",
+      "core_pnl_usd": -1701.5800000000113,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-03-31",
+      "core_pnl_usd": 555.7699999999977,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-01",
+      "core_pnl_usd": 235.41999999999666,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-02",
+      "core_pnl_usd": 528.9499999999978,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-03",
+      "core_pnl_usd": -4145.179999999989,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-04",
+      "core_pnl_usd": -4681.580000000005,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-07",
+      "core_pnl_usd": -134.10000000000278,
+      "risk_on_at_close": false
+    },
+    {
+      "date": "2025-04-08",
+      "core_pnl_usd": -1177.0999999999865,
+      "risk_on_at_close": false
+    }
+  ],
+  "scope": "Exact attribution from audited benchmark mark/dividend accrual and strategy SPY fills. Risk-off-at-close loss is not assumed avoidable at that close; next-open replay remains necessary."
+}
