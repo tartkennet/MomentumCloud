@@ -3,8 +3,8 @@
   "short_name": "MomentumCloud",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f5f8fb",
-  "theme_color": "#f5f8fb",
+  "background_color": "#fbf5eb",
+  "theme_color": "#fbf5eb",
   "icons": [
     {
       "src": "/icon.svg",
