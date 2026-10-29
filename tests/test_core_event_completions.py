@@ -8,11 +8,26 @@ from unittest.mock import patch
 import momentum_core as core
 from momentum_core_data import atomic_json
 from research_core_ledger import ResearchLedger, STOCK_COMPLETIONS, DISTRIBUTIONS
-from run_core_normalized_research import save_case, accounting_audit
+from run_core_normalized_research import save_case, accounting_audit, payment_policy
 from test_momentum_core import MemoryData, order
 
 
 class EventCompletions(unittest.TestCase):
+    def test_payment_policies_preserve_cross_boundary_and_unobserved_future_claims(self):
+        d = SimpleNamespace(days=['2026-10-22', '2026-10-23', '2026-10-26'],
+                            sessions=['2026-10-22', '2026-10-23'],
+                            payment_sessions=['2026-10-22', '2026-10-23', '2026-10-26'])
+        d.source = SimpleNamespace(cash_actions={'A': {'effective_date': '2026-10-23', 'cash_per_share': 10},
+                                   'FUTURE': {'effective_date': '2026-12-01', 'cash_per_share': 20}}, stock_actions={})
+        payment_policy(d, 1)
+        self.assertEqual(d.cash_actions['A']['pay_date'], '2026-10-26')
+        assumptions = payment_policy(d, 20)
+        self.assertNotIn('pay_date', d.cash_actions['A'])
+        self.assertEqual(len(assumptions), 1)
+        self.assertTrue(assumptions[0]['payment_after_observed_window'])
+        payment_policy(d, None)
+        self.assertNotIn('pay_date', d.cash_actions['A'])
+
     def test_ael_preserves_cash_stock_and_fractional_rights(self):
         d = MemoryData(['2024-05-03'], [{'BAM': [40, 41, 1_000_000]}],
                        stock_actions={'AEL': dict(STOCK_COMPLETIONS['AEL'])})

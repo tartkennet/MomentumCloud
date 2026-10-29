@@ -112,15 +112,26 @@ def accounting_audit(cache, folder):
 
 
 def payment_policy(data, delay):
-    data.cash_actions, assumptions = policy_actions(data, delay)
+    data.cash_actions = copy.deepcopy(data.source.cash_actions)
     data.stock_actions = copy.deepcopy(data.source.stock_actions)
-    for ticker, event in data.stock_actions.items():
-        if event.get('cash_per_share') and delay is not None:
-            i = bisect.bisect_left(data.days, event['effective_date'])
-            if i + delay >= len(data.days):
-                raise core.DataBlocked('Incomplete stock/cash payment calendar')
-            event['pay_date'] = data.days[i + delay]
-            assumptions.append({'ticker': ticker, 'assumed_pay_date': event['pay_date'], 'verified': False})
+    assumptions = []
+    calendar = getattr(data, 'payment_sessions', data.days)
+    for actions in (data.cash_actions, data.stock_actions):
+        for ticker, event in actions.items():
+            if (delay is None or not event.get('cash_per_share') or event.get('pay_date')
+                    or event['effective_date'] > data.sessions[-1]):
+                continue
+            i = bisect.bisect_left(calendar, event['effective_date'])
+            if i == len(calendar) or calendar[i] != event['effective_date']:
+                raise core.DataBlocked(f'Non-session corporate action {ticker}')
+            if i + delay < len(calendar):
+                event['pay_date'] = calendar[i + delay]
+                assumptions.append({'ticker': ticker, 'assumed_pay_date': event['pay_date'], 'verified': False})
+            else:
+                # No future session is invented. A payment later than the
+                # last observed session cannot fund any trade in this replay.
+                assumptions.append({'ticker': ticker, 'assumed_delay_sessions': delay,
+                                    'payment_after_observed_window': True, 'verified': False})
     return assumptions
 
 
@@ -319,6 +330,7 @@ def run(args):
             for phase, end in (('historical', CUTOFF), ('extension', EXTENSION_END)):
                 data = full_data if phase == 'extension' else supplement(make_data(args.cache_dir, end, True))
                 data = complete_data(data, mark_policy)
+                data.payment_sessions = full_data.days
                 for delay in DELAYS:
                     assumptions = payment_policy(data, delay)
                     policy = 'locked' if delay is None else f'assumed_{delay}'
