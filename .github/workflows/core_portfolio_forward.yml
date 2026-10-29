@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-    paths: ['probe_h3_readiness.py', 'h3_observability.py', 'publish_h3_snapshot.py', 'tests/test_h3_*.py', 'h3_forward_policy.json', '.github/workflows/core_portfolio_forward.yml']
+    paths: ['probe_h3_readiness.py', 'h3_observability.py', 'h3_display.py', 'publish_h3_snapshot.py', 'tests/test_h3_*.py', 'h3_forward_policy.json', '.github/workflows/core_portfolio_forward.yml']
   schedule:
     - cron: '35 0,3,6,9 * * 2-6'
 

@@ -1,10 +1,15 @@
 {
-  "name": "MomentumCloud Production v1",
+  "name": "MomentumCloud · H3",
   "short_name": "MomentumCloud",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#090d18",
-  "theme_color": "#0a1020",
-  "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml"}]
+  "background_color": "#f5f8fb",
+  "theme_color": "#f5f8fb",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
 }
-
