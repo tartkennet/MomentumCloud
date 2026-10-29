@@ -22,6 +22,7 @@ import requests
 
 ROOT=Path(__file__).resolve().parent
 BRANCH='h3-observed-snapshots'
+DISPLAY_BRANCH='h3-sek-valuations'
 FP='e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921'
 NY=ZoneInfo('America/New_York')
 
@@ -100,24 +101,29 @@ def rate_on(rates,day,strict=False):
 def market_quotes(key,tickers,now,as_of=None):
     today=now.astimezone(NY).date();end=(today-timedelta(days=1)).isoformat();start=(today-timedelta(days=9)).isoformat()
     symbols=sorted(set(tickers))
-    probe=query(key,'/v3/snapshot',{'ticker.any_of':','.join(symbols),'type':'stocks','limit':250}) if key else {'error':'KEY_UNAVAILABLE'}
+    params={'ticker':symbols[0],'limit':1} if len(symbols)==1 else {'ticker.any_of':','.join(symbols),'limit':250}
+    probe=query(key,'/v3/snapshot',params) if key else {'error':'KEY_UNAVAILABLE'}
     unified={r['ticker']:r for r in probe.get('results',[]) if r.get('ticker')}
     frames={t:r.get('timeframe') for t,r in unified.items()}
     cap={'checked_at':now.isoformat(),'snapshot_status':probe.get('error',probe.get('status','UNKNOWN')),
          'realtime_verified':any(v=='REAL-TIME' for v in frames.values()),'timeframes':frames,
-         'selected_mode':'INTRADAY' if any(v in ('REAL-TIME','DELAYED') for v in frames.values()) else 'CLOSE',
+         'selected_mode':'CLOSE','provider_latency':'VERIFIED_TIMEFRAME' if any(frames.values()) else 'UNVERIFIED',
+         'display_refresh_minutes':15,
          'subscription_changed':False}
     # Only explicit per-ticker timeframe metadata establishes the entitlement.
     def one(t):
         row=unified.get(t,{})
-        if row.get('timeframe') in ('REAL-TIME','DELAYED'):
+        if row:
             trade=row.get('last_trade') or {};price=row.get('session',{}).get('price')
-            stamp=trade.get('sip_timestamp') or trade.get('last_updated') or row.get('last_updated')
+            stamp=trade.get('sip_timestamp') or trade.get('last_updated') or row.get('session',{}).get('last_updated') or row.get('last_updated')
             if price and stamp:
                 at=datetime.fromtimestamp(stamp/1e9,timezone.utc)
                 if at<=now and (now-at).total_seconds()<86400:
                     return t,{'usd':price,'at':at.isoformat(),'session':at.astimezone(NY).date().isoformat(),
-                              'mode':'REALTIME' if row['timeframe']=='REAL-TIME' else 'DELAYED','source':'Massive unified snapshot'}
+                              'mode':'REALTIME' if row.get('timeframe')=='REAL-TIME' else 'DELAYED',
+                              'provider_timeframe':row.get('timeframe','UNVERIFIED'),
+                              'delay_basis':'15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED',
+                              'source':'Massive unified snapshot'}
         p=query(key,f'/v2/aggs/ticker/{t}/range/1/day/{start}/{end}',{'adjusted':'false','sort':'desc','limit':8}) if key else {}
         rows=p.get('results') or []
         if not rows:return t,{'error':p.get('error','CLOSE_UNAVAILABLE'),'mode':'MISSING'}
@@ -126,6 +132,7 @@ def market_quotes(key,tickers,now,as_of=None):
         # tick timestamp (early closes exist). Display the session date only.
         return t,{'usd':row['c'],'at':None,'session':day,'mode':'CLOSE','source':'Massive raw daily close'}
     with ThreadPoolExecutor(max_workers=4) as pool:quotes=dict(pool.map(one,symbols))
+    cap['selected_mode']='INTRADAY' if any(q.get('mode') in ('REALTIME','DELAYED') for q in quotes.values()) else 'CLOSE'
     if as_of:
         future=[t for t,m in quotes.items() if m.get('session','')>as_of]
         if future:
@@ -244,11 +251,15 @@ def git(*args,cwd=ROOT):return subprocess.run(['git',*args],cwd=cwd,text=True,ca
 
 
 def refresh():
-    git('fetch','--no-tags','origin',BRANCH);head=git('rev-parse','FETCH_HEAD')
+    git('fetch','--no-tags','origin',BRANCH)
+    account=json.loads(git('show','FETCH_HEAD:public/data/h3-account.json'))
+    exists=git('ls-remote','--heads','origin','refs/heads/'+DISPLAY_BRANCH)
+    if exists:
+        git('fetch','--no-tags','origin',DISPLAY_BRANCH);head=git('rev-parse','FETCH_HEAD')
+    else:head=git('rev-parse','HEAD')
     with tempfile.TemporaryDirectory(prefix='h3-marks-') as temp:
         work=Path(temp)/'work';git('worktree','add','--detach',str(work),head)
         try:
-            account=read(work/'public/data/h3-account.json')
             if not account:raise ValueError('Accepted account export is not published yet')
             file=work/'public/data/h3-display.json';old=read(file,{})
             rates=dict(old.get('fx_history',{}));now=datetime.now(timezone.utc);fx_error=None
@@ -262,10 +273,13 @@ def refresh():
             data=build(account,old,rates,quotes,cap,now)
             if fx_error:data['errors'].append('ECB-uppdatering misslyckades: '+fx_error+'. Senast verifierade kurs visas med datum om den är tillräckligt färsk.')
             data['refresh_run']=os.getenv('GITHUB_RUN_ID');write(file,data)
-            git('add','public/data/h3-display.json',cwd=work)
+            extra=[]
+            if not exists:
+                (work/'vercel.json').write_text((ROOT/'vercel.json').read_text());extra=['vercel.json']
+            git('add','public/data/h3-display.json',*extra,cwd=work)
             git('-c','user.name=github-actions[bot]','-c','user.email=41898282+github-actions[bot]@users.noreply.github.com',
                 'commit','-m','Refresh separate H3 SEK valuation '+str(os.getenv('GITHUB_RUN_ID','manual')),cwd=work)
-            git('push','origin',f'HEAD:refs/heads/{BRANCH}',cwd=work)
+            git('push','origin',f'HEAD:refs/heads/{DISPLAY_BRANCH}',cwd=work)
             print(json.dumps({'status':data['status'],'sessions':data['sessions'],'capability':cap,'fx':data['fx'],'errors':data['errors']}))
         finally:git('worktree','remove','--force',str(work))
 

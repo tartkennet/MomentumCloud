@@ -1,10 +1,25 @@
 import copy
 import unittest
+from unittest.mock import patch
 from datetime import datetime,timezone
-from h3_display import build,FP,basis_and_trades,rate_on
+from h3_display import build,FP,basis_and_trades,rate_on,market_quotes
 
 
 class DisplayTests(unittest.TestCase):
+    def test_timestamped_snapshot_without_rights_metadata_is_never_called_realtime(self):
+        now=datetime(2026,10,29,15,30,tzinfo=timezone.utc)
+        response={'status':'OK','results':[{'ticker':'SPY','session':{'price':100.,'last_updated':int((now.timestamp()-60)*1e9)}}]}
+        with patch('h3_display.query',return_value=response):cap,quotes=market_quotes('test',['SPY'],now)
+        self.assertFalse(cap['realtime_verified']);self.assertEqual(quotes['SPY']['mode'],'DELAYED')
+        self.assertEqual(cap['provider_latency'],'UNVERIFIED')
+
+    def test_unbooked_split_blocks_post_split_mark_on_the_old_share_quantity(self):
+        now=datetime(2026,10,29,15,30,tzinfo=timezone.utc)
+        def response(key,path,params=None):
+            if path=='/v3/snapshot':return {'status':'OK','results':[{'ticker':'SPY','session':{'price':50.,'last_updated':int(now.timestamp()*1e9)}}]}
+            return {'results':[{'ticker':'SPY','execution_date':'2026-10-29'}]} if path.endswith('splits') else {'results':[]}
+        with patch('h3_display.query',side_effect=response):cap,quotes=market_quotes('test',['SPY'],now,'2026-10-28')
+        self.assertEqual(quotes['SPY']['mode'],'MISSING');self.assertEqual(cap['corporate_event_guard']['blocked_tickers'],['SPY'])
     def test_waiting_shows_a_budget_but_never_a_fabricated_return(self):
         source={'source_fingerprint':FP,'as_of':None,'source_run':'test','checkpoint_sha256':'test','account':None,'benchmark':None,'latest_decision':None}
         result=build(source,{}, {},{}, {},datetime(2026,10,29,tzinfo=timezone.utc))

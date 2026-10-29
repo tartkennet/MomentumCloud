@@ -2,5 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "cleanUrls": true,
-  "git": {"deploymentEnabled": {"h3-observed-snapshots": false}}
+  "git": {"deploymentEnabled": {"h3-observed-snapshots": false, "h3-sek-valuations": false}}
 }

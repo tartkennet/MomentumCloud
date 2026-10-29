@@ -9,7 +9,8 @@ function validate(data){
   return data;
 }
 async function remote(file){
-  const r=await fetch(`${BASE}${file}?minute=${Math.floor(Date.now()/60000)}`,{signal:AbortSignal.timeout(6000),headers:{'cache-control':'no-cache'}});
+  const base=file==='h3-display.json'?BASE.replace('h3-observed-snapshots','h3-sek-valuations'):BASE;
+  const r=await fetch(`${base}${file}?minute=${Math.floor(Date.now()/60000)}`,{signal:AbortSignal.timeout(6000),headers:{'cache-control':'no-cache'}});
   if(!r.ok)throw Error('Delivery unavailable');return r.json();
 }
 module.exports=async(_req,res)=>{
