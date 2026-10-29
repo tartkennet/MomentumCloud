@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
+  "as_of": null,
+  "source_run": "40890462588",
+  "checkpoint_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+  "account": null,
+  "benchmark": null,
+  "holdings": [],
+  "latest_decision": null,
+  "splits": [],
+  "live_approved": false,
+  "broker_orders_enabled": false
+}
