@@ -27,7 +27,7 @@ function trades(rows,detail=false){
 function chart(rows,width=800){
  if(rows.some(r=>!finite(r.nav_sek)||!finite(r.spy_sek)))return '<div class="chart-empty"><h3>En del valutaunderlag saknas.</h3><p>Ingen ofullständig SEK-kurva visas. De ursprungliga H3-observationerna är bevarade.</p></div>';
  const valid=rows.filter(r=>finite(r.nav_sek)&&finite(r.spy_sek));
- if(valid.length<2)return '<div class="chart-empty"><span class="empty-symbol"><svg><use href="#i-stats"/></svg></span><h3>Första kapitlet börjar snart.</h3><p>Här växer din portföljkurva fram när riktiga H3-sessioner har registrerats. Ingen historisk avkastning fylls i i förväg.</p></div>';
+ if(valid.length<2)return '<div class="chart-empty"><span class="empty-symbol"><svg><use href="#i-arrow"/></svg></span><h3>Redo för nästa kapitel.</h3><p>Din utveckling tar form här, så snart två verkliga H3-observationer finns. Fram till dess väntar vi in marknaden.</p></div>';
  const w=Math.max(280,width),h=285,left=62,right=12,top=24,bottom=45;
  const values=valid.flatMap(r=>[r.nav_sek,r.spy_sek]),min=Math.min(...values),max=Math.max(...values),gap=(max-min)*.12||100;
  const low=min-gap,high=max+gap;
@@ -35,7 +35,7 @@ function chart(rows,width=800){
  const line=key=>valid.map((r,i)=>`${i?'L':'M'}${x(i).toFixed(2)},${y(r[key]).toFixed(2)}`).join(' ');
  const grid=[0,1,2,3].map(i=>{const value=low+(high-low)*i/3,Y=y(value);return `<line class="gridline" x1="${left}" x2="${w-right}" y1="${Y}" y2="${Y}"/><text x="${left-10}" y="${Y+5}" text-anchor="end">${n(value/1000,0)} tkr</text>`}).join('');
  const start=date(valid[0].date).replace(/ 20\d\d$/,''),end=date(valid.at(-1).date).replace(/ 20\d\d$/,'');
- return `<svg class="value-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Registrerade H3- och SPY-portföljvärden i SEK"><defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#18aa91" stop-opacity=".16"/><stop offset="1" stop-color="#18aa91" stop-opacity="0"/></linearGradient></defs>${grid}<path fill="url(#chart-fill)" d="${line('nav_sek')} L${x(valid.length-1)},${h-bottom} L${left},${h-bottom}Z"/><path class="spyline" d="${line('spy_sek')}"/><path class="navline" d="${line('nav_sek')}"/><circle class="chart-point" cx="${x(valid.length-1)}" cy="${y(valid.at(-1).nav_sek)}" r="5"/><text x="${left}" y="${h-12}">${esc(start)}</text><text x="${w-right}" y="${h-12}" text-anchor="end">${esc(end)}</text><rect class="chart-touch" x="${left}" y="${top}" width="${w-left-right}" height="${h-top-bottom}"/></svg><div class="chart-tooltip" hidden></div>`;
+ return `<svg class="value-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Registrerade H3- och SPY-portföljvärden i SEK"><defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="var(--aqua)" stop-opacity=".16"/><stop offset="1" stop-color="var(--aqua)" stop-opacity="0"/></linearGradient></defs>${grid}<path fill="url(#chart-fill)" d="${line('nav_sek')} L${x(valid.length-1)},${h-bottom} L${left},${h-bottom}Z"/><path class="spyline" d="${line('spy_sek')}"/><path class="navline" d="${line('nav_sek')}"/><circle class="chart-point" cx="${x(valid.length-1)}" cy="${y(valid.at(-1).nav_sek)}" r="5"/><text x="${left}" y="${h-12}">${esc(start)}</text><text x="${w-right}" y="${h-12}" text-anchor="end">${esc(end)}</text><rect class="chart-touch" x="${left}" y="${top}" width="${w-left-right}" height="${h-top-bottom}"/></svg><div class="chart-tooltip" hidden></div>`;
 }
 function renderChart(){
  if(!current)return;
@@ -62,14 +62,15 @@ function render(d){
  $('portfolio-value').innerHTML=finite(m?.nav_sek)?`${n(m.nav_sek,0)} <small>kr</small>`:'100 000 <small>kr</small>';
  $('portfolio-return').className='hero-return '+cls(m?.pnl_sek);
  $('portfolio-return').textContent=m?`${m.pnl_sek>0?'+':''}${money(m.pnl_sek)}  (${pct(m.return_pct)}) sedan start`:d.sessions?'SEK-värderingen inväntar verifierade kurser eller valuta':'Inväntar den första registrerade sessionen';
+ $('portfolio-status').dataset.state=d.delivery?.verified===false||errors.length?'blocked':d.sessions?'active':'waiting';
  $('portfolio-status').textContent=d.delivery?.verified===false?'Anslutningsproblem':errors.length?'Kontroll behövs':d.sessions?'Paper trading pågår':'Redo för första sessionen';
  const marks=positions.map(p=>p.mark).concat(d.quotes?.SPY?[d.quotes.SPY]:[]);
  const modes=new Set(marks.map(x=>x?.mode));const modeText=modes.has('REALTIME')?'Realtidskälla · hämtas var 15:e minut':modes.has('DELAYED')?'Fördröjd visning · hämtas var 15:e minut':modes.has('CLOSE')?'Senaste stängningskurser':'Kursunderlag inväntas';
  const newest=marks.map(x=>x?.session).filter(Boolean).sort().at(-1);const newestAt=marks.map(x=>x?.at).filter(Boolean).sort().at(-1);
  $('valuation-time').textContent=`${modeText}${newestAt?' · datatid '+stamp(newestAt):newest?' · '+date(newest):''} · hämtat ${stamp(d.generated_at)}`;
- const decision=d.latest_decision;$('risk-status').textContent=decision?(decision.risk_on?'RISK ON':'RISK OFF'):'Inväntar H3';
- $('risk-status').className=decision?.risk_on?'positive':'';
- $('risk-copy').textContent=decision?decision.risk_on?'H3:s senaste beslut tillåter exponering mot momentumaktier och SPY.':'H3:s senaste beslut söker skydd i kassa. Beslut fylls enligt den frysta modellen.':'Marknadsläget visas när H3 har registrerat sitt första beslut.';
+ const decision=d.latest_decision;$('risk-status').textContent=decision?(decision.risk_on?'RISK ON':'RISK OFF'):'Väntar';
+ $('risk-status').className='';$('risk-status').dataset.state=decision?(decision.risk_on?'on':'off'):'waiting';
+ $('risk-copy').textContent=decision?decision.risk_on?'H3:s senaste beslut tillåter exponering mot momentumaktier och SPY.':'H3:s senaste beslut söker skydd i kassa. Beslut fylls enligt den frysta modellen.':'Första H3-beslutet är inte registrerat ännu.';
  $('next-decision').textContent=stamp(h.next_attempt);
  $('summary-metrics').innerHTML=stat('H3 sedan start',pct(m?.return_pct),'SEK efter modellens kostnader',cls(m?.return_pct))+stat('S&P 500 via SPY',pct(m?.spy_return_pct),'Samma valutagrund',cls(m?.spy_return_pct))+stat('Skillnad mot SPY',finite(m?.edge_pct)?n(m.edge_pct)+' pp':'—','Procentenheter',cls(m?.edge_pct))+stat('Bokförda sessioner',n(d.sessions||0,0),'Verkligt insamlade observationer');
  $('portfolio-metrics').innerHTML=stat('Portföljvärde',money(m?.nav_sek))+stat('Resultat sedan start',money(m?.pnl_sek),'Inklusive dollarutveckling',cls(m?.pnl_sek))+stat('Aktieinnehav',n(positions.length,0))+stat('Referenskurs USD/SEK',n(d.fx?.usdsek,4),d.fx?date(d.fx.date):'Verifierad valutakurs saknas');
@@ -83,15 +84,15 @@ function render(d){
  const hist=h.historical?.metrics;$('historical-details').innerHTML=hist?`<p>Utvecklingsdata 2024-01-01–2026-10-28. Separat från din fiktiva portfölj.</p>${row('H3 historiskt',pct(hist.TotalReturn_pct))}${row('SPY historiskt',pct(hist.SPYTotalReturn_pct))}${row('Maximal nedgång',pct(hist.DailyMaxDrawdown_pct))}${row('Sharpe',n(hist.DailySharpe_zero_rf))}<p class="caption">Samtliga 40 historiska scenarier passerade. Detta är inte orörd out-of-sample-data eller tillstånd för riktig handel.</p>`:'Den historiska sammanfattningen är inte tillgänglig just nu.';
 }
 function selectTab(name){
- if(!['overview','portfolio','trades','stats','more'].includes(name))name='overview';tab=name;
+ if(!['overview','portfolio','trades','stats','more'].includes(name))name='overview';tab=name;document.body.dataset.view=name;
  document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==name);
  document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===name;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  history.replaceState(null,'','#'+name);window.scrollTo({top:0,left:0,behavior:'instant'});if(name==='overview')renderChart();
 }
-function setTheme(theme){document.documentElement.dataset.theme=theme;try{localStorage.setItem('momentum-theme',theme)}catch{}document.querySelector('meta[name="color-scheme"]').content=theme==='light'?'only light':'dark';document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#111e2a':'#f5f8fb';$('theme-toggle').setAttribute('aria-label',theme==='dark'?'Byt till ljust tema':'Byt till mörkt tema');$('theme-toggle').innerHTML=`<svg><use href="#i-${theme==='dark'?'sun':'moon'}"/></svg>`;}
+function setTheme(theme){document.documentElement.dataset.theme=theme;try{localStorage.setItem('momentum-theme',theme)}catch{}document.querySelector('meta[name="color-scheme"]').content=theme==='light'?'only light':'dark';document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#132c33':'#fbf5eb';$('theme-toggle').setAttribute('aria-label',theme==='dark'?'Byt till ljust tema':'Byt till mörkt tema');$('theme-toggle').innerHTML=`<svg><use href="#i-${theme==='dark'?'sun':'moon'}"/></svg>`;}
 async function load(){
  try{const response=await fetch('/api/portfolio',{cache:'no-store',signal:AbortSignal.timeout(12000)});const d=await response.json();if(d.start_capital_sek!==100000)throw Error('Invalid portfolio');render(d)}
- catch{$('connection-alert').hidden=false;$('connection-alert').textContent='Anslutningen till portföljen fungerar inte just nu. Tidigare värden är inte aktuella signaler. Vyn försöker automatiskt igen.';$('portfolio-status').textContent='Anslutningsproblem';}
+ catch{$('connection-alert').hidden=false;$('connection-alert').textContent='Anslutningen till portföljen fungerar inte just nu. Tidigare värden är inte aktuella signaler. Vyn försöker automatiskt igen.';$('portfolio-status').textContent='Anslutningsproblem';$('portfolio-status').dataset.state='blocked';}
 }
 function exportCSV(){if(!current?.trades?.length)return;const cells=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const columns=['date','at','side','ticker','quantity','price','fee_usd','fee_sek','notional_sek','signal_date','time_basis'];const text='\uFEFF'+[columns.join(';'),...current.trades.map(t=>columns.map(k=>cells(t[k])).join(';'))].join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='MomentumCloud-H3-simulerade-affarer.csv';a.click();URL.revokeObjectURL(url);}
 if(typeof module!=='undefined')module.exports={chart,statistics,esc,pct};
