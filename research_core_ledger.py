@@ -47,6 +47,14 @@ def complete_data(data, mark_policy='last_quote'):
 
 
 class ResearchLedger(Ledger):
+    def execute_open(self, data, day, config=CONFIG):
+        signal = self.pending['signal_date'] if self.pending else None
+        first = len(self.trades)
+        super().execute_open(data, day, config)
+        for trade in self.trades[first:]:
+            if trade['side'] == 'BUY_CANCELLED_NO_OPEN':
+                trade['signal_date'] = signal
+
     def events_before_open(self, data, day):
         # Quantities immediately before the event, after that day's splits.
         quantities = dict(self.shares)

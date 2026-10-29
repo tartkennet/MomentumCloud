@@ -326,9 +326,10 @@ def run(args):
             for gap in scan['quote_gaps']:
                 print('PREFLIGHT_GAP ' + json.dumps(gap), flush=True)
             raise core.DataBlocked('Holding-input preflight found unresolved quotes; no performance calculated')
+        historical_data = supplement(make_data(args.cache_dir, CUTOFF, True))
         for mark_policy in ('last_quote', 'offer_value'):
             for phase, end in (('historical', CUTOFF), ('extension', EXTENSION_END)):
-                data = full_data if phase == 'extension' else supplement(make_data(args.cache_dir, end, True))
+                data = full_data if phase == 'extension' else historical_data
                 data = complete_data(data, mark_policy)
                 data.payment_sessions = full_data.days
                 for delay in DELAYS:

@@ -13,6 +13,15 @@ from test_momentum_core import MemoryData, order
 
 
 class EventCompletions(unittest.TestCase):
+    def test_cancelled_missing_buy_keeps_its_original_signal_date(self):
+        d = MemoryData(['2024-01-02', '2024-01-03'], [{}, {}])
+        l = ResearchLedger(pending=order(d.days[0], 100000, MISSING=.1))
+        l.execute_open(d, d.days[1])
+        self.assertEqual(l.trades[0]['signal_date'], d.days[0])
+        self.assertEqual(l.trades[0]['date'], d.days[1])
+        self.assertEqual(l.trades[0]['side'], 'BUY_CANCELLED_NO_OPEN')
+        self.assertEqual(l.cash, 100000)
+
     def test_payment_policies_preserve_cross_boundary_and_unobserved_future_claims(self):
         d = SimpleNamespace(days=['2026-10-22', '2026-10-23', '2026-10-26'],
                             sessions=['2026-10-22', '2026-10-23'],

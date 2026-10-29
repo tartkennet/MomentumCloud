@@ -22,7 +22,7 @@ permissions:
 
 concurrency:
   group: core-normalized-${{ github.head_ref || github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   research:
