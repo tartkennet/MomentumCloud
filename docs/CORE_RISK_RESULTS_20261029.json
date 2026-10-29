@@ -1,0 +1,3759 @@
+{
+  "verification": {
+    "status": "PASS",
+    "financial_GO": false,
+    "live_approved": false,
+    "broker_orders_enabled": false,
+    "research_run": 40791570390,
+    "earlier_complete_run": 40788221889,
+    "export_run": 40794576905,
+    "export_source": "bb59828448cb5311b91227bb50612b6932b826fd",
+    "source_fingerprint": "c88761ba2ca70c42298a647b641a3f5e4a98fcb6592f0b76d7817daaee1008e2",
+    "study_fingerprint": "f1ed81a24d0ba988314cc8e958e0ed42a16aba34ca5e7527bd4f1a39c66649c1",
+    "completed_accounts": 60,
+    "unit_tests": 163,
+    "input_files_verified": 1001,
+    "original_input_files_unchanged": 957,
+    "new_input_files": 44,
+    "accounting_audits_passed": 60,
+    "maximum_nav_error_usd": 0,
+    "independent_stop_policy_accounts": 40,
+    "independent_stop_signals": 11630,
+    "next_session_stop_fills": 11610,
+    "identical_economic_files": 360,
+    "corrected_fee_metadata_accounts": 30,
+    "only_runner_function_changed": "extension_metrics",
+    "frozen_risk_modules_unchanged": true,
+    "market_data_API_used": false,
+    "risk_on_rankings": 34,
+    "eligible_min": 845,
+    "eligible_max": 1713,
+    "target_min": 15,
+    "target_max": 15,
+    "raw_first_session": "2022-12-29",
+    "raw_last_session": "2026-10-28",
+    "release_tag": "core-risk-research-20261029"
+  },
+  "cases": [
+    {
+      "phase": "historical",
+      "name": "baseline_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 44.305365408499895,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -21.137134435500073,
+        "DailyMaxDrawdown_pct": -37.52383373192537,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 4365.930991500002,
+        "FinalNAV_USD": 144305.3654084999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.305365408499895,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -21.137134435500073,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.52383373192537,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 39.54028368460003,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -25.444634027399957,
+        "DailyMaxDrawdown_pct": -37.86827649850489,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 8518.713155400006,
+        "FinalNAV_USD": 139540.28368460003
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 39.54028368460003,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -25.444634027399957,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.86827649850489,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.45504634819997,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.9874534958,
+        "DailyMaxDrawdown_pct": -47.38774381991081,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5482.127251800003,
+        "FinalNAV_USD": 125455.04634819996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.45504634819997,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.9874534958,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.38774381991081,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.685967209199905,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.29895050280008,
+        "DailyMaxDrawdown_pct": -47.95461067168425,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10716.432910799998,
+        "FinalNAV_USD": 119685.96720919991
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.685967209199905,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.29895050280008,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95461067168425,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.51106803549996,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.93143180850001,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5481.342364500009,
+        "FinalNAV_USD": 125511.06803549996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.51106803549996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.93143180850001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.581560521200014,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.403357190799966,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10706.796718800011,
+        "FinalNAV_USD": 119581.56052120002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.581560521200014,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.403357190799966,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 25.51106803549996,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -39.93143180850001,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5481.342364500009,
+        "FinalNAV_USD": 125511.06803549996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 25.51106803549996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.93143180850001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 19.581560521200014,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -45.403357190799966,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10706.796718800011,
+        "FinalNAV_USD": 119581.56052120002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 19.581560521200014,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -45.403357190799966,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 26.73420549409997,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -38.7082943499,
+        "DailyMaxDrawdown_pct": -47.33864683645119,
+        "PeriodHitRate_pct": 53.125,
+        "ActualFees_USD": 5446.168545900002,
+        "FinalNAV_USD": 126734.20549409998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 26.73420549409997,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -38.7082943499,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.33864683645119,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 53.125,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "baseline_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 21.629281782399957,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -43.35563592960003,
+        "DailyMaxDrawdown_pct": -47.95225005651324,
+        "PeriodHitRate_pct": 50.0,
+        "ActualFees_USD": 10656.133857600003,
+        "FinalNAV_USD": 121629.28178239996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 21.629281782399957,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -43.35563592960003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95225005651324,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 50.0,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 70.9010921992,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 5.458592355200025,
+        "DailyMaxDrawdown_pct": -28.09485621968575,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 6366.994960800002,
+        "FinalNAV_USD": 170901.0921992
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 70.9010921992,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 5.458592355200025,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.09485621968575,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 63.5323262592,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -1.452591452799986,
+        "DailyMaxDrawdown_pct": -28.754465303012623,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 12386.24038080002,
+        "FinalNAV_USD": 163532.3262592
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 63.5323262592,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -1.452591452799986,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.754465303012623,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 66.53797653540006,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 1.0954766914000942,
+        "DailyMaxDrawdown_pct": -33.15098755990533,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 7984.674504600007,
+        "FinalNAV_USD": 166537.97653540006
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 66.53797653540006,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 1.0954766914000942,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.15098755990533,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 57.50005794579993,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -7.484859766200053,
+        "DailyMaxDrawdown_pct": -33.95091130314285,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 15465.710134199997,
+        "FinalNAV_USD": 157500.05794579993
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 57.50005794579993,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -7.484859766200053,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95091130314285,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 66.7694895826001,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 1.3269897386001333,
+        "DailyMaxDrawdown_pct": -33.1990992570655,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 7989.7255374000015,
+        "FinalNAV_USD": 166769.4895826001
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 66.7694895826001,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 1.3269897386001333,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.1990992570655,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 57.55463888079999,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -7.430278831199992,
+        "DailyMaxDrawdown_pct": -33.95279915298447,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 15467.559199199999,
+        "FinalNAV_USD": 157554.6388808
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 57.55463888079999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -7.430278831199992,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95279915298447,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 66.89168704759997,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 1.4491872036000046,
+        "DailyMaxDrawdown_pct": -33.141550669528755,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 7992.331952400006,
+        "FinalNAV_USD": 166891.6870476
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 66.89168704759997,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 1.4491872036000046,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.141550669528755,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 57.55463888079999,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -7.430278831199992,
+        "DailyMaxDrawdown_pct": -33.95279915298447,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 15467.559199199999,
+        "FinalNAV_USD": 157554.6388808
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 57.55463888079999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -7.430278831199992,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95279915298447,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 71.06523856749989,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 5.622738723499921,
+        "DailyMaxDrawdown_pct": -33.14356600589797,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 8000.8820325000015,
+        "FinalNAV_USD": 171065.23856749988
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 71.06523856749989,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 5.622738723499921,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.14356600589797,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "stop10_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 61.42044884979996,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -3.564468862200023,
+        "DailyMaxDrawdown_pct": -33.90489143273938,
+        "PeriodHitRate_pct": 59.375,
+        "ActualFees_USD": 15520.326070200019,
+        "FinalNAV_USD": 161420.44884979996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 61.42044884979996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -3.564468862200023,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.90489143273938,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 59.375,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 53.89116650689996,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": -11.551333337100012,
+        "DailyMaxDrawdown_pct": -25.616732408435006,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 7845.672653099999,
+        "FinalNAV_USD": 153891.16650689996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 53.89116650689996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -11.551333337100012,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -25.616732408435006,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 42.89669387985,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -22.088223832149986,
+        "DailyMaxDrawdown_pct": -28.05391596699357,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 14970.794250150006,
+        "FinalNAV_USD": 142896.69387985
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 42.89669387985,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -22.088223832149986,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.05391596699357,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 69.30923834572489,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 3.8667385017249245,
+        "DailyMaxDrawdown_pct": -29.33448472268374,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 9986.273944275015,
+        "FinalNAV_USD": 169309.23834572488
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 69.30923834572489,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 3.8667385017249245,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -29.33448472268374,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 56.009289665100056,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -8.975628046899928,
+        "DailyMaxDrawdown_pct": -31.93945007267618,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 19087.77359490001,
+        "FinalNAV_USD": 156009.28966510005
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 56.009289665100056,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -8.975628046899928,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.93945007267618,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 69.28200709122498,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 3.839507247225015,
+        "DailyMaxDrawdown_pct": -29.30623735195531,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 9997.022078775019,
+        "FinalNAV_USD": 169282.00709122498
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 69.28200709122498,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 3.839507247225015,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -29.30623735195531,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 56.011468780099996,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -8.973448931899988,
+        "DailyMaxDrawdown_pct": -31.930294774592095,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 19084.729479900005,
+        "FinalNAV_USD": 156011.4687801
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 56.011468780099996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -8.973448931899988,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.930294774592095,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 70.25138717887491,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 4.808887334874939,
+        "DailyMaxDrawdown_pct": -28.88121230510864,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 10023.05457112501,
+        "FinalNAV_USD": 170251.38717887492
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 70.25138717887491,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 4.808887334874939,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.88121230510864,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 56.727068283249984,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -8.25784942875,
+        "DailyMaxDrawdown_pct": -31.504393234585326,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 19159.80048675001,
+        "FinalNAV_USD": 156727.06828324997
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 56.727068283249984,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -8.25784942875,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.504393234585326,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 70.0773753577999,
+        "SPYTotalReturn_pct": 65.44249984399997,
+        "TotalEdgeVsSPY_pct": 4.634875513799926,
+        "DailyMaxDrawdown_pct": -28.620910450219718,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 9927.312082200013,
+        "FinalNAV_USD": 170077.3753577999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 70.0773753577999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": 4.634875513799926,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.620910450219718,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "historical",
+      "name": "trailing10_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 32,
+        "TotalReturn_pct": 56.49280435425001,
+        "SPYTotalReturn_pct": 64.98491771199998,
+        "TotalEdgeVsSPY_pct": -8.492113357749972,
+        "DailyMaxDrawdown_pct": -31.29762026670099,
+        "PeriodHitRate_pct": 56.25,
+        "ActualFees_USD": 18958.715175749996,
+        "FinalNAV_USD": 156492.80435425002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 32,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 56.49280435425001,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -8.492113357749972,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.29762026670099,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 56.25,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "f5aecba1ad9bfab5ca8960376638a39cffe8b3bf214f8df0698e6b19fe0a8b2d",
+      "decision_status": "NO_GO"
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 37.3147612084999,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -30.7605314435001,
+        "DailyMaxDrawdown_pct": -37.52383373192537,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 4505.034391500001,
+        "FinalNAV_USD": 137314.7612084999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 37.3147612084999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -30.7605314435001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.52383373192537,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -4.844313432290603,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -6.435677689046015,
+        "DailyMaxDrawdown_pct": -15.222644215535297,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 139.10339999999906,
+        "FinalNAV_USD": 137314.7612084999,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 32.197745012600045,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -35.40754667339994,
+        "DailyMaxDrawdown_pct": -37.86827649850489,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 8794.586747400008,
+        "FinalNAV_USD": 132197.74501260003
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 32.197745012600045,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -35.40754667339994,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -37.86827649850489,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -5.261949078874018,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -6.850199696166282,
+        "DailyMaxDrawdown_pct": -15.312906885410316,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 275.87359200000174,
+        "FinalNAV_USD": 132197.74501260003,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 15.552421267199957,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -52.52287138480004,
+        "DailyMaxDrawdown_pct": -47.38774381991081,
+        "PeriodHitRate_pct": 51.515151515151516,
+        "ActualFees_USD": 5702.571532800003,
+        "FinalNAV_USD": 115552.42126719996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 15.552421267199957,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -52.52287138480004,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.38774381991081,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 51.515151515151516,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.893365288404031,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -9.484729545159443,
+        "DailyMaxDrawdown_pct": -22.754686212465103,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 220.44428100000005,
+        "FinalNAV_USD": 115552.42126719996,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 10.373662462199885,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -57.2316292238001,
+        "DailyMaxDrawdown_pct": -47.95461067168425,
+        "PeriodHitRate_pct": 48.484848484848484,
+        "ActualFees_USD": 11141.831617799991,
+        "FinalNAV_USD": 110373.66246219989
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 10.373662462199885,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -57.2316292238001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95461067168425,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 48.484848484848484,
+          "requirement": ">= 50%",
+          "pass": false
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.780615358793885,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -9.368865976086148,
+        "DailyMaxDrawdown_pct": -22.520275940574443,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 425.398706999993,
+        "FinalNAV_USD": 110373.66246219989,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 15.602473274499973,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -52.47281937750003,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 51.515151515151516,
+        "ActualFees_USD": 5701.836325500008,
+        "FinalNAV_USD": 115602.47327449998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 15.602473274499973,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -52.47281937750003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 51.515151515151516,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.894598393663099,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -9.48596265041851,
+        "DailyMaxDrawdown_pct": -22.751918684881687,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 220.4939609999983,
+        "FinalNAV_USD": 115602.47327449998,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 10.276741869200002,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -57.328549816799985,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 48.484848484848484,
+        "ActualFees_USD": 11131.975090800006,
+        "FinalNAV_USD": 110276.7418692
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 10.276741869200002,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -57.328549816799985,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 48.484848484848484,
+          "requirement": ">= 50%",
+          "pass": false
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.781148373917068,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -9.369398991209332,
+        "DailyMaxDrawdown_pct": -22.532151189104365,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 425.17837199999485,
+        "FinalNAV_USD": 110276.7418692,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 15.602473274499973,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -52.47281937750003,
+        "DailyMaxDrawdown_pct": -47.37737728413121,
+        "PeriodHitRate_pct": 51.515151515151516,
+        "ActualFees_USD": 5701.836325500008,
+        "FinalNAV_USD": 115602.47327449998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 15.602473274499973,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -52.47281937750003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.37737728413121,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 51.515151515151516,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.894598393663099,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -9.48596265041851,
+        "DailyMaxDrawdown_pct": -22.751918684881687,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 220.4939609999983,
+        "FinalNAV_USD": 115602.47327449998,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 10.276741869200002,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -57.328549816799985,
+        "DailyMaxDrawdown_pct": -47.96242780879672,
+        "PeriodHitRate_pct": 48.484848484848484,
+        "ActualFees_USD": 11131.975090800006,
+        "FinalNAV_USD": 110276.7418692
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 10.276741869200002,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -57.328549816799985,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.96242780879672,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 48.484848484848484,
+          "requirement": ">= 50%",
+          "pass": false
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.781148373917068,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -9.369398991209332,
+        "DailyMaxDrawdown_pct": -22.532151189104365,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 425.17837199999485,
+        "FinalNAV_USD": 110276.7418692,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 16.39106527309999,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -51.68422737890001,
+        "DailyMaxDrawdown_pct": -47.33864683645119,
+        "PeriodHitRate_pct": 51.515151515151516,
+        "ActualFees_USD": 5666.036886900002,
+        "FinalNAV_USD": 116391.06527309999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 16.39106527309999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -51.68422737890001,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.33864683645119,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 51.515151515151516,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -8.161285408840557,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -9.75264966559597,
+        "DailyMaxDrawdown_pct": -23.05707155920379,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 219.86834100000033,
+        "FinalNAV_USD": 116391.06527309999,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "baseline_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 11.977920655399931,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -55.62737103060006,
+        "DailyMaxDrawdown_pct": -47.95225005651324,
+        "PeriodHitRate_pct": 48.484848484848484,
+        "ActualFees_USD": 11087.047104600006,
+        "FinalNAV_USD": 111977.92065539994
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 11.977920655399931,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -55.62737103060006,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -47.95225005651324,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 48.484848484848484,
+          "requirement": ">= 50%",
+          "pass": false
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -7.935063814868792,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -9.523314432161056,
+        "DailyMaxDrawdown_pct": -22.737770182997462,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 430.91324700000223,
+        "FinalNAV_USD": 111977.92065539994,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 51.07863476719998,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -16.996657884800022,
+        "DailyMaxDrawdown_pct": -28.09485621968575,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 6733.128472800001,
+        "FinalNAV_USD": 151078.63476719998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 51.07863476719998,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -16.996657884800022,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.09485621968575,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -11.598789204281523,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -13.190153461036935,
+        "DailyMaxDrawdown_pct": -15.264288800088954,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 366.1335119999985,
+        "FinalNAV_USD": 151078.63476719998,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 44.753003120199985,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -22.852288565800002,
+        "DailyMaxDrawdown_pct": -28.754465303012623,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 13090.485439800019,
+        "FinalNAV_USD": 144753.00312019998
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.753003120199985,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -22.852288565800002,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.754465303012623,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -11.483554089015179,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -13.071804706307443,
+        "DailyMaxDrawdown_pct": -15.115814024770957,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 704.245058999999,
+        "FinalNAV_USD": 144753.00312019998,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 40.973172186900086,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -27.102120465099915,
+        "DailyMaxDrawdown_pct": -33.15098755990533,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 8580.389573100007,
+        "FinalNAV_USD": 140973.17218690008
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 40.973172186900086,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -27.102120465099915,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.15098755990533,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.350735538128635,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -16.942099794884047,
+        "DailyMaxDrawdown_pct": -19.918150522493693,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 595.7150684999997,
+        "FinalNAV_USD": 140973.17218690008,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 32.77915122379991,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -34.82614046220008,
+        "DailyMaxDrawdown_pct": -33.95091130314285,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 16585.97449619999,
+        "FinalNAV_USD": 132779.1512237999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 32.77915122379991,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -34.82614046220008,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95091130314285,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.695808017103808,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.28405863439607,
+        "DailyMaxDrawdown_pct": -20.204647334970183,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1120.2643619999926,
+        "FinalNAV_USD": 132779.1512237999,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 40.80313156160014,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -27.272161090399862,
+        "DailyMaxDrawdown_pct": -33.1990992570655,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 8583.453518400003,
+        "FinalNAV_USD": 140803.13156160014
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 40.80313156160014,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -27.272161090399862,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.1990992570655,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.570208966873977,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -17.16157322362939,
+        "DailyMaxDrawdown_pct": -20.20952721640762,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 593.7279810000018,
+        "FinalNAV_USD": 140803.13156160014,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 32.83024128879999,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -34.7750503972,
+        "DailyMaxDrawdown_pct": -33.95279915298447,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 16588.00443119999,
+        "FinalNAV_USD": 132830.2412888
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 32.83024128879999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -34.7750503972,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95279915298447,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.692586246670626,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.28083686396289,
+        "DailyMaxDrawdown_pct": -20.200815948021813,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1120.4452319999928,
+        "FinalNAV_USD": 132830.2412888,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 40.92365926660004,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -27.15163338539996,
+        "DailyMaxDrawdown_pct": -33.141550669528755,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 8586.323933400008,
+        "FinalNAV_USD": 140923.65926660004
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 40.92365926660004,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -27.15163338539996,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.141550669528755,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.55980902367743,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -17.151173280432843,
+        "DailyMaxDrawdown_pct": -20.198355883131413,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 593.9919810000019,
+        "FinalNAV_USD": 140923.65926660004,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 32.83024128879999,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -34.7750503972,
+        "DailyMaxDrawdown_pct": -33.95279915298447,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 16588.00443119999,
+        "FinalNAV_USD": 132830.2412888
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 32.83024128879999,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -34.7750503972,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.95279915298447,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.692586246670626,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.28083686396289,
+        "DailyMaxDrawdown_pct": -20.200815948021813,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1120.4452319999928,
+        "FinalNAV_USD": 132830.2412888,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 44.486534513999906,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -23.588758138000095,
+        "DailyMaxDrawdown_pct": -33.14356600589797,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 8607.968886,
+        "FinalNAV_USD": 144486.5345139999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.486534513999906,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -23.588758138000095,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.14356600589797,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.53717416587379,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -17.1285384226292,
+        "DailyMaxDrawdown_pct": -20.11097066342372,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 607.086853499999,
+        "FinalNAV_USD": 144486.5345139999,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "stop10_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 36.395090667799955,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -31.21020101820003,
+        "DailyMaxDrawdown_pct": -33.90489143273938,
+        "PeriodHitRate_pct": 57.57575757575758,
+        "ActualFees_USD": 16676.588212200015,
+        "FinalNAV_USD": 136395.09066779996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 36.395090667799955,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -31.21020101820003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -33.90489143273938,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 57.57575757575758,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.503214345095662,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.091464962387924,
+        "DailyMaxDrawdown_pct": -20.055883566406386,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1156.262141999996,
+        "FinalNAV_USD": 136395.09066779996,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_locked_15bps",
+      "delay": null,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 37.91979337739995,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -30.155499274600054,
+        "DailyMaxDrawdown_pct": -25.616732408435006,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 8369.026062600002,
+        "FinalNAV_USD": 137919.79337739994
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 37.91979337739995,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -30.155499274600054,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -25.616732408435006,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -10.378356010956558,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -11.96972026771197,
+        "DailyMaxDrawdown_pct": -13.143303624212678,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 523.3534095000032,
+        "FinalNAV_USD": 137919.79337739994,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_locked_30bps",
+      "delay": null,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 27.753233157850012,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -39.852058528149975,
+        "DailyMaxDrawdown_pct": -28.05391596699357,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 15925.848012150003,
+        "FinalNAV_USD": 127753.23315785002
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 27.753233157850012,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -39.852058528149975,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.05391596699357,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -10.59748851483777,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -12.185739132130035,
+        "DailyMaxDrawdown_pct": -13.17215184891969,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 955.0537619999977,
+        "FinalNAV_USD": 127753.23315785002,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_0_15bps",
+      "delay": 0,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 43.392596349724855,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -24.682696302275147,
+        "DailyMaxDrawdown_pct": -29.33448472268374,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 10845.933460275006,
+        "FinalNAV_USD": 143392.59634972486
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 43.392596349724855,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -24.682696302275147,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -29.33448472268374,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.30728166355515,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -16.898645920310564,
+        "DailyMaxDrawdown_pct": -19.083989014954327,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 859.6595159999906,
+        "FinalNAV_USD": 143392.59634972486,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_0_30bps",
+      "delay": 0,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 31.510063945100054,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -36.09522774089993,
+        "DailyMaxDrawdown_pct": -31.93945007267618,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 20664.20219490001,
+        "FinalNAV_USD": 131510.06394510006
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 31.510063945100054,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -36.09522774089993,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.93945007267618,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.70369673023424,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.291947347526502,
+        "DailyMaxDrawdown_pct": -19.344358637251602,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1576.428600000003,
+        "FinalNAV_USD": 131510.06394510006,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_1_15bps",
+      "delay": 1,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 43.36847287522501,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -24.706819776774992,
+        "DailyMaxDrawdown_pct": -29.30623735195531,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 10856.58805477501,
+        "FinalNAV_USD": 143368.472875225
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 43.36847287522501,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -24.706819776774992,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -29.30623735195531,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.307908183080166,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -16.899272439835578,
+        "DailyMaxDrawdown_pct": -19.084824490398844,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 859.5659759999908,
+        "FinalNAV_USD": 143368.472875225,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_1_30bps",
+      "delay": 1,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 31.511855220100003,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -36.093436465899984,
+        "DailyMaxDrawdown_pct": -31.930294774592095,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 20661.245919900004,
+        "FinalNAV_USD": 131511.8552201
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 31.511855220100003,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -36.093436465899984,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.930294774592095,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.703725983461181,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.291976600753443,
+        "DailyMaxDrawdown_pct": -19.344865730880855,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1576.5164399999994,
+        "FinalNAV_USD": 131511.8552201,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_5_15bps",
+      "delay": 5,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 44.22408211287498,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -23.85121053912502,
+        "DailyMaxDrawdown_pct": -28.88121230510864,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 10886.296837125015,
+        "FinalNAV_USD": 144224.08211287498
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.22408211287498,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -23.85121053912502,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.88121230510864,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.28757298092045,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -16.878937237675864,
+        "DailyMaxDrawdown_pct": -19.061095573705387,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 863.2422660000047,
+        "FinalNAV_USD": 144224.08211287498,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_5_30bps",
+      "delay": 5,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 32.09131694324996,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -35.51397474275003,
+        "DailyMaxDrawdown_pct": -31.504393234585326,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 20743.534386750012,
+        "FinalNAV_USD": 132091.31694324996
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 32.09131694324996,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -35.51397474275003,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.504393234585326,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.718887368885303,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.307137986177565,
+        "DailyMaxDrawdown_pct": -19.348182206098585,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1583.733900000003,
+        "FinalNAV_USD": 132091.31694324996,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_20_15bps",
+      "delay": 20,
+      "cost": 0.0015,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 44.08136199179991,
+        "SPYTotalReturn_pct": 68.075292652,
+        "TotalEdgeVsSPY_pct": -23.993930660200093,
+        "DailyMaxDrawdown_pct": -28.620910450219718,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 10789.685368200018,
+        "FinalNAV_USD": 144081.3619917999
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 44.08136199179991,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -23.993930660200093,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -28.620910450219718,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.28481569715604,
+        "SPYTotalReturn_pct": 1.591364256755412,
+        "TotalEdgeVsSPY_pct": -16.876179953911453,
+        "DailyMaxDrawdown_pct": -19.059573894527247,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 862.3732860000055,
+        "FinalNAV_USD": 144081.3619917999,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    },
+    {
+      "phase": "extension",
+      "name": "trailing10_assumed_20_30bps",
+      "delay": 20,
+      "cost": 0.003,
+      "metrics": {
+        "Periods": 33,
+        "TotalReturn_pct": 31.884542514250057,
+        "SPYTotalReturn_pct": 67.60529168599999,
+        "TotalEdgeVsSPY_pct": -35.72074917174993,
+        "DailyMaxDrawdown_pct": -31.29762026670099,
+        "PeriodHitRate_pct": 54.54545454545455,
+        "ActualFees_USD": 20540.58805575,
+        "FinalNAV_USD": 131884.54251425006
+      },
+      "gates": [
+        {
+          "gate": "at_least_30_periods",
+          "metric": "Periods",
+          "value": 33,
+          "requirement": ">= 30",
+          "pass": true
+        },
+        {
+          "gate": "positive_net_return",
+          "metric": "TotalReturn_pct",
+          "value": 31.884542514250057,
+          "requirement": "> 0",
+          "pass": true
+        },
+        {
+          "gate": "beats_spy",
+          "metric": "TotalEdgeVsSPY_pct",
+          "value": -35.72074917174993,
+          "requirement": "> 0",
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "metric": "DailyMaxDrawdown_pct",
+          "value": -31.29762026670099,
+          "requirement": ">= -20%",
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "metric": "PeriodHitRate_pct",
+          "value": 54.54545454545455,
+          "requirement": ">= 50%",
+          "pass": true
+        }
+      ],
+      "input_fingerprint": "64b737fd0e4185ce7dc405ed36c721fd552ff99e3bccf1eaafce3b2d947518da",
+      "decision_status": "NO_GO",
+      "extension_metrics": {
+        "Periods": 1,
+        "TotalReturn_pct": -15.72485197740765,
+        "SPYTotalReturn_pct": 1.588250617292264,
+        "TotalEdgeVsSPY_pct": -17.313102594699913,
+        "DailyMaxDrawdown_pct": -19.354919005479733,
+        "PeriodHitRate_pct": 0.0,
+        "ActualFees_USD": 1581.8728800000026,
+        "FinalNAV_USD": 131884.54251425006,
+        "sessions_after_cutoff": 40,
+        "evidence_class": "POST_FREEZE_HISTORICAL_EXTENSION",
+        "certified_untouched_holdout": false,
+        "forward_paper": false
+      }
+    }
+  ]
+}

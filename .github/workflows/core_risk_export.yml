@@ -1,0 +1,97 @@
+name: Export verified Core risk evidence
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
+    branches: [main]
+    paths: ['.github/workflows/core_risk_export.yml']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  export:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: Momentum_Core_fixed_risk_v2_evidence
+          run-id: 40791570390
+          github-token: ${{ github.token }}
+          path: current_evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: Momentum_Core_fixed_risk_v2_evidence
+          run-id: 40788221889
+          github-token: ${{ github.token }}
+          path: previous_evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: Momentum_Core_evidence
+          run-id: 40772049150
+          github-token: ${{ github.token }}
+          path: .canonical_baseline
+      - name: Restore encrypted immutable input vintages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p risk_release
+          gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --output .momentum_core_cache.sealed
+          gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_manifest.json --dir risk_release
+          gh release download core-research-20261027-c88761ba2ca7 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_cache.sealed --output original_core_cache.sealed
+          python cache_momentum_inputs.py unseal
+          python cache_momentum_inputs.py unseal --sealed original_core_cache.sealed --cache-dir .original_core_cache
+      - name: Reconcile evidence and produce final report
+        run: python export_core_risk_evidence.py
+      - name: Encrypt complete inputs to saved private recipient
+        run: |
+          mkdir -p input_delivery
+          python archive_momentum_inputs.py --cache-dir .momentum_core_cache --decision current_evidence/extended/baseline_locked_15bps/Momentum_core_decision.json --output "$RUNNER_TEMP/core_risk_recipient_inputs.tar.gz"
+          openssl cms -encrypt -aes-256-cbc -binary -outform DER -in "$RUNNER_TEMP/core_risk_recipient_inputs.tar.gz" -out input_delivery/Momentum_core_risk_recipient_inputs.p7m docs/validation_archive_recipient.pem
+      - name: Permanently preserve encrypted inputs and verified results
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh release view core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = true
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          files=[Path('input_delivery/Momentum_core_risk_recipient_inputs.p7m'),Path('report_out/Momentum_core_risk_verified_results.zip'),Path('report_out/summary.json'),Path('report_out/MomentumCloud_riskrapport_20261029.md')]
+          manifest={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+          Path('report_out/Momentum_core_risk_delivery_manifest.json').write_text(json.dumps(manifest,indent=2))
+          PY
+          gh release upload core-risk-research-20261029 input_delivery/Momentum_core_risk_recipient_inputs.p7m report_out/Momentum_core_risk_verified_results.zip report_out/Momentum_core_risk_delivery_manifest.json --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Commit generated report to this delivery branch
+        if: github.event_name == 'pull_request'
+        env:
+          REPORT_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/CORE_RISK_REVIEW_20261029.md docs/CORE_RISK_RESULTS_20261029.json
+          git commit -m "Record verified risk scenarios and actual GO blockers"
+          git push origin "HEAD:refs/heads/$REPORT_BRANCH"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Momentum_Core_risk_verified_report
+          path: report_out/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Momentum_Core_risk_recipient_inputs
+          path: input_delivery/*.p7m
+          if-no-files-found: warn
+          retention-days: 90
