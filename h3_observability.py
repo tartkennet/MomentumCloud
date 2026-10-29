@@ -171,6 +171,12 @@ def audit_delta(previous,current,cache,inputs,event_facts):
     checked=0;participation=[]
     for name in ACCOUNTS:
         new=current[name];old=previous[name] if previous else {'cash':100000.,'shares':{},'receivables':[],'fees':0.,'trades':[],'pending':None}
+        if new.get('pending'):
+            if new['pending']['signal_date']!=day:raise ValueError('New intention was not recorded for the current close')
+            near(new['pending']['signal_nav'],new['equity'][-1]['nav'],'new signal NAV')
+            weights=[t['weight'] for t in new['pending']['targets']]
+            if any(not math.isfinite(w) or w<0 for w in weights) or sum(weights)>1+1e-9:raise ValueError('Invalid unlevered intention weights')
+        if any(t['date']!=day for t in new['targets'][len(old.get('targets',[])):]):raise ValueError('Backdated target decision')
         cash=old['cash'];shares=copy.deepcopy(old['shares']);claims=copy.deepcopy(old['receivables']);fees=old['fees']
         def claim(t,amount,pay,reason,maximum=None):
             nonlocal cash

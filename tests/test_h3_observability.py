@@ -69,7 +69,7 @@ class ObservabilityTests(unittest.TestCase):
         old=checkpoint();new=copy.deepcopy(old);day='2026-10-30'
         for name in ('strategy','benchmark','stress_strategy','stress_benchmark'):
             a=new[name];fee=3. if name.startswith('stress_') else 1.5
-            a.update(cash=99000-fee,shares={'SPY':10},fees=fee,last_date=day)
+            a.update(cash=99000-fee,shares={'SPY':10},fees=fee,last_date=day,pending=None)
             a['trades'].append({'date':day,'signal_date':'2026-10-29','side':'BUY','ticker':'SPY','quantity':10,'price':100.,'fee':fee})
             a['equity'].append({'date':day,'nav':100010-fee,'cash':99000-fee,'stock_value':1010.,'receivables':0.,'fees_cumulative':fee})
         observed={'splits/2025-04-01/2026-10-30':[], 'dividends/2026-10-30/2026-10-30':[],

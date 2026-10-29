@@ -11,6 +11,13 @@ function validate(data) {
       data.source_fingerprint !== "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921") {
     throw new Error("Invalid H3 observation identity");
   }
+  if (!Number.isInteger(data.sessions) || data.sessions < 0 ||
+      !Number.isFinite(Date.parse(data.generated_at)) ||
+      !Number.isFinite(Date.parse(data.operations?.next_expected_attempt_at)) ||
+      Date.parse(data.operations.next_expected_attempt_at) <= Date.parse(data.generated_at) ||
+      data.operations.delay_grace_minutes !== 90 || !Array.isArray(data.operations.errors)) {
+    throw new Error("Invalid H3 observation monitor state");
+  }
   return data;
 }
 
@@ -18,7 +25,7 @@ module.exports = async function handler(_request, response) {
   response.setHeader("Content-Type", "application/json; charset=utf-8");
   response.setHeader("Cache-Control", "no-store");
   try {
-    const upstream = await fetch(SOURCE, {signal: AbortSignal.timeout(5000), headers: {accept:"application/json", "cache-control":"no-cache"}});
+    const upstream = await fetch(`${SOURCE}?observed_minute=${Math.floor(Date.now()/60000)}`, {signal: AbortSignal.timeout(5000), headers: {accept:"application/json", "cache-control":"no-cache"}});
     if (!upstream.ok) throw new Error("Observation delivery failed");
     const data = validate(await upstream.json());
     const next = Date.parse(data.operations?.next_expected_attempt_at);

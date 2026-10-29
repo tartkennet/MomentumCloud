@@ -8,6 +8,14 @@ PR25 stage-one paper run [40874807620](https://github.com/tartkennet/MomentumClo
 
 No paper trading session or simulated fill existed at that time. Status was `PAPER_WAITING_FOR_SESSIONS`, with null actual performance and no holdings or forward curve. The first-stage artifact was ID `12897432932`, SHA-256 `00311370d9547e4648ddf19ad0335e94d88c61fc237efad1c4a0c6874ff05a47`.
 
+## End-to-end publication and restart evidence
+
+Commit `d017980a8845694facfa363d1a3eca74aea5e984` passed [Production CI 40878043729](https://github.com/tartkennet/MomentumCloud/actions/runs/40878043729): 221 Python tests and four dashboard delivery/empty-state tests. [Paper run 40878043846](https://github.com/tartkennet/MomentumCloud/actions/runs/40878043846) passed with the independent observer and real publication enabled. All 137 archived source files matched the frozen commit. Its observed export returned HTTP 200 from the deployed preview `/api/h3`, reading the separate data branch, with no data errors, zero sessions, null performance, empty holdings, no intentions and no curve. The browser confirmed eight metric cards, 0/30 monthly periods, the separate historical summary and no H3 chart before observations. No application-origin console error was observed.
+
+Attempt 1 published data commit `f7b698705449f1dd6794565118ccbb1d52f75b95` and immutable paper archive SHA-256 `14390c9d321eb8bc2b74381a9b14e450e658c92a06e68e79115631b5aff8494d`. Its Actions artifact was `12899087140`, digest `35801bf3ba99acbd9838e361856242ceff5a720c7a99857ab4c38ca5449ab566`. A real rerun, attempt 2, then passed the entire chain again and published data commit `7c4ca7baadf3fc96b33c0f075c3441825d7c8520`. It restored the accepted release, preserved the original identity, created a distinct attempt-2 archive and linked the preceding digest. This tested restart/publication without inventing a paper session. Vercel lists zero deployments for the data branch, confirming that routine observations do not redeploy the website.
+
+The GitHub raw-content CDN can briefly retain an earlier branch response. The API therefore uses a minute-scoped retrieval URL as well as no-store responses; this does not involve the licensed market-data API. Source/model/monitor timestamps and false trading flags are validated before an export is displayed. The interface also clears displayed intentions on delayed or failed delivery.
+
 ## Schedule and restart behavior
 
 `.github/workflows/core_portfolio_forward.yml` is registered on main with UTC cron `35 0,3,6,9 * * 2-6`, a fixed concurrency group and no overlapping/cancelled paper runs. This is Tuesday–Saturday morning collection following US sessions. GitHub schedule starts can be delayed.

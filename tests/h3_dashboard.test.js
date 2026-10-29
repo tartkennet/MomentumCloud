@@ -9,7 +9,7 @@ function response(){return {headers:{},setHeader(k,v){this.headers[k]=v},status(
 
 test('delivery rejects a changed model, source or enabled trading flag',()=>{
   handler.validate(copy());
-  for(const [key,value] of [['model','other'],['source_fingerprint','other'],['live_approved',true],['broker_orders_enabled',true]]){
+  for(const [key,value] of [['model','other'],['source_fingerprint','other'],['live_approved',true],['broker_orders_enabled',true],['sessions',-1],['generated_at','invalid']]){
     const bad=copy();bad[key]=value;assert.throws(()=>handler.validate(bad));
   }
 });
@@ -21,7 +21,7 @@ test('fresh real waiting journal has null performance and no fake fills',async t
   assert.equal(res.body.metrics,null);assert.equal(res.body.sessions,0);assert.deepEqual(res.body.curve,[]);
 });
 test('late monitor and failed delivery never show actionable intentions',async t=>{
-  const data=copy();data.operations.next_expected_attempt_at='2020-01-01T00:00:00Z';data.pending_intentions={targets:[{ticker:'SPY',weight:1}]};
+  const data=copy();data.generated_at='2019-12-31T00:00:00Z';data.operations.next_expected_attempt_at='2020-01-01T00:00:00Z';data.pending_intentions={targets:[{ticker:'SPY',weight:1}]};
   t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>data}));
   let res=response();await handler({},res);
   assert.equal(res.body.status,'MONITOR_DELAYED');assert.equal(res.body.pending_intentions,null);
