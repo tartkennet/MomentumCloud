@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import csv
 import functools
 import hashlib
 import json
@@ -15,12 +16,14 @@ import momentum_core as core
 from audit_core_normalized import audit_targets
 from momentum_core_data import atomic_json
 from research_core_normalized import MODEL, select_targets
+from research_core_actions import EXTRA_CASH_ACTIONS, supplement
 from run_core_risk_research import (CUTOFF, DELAYS, EXTENSION_END, START,
                                     audit, extension_metrics, make_data, policy_actions, replay)
 from run_momentum_core import source_fingerprint, write_csv
 
 ROOT = Path(__file__).resolve().parent
 FILES = ('research_core_normalized.py', 'audit_core_normalized.py',
+         'research_core_actions.py', 'docs/CORE_NORMALIZED_DATA_REPAIRS_20261029.md',
          'run_core_normalized_research.py', 'run_core_risk_research.py',
          'audit_core_risk_research.py', 'tests/test_core_normalized.py',
          'docs/CORE_RISK_NORMALIZED_PROTOCOL_20261029.md')
@@ -126,9 +129,19 @@ def run(args):
             saved = controls[(a['phase'], a['name'])]
             if saved['metrics'] != a['metrics'] or saved['gates'] != a['gates'] or saved['accounting_audit'] != 'PASS':
                 raise core.DataBlocked('Saved control differs from verified main evidence')
+            phase = 'historical' if a['phase'] == 'historical' else 'extended'
+            folder = Path(args.controls_dir) / phase / a['name']
+            with (folder / 'Momentum_core_trades.csv').open() as stream:
+                symbols = {r['ticker'] for r in csv.DictReader(stream)}
+            signals = json.loads((folder / 'Momentum_core_targets.json').read_text())
+            symbols.update(r['ticker'] for s in signals for r in s['targets'])
+            if symbols & EXTRA_CASH_ACTIONS.keys():
+                raise core.DataBlocked('Supplemented event touches a saved baseline control')
     register = {'model': MODEL, 'study_fingerprint': study, 'core_fingerprint': source_fingerprint(),
                 'frozen_input_manifest_fingerprint': manifest_hash,
                 'input_files_verified': 1001, 'expected_attempts': 20,
+                'supplemental_cash_actions': EXTRA_CASH_ACTIONS,
+                'saved_control_supplement_isolation': 'PASS',
                 'evidence_class': 'DEVELOPMENT_RESEARCH', 'certified_untouched_holdout': False,
                 'live_approved': False, 'broker_orders_enabled': False, 'attempts': [],
                 'all_attempts_completed': False, 'controls_reused_without_rerun': 20}
@@ -137,7 +150,7 @@ def run(args):
     audit_memo = {}
     with candidate_selection():
         for phase, end in (('historical', CUTOFF), ('extension', EXTENSION_END)):
-            data = make_data(args.cache_dir, end, True)
+            data = supplement(make_data(args.cache_dir, end, True))
             for delay in DELAYS:
                 data.cash_actions, assumptions = policy_actions(data, delay)
                 policy = 'locked' if delay is None else f'assumed_{delay}'
@@ -184,6 +197,7 @@ def run(args):
                         print('DONE ' + phase + ' ' + name + ' ' + json.dumps(result), flush=True)
                     except core.DataBlocked as exc:
                         attempt.update(status='DATA_BLOCKED', error_type=type(exc).__name__, error=str(exc))
+                        print('BLOCKED ' + phase + ' ' + name + ': ' + str(exc), flush=True)
                     except Exception as exc:
                         attempt.update(status='VALIDATION_ERROR', error_type=type(exc).__name__, error=str(exc))
                         raise

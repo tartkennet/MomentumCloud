@@ -5,11 +5,13 @@ import tempfile
 import unittest
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import momentum_core as core
 from audit_core_normalized import audit_targets
 from research_core_normalized import MODEL, select_targets
+from research_core_actions import EXTRA_CASH_ACTIONS, supplement
 from momentum_core_data import atomic_json
 from run_core_normalized_research import candidate_selection, save_case
 from run_core_risk_research import audit
@@ -17,6 +19,36 @@ from test_momentum_core import MemoryData, long_data
 
 
 class NormalizedTests(unittest.TestCase):
+    def test_verified_merger_replaces_missing_quote_with_unspendable_claim(self):
+        data = MemoryData(['2024-03-11', '2024-03-12'],
+                          [{'SOVO': [22.9, 22.9, 1_000_000]}, {}])
+        original = {}
+        data.source = SimpleNamespace(cash_actions=original)
+        supplement(data)
+        self.assertEqual(original, {})
+        self.assertNotIn('pay_date', data.cash_actions['SOVO'])
+        ledger = core.Ledger(cash=0, shares={'SOVO': 10})
+        ledger.events_before_open(data, '2024-03-12')
+        self.assertEqual(ledger.cash, 0)
+        self.assertEqual(ledger.shares, {})
+        self.assertEqual(sum(r['amount'] for r in ledger.receivables), 230)
+        self.assertEqual(ledger.close_value(data, '2024-03-12')[0], 230)
+        self.assertFalse(any(t['side'] in ('BUY', 'SELL') for t in ledger.trades))
+        self.assertEqual(ledger.fees, 0)
+
+    def test_supplement_preserves_unpriced_right_and_rejects_conflicting_facts(self):
+        data = MemoryData(['2025-06-25'], [{}])
+        data.source = SimpleNamespace(cash_actions={})
+        supplement(data)
+        ledger = core.Ledger(cash=0, shares={'RGLS': 10})
+        ledger.events_before_open(data, '2025-06-25')
+        self.assertEqual(sum(r['amount'] for r in ledger.receivables), 70)
+        right = next(r for r in ledger.receivables if r['reason'] == 'CONTINGENT_VALUE_RIGHT_UNPRICED')
+        self.assertEqual(right['amount'], 0)
+        self.assertEqual(right['maximum_amount'], 70)
+        with self.assertRaises(ValueError):
+            supplement(data)
+
     def test_ranking_scales_momentum_without_changing_eligibility(self):
         data = long_data()
         for i, day in enumerate(data.days):

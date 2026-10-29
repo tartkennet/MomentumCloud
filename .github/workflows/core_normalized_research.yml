@@ -7,6 +7,7 @@ on:
     paths:
       - 'research_core_normalized.py'
       - 'audit_core_normalized.py'
+      - 'research_core_actions.py'
       - 'run_core_normalized_research.py'
       - 'tests/test_core_normalized.py'
       - 'docs/CORE_RISK_NORMALIZED_PROTOCOL_20261029.md'
@@ -29,6 +30,9 @@ jobs:
       PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -79,10 +83,10 @@ jobs:
           cp normalized_results/attempts.json normalized_release/attempts.json
           cp normalized_results/report.md normalized_release/report.md
           python - <<'PY'
-          import hashlib,json,os
+          import hashlib,json,os,subprocess
           from pathlib import Path
           root=Path('normalized_release')
-          meta={'source_commit':os.environ['GITHUB_SHA'],'workflow_run':os.environ['GITHUB_RUN_ID'],
+          meta={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'workflow_run':os.environ['GITHUB_RUN_ID'],
                 'input_release':'core-risk-research-20261029','live_approved':False,'broker_orders_enabled':False,
                 'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.is_file()}}
           (root/'manifest.json').write_text(json.dumps(meta,indent=2))
@@ -100,6 +104,7 @@ jobs:
         run: |
           cp normalized_results/report.md docs/CORE_NORMALIZED_REVIEW_20261029.md
           cp normalized_results/attempts.json docs/CORE_NORMALIZED_RESULTS_20261029.json
+          test "$(git ls-remote origin "refs/heads/$REPORT_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add docs/CORE_NORMALIZED_REVIEW_20261029.md docs/CORE_NORMALIZED_RESULTS_20261029.json
