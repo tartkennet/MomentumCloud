@@ -210,4 +210,5 @@ jobs:
           python publish_h3_snapshot.py --snapshot portfolio_forward_results/H3_snapshot.json
           --previous-snapshot forward_previous_record/H3_snapshot.json
           --durable-status '${{ steps.preserve.outcome }}'
+          --observer-status '${{ steps.observe.outcome }}'
           --manifest forward_delivery/current_manifest.json

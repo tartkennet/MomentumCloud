@@ -376,10 +376,9 @@ def main():
         with tarfile.open(record/'H3_rejected_attempt.tar.gz','w:gz') as archive:
             for file in current_files:archive.add(file,arcname=file.name)
         for file in current_files:
-            if file.name=='Momentum_core_paper_identity.json':continue
             original=previous/file.name
             if original.exists():shutil.copyfile(original,file)
-            else:file.unlink()
+            elif file.name!='Momentum_core_paper_identity.json' or result['operations']['checks'].get('source',{}).get('status')!='PASS':file.unlink()
         blocked={'model':policy['model'],'cohort':policy['cohort'],'status':'DATA_BLOCKED',
                  'error':'; '.join(result['operations']['errors']),'live_approved':False,'broker_orders_enabled':False}
         (record/'Momentum_core_decision.json').write_text(json.dumps(blocked,indent=2))

@@ -15,7 +15,7 @@ def git(*args,cwd=ROOT):
     return subprocess.run(['git',*args],cwd=cwd,text=True,capture_output=True,check=True,timeout=45).stdout.strip()
 
 
-def publish(snapshot,previous_snapshot,durable_status,manifest):
+def publish(snapshot,previous_snapshot,durable_status,observer_status,manifest):
     path=Path(snapshot).resolve();data=json.loads(path.read_text())
     policy=json.loads((ROOT/'h3_forward_policy.json').read_text())
     for key in ('model','cohort','source_fingerprint'):
@@ -23,7 +23,7 @@ def publish(snapshot,previous_snapshot,durable_status,manifest):
     if data.get('live_approved') is not False or data.get('broker_orders_enabled') is not False:raise ValueError('Live flags must be false')
     if json.loads((ROOT/'vercel.json').read_text())['git']['deploymentEnabled'][BRANCH] is not False:
         raise ValueError('Data-branch deployments must be disabled')
-    if durable_status!='success':
+    if durable_status!='success' or observer_status!='success':
         old=json.loads(Path(previous_snapshot).read_text()) if Path(previous_snapshot).exists() else None
         if old:
             old.update(generated_at=data['generated_at'],operations=data['operations']);data=old
@@ -34,7 +34,8 @@ def publish(snapshot,previous_snapshot,durable_status,manifest):
             for case in data['validation']['gates'].values():
                 for gate in case:gate.update({'value':None,'pass':False})
         data['status']=data['validation']['status']='DATA_BLOCKED';data['pending_intentions']=None
-        data['operations']['errors'].append('Durable journal preservation did not complete; only the prior accepted record is displayed.')
+        if durable_status!='success':data['operations']['errors'].append('Durable journal preservation did not complete; only the prior accepted record is displayed.')
+        if observer_status!='success':data['operations']['errors'].append('Independent observation did not complete successfully; only the prior accepted record is displayed.')
     elif Path(manifest).exists():
         saved=json.loads(Path(manifest).read_text())
         data['journal_evidence']={k:saved[k] for k in ('paper_asset','paper_archive_sha256','previous_paper_asset','previous_paper_archive_sha256','workflow_run')}
@@ -64,5 +65,5 @@ def publish(snapshot,previous_snapshot,durable_status,manifest):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    for name in ('snapshot','previous-snapshot','durable-status','manifest'):p.add_argument('--'+name,required=True)
-    a=p.parse_args();publish(a.snapshot,a.previous_snapshot,a.durable_status,a.manifest)
+    for name in ('snapshot','previous-snapshot','durable-status','observer-status','manifest'):p.add_argument('--'+name,required=True)
+    a=p.parse_args();publish(a.snapshot,a.previous_snapshot,a.durable_status,a.observer_status,a.manifest)
