@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "model": "momentum-diversified-regime-research-v1",
+  "cohort": "portfolio-global-regime-forward-v1-20261029",
+  "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
+  "generated_at": "2026-10-29T12:57:45.575904+00:00",
+  "as_of": null,
+  "status": "PAPER_WAITING_FOR_SESSIONS",
+  "live_approved": false,
+  "broker_orders_enabled": false,
+  "sessions": 0,
+  "metrics": null,
+  "cost_cases": {
+    "15bp": null,
+    "30bp": null
+  },
+  "cash_usd": null,
+  "receivables_usd": null,
+  "holdings": [],
+  "latest_decision": null,
+  "pending_intentions": null,
+  "recent_trades": [],
+  "curve": [],
+  "validation": {
+    "status": "COLLECTING",
+    "observed_periods": 0,
+    "required_periods": 30,
+    "remaining_periods": 30,
+    "period_unit": "complete_observed_monthly_interval",
+    "earliest_assessment_month": "2029-05",
+    "financial_gates_passed": false,
+    "gates": {
+      "15bp": [
+        {
+          "gate": "at_least_30_periods",
+          "value": null,
+          "threshold": 30,
+          "pass": false
+        },
+        {
+          "gate": "positive_net_return",
+          "value": null,
+          "threshold": 0,
+          "pass": false
+        },
+        {
+          "gate": "beats_spy",
+          "value": null,
+          "threshold": 0,
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "value": null,
+          "threshold": -20,
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "value": null,
+          "threshold": 50,
+          "pass": false
+        }
+      ],
+      "30bp": [
+        {
+          "gate": "at_least_30_periods",
+          "value": null,
+          "threshold": 30,
+          "pass": false
+        },
+        {
+          "gate": "positive_net_return",
+          "value": null,
+          "threshold": 0,
+          "pass": false
+        },
+        {
+          "gate": "beats_spy",
+          "value": null,
+          "threshold": 0,
+          "pass": false
+        },
+        {
+          "gate": "drawdown",
+          "value": null,
+          "threshold": -20,
+          "pass": false
+        },
+        {
+          "gate": "hit_rate",
+          "value": null,
+          "threshold": 50,
+          "pass": false
+        }
+      ]
+    },
+    "automatic_live_go_allowed": false,
+    "explicit_user_approval_required": true
+  },
+  "execution": {
+    "fees_model_bps": [
+      15,
+      30
+    ],
+    "spread_status": "UNVERIFIED",
+    "opening_depth_status": "UNVERIFIED",
+    "actual_broker_fees_status": "NOT_OBSERVED",
+    "live_readiness": "INDEPENDENT_EXECUTION_REVIEW_REQUIRED",
+    "quote_access": {
+      "authorized": false,
+      "http_status": 403,
+      "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+    },
+    "liquidity": [],
+    "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
+  },
+  "operations": {
+    "errors": [],
+    "checks": {
+      "source": {
+        "status": "PASS",
+        "git_commit": "80489e3d7fa95842737981d44525598d54212bbb",
+        "files_checked": 137
+      },
+      "prefix": {
+        "status": "WAITING",
+        "sessions": 0,
+        "accounts": 4
+      }
+    },
+    "readiness": {
+      "checked_at": "2026-10-29T12:38:00.502333+00:00",
+      "key_configured": true,
+      "live_probe": true,
+      "secrets_exposed": false,
+      "subscription_changed": false,
+      "live_approved": false,
+      "broker_orders_enabled": false,
+      "required_endpoints": {
+        "raw_daily_bars": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 8,
+          "latest_observed_session": "2026-10-28"
+        },
+        "dated_universe": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        },
+        "splits": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        },
+        "dividends": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        }
+      },
+      "optional_quotes": {
+        "authorized": false,
+        "http_status": 403,
+        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+      },
+      "status": "PASS"
+    },
+    "workflow": {
+      "id": 400565291,
+      "path": ".github/workflows/core_portfolio_forward.yml",
+      "state": "active"
+    },
+    "next_expected_attempt_at": "2026-10-30T00:35:00+00:00",
+    "delay_grace_minutes": 90,
+    "workflow_run": null,
+    "workflow_attempt": null
+  },
+  "schedule": {
+    "cron_utc": "35 0,3,6,9 * * 2-6",
+    "first_expected_attempt_at": "2026-10-30T00:35:00+00:00",
+    "initial_deadline_at": "2026-10-30T12:00:00+00:00"
+  },
+  "historical": {
+    "label": "Historiskt backtest, inte paper trading",
+    "evidence_class": "DEVELOPMENT_RESEARCH",
+    "start": "2024-01-01",
+    "end": "2026-10-28",
+    "metrics": {
+      "Periods": 33,
+      "TotalReturn_pct": 77.13466627290009,
+      "SPYTotalReturn_pct": 68.075292652,
+      "TotalEdgeVsSPY_pct": 9.05937362090009,
+      "DailyMaxDrawdown_pct": -16.076466494265983,
+      "PeriodHitRate_pct": 66.66666666666667,
+      "ActualFees_USD": 3122.8558850999984,
+      "FinalNAV_USD": 177134.6662729001,
+      "DailySharpe_zero_rf": 1.307248900169288
+    },
+    "status": "PAPER_ONLY"
+  }
+}

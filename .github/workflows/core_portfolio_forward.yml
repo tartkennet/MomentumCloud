@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-    paths: ['probe_h3_readiness.py', 'h3_observability.py', 'tests/test_h3_*.py', 'h3_forward_policy.json', '.github/workflows/core_portfolio_forward.yml']
+    paths: ['probe_h3_readiness.py', 'h3_observability.py', 'publish_h3_snapshot.py', 'tests/test_h3_*.py', 'h3_forward_policy.json', '.github/workflows/core_portfolio_forward.yml']
   schedule:
     - cron: '35 0,3,6,9 * * 2-6'
 
@@ -29,6 +29,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -82,10 +83,13 @@ jobs:
           with open(os.environ['GITHUB_ENV'],'a') as f:print('MODEL_SOURCE_SHA='+frozen['source_sha'],file=f)
           PY
       - run: python -m pip install -r requirements.txt
+        id: dependencies
         working-directory: frozen_engine
       - run: python -m unittest discover -s tests -q
+        id: frozen_tests
         working-directory: frozen_engine
       - name: Restore authenticated inputs only when a new completed session is needed
+        id: inputs
         if: steps.restore.outputs.need_market == 'true' || github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -122,6 +126,7 @@ jobs:
             python probe_h3_readiness.py --record-dir portfolio_forward_results
           fi
       - name: Record the qualified candidate prospectively with live trading disabled
+        id: record
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         working-directory: frozen_engine
@@ -134,10 +139,20 @@ jobs:
           print(json.dumps({k:d.get(k) for k in ('model','status','actual_last_session','live_approved','broker_orders_enabled')}))
           PY
       - name: Encrypt updated inputs
+        id: seal
         if: always() && hashFiles('.portfolio_forward_cache/**/*.gz') != ''
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: python frozen_engine/cache_momentum_inputs.py seal --cache-dir .portfolio_forward_cache --sealed .portfolio_forward.sealed
+      - name: Independently reconcile and report the accepted forward journal
+        id: observe
+        if: always()
+        env:
+          STEP_STATES: '{"restore":"${{ steps.restore.outcome }}","dependencies":"${{ steps.dependencies.outcome }}","frozen_tests":"${{ steps.frozen_tests.outcome }}","inputs":"${{ steps.inputs.outcome }}","readiness":"${{ steps.readiness.outcome }}","record":"${{ steps.record.outcome }}","seal":"${{ steps.seal.outcome }}"}'
+        run: >-
+          python h3_observability.py --record-dir portfolio_forward_results
+          --previous-dir forward_previous_record --cache-dir .portfolio_forward_cache
+          --engine-dir frozen_engine --output public/data/h3.json --steps "$STEP_STATES"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -146,9 +161,11 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
       - name: Preserve each real snapshot and advance the durable pointer last
+        id: preserve
         if: always() && steps.restore.outcome == 'success' && hashFiles('portfolio_forward_results/Momentum_core_paper_identity.json') != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          CACHE_SEALED: ${{ steps.seal.outcome == 'success' }}
         run: |
           python - <<'PY'
           import hashlib,json,os,shutil,subprocess,tarfile
@@ -169,10 +186,11 @@ jobs:
           with tarfile.open(paper,'w:gz') as archive:archive.add('portfolio_forward_results',arcname='.')
           meta={'source_archive_sha256':frozen['source_archive_sha256'],'source_sha':frozen['source_sha'],
                 'paper_asset':paper.name,'paper_archive_sha256':hashlib.sha256(paper.read_bytes()).hexdigest(),
+                'previous_paper_asset':prior.get('paper_asset'),'previous_paper_archive_sha256':prior.get('paper_archive_sha256'),
                 'workflow_run':os.environ['GITHUB_RUN_ID'],'live_approved':False,'broker_orders_enabled':False,
                 'cache_asset':prior.get('cache_asset'),'cache_sha256':prior.get('cache_sha256'),'cache_slot':prior.get('cache_slot',1)}
           cache_upload=None
-          if Path('.portfolio_forward.sealed').exists():
+          if os.environ['CACHE_SEALED']=='true' and Path('.portfolio_forward.sealed').exists():
               slot=1-prior.get('cache_slot',1)
               cache=delivery/f'portfolio_forward_cache_{slot}.sealed';shutil.copyfile('.portfolio_forward.sealed',cache)
               meta.update(cache_asset=cache.name,cache_slot=slot,cache_sha256=hashlib.sha256(cache.read_bytes()).hexdigest())
@@ -186,3 +204,10 @@ jobs:
           pointer=delivery/'current_manifest.json';pointer.write_text(json.dumps(meta,indent=2))
           gh('release','upload',tag,str(pointer),'--clobber')
           PY
+      - name: Publish observed status for the existing dashboard
+        if: always() && steps.observe.outcome != 'skipped' && hashFiles('portfolio_forward_results/H3_snapshot.json') != ''
+        run: >-
+          python publish_h3_snapshot.py --snapshot portfolio_forward_results/H3_snapshot.json
+          --previous-snapshot forward_previous_record/H3_snapshot.json
+          --durable-status '${{ steps.preserve.outcome }}'
+          --manifest forward_delivery/current_manifest.json
