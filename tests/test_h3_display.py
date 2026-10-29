@@ -17,7 +17,7 @@ class DisplayTests(unittest.TestCase):
         now=datetime(2026,10,29,15,30,tzinfo=timezone.utc)
         def response(key,path,params=None):
             if path=='/v3/snapshot':return {'status':'OK','results':[{'ticker':'SPY','session':{'price':50.,'last_updated':int(now.timestamp()*1e9)}}]}
-            return {'results':[{'ticker':'SPY','execution_date':'2026-10-29'}]} if path.endswith('splits') else {'results':[]}
+            return {'status':'OK','results':[{'ticker':'SPY','execution_date':'2026-10-29'}]} if path.endswith('splits') else {'status':'OK','results':[]}
         with patch('h3_display.query',side_effect=response):cap,quotes=market_quotes('test',['SPY'],now,'2026-10-28')
         self.assertEqual(quotes['SPY']['mode'],'MISSING');self.assertEqual(cap['corporate_event_guard']['blocked_tickers'],['SPY'])
     def test_waiting_shows_a_budget_but_never_a_fabricated_return(self):
@@ -35,6 +35,8 @@ class DisplayTests(unittest.TestCase):
         self.assertAlmostEqual(result['metrics']['nav_sek'],121000.)
         self.assertAlmostEqual(result['metrics']['spy_nav_sek'],121000.)
         self.assertAlmostEqual(result['positions'][0]['quantity'],10.)
+        corrupt=copy.deepcopy(result);corrupt['anchor']['scale']*=2
+        with self.assertRaises(ValueError):build(source,corrupt,{'2026-10-29':10.}, {},{},datetime(2026,10,30,tzinfo=timezone.utc))
         self.assertEqual(result['trades'][0]['at'],'2026-10-30T13:30:00+00:00')
         blocked=build(source,{}, {},{}, {},datetime(2026,10,30,tzinfo=timezone.utc))
         self.assertEqual(blocked['status'],'FX_MISSING');self.assertIsNone(blocked['metrics'])

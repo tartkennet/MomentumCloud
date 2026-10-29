@@ -107,6 +107,8 @@ def market_quotes(key,tickers,now,as_of=None):
     frames={t:r.get('timeframe') for t,r in unified.items()}
     cap={'checked_at':now.isoformat(),'snapshot_status':probe.get('error',probe.get('status','UNKNOWN')),
          'realtime_verified':any(v=='REAL-TIME' for v in frames.values()),'timeframes':frames,
+         'snapshot_price_available':{t:bool(r.get('session',{}).get('price') or r.get('last_minute',{}).get('close')) for t,r in unified.items()},
+         'snapshot_ticker_error_present':{t:bool(r.get('error')) for t,r in unified.items()},
          'selected_mode':'CLOSE','provider_latency':'VERIFIED_TIMEFRAME' if any(frames.values()) else 'UNVERIFIED',
          'display_refresh_minutes':15,
          'subscription_changed':False}
@@ -114,8 +116,8 @@ def market_quotes(key,tickers,now,as_of=None):
     def one(t):
         row=unified.get(t,{})
         if row:
-            trade=row.get('last_trade') or {};price=row.get('session',{}).get('price')
-            stamp=trade.get('sip_timestamp') or trade.get('last_updated') or row.get('session',{}).get('last_updated') or row.get('last_updated')
+            trade=row.get('last_trade') or {};price=row.get('session',{}).get('price') or row.get('last_minute',{}).get('close')
+            stamp=trade.get('sip_timestamp') or trade.get('last_updated') or row.get('session',{}).get('last_updated') or row.get('last_minute',{}).get('last_updated') or row.get('last_updated')
             if price and stamp:
                 at=datetime.fromtimestamp(stamp/1e9,timezone.utc)
                 if at<=now and (now-at).total_seconds()<86400:
@@ -139,11 +141,14 @@ def market_quotes(key,tickers,now,as_of=None):
             through=max(quotes[t]['session'] for t in future);unsafe=set();unverified=False
             for kind,col in [('splits','execution_date'),('dividends','ex_dividend_date')]:
                 p=query(key,'/stocks/v1/'+kind,{col+'.gt':as_of,col+'.lte':through,'limit':5000})
-                if p.get('error') or p.get('next_url'):unverified=True
+                if p.get('error') or p.get('next_url') or p.get('status') not in ('OK','DELAYED'):unverified=True
                 unsafe.update(e['ticker'] for e in p.get('results',[]) if e.get('ticker') in future)
             for t in future:
-                if unverified or t in unsafe:quotes[t]={'mode':'MISSING','error':'UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT'}
+                # Keep portfolio and benchmark on the same accepted basis
+                # when any economic event still awaits journal booking.
+                if unverified or unsafe:quotes[t]={'mode':'MISSING','error':'UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT'}
             cap['corporate_event_guard']={'through':through,'blocked_tickers':future if unverified else sorted(unsafe)}
+    cap['selected_mode']='INTRADAY' if any(q.get('mode') in ('REALTIME','DELAYED') for q in quotes.values()) else 'CLOSE'
     return cap,quotes
 
 
@@ -271,6 +276,8 @@ def refresh():
             symbols=list((account.get('account') or {}).get('shares',{}))+['SPY']
             cap,quotes=market_quotes(os.getenv('POLYGON_API_KEY'),symbols,now,account['as_of'])
             data=build(account,old,rates,quotes,cap,now)
+            if cap.get('corporate_event_guard',{}).get('blocked_tickers'):
+                data['errors'].append('Nya företagshändelser inväntar H3-bokföring. Senast accepterade stängningskurser används för jämförbar värdering.')
             if fx_error:data['errors'].append('ECB-uppdatering misslyckades: '+fx_error+'. Senast verifierade kurs visas med datum om den är tillräckligt färsk.')
             data['refresh_run']=os.getenv('GITHUB_RUN_ID');write(file,data)
             extra=[]

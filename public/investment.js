@@ -96,12 +96,14 @@ async function load(){
 function exportCSV(){if(!current?.trades?.length)return;const cells=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const columns=['date','at','side','ticker','quantity','price','fee_usd','fee_sek','notional_sek','signal_date','time_basis'];const text='\uFEFF'+[columns.join(';'),...current.trades.map(t=>columns.map(k=>cells(t[k])).join(';'))].join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='MomentumCloud-H3-simulerade-affarer.csv';a.click();URL.revokeObjectURL(url);}
 if(typeof module!=='undefined')module.exports={chart,statistics,esc,pct};
 if(typeof document!=='undefined'){
+ history.scrollRestoration='manual';document.querySelector('.brand').addEventListener('click',event=>{event.preventDefault();selectTab('overview')});
  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
  document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.goto)));
  document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{period=b.dataset.period;document.querySelectorAll('[data-period]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});renderChart()}));
  document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));displayTrades()}));
  $('trade-search').addEventListener('input',displayTrades);$('export-trades').addEventListener('click',exportCSV);$('refresh-data').addEventListener('click',load);
  $('theme-toggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+ window.addEventListener('load',()=>requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:'instant'})),{once:true});
  setTheme(document.documentElement.dataset.theme==='dark'?'dark':'light');selectTab(location.hash.slice(1)==='h3-paper'?'overview':location.hash.slice(1));load();setInterval(()=>{if(!document.hidden)load()},60000);window.addEventListener('resize',()=>{if(tab==='overview')renderChart()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
 }
 }());
