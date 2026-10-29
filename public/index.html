@@ -1,123 +1,51 @@
 <!doctype html>
-<html lang="sv">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a1020" />
-    <meta name="description" content="MomentumCloud Production v1" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/styles.css" />
-    <link rel="stylesheet" href="/h3.css" />
-    <title>MomentumCloud</title>
-  </head>
-  <body>
-    <div class="ambient ambient-one"></div>
-    <div class="ambient ambient-two"></div>
-    <header class="topbar">
-      <a class="brand" href="#buy-now" aria-label="MomentumCloud startsida">
-        <span class="brand-mark">M</span>
-        <span><strong>Momentum</strong><em>Cloud</em></span>
-      </a>
-      <div class="live-pill"><span></span><b id="market-date">Väntar på data</b></div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">PRODUCTION V1 · V4-BALANCED</p>
-          <h1>Dina starkaste aktier.<br /><span>Ett tydligt beslut.</span></h1>
-          <p id="hero-copy">Laddar senaste verifierade körning…</p>
-        </div>
-        <article id="regime-card" class="regime-card waiting">
-          <div class="orb"><i></i></div>
-          <div><small>MARKNADSREGIM</small><strong id="regime-status">VÄNTAR</strong><span id="regime-reason">SPY / SMA200</span></div>
-        </article>
-      </section>
-
-      <nav class="section-nav" aria-label="Dashboardsektioner">
-        <a class="active" href="#buy-now">Buy now</a>
-        <a href="#h3-paper">H3 paper</a>
-        <a href="#target-portfolio">Målportfölj</a>
-        <a href="#candidates">Kandidater</a>
-        <a href="#holdings">Innehav</a>
-        <a href="#signals">Signaler</a>
-        <a href="#risk">Risk</a>
-        <a href="#performance">Utveckling</a>
-        <a href="#history">Historik</a>
-        <a href="#system">System</a>
-      </nav>
-
-      <section id="h3-paper" class="panel" aria-labelledby="h3-title">
-        <div class="panel-heading"><div><p class="eyebrow sky">FRAMÅTRIKTAD VALIDERING</p><h2 id="h3-title">Momentum H3 <span class="h3-label">PAPER ONLY</span></h2></div><span id="h3-status" class="h3-status" role="status">Kontrollerar journalen…</span></div>
-        <p class="h3-intro">Simulerad handel med verkligt insamlade marknadsdata. H3 är fryst under prövningen. Inga riktiga order skickas.</p>
-        <p id="h3-asof" class="h3-muted">Läser den accepterade paper-journalen…</p>
-        <div id="h3-metrics" class="h3-metrics"></div>
-        <div class="h3-progress-box"><h3>Fram till full prövning</h3><p id="h3-progress-copy">Inväntar observationer</p><progress id="h3-progress" value="0" max="30" aria-label="Observerade fullständiga månadsperioder"></progress><p id="h3-period-note" class="h3-muted"></p><p id="h3-validation-status"></p></div>
-        <h3>Insamlat portföljvärde mot SPY</h3><div id="h3-curve"><p class="h3-empty">Ingen insamlad kurva ännu.</p></div>
-        <h3>Simulerade innehav</h3><div id="h3-holdings"></div><p id="h3-cash" class="h3-muted"></p>
-        <h3>Senaste handelsbeslut</h3><p id="h3-decision"></p><p id="h3-intentions" class="h3-muted"></p><div id="h3-trades"></div>
-        <h3>Drift och data</h3><p id="h3-readiness" class="h3-muted"></p><p id="h3-execution" class="h3-warning"></p><div id="h3-errors" role="status"></div><p id="h3-next" class="h3-muted"></p><p id="h3-first" class="h3-muted"></p>
-        <details class="h3-details"><summary>Oförändrade krav för framåtprövningen</summary><div id="h3-gates"></div><p class="h3-history-note">Prövningen görs även vid dubbel transaktionskostnad. Ett godkänt historiskt test eller framåttest aktiverar aldrig riktig handel automatiskt.</p></details>
-        <details class="h3-details"><summary>Historiskt backtest – separat från paper trading</summary><div id="h3-history"></div></details>
-      </section>
-
-      <section id="buy-now" class="panel feature-panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow coral">AKTUELLA KÖPORDER</p><h2>Buy now</h2></div>
-          <div class="count-badge"><b id="buy-count">0</b><span>att köpa</span></div>
-        </div>
-        <div id="buy-grid" class="stock-grid empty-state">Ingen verifierad produktionskörning ännu.</div>
-      </section>
-
-      <section id="target-portfolio" class="panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow mint">LÅST FÖR MÅNADEN</p><h2>Målportfölj</h2></div>
-          <div class="count-badge"><b id="target-count">0</b><span>av 15</span></div>
-        </div>
-        <div id="target-grid" class="stock-grid empty-state">Ingen målportfölj ännu.</div>
-      </section>
-
-      <section id="candidates" class="panel">
-        <div class="panel-heading"><div><p class="eyebrow lilac">URVALET</p><h2>Top 50 kandidater</h2></div></div>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Status</th><th>Score</th><th>Kurs</th><th>12–2 mån</th><th>6–2 mån</th><th>Vol.</th><th>Över SMA50</th><th>ADV20</th></tr></thead><tbody id="candidate-rows"></tbody></table></div>
-      </section>
-
-      <section id="holdings" class="panel">
-        <div class="panel-heading"><div><p id="holdings-eyebrow" class="eyebrow mint">PORTFÖLJEN</p><h2 id="holdings-title">Innehav</h2></div></div>
-        <div id="holding-grid" class="metric-grid empty-state">Inga registrerade innehav.</div>
-        <p id="holdings-note" class="note"></p>
-      </section>
-
-      <section id="signals" class="panel">
-        <div class="panel-heading"><div><p class="eyebrow coral">ATT GÖRA</p><h2>Signaler</h2></div><span id="rebalance-badge" class="soft-badge">Kontrollerar…</span></div>
-        <div id="signal-list" class="signal-list empty-state">Inga signaler.</div>
-      </section>
-
-      <section id="risk" class="panel split-panel">
-        <div><p class="eyebrow sky">RISK</p><h2>Skyddsräcken</h2><div id="risk-metrics" class="metric-grid"></div></div>
-        <div class="risk-art"><div class="ring"><span id="exposure-ring">0%</span></div><p>Aktieexponering</p></div>
-      </section>
-
-      <section id="performance" class="panel">
-        <div class="panel-heading"><div><p class="eyebrow mint">RESULTAT</p><h2>Portfölj mot SPY</h2></div></div>
-        <div id="performance-grid" class="metric-grid"></div>
-        <p id="performance-note" class="note"></p>
-      </section>
-
-      <section id="history" class="panel">
-        <div class="panel-heading"><div><p class="eyebrow lilac">SPÅRBART</p><h2>Historik</h2></div></div>
-        <div id="history-list" class="timeline empty-state">Historik skapas efter första produktionskörningen.</div>
-      </section>
-
-      <section id="system" class="panel system-panel">
-        <div><p class="eyebrow sky">SYSTEM STATUS</p><h2>Allt på ett ställe</h2><p id="limitation" class="warning">Current limitation: survivorship bias</p></div>
-        <div id="system-grid" class="status-grid"></div>
-      </section>
-    </main>
-
-    <footer><span>MomentumCloud Production v1</span><span>Beslutsstöd · ingen automatisk handel</span></footer>
-    <script src="/app.js" defer></script>
-    <script src="/h3.js" defer></script>
-  </body>
-</html>
+<html lang="sv" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="only light"><meta name="theme-color" content="#f5f8fb">
+<meta name="description" content="Följ din fiktiva H3-portfölj. Verkliga marknadsdata, tydlig utveckling och automatiska simulerade affärer.">
+<title>MomentumCloud · Din H3-portfölj</title><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('momentum-theme')==='dark'?'dark':'light'}catch{}document.querySelector('meta[name="color-scheme"]').content=document.documentElement.dataset.theme==='dark'?'dark':'only light';</script>
+<link rel="stylesheet" href="/investment.css"><script src="/investment.js" defer></script>
+</head>
+<body>
+<svg class="svg-defs" aria-hidden="true"><defs>
+<symbol id="i-overview" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10"/></symbol>
+<symbol id="i-portfolio" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="15" rx="3"/><path d="M8 6V3h8v3M3 12h18M10 12v3h4v-3"/></symbol>
+<symbol id="i-trades" viewBox="0 0 24 24"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4 4-4-4 4-4"/></symbol>
+<symbol id="i-stats" viewBox="0 0 24 24"><path d="M4 21V11m8 10V3m8 18V7"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13a9 9 0 0 1-10-10 9 9 0 1 0 10 10Z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6l8-4Z"/><path d="m8 12 3 3 5-6"/></symbol>
+</defs></svg>
+<header class="topbar"><a class="brand" href="#overview" aria-label="MomentumCloud översikt"><span class="brand-mark"><svg><use href="#i-arrow"/></svg></span><span>Momentum<span class="brand-light">Cloud</span></span></a><span class="paper-pill">H3 · fiktiva pengar</span><button id="theme-toggle" class="icon-button" aria-label="Byt till mörkt tema"><svg><use href="#i-moon"/></svg></button></header>
+<nav class="main-nav" aria-label="Huvudmeny">
+<button data-tab="overview" class="active" aria-current="page"><svg><use href="#i-overview"/></svg><span>Översikt</span></button>
+<button data-tab="portfolio"><svg><use href="#i-portfolio"/></svg><span>Portfölj</span></button>
+<button data-tab="trades"><svg><use href="#i-trades"/></svg><span>Affärer</span></button>
+<button data-tab="stats"><svg><use href="#i-stats"/></svg><span>Statistik</span></button>
+<button data-tab="more"><svg><use href="#i-more"/></svg><span>Mer</span></button>
+</nav>
+<main>
+<div id="connection-alert" class="notice error" role="status" hidden></div>
+<section data-panel="overview" id="overview">
+<div class="page-heading"><div><p class="eyebrow">DIN H3-PORTFÖLJ</p><h1>Mer överblick.<br><span>Mer momentum.</span></h1></div><p class="page-intro">Strategin arbetar.<br>Du följer utvecklingen.</p></div>
+<div class="overview-grid">
+<article class="hero-card"><div class="card-top"><span class="label" id="value-label">Planerat startkapital</span><span class="badge" id="portfolio-status">Läser portföljen</span></div><p class="portfolio-number" id="portfolio-value">100 000 <small>kr</small></p><div id="portfolio-return" class="hero-return">Inväntar den första registrerade sessionen</div><p class="hero-foot" id="valuation-time">Kontrollerar senaste underlaget…</p><div class="hero-orbit" aria-hidden="true"></div></article>
+<article class="card strategy-card"><div class="section-top"><span class="eyebrow">MARKNADSLÄGE</span><svg class="teal icon"><use href="#i-shield"/></svg></div><h2 id="risk-status">Inväntar H3</h2><p id="risk-copy">Marknadsläget visas när H3 har registrerat sitt första beslut.</p><div class="next-decision"><svg class="icon"><use href="#i-clock"/></svg><div><span>Nästa H3-kontroll</span><strong id="next-decision">Inväntar schema</strong></div></div></article>
+</div>
+<div class="summary-grid" id="summary-metrics"></div>
+<article class="card chart-card"><div class="section-top wrap"><div><p class="eyebrow">UTVECKLING</p><h2>Din portfölj mot marknaden</h2></div><div class="periods" aria-label="Grafperiod"><button data-period="1m">1 mån</button><button data-period="3m">3 mån</button><button data-period="all" class="active" aria-pressed="true">Sedan start</button></div></div><div class="chart-legend"><span><i class="dot mint"></i>H3 i SEK</span><span><i class="dot blue"></i>SPY i SEK</span></div><div id="main-chart" class="chart-container"></div><p id="chart-detail" class="caption">Endast verkligt registrerade sessioner. Samma valutagrund för H3 och SPY.</p></article>
+<div class="lower-grid"><article class="card"><div class="section-top"><h2>Dina innehav</h2><button class="text-button" data-goto="portfolio">Visa alla <span>→</span></button></div><div id="overview-holdings"></div></article><article class="card"><div class="section-top"><h2>Senaste affärerna</h2><button class="text-button" data-goto="trades">Alla affärer <span>→</span></button></div><div id="overview-trades"></div></article></div>
+<div class="quiet-note"><svg class="icon"><use href="#i-shield"/></svg><p>En fryst strategi. Bara fiktiva pengar. Inga riktiga order skickas.</p></div>
+</section>
+<section data-panel="portfolio" id="portfolio" hidden><div class="page-heading"><div><p class="eyebrow">DET DU ÄGER FIKTIVT</p><h1>Din portfölj</h1></div></div><div class="summary-grid" id="portfolio-metrics"></div><article class="card"><div class="section-top"><h2>Aktuella innehav</h2><span id="positions-count" class="badge"></span></div><p class="caption">Fraktionella simulerade antal speglar H3:s registrerade USD-konto, skalat till 100 000 SEK.</p><div id="all-holdings"></div></article><article class="card cash-card"><div><p class="eyebrow">TILLGÄNGLIG KASSA</p><strong id="cash-value">—</strong></div><p id="cash-note">Startkapitalet växelkursförankras när den första verkliga H3-sessionen registreras.</p></article><article class="card"><h2>Vad visas i SEK?</h2><p>Aktier, kassa och eventuella fordringar räknas om med samma daterade USD/SEK-referenskurs. Dollarutvecklingen påverkar värdet. Inköpsvärdet använder senast publicerade referenskurs före respektive simulerade köp.</p><p class="caption">Referenskurser är inga handlingsbara växlingskurser. Valutaväxlingsavgift och skatt är inte simulerade.</p></article></section>
+<section data-panel="trades" id="trades" hidden><div class="page-heading"><div><p class="eyebrow">HELA RESAN, AFFÄR FÖR AFFÄR</p><h1>Dina affärer</h1></div><button id="export-trades" class="secondary-button">Exportera CSV</button></div><article class="card"><div class="trade-toolbar"><label class="search-label">Sök aktie<input id="trade-search" type="search" placeholder="Till exempel SPY" autocomplete="off"></label><div class="trade-filters" aria-label="Filtrera affärer"><button data-filter="all" class="active">Alla</button><button data-filter="BUY">Köp</button><button data-filter="SELL">Sälj</button></div></div><p class="caption">Bara affärer från den verkligt insamlade H3-journalen. Börsöppningens tid är modellens simuleringsantagande, inte ett verifierat brokeravslut.</p><div id="all-trades"></div></article></section>
+<section data-panel="stats" id="stats" hidden><div class="page-heading"><div><p class="eyebrow">SÄTT UTVECKLINGEN I PERSPEKTIV</p><h1>Din statistik</h1></div></div><div id="stats-metrics" class="summary-grid"></div><article class="card"><h2>H3 och S&amp;P 500, på lika villkor</h2><div id="benchmark-comparison"></div><p class="caption">SPY är en ETF som följer S&amp;P 500. Båda kurvorna utgår från 100 000 SEK och samma valutaförankring. SPY-kontot inkluderar sina registrerade utdelningar och simulerade kostnader.</p></article><article class="card"><h2>Om statistiken</h2><p>Den här fliken visar den separata visningsportföljen i SEK. Löpande kursvärdering kan skilja sig från den senast bokförda H3-sessionen. Historiska backtester ingår aldrig här.</p><p class="caption">Finansiell GO-validering använder fortfarande de oförändrade originalkontona i USD. Se Mer för underlag och granskningsstatus.</p></article></section>
+<section data-panel="more" id="more" hidden><div class="page-heading"><div><p class="eyebrow">BRA ATT VETA</p><h1>Bakom portföljen</h1></div></div><article class="card"><div class="section-top"><h2>Kurser och valuta</h2><button id="refresh-data" class="secondary-button">Uppdatera vyn</button></div><div id="data-details"></div><p class="caption">Vyn läser automatiskt publicerade data varje minut. Separat kursuppföljning schemaläggs var 15:e minut under USA-dagen och efter H3-insamlingen. GitHub kan fördröja körningar. H3:s affärer bokförs efter avslutad verklig session, inte vid varje kursuppdatering.</p></article><article class="card"><h2>Så fungerar din visningsportfölj</h2><p>100 000 SEK förankras en gång till en verifierad USD/SEK-referenskurs. Därefter speglas H3:s faktiskt registrerade framåtriktade köp, försäljningar, kassa och kostnader proportionellt. Antal aktier kan därför vara fraktionella simulerade enheter.</p><p>Affärsavgiften i originalkontot är 15 baspunkter per sida. Valideringen granskar också 30 baspunkter. Spread, öppningslikviditet och verkligt kurtage är inte verifierade. Ingen riktig handel är aktiverad.</p></article><article class="card"><h2>Framåtriktad validering</h2><div id="validation-details"></div></article><article class="card"><details><summary>Historiska backtester</summary><div id="historical-details"></div></details></article><article class="card links-card"><a href="/legacy.html">Tidigare modeller och Buy Now <span>↗</span></a><a href="https://github.com/tartkennet/MomentumCloud" target="_blank" rel="noopener noreferrer">Källkod och granskningsunderlag <span>↗</span></a><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener noreferrer">Valutakälla: ECB <span>↗</span></a></article></section>
+<footer><span>MomentumCloud <b>H3</b></span><span>Fiktiv portfölj · PAPER ONLY</span></footer>
+</main>
+</body></html>

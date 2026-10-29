@@ -97,33 +97,46 @@ def rate_on(rates,day,strict=False):
     return {'date':key,'usdsek':rates[key],'source':'ECB reference fixing','stale_days':age}
 
 
-def market_quotes(key,tickers,now,capability=None):
+def market_quotes(key,tickers,now,as_of=None):
     today=now.astimezone(NY).date();end=(today-timedelta(days=1)).isoformat();start=(today-timedelta(days=9)).isoformat()
-    probe=query(key,'/v2/snapshot/locale/us/markets/stocks/tickers/SPY') if key else {'error':'KEY_UNAVAILABLE'}
-    # Only explicit provider DELAYED status establishes an intraday entitlement.
-    # OK without entitlement metadata is not proof of realtime exchange rights.
-    delayed=probe.get('status')=='DELAYED' and bool(probe.get('ticker'))
+    symbols=sorted(set(tickers))
+    probe=query(key,'/v3/snapshot',{'ticker.any_of':','.join(symbols),'type':'stocks','limit':250}) if key else {'error':'KEY_UNAVAILABLE'}
+    unified={r['ticker']:r for r in probe.get('results',[]) if r.get('ticker')}
+    frames={t:r.get('timeframe') for t,r in unified.items()}
     cap={'checked_at':now.isoformat(),'snapshot_status':probe.get('error',probe.get('status','UNKNOWN')),
-         'realtime_verified':False,'intraday_mode':'DELAYED' if delayed else 'UNVERIFIED',
-         'selected_mode':'DELAYED' if delayed else 'CLOSE','subscription_changed':False}
+         'realtime_verified':any(v=='REAL-TIME' for v in frames.values()),'timeframes':frames,
+         'selected_mode':'INTRADAY' if any(v in ('REAL-TIME','DELAYED') for v in frames.values()) else 'CLOSE',
+         'subscription_changed':False}
+    # Only explicit per-ticker timeframe metadata establishes the entitlement.
     def one(t):
-        if delayed:
-            p=probe if t=='SPY' else query(key,'/v2/snapshot/locale/us/markets/stocks/tickers/'+t)
-            row=p.get('ticker',{});minute=row.get('min') or {};price=minute.get('c');stamp=minute.get('t')
-            if p.get('status')=='DELAYED' and price and stamp:
-                at=datetime.fromtimestamp(stamp/1000,timezone.utc)
+        row=unified.get(t,{})
+        if row.get('timeframe') in ('REAL-TIME','DELAYED'):
+            trade=row.get('last_trade') or {};price=row.get('session',{}).get('price')
+            stamp=trade.get('sip_timestamp') or trade.get('last_updated') or row.get('last_updated')
+            if price and stamp:
+                at=datetime.fromtimestamp(stamp/1e9,timezone.utc)
                 if at<=now and (now-at).total_seconds()<86400:
                     return t,{'usd':price,'at':at.isoformat(),'session':at.astimezone(NY).date().isoformat(),
-                              'mode':'DELAYED','source':'Massive delayed minute aggregate'}
+                              'mode':'REALTIME' if row['timeframe']=='REAL-TIME' else 'DELAYED','source':'Massive unified snapshot'}
         p=query(key,f'/v2/aggs/ticker/{t}/range/1/day/{start}/{end}',{'adjusted':'false','sort':'desc','limit':8}) if key else {}
         rows=p.get('results') or []
         if not rows:return t,{'error':p.get('error','CLOSE_UNAVAILABLE'),'mode':'MISSING'}
         row=max(rows,key=lambda v:v['t']);day=datetime.fromtimestamp(row['t']/1000,timezone.utc).astimezone(NY).date().isoformat()
-        at=datetime.fromisoformat(day).replace(hour=16,tzinfo=NY).astimezone(timezone.utc)
         # Daily aggregate identifies the session; 16:00 is not claimed as a
         # tick timestamp (early closes exist). Display the session date only.
         return t,{'usd':row['c'],'at':None,'session':day,'mode':'CLOSE','source':'Massive raw daily close'}
-    with ThreadPoolExecutor(max_workers=4) as pool:quotes=dict(pool.map(one,sorted(set(tickers))))
+    with ThreadPoolExecutor(max_workers=4) as pool:quotes=dict(pool.map(one,symbols))
+    if as_of:
+        future=[t for t,m in quotes.items() if m.get('session','')>as_of]
+        if future:
+            through=max(quotes[t]['session'] for t in future);unsafe=set();unverified=False
+            for kind,col in [('splits','execution_date'),('dividends','ex_dividend_date')]:
+                p=query(key,'/stocks/v1/'+kind,{col+'.gt':as_of,col+'.lte':through,'limit':5000})
+                if p.get('error') or p.get('next_url'):unverified=True
+                unsafe.update(e['ticker'] for e in p.get('results',[]) if e.get('ticker') in future)
+            for t in future:
+                if unverified or t in unsafe:quotes[t]={'mode':'MISSING','error':'UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT'}
+            cap['corporate_event_guard']={'through':through,'blocked_tickers':future if unverified else sorted(unsafe)}
     return cap,quotes
 
 
@@ -244,7 +257,7 @@ def refresh():
                     if day<=now.date().isoformat() and math.isfinite(rate) and rate>0:rates.setdefault(day,rate)
             except Exception as exc:fx_error=type(exc).__name__
             symbols=list((account.get('account') or {}).get('shares',{}))+['SPY']
-            cap,quotes=market_quotes(os.getenv('POLYGON_API_KEY'),symbols,now)
+            cap,quotes=market_quotes(os.getenv('POLYGON_API_KEY'),symbols,now,account['as_of'])
             data=build(account,old,rates,quotes,cap,now)
             if fx_error:data['errors'].append('ECB-uppdatering misslyckades: '+fx_error+'. Senast verifierade kurs visas med datum om den är tillräckligt färsk.')
             data['refresh_run']=os.getenv('GITHUB_RUN_ID');write(file,data)
