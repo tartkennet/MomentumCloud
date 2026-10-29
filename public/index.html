@@ -8,6 +8,7 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/h3.css" />
     <title>MomentumCloud</title>
   </head>
   <body>
@@ -36,6 +37,7 @@
 
       <nav class="section-nav" aria-label="Dashboardsektioner">
         <a class="active" href="#buy-now">Buy now</a>
+        <a href="#h3-paper">H3 paper</a>
         <a href="#target-portfolio">Målportfölj</a>
         <a href="#candidates">Kandidater</a>
         <a href="#holdings">Innehav</a>
@@ -45,6 +47,20 @@
         <a href="#history">Historik</a>
         <a href="#system">System</a>
       </nav>
+
+      <section id="h3-paper" class="panel" aria-labelledby="h3-title">
+        <div class="panel-heading"><div><p class="eyebrow sky">FRAMÅTRIKTAD VALIDERING</p><h2 id="h3-title">Momentum H3 <span class="h3-label">PAPER ONLY</span></h2></div><span id="h3-status" class="h3-status" role="status">Kontrollerar journalen…</span></div>
+        <p class="h3-intro">Simulerad handel med verkligt insamlade marknadsdata. H3 är fryst under prövningen. Inga riktiga order skickas.</p>
+        <p id="h3-asof" class="h3-muted">Läser den accepterade paper-journalen…</p>
+        <div id="h3-metrics" class="h3-metrics"></div>
+        <div class="h3-progress-box"><h3>Fram till full prövning</h3><p id="h3-progress-copy">Inväntar observationer</p><progress id="h3-progress" value="0" max="30" aria-label="Observerade fullständiga månadsperioder"></progress><p id="h3-period-note" class="h3-muted"></p><p id="h3-validation-status"></p></div>
+        <h3>Insamlat portföljvärde mot SPY</h3><div id="h3-curve"><p class="h3-empty">Ingen insamlad kurva ännu.</p></div>
+        <h3>Simulerade innehav</h3><div id="h3-holdings"></div><p id="h3-cash" class="h3-muted"></p>
+        <h3>Senaste handelsbeslut</h3><p id="h3-decision"></p><p id="h3-intentions" class="h3-muted"></p><div id="h3-trades"></div>
+        <h3>Drift och data</h3><p id="h3-readiness" class="h3-muted"></p><p id="h3-execution" class="h3-warning"></p><div id="h3-errors" role="status"></div><p id="h3-next" class="h3-muted"></p><p id="h3-first" class="h3-muted"></p>
+        <details class="h3-details"><summary>Oförändrade krav för framåtprövningen</summary><div id="h3-gates"></div><p class="h3-history-note">Prövningen görs även vid dubbel transaktionskostnad. Ett godkänt historiskt test eller framåttest aktiverar aldrig riktig handel automatiskt.</p></details>
+        <details class="h3-details"><summary>Historiskt backtest – separat från paper trading</summary><div id="h3-history"></div></details>
+      </section>
 
       <section id="buy-now" class="panel feature-panel">
         <div class="panel-heading">
@@ -102,5 +118,6 @@
 
     <footer><span>MomentumCloud Production v1</span><span>Beslutsstöd · ingen automatisk handel</span></footer>
     <script src="/app.js" defer></script>
+    <script src="/h3.js" defer></script>
   </body>
 </html>

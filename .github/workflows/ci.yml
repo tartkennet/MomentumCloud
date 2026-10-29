@@ -36,7 +36,9 @@ jobs:
           validate_production_backtest.py momentum_core.py
           momentum_core_data.py run_momentum_core.py
       - name: Compile dashboard functions
-        run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js
+        run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js && node --check api/h3.js && node --check public/h3.js
+      - name: Verify H3 delivery and empty-state behavior
+        run: node --test tests/h3_dashboard.test.js
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Verify locked production configuration
