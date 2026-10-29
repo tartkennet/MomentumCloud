@@ -1,40 +1,26 @@
-# MomentumCloud — Core-kandidat och historisk v4
+# MomentumCloud — verifiering 29 oktober 2026
 
-Senaste fullständiga Core-testet, 2024-01-01–2026-09-01: **NO_GO**.
-Modellen gav **+44,305365 %**, SPY **+65,442500 %** och maximal daglig
-nedgång var **−37,523834 %**. SPY- och drawdownkraven fallerar. De 129
-funktionstesterna, offlineåterkörningen och den separata redovisningskontrollen
-passerar i [den verifierade körningen](https://github.com/tartkennet/MomentumCloud/actions/runs/40772049150).
-Paper-cohort v2 börjar först med signal 2026-10-29; den missade ursprungliga
-starten bevaras som ett misslyckat försök. Verkliga köp är inte godkända.
+PR #22 är färdig och sammanslagen. AEL, PLYA och RNA/RNAM har verifierade företagshändelser och full historisk bokföring. Den enda efterföljande rankingförbättringen är också färdigtestad. **Båda kandidaterna får NO_GO i samtliga 40 scenarier vardera.** GO-gränserna är oförändrade.
 
-Det aktiva omarbetningsarbetet är `momentum-core-v1`. Kandidaten ersätter
-v4:s blandade ranking och individuella fasta stoppar med en enkel
-12–2-ranking, volatilitetsstyrd storlek och daglig SPY-riskkontroll. Historik
-och pappershandel använder samma handelsmotor, råpriser, utdelningar och
-kostnad på faktiskt handlat belopp. Regler och begränsningar är frysta i
-[`docs/MOMENTUM_CORE_PROTOCOL.md`](docs/MOMENTUM_CORE_PROTOCOL.md).
+Gemensam period 2024-01-01–2026-10-28, USD efter kostnader, före skatt. Tabellen visar det fördefinierade fallet med 15 bp per sida, antagen betalning efter fem observerade sessioner och senaste observerade kurs under PLYA:s handelsstopp. Betaldatum är en känslighetsanalys, inte verifierade faktiska kontantbetalningar.
+
+| Modell | Nettoavkastning | Maximal drawdown | Daglig Sharpe, RF=0 | Kostnader USD |
+|---|---:|---:|---:|---:|
+| Tidigare Core | +15.60 % | -47.38 % | 0.347 | 5701.84 |
+| Normaliserad ranking, PR #22 | +62.48 % | -20.94 % | 0.843 | 6550.67 |
+| Samma formationsperiod för avkastning och risk | +129.48 % | -36.26 % | 0.920 | 9014.98 |
+| SPY | +68.08 % | -18.49 % | 1.293 | 149.60 |
+
+Kod, alla scenarier, marknadsperioder och oberoende kontroller finns i [slutverifieringen](docs/CORE_FINAL_VALIDATION_20261029.md), [PR #22-resultaten](docs/CORE_NORMALIZED_REVIEW_20261029.md) och [uppföljningens resultat](docs/CORE_FORMATION_REVIEW_20261029.md). Alla 187 tester passerar. Grön CI betyder teknisk verifiering; den ändrar inte finansiellt NO_GO.
+
+Underkända forskningsmodeller ligger separat från fryst Core, ursprunglig paper-identitet och Buy Now. Forskningsworkflowen är manuellt återkörbara från sparade data. Befintlig Core-paper fortsätter samla verkliga framtida sessioner; den utgör ingen validering av de ändrade forskningarnas regler. Redan granskad historik är utvecklingsdata och saknar ett orört out-of-sample-test. Verklig handel är inte godkänd.
+
+Fryst Core använder 12–2-ranking, volatilitetsstyrd storlek och daglig SPY-riskkontroll. Reglerna finns i [Core-protokollet](docs/MOMENTUM_CORE_PROTOCOL.md).
 
 ```bash
 python run_momentum_core.py --start 2024-01-01 --end 2026-09-01
 python run_momentum_core.py --paper --start 2026-10-29 --output-dir core_paper_results
 ```
-
-Workflowet **Momentum Core candidate** kör tester, historisk replay och dubbel
-handelskostnad på PR. Efter införande på main kör det framåtriktad
-pappershandel på morgonen efter USA-sessionen. `Momentum_core_decision.json`
-visar varje ekonomiskt krav och uppnått värde; samtliga affärer, dagligt NAV,
-mål och källfingeravtryck sparas i workflowets artifact. `NO_GO` är ett giltigt
-ekonomiskt testresultat; datafel ger `DATA_BLOCKED` och ett misslyckat jobb.
-Grön CI betyder att beräkningen körde färdigt, inte att modellen fick GO.
-
-Redan granskad historik är utvecklingsdata. Kandidaten har ingen automatisk
-livebehörighet och dess pappersorder matas inte in i gamla Buy Now.
-`v4-balanced` nedan bevaras som den tidigare implementationen och jämförelsen;
-dess tidigare NO-GO får inte döpas om till ett Core-godkännande.
-Efter införandet är de två gamla v4-workflowen manuella. De startar inte
-längre dagliga snapshot- eller valideringsloopar. Den befintliga dashboarden
-visar ett historiskt v4-snapshot tills en separat verifierad publicering finns.
 
 ## Tidigare Production v1 / v4-balanced
 
