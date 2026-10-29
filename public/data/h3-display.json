@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-29T14:43:36.447271+00:00",
-  "source_run": "40893207417",
+  "generated_at": "2026-10-29T20:05:24.132386+00:00",
+  "source_run": "40894328285",
   "source_as_of": null,
   "source_checkpoint_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
   "status": "WAITING",
@@ -72,16 +72,17 @@
     "2026-08-05": 9.488921585598062,
     "2026-08-04": 9.546244029526704,
     "2026-08-03": 9.522756827048115,
-    "2026-07-31": 9.565084893339137
+    "2026-07-31": 9.565084893339137,
+    "2026-10-29": 9.882749326145552
   },
   "fx": {
-    "date": "2026-10-28",
-    "usdsek": 9.930836252582413,
+    "date": "2026-10-29",
+    "usdsek": 9.882749326145552,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-10-29T14:43:36.447271+00:00",
+    "checked_at": "2026-10-29T20:05:24.132386+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -120,5 +121,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "40894328348"
+  "refresh_run": "40945852049"
 }
