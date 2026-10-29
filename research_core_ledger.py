@@ -7,6 +7,9 @@ import copy
 from momentum_core import CONFIG, DataBlocked, Ledger, number
 
 STOCK_COMPLETIONS = {
+    'NGD': {'effective_date': '2026-03-20', 'successor_ticker': 'CDE',
+            'shares_per_share': .4959, 'reason': 'STOCK_MERGER',
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/800166/000127956926000229/ex991.htm'},
     'AEL': {'effective_date': '2024-05-03', 'completion_date': '2024-05-02',
             'successor_ticker': 'BAM', 'shares_per_share': .45464, 'cash_per_share': 38.85,
             'reason': 'STOCK_CASH_MERGER',

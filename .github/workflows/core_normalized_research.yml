@@ -2,19 +2,6 @@ name: Fixed Core risk-normalized ranking
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'research_core_normalized.py'
-      - 'audit_core_normalized.py'
-      - 'research_core_actions.py'
-      - 'research_core_ledger.py'
-      - 'audit_core_research_account.py'
-      - 'tests/test_core_event_completions.py'
-      - 'run_core_normalized_research.py'
-      - 'tests/test_core_normalized.py'
-      - 'docs/CORE_RISK_NORMALIZED_PROTOCOL_20261029.md'
-      - '.github/workflows/core_normalized_research.yml'
 
 permissions:
   contents: write

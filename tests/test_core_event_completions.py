@@ -13,6 +13,19 @@ from test_momentum_core import MemoryData, order
 
 
 class EventCompletions(unittest.TestCase):
+    def test_ngd_exchange_precedes_next_session_sale_without_fictitious_old_quote(self):
+        d = MemoryData(['2026-03-19', '2026-03-20'],
+                       [{'NGD': [10, 10, 1e6]}, {'CDE': [20, 21, 1e6]}],
+                       stock_actions={'NGD': STOCK_COMPLETIONS['NGD']})
+        l = ResearchLedger(cash=0, shares={'NGD':101}, pending=order(d.days[0], 1010))
+        l.events_before_open(d, d.days[1])
+        self.assertAlmostEqual(l.shares['CDE'],101*.4959)
+        l.execute_open(d,d.days[1])
+        self.assertEqual(l.trades[0]['ticker'],'CDE')
+        self.assertEqual(l.trades[0]['quantity'],50)
+        self.assertAlmostEqual(l.shares['CDE'],101*.4959-50)
+        self.assertTrue(all(t['ticker']!='NGD' for t in l.trades))
+
     def test_cancelled_missing_buy_keeps_its_original_signal_date(self):
         d = MemoryData(['2024-01-02', '2024-01-03'], [{}, {}])
         l = ResearchLedger(pending=order(d.days[0], 100000, MISSING=.1))
