@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-29T14:36:48.948235+00:00",
-  "source_run": "40892040332",
+  "generated_at": "2026-10-29T14:43:36.447271+00:00",
+  "source_run": "40893207417",
   "source_as_of": null,
   "source_checkpoint_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
   "status": "WAITING",
@@ -81,11 +81,17 @@
     "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-10-29T14:36:48.948235+00:00",
+    "checked_at": "2026-10-29T14:43:36.447271+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
       "SPY": null
+    },
+    "snapshot_price_available": {
+      "SPY": true
+    },
+    "snapshot_ticker_error_present": {
+      "SPY": false
     },
     "selected_mode": "CLOSE",
     "provider_latency": "UNVERIFIED",
@@ -114,5 +120,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "40893207479"
+  "refresh_run": "40894328348"
 }
