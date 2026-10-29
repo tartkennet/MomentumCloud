@@ -7,6 +7,8 @@ broker payment dates remain unknown; use all original payment sensitivities.
 import copy
 
 EXTRA_CASH_ACTIONS = {
+    'TGH': {'effective_date': '2024-03-14', 'cash_per_share': 50.0,
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1413159/000095017024031155/tgh-6k-03_14_2024.htm'},
     'SOVO': {'effective_date': '2024-03-12', 'cash_per_share': 23.0,
              'source_url': 'https://www.sec.gov/Archives/edgar/data/1856608/000110465924033282/tm248409d1_8k.htm'},
     'CBAY': {'effective_date': '2024-03-22', 'cash_per_share': 32.5,

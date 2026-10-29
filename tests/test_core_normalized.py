@@ -13,12 +13,31 @@ from audit_core_normalized import audit_targets
 from research_core_normalized import MODEL, select_targets
 from research_core_actions import EXTRA_CASH_ACTIONS, supplement
 from momentum_core_data import atomic_json
-from run_core_normalized_research import candidate_selection, save_case
+from run_core_normalized_research import candidate_selection, save_case, scan_holding_inputs
 from run_core_risk_research import audit
 from test_momentum_core import MemoryData, long_data
 
 
 class NormalizedTests(unittest.TestCase):
+    def test_quote_preflight_collects_all_gaps_without_performance_or_silent_fills(self):
+        data = long_data()
+        data.sessions = data.days[252:]
+        data.set_day = lambda day: None
+        rows, _ = select_targets(data, data.sessions[0])
+        first, second = [r['ticker'] for r in rows[:2]]
+        del data.by_day[data.sessions[3]][first]
+        del data.by_day[data.sessions[4]][second]
+        with candidate_selection():
+            report = scan_holding_inputs(data, core.CONFIG)
+        self.assertFalse(report['performance_calculated'])
+        self.assertEqual(report['status'], 'DATA_BLOCKED')
+        self.assertTrue({first, second} <= {g['ticker'] for g in report['quote_gaps']})
+        data.cash_actions = {first: {'effective_date': data.sessions[3], 'cash_per_share': 23},
+                             second: {'effective_date': data.sessions[4], 'cash_per_share': 50}}
+        with candidate_selection():
+            repaired = scan_holding_inputs(data, core.CONFIG)
+        self.assertEqual(repaired['status'], 'PASS')
+
     def test_verified_merger_replaces_missing_quote_with_unspendable_claim(self):
         data = MemoryData(['2024-03-11', '2024-03-12'],
                           [{'SOVO': [22.9, 22.9, 1_000_000]}, {}])

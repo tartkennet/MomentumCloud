@@ -87,6 +87,61 @@ def save_case(folder, data, config, strategy, benchmark, result, periods, attemp
     return decision
 
 
+def scan_holding_inputs(data, config):
+    """Enumerate potential quote gaps without valuing a portfolio or performance.
+
+    Missing buys remain cash and never create a replacement. Known conversions
+    are applied on their effective dates. A missing held quote is reported, not
+    filled. The scanner's affected sleeve is then untracked so other gaps can
+    be found; actual replay remains blocked until every issue is resolved.
+    """
+    held, pending, previous, month = set(), None, False, ''
+    gaps, selections = [], []
+    previous_day = None
+    for day in data.sessions:
+        data.set_day(day)
+        for ticker, event in data.cash_actions.items():
+            if event['effective_date'] == day:
+                held.discard(ticker)
+        for ticker, event in data.stock_actions.items():
+            if event['effective_date'] == day and ticker in held:
+                held.remove(ticker)
+                held.add(event['successor_ticker'])
+        bars = data.bars(day)
+        if pending is not None:
+            desired = set()
+            for ticker in pending:
+                event = data.cash_actions.get(ticker) or data.stock_actions.get(ticker)
+                if event and previous_day < event['effective_date'] <= day:
+                    continue
+                bar = bars.get(ticker)
+                if ticker in held or (bar and core.number(bar[0]) is not None):
+                    desired.add(ticker)
+            for ticker in sorted(held - desired):
+                if not bars.get(ticker) or core.number(bars[ticker][0]) is None:
+                    gaps.append({'date': day, 'ticker': ticker, 'kind': 'MISSING_SELL_OPEN',
+                                 'previous_session': previous_day})
+            held = desired
+        for ticker in sorted(held.copy()):
+            if not bars.get(ticker) or core.number(bars[ticker][1]) is None:
+                gaps.append({'date': day, 'ticker': ticker, 'kind': 'MISSING_HELD_CLOSE',
+                             'previous_session': previous_day})
+                held.remove(ticker)
+        allowed = core.risk_on(data, day)
+        pending = None
+        if allowed and (month != day[:7] or not previous):
+            rows, count = core.select_targets(data, day, config)
+            selections.append({'date': day, 'targets': rows, 'eligible_count': count})
+            pending = {r['ticker'] for r in rows}
+            month = day[:7]
+        elif not allowed and (previous or previous_day is None):
+            pending = set()
+        previous, previous_day = allowed, day
+    return {'status': 'DATA_BLOCKED' if gaps else 'PASS', 'quote_gaps': gaps,
+            'risk_on_selections': selections, 'performance_calculated': False,
+            'scope': 'Potential held quote coverage, not whole-share execution or financial validation.'}
+
+
 def render_report(register, path):
     rows = ['# Core risk-normalized ranking — 29 October 2026', '',
             'All observations are previously inspected development history. No live approval.', '',
@@ -106,6 +161,10 @@ def render_report(register, path):
              'Independent ranking/timing and accounting checks validate implementation, not independent market evidence.',
              'Vendor backfill, unverified payment dates, opening liquidity and actual execution costs remain limitations.',
              'The five existing gates and original Core paper identity are unchanged. No parameter is selected after results.', '']
+    if register.get('unresolved_quote_gaps'):
+        rows += ['## Input preflight — DATA_BLOCKED', '',
+                 'No candidate performance was calculated in this run. Resolve the following facts before replay:', '']
+        rows += [f"- {g['date']} {g['ticker']}: {g['kind']}" for g in register['unresolved_quote_gaps']]
     Path(path).write_text('\n'.join(rows))
 
 
@@ -149,8 +208,19 @@ def run(args):
     checkpoints = {}
     audit_memo = {}
     with candidate_selection():
+        full_data = supplement(make_data(args.cache_dir, EXTENSION_END, True))
+        scan = scan_holding_inputs(full_data, replace(core.CONFIG, model=MODEL))
+        atomic_json(output / 'holding_input_preflight.json', scan)
+        register['holding_input_preflight_status'] = scan['status']
+        register['unresolved_quote_gaps'] = scan['quote_gaps']
+        atomic_json(register_path, register)
+        render_report(register, output / 'report.md')
+        if scan['quote_gaps']:
+            for gap in scan['quote_gaps']:
+                print('PREFLIGHT_GAP ' + json.dumps(gap), flush=True)
+            raise core.DataBlocked('Holding-input preflight found unresolved quotes; no performance calculated')
         for phase, end in (('historical', CUTOFF), ('extension', EXTENSION_END)):
-            data = supplement(make_data(args.cache_dir, end, True))
+            data = full_data if phase == 'extension' else supplement(make_data(args.cache_dir, end, True))
             for delay in DELAYS:
                 data.cash_actions, assumptions = policy_actions(data, delay)
                 policy = 'locked' if delay is None else f'assumed_{delay}'

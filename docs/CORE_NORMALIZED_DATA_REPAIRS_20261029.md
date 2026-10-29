@@ -36,3 +36,16 @@ merge checkout. Evidence upload and unpublished release preservation succeeded.
 The workflow now checks out the exact candidate head with full ancestry and
 checks the branch has not moved before committing its report. It never force
 pushes or overwrites concurrent work.
+
+The second run 40843858260 retained a further missing quote for TGH on
+2024-03-14. Its 6-K confirms that date's pre-open cash acquisition at USD 50:
+https://www.sec.gov/Archives/edgar/data/1413159/000095017024031155/tgh-6k-03_14_2024.htm .
+This thirteenth event is a new verified completion, not a PR 13 fact.
+The second attempt register is preserved separately. Its report push succeeded.
+
+A new preflight enumerates all potential held quote gaps over the entire
+fixed window without computing NAV or performance. Known corporate events
+transform the tracked sleeves; missing buys remain cash and unknown held
+quotes block the actual replay. Scanning past an unresolved sleeve serves
+only to collect other issues, never to create a financial result. The frozen
+selection and risk rules are unchanged.
