@@ -50,9 +50,17 @@ def publish(snapshot,previous_snapshot,durable_status,observer_status,manifest):
         try:
             destination=work/'public/data/h3.json';destination.parent.mkdir(parents=True,exist_ok=True)
             destination.write_text(payload)
+            extra=[]
+            if durable_status=='success' and observer_status=='success':
+                from h3_display import export_account
+                account_path=work/'public/data/h3-account.json'
+                previous_account=json.loads(account_path.read_text()) if account_path.exists() else None
+                account=export_account(path.parent,ROOT/'.portfolio_forward_cache',previous_account)
+                account_path.write_text(json.dumps(account,ensure_ascii=False,indent=2,allow_nan=False))
+                extra=['public/data/h3-account.json']
             # The first data-branch commit also carries its deployment opt-out.
             if not remote:shutil.copyfile(ROOT/'vercel.json',work/'vercel.json')
-            git('add','public/data/h3.json',*(['vercel.json'] if not remote else []),cwd=work)
+            git('add','public/data/h3.json',*extra,*(['vercel.json'] if not remote else []),cwd=work)
             if not git('diff','--cached','--name-only',cwd=work):return
             git('-c','user.name=github-actions[bot]','-c','user.email=41898282+github-actions[bot]@users.noreply.github.com',
                 'commit','-m',f"H3 observed journal {os.getenv('GITHUB_RUN_ID','manual')} attempt {os.getenv('GITHUB_RUN_ATTEMPT','1')}",cwd=work)

@@ -1,0 +1,35 @@
+name: H3 separate SEK valuation
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Frozen H3 prospective paper']
+    types: [completed]
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths: ['h3_display.py', '.github/workflows/h3_display.yml']
+  schedule:
+    - cron: '*/15 13-22 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: portfolio-global-regime-forward-v1
+  cancel-in-progress: false
+jobs:
+  value:
+    if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests==2.32.5
+      - name: Refresh only presentation prices and FX, never the frozen paper journal
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python h3_display.py refresh
