@@ -1,0 +1,92 @@
+"""Verified event completions for research only; never alter frozen Core code.
+
+The initial subset also existed in PR 13. Further quote-coverage completions
+come from primary filings listed per event and in the repair document. Actual
+broker payment dates remain unknown; use all original payment sensitivities.
+"""
+import copy
+
+EXTRA_CASH_ACTIONS = {
+    'SPLK': {'effective_date': '2024-03-18', 'cash_per_share': 157.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/858877/000119312524070175/d783088d8k.htm'},
+    'SP': {'effective_date': '2024-05-16', 'cash_per_share': 54.0,
+           'source_url': 'https://www.sec.gov/Archives/edgar/data/1059262/000119312524140235/d833024dex991.htm'},
+    'EVBG': {'effective_date': '2024-07-02', 'cash_per_share': 35.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1437352/000119312524173902/d804733dex991.htm'},
+    'PRFT': {'effective_date': '2024-10-02', 'cash_per_share': 76.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1085869/000119312524230795/d898227d8k.htm'},
+    'SQSP': {'effective_date': '2024-10-17', 'cash_per_share': 46.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1496963/000114036124043632/ny20030653x23_sc13e3a.htm'},
+    'ENV': {'effective_date': '2024-11-25', 'cash_per_share': 63.15,
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1337619/000121390024101828/ea022217801ex99-1_envestnet.htm'},
+    'VZIO': {'effective_date': '2024-12-03', 'cash_per_share': 11.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1835591/000119312524269483/d909505d8k.htm'},
+    'SMAR': {'effective_date': '2025-01-22', 'cash_per_share': 56.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1366561/000162828025002101/smar-20250122.htm'},
+    'BALY': {'effective_date': '2025-02-07', 'cash_per_share': 18.25,
+             'note': 'Default cash consideration; no election to retain stock is assumed.',
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1747079/000121390025013607/ea0229518-8k_ballys.htm'},
+    'ALTR': {'effective_date': '2025-03-26', 'cash_per_share': 113.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1701732/000119312525066329/d869190d8k.htm'},
+    'DESP': {'effective_date': '2025-05-15', 'cash_per_share': 19.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1703141/000094787125000525/ss4830126_ex9901.htm'},
+    'RDUS': {'effective_date': '2025-07-11', 'cash_per_share': 30.0, 'completion_date': '2025-07-10',
+             'note': 'First non-trading session after the completed merger; no assumed pay date.',
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/912603/000114036125025485/ef20051635_8k.htm'},
+    'TGI': {'effective_date': '2025-07-25', 'cash_per_share': 26.0, 'completion_date': '2025-07-24',
+            'note': 'First non-trading session after the completed merger; no assumed pay date.',
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1021162/000095017025098396/tgi-20250724.htm'},
+    'SPNS': {'effective_date': '2025-12-17', 'cash_per_share': 43.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/885740/000121390025122812/ea026966502-sc13e3a2_sapiens.htm'},
+    'FOLD': {'effective_date': '2026-04-27', 'cash_per_share': 14.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1048477/000119312526179243/d113922d8k.htm'},
+    'SEMR': {'effective_date': '2026-04-28', 'cash_per_share': 12.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1831840/000114036126017299/ef20071354_8k.htm'},
+    'CSGS': {'effective_date': '2026-05-14', 'cash_per_share': 80.7,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1005757/000119312526224339/d154728d8k.htm'},
+    'KW': {'effective_date': '2026-06-16', 'cash_per_share': 10.9,
+           'source_url': 'https://www.sec.gov/Archives/edgar/data/915191/000110465926074343/tm2618038d2_ex99-1.htm'},
+    'EA': {'effective_date': '2026-08-05', 'cash_per_share': 210.0, 'completion_date': '2026-08-04',
+           'note': 'Closed after trading on August 4; booking at the next session, not an August 4 open.',
+           'source_url': 'https://www.sec.gov/Archives/edgar/data/712515/000114036126031157/ef20079099_8k.htm'},
+    'DBRG': {'effective_date': '2026-09-30', 'cash_per_share': 16.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1679688/000167968826000143/xslF345X06/wk-form4_1790978487.xml'},
+    'ACA': {'effective_date': '2026-10-23', 'cash_per_share': 150.0,
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1739445/000114036126040596/ef20084131_8k.htm'},
+    'TGH': {'effective_date': '2024-03-14', 'cash_per_share': 50.0,
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1413159/000095017024031155/tgh-6k-03_14_2024.htm'},
+    'SOVO': {'effective_date': '2024-03-12', 'cash_per_share': 23.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1856608/000110465924033282/tm248409d1_8k.htm'},
+    'CBAY': {'effective_date': '2024-03-22', 'cash_per_share': 32.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/882095/000110465924037619/tm249475d1_8k.htm'},
+    'NWLI': {'effective_date': '2024-07-09', 'cash_per_share': 500.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1635984/000163598424000019/nwli-20240709.htm'},
+    'NVEI': {'effective_date': '2024-11-15', 'cash_per_share': 34.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1765159/000095010324016364/dp220747_ex9902.htm'},
+    'AXNX': {'effective_date': '2024-11-15', 'cash_per_share': 71.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1603756/000162828024048038/axnx-20241115.htm'},
+    'HCP': {'effective_date': '2025-02-27', 'cash_per_share': 35.0,
+            'source_url': 'https://www.sec.gov/Archives/edgar/data/1720671/000119312525037910/d898526d8k.htm'},
+    'RGLS': {'effective_date': '2025-06-25', 'cash_per_share': 7.0, 'contingent_cash_per_share': 7.0,
+             'source_url': 'https://www.novartis.com/news/media-releases/novartis-completes-acquisition-regulus-therapeutics'},
+    'ESGR': {'effective_date': '2025-07-02', 'cash_per_share': 338.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1363829/000110465925065337/tm2519642d2_ex99-1.htm'},
+    'FYBR': {'effective_date': '2026-01-20', 'cash_per_share': 38.5,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/732712/000119312526016059/d198618d8k.htm'},
+    'EXAS': {'effective_date': '2026-03-23', 'cash_per_share': 105.0,
+             'source_url': 'https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-178'},
+    'AL': {'effective_date': '2026-04-08', 'cash_per_share': 65.0,
+           'source_url': 'https://www.sec.gov/Archives/edgar/data/1487712/000119312526147571/d139383d8k.htm'},
+    'GTLS': {'effective_date': '2026-07-16', 'cash_per_share': 210.0,
+             'source_url': 'https://www.sec.gov/Archives/edgar/data/1701605/000170160526000023/bkr-20260630.htm'},
+}
+
+
+def supplement(data):
+    actions = copy.deepcopy(data.source.cash_actions)
+    if actions.keys() & EXTRA_CASH_ACTIONS.keys():
+        raise ValueError('Research event supplement conflicts with original Core facts')
+    actions.update(copy.deepcopy(EXTRA_CASH_ACTIONS))
+    data.source.cash_actions = actions
+    data.cash_actions = copy.deepcopy(actions)
+    return data
