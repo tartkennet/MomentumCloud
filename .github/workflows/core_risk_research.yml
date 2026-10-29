@@ -16,7 +16,7 @@ on:
       - '.github/workflows/core_risk_research.yml'
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 concurrency:
@@ -40,7 +40,18 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - name: Verify original and candidate mechanics
         run: python -m unittest discover -s tests -v
-      - name: Restore pinned complete inputs for offline verification
+      - name: Restore immutable encrypted research inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=core-risk-research-20261029
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft > "$RUNNER_TEMP/risk_release_draft"; then
+            test "$(cat "$RUNNER_TEMP/risk_release_draft")" = true
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" \
+              --pattern Momentum_core_risk_cache.sealed --output .momentum_core_cache.sealed
+          fi
+      - name: Bootstrap immutable inputs from the completed same-PR cache
+        if: hashFiles('.momentum_core_cache.sealed') == ''
         uses: actions/cache/restore@v4
         with:
           path: .momentum_core_cache.sealed
@@ -78,6 +89,40 @@ jobs:
         with:
           path: .momentum_core_cache.sealed
           key: core-risk-sealed-${{ github.run_id }}
+      - name: Preserve the complete frozen research package without cache expiry
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=core-risk-research-20261029
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets --jq '[.assets[].name] | contains(["Momentum_core_risk_cache.sealed", "Momentum_core_risk_source.tar.gz", "Momentum_core_risk_results.tar.gz", "Momentum_core_risk_manifest.json"])' > "$RUNNER_TEMP/risk_release_complete"; then
+            if [ "$(cat "$RUNNER_TEMP/risk_release_complete")" = true ]; then exit 0; fi
+          fi
+          mkdir -p risk_release
+          cp .momentum_core_cache.sealed risk_release/Momentum_core_risk_cache.sealed
+          git archive --format=tar.gz HEAD > risk_release/Momentum_core_risk_source.tar.gz
+          tar -czf risk_release/Momentum_core_risk_results.tar.gz -C risk_v2_results .
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('risk_release')
+          cache = Path('.momentum_core_cache')
+          result = {'source_commit': os.environ['GITHUB_SHA'], 'workflow_run': os.environ['GITHUB_RUN_ID'],
+                    'live_approved': False, 'raw_inputs_encrypted': True, 'input_files': {}, 'assets': {}}
+          for p in sorted(cache.rglob('*')):
+              if p.is_file():
+                  assert not p.is_symlink()
+                  result['input_files'][str(p.relative_to(cache))] = hashlib.sha256(p.read_bytes()).hexdigest()
+          for p in sorted(root.iterdir()):
+              result['assets'][p.name] = hashlib.sha256(p.read_bytes()).hexdigest()
+          (root / 'Momentum_core_risk_manifest.json').write_text(json.dumps(result, indent=2))
+          PY
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url --jq .url; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft \
+              --title "Core fixed-risk frozen research 2026-10-29" \
+              --notes "Encrypted saved inputs, exact source and all results. No API credential is stored. Historical research only; no live approval. Private raw-data copies are also retained for offline replay without an active subscription."
+          fi
+          gh release upload "$tag" risk_release/* --repo "$GITHUB_REPOSITORY" --clobber
       - name: Preserve encrypted inputs and exact study source
         if: always() && hashFiles('risk_v2_results/**/Momentum_core_decision.json') != ''
         run: |
