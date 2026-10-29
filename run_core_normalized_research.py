@@ -96,7 +96,7 @@ def scan_holding_inputs(data, config):
     be found; actual replay remains blocked until every issue is resolved.
     """
     held, pending, previous, month = set(), None, False, ''
-    gaps, selections = [], []
+    gaps, selections, signals = [], [], []
     previous_day = None
     for day in data.sessions:
         data.set_day(day)
@@ -132,13 +132,15 @@ def scan_holding_inputs(data, config):
         if allowed and (month != day[:7] or not previous):
             rows, count = core.select_targets(data, day, config)
             selections.append({'date': day, 'targets': rows, 'eligible_count': count})
+            signals.append({'date': day, 'risk_on': True, 'targets': rows, 'eligible_count': count})
             pending = {r['ticker'] for r in rows}
             month = day[:7]
         elif not allowed and (previous or previous_day is None):
             pending = set()
+            signals.append({'date': day, 'risk_on': False, 'targets': [], 'eligible_count': 0})
         previous, previous_day = allowed, day
     return {'status': 'DATA_BLOCKED' if gaps else 'PASS', 'quote_gaps': gaps,
-            'risk_on_selections': selections, 'performance_calculated': False,
+            'risk_on_selections': selections, 'all_signals': signals, 'performance_calculated': False,
             'scope': 'Potential held quote coverage, not whole-share execution or financial validation.'}
 
 
@@ -211,6 +213,9 @@ def run(args):
         full_data = supplement(make_data(args.cache_dir, EXTENSION_END, True))
         scan = scan_holding_inputs(full_data, replace(core.CONFIG, model=MODEL))
         atomic_json(output / 'holding_input_preflight.json', scan)
+        selection_audit = audit_targets(full_data, replace(core.CONFIG, model=MODEL), scan['all_signals'], memo=audit_memo)
+        atomic_json(output / 'preflight_selection_audit.json', selection_audit)
+        register['preflight_selection_audit'] = selection_audit
         register['holding_input_preflight_status'] = scan['status']
         register['unresolved_quote_gaps'] = scan['quote_gaps']
         atomic_json(register_path, register)
