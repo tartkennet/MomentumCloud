@@ -190,6 +190,7 @@ def build(account,previous,rates,quotes,capability,now):
                 'recorded_at':now.isoformat(),'basis':'100000 SEK proportional presentation of accepted USD account'}
     if not anchor:result.update(status='FX_MISSING');errors.append('Startens USD/SEK-referenskurs saknas. Ingen SEK-avkastning kan beräknas.');return result
     if anchor['paper_start']!=first['date']:raise ValueError('Display anchor changed cohort')
+    if not math.isclose(anchor['scale']*first['nav']*anchor['fx']['usdsek'],100000.,rel_tol=1e-12):raise ValueError('Display start capital changed')
     result['anchor']=anchor;scale=anchor['scale'];fx=result['fx'];basis,trades=basis_and_trades(a,account.get('splits',[]),rates,scale)
     result['trades']=trades
     valid=True;stock=0.

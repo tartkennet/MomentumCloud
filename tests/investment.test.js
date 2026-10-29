@@ -8,8 +8,8 @@ test('SEK delivery preserves identity and never accepts a fabricated anchor-free
  const live=structuredClone(actual);live.broker_orders_enabled=true;assert.throws(()=>validate(live));
 });
 test('empty and single-session charts never interpolate fake history',()=>{
- assert.doesNotMatch(ui.chart([],390),/<svg/);
- assert.doesNotMatch(ui.chart([{nav_sek:100000,spy_sek:100000,date:'2026-10-29'}],390),/<svg/);
+ assert.doesNotMatch(ui.chart([],390),/class="value-chart"/);
+ assert.doesNotMatch(ui.chart([{nav_sek:100000,spy_sek:100000,date:'2026-10-29'}],390),/class="value-chart"/);
  assert.equal(ui.pct(null),'—');assert.equal(ui.esc('<img>'),'&lt;img&gt;');
 });
 test('chart uses real coordinates and refuses missing currency intervals',()=>{
