@@ -1,26 +1,23 @@
-# MomentumCloud — verifiering 29 oktober 2026
+# MomentumCloud — historiskt verifierad kandidat, PAPER_ONLY
 
-PR #22 är färdig och sammanslagen. AEL, PLYA och RNA/RNAM har verifierade företagshändelser och full historisk bokföring. Den enda efterföljande rankingförbättringen är också färdigtestad. **Båda kandidaterna får NO_GO i samtliga 40 scenarier vardera.** GO-gränserna är oförändrade.
+Forskningskandidaten **H3 klarar alla fem oförändrade finansiella GO-krav i samtliga 40 scenarier**, inklusive dubbla transaktionskostnader. Status är **PAPER_ONLY**: verklig out-of-sample-validering saknas och riktig handel är inte godkänd.
 
-Gemensam period 2024-01-01–2026-10-28, USD efter kostnader, före skatt. Tabellen visar det fördefinierade fallet med 15 bp per sida, antagen betalning efter fem observerade sessioner och senaste observerade kurs under PLYA:s handelsstopp. Betaldatum är en känslighetsanalys, inte verifierade faktiska kontantbetalningar.
+2024-01-01–2026-10-28, USD netto efter 15 bp per sida, fördefinierat femsessioners betalningsantagande:
 
-| Modell | Nettoavkastning | Maximal drawdown | Daglig Sharpe, RF=0 | Kostnader USD |
+| Modell | Netto | Max drawdown | Daglig Sharpe, RF=0 | Avgifter USD |
 |---|---:|---:|---:|---:|
-| Tidigare Core | +15.60 % | -47.38 % | 0.347 | 5701.84 |
-| Normaliserad ranking, PR #22 | +62.48 % | -20.94 % | 0.843 | 6550.67 |
-| Samma formationsperiod för avkastning och risk | +129.48 % | -36.26 % | 0.920 | 9014.98 |
-| SPY | +68.08 % | -18.49 % | 1.293 | 149.60 |
+| Ursprunglig Core | +15,60 % | −47,38 % | 0,347 | 5701,84 |
+| PR #23 | +129,48 % | −36,26 % | 0,920 | 9014,98 |
+| **H3** | **+77,13 %** | **−16,08 %** | **1,307** | **3122,86** |
+| SPY | +68,08 % | −18,49 % | 1,293 | 149,60 |
 
-Kod, alla scenarier, marknadsperioder och oberoende kontroller finns i [slutverifieringen](docs/CORE_FINAL_VALIDATION_20261029.md), [PR #22-resultaten](docs/CORE_NORMALIZED_REVIEW_20261029.md) och [uppföljningens resultat](docs/CORE_FORMATION_REVIEW_20261029.md). Alla 187 tester passerar. Grön CI betyder teknisk verifiering; den ändrar inte finansiellt NO_GO.
+H3 behåller PR23:s momentumranking och fördelar risk mellan momentumaktierna och en bred SPY-kärna. Det befintliga marknadsbeslutet gäller hela portföljen: risk-off leder till försäljning vid nästa observerade öppning. Inga nya indikatorer, sökta gränsvärden eller sänkta GO-krav. Försöken med riskbudget/kassa och passiv kärna bevaras som NO_GO.
 
-Underkända forskningsmodeller ligger separat från fryst Core, ursprunglig paper-identitet och Buy Now. Forskningsworkflowen är manuellt återkörbara från sparade data. Befintlig Core-paper fortsätter samla verkliga framtida sessioner; den utgör ingen validering av de ändrade forskningarnas regler. Redan granskad historik är utvecklingsdata och saknar ett orört out-of-sample-test. Verklig handel är inte godkänd.
+33 perioder och 66,67 % positiva perioder. Vid 30 bp per sida ger H3 +73,35 %, drawdown −16,48 % och fortsatt historiskt godkända krav. 212 tester och separata redovisnings-/allokeringskontroller passerar.
 
-Fryst Core använder 12–2-ranking, volatilitetsstyrd storlek och daglig SPY-riskkontroll. Reglerna finns i [Core-protokollet](docs/MOMENTUM_CORE_PROTOCOL.md).
+[Riskanalys, marknadsperioder och verifieringsbevis](docs/CORE_PORTFOLIO_RISK_REVIEW_20261029.md) · [Alla H3-scenarier](docs/CORE_PORTFOLIO_H3_REVIEW_20261029.md) · [Fryst framåtjournal](docs/CORE_PORTFOLIO_FORWARD_PROTOCOL_20261029.md) · [Tidigare PR22/23-verifiering](docs/CORE_FINAL_VALIDATION_20261029.md).
 
-```bash
-python run_momentum_core.py --start 2024-01-01 --end 2026-09-01
-python run_momentum_core.py --paper --start 2026-10-29 --output-dir core_paper_results
-```
+Forskningskandidaten och dess framåtjournal är separata från aktiv produktion, ursprunglig Core-paper och Buy Now. Framåtjournalen samlar faktiska framtida sessioner och spärrar retroaktiv rekonstruktion. Ingen framtida avkastning är ännu verifierad. Ursprunglig Core behåller sin frysta källidentitet och sitt [protokoll](docs/MOMENTUM_CORE_PROTOCOL.md). Avslutade historiska forskningsjobb är manuellt återkörbara från sparade data.
 
 ## Tidigare Production v1 / v4-balanced
 

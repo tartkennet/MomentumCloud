@@ -1,0 +1,172 @@
+name: Frozen H3 prospective paper
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['run_portfolio_forward.py', 'tests/test_portfolio_forward.py', 'docs/CORE_PORTFOLIO_FORWARD_PROTOCOL_20261029.md', '.github/workflows/core_portfolio_forward.yml']
+  schedule:
+    - cron: '35 0,3,6,9 * * 2-6'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: portfolio-global-regime-forward-v1
+  cancel-in-progress: false
+
+jobs:
+  paper:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONUNBUFFERED: '1'
+      POLYGON_MAX_RETRIES: '8'
+      PAPER_TAG: portfolio-global-regime-forward-v1-20261029
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Restore frozen source and the actual paper prefix
+        id: restore
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,re,subprocess,tarfile
+          from pathlib import Path
+          from datetime import datetime,timedelta,timezone
+          repo,tag=os.environ['GITHUB_REPOSITORY'],os.environ['PAPER_TAG']
+          restore=Path('forward_restore');restore.mkdir()
+          engine=Path('frozen_engine');engine.mkdir()
+          output=Path('portfolio_forward_results');output.mkdir()
+          def gh(*args):return subprocess.run(['gh',*args,'--repo',repo],text=True,capture_output=True,check=True).stdout
+          def download(name):
+              gh('release','download',tag,'--pattern',name,'--dir',str(restore))
+              return restore/name
+          def verify(path,expected):assert hashlib.sha256(path.read_bytes()).hexdigest()==expected,path.name
+          view=subprocess.run(['gh','release','view',tag,'--repo',repo,'--json','isDraft'],text=True,capture_output=True)
+          previous={}
+          if view.returncode==0:
+              assert json.loads(view.stdout)['isDraft']
+              frozen=json.loads(download('freeze_manifest.json').read_text())
+              source=download('frozen_source.tar.gz');verify(source,frozen['source_archive_sha256'])
+              previous=json.loads(download('current_manifest.json').read_text())
+              assert previous['source_archive_sha256']==frozen['source_archive_sha256']
+              assert re.fullmatch(r'paper_run_\d+\.tar\.gz',previous['paper_asset'])
+              paper=download(previous['paper_asset']);verify(paper,previous['paper_archive_sha256'])
+              with tarfile.open(paper) as archive:archive.extractall(output,filter='data')
+          else:
+              if 'release not found' not in view.stderr.lower():raise RuntimeError('Cannot establish the existing paper release state')
+              source=restore/'frozen_source.tar.gz'
+              with source.open('wb') as f:subprocess.run(['git','archive','--format=tar.gz','HEAD'],stdout=f,check=True)
+              frozen={'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+                      'source_archive_sha256':hashlib.sha256(source.read_bytes()).hexdigest()}
+              (restore/'freeze_manifest.json').write_text(json.dumps(frozen,indent=2))
+          with tarfile.open(source) as archive:archive.extractall(engine,filter='data')
+          assert re.fullmatch(r'[a-f0-9]{40}',frozen['source_sha'])
+          assert re.fullmatch(r'[a-f0-9]{64}',frozen['source_archive_sha256'])
+          Path('forward_previous_manifest.json').write_text(json.dumps(previous))
+          requested=(datetime.now(timezone.utc).date()-timedelta(days=1)).isoformat()
+          checkpoint=output/'Momentum_core_paper_checkpoint.json'
+          prior_day=json.loads(checkpoint.read_text())['strategy']['last_date'] if checkpoint.exists() else None
+          need=requested>='2026-10-29' and requested!=prior_day
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:print('need_market='+str(need).lower(),file=f)
+          with open(os.environ['GITHUB_ENV'],'a') as f:print('MODEL_SOURCE_SHA='+frozen['source_sha'],file=f)
+          PY
+      - run: python -m pip install -r requirements.txt
+        working-directory: frozen_engine
+      - run: python -m unittest discover -s tests -q
+        working-directory: frozen_engine
+      - name: Restore authenticated inputs only when a new completed session is needed
+        if: steps.restore.outputs.need_market == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          p=json.loads(Path('forward_previous_manifest.json').read_text());repo=os.environ['GITHUB_REPOSITORY']
+          if p.get('cache_asset'):
+              assert p['cache_asset'] in ('portfolio_forward_cache_0.sealed','portfolio_forward_cache_1.sealed')
+              subprocess.run(['gh','release','download',os.environ['PAPER_TAG'],'--repo',repo,'--pattern',p['cache_asset'],'--output','.portfolio_forward.sealed'],check=True)
+              assert hashlib.sha256(Path('.portfolio_forward.sealed').read_bytes()).hexdigest()==p['cache_sha256']
+          else:
+              root=Path('forward_bootstrap');root.mkdir()
+              subprocess.run(['gh','release','download','core-risk-research-20261029','--repo',repo,'--pattern','Momentum_core_risk_cache.sealed','--pattern','Momentum_core_risk_manifest.json','--dir',str(root)],check=True)
+              m=json.loads((root/'Momentum_core_risk_manifest.json').read_text())
+              raw=(root/'Momentum_core_risk_cache.sealed').read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==m['assets']['Momentum_core_risk_cache.sealed']
+              Path('.portfolio_forward.sealed').write_bytes(raw)
+          PY
+          python frozen_engine/cache_momentum_inputs.py unseal --sealed .portfolio_forward.sealed --cache-dir .portfolio_forward_cache
+      - name: Record the qualified candidate prospectively with live trading disabled
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        working-directory: frozen_engine
+        run: |
+          python run_portfolio_forward.py --output-dir "$GITHUB_WORKSPACE/portfolio_forward_results" --cache-dir "$GITHUB_WORKSPACE/.portfolio_forward_cache"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['GITHUB_WORKSPACE'])/'portfolio_forward_results/Momentum_core_decision.json').read_text())
+          print(json.dumps({k:d.get(k) for k in ('model','status','actual_last_session','live_approved','broker_orders_enabled')}))
+          PY
+      - name: Encrypt updated inputs
+        if: always() && hashFiles('.portfolio_forward_cache/**/*.gz') != ''
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python frozen_engine/cache_momentum_inputs.py seal --cache-dir .portfolio_forward_cache --sealed .portfolio_forward.sealed
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Portfolio_forward_evidence
+          path: portfolio_forward_results/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Preserve each real snapshot and advance the durable pointer last
+        if: always() && steps.restore.outcome == 'success' && hashFiles('portfolio_forward_results/Momentum_core_paper_identity.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,shutil,subprocess,tarfile
+          from pathlib import Path
+          repo,tag=os.environ['GITHUB_REPOSITORY'],os.environ['PAPER_TAG']
+          def gh(*a):return subprocess.run(['gh',*a,'--repo',repo],check=True,text=True,capture_output=True).stdout
+          delivery=Path('forward_delivery');delivery.mkdir()
+          frozen=json.loads(Path('forward_restore/freeze_manifest.json').read_text())
+          prior=json.loads(Path('forward_previous_manifest.json').read_text())
+          view=subprocess.run(['gh','release','view',tag,'--repo',repo,'--json','isDraft'],text=True,capture_output=True)
+          if view.returncode:
+              if 'release not found' not in view.stderr.lower():raise RuntimeError('Cannot verify paper release')
+              gh('release','create',tag,'--target',frozen['source_sha'],'--draft','--title','Frozen H3 prospective paper v1','--notes','Research only. Source frozen before first observation. No live trading. Missing/missed original sessions block retrospective reconstruction.')
+              gh('release','upload',tag,'forward_restore/frozen_source.tar.gz','forward_restore/freeze_manifest.json')
+          else:assert json.loads(view.stdout)['isDraft']
+          paper=delivery/f"paper_run_{os.environ['GITHUB_RUN_ID']}.tar.gz"
+          with tarfile.open(paper,'w:gz') as archive:archive.add('portfolio_forward_results',arcname='.')
+          meta={'source_archive_sha256':frozen['source_archive_sha256'],'source_sha':frozen['source_sha'],
+                'paper_asset':paper.name,'paper_archive_sha256':hashlib.sha256(paper.read_bytes()).hexdigest(),
+                'workflow_run':os.environ['GITHUB_RUN_ID'],'live_approved':False,'broker_orders_enabled':False,
+                'cache_asset':prior.get('cache_asset'),'cache_sha256':prior.get('cache_sha256'),'cache_slot':prior.get('cache_slot',1)}
+          uploads=[str(paper)]
+          if Path('.portfolio_forward.sealed').exists():
+              slot=1-prior.get('cache_slot',1)
+              cache=delivery/f'portfolio_forward_cache_{slot}.sealed';shutil.copyfile('.portfolio_forward.sealed',cache)
+              meta.update(cache_asset=cache.name,cache_slot=slot,cache_sha256=hashlib.sha256(cache.read_bytes()).hexdigest())
+              uploads.append(str(cache))
+          manifest=delivery/f"paper_manifest_{os.environ['GITHUB_RUN_ID']}.json"
+          manifest.write_text(json.dumps(meta,indent=2));uploads.append(str(manifest))
+          # Upload into the inactive cache slot and immutable snapshot first.
+          # A failed upload leaves the previous pointer and cache pair valid.
+          gh('release','upload',tag,*uploads,'--clobber')
+          pointer=delivery/'current_manifest.json';pointer.write_text(json.dumps(meta,indent=2))
+          gh('release','upload',tag,str(pointer),'--clobber')
+          PY

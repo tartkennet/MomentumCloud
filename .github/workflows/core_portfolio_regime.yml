@@ -2,9 +2,6 @@ name: H3 diversified portfolio with global regime
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main]
-    paths: ['research_portfolio_regime.py', 'audit_portfolio_regime.py', 'run_portfolio_regime.py', 'tests/test_portfolio_regime.py', '.github/workflows/core_portfolio_regime.yml']
 
 permissions:
   contents: write

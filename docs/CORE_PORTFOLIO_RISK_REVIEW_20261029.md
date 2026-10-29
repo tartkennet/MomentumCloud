@@ -30,3 +30,55 @@ H1:s samtliga 40 konton är COMPLETE, oberoende kontroller PASS och finansiellt 
 H2 frystes i `8f78ba88ffe84fae0165f4d3d1e4c0370914be3f` före resultat. En bred SPY-kärna och den oförändrade momentumkorgen får lika beräknade riskbidrag, utan vald fast kapitalfördelning. Median vid risk-on-signalerna är 25,71 % momentum och 74,29 % SPY. Samtliga 40 konton är tekniskt PASS men NO_GO för drawdown. Primärfallet ger +90,63 %, −21,14 %, Sharpe 1,371 och 2391,78 USD avgifter. 30 bp ger +87,39 %, −21,28 % och fortsatt NO_GO. De 40 exporterade kontonas avkastning, SPY, drawdown och Sharpe har också räknats om separat lokalt. ZIP SHA256: `e7cae32f0830cd1f83e14667217387039c7246ef259164de8ec7fbdff1623492`. Fulla resultat och källor finns i Actions 40861070577 och draft-release `core-portfolio-h2-40861070577`.
 
 H2:s återstående största nedgång är 2025-02-18–2025-04-08, 31 122,99 USD. SPY-kärnan bidrar med −17 750,90 USD och övriga positioner med −13 372,08 USD. 20 av 35 sessioner från topp till botten har risk-off vid stängning. Samma stängning används inte som säljkurs: en full replay krävs för att pröva vad som kan undvikas vid nästa verkliga öppning. [Kärnattributionen](CORE_PORTFOLIO_H2_CORE_ATTRIBUTION_20261029.json) är reproducerbar med `attribute_benchmark_core.py` från de redan reviderade kontoutdragen. H3 förregistrerar därför konsekvent tillämpning av det befintliga marknadsbeslutet på båda aktiedelarna; ingen riskgräns ändras.
+
+
+## Färdig kandidat H3: PAPER_ONLY
+
+Hypotesen frystes i `c5013728ec10fb7fda0e4d60aeab1cfae9827395`, koden i `0d3a1c71c950e87f170eaeaca975f86b4ec8112e`, före resultat. Inga regler eller gränsvärden har ändrats efter utfallet. H3 behåller H2:s risk-on-allokering och återinför ursprungligt risk-off för hela aktieportföljen. Det är en diversifierad portfölj med betydande SPY-kärna.
+
+**Alla 40 scenarier klarar samtliga fem oförändrade finansiella GO-krav och båda oberoende kontrollerna. Status är PAPER_ONLY.**
+
+Gemensam period 2024-01-01–2026-10-28, USD efter simulerade avgifter och före skatt. Primärfallet är fördefinierat: 15 bp per sida, fem observerade sessioners antagen kontantbetalning och senaste observerade kurs under det dokumenterade PLYA-stoppet. Betaldatum är känslighetsantaganden, inte verifierade faktiska betalningar. Även låsta fordringar och övriga betalningsantaganden passerar. Fraktionella rättigheter värderas men görs inte fiktivt handelbara.
+
+| Modell | Netto % | Daglig max drawdown % | Sharpe RF=0 | Avgifter USD | Status |
+|---|---:|---:|---:|---:|---|
+| Ursprunglig Core | +15.6025 | -47.3774 | 0.3467 | 5701.84 | NO_GO |
+| PR23 | +129.4756 | -36.2617 | 0.9204 | 9014.98 | NO_GO |
+| H1, riskbudget med kassa | +51.5508 | -14.1812 | 1.1480 | 2639.02 | NO_GO |
+| H2, diversifierad kärna | +90.6256 | -21.1394 | 1.3710 | 2391.78 | NO_GO |
+| H3, gemensamt risk-off | +77.1347 | -16.0765 | 1.3072 | 3122.86 | PAPER_ONLY |
+| SPY | +68.0753 | -18.4922 | 1.2934 | 149.60 | Jämförelse |
+
+| Oförändrat krav | H3 utfall | Godkänt |
+|---|---:|---|
+| at_least_30_periods: >= 30 | 33.000000 | PASS |
+| positive_net_return: > 0 | 77.134666 | PASS |
+| beats_spy: > 0 | 9.059374 | PASS |
+| drawdown: >= -20% | -16.076466 | PASS |
+| hit_rate: >= 50% | 66.666667 | PASS |
+
+Dubbel kostnad, 30 bp per sida: +73.3505 %, drawdown -16.4821 %, Sharpe 1.2602, avgifter 6181.20 USD. SPY efter samma 30 bp ger +67.6053 %. Samtliga krav passerar även här.
+
+| Kalenderår | H3 netto % | PR23 netto % | Core netto % | SPY netto % | H3 DD % | H3 Sharpe | H3 avgifter USD |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 2024 | +36.4666 | +57.0238 | +8.8957 | +25.8660 | -10.2849 | 1.8915 | 751.61 |
+| 2025 | +7.0209 | -1.9684 | -12.4374 | +17.3690 | -16.0765 | 0.5124 | 1331.35 |
+| 2026 | +21.2854 | +49.0751 | +21.2377 | +13.7737 | -8.9668 | 1.4797 | 1039.90 |
+
+Den separat återupptagna perioden 2026-09-02–2026-10-28 har 40 sessioner: H3 −0,2538 %, SPY +1,5914 %, H3 drawdown −4,7283 % och Sharpe −0,0577. Den är utvecklingsdata och visar att kandidaten inte slår SPY i varje delperiod. År 2025 underpresterar också SPY. Totalresultatet är inget bevis på bestående alpha.
+
+Sharpe använder enkla dagliga USD-avkastningar, stickprovsstandardavvikelse, sqrt(252) och riskfri ränta noll. Kassa ger ingen ränta. Avgifterna är simulerade kostnader på omsatt belopp. Ingen SEK-, skatte- eller verklig exekveringsavkastning påstås.
+
+## Oberoende validering och bevarande
+
+[Actions 40863071105](https://github.com/tartkennet/MomentumCloud/actions/runs/40863071105) är grön. Alla 40 konton är COMPLETE. Separat bokföringskod rekonstruerar råpriser, innehav, kontanter/fordringar, utdelningar, företagshändelser, nästa öppningsaffärer, avgifter, dagligt NAV, SPY och mått. Maximal NAV-differens är 0 USD i samtliga H3-konton. Primärfallet omfattar 709 sessioner och 746 transaktionsrader. Oberoende allokeringskod kontrollerar 37 signaler, 510 aktieallokeringar, lika riskbidrag via separat kovariansalgebra och 742 nästa-sessionsorder. Oförändrad basranking återanvänds från hashkontrollerade, tidigare fullständigt reviderade PR23-urval; gamla urvalsanalyser görs inte om.
+
+En separat lokal omräkning av alla 40 nedladdade dagliga CSV-filer bekräftar nettoavkastning, SPY, drawdown och Sharpe. De 1001 ursprungliga rådatafilernas SHA256 matchar före och efter replay; nätverk är blockerat i forskningsprocessen. Detta är oberoende beräkningsimplementationer på samma leverantörsdata, inte en andra oberoende marknadsdatakälla.
+
+Fullständiga källor, varje scenario, avgifter, dagskonton, transaktioner, kontroller och manifest finns i draft-release `core-portfolio-h3-40863071105`. Evidence ZIP SHA256: `75879b6f3b7809c715b4f8a9246c8b0520b1c2f145e11ffe4cbd3dafa8aec48e`. Studiefingeravtryck: `b9ee2690dbc5a4d8b0c80a0ec3516cd58f58c4089599e395c6207d1d7ead6b56`. H1, H2, PR22, PR23 och ursprunglig Core bevaras med alla underkända resultat.
+
+## Framåtriktat bevis och produktionsgräns
+
+212 tester passerar. En separat framåtjournal kvalificerar den exakta källidentiteten mot alla 40 godkända historiska konton. Den fryser egen identitet och källkod före första framtida observation, återupptar fyra konton utan omskrivning och blockerar missade sessioner, sen registrering och ändrad källa. Historisk framgång ger enbart PAPER_ONLY; en väntande eller kort paper-journal är inte framtida finansiellt godkännande. [Forward-protokollet](CORE_PORTFOLIO_FORWARD_PROTOCOL_20261029.md) beskriver insamlingen för senare oberoende OOS-prövning.
+
+Fryst ursprunglig Core-identitet är fortfarande `c88761ba2ca70c42298a647b641a3f5e4a98fcb6592f0b76d7817daaee1008e2`. Aktiv produktion, ursprunglig Core-paper och Buy Now är oförändrade. Ingen riktig handel eller broker-integration har aktiverats. Avslutade forskningsworkflow är manuellt reproducerbara så att rapportuppdateringar inte startar samma försök igen.
