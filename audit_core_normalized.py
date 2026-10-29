@@ -35,7 +35,7 @@ def closes_at(data, day, ticker, count):
     return closes
 
 
-def population(data, day, config):
+def population(data, day, config, formation=False):
     """Reconstruct the entire eligible set, including excluded top raw winners."""
     records = {r.get('ticker'): r for r in data.universe(day)}
     rows = []
@@ -69,8 +69,17 @@ def population(data, day, config):
         mean = math.fsum(returns) / len(returns)
         vol = math.sqrt(math.fsum((r - mean) ** 2 for r in returns) / (len(returns) - 1))
         if momentum > 0 and math.isfinite(vol) and vol > 0:
-            rows.append({'ticker': ticker, 'momentum_12_2': momentum, 'daily_volatility': vol,
-                         'raw_price': price, 'adv20_usd': adv, 'risk_normalized_score': momentum / vol})
+            row = {'ticker': ticker, 'momentum_12_2': momentum, 'daily_volatility': vol,
+                   'raw_price': price, 'adv20_usd': adv, 'risk_normalized_score': momentum / vol}
+            if formation:
+                formation_returns = [closes[i] / closes[i+1] - 1 for i in range(21,252)]
+                center = math.fsum(formation_returns) / 231
+                deviation = math.sqrt(math.fsum((r-center)**2 for r in formation_returns) / 230)
+                if not math.isfinite(deviation) or deviation <= 0:
+                    continue
+                row['formation_volatility'] = deviation
+                row['risk_normalized_score'] = momentum / deviation
+            rows.append(row)
     return sorted(rows, key=lambda r: (-r['risk_normalized_score'], r['ticker']))
 
 
@@ -95,7 +104,7 @@ def near(actual, expected, label):
         raise AssertionError(f'{label}: {actual} != {expected}')
 
 
-def audit_targets(data, config, targets, trades=(), memo=None):
+def audit_targets(data, config, targets, trades=(), memo=None, formation=False):
     """Derive every signal date, then verify all emitted ranks and target fields."""
     previous_risk, month, expected = False, '', []
     memo = {} if memo is None else memo
@@ -121,9 +130,9 @@ def audit_targets(data, config, targets, trades=(), memo=None):
             if signal['targets'] or signal['eligible_count'] != 0:
                 raise AssertionError('Risk-off target must be cash')
             continue
-        key = ('population', signal['date'])
+        key = ('population', formation, signal['date'])
         if key not in memo:
-            memo[key] = population(data, signal['date'], config)
+            memo[key] = population(data, signal['date'], config, formation)
         ranked = memo[key]
         chosen = ranked[:config.positions]
         if signal['eligible_count'] != len(ranked):

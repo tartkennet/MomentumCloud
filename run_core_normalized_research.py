@@ -24,12 +24,15 @@ from research_core_actions import EXTRA_CASH_ACTIONS, supplement
 from research_core_ledger import (ResearchLedger, complete_data, STOCK_COMPLETIONS,
                                   CASH_COMPLETIONS, DISTRIBUTIONS)
 from research_core_diagnostics import describe, performance
+import research_core_formation as formation_model
 from run_core_risk_research import (CUTOFF, DELAYS, EXTENSION_END, START,
                                     audit, extension_metrics, make_data, policy_actions, replay)
 from run_momentum_core import source_fingerprint, write_csv
 
 ROOT = Path(__file__).resolve().parent
 FILES = ('research_core_normalized.py', 'audit_core_normalized.py',
+         'research_core_formation.py', 'docs/CORE_FORMATION_RISK_PROTOCOL_20261029.md',
+         'tests/test_core_formation.py',
          'research_core_ledger.py', 'audit_core_research_account.py',
          'tests/test_core_event_completions.py',
          'research_core_diagnostics.py', 'docs/CORE_EVENT_ACCOUNTING_PROTOCOL_20261029.md',
@@ -61,11 +64,11 @@ def verify_inputs(cache, manifest):
 
 
 @contextmanager
-def candidate_selection():
+def candidate_selection(selector=select_targets):
     original = core.select_targets
-    cached = functools.lru_cache(maxsize=None)(select_targets)
+    cached = functools.lru_cache(maxsize=None)(selector)
     def independent_copy(data, day, config):
-        return copy.deepcopy(cached(data, day, config))
+        return copy.deepcopy(cached(data, day, replace(config, one_way_cost=core.CONFIG.one_way_cost)))
     core.select_targets = independent_copy
     try:
         yield
@@ -76,7 +79,7 @@ def candidate_selection():
 def save_case(folder, data, config, strategy, benchmark, result, periods, attempt, study):
     folder.mkdir(parents=True, exist_ok=True)
     checks = core.gates(result)
-    decision = dict(attempt, model=MODEL, start=START, end=strategy.last_date,
+    decision = dict(attempt, model=config.model, start=START, end=strategy.last_date,
                     status='PAPER_ONLY' if all(g['pass'] for g in checks) else 'NO_GO',
                     metrics=result, gates=checks, config=asdict(config),
                     source_fingerprint=source_fingerprint(), study_fingerprint=study,
@@ -253,10 +256,13 @@ def render_report(register, path):
         rows += ['', '## Fixed display case: assumed 5-session payment, 15 bp/side, last-quote halt mark', '',
                  '| Account | Net % | Daily drawdown % | Daily Sharpe, RF=0 | Actual fees USD |',
                  '|---|---:|---:|---:|---:|']
-        for label, m, fees in [('Normalized', primary['diagnostics']['full']['strategy'], primary['metrics']['ActualFees_USD']),
+        for label, m, fees in [(register['model'], primary['diagnostics']['full']['strategy'], primary['metrics']['ActualFees_USD']),
                                ('Core control', primary['control_diagnostics']['full']['strategy'], primary['control_metrics']['ActualFees_USD']),
                                ('SPY', primary['diagnostics']['full']['SPY'], primary['benchmark_fees_usd'])]:
             rows.append(f"| {label} | {m['return_pct']:.4f} | {m['max_drawdown_pct']:.4f} | {m['daily_sharpe_zero_rf']} | {fees:.2f} |")
+        if 'normalized_control_metrics' in primary:
+            m = primary['normalized_control_metrics']
+            rows.append(f"| Prior 63-return normalization | {m['TotalReturn_pct']:.4f} | {m['DailyMaxDrawdown_pct']:.4f} | {m['DailySharpe_zero_rf']} | {m['ActualFees_USD']:.2f} |")
         rows += ['', '| Calendar period | Normalized % | Core % | SPY % | Normalized drawdown % | Normalized Sharpe |',
                  '|---|---:|---:|---:|---:|---:|']
         for year, case in primary['diagnostics']['calendar_years'].items():
@@ -274,11 +280,18 @@ def run(args):
     register_path = output / 'attempts.json'
     if register_path.exists():
         raise ValueError('Use a fresh output directory; preserve previous attempts')
+    formation = bool(getattr(args, 'formation', False))
+    model = formation_model.MODEL if formation else MODEL
+    selector = formation_model.select_targets if formation else select_targets
+    family = 'formation' if formation else 'normalized'
+    if formation and not getattr(args, 'normalized_dir', None):
+        raise ValueError('Completed normalized reference is required')
     expected = json.loads((ROOT / 'docs/CORE_RISK_RESULTS_20261029.json').read_text())
     if source_fingerprint() != expected['verification']['source_fingerprint']:
         raise core.DataBlocked('Original Core source changed')
     manifest_hash = verify_inputs(args.cache_dir, args.manifest)
-    study = fingerprint()
+    source_identity = fingerprint()
+    study = hashlib.sha256((source_identity + model).encode()).hexdigest()
     control_register = json.loads((Path(args.controls_dir) / 'attempts.json').read_text())
     if not control_register['all_attempts_completed'] or len(control_register['attempts']) != 60:
         raise core.DataBlocked('Incomplete saved controls')
@@ -296,7 +309,7 @@ def run(args):
             symbols.update(r['ticker'] for s in signals for r in s['targets'])
             if symbols & EXTRA_CASH_ACTIONS.keys():
                 raise core.DataBlocked('Supplemented event touches a saved baseline control')
-    register = {'model': MODEL, 'study_fingerprint': study, 'core_fingerprint': source_fingerprint(),
+    register = {'model': model, 'study_fingerprint': study, 'core_fingerprint': source_fingerprint(),
                 'frozen_input_manifest_fingerprint': manifest_hash,
                 'input_files_verified': 1001, 'expected_attempts': 40,
                 'supplemental_cash_actions': EXTRA_CASH_ACTIONS,
@@ -307,15 +320,15 @@ def run(args):
     atomic_json(register_path, register)
     checkpoints = {}
     audit_memo = {}
-    with candidate_selection():
+    with candidate_selection(selector):
         full_data = complete_data(supplement(make_data(args.cache_dir, EXTENSION_END, True)))
         for a in expected['cases']:
             if a['name'].startswith('baseline_'):
                 phase_name = 'historical' if a['phase'] == 'historical' else 'extended'
                 verify_control_events(full_data, Path(args.controls_dir) / phase_name / a['name'])
-        scan = scan_holding_inputs(full_data, replace(core.CONFIG, model=MODEL))
+        scan = scan_holding_inputs(full_data, replace(core.CONFIG, model=model))
         atomic_json(output / 'holding_input_preflight.json', scan)
-        selection_audit = audit_targets(full_data, replace(core.CONFIG, model=MODEL), scan['all_signals'], memo=audit_memo)
+        selection_audit = audit_targets(full_data, replace(core.CONFIG, model=model), scan['all_signals'], memo=audit_memo, formation=formation)
         atomic_json(output / 'preflight_selection_audit.json', selection_audit)
         register['preflight_selection_audit'] = selection_audit
         register['holding_input_preflight_status'] = scan['status']
@@ -336,16 +349,27 @@ def run(args):
                     assumptions = payment_policy(data, delay)
                     policy = 'locked' if delay is None else f'assumed_{delay}'
                     for cost in (.0015, .003):
-                        name = f'normalized_{policy}_{round(cost * 10000)}bps_{mark_policy}'
+                        name = f'{family}_{policy}_{round(cost * 10000)}bps_{mark_policy}'
                         control = controls[(phase, f'baseline_{policy}_{round(cost * 10000)}bps')]
+                        prior = None
+                        if formation:
+                            prior_name = f'normalized_{policy}_{round(cost*10000)}bps_{mark_policy}'
+                            prior = json.loads((Path(args.normalized_dir) / phase / prior_name / 'Momentum_core_decision.json').read_text())
+                            saved = json.loads((ROOT / 'docs/CORE_NORMALIZED_RESULTS_20261029.json').read_text())
+                            verified = next(a for a in saved['attempts'] if a['phase']==phase and a['name']==prior_name)
+                            if prior['metrics'] != verified['metrics']:
+                                raise core.DataBlocked('Prior normalized reference differs from completed main evidence')
                         attempt = dict(phase=phase, name=name, policy=policy, delay=delay, cost=cost,
                                        payment_assumptions=assumptions, halt_mark_policy=mark_policy, status='RUNNING',
                                        control_metrics=control['metrics'], control_gates=control['gates'])
                         register['attempts'].append(attempt)
+                        if prior:
+                            attempt['normalized_control_metrics'] = prior['metrics']
+                            attempt['normalized_control_diagnostics'] = json.loads((Path(args.normalized_dir) / phase / prior_name / 'diagnostics.json').read_text())
                         atomic_json(register_path, register)
                         print(f'START {phase} {name}', flush=True)
                         try:
-                            config = replace(core.CONFIG, model=MODEL, one_way_cost=cost)
+                            config = replace(core.CONFIG, model=model, one_way_cost=cost)
                             checkpoint = None
                             sessions = None
                             if phase == 'extension':
@@ -362,7 +386,7 @@ def run(args):
                             folder = output / phase / name
                             decision = save_case(folder, data, config, s, b, result, periods, attempt, study)
                             accounting = accounting_audit(args.cache_dir, folder)
-                            selection = audit_targets(data, config, s.targets, s.trades, audit_memo)
+                            selection = audit_targets(data, config, s.targets, s.trades, audit_memo, formation=formation)
                             atomic_json(folder / 'Momentum_core_selection_audit.json', selection)
                             control_phase = 'historical' if phase == 'historical' else 'extended'
                             control_folder = Path(args.controls_dir) / control_phase / f'baseline_{policy}_{round(cost*10000)}bps'
@@ -393,7 +417,7 @@ def run(args):
                         finally:
                             atomic_json(register_path, register)
                             render_report(register, output / 'report.md')
-    assert fingerprint() == study
+    assert fingerprint() == source_identity
     verify_inputs(args.cache_dir, args.manifest)
     register['all_attempts_completed'] = (len(register['attempts']) == 40
                 and all(a['status'] == 'COMPLETE' for a in register['attempts']))
@@ -407,6 +431,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('cache-dir', 'manifest', 'controls-dir', 'output-dir'):
         parser.add_argument('--' + name, required=True)
+    parser.add_argument('--formation', action='store_true')
+    parser.add_argument('--normalized-dir')
     args = parser.parse_args()
     def blocked(*args, **kwargs):
         raise RuntimeError('Network forbidden in frozen offline experiment')
