@@ -1,0 +1,21 @@
+# H2: diversified benchmark core and momentum sleeve, equal ex-ante risk
+
+Frozen AFTER completed H1 and BEFORE any H2 account is replayed. H1 source 8ed816f77462c33b90af0c52f0f1f0046b13a544; Actions 40859366045. All 40 cases are technically COMPLETE/PASS and financially NO_GO. In the fixed full-period 5-session/15bp case, H1 earns 51.5508% against SPY 68.0753%, drawdown −14.1812%, zero-RF Sharpe 1.14804, fees USD 2639.02. All 40 fail beating SPY; reducing absolute risk alone does not solve the objective. Its 2025 return is 1.0317% against SPY 17.3690%. Preserve H1 without changing its risk multiplier.
+
+## Hypothesis and causal limit
+
+PR23's common-stock risk clusters and repeated drawdowns during positive SPY periods support diversification outside that same stock basket. H1 demonstrates that a cash-funded risk cap can control drawdown but leaves too little participation in the broader equity premium. Test a broad benchmark core alongside the unchanged momentum basket, with equal estimated risk contributions between those TWO sleeves. This is a structural diversification/allocation test, not proof that the market's future return will be positive or that H1's shortfall is all cash drag. No stock-specific, sector-specific, optimized covariance or expected-return exclusions are introduced.
+
+## Exact rule, no selected allocation percentage
+
+Keep PR23's audited 15-stock selections, formation rank and capped inverse-volatility stock weights w. At each ORIGINAL risk-on monthly/re-entry signal calculate basket and SPY sample volatility over the same existing 63 past split-adjusted daily simple returns, exactly as H1. Allocate a = sigma_SPY / (sigma_SPY + sigma_basket) to that basket: stock targets a*w_i. Allocate b = 1−a to SPY. This gives equal ex-ante Euler risk contributions for TWO sleeves regardless of their covariance; it does not require a fitted 20/80 or 40/60 split. No leverage or volatility multiplier. If the original basket has fewer than 15 eligible stocks its existing underallocation stays cash within its sleeve; do not invent replacement ranks.
+
+The existing SPY/SMA200 regime still governs the MOMENTUM sleeve. On a risk-off signal sell its whole tradable stock shares at the next raw open and retain the last signalled benchmark-core fraction b of current signal NAV in SPY. The unused stock fraction stays cash. Do not increase the core fraction to 100% merely because risk-off occurs. While risk-off persists there are no new monthly stock signals and no daily core rebalance; the next original re-entry signal recomputes both sleeve fractions. Before the first valid stock selection, or if a risk-on selection has no eligible stocks, the defined core fraction is 100% SPY until a valid stock signal. Never synthesize an immediate close or stop-price fill.
+
+SPY is an explicitly separate diversified ETF core, not an eligible single-company momentum pick; its core weight is exempt from the 10% individual-stock target cap. Each momentum stock remains below its original cap scaled by a. Holdings/fractions, raw prices, costs, next-session ordering and corporate events use the existing research ledger. The extended ledger persists the most recent core fraction across saved checkpoints and reconstructs it independently from prior targets. Benchmark remains the original separately costed SPY buy-and-hold.
+
+## Complete evaluation, preserve both failed and successful cases
+
+All 40 existing marking/payment/cost/phase accounts. Independent covariance/weight/regime/core-state/timing audit plus the independent cash/share/actions/fills/fees/NAV/SPY/metrics accountant. Compare all matching results with H1, PR23, original Core and SPY, including 30bp costs, calendar years and the separately resumed later segment. Reuse the same immutable 1001 inputs and completed controls. No paid API or refetched historical prices. All five GO gates are unchanged. Neither calendar subdivision nor the later segment becomes untouched OOS.
+
+H2 must pass the original return/SPY/drawdown/hit-rate/period gates as written; do not choose an allocation percentage or tune the 63-return horizon after its outcome. A historical pass is PAPER_ONLY with genuine future evidence still required. Keep source/results, including failures, separate from production/Buy Now and original Core paper. No real trading is authorized.

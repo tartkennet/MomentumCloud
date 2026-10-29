@@ -1,0 +1,101 @@
+name: PR23 portfolio risk diagnosis
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: portfolio-diagnosis-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnosis:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -q
+      - name: Restore immutable inputs and completed PR23 without rerunning its strategy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p frozen_release formation_reference/results
+          gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --pattern Momentum_core_risk_manifest.json --dir frozen_release
+          gh release download core-formation-research-40853780420 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir formation_reference
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('frozen_release'); meta=json.loads((root/'Momentum_core_risk_manifest.json').read_text())
+          assert hashlib.sha256((root/'Momentum_core_risk_cache.sealed').read_bytes()).hexdigest()==meta['assets']['Momentum_core_risk_cache.sealed']
+          root=Path('formation_reference'); meta=json.loads((root/'manifest.json').read_text())
+          assert meta['source_commit']=='333805e4c570ee6fa0ec7574154d53fff3425471'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==meta['assets']['results.tar.gz']
+          PY
+          tar -xzf formation_reference/results.tar.gz -C formation_reference/results
+      - name: Open authenticated saved data without a market API request
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal --sealed frozen_release/Momentum_core_risk_cache.sealed
+      - name: Reconcile P&L and measure concentration, covariance and regime risk
+        run: |
+          set -o pipefail
+          mkdir -p portfolio_diagnosis
+          python analyze_formation_portfolio.py --cache .momentum_core_cache --manifest frozen_release/Momentum_core_risk_manifest.json --reference formation_reference/results --output portfolio_diagnosis 2>&1 | tee portfolio_diagnosis/study.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Portfolio_risk_diagnosis
+          path: portfolio_diagnosis/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve source and complete diagnostic evidence
+        if: always() && hashFiles('portfolio_diagnosis/risk_diagnosis.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p risk_delivery
+          git archive --format=tar.gz HEAD > risk_delivery/source.tar.gz
+          tar -czf risk_delivery/results.tar.gz -C portfolio_diagnosis .
+          cp portfolio_diagnosis/report.md risk_delivery/report.md
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('risk_delivery')
+          meta={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'workflow_run':os.environ['GITHUB_RUN_ID'],
+                'live_approved':False,'broker_orders_enabled':False,
+                'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir()}}
+          (root/'manifest.json').write_text(json.dumps(meta,indent=2))
+          PY
+          tag="core-portfolio-diagnosis-$GITHUB_RUN_ID"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY"; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft --title "PR23 portfolio risk diagnosis $GITHUB_RUN_ID" --notes 'Read-only diagnosis. Not new strategy performance. No live trading.'
+          fi
+          gh release upload "$tag" risk_delivery/* --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Save the verified diagnosis on the research branch
+        if: success() && github.event_name == 'pull_request'
+        env:
+          REPORT_BRANCH: ${{ github.head_ref }}
+        run: |
+          cp portfolio_diagnosis/report.md docs/CORE_PORTFOLIO_DIAGNOSIS_20261029.md
+          cp portfolio_diagnosis/risk_diagnosis.json docs/CORE_PORTFOLIO_DIAGNOSIS_20261029.json
+          test "$(git ls-remote origin "refs/heads/$REPORT_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/CORE_PORTFOLIO_DIAGNOSIS_20261029.*
+          git diff --cached --quiet && exit 0
+          git commit -m 'Preserve reconciled PR23 position and covariance risk diagnosis'
+          git push origin "HEAD:refs/heads/$REPORT_BRANCH"

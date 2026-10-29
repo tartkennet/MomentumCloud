@@ -1,0 +1,9 @@
+# Frozen prospective H3 cohort
+
+This collector can initialize only if the exact source identity has completed all 40 original historical cases, every financial gate and both independent audits. Its status is still research PAPER_ONLY, never live-approved. The current inspected history is not OOS.
+
+Cohort `portfolio-global-regime-forward-v1-20261029` begins at the actual completed US session 2026-10-29. Before that it only freezes an identity and reports PAPER_WAITING_FOR_SESSIONS; no return or fill is invented. The existing initial-checkpoint deadline, 2026-10-30 12:00 UTC, applies. An absent checkpoint after that deadline blocks reconstruction. A new checkpoint must finish before 12:00 UTC, ahead of the next US regular open. If more than one unrecorded session is present, block rather than fabricate intermediate paper intentions retrospectively. Source changes block the cohort. No automatic restart with a new start date.
+
+Use the historical candidate's exact selector, risk allocation, corporate-event completion and standard research ledger, at both 15 and 30bp, plus original independently costed SPY controls. Resume all four serialized accounts, preserve every old equity/trade/target row and clear intentions on any failure. Unverified future corporate cash receipts are not assumed paid. Unknown future data gaps block.
+
+The workflow preserves frozen source, identity, observed snapshots and authenticated encrypted input files independently of Actions-cache eviction. Scheduled runs execute the frozen source archive, keeping later research changes separate. Original Core paper, production and Buy Now are untouched. This is prospective collection for later independent OOS evaluation; a short or empty record is not an OOS pass and no future performance is claimed. All five financial gates remain unchanged, including 30 periods. Broker/live flags remain false.

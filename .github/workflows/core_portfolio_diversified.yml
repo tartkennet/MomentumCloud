@@ -1,0 +1,146 @@
+name: H2 diversified equal-risk portfolio
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: core-portfolio-h2-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  research:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -q
+      - name: Restore the immutable saved inputs and completed controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p frozen_release
+          test "$(gh release view core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = true
+          gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --pattern Momentum_core_risk_results.tar.gz --pattern Momentum_core_risk_manifest.json --dir frozen_release
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('frozen_release')
+          manifest=json.loads((root/'Momentum_core_risk_manifest.json').read_text())
+          for name in ('Momentum_core_risk_cache.sealed','Momentum_core_risk_results.tar.gz'):
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==manifest['assets'][name],name
+          PY
+          mkdir -p saved_controls
+          tar -xzf frozen_release/Momentum_core_risk_results.tar.gz -C saved_controls
+      - name: Restore the completed normalized comparator without rerunning it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p normalized_reference/results
+          gh release download core-normalized-research-40849825735 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir normalized_reference
+          python - <<'PYREF'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('normalized_reference')
+          manifest=json.loads((root/'manifest.json').read_text())
+          assert manifest['source_commit']=='41952be9e54c40cb3456bd75ce13155e785a4689'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==manifest['assets']['results.tar.gz']
+          PYREF
+          tar -xzf normalized_reference/results.tar.gz -C normalized_reference/results
+      - name: Restore completed PR23 selections and controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p formation_reference/results
+          gh release download core-formation-research-40853780420 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir formation_reference
+          python - <<'PYREF'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('formation_reference'); m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='333805e4c570ee6fa0ec7574154d53fff3425471'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          PYREF
+          tar -xzf formation_reference/results.tar.gz -C formation_reference/results
+      - name: Restore completed H1 without changing its failed result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p h1_reference/results
+          gh release download core-portfolio-h1-40859366045 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir h1_reference
+          python - <<'PYREF'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('h1_reference');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='8ed816f77462c33b90af0c52f0f1f0046b13a544'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          PYREF
+          tar -xzf h1_reference/results.tar.gz -C h1_reference/results
+      - name: Open encrypted historical cache without a market API request
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal --sealed frozen_release/Momentum_core_risk_cache.sealed
+      - name: Run the one frozen candidate and separate independent checks
+        run: |
+          set -o pipefail
+          mkdir -p portfolio_h2_results
+          python run_portfolio_diversified.py --cache-dir .momentum_core_cache --manifest frozen_release/Momentum_core_risk_manifest.json --controls-dir saved_controls --output-dir portfolio_h2_results --normalized-dir normalized_reference/results --formation-dir formation_reference/results --h1-dir h1_reference/results 2>&1 | tee portfolio_h2_results/study.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Portfolio_H2_evidence
+          path: portfolio_h2_results/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve completed or interrupted research beyond artifact expiry
+        if: always() && hashFiles('portfolio_h2_results/attempts.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p portfolio_h2_release
+          git archive --format=tar.gz HEAD > portfolio_h2_release/source.tar.gz
+          tar -czf portfolio_h2_release/results.tar.gz -C portfolio_h2_results .
+          cp portfolio_h2_results/attempts.json portfolio_h2_release/attempts.json
+          cp portfolio_h2_results/report.md portfolio_h2_release/report.md
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('portfolio_h2_release')
+          meta={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'workflow_run':os.environ['GITHUB_RUN_ID'],
+                'input_release':'core-risk-research-20261029','live_approved':False,'broker_orders_enabled':False,
+                'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.is_file()}}
+          (root/'manifest.json').write_text(json.dumps(meta,indent=2))
+          PY
+          tag="core-portfolio-h2-$GITHUB_RUN_ID"
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY"; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --draft --title "Frozen H2 diversified portfolio $GITHUB_RUN_ID" --notes "One fixed development experiment. All cases and failures retained. Reuses immutable encrypted inputs. No live approval."
+          fi
+          test "$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = true
+          gh release upload "$tag" portfolio_h2_release/* --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Checkpoint the result summary on the research branch
+        if: always() && github.event_name == 'pull_request' && hashFiles('portfolio_h2_results/report.md') != ''
+        env:
+          REPORT_BRANCH: ${{ github.head_ref }}
+        run: |
+          cp portfolio_h2_results/report.md docs/CORE_PORTFOLIO_H2_REVIEW_20261029.md
+          cp portfolio_h2_results/attempts.json docs/CORE_PORTFOLIO_H2_RESULTS_20261029.json
+          test "$(git ls-remote origin "refs/heads/$REPORT_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/CORE_PORTFOLIO_H2_REVIEW_20261029.md docs/CORE_PORTFOLIO_H2_RESULTS_20261029.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Preserve fixed H2 diversified-portfolio results and independent checks"
+          git push origin "HEAD:refs/heads/$REPORT_BRANCH"
