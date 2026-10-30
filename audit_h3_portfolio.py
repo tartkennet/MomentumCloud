@@ -58,6 +58,17 @@ def period_return(prices,events,dividends,ticker,end,months):
 def unique(rows):
     return list({json.dumps(r,sort_keys=True):r for r in rows}.values())
 
+def dedupe_events(items,kind):
+    """Ignore provider metadata revisions; reject conflicting economic terms."""
+    fields=('ticker','execution_date','split_from','split_to') if kind=='split' else ('ticker','ex_dividend_date','cash_amount','currency')
+    result={}
+    for e in items:
+        terms=tuple(e.get(f) for f in fields);key=e.get('id') or terms
+        if key in result and tuple(result[key].get(f) for f in fields)!=terms:
+            raise ValueError('Conflicting economic event: '+str(terms))
+        result.setdefault(key,e)
+    return list(result.values())
+
 def historical_evidence(root,current):
     root=Path(root);files=list(root.rglob('Momentum_core_targets.json'));evidence=[]
     # One complete, pre-existing 15bp display account; never re-run or optimize it.
@@ -116,17 +127,8 @@ def run(record,cache,historical,output,live):
         if label in original:assert h==original[label],label;matched+=1
     assert matched>=254
     # Existing cache is read only; live additions are isolated in this report.
-    events=unique([e for p in cache.glob('splits-*.json.gz') for e in read(p)])
-    dividends=unique([e for p in cache.glob('dividends-*.json.gz') for e in read(p)])
-    # Overlapping saved files may carry the same provider event with identical ID.
-    def dedupe(items,kind):
-        result={}
-        for e in items:
-            k=e.get('id') or (e.get('ticker'),e.get('execution_date') or e.get('ex_dividend_date'),e.get('cash_amount'),e.get('split_from'),e.get('split_to'))
-            if k in result:assert result[k]==e,(kind,k)
-            result[k]=e
-        return list(result.values())
-    events=dedupe(events,'split');dividends=dedupe(dividends,'dividend')
+    events=dedupe_events([e for p in sorted(cache.glob('splits-*.json.gz')) for e in read(p) if e.get('ticker') in tickers],'split')
+    dividends=dedupe_events([e for p in sorted(cache.glob('dividends-*.json.gz')) for e in read(p) if e.get('ticker') in tickers],'dividend')
     latest='2026-10-30';live_data={};refs={};errors=[]
     if live:
         grouped=query('/v2/aggs/grouped/locale/us/market/stocks/'+latest,{'adjusted':'false','include_otc':'false'})
@@ -135,8 +137,9 @@ def run(record,cache,historical,output,live):
         for kind,column in [('splits','execution_date'),('dividends','ex_dividend_date')]:
             extra=query('/stocks/v1/'+kind,{column+'.gte':day,column+'.lte':latest,'limit':5000})
             if extra.get('error') or extra.get('next_url'):raise ValueError('Corporate-action coverage incomplete: '+kind)
-            if kind=='splits':events=dedupe(events+extra.get('results',[]),'split')
-            else:dividends=dedupe(dividends+extra.get('results',[]),'dividend')
+            additions=[e for e in extra.get('results',[]) if e.get('ticker') in tickers]
+            if kind=='splits':events=dedupe_events(events+additions,'split')
+            else:dividends=dedupe_events(dividends+additions,'dividend')
         def reference(t):return t,query('/v3/reference/tickers/'+t,{'date':day})
         with ThreadPoolExecutor(max_workers=4) as pool:refs=dict(pool.map(reference,tickers))
     for row in rows:
