@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-30T08:58:34.701566+00:00",
+  "generated_at": "2026-10-30T09:00:13.748856+00:00",
   "as_of": "2026-10-29",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -590,7 +590,7 @@
       }
     },
     "readiness": {
-      "checked_at": "2026-10-30T08:58:31.058154+00:00",
+      "checked_at": "2026-10-30T09:00:09.254165+00:00",
       "key_configured": true,
       "live_probe": true,
       "secrets_exposed": false,
@@ -634,7 +634,7 @@
     },
     "next_expected_attempt_at": "2026-10-30T09:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41029995166",
+    "workflow_run": "41030172184",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -661,10 +661,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41029995166_attempt_1.tar.gz",
-    "paper_archive_sha256": "5864bc5200096c22aaf90e57ec84844fd2da2bc4ce509bf2b618b78f859374e5",
-    "previous_paper_asset": "paper_run_41013485761_attempt_2.tar.gz",
-    "previous_paper_archive_sha256": "a774545220f4bc8bff0eb3e7c802f45c0e54ece6cdf8ebc359186ce4537f1f48",
-    "workflow_run": "41029995166"
+    "paper_asset": "paper_run_41030172184_attempt_1.tar.gz",
+    "paper_archive_sha256": "2d2bb27c4b945902962db696771af23d407d691bb8c61055aae3510c175d3b3f",
+    "previous_paper_asset": "paper_run_41029995166_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "5864bc5200096c22aaf90e57ec84844fd2da2bc4ce509bf2b618b78f859374e5",
+    "workflow_run": "41030172184"
   }
 }
