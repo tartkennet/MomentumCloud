@@ -2,11 +2,12 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
-const n=(x,d=2)=>finite(x)?x.toLocaleString('sv-SE',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+const roundedZero=(x,d)=>Math.abs(x)<.5*10**(-d)?0:x;
+const n=(x,d=2)=>finite(x)?roundedZero(x,d).toLocaleString('sv-SE',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
 const money=x=>finite(x)?n(x,0)+' kr':'—';
 const usd=x=>finite(x)?n(x,2)+' USD':'—';
-const pct=x=>finite(x)?(x>0?'+':'')+n(x,2)+' %':'—';
-const cls=x=>finite(x)?x>=0?'positive':'negative':'';
+const pct=x=>finite(x)?(roundedZero(x,2)>0?'+':'')+n(x,2)+' %':'—';
+const cls=x=>finite(x)?roundedZero(x,2)>=0?'positive':'negative':'';
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const stamp=x=>x&&Number.isFinite(Date.parse(x))?new Date(x).toLocaleString('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
 const date=x=>x?new Date(x+'T12:00:00Z').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}):'—';

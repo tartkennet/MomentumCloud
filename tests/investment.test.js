@@ -38,6 +38,8 @@ test('recorded plans are labelled as unfilled intentions and escape symbols',()=
  const html=ui.intentions({pending_intentions:{signal_date:'2026-10-29',targets:[{ticker:'<SPY>',weight:.78}]}});
  assert.match(html,/inga genomförda affärer/);assert.match(html,/78,00 %/);assert.match(html,/&lt;SPY&gt;/);
  assert.match(ui.intentions({errors:['delayed'],pending_intentions:null}),/inväntar verifierad uppföljning/);
+ assert.equal(ui.pct(-1.4551915228366852e-14),'0,00 %');
+ assert.equal(ui.pct(-.01),'−0,01 %');
 });
 test('SEK delivery preserves identity and never accepts a fabricated anchor-free NAV',()=>{
  validate(structuredClone(actual));
