@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-30T09:03:27.292660+00:00",
+  "generated_at": "2026-10-30T13:12:19.700030+00:00",
   "as_of": "2026-10-29",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -590,7 +590,7 @@
       }
     },
     "readiness": {
-      "checked_at": "2026-10-30T09:03:22.954354+00:00",
+      "checked_at": "2026-10-30T13:12:15.546620+00:00",
       "key_configured": true,
       "live_probe": true,
       "secrets_exposed": false,
@@ -632,9 +632,9 @@
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-10-30T09:35:00+00:00",
+    "next_expected_attempt_at": "2026-10-31T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41030564057",
+    "workflow_run": "41061208139",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -661,10 +661,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41030564057_attempt_1.tar.gz",
-    "paper_archive_sha256": "08fb9b07ed0a5aa5c9b7e56e94fc3d189ec645b2fd86d63b9a4677643d628b59",
-    "previous_paper_asset": "paper_run_41030172184_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "2d2bb27c4b945902962db696771af23d407d691bb8c61055aae3510c175d3b3f",
-    "workflow_run": "41030564057"
+    "paper_asset": "paper_run_41061208139_attempt_1.tar.gz",
+    "paper_archive_sha256": "80582721a10fd1c2ccf7b4dabeb5cae3cdf4d611b7bb8d44c97bf10abeccceea",
+    "previous_paper_asset": "paper_run_41030564057_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "08fb9b07ed0a5aa5c9b7e56e94fc3d189ec645b2fd86d63b9a4677643d628b59",
+    "workflow_run": "41061208139"
   }
 }
