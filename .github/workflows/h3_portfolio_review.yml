@@ -1,0 +1,65 @@
+name: Read-only H3 portfolio review
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['audit_h3_portfolio.py', '.github/workflows/h3_portfolio_review.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: h3-readonly-review-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  review:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Restore authenticated evidence without writing the original release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess,tarfile
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY'];tag='portfolio-global-regime-forward-v1-20261029'
+          root=Path('audit_restore');root.mkdir();record=Path('audit_record');record.mkdir()
+          def get(tag,name):
+              subprocess.run(['gh','release','download',tag,'--repo',repo,'--pattern',name,'--dir',str(root)],check=True)
+              return root/name
+          def check(p,h):assert hashlib.sha256(p.read_bytes()).hexdigest()==h,p.name
+          m=json.loads(get(tag,'current_manifest.json').read_text())
+          archive=get(tag,m['paper_asset']);check(archive,m['paper_archive_sha256'])
+          with tarfile.open(archive) as t:t.extractall(record,filter='data')
+          cache=get(tag,m['cache_asset']);check(cache,m['cache_sha256'])
+          Path('audit_cache_asset.txt').write_text(str(cache))
+          historical='core-portfolio-h3-40863071105'
+          manifest=get(historical,'manifest.json');old=json.loads(manifest.read_text())
+          results=get(historical,'results.tar.gz');check(results,old['assets']['results.tar.gz'])
+          out=Path('audit_historical');out.mkdir()
+          with tarfile.open(results) as t:t.extractall(out,filter='data')
+          print(json.dumps({'paper_asset':m['paper_asset'],'historical_source':old['source_commit']}))
+          PY
+      - name: Read cached signals and current reference data only
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          python cache_momentum_inputs.py unseal --sealed "$(cat audit_cache_asset.txt)" --cache-dir audit_cache
+          mkdir -p audit_output
+          python audit_h3_portfolio.py --record audit_record --cache audit_cache --historical audit_historical --output audit_output/H3_portfolio_review.json --live
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H3_readonly_portfolio_review
+          path: audit_output/
+          retention-days: 90
+          if-no-files-found: warn
