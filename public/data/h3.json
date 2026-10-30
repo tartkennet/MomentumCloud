@@ -3,24 +3,480 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-29T14:44:08.636124+00:00",
-  "as_of": null,
-  "status": "PAPER_WAITING_FOR_SESSIONS",
+  "generated_at": "2026-10-30T06:21:08.744107+00:00",
+  "as_of": "2026-10-29",
+  "status": "PAPER_COLLECTING",
   "live_approved": false,
   "broker_orders_enabled": false,
-  "sessions": 0,
-  "metrics": null,
-  "cost_cases": {
-    "15bp": null,
-    "30bp": null
+  "sessions": 1,
+  "metrics": {
+    "Periods": 0,
+    "TotalReturn_pct": 0.0,
+    "SPYTotalReturn_pct": 0.0,
+    "TotalEdgeVsSPY_pct": 0.0,
+    "DailyMaxDrawdown_pct": 0.0,
+    "PeriodHitRate_pct": 0.0,
+    "DailySharpe_zero_rf": null,
+    "ActualFees_USD": 0.0,
+    "FinalNAV_USD": 100000.0,
+    "evaluation_through": "2026-10-29",
+    "sessions_in_evaluation": 1,
+    "fixed_first_window_complete": false
   },
-  "cash_usd": null,
-  "receivables_usd": null,
+  "cost_cases": {
+    "15bp": {
+      "Periods": 0,
+      "TotalReturn_pct": 0.0,
+      "SPYTotalReturn_pct": 0.0,
+      "TotalEdgeVsSPY_pct": 0.0,
+      "DailyMaxDrawdown_pct": 0.0,
+      "PeriodHitRate_pct": 0.0,
+      "DailySharpe_zero_rf": null,
+      "ActualFees_USD": 0.0,
+      "FinalNAV_USD": 100000.0,
+      "evaluation_through": "2026-10-29",
+      "sessions_in_evaluation": 1,
+      "fixed_first_window_complete": false
+    },
+    "30bp": {
+      "Periods": 0,
+      "TotalReturn_pct": 0.0,
+      "SPYTotalReturn_pct": 0.0,
+      "TotalEdgeVsSPY_pct": 0.0,
+      "DailyMaxDrawdown_pct": 0.0,
+      "PeriodHitRate_pct": 0.0,
+      "DailySharpe_zero_rf": null,
+      "ActualFees_USD": 0.0,
+      "FinalNAV_USD": 100000.0,
+      "evaluation_through": "2026-10-29",
+      "sessions_in_evaluation": 1,
+      "fixed_first_window_complete": false
+    }
+  },
+  "cash_usd": 100000.0,
+  "receivables_usd": 0,
   "holdings": [],
-  "latest_decision": null,
-  "pending_intentions": null,
+  "latest_decision": {
+    "date": "2026-10-29",
+    "risk_on": true,
+    "eligible_count": 1311,
+    "targets": [
+      {
+        "ticker": "TXG",
+        "momentum_12_2": 5.773613193403299,
+        "daily_volatility": 0.05085278055125284,
+        "raw_price": 81.55,
+        "adv20_usd": 307017573.4819763,
+        "formation_volatility": 0.04577486235222386,
+        "risk_normalized_score": 126.13065111975813,
+        "weight": 0.012389549897093005,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SNDK",
+        "momentum_12_2": 8.912208739246854,
+        "daily_volatility": 0.05102787143848519,
+        "raw_price": 1330.05,
+        "adv20_usd": 11836022989.137512,
+        "formation_volatility": 0.07290578249641366,
+        "risk_normalized_score": 122.24282401310565,
+        "weight": 0.012347037888993538,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "AXTI",
+        "momentum_12_2": 10.728787878787879,
+        "daily_volatility": 0.07955067721051784,
+        "raw_price": 60.88,
+        "adv20_usd": 594556461.8567811,
+        "formation_volatility": 0.09794974067806402,
+        "risk_normalized_score": 109.53360166670258,
+        "weight": 0.007920021351651879,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "TWST",
+        "momentum_12_2": 4.756330056598153,
+        "daily_volatility": 0.06575963871759624,
+        "raw_price": 173.45,
+        "adv20_usd": 469447692.21784383,
+        "formation_volatility": 0.047771943929309585,
+        "risk_normalized_score": 99.56325125970005,
+        "weight": 0.009580999444832386,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "ERAS",
+        "momentum_12_2": 5.008196721311475,
+        "daily_volatility": 0.0362148515026434,
+        "raw_price": 14.98,
+        "adv20_usd": 77245500.28329745,
+        "formation_volatility": 0.06574756013882747,
+        "risk_normalized_score": 76.1731189832224,
+        "weight": 0.0173973669890564,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SLS",
+        "momentum_12_2": 5.155,
+        "daily_volatility": 0.06024331464378674,
+        "raw_price": 10.155,
+        "adv20_usd": 73742670.7307501,
+        "formation_volatility": 0.06870208445552102,
+        "risk_normalized_score": 75.03411346037748,
+        "weight": 0.010458306714546759,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CLYM",
+        "momentum_12_2": 4.514423076923077,
+        "daily_volatility": 0.05254600325577152,
+        "raw_price": 10.33,
+        "adv20_usd": 12276516.511876006,
+        "formation_volatility": 0.060276299880483275,
+        "risk_normalized_score": 74.89549102838662,
+        "weight": 0.01199031368720637,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "ATEX",
+        "momentum_12_2": 2.9867953275774504,
+        "daily_volatility": 0.03897702838849493,
+        "raw_price": 91.81,
+        "adv20_usd": 21674909.077431284,
+        "formation_volatility": 0.04058611846982652,
+        "risk_normalized_score": 73.59154903659889,
+        "weight": 0.0161644714359918,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CDNA",
+        "momentum_12_2": 3.4308111792774367,
+        "daily_volatility": 0.03263347800645002,
+        "raw_price": 71.52,
+        "adv20_usd": 88923767.49636433,
+        "formation_volatility": 0.04702277085457262,
+        "risk_normalized_score": 72.960634112522,
+        "weight": 0.01930664766780726,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "MU",
+        "momentum_12_2": 3.7997386327790545,
+        "daily_volatility": 0.03396090776559646,
+        "raw_price": 934.27,
+        "adv20_usd": 24837284634.899303,
+        "formation_volatility": 0.052399469332658155,
+        "risk_normalized_score": 72.51483042044576,
+        "weight": 0.018552008868382566,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "STX",
+        "momentum_12_2": 3.1360538116591927,
+        "daily_volatility": 0.041464177307571744,
+        "raw_price": 700.47,
+        "adv20_usd": 4397745160.529338,
+        "formation_volatility": 0.04793534293194952,
+        "risk_normalized_score": 65.42258008065636,
+        "weight": 0.015194876709409983,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SYRE",
+        "momentum_12_2": 2.6132305194805197,
+        "daily_volatility": 0.038031339079858895,
+        "raw_price": 98.96,
+        "adv20_usd": 115057679.01676662,
+        "formation_volatility": 0.0412137164566746,
+        "risk_normalized_score": 63.40681559809452,
+        "weight": 0.016566418045988126,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "LITE",
+        "momentum_12_2": 3.8957104692776854,
+        "daily_volatility": 0.05626075179580092,
+        "raw_price": 919.53,
+        "adv20_usd": 4681208817.454523,
+        "formation_volatility": 0.06307947357947181,
+        "risk_normalized_score": 61.75876633418007,
+        "weight": 0.01119862500829027,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CLMT",
+        "momentum_12_2": 1.632160804020101,
+        "daily_volatility": 0.03399237392537897,
+        "raw_price": 48.525,
+        "adv20_usd": 77457864.75457424,
+        "formation_volatility": 0.02730298798146981,
+        "risk_normalized_score": 59.77956717146958,
+        "weight": 0.01853483559073445,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "RVMD",
+        "momentum_12_2": 2.528623001547189,
+        "daily_volatility": 0.025999772342591168,
+        "raw_price": 190.27,
+        "adv20_usd": 375317112.5273922,
+        "formation_volatility": 0.04269693267840715,
+        "risk_normalized_score": 59.22259148198656,
+        "weight": 0.021955719922220535,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SPY",
+        "weight": 0.7804428007777946,
+        "benchmark_core": true
+      }
+    ]
+  },
+  "pending_intentions": {
+    "signal_date": "2026-10-29",
+    "signal_nav": 100000.0,
+    "targets": [
+      {
+        "ticker": "TXG",
+        "momentum_12_2": 5.773613193403299,
+        "daily_volatility": 0.05085278055125284,
+        "raw_price": 81.55,
+        "adv20_usd": 307017573.4819763,
+        "formation_volatility": 0.04577486235222386,
+        "risk_normalized_score": 126.13065111975813,
+        "weight": 0.012389549897093005,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SNDK",
+        "momentum_12_2": 8.912208739246854,
+        "daily_volatility": 0.05102787143848519,
+        "raw_price": 1330.05,
+        "adv20_usd": 11836022989.137512,
+        "formation_volatility": 0.07290578249641366,
+        "risk_normalized_score": 122.24282401310565,
+        "weight": 0.012347037888993538,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "AXTI",
+        "momentum_12_2": 10.728787878787879,
+        "daily_volatility": 0.07955067721051784,
+        "raw_price": 60.88,
+        "adv20_usd": 594556461.8567811,
+        "formation_volatility": 0.09794974067806402,
+        "risk_normalized_score": 109.53360166670258,
+        "weight": 0.007920021351651879,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "TWST",
+        "momentum_12_2": 4.756330056598153,
+        "daily_volatility": 0.06575963871759624,
+        "raw_price": 173.45,
+        "adv20_usd": 469447692.21784383,
+        "formation_volatility": 0.047771943929309585,
+        "risk_normalized_score": 99.56325125970005,
+        "weight": 0.009580999444832386,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "ERAS",
+        "momentum_12_2": 5.008196721311475,
+        "daily_volatility": 0.0362148515026434,
+        "raw_price": 14.98,
+        "adv20_usd": 77245500.28329745,
+        "formation_volatility": 0.06574756013882747,
+        "risk_normalized_score": 76.1731189832224,
+        "weight": 0.0173973669890564,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SLS",
+        "momentum_12_2": 5.155,
+        "daily_volatility": 0.06024331464378674,
+        "raw_price": 10.155,
+        "adv20_usd": 73742670.7307501,
+        "formation_volatility": 0.06870208445552102,
+        "risk_normalized_score": 75.03411346037748,
+        "weight": 0.010458306714546759,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CLYM",
+        "momentum_12_2": 4.514423076923077,
+        "daily_volatility": 0.05254600325577152,
+        "raw_price": 10.33,
+        "adv20_usd": 12276516.511876006,
+        "formation_volatility": 0.060276299880483275,
+        "risk_normalized_score": 74.89549102838662,
+        "weight": 0.01199031368720637,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "ATEX",
+        "momentum_12_2": 2.9867953275774504,
+        "daily_volatility": 0.03897702838849493,
+        "raw_price": 91.81,
+        "adv20_usd": 21674909.077431284,
+        "formation_volatility": 0.04058611846982652,
+        "risk_normalized_score": 73.59154903659889,
+        "weight": 0.0161644714359918,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CDNA",
+        "momentum_12_2": 3.4308111792774367,
+        "daily_volatility": 0.03263347800645002,
+        "raw_price": 71.52,
+        "adv20_usd": 88923767.49636433,
+        "formation_volatility": 0.04702277085457262,
+        "risk_normalized_score": 72.960634112522,
+        "weight": 0.01930664766780726,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "MU",
+        "momentum_12_2": 3.7997386327790545,
+        "daily_volatility": 0.03396090776559646,
+        "raw_price": 934.27,
+        "adv20_usd": 24837284634.899303,
+        "formation_volatility": 0.052399469332658155,
+        "risk_normalized_score": 72.51483042044576,
+        "weight": 0.018552008868382566,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "STX",
+        "momentum_12_2": 3.1360538116591927,
+        "daily_volatility": 0.041464177307571744,
+        "raw_price": 700.47,
+        "adv20_usd": 4397745160.529338,
+        "formation_volatility": 0.04793534293194952,
+        "risk_normalized_score": 65.42258008065636,
+        "weight": 0.015194876709409983,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SYRE",
+        "momentum_12_2": 2.6132305194805197,
+        "daily_volatility": 0.038031339079858895,
+        "raw_price": 98.96,
+        "adv20_usd": 115057679.01676662,
+        "formation_volatility": 0.0412137164566746,
+        "risk_normalized_score": 63.40681559809452,
+        "weight": 0.016566418045988126,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "LITE",
+        "momentum_12_2": 3.8957104692776854,
+        "daily_volatility": 0.05626075179580092,
+        "raw_price": 919.53,
+        "adv20_usd": 4681208817.454523,
+        "formation_volatility": 0.06307947357947181,
+        "risk_normalized_score": 61.75876633418007,
+        "weight": 0.01119862500829027,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "CLMT",
+        "momentum_12_2": 1.632160804020101,
+        "daily_volatility": 0.03399237392537897,
+        "raw_price": 48.525,
+        "adv20_usd": 77457864.75457424,
+        "formation_volatility": 0.02730298798146981,
+        "risk_normalized_score": 59.77956717146958,
+        "weight": 0.01853483559073445,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "RVMD",
+        "momentum_12_2": 2.528623001547189,
+        "daily_volatility": 0.025999772342591168,
+        "raw_price": 190.27,
+        "adv20_usd": 375317112.5273922,
+        "formation_volatility": 0.04269693267840715,
+        "risk_normalized_score": 59.22259148198656,
+        "weight": 0.021955719922220535,
+        "momentum_sleeve_fraction": 0.21955719922220535,
+        "portfolio_vol63": 0.02285014934409303,
+        "benchmark_vol63": 0.00642829274201554
+      },
+      {
+        "ticker": "SPY",
+        "weight": 0.7804428007777946,
+        "benchmark_core": true
+      }
+    ]
+  },
   "recent_trades": [],
-  "curve": [],
+  "curve": [
+    {
+      "date": "2026-10-29",
+      "nav": 100000.0,
+      "spy_nav": 100000.0
+    }
+  ],
   "validation": {
     "status": "COLLECTING",
     "observed_periods": 0,
@@ -33,31 +489,31 @@
       "15bp": [
         {
           "gate": "at_least_30_periods",
-          "value": null,
+          "value": 0,
           "threshold": 30,
           "pass": false
         },
         {
           "gate": "positive_net_return",
-          "value": null,
+          "value": 0.0,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": null,
+          "value": 0.0,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "drawdown",
-          "value": null,
+          "value": 0.0,
           "threshold": -20,
-          "pass": false
+          "pass": true
         },
         {
           "gate": "hit_rate",
-          "value": null,
+          "value": 0.0,
           "threshold": 50,
           "pass": false
         }
@@ -65,31 +521,31 @@
       "30bp": [
         {
           "gate": "at_least_30_periods",
-          "value": null,
+          "value": 0,
           "threshold": 30,
           "pass": false
         },
         {
           "gate": "positive_net_return",
-          "value": null,
+          "value": 0.0,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": null,
+          "value": 0.0,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "drawdown",
-          "value": null,
+          "value": 0.0,
           "threshold": -20,
-          "pass": false
+          "pass": true
         },
         {
           "gate": "hit_rate",
-          "value": null,
+          "value": 0.0,
           "threshold": 50,
           "pass": false
         }
@@ -124,57 +580,74 @@
         "files_checked": 137
       },
       "prefix": {
-        "status": "WAITING",
-        "sessions": 0,
+        "status": "PASS",
+        "sessions": 1,
         "accounts": 4
+      },
+      "accounting": {
+        "status": "PASS",
+        "new_sessions": 1,
+        "market_trade_rows_checked": 0,
+        "volume_participation": [],
+        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
       }
     },
     "readiness": {
-      "checked_at": "2026-10-29T14:44:04.221223+00:00",
+      "checked_at": "2026-10-30T06:20:47.026575+00:00",
       "key_configured": true,
-      "live_probe": true,
+      "live_probe": false,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "required_endpoints": {
-        "raw_daily_bars": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 8,
-          "latest_observed_session": "2026-10-28"
+      "status": "CONFIGURED",
+      "last_live_probe": {
+        "checked_at": "2026-10-29T14:44:04.221223+00:00",
+        "key_configured": true,
+        "live_probe": true,
+        "secrets_exposed": false,
+        "subscription_changed": false,
+        "live_approved": false,
+        "broker_orders_enabled": false,
+        "required_endpoints": {
+          "raw_daily_bars": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 8,
+            "latest_observed_session": "2026-10-28"
+          },
+          "dated_universe": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "splits": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "dividends": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          }
         },
-        "dated_universe": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
+        "optional_quotes": {
+          "authorized": false,
+          "http_status": 403,
+          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
         },
-        "splits": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        },
-        "dividends": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        }
-      },
-      "optional_quotes": {
-        "authorized": false,
-        "http_status": 403,
-        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
-      },
-      "status": "PASS"
+        "status": "PASS"
+      }
     },
     "workflow": {
       "id": 400565291,
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-10-30T00:35:00+00:00",
+    "next_expected_attempt_at": "2026-10-30T06:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "40894328285",
+    "workflow_run": "41013485761",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -201,10 +674,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_40894328285_attempt_1.tar.gz",
-    "paper_archive_sha256": "73750d61698b1dee162661958bad87ca924bc040760d1507b59dca33308e1397",
-    "previous_paper_asset": "paper_run_40893207417_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "8f0fc93c5aa0d7d14661b37b9d679c02120476e785c39097ff610e7caf2e6773",
-    "workflow_run": "40894328285"
+    "paper_asset": "paper_run_41013485761_attempt_1.tar.gz",
+    "paper_archive_sha256": "a1c93665463106f1fa9af883bda6404ca40bd76d457a50f55ef806b10a674a96",
+    "previous_paper_asset": "paper_run_40894328285_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "73750d61698b1dee162661958bad87ca924bc040760d1507b59dca33308e1397",
+    "workflow_run": "41013485761"
   }
 }
