@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-30T13:27:32.088338+00:00",
+  "generated_at": "2026-10-30T18:27:05.884420+00:00",
   "source_run": "41063279405",
   "source_as_of": "2026-10-29",
   "source_checkpoint_sha256": "4b6aa66430b0976922d025e8fb04b15bd14338b49e8057fbb2eb070bf00df8be",
@@ -84,16 +84,17 @@
     "2026-08-04": 9.546244029526704,
     "2026-08-03": 9.522756827048115,
     "2026-07-31": 9.565084893339137,
-    "2026-10-29": 9.882749326145552
+    "2026-10-29": 9.882749326145552,
+    "2026-10-30": 9.826351593268887
   },
   "fx": {
-    "date": "2026-10-29",
-    "usdsek": 9.882749326145552,
+    "date": "2026-10-30",
+    "usdsek": 9.826351593268887,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-10-30T13:27:32.088338+00:00",
+    "checked_at": "2026-10-30T18:27:05.884420+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -105,34 +106,28 @@
     "snapshot_ticker_error_present": {
       "SPY": false
     },
-    "selected_mode": "INTRADAY",
+    "selected_mode": "CLOSE",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
-    "subscription_changed": false,
-    "corporate_event_guard": {
-      "through": "2026-10-30",
-      "blocked_tickers": []
-    }
+    "subscription_changed": false
   },
   "quotes": {
     "SPY": {
-      "usd": 761.2,
-      "at": "2026-10-30T13:27:32.033119+00:00",
-      "session": "2026-10-30",
-      "mode": "DELAYED",
-      "provider_timeframe": "UNVERIFIED",
-      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-      "source": "Massive unified snapshot"
+      "usd": 769.36,
+      "at": null,
+      "session": "2026-10-29",
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     }
   },
   "metrics": {
-    "nav_sek": 99999.99999999999,
-    "pnl_sek": -1.4551915228366852e-11,
-    "return_pct": -1.4551915228366852e-14,
-    "spy_nav_sek": 99999.99999999999,
-    "spy_return_pct": -1.1102230246251565e-14,
-    "edge_pct": -3.4496849821152867e-15,
-    "cash_sek": 99999.99999999999,
+    "nav_sek": 99429.33154514543,
+    "pnl_sek": -570.6684548545745,
+    "return_pct": -0.5706684548545745,
+    "spy_nav_sek": 99429.33154514543,
+    "spy_return_pct": -0.5706684548545726,
+    "edge_pct": -1.887379141862766e-15,
+    "cash_sek": 99429.33154514543,
     "receivables_sek": 0.0,
     "fees_usd": 0.0
   },
@@ -572,5 +567,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "41063382179"
+  "refresh_run": "41107021578"
 }
