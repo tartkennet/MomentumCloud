@@ -1,6 +1,7 @@
 const fs=require('node:fs/promises');
 const path=require('node:path');
 const {validate:validateH3}=require('./h3');
+const {monitor}=require('../lib/h3-monitor');
 const BASE='https://raw.githubusercontent.com/tartkennet/MomentumCloud/refs/heads/h3-observed-snapshots/public/data/';
 const FP='e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921';
 function validate(data){
@@ -18,7 +19,7 @@ module.exports=async(_req,res)=>{
   try{
     const [data,h3]=await Promise.all([remote('h3-display.json').then(validate),remote('h3.json').then(validateH3)]);
     const errors=[...(data.errors||[])];
-    const late=Date.now()>Date.parse(h3.operations.next_expected_attempt_at)+90*60000;
+    const timing=monitor(h3),late=timing.delayed;
     const sync=data.source_as_of===h3.as_of;
     if(!sync)errors.push('En ny H3-session har registrerats. SEK-värderingen inväntar synkronisering.');
     if(late)errors.push('Den schemalagda H3-insamlingen är försenad.');
@@ -26,11 +27,12 @@ module.exports=async(_req,res)=>{
     const now=new Date(),sessionHours=now.getUTCDay()>0&&now.getUTCDay()<6&&now.getUTCHours()>=13&&now.getUTCHours()<23;
     const valuationLate=sessionHours&&Date.now()-Date.parse(data.generated_at)>60*60000;
     if(valuationLate)errors.push('Kursuppföljningen är försenad. Senast verifierade värdering visas med datum.');
-    if(errors.length)data.pending_intentions=null;
+    data.pending_intentions=errors.length?null:h3.pending_intentions;
     data.errors=errors;
-    data.delivery={verified:true,synchronized:sync,valuation_delayed:valuationLate,checked_at:now.toISOString()};
+    data.delivery={verified:true,synchronized:sync,collection_delayed:late,valuation_delayed:valuationLate,checked_at:now.toISOString()};
     data.h3={status:h3.status,as_of:h3.as_of,sessions:h3.sessions,generated_at:h3.generated_at,
-      next_attempt:h3.operations.next_expected_attempt_at,validation:h3.validation,historical:h3.historical,
+      next_attempt:timing.next_scheduled_attempt_at,expected_attempt:timing.expected_attempt_at,
+      validation:h3.validation,historical:h3.historical,
       execution:h3.execution,errors:h3.operations.errors,journal:h3.journal_evidence};
     return res.status(200).json(data);
   }catch{
