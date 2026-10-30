@@ -1,5 +1,6 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
+const {monitor} = require('../lib/h3-monitor');
 
 const MODEL = "momentum-diversified-regime-research-v1";
 const COHORT = "portfolio-global-regime-forward-v1-20261029";
@@ -28,9 +29,8 @@ module.exports = async function handler(_request, response) {
     const upstream = await fetch(`${SOURCE}?observed_minute=${Math.floor(Date.now()/60000)}`, {signal: AbortSignal.timeout(5000), headers: {accept:"application/json", "cache-control":"no-cache"}});
     if (!upstream.ok) throw new Error("Observation delivery failed");
     const data = validate(await upstream.json());
-    const next = Date.parse(data.operations?.next_expected_attempt_at);
-    const grace = Number(data.operations?.delay_grace_minutes || 90) * 60000;
-    const delayed = Number.isFinite(next) && Date.now() > next + grace;
+    const {delayed,next_scheduled_attempt_at} = monitor(data);
+    data.operations.next_scheduled_attempt_at=next_scheduled_attempt_at;
     if (delayed) {
       data.status = "MONITOR_DELAYED";
       data.pending_intentions = null;

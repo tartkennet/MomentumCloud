@@ -2,11 +2,12 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
-const n=(x,d=2)=>finite(x)?x.toLocaleString('sv-SE',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+const roundedZero=(x,d)=>Math.abs(x)<.5*10**(-d)?0:x;
+const n=(x,d=2)=>finite(x)?roundedZero(x,d).toLocaleString('sv-SE',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
 const money=x=>finite(x)?n(x,0)+' kr':'—';
 const usd=x=>finite(x)?n(x,2)+' USD':'—';
-const pct=x=>finite(x)?(x>0?'+':'')+n(x,2)+' %':'—';
-const cls=x=>finite(x)?x>=0?'positive':'negative':'';
+const pct=x=>finite(x)?(roundedZero(x,2)>0?'+':'')+n(x,2)+' %':'—';
+const cls=x=>finite(x)?roundedZero(x,2)>=0?'positive':'negative':'';
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const stamp=x=>x&&Number.isFinite(Date.parse(x))?new Date(x).toLocaleString('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
 const date=x=>x?new Date(x+'T12:00:00Z').toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'}):'—';
@@ -14,6 +15,12 @@ let current=null,period='all',filter='all',tab='overview',chartRows=[];
 function stat(label,value,detail='',color=''){return `<article class="summary-stat"><span>${esc(label)}</span><strong class="${color}">${esc(value)}</strong>${detail?`<small>${esc(detail)}</small>`:''}</article>`}
 function empty(title,copy){return `<div class="empty"><strong>${esc(title)}</strong><small>${esc(copy)}</small></div>`}
 function row(label,value){return `<div class="detail-row"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`}
+function intentions(d){
+ const pending=d.pending_intentions;
+ if(!pending)return empty(d.errors?.length?'Köpplanen inväntar verifierad uppföljning.':'Ingen väntande köp- eller säljplan.', 'Senast bokförda innehav och genomförda affärer visas separat.');
+ const targets=pending.targets||[];
+ return `<p>Registrerad efter stängning ${esc(date(pending.signal_date))}. ${targets.length?'Målvikter för nästa observerade börsöppning:':'Planen är att gå till kassa vid nästa observerade börsöppning.'}</p><div class="intention-list">${targets.map(t=>`<span class="badge">${esc(t.ticker)} <b>${n(t.weight*100,2)} %</b></span>`).join('')}</div><p class="caption">Detta är registrerade avsikter, inga genomförda affärer. Den frysta modellen använder nästa sessions verkliga öppningskurser. Antal, avgifter och innehav publiceras först efter att sessionens dagsdata har samlats in och granskats. Saknad öppningskurs kan hindra ett köp. Inga brokerordrar skickas.</p>`;
+}
 function mode(mark){return mark?.mode==='REALTIME'?`Realtidskälla · ${stamp(mark.at)}`:mark?.mode==='DELAYED'?`Fördröjd visning · datatid ${stamp(mark.at)}`:mark?.mode==='CLOSE'?`Stängningskurs · ${date(mark.session)}`:'Kurs saknas'}
 function holdings(rows,detail=false){
  if(!rows?.length)return empty('Portföljen är redo att börja.','Innehav visas först när H3:s första simulerade köp har registrerats.');
@@ -72,6 +79,7 @@ function render(d){
  $('risk-status').className='';$('risk-status').dataset.state=decision?(decision.risk_on?'on':'off'):'waiting';
  $('risk-copy').textContent=decision?decision.risk_on?'H3:s senaste beslut tillåter exponering mot momentumaktier och SPY.':'H3:s senaste beslut söker skydd i kassa. Beslut fylls enligt den frysta modellen.':'Första H3-beslutet är inte registrerat ännu.';
  $('next-decision').textContent=stamp(h.next_attempt);
+ $('pending-plan').innerHTML=intentions(d);
  $('summary-metrics').innerHTML=stat('H3 sedan start',pct(m?.return_pct),'SEK efter modellens kostnader',cls(m?.return_pct))+stat('S&P 500 via SPY',pct(m?.spy_return_pct),'Samma valutagrund',cls(m?.spy_return_pct))+stat('Skillnad mot SPY',finite(m?.edge_pct)?n(m.edge_pct)+' pp':'—','Procentenheter',cls(m?.edge_pct))+stat('Bokförda sessioner',n(d.sessions||0,0),'Verkligt insamlade observationer');
  $('portfolio-metrics').innerHTML=stat('Portföljvärde',money(m?.nav_sek))+stat('Resultat sedan start',money(m?.pnl_sek),'Inklusive dollarutveckling',cls(m?.pnl_sek))+stat('Aktieinnehav',n(positions.length,0))+stat('Referenskurs USD/SEK',n(d.fx?.usdsek,4),d.fx?date(d.fx.date):'Verifierad valutakurs saknas');
  $('positions-count').textContent=positions.length+' innehav';$('overview-holdings').innerHTML=holdings(positions.slice(0,4));$('all-holdings').innerHTML=holdings(positions,true);
@@ -79,7 +87,7 @@ function render(d){
  $('overview-trades').innerHTML=trades(executed.slice(-3).reverse());$('export-trades').disabled=!all.length;displayTrades();renderChart();
  const s=statistics(d.curve||[]);$('stats-metrics').innerHTML=stat('Total avkastning',pct(m?.return_pct),'Separat SEK-visning',cls(m?.return_pct))+stat('Maximal nedgång',pct(s.dd),'Bokförda sessioner i SEK')+stat('Sharpe',n(s.sharpe),'Daglig · riskfri ränta 0')+stat('Simulerade affärer',n(executed.length,0),'Från den ursprungliga journalen');
  $('benchmark-comparison').innerHTML=m?`<div class="comparison"><div class="comparison-title"><b>H3 i SEK</b><strong class="${cls(m.return_pct)}">${pct(m.return_pct)}</strong></div><div class="comparison-track"><i style="width:${Math.max(3,Math.min(100,Math.abs(m.return_pct)/Math.max(Math.abs(m.return_pct),Math.abs(m.spy_return_pct),1)*100))}%"></i></div></div><div class="comparison spy"><div class="comparison-title"><b>SPY i SEK</b><strong class="${cls(m.spy_return_pct)}">${pct(m.spy_return_pct)}</strong></div><div class="comparison-track"><i style="width:${Math.max(3,Math.min(100,Math.abs(m.spy_return_pct)/Math.max(Math.abs(m.return_pct),Math.abs(m.spy_return_pct),1)*100))}%"></i></div></div>`:empty('Jämförelsen väntar på riktiga observationer.','H3 och SPY börjar på samma valutakonverterade startkapital.');
- $('data-details').innerHTML=row('Kurser',modeText)+row('Senaste kursdag',date(newest))+row('Kursens senaste datatid',newestAt?stamp(newestAt):'Daglig stängningskurs')+row('Värdering kontrollerad',stamp(d.generated_at))+row('H3 bokförd till',date(d.source_as_of))+row('Senaste H3-uppdatering',stamp(h.generated_at))+row('USD/SEK',d.fx?n(d.fx.usdsek,4)+' · '+date(d.fx.date):'Saknas')+row('Valutakälla','ECB:s dagliga referensfixing')+row('Realtidsrättigheter',d.capability?.realtime_verified?'Verifierade':'Inte verifierade')+row('Leverantörens fördröjning',d.capability?.provider_latency==='UNVERIFIED'?'Ej verifierad, se kursens datatid':'Se leverantörens tidsmärkning')+row('Livehandel','Avstängd');
+ $('data-details').innerHTML=row('Kurser',modeText)+row('Senaste kursdag',date(newest))+row('Kursens senaste datatid',newestAt?stamp(newestAt):'Daglig stängningskurs')+row('Värdering kontrollerad',stamp(d.generated_at))+row('H3 bokförd till',date(d.source_as_of))+row('Senaste H3-uppdatering',stamp(h.generated_at))+row('Nästa planerade H3-kontroll',stamp(h.next_attempt))+(d.delivery?.collection_delayed?row('Utebliven kontroll',stamp(h.expected_attempt)):'')+row('USD/SEK',d.fx?n(d.fx.usdsek,4)+' · '+date(d.fx.date):'Saknas')+row('Valutakälla','ECB:s dagliga referensfixing')+row('Realtidsrättigheter',d.capability?.realtime_verified?'Verifierade':'Inte verifierade')+row('Leverantörens fördröjning',d.capability?.provider_latency==='UNVERIFIED'?'Ej verifierad, se kursens datatid':'Se leverantörens tidsmärkning')+row('Livehandel','Avstängd');
  const v=h.validation||{};$('validation-details').innerHTML=`<p>${d.sessions||0} insamlade sessioner. ${v.observed_periods||0} av ${v.required_periods||30} fullständiga månadsperioder.</p><div class="progress-track"><i style="width:${Math.min(100,(v.observed_periods||0)/30*100)}%"></i></div><p>${v.remaining_periods??30} perioder återstår. Full finansiell prövning tidigast ${esc(v.earliest_assessment_month||'2029-05')}. Ett historiskt godkännande är inte en live-GO.</p><p class="caption">Status: ${esc(v.status||'COLLECTING')} · originalkonton i USD. Kostnader, likviditet och exekvering måste också kunna granskas. H3:s parametrar och GO-gränser är oförändrade.</p>`;
  const hist=h.historical?.metrics;$('historical-details').innerHTML=hist?`<p>Utvecklingsdata 2024-01-01–2026-10-28. Separat från din fiktiva portfölj.</p>${row('H3 historiskt',pct(hist.TotalReturn_pct))}${row('SPY historiskt',pct(hist.SPYTotalReturn_pct))}${row('Maximal nedgång',pct(hist.DailyMaxDrawdown_pct))}${row('Sharpe',n(hist.DailySharpe_zero_rf))}<p class="caption">Samtliga 40 historiska scenarier passerade. Detta är inte orörd out-of-sample-data eller tillstånd för riktig handel.</p>`:'Den historiska sammanfattningen är inte tillgänglig just nu.';
 }
@@ -95,7 +103,7 @@ async function load(){
  catch{$('connection-alert').hidden=false;$('connection-alert').textContent='Anslutningen till portföljen fungerar inte just nu. Tidigare värden är inte aktuella signaler. Vyn försöker automatiskt igen.';$('portfolio-status').textContent='Anslutningsproblem';$('portfolio-status').dataset.state='blocked';}
 }
 function exportCSV(){if(!current?.trades?.length)return;const cells=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const columns=['date','at','side','ticker','quantity','price','fee_usd','fee_sek','notional_sek','signal_date','time_basis'];const text='\uFEFF'+[columns.join(';'),...current.trades.map(t=>columns.map(k=>cells(t[k])).join(';'))].join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='MomentumCloud-H3-simulerade-affarer.csv';a.click();URL.revokeObjectURL(url);}
-if(typeof module!=='undefined')module.exports={chart,statistics,esc,pct};
+if(typeof module!=='undefined')module.exports={chart,statistics,esc,pct,intentions};
 if(typeof document!=='undefined'){
  history.scrollRestoration='manual';document.querySelector('.brand').addEventListener('click',event=>{event.preventDefault();selectTab('overview')});
  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));

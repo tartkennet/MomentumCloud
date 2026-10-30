@@ -2,6 +2,12 @@ name: Frozen H3 prospective paper
 
 on:
   workflow_dispatch:
+  # Independent recovery trigger using an existing morning workflow. A missed
+  # H3 cron slot can recover without a manual rerun or any retrospective fill.
+  workflow_run:
+    workflows: ['Momentum Core candidate']
+    types: [completed]
+    branches: [main]
   pull_request:
     branches: [main]
     paths: ['probe_h3_readiness.py', 'h3_observability.py', 'h3_display.py', 'publish_h3_snapshot.py', 'tests/test_h3_*.py', 'h3_forward_policy.json', '.github/workflows/core_portfolio_forward.yml']
@@ -18,7 +24,7 @@ concurrency:
 
 jobs:
   paper:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
