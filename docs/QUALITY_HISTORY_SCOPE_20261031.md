@@ -39,3 +39,12 @@ sizing. Show base15bp and fixed30bp execution-reserve stress, no winner selectio
 Independent original-fact, ranking/order, event/cash/claim/NAV and return checks.
 All output goes into a separate historical research file/view section, never
 into the prospective account or its metrics. Keep the original five GO gates.
+
+Before any performance output: the completed200-name pools contain37–53 source
+gaps per date. Register one explicitly separate coverage-restricted diagnostic
+using only resolved original facts within the EXACT frozen100-name dated
+capacity universe. It does not lower the90% strategy gate: the strict replay is
+also reported and remains blocked where that gate fails. Diagnostic return is
+not the full candidate's performance because omitted names can change ranking.
+Report every fixed monthly segment and both cost assumptions; no period is
+chosen for return. No panel, score, stop, sector cap or strategy source changes.
