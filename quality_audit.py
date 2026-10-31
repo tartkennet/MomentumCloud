@@ -67,7 +67,16 @@ def audit_plan(targets,plan,shares,cash,nav,prices):
     near(spent,plan['reserved_cash_usd']);assert spent<=cash+reserve+1e-8
     assert all(shares.get(r['ticker'],0)>=1 or buys.get(r['ticker'],0)>=1 for r in targets)
     for t,q in plan['retained'].items():assert q==shares[t] and t not in sales and t not in buys
-    return dict(status='PASS',orders=len(plan['orders']),funded=True,whole_shares=True,no_future_open_sizing=True)
+    names={r['ticker']:r for r in targets}
+    values={t:(buys.get(t,shares.get(t,0)))*r['price_usd']*1.02 for t,r in names.items()}
+    def sector(s):
+        k=int(s)//100
+        return next((name for lo,hi,name in [(1,9,'A'),(10,14,'M'),(15,17,'C'),(20,39,'F'),(40,48,'T'),(50,51,'W'),(52,59,'R'),(70,89,'S')] if lo<=k<=hi),None)
+    assert all(v<=nav*.20+1e-8 for v in values.values())
+    for t,r in names.items():
+        assert sum(v for a,v in values.items() if str(names[a]['sic'])[:2]==str(r['sic'])[:2])<=nav*.30+1e-8
+        assert sector(r['sic']) and sum(v for a,v in values.items() if sector(names[a]['sic'])==sector(r['sic']))<=nav*.50+1e-8
+    return dict(status='PASS',orders=len(plan['orders']),funded=True,whole_shares=True,concentration_limits=True,no_future_open_sizing=True)
 
 
 def audit_selection(rows,targets,nav):

@@ -75,3 +75,25 @@ def audit_account(state,key,benchmark=False):
     near(cash,account['cash']);near(fees,account['fees']);assert set(shares)==set(account['shares'])
     for t,q in shares.items():near(q,account['shares'][t])
     return dict(status='PASS',trades=checks,valuations=len(equity),corporate_event_days=len(events),independent_code=True)
+
+
+def audit_statistics(state,report):
+    a=state['strategy'];b=state['benchmark'];m=report.get('paper_metrics')
+    if not m:return dict(status='NOT_YET_MEASURABLE',independent_code=True)
+    initial=state['initial_usd'];last=a['equity'][-1]['nav'];bl=b['equity'][-1]['nav']
+    near(m['TotalReturn_pct'],(last-initial)/initial*100);near(m['SPYTotalReturn_pct'],(bl-initial)/initial*100)
+    near(m['TotalEdgeVsSPY_pct'],(last-bl)/initial*100)
+    high=initial;worst=0
+    for r in a['equity']:high=max(high,r['nav']);worst=min(worst,(r['nav']-high)/high*100)
+    near(m['DailyMaxDrawdown_pct'],worst)
+    boundaries=[];previous=None
+    for i,r in enumerate(a['equity']):
+        month=r['date'][:7]
+        if (i==0 and a.get('first_is_month_boundary')) or (previous is not None and previous!=month):boundaries.append(r['nav'])
+        previous=month
+    returns=[y/x-1 for x,y in zip(boundaries,boundaries[1:])]
+    assert m['Periods']==len(returns)
+    near(m['PeriodHitRate_pct'],100*sum(r>0 for r in returns)/len(returns) if returns else 0)
+    for row,aa,bb in zip(report['curve'],a['equity'],b['equity']):
+        rate=state['valuation_fx'][aa['date']]['usdsek'];near(row['nav_sek'],aa['nav']*rate);near(row['spy_nav_sek'],bb['nav']*rate)
+    return dict(status='PASS',monthly_intervals=len(returns),initial_trading_costs_included=True,usd_and_sek_checked=True,independent_code=True)

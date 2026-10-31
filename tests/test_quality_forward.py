@@ -49,5 +49,26 @@ class ControllerTests(unittest.TestCase):
         got=process(s,{},datetime.fromisoformat('2026-11-02T15:15:00+00:00'),['2026-11-02'],{'T1':[19,20,1000]})
         self.assertFalse(got['strategy']['trades']);self.assertIsNotNone(got['pending'])
 
+    def test_new_risk_off_cancels_pending_buys_without_rewriting_decision(self):
+        from run_quality_forward import decide
+        s=self.state();prior=copy.deepcopy(s['decisions']);decide(s,dict(risk_on=False,price_as_of='2026-10-30'),None,datetime.fromisoformat('2026-10-31T16:00:00+00:00'))
+        self.assertIsNone(s['pending']);self.assertEqual(s['decisions'],prior);self.assertEqual(s['cancelled_intentions'][0]['reason'],'RISK_OFF');self.assertFalse(s['strategy']['trades'])
+
+    def test_financial_statistics_include_costs_and_benchmark_fx(self):
+        from run_quality_forward import export
+        from quality_account_audit import audit_statistics
+        s=self.state();p=s['pending'];p['benchmark_order']=dict(quantity=6,limit=306);p.pop('sha256');p['sha256']=digest(p);s['decisions']=[copy.deepcopy(p)]
+        bars={o['ticker']:[19,20,100000] for o in p['plan']['orders']};bars['SPY']=[300,303,1000000]
+        client=SimpleNamespace(get=lambda *args,**kwargs:{'results':[dict(T=t,o=b[0],c=b[1],v=b[2]) for t,b in bars.items()]})
+        s=observe(s,Data(['2026-10-30'],bars),client,datetime.fromisoformat('2026-11-02T15:15:00+00:00'))
+        self.assertEqual(audit_account(s,'benchmark',True)['status'],'PASS')
+        s=observe(s,Data(['2026-10-30','2026-11-02'],bars),client,datetime.fromisoformat('2026-11-03T08:15:00+00:00'))
+        s['valuation_fx']['2026-11-02']=dict(usdsek=10,date='2026-11-02');s['audits']={}
+        report=export({},s,datetime.fromisoformat('2026-11-03T08:15:00+00:00'))
+        self.assertEqual(report['independent_statistics']['status'],'PASS');self.assertIsNone(report['sharpe'])
+        self.assertAlmostEqual(report['paper_metrics']['TotalReturn_pct'],100*(s['strategy']['equity'][-1]['nav']/2000-1))
+        report['paper_metrics']['DailyMaxDrawdown_pct']=-50
+        with self.assertRaises(AssertionError):audit_statistics(s,report)
+
 
 if __name__=='__main__':unittest.main()

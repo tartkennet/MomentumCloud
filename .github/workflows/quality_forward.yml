@@ -17,8 +17,34 @@ concurrency:
   group: quality-earnings-paper-v1
   cancel-in-progress: false
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      needed: ${{ steps.changed.outputs.needed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PY'
+          import os,subprocess
+          before=os.environ.get('BEFORE','');needed=True
+          if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
+              p=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True,check=True)
+              needed=any(f.startswith('quality_') or f.startswith('tests/test_quality') or f in ('run_quality_forward.py','publish_quality.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml') for f in p.stdout.splitlines())
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
+          print('Current-source verification required:',needed)
+          PY
   paper:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: scope
+    if: needs.scope.outputs.needed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 18
     env:

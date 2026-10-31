@@ -14,7 +14,7 @@ from run_core_risk_research import make_data
 from collect_quality import collect,extend_events,PriceProvider
 from quality_forward import bootstrap,commit_plan,digest,opening_window,process,NY
 from quality_sources import DataUnavailable
-from quality_account_audit import audit_account
+from quality_account_audit import audit_account,audit_statistics
 from quality_strategy import MODEL
 
 FROZEN=('quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','quality_forward.py','quality_account_audit.py','run_quality_forward.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','momentum_core.py','momentum_core_data.py','research_core_ledger.py','research_momentum10_v2.py','research_stocks10.py','research_momentum10_fx.py','research_core_actions.py','run_core_risk_research.py')
@@ -86,9 +86,16 @@ def observe(state,data,client,now):
 
 
 def decide(state,report,data,now):
-    if state.get('pending'):return
     month=now.astimezone(NY).strftime('%Y-%m');on=report.get('risk_on')
     if on is None:return
+    pending=state.get('pending')
+    if pending:
+        buying=any(o['side']=='BUY' for o in pending['plan']['orders'])
+        rollover=pending['created_at'][:7]!=month and pending.get('kind')!='RISK_OFF'
+        if (not on and buying) or rollover:
+            state.setdefault('cancelled_intentions',[]).append(dict(observed_at=now.isoformat(),commitment=pending['sha256'],reason='RISK_OFF' if not on else 'NEW_MONTH_REQUIRES_FRESH_SELECTION'))
+            state['pending']=None
+        else:return
     if not on and state['strategy']['shares']:
         plan=dict(orders=[dict(ticker=t,side='SELL',quantity=math.floor(q+1e-9)) for t,q in sorted(state['strategy']['shares'].items()) if q>=1])
         p=dict(created_at=now.isoformat(),signal_date=report['price_as_of'],targets=[],plan=plan,kind='RISK_OFF',model_fingerprint=state['model_fingerprint'],sources=[])
@@ -146,6 +153,7 @@ def export(report,state,now):
     if state['opening_observations']:report['status']='PAPER_ACTIVE' if len(s['shares'])==10 else 'PAPER_CASH' if not s['shares'] else 'PAPER_PARTIAL'
     if state['gaps']:report['status']='PAPER_REVIEW_REQUIRED'
     report['generated_at']=now.isoformat();report['paper_journal_sha256']=digest(state)
+    report['independent_statistics']=audit_statistics(state,report)
     return report
 
 
@@ -156,6 +164,15 @@ def run(args):
     if state and state['model_fingerprint']!=fp:raise DataUnavailable('FROZEN_SOURCE_CHANGED_REQUIRES_NEW_COHORT')
     data,client=data_for(Path(args.cache),now)
     if state:
+        # A newer known market close may cancel stale buys before any fill.
+        # Protective exits need no fresh business facts, but still cannot use
+        # an opening that precedes their actual commitment timestamp.
+        import momentum_core as core
+        spy=core.adjusted_history(data,data.sessions[-1],'SPY',200)
+        if len(spy)!=200:raise DataUnavailable('INCOMPLETE_CURRENT_REGIME')
+        if spy[0]<=sum(spy)/200:decide(state,dict(risk_on=False,price_as_of=data.sessions[-1]),data,now)
+        elif state.get('pending') and state['pending']['created_at'][:7]!=now.astimezone(NY).strftime('%Y-%m'):
+            p=state['pending'];state.setdefault('cancelled_intentions',[]).append(dict(observed_at=now.isoformat(),commitment=p['sha256'],reason='NEW_MONTH_REQUIRES_FRESH_SELECTION'));state['pending']=None
         state=observe(state,data,client,now)
         # Audit cash and events BEFORE collecting a new business selection.
         state['audits']={k:audit_account(state,k,k=='benchmark') for k in ('strategy','benchmark')}

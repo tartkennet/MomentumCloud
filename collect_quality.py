@@ -68,6 +68,8 @@ def fundamentals(row,cache):
     try:
         filing,raw=current_filing(provider,row['ticker'],datetime.now(timezone.utc).isoformat(),cache)
         observed=datetime.now(timezone.utc).isoformat();receipt=save_original(cache,filing,raw,observed)
+        # Revalidated latest metadata, separate from the immutable first receipt.
+        row['source_observation']=receipt
         entity=next(e['company_data'] for e in filing['entities'] if e.get('relation')=='filer' and str(e['company_data']['cik']).zfill(10)==row['cik'])
         sic=str(entity.get('sic','')).zfill(4)
         if not sic.isdigit() or not division(sic):row.update(data_status='OUT_OF_SCOPE_INDUSTRY',sic=sic,resolved=True);return row
