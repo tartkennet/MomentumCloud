@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 import momentum_core as core
 from research_stocks10 import Stocks10Ledger, fee, select
+from research_momentum10_fx import native_dividends
 
 MODEL = 'momentum10-retention-risk-v2'
 PRIMARY = (('M1', 1, 'none'), ('M2', 2, 'none'), ('M3', 3, 'none'),
@@ -36,6 +37,8 @@ class RetentionLedger(Stocks10Ledger):
     stop_events: list = field(default_factory=list)
     decisions: list = field(default_factory=list)
     constraints: list = field(default_factory=list)
+    fx_payments: list = field(default_factory=list)
+    native_stop_adjustments: dict = field(default_factory=dict)
 
     def events_before_open(self, data, day):
         before = dict(self.shares)
@@ -47,15 +50,36 @@ class RetentionLedger(Stocks10Ledger):
                     before[t] *= ratio
                 for key in ('reference', 'level'):
                     self.references[t][key] /= ratio
+                for a in self.native_stop_adjustments.get(t,[]):
+                    a['native_per_share']/=ratio;a['last_usd']/=ratio
+        for t,adjustments in list(self.native_stop_adjustments.items()):
+            if t not in self.references:
+                self.native_stop_adjustments.pop(t);continue
+            remaining=[]
+            for a in adjustments:
+                usd=a['native_per_share']*data.native_usd(day,a['currency'])
+                self.references[t]['level']-=usd-a['last_usd'];a['last_usd']=usd
+                if a['pay_date']>day:remaining.append(a)
+            self.native_stop_adjustments[t]=remaining
         for e in data.dividends:
             t = e['ticker']
             if e['ex_dividend_date'] == day and t in self.references:
-                self.references[t]['level'] -= e['cash_amount']
-        super().events_before_open(data, day)
+                currency=e.get('currency','').upper()
+                amount=e['cash_amount']*(1. if currency=='USD' else data.native_usd(day,currency))
+                self.references[t]['level'] -= amount
+                if currency!='USD':
+                    self.native_stop_adjustments.setdefault(t,[]).append(dict(currency=currency,
+                        native_per_share=e['cash_amount'],last_usd=amount,pay_date=e['pay_date']))
+        parent=super()
+        native_dividends(self,data,day,lambda:parent.events_before_open(data,day))
         for t, e in data.stock_actions.items():
             if e['effective_date'] != day or not before.get(t):
                 continue
             successor = e['successor_ticker']
+            adjustments=self.native_stop_adjustments.pop(t,[])
+            for a in adjustments:
+                a['native_per_share']/=e['shares_per_share'];a['last_usd']/=e['shares_per_share']
+            self.native_stop_adjustments.setdefault(successor,[]).extend(adjustments)
             ref = self.references.pop(t, None)
             if ref:
                 old_successor_q = before.get(successor, 0)
@@ -163,6 +187,8 @@ class RetentionLedger(Stocks10Ledger):
             if old_q and old_ref:
                 for key in ('reference','level'):
                     self.references[t][key] = (old_q*old_ref[key]+q*self.references[t][key])/(old_q+q)
+                for a in self.native_stop_adjustments.get(t,[]):
+                    a['native_per_share']*=old_q/(old_q+q);a['last_usd']*=old_q/(old_q+q)
             if self.stop_mode != 'none' and distance >= 1:
                 self.constraints.append({'date': day,'ticker':t,'reason':'INEFFECTIVE_NONPOSITIVE_STOP'})
         if self.cash < -1e-6:

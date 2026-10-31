@@ -23,9 +23,10 @@ from run_stocks10_research import fx_rows,prior_fx,converted
 from research_momentum10_v2 import RetentionLedger,MODEL,PRIMARY,PRIORITY
 from audit_momentum10_v2 import audit
 from run_portfolio_forward import qualify,fingerprint as h3_fingerprint
+from research_momentum10_fx import ReferenceFX,supplement_native_dividend
 
-FILES=('research_momentum10_v2.py','audit_momentum10_v2.py','run_momentum10_v2.py',
-       'docs/MOMENTUM10_V2_PROTOCOL_20261031.md','tests/test_momentum10_v2.py')
+FILES=('research_momentum10_v2.py','audit_momentum10_v2.py','run_momentum10_v2.py','research_momentum10_fx.py',
+       'docs/MOMENTUM10_V2_PROTOCOL_20261031.md','tests/test_momentum10_v2.py','tests/test_momentum10_fx.py')
 
 
 def recovery(rows):
@@ -91,6 +92,9 @@ def run(args):
     manifest=verify_inputs(args.cache,args.manifest)
     data=complete_data(supplement(make_data(args.cache,EXTENSION_END,True)))
     data.source.cash_actions=dict(data.source.cash_actions,APGE=copy.deepcopy(APGE_COMPLETION))
+    data.fx_xml=Path(args.prior)/'ecb-history.xml'
+    data.native_usd=ReferenceFX(data.fx_xml).usd
+    native_repair=supplement_native_dividend(data)
     initial=20000/prior_fx(rates,data.sessions[0])['usdsek']
     assert math.isclose(initial,20000/old['initial_fx']['usdsek'])
     report=dict(model=MODEL,status='RUNNING',completed=False,evidence_class='DEVELOPMENT_RESEARCH',
@@ -100,10 +104,15 @@ def run(args):
         sources={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in FILES},
         input_manifest=manifest,fx_sha256=old['fx_sha256'],h3_development=qualify(),h3_forward=h3_fingerprint(),
         prior_release='stocks10-research-41180905339-1',comparators=old['comparators'],attempts=[],variants=[])
+    report['native_dividend_repair']=native_repair
     report['prior_stocks10']={v:next(a for a in old['attempts'] if a['name']==f'{v}_5_last_quote_0.0015') for v in ('A','B')}
     report['hypothesis_order']=[r[0] for r in PRIMARY]
     memo,independent={},{}
     specs=list(PRIMARY)
+    resume=json.loads((Path(args.resume)/'results.json').read_text()) if args.resume else None
+    if resume:
+        assert resume['source_commit']=='f156b4175ad59a119b6f0e7071c90e928366637b'
+        assert resume['input_manifest']==manifest and resume['fx_sha256']==old['fx_sha256']
     for identifier,interval,stop in specs:
         for mark in ('last_quote','offer_value'):
             complete_data(data,mark)
@@ -117,14 +126,27 @@ def run(args):
                     print('START '+name,flush=True)
                     try:
                         config=replace(core.CONFIG,model=MODEL,initial_cash=initial,positions=10,one_way_cost=execution)
-                        s=RetentionLedger(cash=initial,interval=interval,stop_mode=stop,risk_budget=identifier=='C')
-                        b=Stocks10Ledger(cash=initial,benchmark_account=True)
-                        s.first_is_month_boundary=data.first_is_month_boundary()
-                        for day in data.sessions:
-                            data.set_day(day);b.step(data,day,config,benchmark=True);s.step_stocks(data,day,config,memo)
+                        reuse=next((a for a in resume['attempts'] if a['name']==name and a['status']=='COMPLETE'),None) if resume and identifier in ('M1','M2') else None
+                        if reuse:
+                            assert stop=='none' and reuse['audit']['status']=='PASS'
+                            folder=Path(args.resume)/name
+                            s=RetentionLedger(**json.loads((folder/'strategy.json').read_text()))
+                            b=Stocks10Ledger(**json.loads((folder/'benchmark.json').read_text()))
+                            # Reconcile again with the new native-currency auditor.
+                            # Any held native dividend would make this fail; no
+                            # completed old account is grandfathered unchecked.
+                            case['reused_from_run']='41184241826'
+                            case['original_case_source']=resume['source_commit']
+                        else:
+                            s=RetentionLedger(cash=initial,interval=interval,stop_mode=stop,risk_budget=identifier=='C')
+                            b=Stocks10Ledger(cash=initial,benchmark_account=True)
+                            s.first_is_month_boundary=data.first_is_month_boundary()
+                            for day in data.sessions:
+                                data.set_day(day);b.step(data,day,config,benchmark=True);s.step_stocks(data,day,config,memo)
                         metrics,periods=core.metrics(s,b)
                         metrics['DailySharpe_zero_rf']=performance(s.equity)['daily_sharpe_zero_rf']
                         checks=audit(data,config,s,b,metrics,independent)
+                        if reuse:assert metrics==reuse['metrics'] and not s.fx_payments
                         gates=core.gates(metrics);finance=all(g['pass'] for g in gates)
                         operational=not s.blocked and not s.constraints and checks['accounting']['max_volume_participation']<=.01
                         case.update(status='COMPLETE',metrics=metrics,gates=gates,audit=checks,
@@ -168,6 +190,7 @@ def run(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     for name in ('cache','manifest','prior','output'):p.add_argument('--'+name,required=True)
+    p.add_argument('--resume')
     args=p.parse_args()
     def offline(*a,**kw):raise RuntimeError('Network forbidden in Momentum10 v2 replay')
     socket.socket.connect=offline;socket.create_connection=offline

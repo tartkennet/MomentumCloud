@@ -145,3 +145,27 @@ Sources: SEC stop execution warning (not a price guarantee):
 https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins-15
 Risk-budget motivation (not validation of this implementation/target):
 https://www.nber.org/papers/w22208
+
+## Technical addendum: native dividend, no strategy changes
+
+Run 41184241826 completed all M1/M2 cases, then blocked M3 on TD's
+2026-01-09 dividend. Its immutable evidence is retained in
+`m10v2-research-41184241826-1`. TD's declaration specifies CAD 1.08,
+not USD 1.08; scheduled 2026-01-31 rolls to 2026-02-02 under TD's
+business-day rule. Repair only this study's in-memory event view.
+https://stories.td.com/ca/en/news/2025-12-04-td-bank-group-declares-dividends
+https://www.td.com/ca/en/about-td/for-investors/investor-relations/share-information/dividends
+
+Native-currency dividend face claims are marked daily using the last
+strictly prior-date ECB cross, then converted only on the first observed
+session on/after the payable day. Deduct the same .25% FX reserve at
+conversion. No invented bank conversion rate or early spendable cash.
+Stop barriers follow the changing USD dividend benefit until payment,
+then freeze that paid benefit. Gross-dividend convention remains before
+tax, matching the earlier studies. Independent code checks native face,
+currency, daily value, payment timing and conversion costs separately.
+
+Reuse the 40 completed M1/M2 states with full new independent reconciliation;
+prove identical financial metrics and zero held native-currency payments.
+Do not rerun those completed experiments or excuse a reconciliation failure.
+Interval/selection/stop/risk-budget rules and financial gates are unchanged.

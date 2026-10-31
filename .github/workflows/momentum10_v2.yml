@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-    paths: ['research_momentum10_v2.py', 'audit_momentum10_v2.py', 'run_momentum10_v2.py', 'docs/MOMENTUM10_V2_PROTOCOL_20261031.md', 'tests/test_momentum10_v2.py', '.github/workflows/momentum10_v2.yml']
+    paths: ['research_momentum10_v2.py', 'audit_momentum10_v2.py', 'run_momentum10_v2.py', 'docs/MOMENTUM10_V2_PROTOCOL_20261031.md', 'tests/test_momentum10_v2.py', 'tests/test_momentum10_fx.py', 'research_momentum10_fx.py', '.github/workflows/momentum10_v2.yml']
 permissions:
   # Draft release download requires repository push scope; original releases
   # are strictly read-only. Results use a NEW unique draft tag.
@@ -33,7 +33,7 @@ jobs:
         run: |
           python - <<'PY'
           import os,subprocess
-          files={'research_momentum10_v2.py','audit_momentum10_v2.py','run_momentum10_v2.py','docs/MOMENTUM10_V2_PROTOCOL_20261031.md','tests/test_momentum10_v2.py'}
+          files={'research_momentum10_v2.py','audit_momentum10_v2.py','run_momentum10_v2.py','docs/MOMENTUM10_V2_PROTOCOL_20261031.md','tests/test_momentum10_v2.py','tests/test_momentum10_fx.py','research_momentum10_fx.py'}
           replay=True
           before=os.environ.get('BEFORE','')
           if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
@@ -60,7 +60,7 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: python -m pip install -r requirements.txt
-      - run: python -m unittest discover -s tests -p test_momentum10_v2.py -v
+      - run: python -m unittest discover -s tests -p 'test_momentum10*.py' -v
       - name: Restore and authenticate saved inputs only
         env:
           GH_TOKEN: ${{ github.token }}
@@ -88,6 +88,20 @@ jobs:
           assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
           with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v2_prior/results',filter='data')
           PY
+      - name: Resume authenticated completed M1 and M2 without replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v2_resume/assets m10v2_resume/results
+          timeout 90s gh release download m10v2-research-41184241826-1 --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern results.tar.gz --dir m10v2_resume/assets
+          python - <<'PY'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          root=Path('m10v2_resume/assets');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='f156b4175ad59a119b6f0e7071c90e928366637b'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v2_resume/results',filter='data')
+          PY
       - name: Unseal historical cache without new market requests
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
@@ -96,7 +110,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p m10v2_output
-          python run_momentum10_v2.py --cache .momentum_core_cache --manifest m10v2_restore/Momentum_core_risk_manifest.json --prior m10v2_prior/results --output m10v2_output 2>&1 | tee m10v2_output/study.log
+          timeout 14m python run_momentum10_v2.py --cache .momentum_core_cache --manifest m10v2_restore/Momentum_core_risk_manifest.json --prior m10v2_prior/results --output m10v2_output --resume m10v2_resume/results 2>&1 | tee m10v2_output/study.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
