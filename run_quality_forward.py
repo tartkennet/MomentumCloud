@@ -123,9 +123,11 @@ def export(report,state,now):
         report['selection_fx']=selected.get('signal_fx',state['initial_fx']);report['selection_nav_usd']=selected.get('signal_nav_usd',state['initial_usd'])
         report['proposed_orders']=selected['plan'] if selected.get('kind')=='MEMBERSHIP' else None
     curve=[]
+    benchmark_valid=bool(b['trades']) and bool(state['opening_observations']) and b['trades'][0]['date']==state['opening_observations'][0]['date']
+    report['benchmark_valid']=benchmark_valid
     for a,bb in zip(s['equity'],b['equity']):
         rate=state['valuation_fx'][a['date']]
-        curve.append(dict(date=a['date'],nav_sek=a['nav']*rate['usdsek'],spy_nav_sek=bb['nav']*rate['usdsek']))
+        curve.append(dict(date=a['date'],nav_sek=a['nav']*rate['usdsek'],spy_nav_sek=bb['nav']*rate['usdsek'] if benchmark_valid else None))
     report.update(paper_started=bool(state['opening_observations']),sessions=len(s['equity']),paper_initialized_at=state['initialized_at'],model_fingerprint=state['model_fingerprint'],pending_intention=state.get('pending'),cash_usd=s['cash'],fees_usd=s['fees'],trades=s['trades'],curve=curve,gaps=state['gaps'],unfilled_orders=state['unfilled_orders'],paper_metrics=None,positions=[],accounting_audits=state['audits'])
     last=s['equity'][-1] if s['equity'] else None
     report['nav_sek']=last['nav']*state['valuation_fx'][last['date']]['usdsek'] if last else 20000
@@ -140,7 +142,7 @@ def export(report,state,now):
     report['valuation_pending']=bool(s['shares']) and (not last or max(t['date'] for t in s['trades'])>last['date'])
     if report['valuation_pending']:report['nav_sek']=None
     result=None;periods=[]
-    if last and b['trades']:
+    if last and benchmark_valid:
         result,periods=metrics(RetentionLedger(**s),RetentionLedger(**b))
         # Return includes initial trading costs rather than normalising them away.
         result['TotalReturn_pct']=100*(last['nav']/state['initial_usd']-1);result['SPYTotalReturn_pct']=100*(b['equity'][-1]['nav']/state['initial_usd']-1);result['TotalEdgeVsSPY_pct']=result['TotalReturn_pct']-result['SPYTotalReturn_pct']

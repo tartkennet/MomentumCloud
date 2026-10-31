@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import math
 from datetime import datetime,time,timezone
 from zoneinfo import ZoneInfo
 from dataclasses import replace
@@ -50,13 +51,13 @@ def execute_pending(state,bars,day,now):
         state['pending']=None;state['unfilled_orders'].append(dict(date=day,reason='CORPORATE_ACTION_INVALIDATED_COMMITMENT',commitment=h));return
     for order in orders:
         t=order['ticker'];bar=bars.get(t);price=bar[0] if bar else None
-        if not price or (order['side']=='BUY' and price>order['limit']):unfilled.append(dict(order,reason='MISSING_OPEN_OR_BUY_LIMIT'));continue
+        if not isinstance(price,(float,int)) or not math.isfinite(price) or price<=0 or len(bar)<3 or not bar[2] or bar[2]<=0 or (order['side']=='BUY' and price>order['limit']):unfilled.append(dict(order,reason='MISSING_OPEN_OR_BUY_LIMIT'));continue
         if order['side']=='BUY' and any(o['side']=='SELL' for o in unfilled):unfilled.append(dict(order,reason='EXIT_NOT_FILLED'));continue
         q=order['quantity']
         if order['side']=='SELL' and s.shares.get(t,0)<q:raise DataUnavailable('CORPORATE_ACTION_CHANGED_COMMITTED_QUANTITY')
         from research_stocks10 import fee
         if order['side']=='BUY' and q*price+fee(q*price)>s.cash+1e-8:unfilled.append(dict(order,reason='ACTUAL_CASH_INSUFFICIENT'));continue
-        s._trade(day,p['signal_date'],t,order['side'],q,price,config,'QUALITY_MEMBERSHIP',
+        s._trade(day,p['signal_date'],t,order['side'],q,price,config,'QUALITY_'+p.get('kind','MEMBERSHIP'),
             decision_at=p['created_at'],execution_at=opening(day).isoformat(),quote_observed_at=now.isoformat(),commitment_sha256=h)
     state['strategy']=s.to_dict();state['pending']=None;state['unfilled_orders'].extend(dict(o,date=day,observed_at=now.isoformat()) for o in unfilled)
     state['decision_month']=day[:7];state['opening_observations'].append(dict(date=day,observed_at=now.isoformat(),commitment=h,unfilled=len(unfilled)))
@@ -64,7 +65,7 @@ def execute_pending(state,bars,day,now):
     if bp and not state['benchmark']['trades']:
         from research_stocks10 import fee
         b=RetentionLedger(**state['benchmark']);price=bars.get('SPY',[None])[0]
-        if price and price<=bp['limit'] and bp['quantity']*price+fee(bp['quantity']*price)<=b.cash:
+        if isinstance(price,(float,int)) and math.isfinite(price) and price>0 and bars['SPY'][2] and bars['SPY'][2]>0 and price<=bp['limit'] and bp['quantity']*price+fee(bp['quantity']*price)<=b.cash:
             b._trade(day,p['signal_date'],'SPY','BUY',bp['quantity'],price,config,'BENCHMARK',decision_at=p['created_at'],execution_at=opening(day).isoformat(),quote_observed_at=now.isoformat(),commitment_sha256=h)
             state['benchmark']=b.to_dict()
         else:state['gaps'].append(dict(kind='BENCHMARK_OPEN_UNFILLED',session=day,observed_at=now.isoformat()))

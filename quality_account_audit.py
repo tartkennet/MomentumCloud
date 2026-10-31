@@ -58,6 +58,7 @@ def audit_account(state,key,benchmark=False):
             assert datetime.fromisoformat(t['decision_at'])<datetime.fromisoformat(t['execution_at'])<=datetime.fromisoformat(t['quote_observed_at'])
             quote=next(o for o in state['opening_quotes'] if o['date']==day)
             near(price,quote['bars'][symbol][0])
+            assert quote['bars'][symbol][2]>0
             o=decision['benchmark_order'] if benchmark else next(o for o in decision['plan']['orders'] if o['ticker']==symbol and o['side']==side)
             assert q==o['quantity']
             if side=='BUY':assert price<=o['limit']
@@ -74,6 +75,16 @@ def audit_account(state,key,benchmark=False):
             for a,b in [(cash,r['cash']),(fees,r['fees_cumulative']),(stock,r['stock_value']),(due,r['receivables']),(cash+stock+due,r['nav'])]:near(a,b)
     near(cash,account['cash']);near(fees,account['fees']);assert set(shares)==set(account['shares'])
     for t,q in shares.items():near(q,account['shares'][t])
+    expected_claims={};actual_claims={}
+    for c in claims:
+        k=(c['ticker'],c['currency'],c['pay']);expected_claims[k]=expected_claims.get(k,0)+c['face']
+    latest_fx=events[max(events)]['fx'] if events else {'USD':1}
+    for c in account['receivables']:
+        currency=c.get('currency','USD');face=c.get('native_amount',c['amount']);k=(c['ticker'],currency,c['pay_date'])
+        actual_claims[k]=actual_claims.get(k,0)+face
+        near(c['amount'],face*latest_fx[currency])
+    assert set(expected_claims)==set(actual_claims)
+    for k in expected_claims:near(expected_claims[k],actual_claims[k])
     return dict(status='PASS',trades=checks,valuations=len(equity),corporate_event_days=len(events),independent_code=True)
 
 

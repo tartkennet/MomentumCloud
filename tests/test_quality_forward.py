@@ -70,5 +70,11 @@ class ControllerTests(unittest.TestCase):
         report['paper_metrics']['DailyMaxDrawdown_pct']=-50
         with self.assertRaises(AssertionError):audit_statistics(s,report)
 
+    def test_nonfinite_or_zero_volume_quotes_never_create_trades(self):
+        from quality_forward import process
+        s=self.state();orders=s['pending']['plan']['orders'];bars={o['ticker']:[float('nan'),20,0] for o in orders}
+        got=process(s,{},datetime.fromisoformat('2026-11-02T15:15:00+00:00'),['2026-11-02'],bars)
+        self.assertFalse(got['strategy']['trades']);self.assertEqual(len(got['unfilled_orders']),10)
+
 
 if __name__=='__main__':unittest.main()
