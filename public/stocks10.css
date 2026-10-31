@@ -3,3 +3,5 @@
 .stocks10 .metric-card{background:var(--mint-card);padding:1.4rem;border-radius:22px;min-width:0}.stocks10 .metric-card:nth-child(2){background:var(--peach-card)}.stocks10 .metric-card:nth-child(3){background:var(--blue-card)}.stocks10 .metric-card:nth-child(4){background:var(--lime-card)}.stocks10 .metric-card p{font-size:1rem;margin:0 0 .6rem}.stocks10 .metric-card strong{font-size:clamp(1.7rem,3.3vw,2.5rem);line-height:1.15;letter-spacing:-.04em}.stocks10 .s10-nav a{color:var(--text)}:root[data-theme=dark] .s10-hero{background:radial-gradient(circle at 95% 5%,#245b4a 0,transparent 45%),linear-gradient(125deg,#53392e,#243b39 55%,#1e555e);color:var(--text)}
 
 .s10-trade>div{min-width:0;overflow-wrap:anywhere}.stocks10 .metric-card strong{overflow-wrap:anywhere}
+
+@media(max-width:650px){.stocks10 .metric-card{padding:1rem}.stocks10 .metric-card strong{font-size:1.6rem;white-space:nowrap;overflow-wrap:normal}.stocks10 .metric-card p{min-height:4.5em;line-height:1.5}}
