@@ -48,6 +48,11 @@ def current_filing(provider,ticker,observed_at):
     parsed=urlparse(url)
     if parsed.hostname not in ('api.massive.com','api.polygon.io') or parsed.query:raise DataUnavailable('UNTRUSTED_INSTANCE_URL')
     if not parsed.path.startswith('/v1/reference/sec/filings/'+filing['id']+'/files/'):raise DataUnavailable('MISMATCHED_INSTANCE')
+    entity=next((e['company_data'] for e in filing['entities'] if e.get('relation')=='filer' and ticker in e.get('company_data',{}).get('tickers',[e.get('company_data',{}).get('ticker')])),None)
+    if not entity:raise DataUnavailable('TICKER_FILTER_MISMATCH')
+    amendments=provider.get('/stocks/filings/vX/index',{'cik':entity['cik'],'form_type.any_of':'10-K/A,10-Q/A','filing_date.gte':iso_date(filing['filing_date']),'limit':1})
+    if amendments.get('results'):raise DataUnavailable('AMENDMENT_REQUIRES_REVIEW')
+    filing['amendments_checked_at']=observed_at
     raw=provider.get(parsed.path,xml=True)
     return filing,raw
 
@@ -56,9 +61,12 @@ def save_original(root,filing,raw,observed_at):
     root=Path(root);root.mkdir(parents=True,exist_ok=True);accession=filing['accession_number']
     if any(c not in '0123456789-' for c in accession):raise DataUnavailable('INVALID_ACCESSION')
     digest=hashlib.sha256(raw).hexdigest();stem=accession+'-'+digest[:16]
-    with gzip.open(root/(stem+'.xml.gz'),'wb') as f:f.write(raw)
+    prior=list(root.glob(accession+'-*.json'))
+    if prior and any(json.loads(p.read_text())['sha256']!=digest for p in prior):raise DataUnavailable('ORIGINAL_ACCESSION_CHANGED')
+    if not (root/(stem+'.xml.gz')).exists():
+        with gzip.open(root/(stem+'.xml.gz'),'wb') as f:f.write(raw)
     receipt=dict(observed_at=observed_at,filing=filing,sha256=digest,xml_asset=stem+'.xml.gz',source='original SEC XBRL via existing Massive filing-file endpoint')
-    (root/(stem+'.json')).write_text(json.dumps(receipt,indent=2))
+    if not (root/(stem+'.json')).exists():(root/(stem+'.json')).write_text(json.dumps(receipt,indent=2))
     return receipt
 
 

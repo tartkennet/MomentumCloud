@@ -41,3 +41,14 @@ The initial AAPL/MSFT requests test the data transport/parser only; they do
 not define an investable universe or become a handpicked backtest sample.
 Analyst revisions are EXCLUDED unless reliable original observation vintages
 are available. No realised EPS substituted for prior analyst expectations.
+
+Verified transport follow-up (run41208670284): direct SEC API returns403
+from Actions, but the existing app key CAN retrieve original SEC XBRL from
+/v1/reference/sec/filings/{id}/files/{file_id}. Both AAPL and MSFT originals
+were archived byte-for-byte with SHA256. These are original filing instances,
+not the current restated statement API. Filing index access and original-file
+access are distinct from paid Financials/analyst endpoints. The new model uses
+this working original-file route; no SEC access restriction is bypassed.
+Original metadata/instance identity, reporting periods, units and all selected
+values are independently reconciled. Availability of two originals is not a
+certification of a complete historical strategy panel.
