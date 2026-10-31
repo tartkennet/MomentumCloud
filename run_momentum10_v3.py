@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import socket
+import shutil
 import statistics
 import subprocess
 from collections import Counter
@@ -120,6 +121,17 @@ def run(args):
     report['hypothesis_order']=['R']
     memo,independent={},{}
     specs=[('R_M1_none',1,'none')]
+    resume=None
+    if args.resume:
+        resume=json.loads((Path(args.resume)/'results.json').read_text())
+        assert resume['source_commit']=='157876556c7838855b8bcc26c54c8422bcc8e8a5'
+        assert resume['input_manifest']==manifest and resume['fx_sha256']==old['fx_sha256']
+        assert resume['h3_development']==report['h3_development'] and resume['h3_forward']==report['h3_forward']
+        for f,h in resume['sources'].items():
+            if f!='run_momentum10_v3.py':assert hashlib.sha256(Path(f).read_bytes()).hexdigest()==h,f
+        report['resume_source']=resume['source_commit']
+        report['resume_run']=args.resume_run
+
     for identifier,interval,stop in specs:
         stage=identifier[0]
         for mark in ('last_quote','offer_value'):
@@ -133,33 +145,46 @@ def run(args):
                     report['attempts'].append(case);atomic_json(out/'results.json',report)
                     print('START '+name,flush=True)
                     try:
-                        config=replace(core.CONFIG,model=MODEL,initial_cash=initial,positions=10,one_way_cost=execution)
-                        s=SelectionLedger(cash=initial,interval=interval,stop_mode=stop,stage=stage)
-                        b=Stocks10Ledger(cash=initial,benchmark_account=True)
-                        s.first_is_month_boundary=data.first_is_month_boundary()
-                        for day in data.sessions:
-                            data.set_day(day);b.step(data,day,config,benchmark=True);s.step_stocks(data,day,config,memo)
-                        metrics,periods=core.metrics(s,b)
-                        metrics['DailySharpe_zero_rf']=performance(s.equity)['daily_sharpe_zero_rf']
-                        checks=audit(data,config,s,b,metrics,independent)
-                        gates=core.gates(metrics);finance=all(g['pass'] for g in gates)
-                        operational=not s.blocked and not s.constraints and checks['accounting']['max_volume_participation']<=.01
-                        case.update(status='COMPLETE',metrics=metrics,gates=gates,audit=checks,
-                            financial_pass=finance,operational_pass=operational,
-                            decision='PAPER_ONLY' if finance and operational else 'NO_GO',
-                            sek=performance(converted(s,rates)),spy_sek=performance(converted(b,rates)),
-                            fee_initial_capital_pct=s.fees/initial*100,blocked=s.blocked,
-                            operational_constraints=s.constraints,
-                            trading=diagnostics(data,s),signal_risk=signal_risk(data,s),
-                            calendar=describe([dict(r,spy_nav=z['nav']) for r,z in zip(s.equity,b.equity)]))
-                        folder=out/name;folder.mkdir()
-                        atomic_json(folder/'strategy.json',s.to_dict());atomic_json(folder/'benchmark.json',b.to_dict())
-                        atomic_json(folder/'result.json',case)
-                        # Export observed cached marks now, avoiding any later price API.
-                        atomic_json(folder/'final_marks.json',{t:data.bars(data.sessions[-1])[t][1] for t in s.shares})
-                        atomic_json(folder/'curve.json',[dict(date=r['date'],nav_sek=r['nav']*prior_fx(rates,r['date'])['usdsek'],
-                            spy_sek=z['nav']*prior_fx(rates,z['date'])['usdsek']) for r,z in zip(s.equity,b.equity)])
-                        print('DONE '+name+' '+json.dumps(dict(metrics=metrics,fees=s.fees,orders=case['trading']['market_orders'],paper=case['decision'])),flush=True)
+                        reused=next((a for a in resume['attempts'] if a['name']==name and a['status']=='COMPLETE'),None) if resume else None
+                        if reused:
+                            assert reused['audit']['status']=='PASS'
+                            original=Path(args.resume)/name;folder=out/name
+                            s=SelectionLedger(**json.loads((original/'strategy.json').read_text()))
+                            b=Stocks10Ledger(**json.loads((original/'benchmark.json').read_text()))
+                            metrics,_=core.metrics(s,b);metrics['DailySharpe_zero_rf']=performance(s.equity)['daily_sharpe_zero_rf']
+                            assert metrics==reused['metrics'] and core.gates(metrics)==reused['gates']
+                            case.clear();case.update(copy.deepcopy(reused),reused_from_run=args.resume_run,
+                                original_case_source=resume['source_commit'])
+                            shutil.copytree(original,folder);atomic_json(folder/'result.json',case)
+                            print('REUSED '+name+' independently approved immutable case',flush=True)
+                        else:
+                            config=replace(core.CONFIG,model=MODEL,initial_cash=initial,positions=10,one_way_cost=execution)
+                            s=SelectionLedger(cash=initial,interval=interval,stop_mode=stop,stage=stage)
+                            b=Stocks10Ledger(cash=initial,benchmark_account=True)
+                            s.first_is_month_boundary=data.first_is_month_boundary()
+                            for day in data.sessions:
+                                data.set_day(day);b.step(data,day,config,benchmark=True);s.step_stocks(data,day,config,memo)
+                            metrics,periods=core.metrics(s,b)
+                            metrics['DailySharpe_zero_rf']=performance(s.equity)['daily_sharpe_zero_rf']
+                            checks=audit(data,config,s,b,metrics,independent)
+                            gates=core.gates(metrics);finance=all(g['pass'] for g in gates)
+                            operational=not s.blocked and not s.constraints and checks['accounting']['max_volume_participation']<=.01
+                            case.update(status='COMPLETE',metrics=metrics,gates=gates,audit=checks,
+                                financial_pass=finance,operational_pass=operational,
+                                decision='PAPER_ONLY' if finance and operational else 'NO_GO',
+                                sek=performance(converted(s,rates)),spy_sek=performance(converted(b,rates)),
+                                fee_initial_capital_pct=s.fees/initial*100,blocked=s.blocked,
+                                operational_constraints=s.constraints,
+                                trading=diagnostics(data,s),signal_risk=signal_risk(data,s),
+                                calendar=describe([dict(r,spy_nav=z['nav']) for r,z in zip(s.equity,b.equity)]))
+                            folder=out/name;folder.mkdir()
+                            atomic_json(folder/'strategy.json',s.to_dict());atomic_json(folder/'benchmark.json',b.to_dict())
+                            atomic_json(folder/'result.json',case)
+                            # Export observed cached marks now, avoiding any later price API.
+                            atomic_json(folder/'final_marks.json',{t:data.bars(data.sessions[-1])[t][1] for t in s.shares})
+                            atomic_json(folder/'curve.json',[dict(date=r['date'],nav_sek=r['nav']*prior_fx(rates,r['date'])['usdsek'],
+                                spy_sek=z['nav']*prior_fx(rates,z['date'])['usdsek']) for r,z in zip(s.equity,b.equity)])
+                            print('DONE '+name+' '+json.dumps(dict(metrics=metrics,fees=s.fees,orders=case['trading']['market_orders'],paper=case['decision'])),flush=True)
                     except Exception as e:
                         checkpoint=out/(name+'_TECHNICAL_PARTIAL');checkpoint.mkdir(exist_ok=True)
                         atomic_json(checkpoint/'strategy.json',s.to_dict());atomic_json(checkpoint/'benchmark.json',b.to_dict())
@@ -196,6 +221,7 @@ def run(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     for name in ('cache','manifest','prior','v2','output'):p.add_argument('--'+name,required=True)
+    p.add_argument('--resume');p.add_argument('--resume-run')
     args=p.parse_args()
     def offline(*a,**kw):raise RuntimeError('Network forbidden in Momentum10 v3 replay')
     socket.socket.connect=offline;socket.create_connection=offline

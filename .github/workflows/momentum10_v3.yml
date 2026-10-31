@@ -102,6 +102,20 @@ jobs:
           assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
           with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v3_resume/results',filter='data')
           PY
+      - name: Restore completed immutable v3 cases after bounded-run timeout
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_checkpoint/assets m10v3_checkpoint/results
+          timeout 90s gh release download m10v3-research-41196824070-1 --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern results.tar.gz --dir m10v3_checkpoint/assets
+          python - <<'PYCODE'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          root=Path('m10v3_checkpoint/assets');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='157876556c7838855b8bcc26c54c8422bcc8e8a5'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v3_checkpoint/results',filter='data')
+          PYCODE
       - name: Unseal historical cache without new market requests
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
@@ -110,7 +124,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p m10v3_output
-          timeout 18m python run_momentum10_v3.py --cache .momentum_core_cache --manifest m10v3_restore/Momentum_core_risk_manifest.json --prior m10v3_prior/results --output m10v3_output --v2 m10v3_resume/results 2>&1 | tee m10v3_output/study.log
+          timeout 18m python run_momentum10_v3.py --cache .momentum_core_cache --manifest m10v3_restore/Momentum_core_risk_manifest.json --prior m10v3_prior/results --output m10v3_output --v2 m10v3_resume/results --resume m10v3_checkpoint/results --resume-run 41196824070 2>&1 | tee m10v3_output/study.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
