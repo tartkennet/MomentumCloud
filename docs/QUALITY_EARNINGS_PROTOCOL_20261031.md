@@ -139,3 +139,39 @@ This change addresses documented reporting coverage, not a favourable return.
 Model identity is momentum10-quality-earnings-net-v1. There are no other field,
 threshold or horizon alternatives in this register. Any subsequent prototype
 return would be a separately registered study, never quietly merged into v1.
+
+
+## Operational paper freeze, before the first possible market opening
+
+Prospective accounting uses a non-borrowed USD cash subaccount. SEK20,000 is
+anchored to the strictly prior-date ECB USD/SEK fixing; the cash thereafter has
+USD currency exposure, as do the stocks and the benchmark. The per-order25bp
+FX charge is a conservative conversion reserve, not a claim of the exact cash
+sweep mechanics of a standard SEK ISK. Actual broker/account support and
+instrument availability remain unverified prerequisites for any live approval.
+This listing universe includes US-listed foreign issuers (for example SHOP);
+NYSE/Nasdaq listing is not a claim of US incorporation. No fund holdings.
+
+The controller freezes hashes of the economic code, parser, protocol and reused
+bookkeeping dependencies. A changed fingerprint blocks continuation of that
+cohort. Serialize scheduled runs; the independent ledger verifier checks raw
+observed opening quotes, committed quantities, costs, splits, native dividend
+claims/payments, mergers/distributions and NAV. Append full accepted state and
+previous-state SHA to unique journal paths; never overwrite prior decisions,
+trades or equity observations. Archive original receipts separately in draft
+releases, authenticate input files, keep two encrypted rolling market caches,
+and publish the durable pointer only after successful preservation. Ordinary
+fast-forward Git pushes reject concurrent writers. Public journals contain no
+API keys. Repository administrators can alter Git history; hashes and separate
+immutable observation releases make changes detectable, not cryptographically
+impossible. No broker clients or order API credentials are used.
+
+Production schedules Mon–Fri08:17,14:47,15:47,22:17UTC. Actual source-observed
+opening fills only09:30–11:30America/New_York, after the prior commitment.
+The unfinished current bar is never placed in the completed-close cache. Closed
+valuations are registered on the next actual collection, with quote date and
+observation timestamp; missed valuation dates are flagged without backfilling.
+The public monitor marks a missing scheduled publication after30minutes grace.
+Sharpe requires20 actual contiguous daily observations; it is not fabricated
+from initialization cash. No economic pass can authorize live trading; future
+cost-stress/market-liquidity checks remain separate from the five base gates.

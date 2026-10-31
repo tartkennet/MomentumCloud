@@ -66,7 +66,7 @@ def market_universe(data,day,nav):
 def fundamentals(row,cache):
     row=copy.deepcopy(row);provider=Provider()
     try:
-        filing,raw=current_filing(provider,row['ticker'],datetime.now(timezone.utc).isoformat())
+        filing,raw=current_filing(provider,row['ticker'],datetime.now(timezone.utc).isoformat(),cache)
         observed=datetime.now(timezone.utc).isoformat();receipt=save_original(cache,filing,raw,observed)
         entity=next(e['company_data'] for e in filing['entities'] if e.get('relation')=='filer' and str(e['company_data']['cik']).zfill(10)==row['cik'])
         sic=str(entity.get('sic','')).zfill(4)
@@ -96,15 +96,17 @@ def collect(args):
         adapter.PolygonClient=lambda key:client
         data=supplement(make_data(cache,end,False));day=data.sessions[-1]
         if (now.date()-datetime.fromisoformat(day).date()).days>4:raise DataUnavailable('STALE_MARKET_PRICES')
-        rates=ecb_rates();fx=prior_fx(rates,now.date().isoformat());nav=20000/fx['usdsek']
+        rates=ecb_rates();fx=prior_fx(rates,now.date().isoformat());nav=getattr(args,'capital_usd',None) or 20000/fx['usdsek']
         universe,exclusions,risk_on=market_universe(data,day,nav)
         report.update(price_as_of=day,fx=fx,fx_history=rates,risk_on=risk_on,universe_count=len(universe),price_exclusions=exclusions)
         results=[]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        pool=concurrent.futures.ThreadPoolExecutor(max_workers=4)
+        try:
             futures={pool.submit(fundamentals,r,Path(args.fundamentals)):r['ticker'] for r in universe}
-            for future in concurrent.futures.as_completed(futures):
+            for future in concurrent.futures.as_completed(futures,timeout=420):
                 results.append(future.result());report['candidates']=sorted(results,key=lambda r:r['ticker'])
                 atomic_json(out/'quality.json',report);print('FUNDAMENTAL',len(results),len(universe),futures[future],results[-1]['data_status'],flush=True)
+        finally:pool.shutdown(wait=True,cancel_futures=True)
         valid=[r for r in results if r['data_status']=='VERIFIED']
         coverage=sum(r['resolved'] for r in results)/len(universe) if universe else 0
         targets=choose(valid,nav);selection_check=audit_selection(valid,targets,nav)
@@ -123,7 +125,7 @@ def collect(args):
             qualified_count=sum(r['fundamental']['qualified'] for r in valid),targets=targets,proposed_orders=plan,
             audits=dict(selection=selection_check,orders=order_check,fundamentals_checked=len(valid)),
             status='PAPER_READY_AWAITING_SESSION' if permit else 'DATA_BLOCKED' if coverage<.9 else 'RISK_OFF' if not risk_on else 'SELECTION_BLOCKED',
-            paper_start_permit=permit,initial_usd=nav,
+            paper_start_permit=permit,initial_usd=20000/fx['usdsek'],selection_nav_usd=nav,
             observations_remaining=30,analyst_revisions='EXCLUDED_NO_VERIFIED_VINTAGES',
             price_mode='LAST_OBSERVED_CLOSE',realtime_verified=False,
             limitations=['No certified historical as-filed universe panel; no historical return is reported.',

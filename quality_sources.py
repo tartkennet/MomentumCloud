@@ -34,7 +34,7 @@ def iso_date(value):
     return s[:10]
 
 
-def current_filing(provider,ticker,observed_at):
+def current_filing(provider,ticker,observed_at,cache=None):
     choices=[]
     for form in ('10-Q','10-K'):
         payload=provider.get('/v1/reference/sec/filings',{'entities.company_data.ticker':ticker,'type':form,'sort':'filing_date','order':'desc','limit':1})
@@ -53,7 +53,16 @@ def current_filing(provider,ticker,observed_at):
     amendments=provider.get('/stocks/filings/vX/index',{'cik':entity['cik'],'form_type.any_of':'10-K/A,10-Q/A','filing_date.gte':iso_date(filing['filing_date']),'limit':1})
     if amendments.get('results'):raise DataUnavailable('AMENDMENT_REQUIRES_REVIEW')
     filing['amendments_checked_at']=observed_at
-    raw=provider.get(parsed.path,xml=True)
+    raw=None
+    if cache:
+        for p in Path(cache).glob(filing['accession_number']+'-*.json'):
+            saved=json.loads(p.read_text());asset=Path(cache)/saved['xml_asset']
+            if asset.name!=saved['xml_asset']:raise DataUnavailable('UNTRUSTED_CACHED_ASSET')
+            if asset.exists():
+                with gzip.open(asset,'rb') as f:candidate=f.read()
+                if hashlib.sha256(candidate).hexdigest()!=saved['sha256']:raise DataUnavailable('CHANGED_CACHED_ORIGINAL')
+                raw=candidate;break
+    if raw is None:raw=provider.get(parsed.path,xml=True)
     return filing,raw
 
 

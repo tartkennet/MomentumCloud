@@ -1,0 +1,113 @@
+name: Quality and Earnings prospective paper
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['quality_*.py','run_quality_forward.py','collect_quality.py','publish_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml']
+  pull_request:
+    branches: [main]
+    paths: ['quality_*.py','run_quality_forward.py','publish_quality.py','.github/workflows/quality_forward.yml','tests/test_quality*.py']
+  schedule:
+    - cron: '17 8,22 * * 1-5'
+    - cron: '47 14,15 * * 1-5'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: quality-earnings-paper-v1
+  cancel-in-progress: false
+jobs:
+  paper:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_quality*.py' -v
+      - name: Restore durable observations and authenticated cached prices
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p quality_restore/assets quality_restore/results quality_previous quality_output
+          python - <<'PY'
+          import subprocess,json,hashlib,tarfile,shutil,os
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY'];branch='quality-observed-snapshots'
+          def gh(*args):return subprocess.run(['gh',*args,'--repo',repo],text=True,capture_output=True,check=True,timeout=120).stdout
+          refs=subprocess.run(['git','ls-remote','--heads','origin','refs/heads/'+branch],capture_output=True,text=True,check=True,timeout=30).stdout
+          prior=None
+          if refs:
+              subprocess.run(['git','fetch','--no-tags','origin','refs/heads/'+branch],check=True,timeout=45)
+              base=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
+              prior=json.loads(subprocess.check_output(['git','show',base+':quality-current-manifest.json'],text=True))
+          tag=prior['release_tag'] if prior else 'quality-observation-41211445204-1'
+          gh('release','download',tag,'--pattern','quality_observation.tar.gz','--pattern','quality_manifest.json','--dir','quality_restore/assets')
+          root=Path('quality_restore/assets');m=json.loads((root/'quality_manifest.json').read_text())
+          assert hashlib.sha256((root/'quality_observation.tar.gz').read_bytes()).hexdigest()==m['sha256']
+          if prior:assert m==prior
+          with tarfile.open(root/'quality_observation.tar.gz') as t:t.extractall('quality_restore/results',filter='data')
+          results=Path('quality_restore/results')
+          if prior:
+              if (results/'state.json').exists():shutil.copyfile(results/'state.json','quality_previous/state.json')
+              shutil.copyfile(results/'quality.json','quality_previous/quality.json')
+              assert prior['cache_asset'] in ('quality_cache_0.sealed','quality_cache_1.sealed')
+              gh('release','download','quality-paper-inputs-v1','--pattern',prior['cache_asset'],'--output','quality_restore/cache.sealed')
+              assert hashlib.sha256(Path('quality_restore/cache.sealed').read_bytes()).hexdigest()==prior['cache_sha256']
+          else:shutil.copyfile(results/'market_cache.sealed','quality_restore/cache.sealed')
+          shutil.copyfile(results/'base_manifest.json','quality_output/base_manifest.json')
+          shutil.copytree(results/'originals','quality_output/originals',dirs_exist_ok=True)
+          Path('quality_restore/previous_manifest.json').write_text(json.dumps(prior))
+          PY
+          python cache_momentum_inputs.py unseal --sealed quality_restore/cache.sealed --cache-dir .quality_market_cache
+      - name: Observe current sources and run the frozen future-only controller
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: timeout --preserve-status 10m python run_quality_forward.py --cache .quality_market_cache --manifest quality_output/base_manifest.json --previous quality_previous --output quality_output
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quality_paper_summary
+          path: |
+            quality_output/quality.json
+            quality_output/state.json
+          retention-days: 30
+      - name: Encrypt cache and preserve the observation before publication
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          python cache_momentum_inputs.py seal --cache-dir .quality_market_cache --sealed quality_restore/updated.sealed
+          python - <<'PY'
+          import subprocess,json,hashlib,tarfile,os,shutil
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY'];run=os.environ['GITHUB_RUN_ID'];attempt=os.environ['GITHUB_RUN_ATTEMPT'];tag='quality-paper-'+run+'-'+attempt
+          def gh(*args):return subprocess.run(['gh',*args,'--repo',repo],text=True,capture_output=True,check=True,timeout=120).stdout
+          prior=json.loads(Path('quality_restore/previous_manifest.json').read_text());slot=1-prior['cache_slot'] if prior else 0
+          cache=Path('quality_restore')/('quality_cache_'+str(slot)+'.sealed');shutil.copyfile('quality_restore/updated.sealed',cache)
+          v=subprocess.run(['gh','release','view','quality-paper-inputs-v1','--repo',repo,'--json','isDraft'],text=True,capture_output=True,timeout=30)
+          if v.returncode:
+              if 'release not found' not in v.stderr.lower():raise RuntimeError('Cannot verify cache release')
+              gh('release','create','quality-paper-inputs-v1','--draft','--title','Quality encrypted rotating inputs','--notes','Authenticated source cache. No broker capability.')
+          else:assert json.loads(v.stdout)['isDraft']
+          gh('release','upload','quality-paper-inputs-v1',str(cache),'--clobber')
+          archive=Path('quality_observation.tar.gz')
+          with tarfile.open(archive,'w:gz') as t:t.add('quality_output',arcname='.')
+          meta=dict(release_tag=tag,sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),run=run,cache_slot=slot,cache_asset=cache.name,cache_sha256=hashlib.sha256(cache.read_bytes()).hexdigest(),live_approved=False,broker_orders_enabled=False)
+          Path('quality_manifest.json').write_text(json.dumps(meta))
+          gh('release','create',tag,str(archive),'quality_manifest.json','--draft','--title','Quality prospective observation '+run,'--notes','Immutable original receipts, paper record and manifest. No historical fills. No live trading.')
+          PY
+      - name: Publish the accepted independent paper journal
+        if: github.event_name != 'pull_request'
+        run: python publish_quality.py --folder quality_output --manifest quality_manifest.json

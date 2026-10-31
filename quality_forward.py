@@ -27,9 +27,9 @@ def opening_window(now):
 def commit_plan(state,report,now,prices):
     s=RetentionLedger(**state['strategy']);targets=report['targets']
     plan=plan_orders(targets,s.shares,report['initial_usd'] if not s.equity else s.equity[-1]['nav'],s.cash,prices)
-    intention=dict(created_at=now.isoformat(),signal_date=report['price_as_of'],targets=targets,plan=plan,
+    intention=dict(created_at=now.isoformat(),signal_date=report['price_as_of'],targets=targets,plan=plan,kind='MEMBERSHIP',
         model_fingerprint=state['model_fingerprint'],sources=[r['fundamental']['sha256'] for r in targets])
-    intention['sha256']=digest(intention);state['pending']=intention;state['decision_month']=now.astimezone(NY).strftime('%Y-%m')
+    intention['sha256']=digest(intention);state['pending']=intention
     state['decisions'].append(copy.deepcopy(intention));return intention
 
 
@@ -42,6 +42,9 @@ def execute_pending(state,bars,day,now):
     if p['model_fingerprint']!=state['model_fingerprint']:raise DataUnavailable('CHANGED_FROZEN_MODEL')
     s=RetentionLedger(**state['strategy']);config=replace(CONFIG,positions=10)
     orders=p['plan']['orders'];unfilled=[]
+    changed=state.get('event_changed_tickers',[])
+    if any(o['ticker'] in changed for o in orders):
+        state['pending']=None;state['unfilled_orders'].append(dict(date=day,reason='CORPORATE_ACTION_INVALIDATED_COMMITMENT',commitment=h));return
     for order in orders:
         t=order['ticker'];bar=bars.get(t);price=bar[0] if bar else None
         if not price or (order['side']=='BUY' and price>order['limit']):unfilled.append(dict(order,reason='MISSING_OPEN_OR_BUY_LIMIT'));continue
@@ -54,13 +57,21 @@ def execute_pending(state,bars,day,now):
             decision_at=p['created_at'],execution_at=opening(day).isoformat(),quote_observed_at=now.isoformat(),commitment_sha256=h)
     state['strategy']=s.to_dict();state['pending']=None;state['unfilled_orders'].extend(dict(o,date=day,observed_at=now.isoformat()) for o in unfilled)
     state['decision_month']=day[:7];state['opening_observations'].append(dict(date=day,observed_at=now.isoformat(),commitment=h,unfilled=len(unfilled)))
+    bp=p.get('benchmark_order')
+    if bp and not state['benchmark']['trades']:
+        from research_stocks10 import fee
+        b=RetentionLedger(**state['benchmark']);price=bars.get('SPY',[None])[0]
+        if price and price<=bp['limit'] and bp['quantity']*price+fee(bp['quantity']*price)<=b.cash:
+            b._trade(day,p['signal_date'],'SPY','BUY',bp['quantity'],price,config,'BENCHMARK',decision_at=p['created_at'],execution_at=opening(day).isoformat(),quote_observed_at=now.isoformat(),commitment_sha256=h)
+            state['benchmark']=b.to_dict()
+        else:state['gaps'].append(dict(kind='BENCHMARK_OPEN_UNFILLED',session=day,observed_at=now.isoformat()))
 
 
 def bootstrap(report,fingerprint,now):
     return dict(schema_version=1,model_fingerprint=fingerprint,initialized_at=now.isoformat(),initial_usd=report['initial_usd'],initial_fx=report['fx'],
         strategy=RetentionLedger(cash=report['initial_usd']).to_dict(),benchmark=RetentionLedger(cash=report['initial_usd']).to_dict(),
         decisions=[],pending=None,unfilled_orders=[],opening_observations=[],valuation_observations=[],event_through=now.astimezone(NY).date().isoformat(),
-        decision_month='',gaps=[],previous_state_sha256=None)
+        decision_month='',gaps=[],previous_state_sha256=None,previous_risk=None,event_changed_tickers=[],event_journal=[],valuation_quotes={})
 
 
 def process(state,report,now,market_days,bars=None):
