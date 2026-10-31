@@ -42,6 +42,9 @@ def choose(rows,nav):
         if row['cik'] in issuers or industries[industry]>=2 or divisions[sector]>=4:continue
         minimum=p+fee(p)
         if p>nav*.20 or reserved+minimum+(9-len(selected))*(10.2+fee(10.2))>nav:continue
+        trial=selected+[row]
+        if sum(r['price_usd']*1.02 for r in trial if str(r['sic'])[:2]==industry)>nav*.30+1e-8:continue
+        if sum(r['price_usd']*1.02 for r in trial if division(r['sic'])==sector)>nav*.50+1e-8:continue
         selected.append(row);reserved+=minimum;industries[industry]+=1;divisions[sector]+=1;issuers.add(row['cik'])
         if len(selected)==10:return selected
     return []

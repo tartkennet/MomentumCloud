@@ -108,7 +108,9 @@ def collect(args):
         valid=[r for r in results if r['data_status']=='VERIFIED']
         coverage=sum(r['resolved'] for r in results)/len(universe) if universe else 0
         targets=choose(valid,nav);selection_check=audit_selection(valid,targets,nav)
-        plan=plan_orders(targets,{},nav,nav) if targets else None
+        plan=None
+        try:plan=plan_orders(targets,{},nav,nav) if targets else None
+        except ValueError as e:report['selection_block']=str(e)
         order_check=audit_plan(targets,plan,{},nav,nav,{}) if plan else None
         # Independently recheck every selected price/RS from frozen raw inputs.
         spy=closes_at(data,day,'SPY',253)

@@ -83,6 +83,12 @@ jobs:
         run: |
           mkdir -p quality_output
           timeout 4m python recheck_quality.py --input quality_prior/results --output quality_output --cache .quality_market_cache
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quality_current_summary
+          path: quality_output/quality.json
+          retention-days: 90
       - name: Preserve unchanged inputs alongside the new audit
         if: always()
         run: |

@@ -91,3 +91,16 @@ class ForwardTimingTests(unittest.TestCase):
         from datetime import datetime
         s=self.pending();got=process(s,{},datetime.fromisoformat('2026-11-03T15:15:00+00:00'),['2026-11-02','2026-11-03'],{})
         self.assertFalse(got['strategy']['trades']);self.assertEqual(got['gaps'][0]['kind'],'MISSED_OPEN_NO_BACKFILL')
+
+
+class WholeLotRiskTests(unittest.TestCase):
+    def test_industry_minimum_lots_are_checked_during_selection(self):
+        rows=QualityTests().rows()
+        rows[0]['price_usd']=350;rows[1]['price_usd']=350
+        for i in (0,1):rows[i]['fundamental']['metrics'].update(revenue_growth=5+i,eps_growth=5+i,margin_change=1)
+        rows.extend([dict(rows[0],ticker='CHEAP',cik='999',price_usd=20)])
+        selected=choose(rows,2000)
+        self.assertEqual(len(selected),10)
+        self.assertLessEqual(sum(r['price_usd']*1.02 for r in selected if str(r['sic'])[:2]=='20'),600)
+        from quality_audit import audit_selection
+        self.assertEqual(audit_selection(rows,selected,2000)['status'],'PASS')

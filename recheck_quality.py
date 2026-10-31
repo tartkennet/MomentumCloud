@@ -10,7 +10,7 @@ from pathlib import Path
 from quality_sources import DataUnavailable
 from quality_fundamentals import parse_original
 from quality_audit import audit_fundamental,audit_selection,audit_plan
-from quality_strategy import MODEL,PARAMETERS,choose,plan_orders
+from quality_strategy import MODEL,PARAMETERS,choose,plan_orders,division
 from momentum_core_data import atomic_json
 from run_core_risk_research import make_data
 from research_core_actions import supplement
@@ -30,13 +30,17 @@ def recheck(root,out,cache=None):
         receipt=next((v for v in files.values() if any(str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in v[0]['filing']['entities'] if e.get('relation')=='filer')),None)
         if receipt is None:raise ValueError('Missing previously archived original')
         metadata,path=receipt;raw=gzip.decompress(path.read_bytes())
+        entity=next(e['company_data'] for e in metadata['filing']['entities'] if e.get('relation')=='filer' and str(e['company_data'].get('cik','')).zfill(10)==row['cik'])
+        row['sic']=str(entity.get('sic','')).zfill(4);row['division']=division(row['sic'])
         try:
             f=parse_original(raw,metadata,row['cik'],r['generated_at']);a=audit_fundamental(raw,metadata,f,row['cik'],r['generated_at'])
             row.update(fundamental=f,fundamental_audit=a,data_status='VERIFIED',resolved=True);row.pop('reason',None)
         except (DataUnavailable,AssertionError,ValueError) as e:row.update(data_status='DATA_GAP',resolved=False,reason=str(e) if isinstance(e,DataUnavailable) else type(e).__name__);row.pop('fundamental',None)
         rows.append(row)
     valid=[x for x in rows if x['data_status']=='VERIFIED'];coverage=sum(x['resolved'] for x in rows)/len(rows)
-    nav=prior['initial_usd'];targets=choose(valid,nav);a=audit_selection(valid,targets,nav);plan=plan_orders(targets,{},nav,nav) if targets else None
+    nav=prior['initial_usd'];targets=choose(valid,nav);a=audit_selection(valid,targets,nav);plan=None
+    try:plan=plan_orders(targets,{},nav,nav) if targets else None
+    except ValueError as e:r['selection_block']=str(e)
     order=audit_plan(targets,plan,{},nav,nav,{}) if plan else None
     price_audit={'status':'NOT_RUN_LOCAL_CACHE_UNAVAILABLE'}
     if cache:

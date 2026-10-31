@@ -89,6 +89,9 @@ def audit_selection(rows,targets,nav):
         ind=str(r['sic'])[:2];sec=sector(r['sic']);p=r['price_usd']*1.02;minimum=p+max(1,p*.0025)+p*.004
         if r['cik'] in used or sum(str(a['sic'])[:2]==ind for a in expected)>=2 or sum(sector(a['sic'])==sec for a in expected)>=4:continue
         if p>nav*.2 or cost+minimum+(9-len(expected))*(10.2+1+10.2*.004)>nav:continue
+        trial=expected+[r]
+        if sum(a['price_usd']*1.02 for a in trial if str(a['sic'])[:2]==ind)>nav*.30+1e-8:continue
+        if sum(a['price_usd']*1.02 for a in trial if sector(a['sic'])==sec)>nav*.50+1e-8:continue
         expected.append(r);used.add(r['cik']);cost+=minimum
         if len(expected)==10:break
     if len(expected)!=10:expected=[]
