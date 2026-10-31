@@ -40,10 +40,14 @@ jobs:
               subprocess.run(['gh','release','download',tag,'--repo',repo,'--pattern',name,'--dir',str(root)],check=True)
               return root/name
           def check(p,h):assert hashlib.sha256(p.read_bytes()).hexdigest()==h,p.name
-          m=json.loads(get(tag,'current_manifest.json').read_text())
+          current=json.loads(get(tag,'current_manifest.json').read_text())
+          # This is a review of the FIRST signal, not a moving daily review.
+          # Retain its original input hashes after the live journal advances.
+          m=json.loads(get(tag,'paper_manifest_41013485761_attempt_1.json').read_text())
+          assert m['paper_archive_sha256']=='a1c93665463106f1fa9af883bda6404ca40bd76d457a50f55ef806b10a674a96'
           archive=get(tag,m['paper_asset']);check(archive,m['paper_archive_sha256'])
           with tarfile.open(archive) as t:t.extractall(record,filter='data')
-          cache=get(tag,m['cache_asset']);check(cache,m['cache_sha256'])
+          cache=get(tag,current['cache_asset']);check(cache,current['cache_sha256'])
           Path('audit_cache_asset.txt').write_text(str(cache))
           historical='core-portfolio-h3-40863071105'
           manifest=get(historical,'manifest.json');old=json.loads(manifest.read_text())
