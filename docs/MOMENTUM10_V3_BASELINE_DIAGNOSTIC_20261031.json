@@ -1,0 +1,600 @@
+{
+  "evidence_class": "DEVELOPMENT_DIAGNOSTIC",
+  "no_new_strategy_results": true,
+  "variants": {
+    "M1": {
+      "median_signal_return_1m": 0.12057380326542388,
+      "median_signal_return_3m": 0.49523108665216187,
+      "worst_closed_order_cashflows": [
+        {
+          "net_order_cashflow_usd": -136.38054000000002,
+          "ticker": "ERAS",
+          "end": "2026-05-04"
+        },
+        {
+          "net_order_cashflow_usd": -104.32232000000008,
+          "ticker": "USAS",
+          "end": "2026-03-20"
+        },
+        {
+          "net_order_cashflow_usd": -94.70183999999998,
+          "ticker": "VPG",
+          "end": "2026-08-04"
+        },
+        {
+          "net_order_cashflow_usd": -94.40447999999998,
+          "ticker": "RDW",
+          "end": "2025-03-04"
+        },
+        {
+          "net_order_cashflow_usd": -90.74899999999997,
+          "ticker": "BW",
+          "end": "2026-07-02"
+        },
+        {
+          "net_order_cashflow_usd": -90.16720000000001,
+          "ticker": "RKLB",
+          "end": "2025-12-02"
+        },
+        {
+          "net_order_cashflow_usd": -87.25775999999999,
+          "ticker": "AEVA",
+          "end": "2025-08-04"
+        },
+        {
+          "net_order_cashflow_usd": -82.7604,
+          "ticker": "ANRO",
+          "end": "2026-06-02"
+        },
+        {
+          "net_order_cashflow_usd": -82.2192,
+          "ticker": "NESR",
+          "end": "2026-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -81.49677999999997,
+          "ticker": "RKLB",
+          "end": "2025-03-04"
+        }
+      ],
+      "most_selected": [
+        [
+          "FTAI",
+          11
+        ],
+        [
+          "SFM",
+          9
+        ],
+        [
+          "PLTR",
+          9
+        ],
+        [
+          "RKLB",
+          7
+        ],
+        [
+          "AXTI",
+          7
+        ],
+        [
+          "ANF",
+          6
+        ],
+        [
+          "VRT",
+          6
+        ],
+        [
+          "CVNA",
+          6
+        ],
+        [
+          "WGS",
+          6
+        ],
+        [
+          "AHR",
+          6
+        ],
+        [
+          "CLS",
+          5
+        ],
+        [
+          "ADMA",
+          5
+        ],
+        [
+          "SKYW",
+          4
+        ],
+        [
+          "CAMT",
+          4
+        ],
+        [
+          "MOD",
+          4
+        ]
+      ]
+    },
+    "M2": {
+      "median_signal_return_1m": 0.11574206785118546,
+      "median_signal_return_3m": 0.5089113696082566,
+      "worst_closed_order_cashflows": [
+        {
+          "net_order_cashflow_usd": -168.54528,
+          "ticker": "VPG",
+          "end": "2026-09-02"
+        },
+        {
+          "net_order_cashflow_usd": -148.39120000000003,
+          "ticker": "RCAT",
+          "end": "2025-03-04"
+        },
+        {
+          "net_order_cashflow_usd": -136.38054000000002,
+          "ticker": "ERAS",
+          "end": "2026-05-04"
+        },
+        {
+          "net_order_cashflow_usd": -123.82435999999998,
+          "ticker": "HYMC",
+          "end": "2026-07-02"
+        },
+        {
+          "net_order_cashflow_usd": -107.62304000000003,
+          "ticker": "USAS",
+          "end": "2026-03-20"
+        },
+        {
+          "net_order_cashflow_usd": -104.61803999999998,
+          "ticker": "AEVA",
+          "end": "2025-09-03"
+        },
+        {
+          "net_order_cashflow_usd": -100.12739999999998,
+          "ticker": "LFMD",
+          "end": "2024-07-02"
+        },
+        {
+          "net_order_cashflow_usd": -91.90148000000002,
+          "ticker": "BE",
+          "end": "2026-09-02"
+        },
+        {
+          "net_order_cashflow_usd": -89.86804000000001,
+          "ticker": "LUNR",
+          "end": "2025-03-04"
+        },
+        {
+          "net_order_cashflow_usd": -82.85391999999999,
+          "ticker": "RDW",
+          "end": "2025-03-04"
+        }
+      ],
+      "most_selected": [
+        [
+          "FTAI",
+          6
+        ],
+        [
+          "WGS",
+          5
+        ],
+        [
+          "PLTR",
+          5
+        ],
+        [
+          "SFM",
+          4
+        ],
+        [
+          "RKLB",
+          4
+        ],
+        [
+          "AHR",
+          4
+        ],
+        [
+          "AXTI",
+          4
+        ],
+        [
+          "ANF",
+          3
+        ],
+        [
+          "CAMT",
+          3
+        ],
+        [
+          "VRT",
+          3
+        ],
+        [
+          "CVNA",
+          3
+        ],
+        [
+          "SEZL",
+          3
+        ],
+        [
+          "BE",
+          3
+        ],
+        [
+          "HYMC",
+          3
+        ],
+        [
+          "TERN",
+          3
+        ]
+      ]
+    },
+    "M3": {
+      "median_signal_return_1m": 0.12557903213436605,
+      "median_signal_return_3m": 0.4734542804980476,
+      "worst_closed_order_cashflows": [
+        {
+          "net_order_cashflow_usd": -224.17668000000006,
+          "ticker": "NEON",
+          "end": "2025-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -220.18956,
+          "ticker": "LUNR",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -203.12407999999996,
+          "ticker": "RCAT",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -163.08979999999997,
+          "ticker": "LQDA",
+          "end": "2026-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -150.14603999999994,
+          "ticker": "RDW",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -122.10500000000002,
+          "ticker": "AEVA",
+          "end": "2025-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -117.44442000000004,
+          "ticker": "RKLB",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -105.99508000000003,
+          "ticker": "APP",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -104.56111999999996,
+          "ticker": "CAMT",
+          "end": "2024-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -88.84379999999999,
+          "ticker": "RNA",
+          "end": "2025-01-03"
+        }
+      ],
+      "most_selected": [
+        [
+          "ANF",
+          3
+        ],
+        [
+          "FTAI",
+          3
+        ],
+        [
+          "SFM",
+          3
+        ],
+        [
+          "SEZL",
+          3
+        ],
+        [
+          "WGS",
+          3
+        ],
+        [
+          "PLTR",
+          3
+        ],
+        [
+          "AHR",
+          3
+        ],
+        [
+          "AXTI",
+          3
+        ],
+        [
+          "AAOI",
+          2
+        ],
+        [
+          "SKYW",
+          2
+        ],
+        [
+          "CAMT",
+          2
+        ],
+        [
+          "VRT",
+          2
+        ],
+        [
+          "CVNA",
+          2
+        ],
+        [
+          "MOD",
+          2
+        ],
+        [
+          "CLS",
+          2
+        ]
+      ]
+    },
+    "Q10": {
+      "median_signal_return_1m": 0.12308173678636758,
+      "median_signal_return_3m": 0.4734542804980476,
+      "worst_closed_order_cashflows": [
+        {
+          "net_order_cashflow_usd": -126.04492000000005,
+          "ticker": "ERAS",
+          "end": "2026-04-29"
+        },
+        {
+          "net_order_cashflow_usd": -65.280888,
+          "ticker": "RCAT",
+          "end": "2025-01-13"
+        },
+        {
+          "net_order_cashflow_usd": -63.927599999999984,
+          "ticker": "CELC",
+          "end": "2026-06-03"
+        },
+        {
+          "net_order_cashflow_usd": -60.29664,
+          "ticker": "RGTI",
+          "end": "2025-11-14"
+        },
+        {
+          "net_order_cashflow_usd": -46.596479999999985,
+          "ticker": "RDW",
+          "end": "2025-01-13"
+        },
+        {
+          "net_order_cashflow_usd": -46.50235999999998,
+          "ticker": "AMPX",
+          "end": "2025-11-18"
+        },
+        {
+          "net_order_cashflow_usd": -45.957599999999985,
+          "ticker": "SSRM",
+          "end": "2025-11-06"
+        },
+        {
+          "net_order_cashflow_usd": -45.30008000000001,
+          "ticker": "QBTS",
+          "end": "2025-11-14"
+        },
+        {
+          "net_order_cashflow_usd": -43.96671999999998,
+          "ticker": "ERAS",
+          "end": "2026-09-10"
+        },
+        {
+          "net_order_cashflow_usd": -41.57072000000002,
+          "ticker": "TXG",
+          "end": "2026-10-07"
+        }
+      ],
+      "most_selected": [
+        [
+          "ANF",
+          3
+        ],
+        [
+          "FTAI",
+          3
+        ],
+        [
+          "CLS",
+          3
+        ],
+        [
+          "SFM",
+          3
+        ],
+        [
+          "SEZL",
+          3
+        ],
+        [
+          "WGS",
+          3
+        ],
+        [
+          "PLTR",
+          3
+        ],
+        [
+          "AHR",
+          3
+        ],
+        [
+          "AXTI",
+          3
+        ],
+        [
+          "AAOI",
+          2
+        ],
+        [
+          "SKYW",
+          2
+        ],
+        [
+          "CAMT",
+          2
+        ],
+        [
+          "VRT",
+          2
+        ],
+        [
+          "CVNA",
+          2
+        ],
+        [
+          "MOD",
+          2
+        ]
+      ]
+    },
+    "QV": {
+      "median_signal_return_1m": 0.12557903213436605,
+      "median_signal_return_3m": 0.4734542804980476,
+      "worst_closed_order_cashflows": [
+        {
+          "net_order_cashflow_usd": -224.17668000000006,
+          "ticker": "NEON",
+          "end": "2025-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -220.18956,
+          "ticker": "LUNR",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -210.57312000000002,
+          "ticker": "RCAT",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -171.24704,
+          "ticker": "LQDA",
+          "end": "2026-10-01"
+        },
+        {
+          "net_order_cashflow_usd": -158.49563999999998,
+          "ticker": "VPG",
+          "end": "2026-08-11"
+        },
+        {
+          "net_order_cashflow_usd": -157.9432,
+          "ticker": "RDW",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -122.10500000000002,
+          "ticker": "AEVA",
+          "end": "2025-10-02"
+        },
+        {
+          "net_order_cashflow_usd": -117.44442000000004,
+          "ticker": "RKLB",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -105.99508000000003,
+          "ticker": "APP",
+          "end": "2025-03-11"
+        },
+        {
+          "net_order_cashflow_usd": -90.28799999999998,
+          "ticker": "RNA",
+          "end": "2024-12-19"
+        }
+      ],
+      "most_selected": [
+        [
+          "ANF",
+          3
+        ],
+        [
+          "FTAI",
+          3
+        ],
+        [
+          "SFM",
+          3
+        ],
+        [
+          "SEZL",
+          3
+        ],
+        [
+          "WGS",
+          3
+        ],
+        [
+          "PLTR",
+          3
+        ],
+        [
+          "AHR",
+          3
+        ],
+        [
+          "AXTI",
+          3
+        ],
+        [
+          "AAOI",
+          2
+        ],
+        [
+          "SKYW",
+          2
+        ],
+        [
+          "CAMT",
+          2
+        ],
+        [
+          "VRT",
+          2
+        ],
+        [
+          "CVNA",
+          2
+        ],
+        [
+          "MOD",
+          2
+        ],
+        [
+          "CLS",
+          2
+        ]
+      ]
+    }
+  },
+  "limitations": [
+    "Matched order cash flows exclude symbols with corporate event rows; not total-return attribution.",
+    "No point-in-time industry classification in saved selection states. Current classifications cannot be backfilled."
+  ]
+}
