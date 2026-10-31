@@ -113,6 +113,15 @@ def decide(state,report,data,now):
 
 def export(report,state,now):
     report=copy.deepcopy(report);s=state['strategy'];b=state['benchmark'];fx=report.get('fx',state['initial_fx'])
+    report['initial_usd']=state['initial_usd'];report['initial_fx']=state['initial_fx']
+    collection_status=report.get('status')
+    report['collection_status']=collection_status
+    report['daily_observed_targets']=report.get('targets',[])
+    if state['decisions']:
+        selected=state['decisions'][-1]
+        report['targets']=selected['targets'];report['selection_as_of']=selected['signal_date']
+        report['selection_fx']=selected.get('signal_fx',state['initial_fx']);report['selection_nav_usd']=selected.get('signal_nav_usd',state['initial_usd'])
+        report['proposed_orders']=selected['plan'] if selected.get('kind')=='MEMBERSHIP' else None
     curve=[]
     for a,bb in zip(s['equity'],b['equity']):
         rate=state['valuation_fx'][a['date']]
@@ -141,6 +150,7 @@ def export(report,state,now):
     checks=gates(result) if result else [dict(name=n,value=None,pass_=False) for n in ('30_complete_months','positive_net_return','beats_SPY','drawdown_within_20pct','positive_months_50pct')]
     report['validation']=dict(status='NO_GO_INSUFFICIENT_EVIDENCE',complete_months=len(periods),remaining_months=max(0,30-len(periods)),gates=checks,continuity_pass=not state['gaps'],live_approved=False)
     report['observations_remaining']=max(0,30-len(periods))
+    report['gross_turnover_initial_capital_pct']=100*sum(t['quantity']*t['price'] for t in s['trades'] if t['side'] in ('BUY','SELL'))/state['initial_usd']
     report['sharpe']=None
     if len(s['equity'])>=20 and not state['gaps']:
         import statistics
@@ -152,6 +162,8 @@ def export(report,state,now):
     report['live_approved']=False;report['broker_orders_enabled']=False
     if state['opening_observations']:report['status']='PAPER_ACTIVE' if len(s['shares'])==10 else 'PAPER_CASH' if not s['shares'] else 'PAPER_PARTIAL'
     if state['gaps']:report['status']='PAPER_REVIEW_REQUIRED'
+    if state['opening_observations'] and collection_status in ('DATA_BLOCKED','SELECTION_BLOCKED','COLLECTION_FAILED'):
+        report['status']='PAPER_DATA_BLOCKED';report.setdefault('errors',[]).append('Nya köp är spärrade. Senast accepterade paper-innehav och daterad värdering visas.')
     report['generated_at']=now.isoformat();report['paper_journal_sha256']=digest(state)
     report['independent_statistics']=audit_statistics(state,report)
     return report

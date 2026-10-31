@@ -83,6 +83,7 @@ def audit_statistics(state,report):
     initial=state['initial_usd'];last=a['equity'][-1]['nav'];bl=b['equity'][-1]['nav']
     near(m['TotalReturn_pct'],(last-initial)/initial*100);near(m['SPYTotalReturn_pct'],(bl-initial)/initial*100)
     near(m['TotalEdgeVsSPY_pct'],(last-bl)/initial*100)
+    near(m['ActualFees_USD'],a['fees'])
     high=initial;worst=0
     for r in a['equity']:high=max(high,r['nav']);worst=min(worst,(r['nav']-high)/high*100)
     near(m['DailyMaxDrawdown_pct'],worst)
@@ -96,4 +97,9 @@ def audit_statistics(state,report):
     near(m['PeriodHitRate_pct'],100*sum(r>0 for r in returns)/len(returns) if returns else 0)
     for row,aa,bb in zip(report['curve'],a['equity'],b['equity']):
         rate=state['valuation_fx'][aa['date']]['usdsek'];near(row['nav_sek'],aa['nav']*rate);near(row['spy_nav_sek'],bb['nav']*rate)
+    if report.get('sharpe') is not None:
+        assert len(a['equity'])>=20 and not state['gaps']
+        values=[initial]+[r['nav'] for r in a['equity']];rs=[y/x-1 for x,y in zip(values,values[1:])]
+        mean=sum(rs)/len(rs);variance=sum((r-mean)**2 for r in rs)/(len(rs)-1)
+        near(report['sharpe'],mean/math.sqrt(variance)*math.sqrt(252))
     return dict(status='PASS',monthly_intervals=len(returns),initial_trading_costs_included=True,usd_and_sek_checked=True,independent_code=True)

@@ -26,11 +26,11 @@ def opening_window(now):
 
 def commit_plan(state,report,now,prices):
     s=RetentionLedger(**state['strategy']);targets=report['targets']
-    nav=report['initial_usd'] if not s.equity else s.equity[-1]['nav']
+    nav=state['initial_usd'] if not s.equity else s.equity[-1]['nav']
     plan=plan_orders(targets,s.shares,nav,s.cash,prices)
     from quality_audit import audit_plan
     audit_plan(targets,plan,s.shares,s.cash,nav,prices)
-    intention=dict(created_at=now.isoformat(),signal_date=report['price_as_of'],targets=targets,plan=plan,kind='MEMBERSHIP',
+    intention=dict(created_at=now.isoformat(),signal_date=report['price_as_of'],targets=targets,plan=plan,kind='MEMBERSHIP',signal_nav_usd=nav,signal_fx=report.get('fx'),
         model_fingerprint=state['model_fingerprint'],sources=[r['fundamental']['sha256'] for r in targets])
     intention['sha256']=digest(intention);state['pending']=intention
     state['decisions'].append(copy.deepcopy(intention));return intention
