@@ -1,0 +1,103 @@
+name: Quality historical offline replay and independent audit
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['evaluate_historical_quality.py','audit_quality_history_account.py','.github/workflows/evaluate_quality_history.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: quality-history-replay-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.changed.outputs.needed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.event.pull_request.head.sha || github.sha }}', fetch-depth: 0, persist-credentials: false}
+      - id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PYCODE'
+          import os,subprocess
+          before=os.environ.get('BEFORE','');needed=True
+          if before and os.environ.get('ACTION')=='synchronize':
+              files=subprocess.check_output(['git','diff','--name-only',before,'HEAD'],text=True).splitlines()
+              needed=any(f in ('evaluate_historical_quality.py','audit_quality_history_account.py','tests/test_historical_quality.py') for f in files)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
+          print('New offline computation needed:',needed)
+          PYCODE
+  replay:
+    needs: scope
+    if: needs.scope.outputs.needed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.event.pull_request.head.sha || github.sha }}', persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_historical_quality.py' -v
+      - name: Restore completed inputs instead of repeating acquisition
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          timeout 120s gh run download 41233345884 --repo "$GITHUB_REPOSITORY" --name history_prepared --dir history_output
+          timeout 60s gh run download 41233345884 --repo "$GITHUB_REPOSITORY" --pattern 'panel-*' --dir history_panels
+          python - <<'PY'
+          import shutil,json,hashlib
+          from pathlib import Path
+          for p in Path('history_panels').rglob('*.panel.json'):shutil.copyfile(p,Path('history_output')/p.name)
+          dates=json.loads(Path('history_output/signals.json').read_text());assert all((Path('history_output')/(d+'.panel.json')).exists() for d in dates)
+          manifest={str(p.relative_to('history_output')):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('history_output').glob('*.json')}
+          Path('history_output/panel_manifest.json').write_text(json.dumps(manifest))
+          PY
+          mkdir -p archived_fx
+          timeout 60s gh release download stocks10-research-41180905339-1 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir archived_fx
+          python - <<'PY'
+          import hashlib,json,tarfile
+          from pathlib import Path
+          p=Path('archived_fx');m=json.loads((p/'manifest.json').read_text());raw=(p/'results.tar.gz').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(p/'results.tar.gz') as t:
+              member=next(m for m in t.getmembers() if m.name.endswith('ecb-history.xml'))
+              assert t.extractfile(member).read()==Path('history_output/ecb-history.xml').read_bytes()
+          PY
+          python cache_momentum_inputs.py unseal --sealed history_output/market.sealed --cache-dir .history_market
+      - name: Reconcile saved source archive and replay without network
+        run: |
+          timeout 2m python - <<'PY'
+          from run_core_normalized_research import verify_inputs
+          from pathlib import Path
+          import socket
+          from evaluate_historical_quality import run
+          verify_inputs(Path('.history_market'),'history_output/base_manifest.json')
+          socket.socket=lambda *a,**k:(_ for _ in ()).throw(RuntimeError('Historical replay must be offline'))
+          run('.history_market','history_output','history_results')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: Quality_historical_results, path: history_results/, retention-days: 90}
+      - name: Preserve verified results separately from all paper accounts
+        if: always() && hashFiles('history_results/quality-history.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p history_results/inputs
+          cp history_output/*.json history_results/inputs/
+          cp history_output/ecb-history.xml history_results/inputs/
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          files=[Path('history_output/market.sealed')]+list(Path('history_results/inputs').iterdir())
+          Path('history_results/input_assets.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}))
+          PY
+          tar -czf historical_results.tar.gz -C history_results .
+          gh release create "quality-history-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" historical_results.tar.gz history_output/market.sealed --repo "$GITHUB_REPOSITORY" --draft --title "Quality historical conditional results $GITHUB_RUN_ID" --notes "Separate development reconstruction. Original publications audited; historical SIC vintage remains uncertified. No historical or live GO."
