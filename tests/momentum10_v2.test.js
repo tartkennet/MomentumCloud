@@ -1,0 +1,4 @@
+const test=require('node:test'),assert=require('node:assert/strict'),ui=require('../public/momentum10-v2.js');
+test('no fabricated curve on missing data',()=>assert.match(ui.chart([]),/saknas/));
+test('chart separates benchmark, preserves labels and escapes markup',()=>{const s=ui.chart([{date:'<bad>',nav_sek:20000,spy_sek:20000},{date:'2026-10-28',nav_sek:15000,spy_sek:30000}],345);assert.match(s,/viewBox="0 0 345/);assert.match(s,/&lt;bad&gt;/);assert.match(s,/stroke-dasharray/);assert.doesNotMatch(s,/<bad>/)});
+test('operational rejection is never shown as paper admission',()=>{const v={variant:'M3',financial_pass:true,paper_pass:false,scenarios:20,main:{metrics:{TotalReturn_pct:99,DailyMaxDrawdown_pct:-10,DailySharpe_zero_rf:2,ActualFees_USD:500},trading:{market_orders:200}}};const s=ui.variant(v);assert.match(s,/NO GO/);assert.match(s,/Ingen paper-aktivering/);assert.doesNotMatch(s,/PAPER ONLY/)});
