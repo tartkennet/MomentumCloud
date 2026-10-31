@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-31T00:01:00.343206+00:00",
+  "generated_at": "2026-10-31T00:06:55.250825+00:00",
   "as_of": "2026-10-30",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -622,104 +622,7 @@
       "http_status": 403,
       "error": "ACCESS_DENIED_OR_UNAVAILABLE"
     },
-    "liquidity": [
-      {
-        "date": "2026-10-30",
-        "ticker": "ATEX",
-        "quantity": 17,
-        "fraction_of_full_day_volume": 4.289203201983066e-05
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "AXTI",
-        "quantity": 13,
-        "fraction_of_full_day_volume": 8.780911285341772e-07
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "CDNA",
-        "quantity": 23,
-        "fraction_of_full_day_volume": 6.470860196644379e-06
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "CLMT",
-        "quantity": 38,
-        "fraction_of_full_day_volume": 3.111749220363981e-05
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "CLYM",
-        "quantity": 118,
-        "fraction_of_full_day_volume": 0.0001664894354194109
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "ERAS",
-        "quantity": 118,
-        "fraction_of_full_day_volume": 3.147098729022142e-05
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "LITE",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 1.293762895494381e-07
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "MU",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 6.483193157074148e-08
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "RVMD",
-        "quantity": 11,
-        "fraction_of_full_day_volume": 9.99530876440206e-06
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "SLS",
-        "quantity": 108,
-        "fraction_of_full_day_volume": 1.72527320734653e-05
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "SNDK",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 5.703151617533209e-08
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "SPY",
-        "quantity": 102,
-        "fraction_of_full_day_volume": 1.3111936540671162e-06
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "STX",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 3.4575426069484366e-07
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "SYRE",
-        "quantity": 17,
-        "fraction_of_full_day_volume": 2.5713667898007153e-05
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "TWST",
-        "quantity": 5,
-        "fraction_of_full_day_volume": 1.4708679637175459e-06
-      },
-      {
-        "date": "2026-10-30",
-        "ticker": "TXG",
-        "quantity": 16,
-        "fraction_of_full_day_volume": 3.06588548265735e-06
-      }
-    ],
+    "liquidity": [],
     "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
   },
   "operations": {
@@ -736,157 +639,47 @@
         "accounts": 4
       },
       "accounting": {
-        "status": "PASS",
-        "new_sessions": 1,
-        "market_trade_rows_checked": 34,
-        "volume_participation": [
-          {
-            "date": "2026-10-30",
-            "ticker": "ATEX",
-            "quantity": 17,
-            "fraction_of_full_day_volume": 4.289203201983066e-05
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "AXTI",
-            "quantity": 13,
-            "fraction_of_full_day_volume": 8.780911285341772e-07
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "CDNA",
-            "quantity": 23,
-            "fraction_of_full_day_volume": 6.470860196644379e-06
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "CLMT",
-            "quantity": 38,
-            "fraction_of_full_day_volume": 3.111749220363981e-05
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "CLYM",
-            "quantity": 118,
-            "fraction_of_full_day_volume": 0.0001664894354194109
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "ERAS",
-            "quantity": 118,
-            "fraction_of_full_day_volume": 3.147098729022142e-05
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "LITE",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 1.293762895494381e-07
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "MU",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 6.483193157074148e-08
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "RVMD",
-            "quantity": 11,
-            "fraction_of_full_day_volume": 9.99530876440206e-06
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "SLS",
-            "quantity": 108,
-            "fraction_of_full_day_volume": 1.72527320734653e-05
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "SNDK",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 5.703151617533209e-08
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "SPY",
-            "quantity": 102,
-            "fraction_of_full_day_volume": 1.3111936540671162e-06
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "STX",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 3.4575426069484366e-07
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "SYRE",
-            "quantity": 17,
-            "fraction_of_full_day_volume": 2.5713667898007153e-05
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "TWST",
-            "quantity": 5,
-            "fraction_of_full_day_volume": 1.4708679637175459e-06
-          },
-          {
-            "date": "2026-10-30",
-            "ticker": "TXG",
-            "quantity": 16,
-            "fraction_of_full_day_volume": 3.06588548265735e-06
-          }
-        ],
-        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
+        "status": "UNCHANGED_ACCEPTED_PREFIX",
+        "new_sessions": 0
       }
     },
     "readiness": {
-      "checked_at": "2026-10-31T00:00:48.197771+00:00",
+      "checked_at": "2026-10-31T00:06:51.560062+00:00",
       "key_configured": true,
-      "live_probe": false,
+      "live_probe": true,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "status": "CONFIGURED",
-      "last_live_probe": {
-        "checked_at": "2026-10-30T23:54:52.858563+00:00",
-        "key_configured": true,
-        "live_probe": true,
-        "secrets_exposed": false,
-        "subscription_changed": false,
-        "live_approved": false,
-        "broker_orders_enabled": false,
-        "required_endpoints": {
-          "raw_daily_bars": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 9,
-            "latest_observed_session": "2026-10-29"
-          },
-          "dated_universe": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "splits": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "dividends": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          }
+      "required_endpoints": {
+        "raw_daily_bars": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 9,
+          "latest_observed_session": "2026-10-30"
         },
-        "optional_quotes": {
-          "authorized": false,
-          "http_status": 403,
-          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+        "dated_universe": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
         },
-        "status": "PASS"
-      }
+        "splits": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        },
+        "dividends": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        }
+      },
+      "optional_quotes": {
+        "authorized": false,
+        "http_status": 403,
+        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+      },
+      "status": "PASS"
     },
     "workflow": {
       "id": 400565291,
@@ -895,8 +688,8 @@
     },
     "next_expected_attempt_at": "2026-10-31T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41063279405",
-    "workflow_attempt": "2"
+    "workflow_run": "41148306576",
+    "workflow_attempt": "1"
   },
   "schedule": {
     "cron_utc": "35 0,3,6,9 * * 2-6",
@@ -922,10 +715,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41063279405_attempt_2.tar.gz",
-    "paper_archive_sha256": "0a703510120e2de70d96e7342ae9b1ea491ffb84a80ad60c2be93efcf0626f2e",
-    "previous_paper_asset": "paper_run_41147190050_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "c26343be1872efff693c85c1ee16d50ba3dc5cd360818174a61294bd8ba236b9",
-    "workflow_run": "41063279405"
+    "paper_asset": "paper_run_41148306576_attempt_1.tar.gz",
+    "paper_archive_sha256": "d87a468e4ae51e37674752ef9c76e8542b6a42865db089f986ebd4d267580e25",
+    "previous_paper_asset": "paper_run_41063279405_attempt_2.tar.gz",
+    "previous_paper_archive_sha256": "0a703510120e2de70d96e7342ae9b1ea491ffb84a80ad60c2be93efcf0626f2e",
+    "workflow_run": "41148306576"
   }
 }
