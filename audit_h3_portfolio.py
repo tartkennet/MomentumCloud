@@ -143,7 +143,7 @@ def run(record,cache,historical,output,live):
         def reference(t):return t,query('/v3/reference/tickers/'+t,{'date':day})
         with ThreadPoolExecutor(max_workers=4) as pool:refs=dict(pool.map(reference,tickers))
     for row in rows:
-        t=row['ticker'];prices={stamp:bar[1] for stamp,bar in data.history(day,t,len(data.days)) if bar}
+        t=row['ticker'];prices={stamp:bar[1] for stamp,bar in data.history(day,t,253) if bar}
         if t in live_data:prices[latest]=live_data[t].get('c')
         row['returns_at_signal']={str(m):period_return(prices,events,dividends,t,day,m) for m in (1,3,6,12)}
         row['returns_latest']={str(m):period_return(prices,events,dividends,t,latest,m) for m in (1,3,6,12)} if t in live_data else None
