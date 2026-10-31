@@ -17,7 +17,7 @@ from quality_sources import DataUnavailable
 from quality_account_audit import audit_account,audit_statistics
 from quality_strategy import MODEL
 
-FROZEN=('quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','quality_forward.py','quality_account_audit.py','run_quality_forward.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','momentum_core.py','momentum_core_data.py','research_core_ledger.py','research_momentum10_v2.py','research_stocks10.py','research_momentum10_fx.py','research_core_actions.py','run_core_risk_research.py')
+FROZEN=('quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','quality_forward.py','quality_account_audit.py','run_quality_forward.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','momentum_core.py','momentum_core_data.py','research_core_ledger.py','research_momentum10_v2.py','research_stocks10.py','research_momentum10_fx.py','research_core_actions.py','run_core_risk_research.py','h3_display.py','run_stocks10_research.py','run_core_normalized_research.py','audit_core_normalized.py','backtest_momentum_v3.py','momentum_config.py','momentum_strategy.py','requirements.txt')
 
 
 def fingerprint():return digest({f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in FROZEN})
@@ -117,11 +117,15 @@ def export(report,state,now):
     collection_status=report.get('status')
     report['collection_status']=collection_status
     report['daily_observed_targets']=report.get('targets',[])
-    if state['decisions']:
-        selected=state['decisions'][-1]
+    cancelled={d['commitment'] for d in state.get('cancelled_intentions',[])}
+    accepted=[d for d in state['decisions'] if d['sha256'] not in cancelled]
+    if accepted:
+        selected=accepted[-1]
         report['targets']=selected['targets'];report['selection_as_of']=selected['signal_date']
         report['selection_fx']=selected.get('signal_fx',state['initial_fx']);report['selection_nav_usd']=selected.get('signal_nav_usd',state['initial_usd'])
         report['proposed_orders']=selected['plan'] if selected.get('kind')=='MEMBERSHIP' else None
+    else:report['targets']=[];report['proposed_orders']=None
+    report['cancelled_intentions']=state.get('cancelled_intentions',[])
     curve=[]
     benchmark_valid=bool(b['trades']) and bool(state['opening_observations']) and b['trades'][0]['date']==state['opening_observations'][0]['date']
     report['benchmark_valid']=benchmark_valid
