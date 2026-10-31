@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
-    paths: ['quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml']
+    paths: ['quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','recheck_quality.py','quality_forward.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml']
 permissions:
   # Draft release download requires repository push scope; original releases
   # are strictly read-only. Results use a NEW unique draft tag.
@@ -33,7 +33,7 @@ jobs:
         run: |
           python - <<'PY'
           import os,subprocess
-          files={'quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml'}
+          files={'quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','recheck_quality.py','quality_forward.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml'}
           replay=True
           before=os.environ.get('BEFORE','')
           if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
@@ -61,40 +61,34 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s tests -p 'test_quality*.py' -v
-      - name: Restore existing authenticated price inputs
+      - name: Restore completed original observations instead of recollecting
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p quality_restore
-          timeout 90s gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --pattern Momentum_core_risk_manifest.json --dir quality_restore
+          mkdir -p quality_prior/assets quality_prior/results
+          timeout 120s gh release download quality-observation-41210207368-1 --repo "$GITHUB_REPOSITORY" --pattern quality_observation.tar.gz --pattern quality_manifest.json --dir quality_prior/assets
           python - <<'PYCODE'
-          import json,hashlib
+          import json,hashlib,tarfile
           from pathlib import Path
-          p=Path('quality_restore');m=json.loads((p/'Momentum_core_risk_manifest.json').read_text())
-          assert hashlib.sha256((p/'Momentum_core_risk_cache.sealed').read_bytes()).hexdigest()==m['assets']['Momentum_core_risk_cache.sealed']
+          p=Path('quality_prior/assets');m=json.loads((p/'quality_manifest.json').read_text())
+          assert m['source_commit']=='0739238d3727f1a05e1b9f35e552d172ba7ecbfa'
+          assert hashlib.sha256((p/'quality_observation.tar.gz').read_bytes()).hexdigest()==m['sha256']
+          with tarfile.open(p/'quality_observation.tar.gz') as t:t.extractall('quality_prior/results',filter='data')
           PYCODE
-      - name: Unseal into a separate Quality price cache
+      - name: Authenticate already observed market inputs
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python cache_momentum_inputs.py unseal --sealed quality_restore/Momentum_core_risk_cache.sealed --cache-dir .quality_market_cache
-      - name: Observe original reports, current universe and independent checks
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-          PYTHONUNBUFFERED: '1'
+        run: python cache_momentum_inputs.py unseal --sealed quality_prior/results/market_cache.sealed --cache-dir .quality_market_cache
+      - name: Recheck saved originals and prices without network or return simulation
         run: |
-          mkdir -p quality_output quality_fundamentals_cache
-          set -o pipefail
-          timeout 8m python collect_quality.py --cache .quality_market_cache --manifest quality_restore/Momentum_core_risk_manifest.json --fundamentals quality_fundamentals_cache --output quality_output 2>&1 | tee quality_output/collection.log
-      - name: Preserve original SEC files without modifying earlier observations
+          mkdir -p quality_output
+          timeout 4m python recheck_quality.py --input quality_prior/results --output quality_output --cache .quality_market_cache
+      - name: Preserve unchanged inputs alongside the new audit
         if: always()
         run: |
-          cp -r quality_fundamentals_cache quality_output/originals
-          cp quality_restore/Momentum_core_risk_manifest.json quality_output/base_manifest.json
-      - name: Seal the licensed market cache
-        if: always()
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
-        run: python cache_momentum_inputs.py seal --cache-dir .quality_market_cache --sealed quality_output/market_cache.sealed
+          cp -r quality_prior/results/originals quality_output/originals
+          cp quality_prior/results/base_manifest.json quality_output/base_manifest.json
+          cp quality_prior/results/market_cache.sealed quality_output/market_cache.sealed
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -40,6 +40,8 @@ def recheck(root,out,cache=None):
     order=audit_plan(targets,plan,{},nav,nav,{}) if plan else None
     price_audit={'status':'NOT_RUN_LOCAL_CACHE_UNAVAILABLE'}
     if cache:
+        from run_core_normalized_research import verify_inputs
+        assert verify_inputs(cache,root/'base_manifest.json')==prior['original_input_manifest']
         data=supplement(make_data(cache,prior['price_as_of'],True));spy=closes_at(data,prior['price_as_of'],'SPY',253)
         for t in targets:
             c=closes_at(data,prior['price_as_of'],t['ticker'],253)
