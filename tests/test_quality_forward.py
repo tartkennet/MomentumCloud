@@ -67,6 +67,10 @@ class ControllerTests(unittest.TestCase):
         report=export({},s,datetime.fromisoformat('2026-11-03T08:15:00+00:00'))
         self.assertEqual(report['independent_statistics']['status'],'PASS');self.assertIsNone(report['sharpe'])
         self.assertAlmostEqual(report['paper_metrics']['TotalReturn_pct'],100*(s['strategy']['equity'][-1]['nav']/2000-1))
+        # A new split/share conversion cannot be marked at the old quote basis.
+        changed=copy.deepcopy(s);ticker=next(iter(changed['strategy']['shares']));changed['strategy']['shares'][ticker]*=2
+        waiting=export({},changed,datetime.fromisoformat('2026-11-03T15:15:00+00:00'))
+        self.assertTrue(waiting['valuation_pending']);self.assertIsNone(waiting['nav_sek']);self.assertTrue(all(p['value_sek'] is None for p in waiting['positions']))
         report['paper_metrics']['DailyMaxDrawdown_pct']=-50
         with self.assertRaises(AssertionError):audit_statistics(s,report)
 

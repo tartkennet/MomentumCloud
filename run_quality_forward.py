@@ -69,7 +69,7 @@ def observe(state,data,client,now):
             if not any(g.get('session')==d and g['kind']=='MISSED_VALUATION_NO_BACKFILL' for g in state['gaps']):state['gaps'].append(dict(kind='MISSED_VALUATION_NO_BACKFILL',session=d,observed_at=now.isoformat()))
         prices={t:data.bars(last)[t][1] for k in ('strategy','benchmark') for t in state[k]['shares']}
         if any(not p or p<=0 for p in prices.values()):raise DataUnavailable('MISSING_HELD_CLOSE')
-        state['valuation_quotes'][last]=dict(observed_at=now.isoformat(),prices=prices)
+        state['valuation_quotes'][last]=dict(observed_at=now.isoformat(),prices=prices,shares=copy.deepcopy(state['strategy']['shares']))
         for k in ('strategy','benchmark'):
             l=RetentionLedger(**state[k]);nav,stock,claims=l.close_value(data,last)
             l.equity.append(dict(date=last,nav=nav,cash=l.cash,stock_value=stock,receivables=claims,positions=len(l.shares),fees_cumulative=l.fees));state[k]=l.to_dict()
@@ -134,16 +134,17 @@ def export(report,state,now):
         curve.append(dict(date=a['date'],nav_sek=a['nav']*rate['usdsek'],spy_nav_sek=bb['nav']*rate['usdsek'] if benchmark_valid else None))
     report.update(paper_started=bool(state['opening_observations']),sessions=len(s['equity']),paper_initialized_at=state['initialized_at'],model_fingerprint=state['model_fingerprint'],pending_intention=state.get('pending'),cash_usd=s['cash'],fees_usd=s['fees'],trades=s['trades'],curve=curve,gaps=state['gaps'],unfilled_orders=state['unfilled_orders'],paper_metrics=None,positions=[],accounting_audits=state['audits'])
     last=s['equity'][-1] if s['equity'] else None
+    valuation_pending=bool(s['trades']) if not last else s['shares']!=state['valuation_quotes'][last['date']].get('shares',s['shares']) or any(t['date']>last['date'] for t in s['trades'])
+    report['valuation_pending']=valuation_pending
     report['nav_sek']=last['nav']*state['valuation_fx'][last['date']]['usdsek'] if last else 20000
     if last:
         for t,q in sorted(s['shares'].items()):
-            price=state['valuation_quotes'][last['date']]['prices'].get(t)
+            price=state['valuation_quotes'][last['date']]['prices'].get(t) if not valuation_pending else None
             report['positions'].append(dict(ticker=t,quantity=q,price_usd=price,value_sek=q*price*state['valuation_fx'][last['date']]['usdsek'] if price else None,weight=q*price/last['nav'] if price else None))
     else:
         # Opening positions exist before the first closing valuation. Show them
         # without attaching a fabricated close or a backdated portfolio value.
         for t,q in sorted(s['shares'].items()):report['positions'].append(dict(ticker=t,quantity=q,price_usd=None,value_sek=None,weight=None))
-    report['valuation_pending']=bool(s['shares']) and (not last or max(t['date'] for t in s['trades'])>last['date'])
     if report['valuation_pending']:report['nav_sek']=None
     result=None;periods=[]
     if last and benchmark_valid:
