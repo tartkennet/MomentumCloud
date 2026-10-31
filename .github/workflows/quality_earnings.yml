@@ -1,0 +1,117 @@
+name: Quality and Earnings current source collection
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','recheck_quality.py','quality_forward.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml']
+permissions:
+  # Draft release download requires repository push scope; original releases
+  # are strictly read-only. Results use a NEW unique draft tag.
+  contents: write
+  actions: read
+concurrency:
+  group: quality-collection-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scope:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      replay: ${{ steps.changed.outputs.replay }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: changed
+        name: Avoid repeating approved replay for presentation-only commits
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PY'
+          import os,subprocess
+          files={'quality_sources.py','quality_fundamentals.py','quality_strategy.py','quality_audit.py','collect_quality.py','recheck_quality.py','quality_forward.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_earnings.yml'}
+          replay=True
+          before=os.environ.get('BEFORE','')
+          if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
+              result=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True)
+              if result.returncode==0:
+                  replay=bool(files.intersection(result.stdout.splitlines()))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('replay='+str(replay).lower()+'\n')
+          print('Replay required:',replay)
+          PY
+  study:
+    needs: scope
+    if: needs.scope.outputs.replay == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_quality*.py' -v
+      - name: Restore completed original observations instead of recollecting
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p quality_prior/assets quality_prior/results
+          timeout 120s gh release download quality-observation-41210207368-1 --repo "$GITHUB_REPOSITORY" --pattern quality_observation.tar.gz --pattern quality_manifest.json --dir quality_prior/assets
+          python - <<'PYCODE'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          p=Path('quality_prior/assets');m=json.loads((p/'quality_manifest.json').read_text())
+          assert m['source_commit']=='0739238d3727f1a05e1b9f35e552d172ba7ecbfa'
+          assert hashlib.sha256((p/'quality_observation.tar.gz').read_bytes()).hexdigest()==m['sha256']
+          with tarfile.open(p/'quality_observation.tar.gz') as t:t.extractall('quality_prior/results',filter='data')
+          PYCODE
+      - name: Authenticate already observed market inputs
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal --sealed quality_prior/results/market_cache.sealed --cache-dir .quality_market_cache
+      - name: Recheck saved originals and prices without network or return simulation
+        run: |
+          mkdir -p quality_output
+          timeout 4m python recheck_quality.py --input quality_prior/results --output quality_output --cache .quality_market_cache
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quality_current_summary
+          path: quality_output/quality.json
+          retention-days: 90
+      - name: Preserve unchanged inputs alongside the new audit
+        if: always()
+        run: |
+          cp -r quality_prior/results/originals quality_output/originals
+          cp quality_prior/results/base_manifest.json quality_output/base_manifest.json
+          cp quality_prior/results/market_cache.sealed quality_output/market_cache.sealed
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quality_current_observation
+          path: quality_output/
+          retention-days: 90
+      - name: Archive this observation under a new immutable tag
+        if: always() && hashFiles('quality_output/quality.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf quality_observation.tar.gz -C quality_output .
+          python - <<'PYCODE'
+          import hashlib,json,subprocess,os
+          from pathlib import Path
+          p=Path('quality_observation.tar.gz')
+          Path('quality_manifest.json').write_text(json.dumps({'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'run':os.environ['GITHUB_RUN_ID'],'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'broker_orders_enabled':False}))
+          PYCODE
+          tag="quality-observation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          gh release create "$tag" quality_observation.tar.gz quality_manifest.json --repo "$GITHUB_REPOSITORY" --target "$(git rev-parse HEAD)" --draft --title "Quality current observation $GITHUB_RUN_ID" --notes "Actual observed original filings and market inputs; no fabricated historical returns or trades."

@@ -1,0 +1,79 @@
+{
+  "prototype_source_commit": "0739238d3727f1a05e1b9f35e552d172ba7ecbfa",
+  "workflow_run": "41210207368",
+  "coverage": 0.83,
+  "qualified_count": 33,
+  "paper_started": false,
+  "historical_metrics": null,
+  "gaps": [
+    {
+      "ticker": "ABNB",
+      "reason": "MISSING_eps"
+    },
+    {
+      "ticker": "ADP",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "BMY",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "COP",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "CRWD",
+      "reason": "MISSING_revenue"
+    },
+    {
+      "ticker": "CVX",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "EMR",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "GD",
+      "reason": "MISSING_eps"
+    },
+    {
+      "ticker": "IBM",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "JNJ",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "MNST",
+      "reason": "MISSING_net_income"
+    },
+    {
+      "ticker": "MRK",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "OXY",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "PFE",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "PSX",
+      "reason": "MISSING_operating_income"
+    },
+    {
+      "ticker": "TWST",
+      "reason": "MISSING_revenue"
+    },
+    {
+      "ticker": "XOM",
+      "reason": "AMBIGUOUS_EntityCentralIndexKey"
+    }
+  ],
+  "note": "Operating-margin data-feasibility prototype, no economic return or paper outcome computed. Retained before preregistering the net-margin alternative."
+}
