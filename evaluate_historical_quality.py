@@ -15,7 +15,7 @@ from research_core_ledger import complete_data
 from research_momentum10_fx import ReferenceFX
 from run_stocks10_research import fx_rows,prior_fx
 from research_core_diagnostics import performance
-from audit_quality_history_account import native_account
+from audit_quality_history_account import native_account,audit_performance
 from audit_momentum10_v2 import independent_fx
 
 
@@ -79,6 +79,10 @@ def replay(d,root,fx,start,end,spread,allow_partial=False):
     result=dict(requested_start=start,requested_end=end,start=days[0],end=actual_end,execution_reserve=spread,status='PARTIAL_CONDITIONAL' if verified else 'DATA_BLOCKED',financial_go=False,live_approved=False,broker_orders_enabled=False,block=blocked,selections=selections,unfilled=unfilled,initial_sek=20000,initial_fx=initial_fx,initial_usd=initial,strategy=summary(s) if verified else None,benchmark=summary(b) if verified else None)
     if verified:
         checker=independent_fx(d);result['account_audit']=native_account(d,cfg,s,checker);result['benchmark_audit']=native_account(d,cfg,b,checker,True)
+        result['financial_audit']=audit_performance(s,result['strategy']);result['benchmark_financial_audit']=audit_performance(b,result['benchmark'])
+        initial_spy=sum(t['quantity']*t['price'] for t in b.trades if t['side']=='BUY')
+        no_distributions=all(r['cash']==b.equity[1]['cash'] and r['receivables']==0 for r in b.equity[1:])
+        if no_distributions:result['fully_invested_spy_gross_price_return_pct']=100*(b.equity[-1]['stock_value']/initial_spy-1)
         independent=100*(s.equity[-1]['nav']/initial-1);assert abs(independent-result['strategy']['return_pct'])<1e-9
         metrics,periods=core.metrics(s,b);result['gates']=core.gates(metrics);result['monthly_intervals']=len(periods)
     return result,s,b
@@ -100,6 +104,14 @@ def run(cache,root,out):
                 if start==START and spread==.0015 and mode=='coverage_restricted_diagnostic':report['primary']=result;report['curve']=[dict(date=a['date'],nav_sek=20000 if i==0 else a['nav']*prior_fx(fx,a['date'])['usdsek'],spy_nav_sek=20000 if i==0 else bb['nav']*prior_fx(fx,a['date'])['usdsek']) for i,(a,bb) in enumerate(zip(s.equity,b.equity))];report['trades']=s.trades
             except Exception as e:report['cases'].append(dict(name=name,status='BLOCKED',error=type(e).__name__+': '+str(e)))
             atomic_json(out/'quality-history.json',report)
+    complete=[r for r in report['cases'] if r['status']=='PARTIAL_CONDITIONAL' and r['execution_reserve']==.0015]
+    report['display_case']=complete[0]['name'] if complete else None
+    report['source_coverage']=[dict(date=r['block']['panel']['date'],coverage=r['block']['panel']['coverage'],qualified=r['block']['panel']['qualified'],complete_ten=len(r['block']['panel']['targets'])==10) for r in report['cases'][:4] if r.get('block') and r['block'].get('panel')]
+    if complete:
+        r=complete[0];account=read_json(out/(r['name']+'.strategy.json'));benchmark=read_json(out/(r['name']+'.benchmark.json'))
+        report['display_curve']=[dict(date=a['date'],nav_sek=20000 if i==0 else a['nav']*prior_fx(fx,a['date'])['usdsek'],spy_nav_sek=20000 if i==0 else bb['nav']*prior_fx(fx,a['date'])['usdsek']) for i,(a,bb) in enumerate(zip(account['equity'],benchmark['equity']))]
+        report['display_trades']=account['trades']
+    report['source_files']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in map(Path,['historical_quality_facts.py','historical_quality_audit.py','collect_quality_history.py','evaluate_historical_quality.py','audit_quality_history_account.py','quality_strategy.py','quality_fundamentals.py'])}
     report['minimum_source_gate_relaxed_for_diagnostic_only']=True
     report['diagnostic_warning']='The coverage-restricted diagnostic excludes unresolved fundamentals; its ranking can differ from the complete frozen model. It is NOT a strategy backtest or evidence of historical GO.'
     atomic_json(out/'quality-history.json',report);print('HISTORY_DONE',json.dumps([{k:r.get(k) for k in ('name','status','strategy','block','error')} for r in report['cases']]),flush=True)

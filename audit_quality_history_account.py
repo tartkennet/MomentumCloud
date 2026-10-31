@@ -4,6 +4,16 @@ import math
 from collections import defaultdict
 from audit_stocks10 import near
 
+def audit_performance(ledger,metrics):
+    values=[r['nav'] for r in ledger.equity];returns=[(b-a)/a for a,b in zip(values,values[1:])]
+    mean=sum(returns)/len(returns);variance=sum((r-mean)**2 for r in returns)/(len(returns)-1) if len(returns)>1 else 0
+    peak=values[0];dd=0
+    for v in values:peak=max(peak,v);dd=min(dd,(v-peak)/peak*100)
+    near(metrics['return_pct'],(values[-1]-values[0])/values[0]*100);near(metrics['max_drawdown_pct'],dd)
+    if variance:near(metrics['daily_sharpe_zero_rf'],mean/variance**.5*252**.5)
+    near(metrics['fees_usd'],ledger.fees)
+    return dict(status='PASS',return_drawdown_sharpe_costs=True,independent_code=True)
+
 def native_account(data,config,s,fx,benchmark=False):
     """Full independent native-currency face claims, fees, raw fills and NAV."""
     by_day=defaultdict(list);split=defaultdict(list);div=defaultdict(list)

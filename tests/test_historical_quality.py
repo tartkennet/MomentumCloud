@@ -27,4 +27,14 @@ class HistoricalClockTests(unittest.TestCase):
         a=parse_original(raw,r,'123','2026-08-01T00:00:00+00:00');b=parse_historical(raw,r,'123','2026-08-01T00:00:00+00:00')
         for key in ('current','prior','metrics','checks','qualified','concepts','period','prior_period'):self.assertEqual(a[key],b[key])
 
+    def test_independent_finance_detects_false_sharpe_and_drawdown(self):
+        from types import SimpleNamespace
+        from research_core_diagnostics import performance
+        from audit_quality_history_account import audit_performance
+        l=SimpleNamespace(equity=[{'nav':100},{'nav':99},{'nav':103},{'nav':101}],fees=2)
+        m=performance(l.equity);m['fees_usd']=2
+        self.assertEqual(audit_performance(l,m)['status'],'PASS')
+        m['daily_sharpe_zero_rf']+=.1
+        with self.assertRaises(AssertionError):audit_performance(l,m)
+
 if __name__=='__main__':unittest.main()

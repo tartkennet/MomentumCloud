@@ -11,8 +11,30 @@ concurrency:
   group: quality-history-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.changed.outputs.needed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.event.pull_request.head.sha || github.sha }}', fetch-depth: 0, persist-credentials: false}
+      - id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PYCODE'
+          import os,subprocess
+          before=os.environ.get('BEFORE','');needed=True
+          if before and os.environ.get('ACTION')=='synchronize':
+              files=subprocess.check_output(['git','diff','--name-only',before,'HEAD'],text=True).splitlines()
+              needed=any(f in ('collect_quality_history.py','historical_quality_facts.py','historical_quality_audit.py') for f in files)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
+          print('New original-file acquisition needed:',needed)
+          PYCODE
   prepare:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: scope
+    if: needs.scope.outputs.needed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 7
     outputs:
@@ -62,6 +84,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: history_prepared, path: history_output, retention-days: 2}
   panel:
+    if: needs.prepare.result == 'success'
     needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 11
