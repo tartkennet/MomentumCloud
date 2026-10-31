@@ -1,0 +1,92 @@
+name: Separate Stocks10 whole-lot research
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['research_stocks10.py', 'audit_stocks10.py', 'run_stocks10_research.py', 'docs/STOCKS10_PROTOCOL_20261031.md', '.github/workflows/stocks10_research.yml']
+permissions:
+  # Draft release download requires repository push scope; original releases
+  # are strictly read-only. Results use a NEW unique draft tag.
+  contents: write
+  actions: read
+concurrency:
+  group: stocks10-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  study:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p test_stocks10.py -v
+      - name: Restore and authenticate saved inputs only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p stocks10_restore
+          timeout 120s gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --pattern Momentum_core_risk_manifest.json --dir stocks10_restore
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('stocks10_restore');m=json.loads((root/'Momentum_core_risk_manifest.json').read_text())
+          name='Momentum_core_risk_cache.sealed'
+          assert hashlib.sha256((root/name).read_bytes()).hexdigest()==m['assets'][name]
+          PY
+      - name: Fetch and preserve free ECB reference history
+        run: |
+          mkdir -p stocks10_output
+          python - <<'PY'
+          import requests
+          from pathlib import Path
+          r=requests.get('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml',timeout=(5,25))
+          r.raise_for_status()
+          Path('stocks10_output/ecb-history.xml').write_bytes(r.content)
+          PY
+      - name: Unseal historical cache without new market requests
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal --sealed stocks10_restore/Momentum_core_risk_cache.sealed
+      - name: Replay preregistered candidates and independent audits offline
+        run: |
+          set -o pipefail
+          python run_stocks10_research.py --cache .momentum_core_cache --manifest stocks10_restore/Momentum_core_risk_manifest.json --fx stocks10_output/ecb-history.xml --output stocks10_output 2>&1 | tee stocks10_output/study.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Stocks10_complete_evidence
+          path: stocks10_output/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Preserve evidence without touching H3 releases or accounts
+        if: always() && hashFiles('stocks10_output/results.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p stocks10_release
+          git archive --format=tar.gz HEAD > stocks10_release/source.tar.gz
+          tar -czf stocks10_release/results.tar.gz -C stocks10_output .
+          cp stocks10_output/results.json stocks10_release/summary.json
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('stocks10_release')
+          m={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+             'run_id':os.environ['GITHUB_RUN_ID'],'attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+             'live_approved':False,'broker_orders_enabled':False,
+             'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir()}}
+          (root/'manifest.json').write_text(json.dumps(m,indent=2))
+          PY
+          tag="stocks10-research-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$(git rev-parse HEAD)" --draft --title "Stocks10 independent whole-lot study $GITHUB_RUN_ID" --notes "Separate preregistered development research. Failures retained. No H3 changes. No live approval."
+          gh release upload "$tag" stocks10_release/* --repo "$GITHUB_REPOSITORY"
