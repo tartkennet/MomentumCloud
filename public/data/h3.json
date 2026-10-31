@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-10-31T12:48:56.978702+00:00",
+  "generated_at": "2026-10-31T12:59:21.198351+00:00",
   "as_of": "2026-10-30",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -644,42 +644,52 @@
       }
     },
     "readiness": {
-      "checked_at": "2026-10-31T12:48:52.455461+00:00",
+      "checked_at": "2026-10-31T12:59:20.714256+00:00",
       "key_configured": true,
-      "live_probe": true,
+      "live_probe": false,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "required_endpoints": {
-        "raw_daily_bars": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 9,
-          "latest_observed_session": "2026-10-30"
+      "status": "CONFIGURED",
+      "last_live_probe": {
+        "checked_at": "2026-10-31T12:48:52.455461+00:00",
+        "key_configured": true,
+        "live_probe": true,
+        "secrets_exposed": false,
+        "subscription_changed": false,
+        "live_approved": false,
+        "broker_orders_enabled": false,
+        "required_endpoints": {
+          "raw_daily_bars": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 9,
+            "latest_observed_session": "2026-10-30"
+          },
+          "dated_universe": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "splits": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "dividends": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          }
         },
-        "dated_universe": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
+        "optional_quotes": {
+          "authorized": false,
+          "http_status": 403,
+          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
         },
-        "splits": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        },
-        "dividends": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        }
-      },
-      "optional_quotes": {
-        "authorized": false,
-        "http_status": 403,
-        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
-      },
-      "status": "PASS"
+        "status": "PASS"
+      }
     },
     "workflow": {
       "id": 400565291,
@@ -688,7 +698,7 @@
     },
     "next_expected_attempt_at": "2026-11-03T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41202716939",
+    "workflow_run": "41203483020",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -715,10 +725,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41202716939_attempt_1.tar.gz",
-    "paper_archive_sha256": "e90d3e4c14e26b72c0e6479de27c2e4f5f4c65cfd140519b7cf8bd07418c6df3",
-    "previous_paper_asset": "paper_run_41175601751_attempt_2.tar.gz",
-    "previous_paper_archive_sha256": "8fbaa67731c6de71c64d10b2e78988e7fae158ac50ddc26fc9073baa7487963a",
-    "workflow_run": "41202716939"
+    "paper_asset": "paper_run_41203483020_attempt_1.tar.gz",
+    "paper_archive_sha256": "06f06211927e15678b212bd46d745ed8632a778a1fca5518d034ebbf5b495049",
+    "previous_paper_asset": "paper_run_41202716939_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "e90d3e4c14e26b72c0e6479de27c2e4f5f4c65cfd140519b7cf8bd07418c6df3",
+    "workflow_run": "41203483020"
   }
 }
