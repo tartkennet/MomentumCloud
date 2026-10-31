@@ -45,6 +45,11 @@ def build(args):
     attribution=json.loads(Path('docs/MOMENTUM10_V3_ATTRIBUTION_20261031.json').read_text())
     assert attribution['status']=='PASS' and not attribution['strategy_replay']
     for a in attribution['variants'].values():assert math.isclose(sum(p for t,p in a['drawdown_contribution_usd']),a['episode']['net_pnl_usd'],abs_tol=1e-7)
+    manifest['resume_run']=r.get('resume_run')
+    manifest['resume_source']=r.get('resume_source')
+    manifest['reused_cases']=sum(bool(a.get('reused_from_run')) for a in r['attempts'])
+    manifest['independent_audit_summary']=dict(cases=len(r['attempts']),passed=sum(a['audit']['status']=='PASS' for a in r['attempts']),
+        max_nav_error_usd=max(a['audit']['accounting']['max_nav_error_usd'] for a in r['attempts']),independent_code=True,independent_vendor=False)
     manifest.update(baseline_attribution=attribution,workflow_run=str(args.run),variants=variants,attempts=[compact(a) for a in r['attempts']],
         prior_stocks10=prior['prior_stocks10'],prior_v2=prior['variants'],comparators=prior['comparators'],spy_comparison=prior['spy_comparison'],
         baseline_order_diagnostic=json.loads(Path('docs/MOMENTUM10_V3_BASELINE_DIAGNOSTIC_20261031.json').read_text()))
@@ -56,6 +61,7 @@ def build(args):
     for v in variants:
         a=v['main'];m=a['metrics'];cases=[z for z in r['attempts'] if z['variant']==v['variant']]
         lines.append(f"| {v['variant']} | {m['TotalReturn_pct']:.2f} | {m['DailyMaxDrawdown_pct']:.2f} | {m['DailySharpe_zero_rf']:.2f} | {m['ActualFees_USD']:.2f} | {a['trading']['market_orders']} | {a['turnover']['gross_turnover_annual_pct']:.2f} | {a['sek']['return_pct']:.2f} | {a['sek']['max_drawdown_pct']:.2f} | {sum(c['financial_pass'] for c in cases)} | {sum(c['decision']=='PAPER_ONLY' for c in cases)} |")
+    lines += ['', f"Bounded run {r.get('resume_run')} preserved {manifest['reused_cases']} independently approved cases; this run completed only the other {len(r['attempts'])-manifest['reused_cases']}. Frozen strategy/auditor/input hashes and recomputed metrics/gates match reused cases. No approved strategy experiment was repeated."]
     lines += ['', 'Main case: assumed payment after five sessions, confirmed-halt last quote, 15bp execution reserve PLUS max(1USD,.25%) commission and .25% FX reserve. Stress execution30bp. Whole-share cash accounts start SEK20,000 with the same strictly prior-date ECB input. Gross turnover is buys+sells including initial purchases; one-way is half.','',
         '## Failed gates and operational constraints','']
     for v in variants:
@@ -80,6 +86,11 @@ def build(args):
         '', 'Historical sector labels remain unavailable: no current SIC/GICS was injected into historical signals. Return clusters are observable risk groups, not industry classification. PIT-name hints are incomplete diagnostics only; they never affect decisions.',
         '',f"Paper candidate: {r['paper_candidate']}; financial candidate: {r['financial_candidate']}. No new paper account was started unless separately frozen for future-only observation; no broker orders/live approval.",
         '', 'All three preregistered selection mechanisms and the final finite 3×3 interval/stop matrix are preserved. If none qualifies, the supported register is exhausted: a more flattering historical combination is not a justified fourth hypothesis. Additional selection factors need new causal evidence and fresh preregistration, not reuse of these results as untouched validation.','']
+    lines += ['', '## Verified interpretation', '',
+        'The new current-momentum score worsened monthly retention from saved v2 +43.59% to R -16.84%; the trend condition T returned -21.26%, and adding D clusters returned -19.63%. D reduced the maximum selection-time mean pair correlation from .3108 to .2694 while drawdown stayed -56.84%. Lower observed correlation alone did not control the damaging losses.',
+        'D monthly lost 45.85% in calendar 2025 versus SPY +16.70%. The predeclared quarterly fixed-stop contrast returned +11.21%, DD -31.63%, positive-month rate 48.48%, all below the applicable edge/risk/hit requirements. It is not promoted as a winning candidate. Its 69 stop fills included 61 below-barrier openings and a worst price-only entry loss of 47.89%, before fees.',
+        'RAPT cash completion is repaired in the v3-only event overlay. A new target basket committed before its 2026-03-03 merger could not be bought at that opening; the missing/untradeable RAPT slot was correctly blocked and fails operational admission. No substitute price, basket or historical paper fill was invented. Quarterly non-volatility cases avoid that operational block, but still fail financial GO.',
+        'Finite registered hypotheses R, T and D were each tested before proceeding; the final interval/stop matrix is complete. No evidence supports promotion, live trading or new automatic paper trading. Further selection-factor research requires a new causally supported registration and suitable dated inputs; these reviewed outcomes cannot be relabelled as independent future validation.', '']
     Path('docs/MOMENTUM10_V3_RESULTS_20261031.md').write_text('\n'.join(lines))
     return manifest
 
