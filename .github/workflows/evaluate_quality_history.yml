@@ -11,8 +11,30 @@ concurrency:
   group: quality-history-replay-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.changed.outputs.needed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.event.pull_request.head.sha || github.sha }}', fetch-depth: 0, persist-credentials: false}
+      - id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PYCODE'
+          import os,subprocess
+          before=os.environ.get('BEFORE','');needed=True
+          if before and os.environ.get('ACTION')=='synchronize':
+              files=subprocess.check_output(['git','diff','--name-only',before,'HEAD'],text=True).splitlines()
+              needed=any(f in ('evaluate_historical_quality.py','audit_quality_history_account.py','tests/test_historical_quality.py') for f in files)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
+          print('New offline computation needed:',needed)
+          PYCODE
   replay:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: scope
+    if: needs.scope.outputs.needed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:

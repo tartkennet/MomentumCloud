@@ -4,3 +4,5 @@
 .comparison-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 32px}.comparison-grid article{border-top:3px solid var(--line);padding-top:12px}.comparison-grid h4{font-size:16px;margin:4px 0 12px}.comparison-grid .row{padding:6px 0}.comparison-grid .row span,.comparison-grid .row strong{font-size:14px}@media(max-width:580px){.comparison-grid{grid-template-columns:1fr}}
 
 .row{min-width:0}.row>span{min-width:0}.row>strong{max-width:58%;min-width:0;flex-shrink:1;overflow-wrap:anywhere;text-align:right}@media(max-width:580px){.hero h1{font-size:clamp(36px,10.7vw,43px)}}
+
+@media(max-width:380px){#history .metric-grid{grid-template-columns:1fr}}
