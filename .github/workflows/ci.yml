@@ -38,7 +38,7 @@ jobs:
       - name: Compile dashboard functions
         run: node --check api/dashboard.js && node --check api/health.js && node --check public/app.js && node --check api/h3.js && node --check public/h3.js && node --check api/portfolio.js && node --check public/investment.js && node --check public/h3-review.js
       - name: Verify H3 delivery and empty-state behavior
-        run: node --test tests/h3_dashboard.test.js tests/investment.test.js tests/h3_review.test.js tests/stocks10.test.js
+        run: node --test tests/h3_dashboard.test.js tests/investment.test.js tests/h3_review.test.js tests/stocks10.test.js tests/momentum10_v2.test.js
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Verify locked production configuration
