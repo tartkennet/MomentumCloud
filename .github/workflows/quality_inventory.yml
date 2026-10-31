@@ -1,0 +1,79 @@
+name: Quality and Earnings data inventory
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['quality_inventory.py', '.github/workflows/quality_inventory.yml']
+permissions:
+  # Draft release download requires repository push scope; original releases
+  # are strictly read-only. Results use a NEW unique draft tag.
+  contents: write
+  actions: read
+concurrency:
+  group: quality-inventory-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scope:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      replay: ${{ steps.changed.outputs.replay }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: changed
+        name: Avoid repeating approved replay for presentation-only commits
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PY'
+          import os,subprocess
+          files={'quality_inventory.py','.github/workflows/quality_inventory.yml'}
+          replay=True
+          before=os.environ.get('BEFORE','')
+          if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
+              result=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True)
+              if result.returncode==0:
+                  replay=bool(files.intersection(result.stdout.splitlines()))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('replay='+str(replay).lower()+'\n')
+          print('Replay required:',replay)
+          PY
+  study:
+    needs: scope
+    if: needs.scope.outputs.replay == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Probe existing app permissions and SEC primary data
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: timeout 4m python quality_inventory.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Quality_data_inventory
+          path: quality_inventory_output/
+          retention-days: 90
+      - name: Preserve primary-data inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf quality_inventory.tar.gz -C quality_inventory_output .
+          tag="quality-inventory-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          gh release create "$tag" quality_inventory.tar.gz --repo "$GITHUB_REPOSITORY" --target "$(git rev-parse HEAD)" --draft --title "Quality data inventory $GITHUB_RUN_ID" --notes "Read-only permissions and primary-source probes; no strategy outcomes or trading."
