@@ -114,3 +114,18 @@ order participation <=1% observed daily volume. No historical test permits
 live GO. A qualifying candidate is at most PAPER_ONLY; its forward source
 must be frozen and separately journalled before any actual future session.
 Never backfill missed sessions, enable broker orders or change H3/Buy Now.
+
+## Technical addendum — RAPT corporate event, unchanged selection
+
+First registered run 41196548955 (source 1f6a077f5ada25eda13731fec66a4034f398cc2c)
+blocked before any completed new outcome: RAPT missing close 2026-03-03.
+Nasdaq ECA2026-124 confirms merger before that opening, USD58 cash per
+share, last trading 2026-03-02. GSK's dated completion announcement/SEC6K
+corroborates completion. Add only this v3 study's in-memory cash-event view.
+No actual broker payment timestamp is known: preserve all five unchanged
+payment sensitivities, including indefinitely locked claims. Never invent
+a missing open/close or a sale; original cached files and all old sources
+remain untouched. Re-run the blocked experiment, no completed cases existed.
+https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-124
+https://www.gsk.com/en-gb/media/press-releases/gsk-completes-acquisition-of-rapt-therapeutics/
+https://www.sec.gov/Archives/edgar/data/1131399/000165495426001801/a1763v.htm

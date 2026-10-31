@@ -21,7 +21,6 @@ from run_core_risk_research import make_data,EXTENSION_END,DELAYS
 from research_stocks10 import Stocks10Ledger,APGE_COMPLETION
 from run_stocks10_research import fx_rows,prior_fx,converted
 from research_momentum10_v3 import SelectionLedger,MODEL
-from research_momentum10_v2 import RetentionLedger
 from audit_momentum10_v3 import audit
 from diagnose_momentum10_v3 import signal_risk
 from run_portfolio_forward import qualify,fingerprint as h3_fingerprint
@@ -94,6 +93,9 @@ def run(args):
     manifest=verify_inputs(args.cache,args.manifest)
     data=complete_data(supplement(make_data(args.cache,EXTENSION_END,True)))
     data.source.cash_actions=dict(data.source.cash_actions,APGE=copy.deepcopy(APGE_COMPLETION))
+    data.source.cash_actions['RAPT']=dict(effective_date='2026-03-03',cash_per_share=58.,
+        source_url='https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-124',
+        sec_url='https://www.sec.gov/Archives/edgar/data/1131399/000165495426001801/a1763v.htm')
     data.fx_xml=Path(args.prior)/'ecb-history.xml'
     data.native_usd=ReferenceFX(data.fx_xml).usd
     native_repair=supplement_native_dividend(data)
@@ -102,6 +104,7 @@ def run(args):
     report=dict(model=MODEL,status='RUNNING',completed=False,evidence_class='DEVELOPMENT_RESEARCH',
         untouched_out_of_sample=False,live_approved=False,broker_orders_enabled=False,
         forward_paper_started=False,start=data.sessions[0],end=data.sessions[-1],initial_sek=20000,
+        preregistered_commit='1f6a077f5ada25eda13731fec66a4034f398cc2c',
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         sources={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in FILES},
         input_manifest=manifest,fx_sha256=old['fx_sha256'],h3_development=qualify(),h3_forward=h3_fingerprint(),
@@ -158,6 +161,8 @@ def run(args):
                             spy_sek=z['nav']*prior_fx(rates,z['date'])['usdsek']) for r,z in zip(s.equity,b.equity)])
                         print('DONE '+name+' '+json.dumps(dict(metrics=metrics,fees=s.fees,orders=case['trading']['market_orders'],paper=case['decision'])),flush=True)
                     except Exception as e:
+                        checkpoint=out/(name+'_TECHNICAL_PARTIAL');checkpoint.mkdir(exist_ok=True)
+                        atomic_json(checkpoint/'strategy.json',s.to_dict());atomic_json(checkpoint/'benchmark.json',b.to_dict())
                         case.update(status='TECHNICAL_BLOCK',error=type(e).__name__+': '+str(e))
                         report['status']='TECHNICAL_BLOCK';atomic_json(out/'results.json',report)
                         print('BLOCKED '+name+' '+case['error'],flush=True);raise
