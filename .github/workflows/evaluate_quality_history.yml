@@ -28,7 +28,7 @@ jobs:
           before=os.environ.get('BEFORE','');needed=True
           if before and os.environ.get('ACTION')=='synchronize':
               files=subprocess.check_output(['git','diff','--name-only',before,'HEAD'],text=True).splitlines()
-              needed=any(f in ('evaluate_historical_quality.py','audit_quality_history_account.py','tests/test_historical_quality.py') for f in files)
+              needed=any(f in ('evaluate_historical_quality.py','audit_quality_history_account.py','tests/test_historical_quality.py','.github/workflows/evaluate_quality_history.yml') for f in files)
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
           print('New offline computation needed:',needed)
           PYCODE
@@ -49,15 +49,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
-          timeout 120s gh run download 41233345884 --repo "$GITHUB_REPOSITORY" --name history_prepared --dir history_output
-          timeout 60s gh run download 41233345884 --repo "$GITHUB_REPOSITORY" --pattern 'panel-*' --dir history_panels
+          mkdir -p history_saved history_output
+          timeout 120s gh release download quality-history-41234365835-1 --repo "$GITHUB_REPOSITORY" --pattern historical_results.tar.gz --pattern market.sealed --dir history_saved
           python - <<'PY'
-          import shutil,json,hashlib
+          import shutil,json,hashlib,tarfile
           from pathlib import Path
-          for p in Path('history_panels').rglob('*.panel.json'):shutil.copyfile(p,Path('history_output')/p.name)
-          dates=json.loads(Path('history_output/signals.json').read_text());assert all((Path('history_output')/(d+'.panel.json')).exists() for d in dates)
-          manifest={str(p.relative_to('history_output')):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('history_output').glob('*.json')}
-          Path('history_output/panel_manifest.json').write_text(json.dumps(manifest))
+          with tarfile.open('history_saved/historical_results.tar.gz') as t:t.extractall('history_saved/results',filter='data')
+          saved=Path('history_saved/results');m=json.loads((saved/'input_assets.json').read_text())
+          sealed=Path('history_saved/market.sealed')
+          assert hashlib.sha256(sealed.read_bytes()).hexdigest()==m['history_output/market.sealed']
+          shutil.copyfile(sealed,'history_output/market.sealed')
+          for p in (saved/'inputs').iterdir():
+              assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==m['history_results/inputs/'+p.name]
+              shutil.copyfile(p,Path('history_output')/p.name)
+          dates=json.loads(Path('history_output/signals.json').read_text())
+          assert all((Path('history_output')/(d+'.panel.json')).exists() for d in dates)
+          print('Restored immutable original panels:',dates)
           PY
           mkdir -p archived_fx
           timeout 60s gh release download stocks10-research-41180905339-1 --repo "$GITHUB_REPOSITORY" --pattern results.tar.gz --pattern manifest.json --dir archived_fx
