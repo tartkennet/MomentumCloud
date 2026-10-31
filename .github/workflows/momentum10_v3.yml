@@ -1,0 +1,156 @@
+name: Momentum10 v3 current selection and risk clusters
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths: ['research_momentum10_v3.py', 'audit_momentum10_v3.py', 'run_momentum10_v3.py', 'docs/MOMENTUM10_V3_PROTOCOL_20261031.md', 'tests/test_momentum10_v3.py', 'diagnose_momentum10_v3.py', '.github/workflows/momentum10_v3.yml']
+permissions:
+  # Draft release download requires repository push scope; original releases
+  # are strictly read-only. Results use a NEW unique draft tag.
+  contents: write
+  actions: read
+concurrency:
+  group: m10v3-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scope:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      replay: ${{ steps.changed.outputs.replay }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: changed
+        name: Avoid repeating approved replay for presentation-only commits
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PY'
+          import os,subprocess
+          files={'research_momentum10_v3.py','audit_momentum10_v3.py','run_momentum10_v3.py','docs/MOMENTUM10_V3_PROTOCOL_20261031.md','tests/test_momentum10_v3.py','diagnose_momentum10_v3.py'}
+          replay=True
+          before=os.environ.get('BEFORE','')
+          if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
+              result=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True)
+              if result.returncode==0:
+                  replay=bool(files.intersection(result.stdout.splitlines()))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('replay='+str(replay).lower()+'\n')
+          print('Replay required:',replay)
+          PY
+  study:
+    needs: scope
+    if: needs.scope.outputs.replay == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_momentum10_v3.py' -v
+      - name: Restore and authenticate saved inputs only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_restore
+          timeout 120s gh release download core-risk-research-20261029 --repo "$GITHUB_REPOSITORY" --pattern Momentum_core_risk_cache.sealed --pattern Momentum_core_risk_manifest.json --dir m10v3_restore
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('m10v3_restore');m=json.loads((root/'Momentum_core_risk_manifest.json').read_text())
+          name='Momentum_core_risk_cache.sealed'
+          assert hashlib.sha256((root/name).read_bytes()).hexdigest()==m['assets'][name]
+          PY
+      - name: Restore completed Stocks10 and its original ECB input without replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_prior/assets m10v3_prior/results
+          timeout 90s gh release download stocks10-research-41180905339-1 --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern results.tar.gz --dir m10v3_prior/assets
+          python - <<'PY'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          root=Path('m10v3_prior/assets');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='fd019d6fe48cdefdc68d9788bf372c8682397a0f'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v3_prior/results',filter='data')
+          PY
+      - name: Restore authenticated completed v2 states for diagnostics, never replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_resume/assets m10v3_resume/results
+          timeout 90s gh release download m10v2-research-41185508350-1 --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern results.tar.gz --dir m10v3_resume/assets
+          python - <<'PY'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          root=Path('m10v3_resume/assets');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='d0eb0f3d84a0636c7ca50f12a96f61105aaef07c'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v3_resume/results',filter='data')
+          PY
+      - name: Restore completed immutable v3 cases after bounded-run timeout
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_checkpoint/assets m10v3_checkpoint/results
+          timeout 90s gh release download m10v3-research-41196824070-1 --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern results.tar.gz --dir m10v3_checkpoint/assets
+          python - <<'PYCODE'
+          import json,hashlib,tarfile
+          from pathlib import Path
+          root=Path('m10v3_checkpoint/assets');m=json.loads((root/'manifest.json').read_text())
+          assert m['source_commit']=='157876556c7838855b8bcc26c54c8422bcc8e8a5'
+          assert hashlib.sha256((root/'results.tar.gz').read_bytes()).hexdigest()==m['assets']['results.tar.gz']
+          with tarfile.open(root/'results.tar.gz') as t:t.extractall('m10v3_checkpoint/results',filter='data')
+          PYCODE
+      - name: Unseal historical cache without new market requests
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python cache_momentum_inputs.py unseal --sealed m10v3_restore/Momentum_core_risk_cache.sealed
+      - name: Replay preregistered candidates and independent audits offline
+        run: |
+          set -o pipefail
+          mkdir -p m10v3_output
+          timeout 18m python run_momentum10_v3.py --cache .momentum_core_cache --manifest m10v3_restore/Momentum_core_risk_manifest.json --prior m10v3_prior/results --output m10v3_output --v2 m10v3_resume/results --resume m10v3_checkpoint/results --resume-run 41196824070 2>&1 | tee m10v3_output/study.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Momentum10_v3_complete_evidence
+          path: m10v3_output/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Preserve evidence without touching H3 releases or accounts
+        if: always() && hashFiles('m10v3_output/results.json') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p m10v3_release
+          git archive --format=tar.gz HEAD > m10v3_release/source.tar.gz
+          tar -czf m10v3_release/results.tar.gz -C m10v3_output .
+          cp m10v3_output/results.json m10v3_release/summary.json
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('m10v3_release')
+          m={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+             'run_id':os.environ['GITHUB_RUN_ID'],'attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+             'live_approved':False,'broker_orders_enabled':False,
+             'assets':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir()}}
+          (root/'manifest.json').write_text(json.dumps(m,indent=2))
+          PY
+          tag="m10v3-research-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$(git rev-parse HEAD)" --draft --title "Momentum10_v3 independent selection study $GITHUB_RUN_ID" --notes "Preregistered current momentum, trend and cluster contrasts; full 3x3 execution comparison. All failures retained. Frozen H3 and Stocks10 A/B unchanged. No live approval."
+          gh release upload "$tag" m10v3_release/* --repo "$GITHUB_REPOSITORY"
