@@ -4,7 +4,7 @@ import math
 from collections import Counter
 from research_stocks10 import fee
 
-MODEL='momentum10-quality-earnings-v1'
+MODEL='momentum10-quality-earnings-net-v1'
 PARAMETERS=dict(universe_size=100,min_price=10.,min_adv20=20_000_000.,history=253,relative_sessions=126,
     industry_slots=2,division_slots=4,max_position_weight=.20,max_industry_weight=.30,max_division_weight=.50,
     buy_limit_buffer=.02,execution_reserve=.0015,stress_execution_reserve=.003,initial_sek=20000.,

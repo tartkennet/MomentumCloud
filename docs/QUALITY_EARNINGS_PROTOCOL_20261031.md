@@ -22,7 +22,7 @@ observed_at <= actual decision timestamp and source observed within24hours.
 Require latest 10-Q/10-K from both form streams, no future filing, latest filing
 <=140days old, amended or conflicting facts require review. Fiscal YTD in10-Q
 compares with fiscal YTD one year earlier; 10-K compares full years. Never mix
-quarter/YTD/annual or infer missing custom tags as zero. All five facts below
+quarter/YTD/annual or infer missing custom tags as zero. All four facts below
 must share an unambiguous whole-entity USD period and comparable prior period
 in the SAME original filing. EPS uses USD/share; current-file comparatives
 share that filing's split basis. Missing/unsupported data are explicit gaps.
@@ -45,22 +45,22 @@ above20% of current NAV. Of this observable liquid confirmed set, consider the
 results, not handpicked names. Save full membership/exclusions each observation.
 One issuer/CIK at most. SEC SIC observed from the current original-filing
 metadata must be known; financials60–69, utilities49, public90–99 and unknown
-industries excluded because this cash/operating-margin comparison is unsuitable.
+industries excluded because this cash/net-margin comparison is unsuitable.
 Current SIC is never assigned retrospectively. Track historical classifications
 separately before any historical sector-cap claim.
 
 ## Business eligibility and ranking
 
 Same-period original US-GAAP concepts: revenue (priority customer revenue,
-Revenues, SalesRevenueNet), OperatingIncomeLoss, NetIncomeLoss,
+Revenues, SalesRevenueNet), NetIncomeLoss,
 EarningsPerShareDiluted, NetCashProvidedByUsedInOperatingActivities.
 Require revenue growth>0; prior diluted EPS>0 and current EPS>prior; positive
-current operating income with non-decreasing operating margin; positive net
+current net income with non-decreasing net margin; positive net
 income both periods; positive operating cash flow both periods, current CFO
 >=current net income. This is cash backing of earnings, not a valuation model.
 
 Rank by equal mean of three cross-sectional midrank percentiles: revenue
-YoY growth, diluted EPS YoY growth, operating-margin change. Ticker tie break.
+YoY growth, diluted EPS YoY growth, net-margin change. Ticker tie break.
 No weighting/horizon/threshold search or ticker exclusions after outcomes.
 Greedily take10: max2 names per SIC two-digit industry and max4 per SIC broad
 division, oneCIK, funded whole minimum lots. Minimum risk/cash feasibility is
@@ -122,3 +122,20 @@ checks. Missing historical or true prospective evidence never permits live-GO.
 Economic status stays NO_GO_INSUFFICIENT_EVIDENCE while unassessed. Every failed
 or missing criterion is visible. No new economic variant until this hypothesis
 has evidence; historical approval does not authorize actual money.
+
+## Registered data-feasibility alternative, before any financial outcome
+
+The original operating-margin extraction prototype (commit0739238, run41210207368)
+resolved83/100 issuers, below the predeclared90% source minimum. Eleven lacked
+a standard operating-income fact; they were NOT imputed as zero or pretax
+income. No strategy return, backtest or real prospective trade was computed.
+Preserve that failed data audit in QUALITY_EARNINGS_FIRST_DATA_AUDIT_20261031.json.
+Register ONE explicit alternative: original-file NET profit margin (NetIncomeLoss
+/revenue), with the same earnings/cash/revenue constraints, percentile ranking,
+universe, fees, sector/whole-lot rules and90% coverage minimum. Net margin is
+a distinct profitability measure and may include non-operating/tax effects;
+CFO>=net income remains a cash-quality check, not proof that profits recur.
+This change addresses documented reporting coverage, not a favourable return.
+Model identity is momentum10-quality-earnings-net-v1. There are no other field,
+threshold or horizon alternatives in this register. Any subsequent prototype
+return would be a separately registered study, never quietly merged into v1.

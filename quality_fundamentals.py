@@ -9,7 +9,7 @@ from quality_sources import DataUnavailable,iso_date
 X='http://www.xbrl.org/2003/instance'
 USD='http://www.xbrl.org/2003/iso4217'
 TAGS={'revenue':('RevenueFromContractWithCustomerExcludingAssessedTax','Revenues','SalesRevenueNet'),
-      'operating_income':('OperatingIncomeLoss',),'net_income':('NetIncomeLoss',),
+      'net_income':('NetIncomeLoss',),
       'eps':('EarningsPerShareDiluted',),'operating_cash_flow':('NetCashProvidedByUsedInOperatingActivities',)}
 
 
@@ -17,6 +17,7 @@ def parse_original(raw,receipt,cik,decision_at):
     if hashlib.sha256(raw).hexdigest()!=receipt['sha256']:raise DataUnavailable('SOURCE_HASH_MISMATCH')
     observed=datetime.fromisoformat(receipt['observed_at']);decision=datetime.fromisoformat(decision_at)
     if observed.tzinfo is None or decision.tzinfo is None or observed>decision:raise DataUnavailable('SNAPSHOT_NOT_YET_OBSERVED')
+    if (decision-observed).total_seconds()>24*3600:raise DataUnavailable('STALE_SOURCE_SNAPSHOT')
     if b'<!DOCTYPE' in raw.upper() or b'<!ENTITY' in raw.upper():raise DataUnavailable('UNSAFE_XML')
     namespaces={}
     for _,(prefix,uri) in E.iterparse(io.BytesIO(raw),events=('start-ns',)):
@@ -27,7 +28,14 @@ def parse_original(raw,receipt,cik,decision_at):
     if filed>decision_at[:10] or end>filed:raise DataUnavailable('INVALID_REPORT_DATES')
     if (decision.date()-date.fromisoformat(filed)).days>140:raise DataUnavailable('STALE_FILING')
     def dei(tag):
-        values={n.text for n in tree if n.tag.endswith('}'+tag) and '/dei/' in n.tag}
+        values=set()
+        for n in tree:
+            if not n.tag.endswith('}'+tag) or '/dei/' not in n.tag:continue
+            ctx=next((c for c in tree if c.tag=='{'+X+'}context' and c.get('id')==n.get('contextRef')),None)
+            if ctx is not None:
+                identifier=ctx.find('.//{'+X+'}identifier')
+                if identifier is None or str(int(identifier.text))!=str(int(cik)):continue
+            values.add(str(int(n.text)) if tag=='EntityCentralIndexKey' else n.text)
         if len(values)!=1:raise DataUnavailable('AMBIGUOUS_'+tag)
         return next(iter(values))
     if str(int(dei('EntityCentralIndexKey')))!=str(int(cik)):raise DataUnavailable('WRONG_CIK')
@@ -74,11 +82,11 @@ def parse_original(raw,receipt,cik,decision_at):
     if now['revenue']<=0 or old['revenue']<=0:raise DataUnavailable('NONPOSITIVE_REVENUE')
     metrics=dict(revenue_growth=now['revenue']/old['revenue']-1,
         eps_growth=now['eps']/old['eps']-1 if old['eps']>0 else None,
-        operating_margin=now['operating_income']/now['revenue'],
-        margin_change=now['operating_income']/now['revenue']-old['operating_income']/old['revenue'],
+        net_margin=now['net_income']/now['revenue'],
+        margin_change=now['net_income']/now['revenue']-old['net_income']/old['revenue'],
         cash_conversion=now['operating_cash_flow']/now['net_income'] if now['net_income']>0 else None)
     checks=dict(revenue_growth=metrics['revenue_growth']>0,earnings_growth=old['eps']>0 and now['eps']>old['eps'],
-        operating_improvement=now['operating_income']>0 and metrics['margin_change']>=0,
+        profitability_improvement=now['net_income']>0 and metrics['margin_change']>=0,
         positive_profits=now['net_income']>0 and old['net_income']>0,
         cash_backing=now['operating_cash_flow']>0 and now['operating_cash_flow']>=now['net_income'] and old['operating_cash_flow']>0)
     return dict(cik=str(cik).zfill(10),accession=filing['accession_number'],filed=filed,report_end=end,period=list(period),

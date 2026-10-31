@@ -23,7 +23,7 @@ class QualityTests(unittest.TestCase):
     def test_original_ytd_comparatives_and_independent_numbers(self):
         raw,r=fixture();f=parse_original(raw,r,'123','2026-08-01T00:00:00+00:00')
         self.assertTrue(f['qualified']);self.assertAlmostEqual(f['metrics']['revenue_growth'],.2)
-        self.assertEqual(audit_fundamental(raw,r,f,'123','2026-08-01T00:00:00+00:00')['facts_checked'],10)
+        self.assertEqual(audit_fundamental(raw,r,f,'123','2026-08-01T00:00:00+00:00')['facts_checked'],8)
         f['current']['revenue']+=1
         with self.assertRaises(AssertionError):audit_fundamental(raw,r,f,'123','2026-08-01T00:00:00+00:00')
 
@@ -57,3 +57,37 @@ class QualityTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+class ForwardTimingTests(unittest.TestCase):
+    def pending(self):
+        from quality_forward import bootstrap,commit_plan
+        from datetime import datetime
+        rows=QualityTests().rows();targets=choose(rows,2000)
+        report=dict(initial_usd=2000,fx={'date':'2026-10-30','usdsek':10},targets=targets,price_as_of='2026-10-30')
+        for row in targets:row['fundamental']['sha256']='verified-unit-fixture'
+        now=datetime.fromisoformat('2026-10-31T15:00:00+00:00');s=bootstrap(report,'frozen',now);commit_plan(s,report,now,{r['ticker']:r['price_usd'] for r in targets})
+        return s
+
+    def test_quoted_open_cannot_change_precommitted_quantities(self):
+        from quality_forward import process
+        from datetime import datetime
+        s=self.pending();quantities={o['ticker']:o['quantity'] for o in s['pending']['plan']['orders']}
+        bars={t:[19,20,100000] for t in quantities}
+        got=process(s,{},datetime.fromisoformat('2026-11-02T15:15:00+00:00'),['2026-11-02'],bars)
+        self.assertEqual({t['ticker']:t['quantity'] for t in got['strategy']['trades']},quantities)
+        self.assertEqual(len(got['strategy']['shares']),10);self.assertGreaterEqual(got['strategy']['cash'],0)
+        self.assertFalse(s['strategy']['trades']) # source prefix unchanged
+
+    def test_bad_gap_is_unfilled_not_resize_or_invented_price(self):
+        from quality_forward import process
+        from datetime import datetime
+        s=self.pending();bars={o['ticker']:[50,50,100000] for o in s['pending']['plan']['orders']}
+        got=process(s,{},datetime.fromisoformat('2026-11-02T15:15:00+00:00'),['2026-11-02'],bars)
+        self.assertFalse(got['strategy']['trades']);self.assertEqual(len(got['unfilled_orders']),10)
+
+    def test_missed_session_is_never_backfilled(self):
+        from quality_forward import process
+        from datetime import datetime
+        s=self.pending();got=process(s,{},datetime.fromisoformat('2026-11-03T15:15:00+00:00'),['2026-11-02','2026-11-03'],{})
+        self.assertFalse(got['strategy']['trades']);self.assertEqual(got['gaps'][0]['kind'],'MISSED_OPEN_NO_BACKFILL')

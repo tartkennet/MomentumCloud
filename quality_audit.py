@@ -19,7 +19,7 @@ def audit_fundamental(raw,receipt,f,cik,decision_at):
         if c.find('.//'+ns+'segment') is not None or c.find(ns+'scenario') is not None:continue
         identifier=c.find('.//'+ns+'identifier');start=c.find('.//'+ns+'startDate');end=c.find('.//'+ns+'endDate')
         if identifier is None or start is None or end is None:continue
-        assert int(identifier.text)==int(cik)
+        if int(identifier.text)!=int(cik):continue
         contexts[c.attrib['id']]=(start.text,end.text)
     original={}
     for name,tag in f['concepts'].items():
@@ -43,12 +43,12 @@ def audit_fundamental(raw,receipt,f,cik,decision_at):
     near(m['revenue_growth'],(c['revenue']-p['revenue'])/p['revenue'])
     if p['eps']>0:near(m['eps_growth'],(c['eps']-p['eps'])/p['eps'])
     else:assert m['eps_growth'] is None
-    near(m['operating_margin'],c['operating_income']/c['revenue'])
-    near(m['margin_change'],c['operating_income']/c['revenue']-p['operating_income']/p['revenue'])
-    expected=[c['revenue']>p['revenue'],p['eps']>0 and c['eps']>p['eps'],c['operating_income']>0 and m['margin_change']>=0,
+    near(m['net_margin'],c['net_income']/c['revenue'])
+    near(m['margin_change'],c['net_income']/c['revenue']-p['net_income']/p['revenue'])
+    expected=[c['revenue']>p['revenue'],p['eps']>0 and c['eps']>p['eps'],c['net_income']>0 and m['margin_change']>=0,
               c['net_income']>0 and p['net_income']>0,c['operating_cash_flow']>0 and c['operating_cash_flow']>=c['net_income'] and p['operating_cash_flow']>0]
     assert list(f['checks'].values())==expected and f['qualified']==all(expected)
-    return dict(status='PASS',facts_checked=10,source_hash=f['sha256'],independent_code=True,independent_vendor=False)
+    return dict(status='PASS',facts_checked=8,source_hash=f['sha256'],independent_code=True,independent_vendor=False)
 
 
 def audit_plan(targets,plan,shares,cash,nav,prices):
