@@ -62,7 +62,7 @@ def replay(d,root,fx,start,end,spread,allow_partial=False):
                     unfilled.append(dict(date=day,**order,reason='EVENT_MISSING_OPEN_LIMIT_OR_ACTUAL_FUNDING'))
                     if side=='SELL':exits_failed=True
                     continue
-                s._trade(day,signal,t,side,q,p,cfg,'HISTORICAL_'+('MEMBERSHIP' if on else 'RISK_OFF'),decision_at=day+'T08:17:00+00:00',historical_simulation=True,input_acquired_at=datetime.now(timezone.utc).isoformat())
+                s._trade(day,signal,t,side,q,p,cfg,'HISTORICAL_'+('MEMBERSHIP' if on else 'RISK_OFF'),decision_at=day+'T08:17:00+00:00',historical_simulation=True,reconstructed_at=datetime.now(timezone.utc).isoformat())
             month=day[:7]
         if day==days[0]:
             p=bars['SPY'][0];limit=d.bars(signal)['SPY'][1]*1.02;q=math.floor(initial/limit)
