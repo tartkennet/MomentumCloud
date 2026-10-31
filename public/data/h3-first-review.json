@@ -1,0 +1,3579 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-30T23:58:16.025525+00:00",
+  "signal_date": "2026-10-29",
+  "latest_price_date": "2026-10-30",
+  "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
+  "development_fingerprint": "b9ee2690dbc5a4d8b0c80a0ec3516cd58f58c4089599e395c6207d1d7ead6b56",
+  "audit": {
+    "status": "PASS",
+    "independent_eligible_count": 1311,
+    "saved_input_hashes_checked": 257,
+    "record_files_unchanged": true,
+    "portfolio_vol63": 0.02285014934409303,
+    "spy_vol63": 0.0064282927420155405,
+    "momentum_fraction": 0.21955719922220535
+  },
+  "positions": [
+    {
+      "ticker": "TXG",
+      "momentum_12_2": 5.773613193403299,
+      "daily_volatility": 0.05085278055125284,
+      "raw_price": 81.55,
+      "adv20_usd": 307017573.4819763,
+      "formation_volatility": 0.04577486235222386,
+      "risk_normalized_score": 126.13065111975813,
+      "weight": 0.012389549897093005,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 1,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 13.34,
+        "end_split_adjusted_close": 90.36,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 90.04,
+          "end_raw_close": 81.55,
+          "price_return_pct": -9.429142603287433,
+          "total_return_pct": -9.429142603287433,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 46.32,
+          "end_raw_close": 81.55,
+          "price_return_pct": 76.05785837651122,
+          "total_return_pct": 76.05785837651122,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 20.2,
+          "end_raw_close": 81.55,
+          "price_return_pct": 303.71287128712873,
+          "total_return_pct": 303.71287128712873,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 12.9,
+          "end_raw_close": 81.55,
+          "price_return_pct": 532.1705426356589,
+          "total_return_pct": 532.1705426356589,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 90.36,
+          "end_raw_close": 70.11,
+          "price_return_pct": -22.410358565737056,
+          "total_return_pct": -22.410358565737056,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 49.43,
+          "end_raw_close": 70.11,
+          "price_return_pct": 41.83694112886911,
+          "total_return_pct": 41.83694112886911,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 22.05,
+          "end_raw_close": 70.11,
+          "price_return_pct": 217.95918367346937,
+          "total_return_pct": 217.95918367346937,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 12.44,
+          "end_raw_close": 70.11,
+          "price_return_pct": 463.5852090032155,
+          "total_return_pct": 463.5852090032155,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "TXG",
+        "v": 5218680.689506,
+        "vw": 70.3498,
+        "o": 73.65,
+        "c": 70.11,
+        "h": 75.79,
+        "l": 67.42,
+        "t": 1793390400000,
+        "n": 66253
+      },
+      "reference": {
+        "name": "10x Genomics, Inc. Class A Common Stock",
+        "sic_code": "3826",
+        "sic_description": "LABORATORY ANALYTICAL INSTRUMENTS",
+        "homepage_url": "https://www.10xgenomics.com",
+        "cik": "0001770787",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/TXG?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -9.749889331562645,
+      "classification": {
+        "name": "10x Genomics",
+        "group": "Laboratorieteknik",
+        "sector_id": "tools",
+        "source_url": "https://www.10xgenomics.com/company",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "SNDK",
+      "momentum_12_2": 8.912208739246854,
+      "daily_volatility": 0.05102787143848519,
+      "raw_price": 1330.05,
+      "adv20_usd": 11836022989.137512,
+      "formation_volatility": 0.07290578249641366,
+      "risk_normalized_score": 122.24282401310565,
+      "weight": 0.012347037888993538,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 2,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 175.53,
+        "end_split_adjusted_close": 1739.89,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 1729.76,
+          "end_raw_close": 1330.05,
+          "price_return_pct": -23.107829987975215,
+          "total_return_pct": -23.107829987975215,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 1015.89,
+          "end_raw_close": 1330.05,
+          "price_return_pct": 30.92460797921035,
+          "total_return_pct": 30.92460797921035,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 1064.21,
+          "end_raw_close": 1330.05,
+          "price_return_pct": 24.980032136514406,
+          "total_return_pct": 24.980032136514406,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 204.36,
+          "end_raw_close": 1330.05,
+          "price_return_pct": 550.8367586611861,
+          "total_return_pct": 550.8367586611861,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1739.89,
+          "end_raw_close": 1150.89,
+          "price_return_pct": -33.85271482679939,
+          "total_return_pct": -33.85271482679939,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1279.96,
+          "end_raw_close": 1150.89,
+          "price_return_pct": -10.083908872152247,
+          "total_return_pct": -10.083908872152247,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1096.51,
+          "end_raw_close": 1150.89,
+          "price_return_pct": 4.959371095566856,
+          "total_return_pct": 4.959371095566856,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 195.82,
+          "end_raw_close": 1150.89,
+          "price_return_pct": 487.72852619752837,
+          "total_return_pct": 487.72852619752837,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "SNDK",
+        "v": 17527393.82896,
+        "vw": 1169.4861,
+        "o": 1215.095,
+        "c": 1150.89,
+        "h": 1239,
+        "l": 1115.16,
+        "t": 1793390400000,
+        "n": 910152
+      },
+      "reference": {
+        "name": "Sandisk Corporation Common Stock",
+        "sic_code": "3572",
+        "sic_description": "COMPUTER STORAGE DEVICES",
+        "homepage_url": "https://www.sandisk.com",
+        "cik": "0002023554",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/SNDK?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -23.555512130077194,
+      "classification": {
+        "name": "Sandisk",
+        "group": "Halvledarminne / flashlagring",
+        "sector_id": "semis",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/2023554/000162828026057406/sndk-20260703.htm",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "AXTI",
+      "momentum_12_2": 10.728787878787879,
+      "daily_volatility": 0.07955067721051784,
+      "raw_price": 60.88,
+      "adv20_usd": 594556461.8567811,
+      "formation_volatility": 0.09794974067806402,
+      "risk_normalized_score": 109.53360166670258,
+      "weight": 0.007920021351651879,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 3,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 6.6,
+        "end_split_adjusted_close": 77.41,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 78.18,
+          "end_raw_close": 60.88,
+          "price_return_pct": -22.1284215911998,
+          "total_return_pct": -22.1284215911998,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 36.97,
+          "end_raw_close": 60.88,
+          "price_return_pct": 64.67406004868815,
+          "total_return_pct": 64.67406004868815,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 71.07,
+          "end_raw_close": 60.88,
+          "price_return_pct": -14.337976642746575,
+          "total_return_pct": -14.337976642746575,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 7.07,
+          "end_raw_close": 60.88,
+          "price_return_pct": 761.1032531824611,
+          "total_return_pct": 761.1032531824611,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 77.41,
+          "end_raw_close": 55.06,
+          "price_return_pct": -28.8722387288464,
+          "total_return_pct": -28.8722387288464,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 46.94,
+          "end_raw_close": 55.06,
+          "price_return_pct": 17.29867916489136,
+          "total_return_pct": 17.29867916489136,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 79.22,
+          "end_raw_close": 55.06,
+          "price_return_pct": -30.49734915425397,
+          "total_return_pct": -30.49734915425397,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 7.32,
+          "end_raw_close": 55.06,
+          "price_return_pct": 652.1857923497267,
+          "total_return_pct": 652.1857923497267,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "AXTI",
+        "v": 14803287.621136,
+        "vw": 54.397,
+        "o": 57.275,
+        "c": 55.06,
+        "h": 58.84,
+        "l": 50.96,
+        "t": 1793390400000,
+        "n": 181985
+      },
+      "reference": {
+        "name": "AXT Inc",
+        "sic_code": "3674",
+        "sic_description": "SEMICONDUCTORS & RELATED DEVICES",
+        "homepage_url": "http://www.axt.com",
+        "cik": "0001051627",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/AXTI?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -21.353830254489083,
+      "classification": {
+        "name": "AXT",
+        "group": "Halvledarmaterial",
+        "sector_id": "semis",
+        "source_url": "https://investors.axt.com/Investors/Overview/default.aspx",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "TWST",
+      "momentum_12_2": 4.756330056598153,
+      "daily_volatility": 0.06575963871759624,
+      "raw_price": 173.45,
+      "adv20_usd": 469447692.21784383,
+      "formation_volatility": 0.047771943929309585,
+      "risk_normalized_score": 99.56325125970005,
+      "weight": 0.009580999444832386,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 4,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 33.57,
+        "end_split_adjusted_close": 193.24,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 186.13,
+          "end_raw_close": 173.45,
+          "price_return_pct": -6.812442916241346,
+          "total_return_pct": -6.812442916241346,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 85.47,
+          "end_raw_close": 173.45,
+          "price_return_pct": 102.93670293670294,
+          "total_return_pct": 102.93670293670294,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 56.7,
+          "end_raw_close": 173.45,
+          "price_return_pct": 205.90828924162255,
+          "total_return_pct": 205.90828924162255,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 32.21,
+          "end_raw_close": 173.45,
+          "price_return_pct": 438.4973610679912,
+          "total_return_pct": 438.4973610679912,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 193.24,
+          "end_raw_close": 152.78,
+          "price_return_pct": -20.937694059200997,
+          "total_return_pct": -20.937694059200997,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 91.33,
+          "end_raw_close": 152.78,
+          "price_return_pct": 67.2834774991788,
+          "total_return_pct": 67.2834774991788,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 58.45,
+          "end_raw_close": 152.78,
+          "price_return_pct": 161.3857998289136,
+          "total_return_pct": 161.3857998289136,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 31.17,
+          "end_raw_close": 152.78,
+          "price_return_pct": 390.1507860121912,
+          "total_return_pct": 390.1507860121912,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "TWST",
+        "v": 3399153.39088,
+        "vw": 154.3465,
+        "o": 162.94,
+        "c": 152.78,
+        "h": 167.27,
+        "l": 148,
+        "t": 1793390400000,
+        "n": 61978
+      },
+      "reference": {
+        "name": "Twist Bioscience Corporation Common Stock",
+        "sic_code": "2836",
+        "sic_description": "BIOLOGICAL PRODUCTS, (NO DIAGNOSTIC SUBSTANCES)",
+        "homepage_url": "https://www.twistbioscience.com",
+        "cik": "0001581280",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/TWST?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -10.241150900434704,
+      "classification": {
+        "name": "Twist Bioscience",
+        "group": "Syntetiskt DNA / forskningsverktyg",
+        "sector_id": "tools",
+        "source_url": "https://www.twistbioscience.com/company/about",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "ERAS",
+      "momentum_12_2": 5.008196721311475,
+      "daily_volatility": 0.0362148515026434,
+      "raw_price": 14.98,
+      "adv20_usd": 77245500.28329745,
+      "formation_volatility": 0.06574756013882747,
+      "risk_normalized_score": 76.1731189832224,
+      "weight": 0.0173973669890564,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 5,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 2.44,
+        "end_split_adjusted_close": 14.66,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 14.21,
+          "end_raw_close": 14.98,
+          "price_return_pct": 5.418719211822665,
+          "total_return_pct": 5.418719211822665,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 17.72,
+          "end_raw_close": 14.98,
+          "price_return_pct": -15.462753950338593,
+          "total_return_pct": -15.462753950338593,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 9.11,
+          "end_raw_close": 14.98,
+          "price_return_pct": 64.43468715697038,
+          "total_return_pct": 64.43468715697038,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 2.36,
+          "end_raw_close": 14.98,
+          "price_return_pct": 534.7457627118645,
+          "total_return_pct": 534.7457627118645,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 14.66,
+          "end_raw_close": 14.35,
+          "price_return_pct": -2.114597544338337,
+          "total_return_pct": -2.114597544338337,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 18.68,
+          "end_raw_close": 14.35,
+          "price_return_pct": -23.17987152034261,
+          "total_return_pct": -23.17987152034261,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 10.65,
+          "end_raw_close": 14.35,
+          "price_return_pct": 34.74178403755867,
+          "total_return_pct": 34.74178403755867,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 2.46,
+          "end_raw_close": 14.35,
+          "price_return_pct": 483.3333333333333,
+          "total_return_pct": 483.3333333333333,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "ERAS",
+        "v": 3749485.165871,
+        "vw": 14.3291,
+        "o": 14.66,
+        "c": 14.35,
+        "h": 15.01,
+        "l": 14.035,
+        "t": 1793390400000,
+        "n": 35382
+      },
+      "reference": {
+        "name": "Erasca, Inc. Common Stock",
+        "sic_code": "2834",
+        "sic_description": "PHARMACEUTICAL PREPARATIONS",
+        "homepage_url": "https://www.erasca.com",
+        "cik": "0001761918",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/ERAS?date=2026-10-29"
+      },
+      "excluded_month_return_pct": 2.1828103683492417,
+      "classification": {
+        "name": "Erasca",
+        "group": "Bioteknik / läkemedel",
+        "sector_id": "bio",
+        "source_url": "https://www.erasca.com/about/",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "SLS",
+      "momentum_12_2": 5.155,
+      "daily_volatility": 0.06024331464378674,
+      "raw_price": 10.155,
+      "adv20_usd": 73742670.7307501,
+      "formation_volatility": 0.06870208445552102,
+      "risk_normalized_score": 75.03411346037748,
+      "weight": 0.010458306714546759,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 6,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 2.0,
+        "end_split_adjusted_close": 12.31,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 11.51,
+          "end_raw_close": 10.155,
+          "price_return_pct": -11.772371850564733,
+          "total_return_pct": -11.772371850564733,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 10.1,
+          "end_raw_close": 10.155,
+          "price_return_pct": 0.544554455445545,
+          "total_return_pct": 0.544554455445545,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 4.67,
+          "end_raw_close": 10.155,
+          "price_return_pct": 117.45182012847964,
+          "total_return_pct": 117.45182012847964,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 2.08,
+          "end_raw_close": 10.155,
+          "price_return_pct": 388.2211538461538,
+          "total_return_pct": 388.2211538461538,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 12.31,
+          "end_raw_close": 9.68,
+          "price_return_pct": -21.364744110479293,
+          "total_return_pct": -21.364744110479293,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 10.29,
+          "end_raw_close": 9.68,
+          "price_return_pct": -5.928085519922255,
+          "total_return_pct": -5.928085519922255,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 4.95,
+          "end_raw_close": 9.68,
+          "price_return_pct": 95.55555555555554,
+          "total_return_pct": 95.55555555555554,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1.91,
+          "end_raw_close": 9.68,
+          "price_return_pct": 406.8062827225131,
+          "total_return_pct": 406.8062827225131,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "SLS",
+        "v": 6257900.11902,
+        "vw": 9.5724,
+        "o": 9.63,
+        "c": 9.68,
+        "h": 9.79,
+        "l": 9.3,
+        "t": 1793390400000,
+        "n": 32542
+      },
+      "reference": {
+        "name": "SELLAS Life Sciences Group, Inc. Common Stock",
+        "sic_code": "2834",
+        "sic_description": "PHARMACEUTICAL PREPARATIONS",
+        "homepage_url": "https://www.sellaslifesciences.com",
+        "cik": "0001390478",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/SLS?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -17.50609260763608,
+      "classification": {
+        "name": "SELLAS Life Sciences",
+        "group": "Bioteknik / läkemedel",
+        "sector_id": "bio",
+        "source_url": "https://sellaslifesciences.com/",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "CLYM",
+      "momentum_12_2": 4.514423076923077,
+      "daily_volatility": 0.05254600325577152,
+      "raw_price": 10.33,
+      "adv20_usd": 12276516.511876006,
+      "formation_volatility": 0.060276299880483275,
+      "risk_normalized_score": 74.89549102838662,
+      "weight": 0.01199031368720637,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 7,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 2.08,
+        "end_split_adjusted_close": 11.47,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 11.5,
+          "end_raw_close": 10.33,
+          "price_return_pct": -10.173913043478255,
+          "total_return_pct": -10.173913043478255,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 12.11,
+          "end_raw_close": 10.33,
+          "price_return_pct": -14.69859620148637,
+          "total_return_pct": -14.69859620148637,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 8.78,
+          "end_raw_close": 10.33,
+          "price_return_pct": 17.65375854214124,
+          "total_return_pct": 17.65375854214124,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 2.08,
+          "end_raw_close": 10.33,
+          "price_return_pct": 396.63461538461536,
+          "total_return_pct": 396.63461538461536,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 11.47,
+          "end_raw_close": 10.25,
+          "price_return_pct": -10.636442894507415,
+          "total_return_pct": -10.636442894507415,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 12.08,
+          "end_raw_close": 10.25,
+          "price_return_pct": -15.14900662251656,
+          "total_return_pct": -15.14900662251656,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 8.88,
+          "end_raw_close": 10.25,
+          "price_return_pct": 15.42792792792791,
+          "total_return_pct": 15.42792792792791,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1.99,
+          "end_raw_close": 10.25,
+          "price_return_pct": 415.0753768844221,
+          "total_return_pct": 415.0753768844221,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "CLYM",
+        "v": 708753.679792,
+        "vw": 10.2232,
+        "o": 10.15,
+        "c": 10.25,
+        "h": 10.5115,
+        "l": 10.02,
+        "t": 1793390400000,
+        "n": 10928
+      },
+      "reference": {
+        "name": "Climb Bio, Inc. Common Stock",
+        "sic_code": "2834",
+        "sic_description": "PHARMACEUTICAL PREPARATIONS",
+        "homepage_url": "https://www.climbbio.com",
+        "cik": "0001768446",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/CLYM?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -9.938971229293813,
+      "classification": {
+        "name": "Climb Bio",
+        "group": "Bioteknik / läkemedel",
+        "sector_id": "bio",
+        "source_url": "https://ir.climbbio.com/news-releases/news-release-details/climb-bio-reports-second-quarter-2026-financial-results-and",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "ATEX",
+      "momentum_12_2": 2.9867953275774504,
+      "daily_volatility": 0.03897702838849493,
+      "raw_price": 91.81,
+      "adv20_usd": 21674909.077431284,
+      "formation_volatility": 0.04058611846982652,
+      "risk_normalized_score": 73.59154903659889,
+      "weight": 0.0161644714359918,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 8,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 19.69,
+        "end_split_adjusted_close": 78.5,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 79.04,
+          "end_raw_close": 91.81,
+          "price_return_pct": 16.156376518218618,
+          "total_return_pct": 16.156376518218618,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 88.2,
+          "end_raw_close": 91.81,
+          "price_return_pct": 4.092970521541939,
+          "total_return_pct": 4.092970521541939,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 45.44,
+          "end_raw_close": 91.81,
+          "price_return_pct": 102.0466549295775,
+          "total_return_pct": 102.0466549295775,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 19.4,
+          "end_raw_close": 91.81,
+          "price_return_pct": 373.2474226804124,
+          "total_return_pct": 373.2474226804124,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 78.5,
+          "end_raw_close": 90.67,
+          "price_return_pct": 15.503184713375795,
+          "total_return_pct": 15.503184713375795,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 93.58,
+          "end_raw_close": 90.67,
+          "price_return_pct": -3.109638811711901,
+          "total_return_pct": -3.109638811711901,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 48.32,
+          "end_raw_close": 90.67,
+          "price_return_pct": 87.64486754966887,
+          "total_return_pct": 87.64486754966887,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 19.58,
+          "end_raw_close": 90.67,
+          "price_return_pct": 363.0745658835547,
+          "total_return_pct": 363.0745658835547,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "ATEX",
+        "v": 396344.010751,
+        "vw": 90.0256,
+        "o": 90.275,
+        "c": 90.67,
+        "h": 91.575,
+        "l": 85.94,
+        "t": 1793390400000,
+        "n": 8571
+      },
+      "reference": {
+        "name": "Anterix Inc. Common Stock",
+        "sic_code": "4813",
+        "sic_description": "TELEPHONE COMMUNICATIONS (NO RADIOTELEPHONE)",
+        "homepage_url": "https://www.anterix.com",
+        "cik": "0001304492",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/ATEX?date=2026-10-29"
+      },
+      "excluded_month_return_pct": 16.955414012738856,
+      "classification": {
+        "name": "Anterix",
+        "group": "Kommunikationsinfrastruktur",
+        "sector_id": "wireless",
+        "source_url": "https://anterix.com/about",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "CDNA",
+      "momentum_12_2": 3.4308111792774367,
+      "daily_volatility": 0.03263347800645002,
+      "raw_price": 71.52,
+      "adv20_usd": 88923767.49636433,
+      "formation_volatility": 0.04702277085457262,
+      "risk_normalized_score": 72.960634112522,
+      "weight": 0.01930664766780726,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 9,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 14.67,
+        "end_split_adjusted_close": 65.0,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 64.02,
+          "end_raw_close": 71.52,
+          "price_return_pct": 11.715089034676662,
+          "total_return_pct": 11.715089034676662,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 35.41,
+          "end_raw_close": 71.52,
+          "price_return_pct": 101.97684269980232,
+          "total_return_pct": 101.97684269980232,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 20.8,
+          "end_raw_close": 71.52,
+          "price_return_pct": 243.8461538461538,
+          "total_return_pct": 243.8461538461538,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 14.28,
+          "end_raw_close": 71.52,
+          "price_return_pct": 400.84033613445376,
+          "total_return_pct": 400.84033613445376,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 65,
+          "end_raw_close": 87.41,
+          "price_return_pct": 34.47692307692307,
+          "total_return_pct": 34.47692307692307,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 38.1,
+          "end_raw_close": 87.41,
+          "price_return_pct": 129.42257217847768,
+          "total_return_pct": 129.42257217847768,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 20.81,
+          "end_raw_close": 87.41,
+          "price_return_pct": 320.038443056223,
+          "total_return_pct": 320.038443056223,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 14.47,
+          "end_raw_close": 87.41,
+          "price_return_pct": 504.0774015203869,
+          "total_return_pct": 504.0774015203869,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "CDNA",
+        "v": 3554396.061891,
+        "vw": 87.0972,
+        "o": 80.615,
+        "c": 87.41,
+        "h": 90.87,
+        "l": 80.44,
+        "t": 1793390400000,
+        "n": 51140
+      },
+      "reference": {
+        "name": "CareDx, Inc.",
+        "sic_code": "8071",
+        "sic_description": "SERVICES-MEDICAL LABORATORIES",
+        "homepage_url": "https://www.caredx.com",
+        "cik": "0001217234",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/CDNA?date=2026-10-29"
+      },
+      "excluded_month_return_pct": 10.03076923076922,
+      "classification": {
+        "name": "CareDx",
+        "group": "Diagnostik",
+        "sector_id": "diagnostics",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1217234/000121723426000018/cdna-20251231.htm",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "MU",
+      "momentum_12_2": 3.7997386327790545,
+      "daily_volatility": 0.03396090776559646,
+      "raw_price": 934.27,
+      "adv20_usd": 24837284634.899303,
+      "formation_volatility": 0.052399469332658155,
+      "risk_normalized_score": 72.51483042044576,
+      "weight": 0.018552008868382566,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 10,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 221.91,
+        "end_split_adjusted_close": 1065.11,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 1065.08,
+          "end_raw_close": 934.27,
+          "price_return_pct": -12.281706538475978,
+          "total_return_pct": -12.267312804522124,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 739,
+          "end_raw_close": 934.27,
+          "price_return_pct": 26.423545331529084,
+          "total_return_pct": 26.444290227550148,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 518.46,
+          "end_raw_close": 934.27,
+          "price_return_pct": 80.20097982486594,
+          "total_return_pct": 80.25800232847169,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 226.63,
+          "end_raw_close": 934.27,
+          "price_return_pct": 312.2446278074395,
+          "total_return_pct": 312.72847293111516,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 1065.11,
+          "end_raw_close": 884.74,
+          "price_return_pct": -16.93440114166611,
+          "total_return_pct": -16.920770870447843,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 874.66,
+          "end_raw_close": 884.74,
+          "price_return_pct": 1.1524478082912237,
+          "total_return_pct": 1.1690459586322532,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 517.16,
+          "end_raw_close": 884.74,
+          "price_return_pct": 71.07664939283782,
+          "total_return_pct": 71.13078460823093,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 224.01,
+          "end_raw_close": 884.74,
+          "price_return_pct": 294.9555823400741,
+          "total_return_pct": 295.4191355793245,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "MU",
+        "v": 30841511.541291,
+        "vw": 885.187,
+        "o": 883.995,
+        "c": 884.74,
+        "h": 906.54,
+        "l": 861.585,
+        "t": 1793390400000,
+        "n": 926314
+      },
+      "reference": {
+        "name": "Micron Technology, Inc.",
+        "sic_code": "3674",
+        "sic_description": "SEMICONDUCTORS & RELATED DEVICES",
+        "homepage_url": "https://www.micron.com",
+        "cik": "0000723125",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/MU?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -12.284177221132087,
+      "classification": {
+        "name": "Micron",
+        "group": "Halvledarminne",
+        "sector_id": "semis",
+        "source_url": "https://www.micron.com/about/company/corporate-profile",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "STX",
+      "momentum_12_2": 3.1360538116591927,
+      "daily_volatility": 0.041464177307571744,
+      "raw_price": 700.47,
+      "adv20_usd": 4397745160.529338,
+      "formation_volatility": 0.04793534293194952,
+      "risk_normalized_score": 65.42258008065636,
+      "weight": 0.015194876709409983,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 11,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 223.0,
+        "end_split_adjusted_close": 922.34,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 913.45,
+          "end_raw_close": 700.47,
+          "price_return_pct": -23.315999781049868,
+          "total_return_pct": -23.315999781049868,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 764.43,
+          "end_raw_close": 700.47,
+          "price_return_pct": -8.367018562850737,
+          "total_return_pct": -8.29216823802793,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 643.3,
+          "end_raw_close": 700.47,
+          "price_return_pct": 8.886988963158714,
+          "total_return_pct": 9.057123434297875,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 265.62,
+          "end_raw_close": 700.47,
+          "price_return_pct": 163.7113169189067,
+          "total_return_pct": 165.2827299296828,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 922.34,
+          "end_raw_close": 644.58,
+          "price_return_pct": -30.114708242079924,
+          "total_return_pct": -30.114708242079924,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 851.68,
+          "end_raw_close": 644.58,
+          "price_return_pct": -24.316644749201565,
+          "total_return_pct": -24.25482286328936,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 673.64,
+          "end_raw_close": 644.58,
+          "price_return_pct": -4.313876848168152,
+          "total_return_pct": -4.164368554176301,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 268.335,
+          "end_raw_close": 644.58,
+          "price_return_pct": 140.2146570518196,
+          "total_return_pct": 141.64605727339756,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "STX",
+        "v": 5784133.574472,
+        "vw": 646.0969,
+        "o": 652,
+        "c": 644.58,
+        "h": 678.4899,
+        "l": 625.2963,
+        "t": 1793390400000,
+        "n": 163465
+      },
+      "reference": {
+        "name": "Seagate Technology Holdings PLC Ordinary Shares (Ireland)",
+        "sic_code": "3572",
+        "sic_description": "COMPUTER STORAGE DEVICES",
+        "homepage_url": "https://www.seagate.com",
+        "cik": "0001137789",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/STX?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -24.05512067133595,
+      "classification": {
+        "name": "Seagate",
+        "group": "Datalagring",
+        "sector_id": "storage",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1137789/000113778926000223/0001137789-26-000223-index.htm",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "SYRE",
+      "momentum_12_2": 2.6132305194805197,
+      "daily_volatility": 0.038031339079858895,
+      "raw_price": 98.96,
+      "adv20_usd": 115057679.01676662,
+      "formation_volatility": 0.0412137164566746,
+      "risk_normalized_score": 63.40681559809452,
+      "weight": 0.016566418045988126,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 12,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 24.64,
+        "end_split_adjusted_close": 89.03,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 84.72,
+          "end_raw_close": 98.96,
+          "price_return_pct": 16.808309726156743,
+          "total_return_pct": 16.808309726156743,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 97.87,
+          "end_raw_close": 98.96,
+          "price_return_pct": 1.11372228466331,
+          "total_return_pct": 1.11372228466331,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 71.89,
+          "end_raw_close": 98.96,
+          "price_return_pct": 37.65475031297816,
+          "total_return_pct": 37.65475031297816,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 23.83,
+          "end_raw_close": 98.96,
+          "price_return_pct": 315.2748636172891,
+          "total_return_pct": 315.2748636172891,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 89.03,
+          "end_raw_close": 96.56,
+          "price_return_pct": 8.457823205661018,
+          "total_return_pct": 8.457823205661018,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 101.5,
+          "end_raw_close": 96.56,
+          "price_return_pct": -4.866995073891623,
+          "total_return_pct": -4.866995073891623,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 74.45,
+          "end_raw_close": 96.56,
+          "price_return_pct": 29.69778374748153,
+          "total_return_pct": 29.69778374748153,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 24.26,
+          "end_raw_close": 96.56,
+          "price_return_pct": 298.02143446001645,
+          "total_return_pct": 298.02143446001645,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "SYRE",
+        "v": 661126.995473,
+        "vw": 96.1906,
+        "o": 96.78,
+        "c": 96.56,
+        "h": 98.96,
+        "l": 94.68,
+        "t": 1793390400000,
+        "n": 15756
+      },
+      "reference": {
+        "name": "Spyre Therapeutics, Inc. Common Stock",
+        "sic_code": "2834",
+        "sic_description": "PHARMACEUTICAL PREPARATIONS",
+        "homepage_url": "https://www.spyre.com",
+        "cik": "0001636282",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/SYRE?date=2026-10-29"
+      },
+      "excluded_month_return_pct": 11.153543749297977,
+      "classification": {
+        "name": "Spyre Therapeutics",
+        "group": "Bioteknik / läkemedel",
+        "sector_id": "bio",
+        "source_url": "https://www.spyre.com/",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "LITE",
+      "momentum_12_2": 3.8957104692776854,
+      "daily_volatility": 0.05626075179580092,
+      "raw_price": 919.53,
+      "adv20_usd": 4681208817.454523,
+      "formation_volatility": 0.06307947357947181,
+      "risk_normalized_score": 61.75876633418007,
+      "weight": 0.01119862500829027,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 13,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 198.39,
+        "end_split_adjusted_close": 971.26,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 973.49,
+          "end_raw_close": 919.53,
+          "price_return_pct": -5.542943430338276,
+          "total_return_pct": -5.542943430338276,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 602.35,
+          "end_raw_close": 919.53,
+          "price_return_pct": 52.657093052212154,
+          "total_return_pct": 52.657093052212154,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 858.32,
+          "end_raw_close": 919.53,
+          "price_return_pct": 7.131372914530698,
+          "total_return_pct": 7.131372914530698,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 214.28,
+          "end_raw_close": 919.53,
+          "price_return_pct": 329.1254433451559,
+          "total_return_pct": 329.1254433451559,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 971.26,
+          "end_raw_close": 840.7,
+          "price_return_pct": -13.442332640075772,
+          "total_return_pct": -13.442332640075772,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 693.24,
+          "end_raw_close": 840.7,
+          "price_return_pct": 21.271132652472446,
+          "total_return_pct": 21.271132652472446,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 902.32,
+          "end_raw_close": 840.7,
+          "price_return_pct": -6.829062860182644,
+          "total_return_pct": -6.829062860182644,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 200.13,
+          "end_raw_close": 840.7,
+          "price_return_pct": 320.0769499825114,
+          "total_return_pct": 320.0769499825114,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "LITE",
+        "v": 7728676.556077,
+        "vw": 833.7184,
+        "o": 861.28,
+        "c": 840.7,
+        "h": 887.6,
+        "l": 805.29,
+        "t": 1793390400000,
+        "n": 265323
+      },
+      "reference": {
+        "name": "Lumentum Holdings Inc. Common Stock",
+        "sic_code": "3669",
+        "sic_description": "COMMUNICATIONS EQUIPMENT, NEC",
+        "homepage_url": "https://www.lumentum.com",
+        "cik": "0001633978",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/LITE?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -5.326071288841305,
+      "classification": {
+        "name": "Lumentum",
+        "group": "Optik / fotonik",
+        "sector_id": "optics",
+        "source_url": "https://www.lumentum.com/en/company",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "CLMT",
+      "momentum_12_2": 1.632160804020101,
+      "daily_volatility": 0.03399237392537897,
+      "raw_price": 48.525,
+      "adv20_usd": 77457864.75457424,
+      "formation_volatility": 0.02730298798146981,
+      "risk_normalized_score": 59.77956717146958,
+      "weight": 0.01853483559073445,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 14,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 19.9,
+        "end_split_adjusted_close": 52.38,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 53.23,
+          "end_raw_close": 48.525,
+          "price_return_pct": -8.83900056359196,
+          "total_return_pct": -8.83900056359196,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 42.4,
+          "end_raw_close": 48.525,
+          "price_return_pct": 14.44575471698113,
+          "total_return_pct": 14.44575471698113,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 32.53,
+          "end_raw_close": 48.525,
+          "price_return_pct": 49.169996925914525,
+          "total_return_pct": 49.169996925914525,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 19.51,
+          "end_raw_close": 48.525,
+          "price_return_pct": 148.71860584315732,
+          "total_return_pct": 148.71860584315732,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 52.38,
+          "end_raw_close": 49.65,
+          "price_return_pct": -5.2119129438717104,
+          "total_return_pct": -5.2119129438717104,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 43.75,
+          "end_raw_close": 49.65,
+          "price_return_pct": 13.485714285714279,
+          "total_return_pct": 13.485714285714279,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 32.72,
+          "end_raw_close": 49.65,
+          "price_return_pct": 51.742053789731045,
+          "total_return_pct": 51.742053789731045,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 19.4,
+          "end_raw_close": 49.65,
+          "price_return_pct": 155.92783505154642,
+          "total_return_pct": 155.92783505154642,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "CLMT",
+        "v": 1220943.099807,
+        "vw": 49.1853,
+        "o": 48.34,
+        "c": 49.65,
+        "h": 49.81,
+        "l": 48.25,
+        "t": 1793390400000,
+        "n": 17638
+      },
+      "reference": {
+        "name": "Calumet, Inc. Common Stock",
+        "sic_code": "2911",
+        "sic_description": "PETROLEUM REFINING",
+        "homepage_url": "https://www.calumet.com",
+        "cik": "0002013745",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/CLMT?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -7.359679266895769,
+      "classification": {
+        "name": "Calumet",
+        "group": "Raffinering / energiprodukter",
+        "sector_id": "energy",
+        "source_url": "https://calumet.com/about/",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "RVMD",
+      "momentum_12_2": 2.528623001547189,
+      "daily_volatility": 0.025999772342591168,
+      "raw_price": 190.27,
+      "adv20_usd": 375317112.5273922,
+      "formation_volatility": 0.04269693267840715,
+      "risk_normalized_score": 59.22259148198656,
+      "weight": 0.021955719922220535,
+      "momentum_sleeve_fraction": 0.21955719922220535,
+      "portfolio_vol63": 0.02285014934409303,
+      "benchmark_vol63": 0.00642829274201554,
+      "rank": 15,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 58.17,
+        "end_split_adjusted_close": 205.26,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 204.48,
+          "end_raw_close": 190.27,
+          "price_return_pct": -6.949334898278547,
+          "total_return_pct": -6.949334898278547,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 180.92,
+          "end_raw_close": 190.27,
+          "price_return_pct": 5.168030068538587,
+          "total_return_pct": 5.168030068538587,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 140.55,
+          "end_raw_close": 190.27,
+          "price_return_pct": 35.37531127712556,
+          "total_return_pct": 35.37531127712556,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 58.02,
+          "end_raw_close": 190.27,
+          "price_return_pct": 227.93864184763873,
+          "total_return_pct": 227.93864184763873,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 205.26,
+          "end_raw_close": 191.31,
+          "price_return_pct": -6.7962584039754415,
+          "total_return_pct": -6.7962584039754415,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 192.17,
+          "end_raw_close": 191.31,
+          "price_return_pct": -0.4475204246240261,
+          "total_return_pct": -0.4475204246240261,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 144.12,
+          "end_raw_close": 191.31,
+          "price_return_pct": 32.7435470441299,
+          "total_return_pct": 32.7435470441299,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 58.87,
+          "end_raw_close": 191.31,
+          "price_return_pct": 224.9702734839477,
+          "total_return_pct": 224.9702734839477,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "RVMD",
+        "v": 1100510.278114,
+        "vw": 190.1895,
+        "o": 188.38,
+        "c": 191.31,
+        "h": 192.75,
+        "l": 187.2775,
+        "t": 1793390400000,
+        "n": 24260
+      },
+      "reference": {
+        "name": "Revolution Medicines, Inc. Common Stock",
+        "sic_code": "2836",
+        "sic_description": "BIOLOGICAL PRODUCTS, (NO DIAGNOSTIC SUBSTANCES)",
+        "homepage_url": "https://www.revmed.com",
+        "cik": "0001628171",
+        "primary_exchange": "XNAS",
+        "type": "CS",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/RVMD?date=2026-10-29"
+      },
+      "excluded_month_return_pct": -7.302932865633826,
+      "classification": {
+        "name": "Revolution Medicines",
+        "group": "Bioteknik / läkemedel",
+        "sector_id": "bio",
+        "source_url": "https://www.revmed.com/about/",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    },
+    {
+      "ticker": "SPY",
+      "weight": 0.7804428007777946,
+      "benchmark_core": true,
+      "rank": null,
+      "formation": {
+        "start_date": "2025-10-28",
+        "end_date": "2026-09-30",
+        "start_split_adjusted_close": 687.06,
+        "end_split_adjusted_close": 762.63,
+        "excluded_recent_start": "2026-10-01",
+        "signal_close_date": "2026-10-29"
+      },
+      "returns_at_signal": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-29",
+          "end": "2026-10-29",
+          "start_raw_close": 764.2,
+          "end_raw_close": 769.36,
+          "price_return_pct": 0.6752159120648971,
+          "total_return_pct": 0.6752159120648971,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-29",
+          "end": "2026-10-29",
+          "start_raw_close": 729.46,
+          "end_raw_close": 769.36,
+          "price_return_pct": 5.469799577769852,
+          "total_return_pct": 5.7313429135307015,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-29",
+          "end": "2026-10-29",
+          "start_raw_close": 711.58,
+          "end_raw_close": 769.36,
+          "price_return_pct": 8.119958402428384,
+          "total_return_pct": 8.664365778230154,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-29",
+          "end": "2026-10-29",
+          "start_raw_close": 687.39,
+          "end_raw_close": 769.36,
+          "price_return_pct": 11.924817061638947,
+          "total_return_pct": 13.130433428696463,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "returns_latest": {
+        "1": {
+          "status": "PASS",
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "start_raw_close": 762.63,
+          "end_raw_close": 755.72,
+          "price_return_pct": -0.9060750298309772,
+          "total_return_pct": -0.9060750298309772,
+          "split_events": [],
+          "dividend_count": 0,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "3": {
+          "status": "PASS",
+          "start": "2026-07-30",
+          "end": "2026-10-30",
+          "start_raw_close": 741.69,
+          "end_raw_close": 755.72,
+          "price_return_pct": 1.8916258814329456,
+          "total_return_pct": 2.14429608490172,
+          "split_events": [],
+          "dividend_count": 1,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "6": {
+          "status": "PASS",
+          "start": "2026-04-30",
+          "end": "2026-10-30",
+          "start_raw_close": 718.66,
+          "end_raw_close": 755.72,
+          "price_return_pct": 5.156819636545795,
+          "total_return_pct": 5.6863069677646205,
+          "split_events": [],
+          "dividend_count": 2,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        },
+        "12": {
+          "status": "PASS",
+          "start": "2025-10-30",
+          "end": "2026-10-30",
+          "start_raw_close": 679.83,
+          "end_raw_close": 755.72,
+          "price_return_pct": 11.163084888869278,
+          "total_return_pct": 12.36049613396264,
+          "split_events": [],
+          "dividend_count": 4,
+          "total_return_method": "USD_EX_DATE_CLOSE_REINVESTMENT_NO_TAX_OR_FEES"
+        }
+      },
+      "latest_raw_bar": {
+        "T": "SPY",
+        "v": 77790912.47972,
+        "vw": 757.4425,
+        "o": 761.38,
+        "c": 755.72,
+        "h": 761.46,
+        "l": 750.36,
+        "t": 1793390400000,
+        "n": 1023137
+      },
+      "reference": {
+        "name": "State Street SPDR S&P 500 ETF Trust",
+        "sic_code": null,
+        "sic_description": null,
+        "homepage_url": null,
+        "cik": "0000884394",
+        "primary_exchange": "ARCX",
+        "type": "ETF",
+        "verified": true,
+        "as_of": "2026-10-29",
+        "endpoint": "https://api.polygon.io/v3/reference/tickers/SPY?date=2026-10-29"
+      },
+      "excluded_month_return_pct": 0.8824724964924036,
+      "classification": {
+        "name": "SPDR S&P 500 ETF",
+        "group": "Brett USA-index",
+        "sector_id": "spy",
+        "source_url": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy",
+        "verification": "ISSUER_BUSINESS_VERIFIED_GICS_NOT_ASSERTED"
+      }
+    }
+  ],
+  "next_ranked": [
+    {
+      "ticker": "MXL",
+      "momentum_12_2": 4.7266962587190875,
+      "daily_volatility": 0.06637757968164477,
+      "raw_price": 71.61,
+      "adv20_usd": 301335898.8074505,
+      "risk_normalized_score": 58.76054950689242,
+      "formation_volatility": 0.08043996011583693,
+      "rank": 16
+    },
+    {
+      "ticker": "ILMN",
+      "momentum_12_2": 1.7983640081799592,
+      "daily_volatility": 0.032689169524220615,
+      "raw_price": 290.06,
+      "adv20_usd": 648565770.1862429,
+      "risk_normalized_score": 57.79101170575789,
+      "formation_volatility": 0.03111840327932489,
+      "rank": 17
+    },
+    {
+      "ticker": "MATX",
+      "momentum_12_2": 1.2478763688465868,
+      "daily_volatility": 0.017417718018984573,
+      "raw_price": 226.99,
+      "adv20_usd": 61337809.837275386,
+      "risk_normalized_score": 55.49827896267496,
+      "formation_volatility": 0.022484956149466162,
+      "rank": 18
+    },
+    {
+      "ticker": "VLO",
+      "momentum_12_2": 1.2889453171134995,
+      "daily_volatility": 0.024841394888546857,
+      "raw_price": 384.57,
+      "adv20_usd": 1092836023.5996366,
+      "risk_normalized_score": 55.41957393625134,
+      "formation_volatility": 0.02325794345868054,
+      "rank": 19
+    },
+    {
+      "ticker": "ECPG",
+      "momentum_12_2": 1.168044077134986,
+      "daily_volatility": 0.0233143056390722,
+      "raw_price": 102.36,
+      "adv20_usd": 21019561.988363206,
+      "risk_normalized_score": 53.116072596088365,
+      "formation_volatility": 0.02199040742370332,
+      "rank": 20
+    }
+  ],
+  "paper": {
+    "as_of": "2026-10-29",
+    "sessions": 1,
+    "holdings": {},
+    "cash_usd": 100000.0,
+    "trades": [],
+    "pending": {
+      "signal_date": "2026-10-29",
+      "signal_nav": 100000.0,
+      "targets": [
+        {
+          "ticker": "TXG",
+          "momentum_12_2": 5.773613193403299,
+          "daily_volatility": 0.05085278055125284,
+          "raw_price": 81.55,
+          "adv20_usd": 307017573.4819763,
+          "formation_volatility": 0.04577486235222386,
+          "risk_normalized_score": 126.13065111975813,
+          "weight": 0.012389549897093005,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "SNDK",
+          "momentum_12_2": 8.912208739246854,
+          "daily_volatility": 0.05102787143848519,
+          "raw_price": 1330.05,
+          "adv20_usd": 11836022989.137512,
+          "formation_volatility": 0.07290578249641366,
+          "risk_normalized_score": 122.24282401310565,
+          "weight": 0.012347037888993538,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "AXTI",
+          "momentum_12_2": 10.728787878787879,
+          "daily_volatility": 0.07955067721051784,
+          "raw_price": 60.88,
+          "adv20_usd": 594556461.8567811,
+          "formation_volatility": 0.09794974067806402,
+          "risk_normalized_score": 109.53360166670258,
+          "weight": 0.007920021351651879,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "TWST",
+          "momentum_12_2": 4.756330056598153,
+          "daily_volatility": 0.06575963871759624,
+          "raw_price": 173.45,
+          "adv20_usd": 469447692.21784383,
+          "formation_volatility": 0.047771943929309585,
+          "risk_normalized_score": 99.56325125970005,
+          "weight": 0.009580999444832386,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "ERAS",
+          "momentum_12_2": 5.008196721311475,
+          "daily_volatility": 0.0362148515026434,
+          "raw_price": 14.98,
+          "adv20_usd": 77245500.28329745,
+          "formation_volatility": 0.06574756013882747,
+          "risk_normalized_score": 76.1731189832224,
+          "weight": 0.0173973669890564,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "SLS",
+          "momentum_12_2": 5.155,
+          "daily_volatility": 0.06024331464378674,
+          "raw_price": 10.155,
+          "adv20_usd": 73742670.7307501,
+          "formation_volatility": 0.06870208445552102,
+          "risk_normalized_score": 75.03411346037748,
+          "weight": 0.010458306714546759,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "CLYM",
+          "momentum_12_2": 4.514423076923077,
+          "daily_volatility": 0.05254600325577152,
+          "raw_price": 10.33,
+          "adv20_usd": 12276516.511876006,
+          "formation_volatility": 0.060276299880483275,
+          "risk_normalized_score": 74.89549102838662,
+          "weight": 0.01199031368720637,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "ATEX",
+          "momentum_12_2": 2.9867953275774504,
+          "daily_volatility": 0.03897702838849493,
+          "raw_price": 91.81,
+          "adv20_usd": 21674909.077431284,
+          "formation_volatility": 0.04058611846982652,
+          "risk_normalized_score": 73.59154903659889,
+          "weight": 0.0161644714359918,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "CDNA",
+          "momentum_12_2": 3.4308111792774367,
+          "daily_volatility": 0.03263347800645002,
+          "raw_price": 71.52,
+          "adv20_usd": 88923767.49636433,
+          "formation_volatility": 0.04702277085457262,
+          "risk_normalized_score": 72.960634112522,
+          "weight": 0.01930664766780726,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "MU",
+          "momentum_12_2": 3.7997386327790545,
+          "daily_volatility": 0.03396090776559646,
+          "raw_price": 934.27,
+          "adv20_usd": 24837284634.899303,
+          "formation_volatility": 0.052399469332658155,
+          "risk_normalized_score": 72.51483042044576,
+          "weight": 0.018552008868382566,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "STX",
+          "momentum_12_2": 3.1360538116591927,
+          "daily_volatility": 0.041464177307571744,
+          "raw_price": 700.47,
+          "adv20_usd": 4397745160.529338,
+          "formation_volatility": 0.04793534293194952,
+          "risk_normalized_score": 65.42258008065636,
+          "weight": 0.015194876709409983,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "SYRE",
+          "momentum_12_2": 2.6132305194805197,
+          "daily_volatility": 0.038031339079858895,
+          "raw_price": 98.96,
+          "adv20_usd": 115057679.01676662,
+          "formation_volatility": 0.0412137164566746,
+          "risk_normalized_score": 63.40681559809452,
+          "weight": 0.016566418045988126,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "LITE",
+          "momentum_12_2": 3.8957104692776854,
+          "daily_volatility": 0.05626075179580092,
+          "raw_price": 919.53,
+          "adv20_usd": 4681208817.454523,
+          "formation_volatility": 0.06307947357947181,
+          "risk_normalized_score": 61.75876633418007,
+          "weight": 0.01119862500829027,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "CLMT",
+          "momentum_12_2": 1.632160804020101,
+          "daily_volatility": 0.03399237392537897,
+          "raw_price": 48.525,
+          "adv20_usd": 77457864.75457424,
+          "formation_volatility": 0.02730298798146981,
+          "risk_normalized_score": 59.77956717146958,
+          "weight": 0.01853483559073445,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "RVMD",
+          "momentum_12_2": 2.528623001547189,
+          "daily_volatility": 0.025999772342591168,
+          "raw_price": 190.27,
+          "adv20_usd": 375317112.5273922,
+          "formation_volatility": 0.04269693267840715,
+          "risk_normalized_score": 59.22259148198656,
+          "weight": 0.021955719922220535,
+          "momentum_sleeve_fraction": 0.21955719922220535,
+          "portfolio_vol63": 0.02285014934409303,
+          "benchmark_vol63": 0.00642829274201554
+        },
+        {
+          "ticker": "SPY",
+          "weight": 0.7804428007777946,
+          "benchmark_core": true
+        }
+      ]
+    },
+    "checkpoint_sha256": "bd6fc55005a4e35f9a435a391c23a5f45db6ee6b034070b4c9ebb28bbf67b492"
+  },
+  "historical": {
+    "archive_files": 40,
+    "display_accounts": [
+      {
+        "path": "extension/formation_assumed_5_15bps_last_quote/Momentum_core_targets.json",
+        "metrics": {
+          "Periods": 33,
+          "TotalReturn_pct": 77.13466627290009,
+          "SPYTotalReturn_pct": 68.075292652,
+          "TotalEdgeVsSPY_pct": 9.05937362090009,
+          "DailyMaxDrawdown_pct": -16.076466494265983,
+          "PeriodHitRate_pct": 66.66666666666667,
+          "ActualFees_USD": 3122.8558850999984,
+          "FinalNAV_USD": 177134.6662729001,
+          "DailySharpe_zero_rf": 1.307248900169288
+        },
+        "max_drawdown": {
+          "peak": "2025-02-18",
+          "trough": "2025-03-27",
+          "drawdown_pct": -16.076466494265983
+        },
+        "historical_signals": [
+          {
+            "date": "2024-01-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-02-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-03-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-04-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-05-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-06-03",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-07-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-08-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-09-03",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-10-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-11-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0.016084965564915878,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "CDNA",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2024-12-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-01-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-02-03",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-03-03",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-03-10",
+            "risk_on": false,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": []
+          },
+          {
+            "date": "2025-03-24",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-03-26",
+            "risk_on": false,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": []
+          },
+          {
+            "date": "2025-05-12",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-06-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-07-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-08-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-09-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-10-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-11-03",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2025-12-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": [
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-01-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.027862929048001403,
+            "current_names_present": [
+              "AXTI",
+              "STX",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-02-02",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.023180910713154625,
+            "current_names_present": [
+              "AXTI",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-03-02",
+            "risk_on": true,
+            "biopharma": 0.010017687220707207,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.018787524877549824,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-03-19",
+            "risk_on": false,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0,
+            "current_names_present": []
+          },
+          {
+            "date": "2026-04-08",
+            "risk_on": true,
+            "biopharma": 0.011938218997355476,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.05645954677804904,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "MU",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-05-01",
+            "risk_on": true,
+            "biopharma": 0.010877429758706389,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.03547062637814228,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-06-01",
+            "risk_on": true,
+            "biopharma": 0,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.05764241006181249,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "STX",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-07-01",
+            "risk_on": true,
+            "biopharma": 0.024236723956461655,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.05859206091013592,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "CLYM",
+              "MU",
+              "STX",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-08-03",
+            "risk_on": true,
+            "biopharma": 0.03933238014796501,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.05016499242381731,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "SLS",
+              "CLYM",
+              "ATEX",
+              "MU",
+              "STX",
+              "LITE",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-09-01",
+            "risk_on": true,
+            "biopharma": 0.061504729697461374,
+            "health_tools_diagnostics": 0,
+            "storage_semis_optics": 0.04998884595241442,
+            "current_names_present": [
+              "SNDK",
+              "AXTI",
+              "ERAS",
+              "SLS",
+              "ATEX",
+              "MU",
+              "STX",
+              "SYRE",
+              "LITE",
+              "RVMD",
+              "SPY"
+            ]
+          },
+          {
+            "date": "2026-10-01",
+            "risk_on": true,
+            "biopharma": 0.08046682834044208,
+            "health_tools_diagnostics": 0.024149633955162078,
+            "storage_semis_optics": 0.03881559281247669,
+            "current_names_present": [
+              "TXG",
+              "SNDK",
+              "AXTI",
+              "TWST",
+              "ERAS",
+              "SLS",
+              "CLYM",
+              "ATEX",
+              "MU",
+              "SYRE",
+              "LITE",
+              "RVMD",
+              "SPY"
+            ]
+          }
+        ],
+        "note": "Only current names are grouped. This is not an exhaustive historical sector classification."
+      }
+    ],
+    "scope": "Read existing H3 states/targets only; no backtest, new parameter, or untouched OOS claim."
+  },
+  "errors": [],
+  "live_approved": false,
+  "broker_orders_enabled": false,
+  "sectors": [
+    {
+      "id": "bio",
+      "name": "Bioteknik / läkemedel",
+      "weight_pct": 7.836812535901819,
+      "tickers": [
+        "ERAS",
+        "SLS",
+        "CLYM",
+        "SYRE",
+        "RVMD"
+      ]
+    },
+    {
+      "id": "tools",
+      "name": "Laboratorieteknik / forskningsverktyg",
+      "weight_pct": 2.197054934192539,
+      "tickers": [
+        "TXG",
+        "TWST"
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "name": "Diagnostik",
+      "weight_pct": 1.930664766780726,
+      "tickers": [
+        "CDNA"
+      ]
+    },
+    {
+      "id": "semis",
+      "name": "Halvledare / halvledarminne",
+      "weight_pct": 3.8819068109027985,
+      "tickers": [
+        "SNDK",
+        "AXTI",
+        "MU"
+      ]
+    },
+    {
+      "id": "optics",
+      "name": "Optik / fotonik",
+      "weight_pct": 1.119862500829027,
+      "tickers": [
+        "LITE"
+      ]
+    },
+    {
+      "id": "storage",
+      "name": "Datalagring",
+      "weight_pct": 1.5194876709409983,
+      "tickers": [
+        "STX"
+      ]
+    },
+    {
+      "id": "wireless",
+      "name": "Kommunikationsinfrastruktur",
+      "weight_pct": 1.61644714359918,
+      "tickers": [
+        "ATEX"
+      ]
+    },
+    {
+      "id": "energy",
+      "name": "Energiprodukter",
+      "weight_pct": 1.853483559073445,
+      "tickers": [
+        "CLMT"
+      ]
+    },
+    {
+      "id": "spy",
+      "name": "SPY, bred indexexponering",
+      "weight_pct": 78.04428007777946,
+      "tickers": [
+        "SPY"
+      ]
+    }
+  ],
+  "health_direct_pct": 11.964532236875083,
+  "lookthrough": {
+    "as_of": "2026-10-29",
+    "source": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy",
+    "spy_it_pct": 38.4,
+    "spy_health_pct": 10.02,
+    "technology_pct": 36.490260532540134,
+    "health_pct": 19.784569100668584,
+    "classification_limitation": "SPY uses issuer GICS. Individual stock broad sectors use verified business group mapping; indicative, not certified GICS."
+  },
+  "negative_last_month_at_signal": 11,
+  "recent_reversals": {
+    "SLS": {
+      "peak_date": "2026-08-21",
+      "peak_close": 15.46,
+      "latest_close": 9.68,
+      "below_peak_pct": -37.38680465717983,
+      "worst_day_pct": -14.708299096138033
+    },
+    "STX": {
+      "peak_date": "2026-08-17",
+      "peak_close": 994.79,
+      "latest_close": 644.58,
+      "below_peak_pct": -35.20441500216125,
+      "worst_day_pct": -10.213945027866789
+    }
+  },
+  "recent_reversals_source": {
+    "provider": "Massive connected API",
+    "window": "2026-07-29..2026-10-30",
+    "basis": "split-adjusted daily closes",
+    "source_endpoint": "/v2/aggs/ticker/{ticker}/range/1/day/2026-07-29/2026-10-30",
+    "independence": "Same data vendor, separate query channel; not an independent market-data provider."
+  },
+  "provenance": {
+    "workflow_run": "41147190058",
+    "artifact_id": 13021183620,
+    "artifact_sha256": "36696d0ddace0d0796323d08cd81cd9610fa9b4d95b77f879759dc911354c958",
+    "readonly_evidence_json_sha256": "f697e21004e80ebb7471ee70ff564989dfc95a3acf896ba5d52053b220a233ec",
+    "source_commit": "17b05709dbdebe47a593c54b3138e224226aad76"
+  },
+  "sources": [
+    {
+      "label": "10x Genomics · verksamhet",
+      "url": "https://www.10xgenomics.com/company"
+    },
+    {
+      "label": "Sandisk · verksamhet",
+      "url": "https://www.sec.gov/Archives/edgar/data/2023554/000162828026057406/sndk-20260703.htm"
+    },
+    {
+      "label": "AXT · verksamhet",
+      "url": "https://investors.axt.com/Investors/Overview/default.aspx"
+    },
+    {
+      "label": "Twist Bioscience · verksamhet",
+      "url": "https://www.twistbioscience.com/company/about"
+    },
+    {
+      "label": "Erasca · verksamhet",
+      "url": "https://www.erasca.com/about/"
+    },
+    {
+      "label": "SELLAS Life Sciences · verksamhet",
+      "url": "https://sellaslifesciences.com/"
+    },
+    {
+      "label": "Climb Bio · verksamhet",
+      "url": "https://ir.climbbio.com/news-releases/news-release-details/climb-bio-reports-second-quarter-2026-financial-results-and"
+    },
+    {
+      "label": "Anterix · verksamhet",
+      "url": "https://anterix.com/about"
+    },
+    {
+      "label": "CareDx · verksamhet",
+      "url": "https://www.sec.gov/Archives/edgar/data/1217234/000121723426000018/cdna-20251231.htm"
+    },
+    {
+      "label": "Micron · verksamhet",
+      "url": "https://www.micron.com/about/company/corporate-profile"
+    },
+    {
+      "label": "Seagate · verksamhet",
+      "url": "https://www.sec.gov/Archives/edgar/data/1137789/000113778926000223/0001137789-26-000223-index.htm"
+    },
+    {
+      "label": "Spyre Therapeutics · verksamhet",
+      "url": "https://www.spyre.com/"
+    },
+    {
+      "label": "Lumentum · verksamhet",
+      "url": "https://www.lumentum.com/en/company"
+    },
+    {
+      "label": "Calumet · verksamhet",
+      "url": "https://calumet.com/about/"
+    },
+    {
+      "label": "Revolution Medicines · verksamhet",
+      "url": "https://www.revmed.com/about/"
+    },
+    {
+      "label": "SPDR S&P 500 ETF · verksamhet",
+      "url": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy"
+    },
+    {
+      "label": "NYSE · handelsdagar och öppettider",
+      "url": "https://www.nyse.com/trade/hours-calendars"
+    }
+  ],
+  "report_date": "2026-10-31",
+  "next_monthly": {
+    "signal_close_date": "2026-11-02",
+    "signal_close_stockholm": "2026-11-02T22:00:00+01:00",
+    "expected_open_stockholm": "2026-11-03T15:30:00+01:00",
+    "conditional": "First observed November close, only risk-on; daily risk-off and re-entry can act outside monthly cycle."
+  },
+  "first_fill_review": {
+    "status": "PASS",
+    "as_of": "2026-10-30",
+    "workflow_run": "41063279405",
+    "workflow_attempt": 2,
+    "artifact_id": 13020759479,
+    "artifact_sha256": "443015d80fd860bdd6cd4c7ebc810279658c07afdebdd4987bbbeac009e7abee",
+    "original_identity_unchanged": true,
+    "original_prefix_unchanged": true,
+    "accounts": {
+      "strategy": {
+        "status": "PASS",
+        "fills": 16,
+        "cash_usd": 1394.7136000000087,
+        "fees_usd": 147.6864,
+        "nav_usd": 99262.5136,
+        "source_shares": {
+          "TXG": 16,
+          "SNDK": 1,
+          "AXTI": 13,
+          "TWST": 5,
+          "ERAS": 118,
+          "SLS": 108,
+          "CLYM": 118,
+          "ATEX": 17,
+          "CDNA": 23,
+          "MU": 2,
+          "STX": 2,
+          "SYRE": 17,
+          "LITE": 1,
+          "CLMT": 38,
+          "RVMD": 11,
+          "SPY": 102
+        }
+      },
+      "benchmark": {
+        "status": "PASS",
+        "fills": 1,
+        "cash_usd": 109.60883000000115,
+        "fees_usd": 149.61117000000002,
+        "nav_usd": 99108.92883,
+        "source_shares": {
+          "SPY": 131
+        }
+      },
+      "stress_strategy": {
+        "status": "PASS",
+        "fills": 16,
+        "cash_usd": 1247.0272000000086,
+        "fees_usd": 295.3728,
+        "nav_usd": 99114.82720000001,
+        "source_shares": {
+          "TXG": 16,
+          "SNDK": 1,
+          "AXTI": 13,
+          "TWST": 5,
+          "ERAS": 118,
+          "SLS": 108,
+          "CLYM": 118,
+          "ATEX": 17,
+          "CDNA": 23,
+          "MU": 2,
+          "STX": 2,
+          "SYRE": 17,
+          "LITE": 1,
+          "CLMT": 38,
+          "RVMD": 11,
+          "SPY": 102
+        }
+      },
+      "stress_benchmark": {
+        "status": "PASS",
+        "fills": 1,
+        "cash_usd": 723.6618000000058,
+        "fees_usd": 296.9382,
+        "nav_usd": 98967.26180000001,
+        "source_shares": {
+          "SPY": 130
+        }
+      }
+    },
+    "observer_checks": {
+      "source": {
+        "status": "PASS",
+        "git_commit": "80489e3d7fa95842737981d44525598d54212bbb",
+        "files_checked": 137
+      },
+      "prefix": {
+        "status": "PASS",
+        "sessions": 2,
+        "accounts": 4
+      },
+      "accounting": {
+        "status": "PASS",
+        "new_sessions": 1,
+        "market_trade_rows_checked": 34,
+        "volume_participation": [
+          {
+            "date": "2026-10-30",
+            "ticker": "ATEX",
+            "quantity": 17,
+            "fraction_of_full_day_volume": 4.289203201983066e-05
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "AXTI",
+            "quantity": 13,
+            "fraction_of_full_day_volume": 8.780911285341772e-07
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "CDNA",
+            "quantity": 23,
+            "fraction_of_full_day_volume": 6.470860196644379e-06
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "CLMT",
+            "quantity": 38,
+            "fraction_of_full_day_volume": 3.111749220363981e-05
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "CLYM",
+            "quantity": 118,
+            "fraction_of_full_day_volume": 0.0001664894354194109
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "ERAS",
+            "quantity": 118,
+            "fraction_of_full_day_volume": 3.147098729022142e-05
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "LITE",
+            "quantity": 1,
+            "fraction_of_full_day_volume": 1.293762895494381e-07
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "MU",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 6.483193157074148e-08
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "RVMD",
+            "quantity": 11,
+            "fraction_of_full_day_volume": 9.99530876440206e-06
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "SLS",
+            "quantity": 108,
+            "fraction_of_full_day_volume": 1.72527320734653e-05
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "SNDK",
+            "quantity": 1,
+            "fraction_of_full_day_volume": 5.703151617533209e-08
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "SPY",
+            "quantity": 102,
+            "fraction_of_full_day_volume": 1.3111936540671162e-06
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "STX",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 3.4575426069484366e-07
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "SYRE",
+            "quantity": 17,
+            "fraction_of_full_day_volume": 2.5713667898007153e-05
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "TWST",
+            "quantity": 5,
+            "fraction_of_full_day_volume": 1.4708679637175459e-06
+          },
+          {
+            "date": "2026-10-30",
+            "ticker": "TXG",
+            "quantity": 16,
+            "fraction_of_full_day_volume": 3.06588548265735e-06
+          }
+        ],
+        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
+      }
+    },
+    "market_trade_rows": 34,
+    "checks_scope": "Independent arithmetic from precommitted 29 October intentions and separately queried real 30 October raw opens/closes; no journal writes."
+  },
+  "paper_record_export_note": "The paper object is the immutable pre-fill record read by the original review export. The first_fill_review is the accepted subsequent session. The UI reads current holdings independently from /api/portfolio."
+}

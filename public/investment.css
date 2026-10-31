@@ -260,3 +260,4 @@ footer b{display:inline-block;border-radius:6px;padding:1px 6px;margin-left:5px;
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 /* Recorded intentions are distinct from filled positions and trade history. */
 .intention-list{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}.intention-list .badge{white-space:normal;gap:8px;font-size:15px}
+.review-report-link{display:inline-block;text-decoration:none;margin:8px 0}
