@@ -75,3 +75,17 @@ ECB: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_ex
 Avanza FX fee explanation: https://blogg.avanza.se/kopa-utlandska-aktier-har-ar-allt-du-behover-veta/
 Commission floor assumption is informed by, not asserted as today's tariff:
 https://investors.avanza.se/media/press/2015/lanserar-ny-mobil-app-och-sanker-courtaget-pa-utlandshandel/
+
+## Technical data addendum after the first attempt (no rule changes)
+
+The initial protocol/model commit is 10646034ed30e1b7f29cde4b65adf2294cb45817.
+Run 41180505963 completed A's 20 cases, then blocked B at a missing APGE
+close on 2026-09-03. All output is preserved in draft release
+stocks10-research-41180505963-1. Nasdaq ECA2026-607 and the completion 8-K
+confirm cash consideration of USD 135.11, merger before that day's open,
+and no further trading. Add this event only to this separate study's
+accounting, never to H3. The payment date remains unverified: retain all
+five prespecified payment scenarios. No signal rule or threshold changes.
+
+https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-607
+https://www.sec.gov/Archives/edgar/data/1974640/000114036126035537/ef20081397_8k.htm

@@ -9,6 +9,13 @@ from research_core_ledger import ResearchLedger
 
 MODEL = 'stocks10-whole-lots-v1'
 
+# This newly held name was absent from the old H3 selections. The missing
+# close is a verified cash merger, never a made-up quote. No payment date is
+# asserted; locked and all prespecified payment sensitivities are retained.
+APGE_COMPLETION = {'effective_date': '2026-09-03', 'cash_per_share': 135.11,
+    'source_url': 'https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-607',
+    'sec_url': 'https://www.sec.gov/Archives/edgar/data/1974640/000114036126035537/ef20081397_8k.htm'}
+
 
 def fee(notional, execution=.0015):
     return max(1., notional * .0025) + notional * (.0025 + execution) if notional else 0.

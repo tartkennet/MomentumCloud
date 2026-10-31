@@ -16,8 +16,8 @@ from research_core_ledger import complete_data
 from research_core_diagnostics import performance, describe
 from run_core_normalized_research import verify_inputs, payment_policy
 from run_core_risk_research import make_data, EXTENSION_END, DELAYS
-from research_stocks10 import Stocks10Ledger, MODEL
-from audit_stocks10 import audit
+from research_stocks10 import Stocks10Ledger, MODEL, APGE_COMPLETION
+from audit_stocks10 import audit, financial_audit
 
 
 def fx_rows(path):
@@ -55,6 +55,7 @@ def run(args):
     input_hash = verify_inputs(args.cache, args.manifest)
     rates = fx_rows(args.fx)
     data = complete_data(supplement(make_data(args.cache, EXTENSION_END, True)))
+    data.source.cash_actions = dict(data.source.cash_actions, APGE=copy.deepcopy(APGE_COMPLETION))
     initial_fx = prior_fx(rates, data.sessions[0])
     initial_usd = 20000 / initial_fx['usdsek']
     source_files = ['research_stocks10.py', 'audit_stocks10.py', 'run_stocks10_research.py', 'docs/STOCKS10_PROTOCOL_20261031.md']
@@ -65,6 +66,7 @@ def run(args):
               'input_manifest_sha256': input_hash,
               'fx_sha256': hashlib.sha256(Path(args.fx).read_bytes()).hexdigest(),
               'source_files': {f: hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in source_files},
+              'supplemental_cash_actions': {'APGE': APGE_COMPLETION},
               'attempts': [], 'comparators': {}}
     for name, path in [('H3', 'docs/CORE_PORTFOLIO_H3_RESULTS_20261029.json'), ('Core', 'docs/CORE_RISK_RESULTS_20261029.json')]:
         saved = json.loads(Path(path).read_text())
@@ -106,6 +108,7 @@ def run(args):
                         # Independent transaction/claims/cash arithmetic and independent eligible-universe ranking.
                         audit_s = audit(data, config, s, memo=independent)
                         audit_b = audit(data, config, b, benchmark=True)
+                        financial = financial_audit(s, b, metrics)
                         gates = core.gates(metrics)
                         passed = all(g['pass'] for g in gates) and not s.blocked
                         folder = output / name
@@ -114,7 +117,7 @@ def run(args):
                         atomic_json(folder / 'benchmark.json', b.to_dict())
                         daily = [dict(r, spy_nav=q['nav']) for r, q in zip(s.equity, b.equity)]
                         attempt.update(status='COMPLETE', decision='PAPER_ONLY' if passed else 'NO_GO',
-                            metrics=metrics, gates=gates, audit=audit_s, benchmark_audit=audit_b,
+                            metrics=metrics, gates=gates, audit=audit_s, benchmark_audit=audit_b, financial_audit=financial,
                             sek=performance(converted(s, rates)), spy_sek=performance(converted(b, rates)),
                             diagnostics=describe(daily), blocked=s.blocked,
                             benchmark_fees_usd=b.fees,

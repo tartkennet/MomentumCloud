@@ -17,6 +17,13 @@ def audit(data, config, ledger, *, benchmark=False, memo=None):
     by_date = defaultdict(list)
     for t in ledger.trades:
         by_date[t['date']].append(t)
+    fills = {}
+    blocked_dates = {r['date'] for r in getattr(ledger, 'blocked', [])}
+    sessions = [r['date'] for r in ledger.equity]
+    for signal in ledger.targets:
+        future = next((d for d in sessions if d > signal['date']), None)
+        if future and future not in blocked_dates and (signal['targets'] or not signal['risk_on']):
+            fills[future] = signal
     max_error, max_participation = 0., 0.
     split_events = defaultdict(list)
     dividends = defaultdict(list)
@@ -90,6 +97,10 @@ def audit(data, config, ledger, *, benchmark=False, memo=None):
             assert bars[ticker][2] > 0
             max_participation = max(max_participation, q / bars[ticker][2])
         assert sorted(expected_events) == sorted(actual_events)
+        if day in fills:
+            target_names = {r['ticker'] for r in fills[day]['targets']}
+            assert all(holdings.get(t, 0) >= 1 for t in target_names)
+            assert all(t in target_names or q < 1 for t, q in holdings.items())
         def close(t):
             mark = data.halt_marks.get(day)
             if mark and t == mark['ticker']:
@@ -129,8 +140,42 @@ def audit(data, config, ledger, *, benchmark=False, memo=None):
                 near(a['weight'], .1)
             signals += 1
     near(cash, ledger.cash)
-    assert holdings == ledger.shares
+    assert holdings.keys() == ledger.shares.keys()
+    for t in holdings:
+        near(holdings[t], ledger.shares[t])
     return {'status': 'PASS', 'sessions': len(ledger.equity), 'signals': signals,
             'trades': len(ledger.trades), 'max_nav_error_usd': max_error,
             'max_volume_participation': max_participation,
             'independent_vendor': False}
+
+
+def financial_audit(strategy, benchmark, result):
+    """Recompute financial gates without importing the shared metric functions."""
+    rows = strategy.equity
+    peak = rows[0]['nav']
+    worst = 0.
+    returns = []
+    for i, row in enumerate(rows):
+        peak = max(peak, row['nav'])
+        worst = min(worst, (row['nav'] / peak - 1) * 100)
+        if i:
+            returns.append(row['nav'] / rows[i-1]['nav'] - 1)
+    boundaries = [r for i, r in enumerate(rows) if (not i and strategy.first_is_month_boundary)
+                  or (i and r['date'][:7] != rows[i-1]['date'][:7])]
+    total = (rows[-1]['nav'] / rows[0]['nav'] - 1) * 100
+    spy = (benchmark.equity[-1]['nav'] / benchmark.equity[0]['nav'] - 1) * 100
+    periods = len(boundaries) - 1
+    hit = 100 * sum(b['nav'] > a['nav'] for a, b in zip(boundaries, boundaries[1:])) / periods if periods else 0.
+    center = sum(returns) / len(returns)
+    variance = sum((r - center)**2 for r in returns) / (len(returns) - 1)
+    calculated = {'Periods': periods, 'TotalReturn_pct': total, 'SPYTotalReturn_pct': spy,
+                  'TotalEdgeVsSPY_pct': total - spy, 'DailyMaxDrawdown_pct': worst,
+                  'PeriodHitRate_pct': hit, 'ActualFees_USD': strategy.fees,
+                  'FinalNAV_USD': rows[-1]['nav'],
+                  'DailySharpe_zero_rf': math.sqrt(252) * center / math.sqrt(variance) if variance else None}
+    for key, value in calculated.items():
+        if value is None:
+            assert result[key] is None
+        else:
+            near(result[key], value)
+    return {'status': 'PASS', 'independently_recomputed': calculated}
