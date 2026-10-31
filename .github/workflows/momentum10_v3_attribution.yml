@@ -13,7 +13,39 @@ concurrency:
   group: m10v3-attribution-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  scope:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      replay: ${{ steps.changed.outputs.replay }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - id: changed
+        name: Avoid repeating approved replay for presentation-only commits
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          python - <<'PY'
+          import os,subprocess
+          files={'attribute_momentum10_v3.py'}
+          replay=True
+          before=os.environ.get('BEFORE','')
+          if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
+              result=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True)
+              if result.returncode==0:
+                  replay=bool(files.intersection(result.stdout.splitlines()))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('replay='+str(replay).lower()+'\n')
+          print('Replay required:',replay)
+          PY
   study:
+    needs: scope
+    if: needs.scope.outputs.replay == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:

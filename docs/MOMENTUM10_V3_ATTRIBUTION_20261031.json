@@ -1,0 +1,563 @@
+{
+  "status": "PASS",
+  "input_manifest": "0da7cf520eed048ce30fc275dc66e5b7a264afe86e9496cc5db6cdf044099428",
+  "baseline_only": true,
+  "strategy_replay": false,
+  "variants": {
+    "M1": {
+      "status": "PASS",
+      "largest_nav_residual_usd": 4.547473508864641e-13,
+      "episode": {
+        "peak": "2026-05-26",
+        "trough": "2026-10-16",
+        "peak_nav": 4069.1362757644565,
+        "trough_nav": 2587.7591457644567,
+        "drawdown_pct": -36.40519829289074,
+        "net_pnl_usd": -1481.3771299999999
+      },
+      "drawdown_contribution_usd": [
+        [
+          "AXTI",
+          -513.59048
+        ],
+        [
+          "PL",
+          -152.70724
+        ],
+        [
+          "CLYM",
+          -99.87657999999996
+        ],
+        [
+          "VPG",
+          -94.70183999999998
+        ],
+        [
+          "NESR",
+          -94.65951999999999
+        ],
+        [
+          "BW",
+          -90.74899999999997
+        ],
+        [
+          "BE",
+          -76.58798000000002
+        ],
+        [
+          "TSEM",
+          -74.3928
+        ],
+        [
+          "ENLT",
+          -63.53248000000002
+        ],
+        [
+          "TXG",
+          -62.62048000000004
+        ],
+        [
+          "LQDA",
+          -54.59775999999994
+        ],
+        [
+          "AEHR",
+          -50.19764000000009
+        ],
+        [
+          "LASR",
+          -48.37269999999995
+        ],
+        [
+          "SYRE",
+          -43.17984000000004
+        ],
+        [
+          "SLS",
+          -43.119759999999985
+        ],
+        [
+          "NGL",
+          -27.807999999999936
+        ],
+        [
+          "ANRO",
+          -17.869159999999965
+        ],
+        [
+          "ORKA",
+          -13.178840000000037
+        ],
+        [
+          "CDNA",
+          -11.381280000000004
+        ],
+        [
+          "FET",
+          -11.070759999999979
+        ],
+        [
+          "RVMD",
+          -9.13900000000001
+        ],
+        [
+          "RLAY",
+          -8.570240000000013
+        ],
+        [
+          "DNTH",
+          -7.63112000000001
+        ],
+        [
+          "NHC",
+          -4.19507999999999
+        ],
+        [
+          "APGE",
+          -2.0206400000000144
+        ],
+        [
+          "CDE",
+          -1.1765299999999987
+        ],
+        [
+          "HYMC",
+          -1.120239999999967
+        ],
+        [
+          "KOD",
+          -0.160000000000025
+        ],
+        [
+          "ECPG",
+          0.09916000000004033
+        ],
+        [
+          "TWST",
+          0.5885599999999727
+        ],
+        [
+          "ERAS",
+          1.3444000000000074
+        ],
+        [
+          "ARWR",
+          2.2958399999999983
+        ],
+        [
+          "ROIV",
+          3.5120000000000005
+        ],
+        [
+          "MATX",
+          5.6201599999999985
+        ],
+        [
+          "VICR",
+          9.03904
+        ],
+        [
+          "ECO",
+          12.833000000000027
+        ],
+        [
+          "SPHR",
+          15.476400000000012
+        ],
+        [
+          "CLMT",
+          21.890800000000013
+        ],
+        [
+          "VSAT",
+          34.217600000000004
+        ],
+        [
+          "TNGX",
+          89.91290000000004
+        ]
+      ],
+      "held_stock_days": 1076,
+      "held_below_sma63_stock_days": 263,
+      "missing_trend_stock_days": 0,
+      "below_sma63_fraction": 0.24442379182156135,
+      "max_single_weight_pct": 26.0954958232626,
+      "convention": "Independent cash/claims/position reconstruction; includes fees and dividend/native-FX effects. Stock exchanges/spins allocate value transfers at same-day observed successor close solely for attribution, never as a trade. All daily ticker P&L sums reconcile exactly to NAV changes."
+    },
+    "M3": {
+      "status": "PASS",
+      "largest_nav_residual_usd": 4.547473508864641e-13,
+      "episode": {
+        "peak": "2025-02-18",
+        "trough": "2025-12-17",
+        "peak_nav": 4160.328313864456,
+        "trough_nav": 1969.8104738644554,
+        "drawdown_pct": -52.65252342465412,
+        "net_pnl_usd": -2190.5178400000004
+      },
+      "drawdown_contribution_usd": [
+        [
+          "RDW",
+          -268.2958
+        ],
+        [
+          "APP",
+          -258.15919999999994
+        ],
+        [
+          "LUNR",
+          -231.80696
+        ],
+        [
+          "NEON",
+          -224.17668
+        ],
+        [
+          "PLTR",
+          -189.62048000000004
+        ],
+        [
+          "WGS",
+          -154.55962
+        ],
+        [
+          "AEVA",
+          -122.10499999999999
+        ],
+        [
+          "RCAT",
+          -108.72351999999998
+        ],
+        [
+          "AMPX",
+          -62.71552
+        ],
+        [
+          "DAVE",
+          -62.25539999999998
+        ],
+        [
+          "EAT",
+          -60.30375999999998
+        ],
+        [
+          "RGTI",
+          -59.258759999999995
+        ],
+        [
+          "NGVC",
+          -58.25168000000002
+        ],
+        [
+          "RKLB",
+          -55.01296000000002
+        ],
+        [
+          "RBLX",
+          -50.881
+        ],
+        [
+          "OPFI",
+          -45.67112
+        ],
+        [
+          "OKLO",
+          -44.38539999999999
+        ],
+        [
+          "KINS",
+          -43.924960000000056
+        ],
+        [
+          "WLFC",
+          -41.95588000000001
+        ],
+        [
+          "ADMA",
+          -34.31456000000003
+        ],
+        [
+          "HOOD",
+          -28.55112000000001
+        ],
+        [
+          "BE",
+          -26.053120000000007
+        ],
+        [
+          "SEZL",
+          -23.6156
+        ],
+        [
+          "TBRG",
+          -21.602360000000004
+        ],
+        [
+          "AS",
+          -21.60027999999997
+        ],
+        [
+          "SSRM",
+          -19.686879999999974
+        ],
+        [
+          "CCB",
+          -12.971960000000024
+        ],
+        [
+          "LTH",
+          -11.327680000000043
+        ],
+        [
+          "CRS",
+          -10.985920000000021
+        ],
+        [
+          "GDDY",
+          -10.050880000000006
+        ],
+        [
+          "TRGP",
+          -7.721400000000017
+        ],
+        [
+          "WELL",
+          -3.1180000000000234
+        ],
+        [
+          "IDCC",
+          -1.1421200000000056
+        ],
+        [
+          "SFM",
+          0.9675599999999918
+        ],
+        [
+          "QUBT",
+          7.363200000000006
+        ],
+        [
+          "NUTX",
+          9.545600000000036
+        ],
+        [
+          "SGHC",
+          12.356480000000005
+        ],
+        [
+          "AHR",
+          39.38448000000005
+        ],
+        [
+          "SRAD",
+          45.930079999999975
+        ],
+        [
+          "QBTS",
+          68.74034
+        ]
+      ],
+      "held_stock_days": 1680,
+      "held_below_sma63_stock_days": 633,
+      "missing_trend_stock_days": 0,
+      "below_sma63_fraction": 0.3767857142857143,
+      "max_single_weight_pct": 26.215640238068673,
+      "convention": "Independent cash/claims/position reconstruction; includes fees and dividend/native-FX effects. Stock exchanges/spins allocate value transfers at same-day observed successor close solely for attribution, never as a trade. All daily ticker P&L sums reconcile exactly to NAV changes."
+    },
+    "Q10": {
+      "status": "PASS",
+      "largest_nav_residual_usd": 4.547473508864641e-13,
+      "episode": {
+        "peak": "2024-11-29",
+        "trough": "2025-12-17",
+        "peak_nav": 3326.2691838644555,
+        "trough_nav": 2334.1485558644554,
+        "drawdown_pct": -29.82682919388249,
+        "net_pnl_usd": -992.1206280000001
+      },
+      "drawdown_contribution_usd": [
+        [
+          "SEZL",
+          -168.81527999999994
+        ],
+        [
+          "DAVE",
+          -112.41825
+        ],
+        [
+          "RCAT",
+          -65.280888
+        ],
+        [
+          "RGTI",
+          -60.29664
+        ],
+        [
+          "CAVA",
+          -52.06664000000001
+        ],
+        [
+          "FTAI",
+          -47.668560000000014
+        ],
+        [
+          "RDW",
+          -46.596479999999985
+        ],
+        [
+          "AMPX",
+          -46.50235999999998
+        ],
+        [
+          "SSRM",
+          -45.957599999999985
+        ],
+        [
+          "SFM",
+          -43.59827999999999
+        ],
+        [
+          "OKLO",
+          -41.45079999999999
+        ],
+        [
+          "QUBT",
+          -40.37359999999995
+        ],
+        [
+          "PLTR",
+          -40.205280000000016
+        ],
+        [
+          "AEVA",
+          -35.87132
+        ],
+        [
+          "KINS",
+          -33.88528000000002
+        ],
+        [
+          "OPFI",
+          -33.22879999999995
+        ],
+        [
+          "CLBT",
+          -32.997199999999964
+        ],
+        [
+          "NEON",
+          -32.501460000000066
+        ],
+        [
+          "ADMA",
+          -30.968000000000018
+        ],
+        [
+          "WLFC",
+          -28.585120000000018
+        ],
+        [
+          "GDDY",
+          -26.945039999999977
+        ],
+        [
+          "LUNR",
+          -26.48879999999997
+        ],
+        [
+          "NGVC",
+          -26.260160000000013
+        ],
+        [
+          "PPC",
+          -22.599600000000038
+        ],
+        [
+          "TBRG",
+          -21.602360000000004
+        ],
+        [
+          "AS",
+          -21.60027999999997
+        ],
+        [
+          "RBLX",
+          -19.665400000000005
+        ],
+        [
+          "HOOD",
+          -17.58424000000001
+        ],
+        [
+          "LTH",
+          -11.327680000000043
+        ],
+        [
+          "CRS",
+          -10.985920000000021
+        ],
+        [
+          "CCB",
+          -9.314639999999997
+        ],
+        [
+          "TRGP",
+          -7.721400000000017
+        ],
+        [
+          "EAT",
+          -4.729279999999989
+        ],
+        [
+          "WELL",
+          -3.1180000000000234
+        ],
+        [
+          "IDCC",
+          -1.1421200000000056
+        ],
+        [
+          "NUTX",
+          9.545600000000036
+        ],
+        [
+          "SGHC",
+          12.913000000000011
+        ],
+        [
+          "CLS",
+          16.77188000000001
+        ],
+        [
+          "AHR",
+          39.38448000000005
+        ],
+        [
+          "WGS",
+          40.49628999999999
+        ],
+        [
+          "QBTS",
+          44.47865999999999
+        ],
+        [
+          "SRAD",
+          45.930079999999975
+        ],
+        [
+          "RKLB",
+          68.71214
+        ]
+      ],
+      "held_stock_days": 1385,
+      "held_below_sma63_stock_days": 243,
+      "missing_trend_stock_days": 0,
+      "below_sma63_fraction": 0.17545126353790613,
+      "max_single_weight_pct": 25.514236382868997,
+      "convention": "Independent cash/claims/position reconstruction; includes fees and dividend/native-FX effects. Stock exchanges/spins allocate value transfers at same-day observed successor close solely for attribution, never as a trade. All daily ticker P&L sums reconcile exactly to NAV changes."
+    }
+  },
+  "workflow_run": "41196973091",
+  "source_commit": "7c88327b8c6bf33933eca84617f4e3864cbec898",
+  "artifact_sha256": "c0aec547852a6e2e452d6766371e980b9918fd3b090cd9d981d01725350684dc"
+}
