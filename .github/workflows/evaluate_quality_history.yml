@@ -1,6 +1,11 @@
 name: Quality historical offline replay and independent audit
 on:
   workflow_dispatch:
+    inputs:
+      collect_supplements:
+        description: 'Complete SEC gaps and replay separately, preserving all original results'
+        type: boolean
+        default: false
   pull_request:
     branches: [main]
     paths: ['evaluate_historical_quality.py','audit_quality_history_account.py','.github/workflows/evaluate_quality_history.yml']
@@ -36,7 +41,7 @@ jobs:
     needs: scope
     if: needs.scope.outputs.needed == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with: {ref: '${{ github.event.pull_request.head.sha || github.sha }}', persist-credentials: false}
@@ -78,16 +83,28 @@ jobs:
               assert t.extractfile(member).read()==Path('history_output/ecb-history.xml').read_bytes()
           PY
           python cache_momentum_inputs.py unseal --sealed history_output/market.sealed --cache-dir .history_market
+      - name: Collect bounded SEC source supplements and reproduce them offline
+        if: github.event_name == 'workflow_dispatch' && inputs.collect_supplements
+        run: |
+          timeout --preserve-status 8m python supplement_quality_sources.py --panels history_output --output source_saved/verified
+          python supplement_quality_sources.py --panels history_output --output source_saved/verified --apply-to history_supplemented
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.collect_supplements
+        with: {name: Quality_SEC_source_completion, path: source_saved/verified/, retention-days: 90}
       - name: Reconcile saved source archive and replay without network
+        env:
+          COLLECT_SUPPLEMENTS: ${{ inputs.collect_supplements }}
         run: |
           timeout 2m python - <<'PY'
+          import os
           from run_core_normalized_research import verify_inputs
           from pathlib import Path
           import socket
           from evaluate_historical_quality import run
           verify_inputs(Path('.history_market'),'history_output/base_manifest.json')
           socket.socket=lambda *a,**k:(_ for _ in ()).throw(RuntimeError('Historical replay must be offline'))
-          run('.history_market','history_output','history_results')
+          root='history_supplemented' if os.environ.get('COLLECT_SUPPLEMENTS')=='true' else 'history_output'
+          run('.history_market',root,'history_results')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
@@ -98,8 +115,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p history_results/inputs
-          cp history_output/*.json history_results/inputs/
+          source=history_output
+          if test -d history_supplemented; then source=history_supplemented; fi
+          cp "$source"/*.json history_results/inputs/
           cp history_output/ecb-history.xml history_results/inputs/
+          if test -f source_saved/verified/source-review.json; then cp source_saved/verified/source-review.json history_results/; fi
           python - <<'PY'
           import hashlib,json
           from pathlib import Path
@@ -107,4 +127,9 @@ jobs:
           Path('history_results/input_assets.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}))
           PY
           tar -czf historical_results.tar.gz -C history_results .
-          gh release create "quality-history-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" historical_results.tar.gz history_output/market.sealed --repo "$GITHUB_REPOSITORY" --draft --title "Quality historical conditional results $GITHUB_RUN_ID" --notes "Separate development reconstruction. Original publications audited; historical SIC vintage remains uncertified. No historical or live GO."
+          extras=()
+          if test -d source_saved/verified; then
+            tar -czf source_completion.tar.gz -C source_saved/verified .
+            extras+=(source_completion.tar.gz)
+          fi
+          gh release create "quality-history-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" historical_results.tar.gz history_output/market.sealed "${extras[@]}" --repo "$GITHUB_REPOSITORY" --draft --title "Quality historical conditional results $GITHUB_RUN_ID" --notes "Separate development reconstruction. Original publications audited; historical SIC vintage remains uncertified. No historical or live GO."

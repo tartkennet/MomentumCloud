@@ -19,8 +19,9 @@ def sha(raw):return hashlib.sha256(raw).hexdigest()
 
 
 class SEC:
-    def __init__(self,root):
+    def __init__(self,root,offline=False):
         self.root=Path(root);self.root.mkdir(parents=True,exist_ok=True)
+        self.offline=offline
         self.session=requests.Session()
         self.session.headers['User-Agent']='MomentumCloud research (github.com/tartkennet/MomentumCloud)'
     def get(self,url):
@@ -29,11 +30,12 @@ class SEC:
         if receipt.exists():
             meta=json.loads(receipt.read_text());raw=gzip.decompress(asset.read_bytes())
             assert meta['url']==url and sha(raw)==meta['sha256'];return raw,meta
+        if self.offline:raise DataUnavailable('UNCACHED_SEC_ORIGINAL')
         time.sleep(.15)
         try:r=self.session.get(url,timeout=(5,12))
         except requests.RequestException as e:raise DataUnavailable('SEC_NETWORK_'+type(e).__name__) from None
         if r.status_code!=200:raise DataUnavailable('SEC_HTTP_'+str(r.status_code))
-        if len(r.content)>60_000_000:raise DataUnavailable('SEC_OVERSIZE')
+        if len(r.content)>180_000_000:raise DataUnavailable('SEC_OVERSIZE')
         raw=r.content;meta=dict(url=url,sha256=sha(raw),observed_at=datetime.now(timezone.utc).isoformat(),asset=asset.name)
         asset.write_bytes(gzip.compress(raw,mtime=0));atomic_json(receipt,meta);return raw,meta
 
@@ -74,7 +76,9 @@ def submissions(client,cik,day):
     raw,meta=client.get('https://data.sec.gov/submissions/CIK'+str(cik).zfill(10)+'.json')
     data=json.loads(raw);groups=[data['filings']['recent']]
     for item in data['filings'].get('files',[]):
-        if item['filingFrom']<=day<=item['filingTo']:
+        if item['filingFrom']<=day and (item['filingTo']>=day or not any(
+            form in ('10-K','10-Q','10-K/A','10-Q/A') and filed<=day
+            for group in groups for form,filed in zip(group['form'],group['filingDate']))):
             b,_=client.get('https://data.sec.gov/submissions/'+item['name']);groups.append(json.loads(b))
     rows=[]
     for group in groups:
@@ -108,7 +112,7 @@ def review(row,day,client):
         if any(a['filing_date']>=f['filing_date'] for a in amendments):raise DataUnavailable('AS_OF_AMENDMENT_REQUIRES_REVIEW')
         if f['type'] not in ('10-K','10-Q'):raise DataUnavailable('SEC_UNSUPPORTED_FORM')
         out.update(sic=f['sic'],division=division(f['sic']),classification_vintage='ORIGINAL_SEC_HEADER')
-        if not division(f['sic']):out.update(resolved=True,data_status='OUT_OF_SCOPE_INDUSTRY');return out
+        if not division(f['sic']):out.update(resolved=True,data_status='OUT_OF_SCOPE_INDUSTRY',reason=None);return out
         name,xml=instance(raw)
         receipt=dict(observed_at=meta['observed_at'],filing=f,sha256=sha(xml),source='original SEC complete submission attachment',xml_filename=name,sgml_sha256=meta['sha256'])
         out['sec_receipt']=receipt
@@ -132,7 +136,7 @@ def run(panels,history,output,day=None,max_rows=200,retry_transient=False):
         assert done['source_panel_sha256']==sha(source.read_bytes())
         existing={r['ticker']:r for r in done['rows']}
         if retry_transient:
-            existing={t:r for t,r in existing.items() if not str(r.get('reason','')).startswith(('SEC_NETWORK_','SEC_HTTP_429','SEC_HTTP_5'))}
+            existing={t:r for t,r in existing.items() if not str(r.get('reason','')).startswith(('SEC_NETWORK_','SEC_HTTP_429','SEC_HTTP_5','SEC_OVERSIZE'))}
         capacity=next(r['block']['panel'] for r in prior['cases'][:4] if r.get('block',{}).get('panel',{}).get('date')==date)
         missing={r['ticker'] for r in capacity['gaps']};todo=[r for r in panel['rows'] if r['ticker'] in missing and r['ticker'] not in existing][:max_rows]
         for row in todo:
@@ -147,5 +151,34 @@ def run(panels,history,output,day=None,max_rows=200,retry_transient=False):
     atomic_json(output/'source-review.json',report);return report
 
 
+def apply_verified(panels,supplements,destination):
+    """Build a separate panel set by reproducing every resolution offline."""
+    import shutil
+    panels=Path(panels);supplements=Path(supplements);destination=Path(destination)
+    assert panels.resolve()!=destination.resolve(),'ORIGINAL_PANELS_ARE_IMMUTABLE'
+    assert not destination.exists(),'DESTINATION_ALREADY_EXISTS'
+    shutil.copytree(panels,destination)
+    client=SEC(supplements/'sec-originals',offline=True);changes=[]
+    for source in sorted(panels.glob('*.panel.json')):
+        saved=json.loads((supplements/(source.name[:10]+'.supplement.json')).read_text())
+        assert saved['source_panel_sha256']==sha(source.read_bytes())
+        panel=json.loads(source.read_text());mapping={r['ticker']:r for r in panel['rows']}
+        assert len({r['ticker'] for r in saved['rows']})==len(saved['rows'])
+        for row in saved['rows']:
+            original=mapping[row['ticker']]
+            assert not original['resolved'],'CANNOT_REPLACE_VERIFIED_ORIGINAL'
+            if not row['resolved']:continue
+            reproduced=review(original,panel['date'],client)
+            assert reproduced==row,'SUPPLEMENT_FAILED_OFFLINE_REPRODUCTION'
+            mapping[row['ticker']]=reproduced
+            changes.append(dict(date=panel['date'],ticker=row['ticker'],status=row['data_status']))
+        panel['rows']=[mapping[r['ticker']] for r in panel['rows']]
+        atomic_json(destination/source.name,panel)
+    atomic_json(destination/'supplement-application.json',dict(status='PASS',offline=True,changes=changes))
+    return changes
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--panels',required=True);p.add_argument('--history',default='public/data/quality-history.json');p.add_argument('--output',required=True);p.add_argument('--day');p.add_argument('--max-rows',type=int,default=200);p.add_argument('--retry-transient',action='store_true');a=p.parse_args();run(a.panels,a.history,a.output,a.day,a.max_rows,a.retry_transient)
+    p=argparse.ArgumentParser();p.add_argument('--panels',required=True);p.add_argument('--history',default='public/data/quality-history.json');p.add_argument('--output',required=True);p.add_argument('--day');p.add_argument('--max-rows',type=int,default=200);p.add_argument('--retry-transient',action='store_true');p.add_argument('--apply-to');a=p.parse_args()
+    if a.apply_to:apply_verified(a.panels,a.output,a.apply_to)
+    else:run(a.panels,a.history,a.output,a.day,a.max_rows,a.retry_transient)
