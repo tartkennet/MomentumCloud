@@ -157,6 +157,9 @@ def apply_verified(panels,supplements,destination):
     panels=Path(panels);supplements=Path(supplements);destination=Path(destination)
     assert panels.resolve()!=destination.resolve(),'ORIGINAL_PANELS_ARE_IMMUTABLE'
     assert not destination.exists(),'DESTINATION_ALREADY_EXISTS'
+    for saved in supplements.glob('*.supplement.json'):
+        rows=json.loads(saved.read_text())['rows']
+        assert not any(str(r.get('reason','')).startswith(('SEC_HTTP_','SEC_NETWORK_','SEC_OVERSIZE','UNCACHED_SEC_')) for r in rows),'INCOMPLETE_SEC_TRANSPORT'
     shutil.copytree(panels,destination)
     client=SEC(supplements/'sec-originals',offline=True);changes=[]
     for source in sorted(panels.glob('*.panel.json')):

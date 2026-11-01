@@ -29,3 +29,30 @@ cancelled and replaced by fresh November eligibility before an opening fill.
 
 This file will be updated with the completed source, operational and production
 verification receipts. Status remains NO_GO_INSUFFICIENT_EVIDENCE.
+
+
+Codex takeover checkpoint: all 85 historical gaps independently reviewed from
+original SEC transport, reproducing 83%, 81%, 86%, 87% coverage. Detailed issuer
+blockers: QUALITY_SOURCE_COMPLETION_20261101.md and
+public/data/quality-source-review.json. 22 gaps resolved; none of the dates
+reaches the frozen 90% gate. Original archives/panels/results are retained.
+
+297 Python tests and seven web test files pass locally. The published paper archive's
+SHA256 and frozen fingerprint match; read-only account/budget audits pass with
+zero sessions/trades, ten intentions and 20,000 SEK. Production APIs returned
+HTTP200 before changes. Both paper journals are untouched.
+
+Runner SEC access returned HTTP403 for all 85 rows in dispatch41291986328;
+that successful operational run reproduces ONLY the original panels. It is
+not evidence of supplemented coverage. Local verified original receipts must
+be restored into a separate offline replay before updated diagnostics publish.
+
+
+Completed source-transfer replay 41292612704: PASS. All 22 resolutions reproduced
+offline from the saved originals; 83/81/86/87% confirmed. Original 1001-file
+market manifest checked. New October-only diagnostic +0.734758% USD, DD
+-8.384138%, Sharpe0.514530; fixed30bp +0.589683%. All independent ledger and
+financial audits PASS, max NAV error0USD. The original +2.279041% result remains
+unchanged in its original file and release. Both are incomplete diagnostics;
+full historical validation remains blocked and NO_GO. See the detailed source
+completion document for exact issuers and reproducible durable archives.

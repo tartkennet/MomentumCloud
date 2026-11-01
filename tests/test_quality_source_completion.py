@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from supplement_quality_sources import SEC,header,instance,review,sha,submissions
+from supplement_quality_sources import SEC,header,instance,review,sha,submissions,apply_verified
 from quality_sources import DataUnavailable
 from test_quality_earnings import fixture
 
@@ -53,6 +53,13 @@ class SECCompletionTests(unittest.TestCase):
             (root/(key+'.gz')).write_bytes(gzip.compress(b'changed'))
             (root/(key+'.json')).write_text(json.dumps(dict(url=url,sha256=sha(b'original'))))
             with self.assertRaises(AssertionError):client.get(url)
+
+    def test_runner_transport_failure_cannot_publish_a_successful_supplemented_replay(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);panels=root/'panels';saved=root/'saved';panels.mkdir();saved.mkdir()
+            (saved/'2026-07-01.supplement.json').write_text(json.dumps(dict(rows=[dict(resolved=False,reason='SEC_HTTP_403')])))
+            with self.assertRaisesRegex(AssertionError,'INCOMPLETE_SEC_TRANSPORT'):apply_verified(panels,saved,root/'result')
+            self.assertFalse((root/'result').exists())
 
     def test_discovery_checks_older_archive_when_recent_has_no_eligible_original(self):
         group=dict(form=['10-Q'],filingDate=['2026-08-01'],accessionNumber=[self.accession])

@@ -6,6 +6,10 @@ on:
         description: 'Complete SEC gaps and replay separately, preserving all original results'
         type: boolean
         default: false
+      supplement_release:
+        description: 'Optional durable release containing source_completion.tar.gz'
+        type: string
+        default: ''
       source_archive_commit:
         description: 'Optional full SHA containing verified transfer chunks, when SEC denies runner access'
         type: string
@@ -91,6 +95,23 @@ jobs:
               assert t.extractfile(member).read()==Path('history_output/ecb-history.xml').read_bytes()
           PY
           python cache_momentum_inputs.py unseal --sealed history_output/market.sealed --cache-dir .history_market
+      - name: Restore durable completed source review
+        if: inputs.supplement_release != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RELEASE: ${{ inputs.supplement_release }}
+          ARCHIVE_SHA256: ${{ inputs.source_archive_sha256 }}
+        run: |
+          python - <<'PY'
+          import os,re,subprocess,hashlib,tarfile
+          from pathlib import Path
+          tag=os.environ['SOURCE_RELEASE'];expected=os.environ['ARCHIVE_SHA256']
+          assert re.fullmatch(r'quality-history-[0-9]+-[0-9]+',tag)
+          assert re.fullmatch(r'[a-f0-9]{64}',expected)
+          subprocess.run(['gh','release','download',tag,'--repo',os.environ['GITHUB_REPOSITORY'],'--pattern','source_completion.tar.gz','--dir','source_saved'],check=True,timeout=120)
+          asset=Path('source_saved/source_completion.tar.gz');assert hashlib.sha256(asset.read_bytes()).hexdigest()==expected
+          with tarfile.open(asset) as t:t.extractall('source_saved/verified',filter='data')
+          PY
       - uses: actions/checkout@v4
         if: inputs.source_archive_commit != ''
         with:

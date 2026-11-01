@@ -415,5 +415,8 @@
     "Original SEC submissions JSON (discovery only)",
     "Original SEC complete submission SGML header and embedded unchanged XBRL",
     "Original licensed Massive/Polygon panels from quality-history-41234365835-1"
-  ]
+  ],
+  "source_run": "41292612704",
+  "source_release": "quality-history-41292612704-1",
+  "source_archive_sha256": "2fb173ef1c41bb5c588c075bce79b045c195d0f970a1392c0cc39cf36d7b58ae"
 }
