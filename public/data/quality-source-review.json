@@ -1,0 +1,422 @@
+{
+  "status": "NO_GO_INSUFFICIENT_EVIDENCE",
+  "generated_at": "2026-11-01T09:05:54.111458+00:00",
+  "economic_model_changed": false,
+  "earlier_results_changed": false,
+  "historical_backtest_certified": false,
+  "financial_go": false,
+  "live_approved": false,
+  "broker_orders_enabled": false,
+  "source_coverage": [
+    {
+      "date": "2026-07-01",
+      "original_coverage": 0.76,
+      "supplemented": 7,
+      "coverage": 0.83,
+      "minimum_coverage": 0.9,
+      "gate_pass": false,
+      "reviewed": 24,
+      "expected_gaps": 24,
+      "reason_counts": {
+        "AMBIGUOUS_EntityCentralIndexKey": 2,
+        "MISSING_revenue": 4,
+        "MISSING_net_income": 6,
+        "MISSING_eps": 1,
+        "RESOLVED": 7,
+        "MISSING_operating_cash_flow": 1,
+        "AS_OF_AMENDMENT_REQUIRES_REVIEW": 1,
+        "SEC_NO_AS_OF_PERMITTED_ORIGINAL": 2
+      },
+      "remaining": [
+        {
+          "ticker": "AAL",
+          "original_reason": "AMBIGUOUS_EntityCentralIndexKey",
+          "reason": "AMBIGUOUS_EntityCentralIndexKey"
+        },
+        {
+          "ticker": "APGE",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "APLD",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "BE",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "CAH",
+          "original_reason": "STALE_FILING",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "FCX",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "JCI",
+          "original_reason": "MISSING_operating_cash_flow",
+          "reason": "MISSING_operating_cash_flow"
+        },
+        {
+          "ticker": "MNST",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "MO",
+          "original_reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW",
+          "reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW"
+        },
+        {
+          "ticker": "NBIS",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "NUVL",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "NVTS",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "RVMD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "STM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "UAL",
+          "original_reason": "AMBIGUOUS_EntityCentralIndexKey",
+          "reason": "AMBIGUOUS_EntityCentralIndexKey"
+        },
+        {
+          "ticker": "VLO",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "VSH",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        }
+      ]
+    },
+    {
+      "date": "2026-08-03",
+      "original_coverage": 0.75,
+      "supplemented": 6,
+      "coverage": 0.81,
+      "minimum_coverage": 0.9,
+      "gate_pass": false,
+      "reviewed": 25,
+      "expected_gaps": 25,
+      "reason_counts": {
+        "AMBIGUOUS_EntityCentralIndexKey": 2,
+        "MISSING_eps": 4,
+        "RESOLVED": 6,
+        "MISSING_revenue": 3,
+        "MISSING_net_income": 5,
+        "AS_OF_AMENDMENT_REQUIRES_REVIEW": 1,
+        "MISSING_operating_cash_flow": 1,
+        "SEC_NO_AS_OF_PERMITTED_ORIGINAL": 3
+      },
+      "remaining": [
+        {
+          "ticker": "AAL",
+          "original_reason": "AMBIGUOUS_EntityCentralIndexKey",
+          "reason": "AMBIGUOUS_EntityCentralIndexKey"
+        },
+        {
+          "ticker": "ABNB",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "AKAM",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "AVGO",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "BE",
+          "original_reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW",
+          "reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW"
+        },
+        {
+          "ticker": "CAH",
+          "original_reason": "STALE_FILING",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "CRWD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "FLEX",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "GD",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "ITW",
+          "original_reason": "MISSING_ACCEPTANCE_TIMESTAMP",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "JCI",
+          "original_reason": "MISSING_operating_cash_flow",
+          "reason": "MISSING_operating_cash_flow"
+        },
+        {
+          "ticker": "MNST",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "NBIS",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "OXY",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "STM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "UAL",
+          "original_reason": "AMBIGUOUS_EntityCentralIndexKey",
+          "reason": "AMBIGUOUS_EntityCentralIndexKey"
+        },
+        {
+          "ticker": "V",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "VLO",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "XOM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-01",
+      "original_coverage": 0.81,
+      "supplemented": 5,
+      "coverage": 0.86,
+      "minimum_coverage": 0.9,
+      "gate_pass": false,
+      "reviewed": 19,
+      "expected_gaps": 19,
+      "reason_counts": {
+        "MISSING_eps": 3,
+        "MISSING_net_income": 3,
+        "AS_OF_AMENDMENT_REQUIRES_REVIEW": 1,
+        "MISSING_revenue": 3,
+        "RESOLVED": 5,
+        "SEC_NO_AS_OF_PERMITTED_ORIGINAL": 3,
+        "CONFLICTING_net_income": 1
+      },
+      "remaining": [
+        {
+          "ticker": "ABNB",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "AVGO",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "BE",
+          "original_reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW",
+          "reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW"
+        },
+        {
+          "ticker": "BKNG",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "CRWD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "CVNA",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "MNST",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "NBIS",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "NTRA",
+          "original_reason": "CONFLICTING_net_income",
+          "reason": "CONFLICTING_net_income"
+        },
+        {
+          "ticker": "RVMD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "STM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "TSEM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "V",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "VLO",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-01",
+      "original_coverage": 0.83,
+      "supplemented": 4,
+      "coverage": 0.87,
+      "minimum_coverage": 0.9,
+      "gate_pass": false,
+      "reviewed": 17,
+      "expected_gaps": 17,
+      "reason_counts": {
+        "RESOLVED": 4,
+        "MISSING_eps": 2,
+        "MISSING_revenue": 5,
+        "AS_OF_AMENDMENT_REQUIRES_REVIEW": 1,
+        "MISSING_net_income": 1,
+        "SEC_NO_AS_OF_PERMITTED_ORIGINAL": 3,
+        "AMBIGUOUS_EntityCentralIndexKey": 1
+      },
+      "remaining": [
+        {
+          "ticker": "ABNB",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "BBY",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "BE",
+          "original_reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW",
+          "reason": "AS_OF_AMENDMENT_REQUIRES_REVIEW"
+        },
+        {
+          "ticker": "CRWD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "FLEX",
+          "original_reason": "MISSING_net_income",
+          "reason": "MISSING_net_income"
+        },
+        {
+          "ticker": "NBIS",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "RVMD",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "STM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "TSEM",
+          "original_reason": "NO_AS_OF_ORIGINAL",
+          "reason": "SEC_NO_AS_OF_PERMITTED_ORIGINAL"
+        },
+        {
+          "ticker": "TWST",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        },
+        {
+          "ticker": "UAL",
+          "original_reason": "STALE_FILING",
+          "reason": "AMBIGUOUS_EntityCentralIndexKey"
+        },
+        {
+          "ticker": "V",
+          "original_reason": "MISSING_eps",
+          "reason": "MISSING_eps"
+        },
+        {
+          "ticker": "VLO",
+          "original_reason": "MISSING_revenue",
+          "reason": "MISSING_revenue"
+        }
+      ]
+    }
+  ],
+  "source_archive_manifest_sha256": "ba6e9e4e6f24ea4d98a8ff8b26aaacf08222412b97e326c9a941ae387c32b28b",
+  "sources": [
+    "Original SEC submissions JSON (discovery only)",
+    "Original SEC complete submission SGML header and embedded unchanged XBRL",
+    "Original licensed Massive/Polygon panels from quality-history-41234365835-1"
+  ],
+  "source_run": "41292612704",
+  "source_release": "quality-history-41292612704-1",
+  "source_archive_sha256": "2fb173ef1c41bb5c588c075bce79b045c195d0f970a1392c0cc39cf36d7b58ae"
+}
