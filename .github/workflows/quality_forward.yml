@@ -100,6 +100,8 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: timeout --preserve-status 10m python run_quality_forward.py --cache .quality_market_cache --manifest quality_output/base_manifest.json --previous quality_previous --output quality_output
+      - name: Independently verify the current account and committed whole-share budget
+        run: python verify_quality_readiness.py --state quality_output/state.json --report quality_output/quality.json --output quality_output/readiness.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -107,6 +109,7 @@ jobs:
           path: |
             quality_output/quality.json
             quality_output/state.json
+            quality_output/readiness.json
           retention-days: 30
       - name: Encrypt cache and preserve the observation before publication
         if: github.event_name != 'pull_request'
