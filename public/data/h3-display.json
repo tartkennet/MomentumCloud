@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-03T17:18:37.676048+00:00",
+  "generated_at": "2026-11-03T19:58:22.832277+00:00",
   "source_run": "41682617540",
   "source_as_of": "2026-11-02",
   "source_checkpoint_sha256": "cdc349b4c542ff6a4332fd8f5116d29c866952d9419d93a9777cb33057f3d4ed",
@@ -96,7 +96,7 @@
     "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-03T17:18:37.676048+00:00",
+    "checked_at": "2026-11-03T19:58:22.832277+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -164,8 +164,8 @@
   },
   "quotes": {
     "ATEX": {
-      "usd": 82.8,
-      "at": "2026-11-03T17:18:30.881524+00:00",
+      "usd": 85.63,
+      "at": "2026-11-03T19:58:05.368645+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -173,8 +173,8 @@
       "source": "Massive unified snapshot"
     },
     "AXTI": {
-      "usd": 51.65,
-      "at": "2026-11-03T17:18:36.576240+00:00",
+      "usd": 51.4,
+      "at": "2026-11-03T19:58:22.721510+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -182,15 +182,17 @@
       "source": "Massive unified snapshot"
     },
     "CDNA": {
-      "usd": 85.88,
-      "at": null,
-      "session": "2026-11-02",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "usd": 89.42,
+      "at": "2026-11-03T19:58:20.738950+00:00",
+      "session": "2026-11-03",
+      "mode": "DELAYED",
+      "provider_timeframe": "UNVERIFIED",
+      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+      "source": "Massive unified snapshot"
     },
     "CLMT": {
-      "usd": 47.38,
-      "at": "2026-11-03T17:18:36.987046+00:00",
+      "usd": 47.0615,
+      "at": "2026-11-03T19:58:21.286211+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -198,8 +200,8 @@
       "source": "Massive unified snapshot"
     },
     "CLYM": {
-      "usd": 9.6338,
-      "at": "2026-11-03T17:18:23.519199+00:00",
+      "usd": 9.65,
+      "at": "2026-11-03T19:58:18.271522+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -207,8 +209,8 @@
       "source": "Massive unified snapshot"
     },
     "ERAS": {
-      "usd": 14.954,
-      "at": "2026-11-03T17:18:35.182194+00:00",
+      "usd": 14.6203,
+      "at": "2026-11-03T19:58:18.953708+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -216,11 +218,13 @@
       "source": "Massive unified snapshot"
     },
     "LITE": {
-      "usd": 684.4,
-      "at": null,
-      "session": "2026-11-02",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "usd": 672.59,
+      "at": "2026-11-03T19:58:22.350041+00:00",
+      "session": "2026-11-03",
+      "mode": "DELAYED",
+      "provider_timeframe": "UNVERIFIED",
+      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+      "source": "Massive unified snapshot"
     },
     "MU": {
       "usd": 833.59,
@@ -230,8 +234,8 @@
       "source": "Massive raw daily close"
     },
     "RVMD": {
-      "usd": 195.01,
-      "at": "2026-11-03T17:18:37.533506+00:00",
+      "usd": 194.4428,
+      "at": "2026-11-03T19:58:21.600942+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -239,20 +243,20 @@
       "source": "Massive unified snapshot"
     },
     "SLS": {
-      "usd": 8.775,
-      "at": "2026-11-03T17:18:37.410804+00:00",
+      "usd": 8.55,
+      "at": null,
+      "session": "2026-11-02",
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
+    },
+    "SNDK": {
+      "usd": 1113.5,
+      "at": "2026-11-03T19:58:22.597306+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
       "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
       "source": "Massive unified snapshot"
-    },
-    "SNDK": {
-      "usd": 1075.08,
-      "at": null,
-      "session": "2026-11-02",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
     },
     "SPY": {
       "usd": 752.1,
@@ -262,17 +266,15 @@
       "source": "Massive raw daily close"
     },
     "STX": {
-      "usd": 609.2985,
-      "at": "2026-11-03T17:18:37.530671+00:00",
-      "session": "2026-11-03",
-      "mode": "DELAYED",
-      "provider_timeframe": "UNVERIFIED",
-      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-      "source": "Massive unified snapshot"
+      "usd": 593.76,
+      "at": null,
+      "session": "2026-11-02",
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     },
     "SYRE": {
-      "usd": 99.2451,
-      "at": "2026-11-03T17:18:37.652844+00:00",
+      "usd": 99.315,
+      "at": "2026-11-03T19:58:22.513880+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -280,8 +282,8 @@
       "source": "Massive unified snapshot"
     },
     "TWST": {
-      "usd": 139.23,
-      "at": "2026-11-03T17:18:37.263014+00:00",
+      "usd": 139.785,
+      "at": "2026-11-03T19:58:20.483878+00:00",
       "session": "2026-11-03",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -289,20 +291,22 @@
       "source": "Massive unified snapshot"
     },
     "TXG": {
-      "usd": 61.63,
-      "at": null,
-      "session": "2026-11-02",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "usd": 65.6977,
+      "at": "2026-11-03T19:58:20.668185+00:00",
+      "session": "2026-11-03",
+      "mode": "DELAYED",
+      "provider_timeframe": "UNVERIFIED",
+      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+      "source": "Massive unified snapshot"
     }
   },
   "metrics": {
-    "nav_sek": 97117.37128976431,
-    "pnl_sek": -2882.6287102356873,
-    "return_pct": -2.882628710235687,
+    "nav_sek": 97227.15695192841,
+    "pnl_sek": -2772.8430480715906,
+    "return_pct": -2.7728430480715907,
     "spy_nav_sek": 97773.83242844358,
     "spy_return_pct": -2.2261675715564144,
-    "edge_pct": -0.6564611386792727,
+    "edge_pct": -0.5466754765151762,
     "cash_sek": 1382.5406434473584,
     "receivables_sek": 0.0,
     "fees_usd": 14.943857738988136
@@ -316,18 +320,18 @@
       "average_cost_usd": 90.4104125,
       "cost_sek": 1536.9770125000002,
       "mark": {
-        "usd": 82.8,
-        "at": "2026-11-03T17:18:30.881524+00:00",
+        "usd": 85.63,
+        "at": "2026-11-03T19:58:05.368645+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 1395.3145719067381,
-      "pnl_sek": -141.6624405932621,
-      "return_pct": -9.216952461952454,
-      "weight_pct": 1.436730168224598
+      "value_sek": 1443.0046714054827,
+      "pnl_sek": -93.97234109451756,
+      "return_pct": -6.114101924118243,
+      "weight_pct": 1.4841580445666442
     },
     {
       "ticker": "AXTI",
@@ -337,18 +341,18 @@
       "average_cost_usd": 57.3609125,
       "cost_sek": 745.6918625,
       "mark": {
-        "usd": 51.65,
-        "at": "2026-11-03T17:18:36.576240+00:00",
+        "usd": 51.4,
+        "at": "2026-11-03T19:58:22.721510+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 665.5896343469589,
-      "pnl_sek": -80.1022281530411,
-      "return_pct": -10.742001110819565,
-      "weight_pct": 0.6853456034771287
+      "value_sek": 662.3680001052021,
+      "pnl_sek": -83.32386239479786,
+      "return_pct": -11.174034019286061,
+      "weight_pct": 0.6812582213349031
     },
     {
       "ticker": "CDNA",
@@ -358,16 +362,18 @@
       "average_cost_usd": 80.7359225,
       "cost_sek": 1856.9262175,
       "mark": {
-        "usd": 85.88,
-        "at": null,
-        "session": "2026-11-02",
-        "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "usd": 89.42,
+        "at": "2026-11-03T19:58:20.738950+00:00",
+        "session": "2026-11-03",
+        "mode": "DELAYED",
+        "provider_timeframe": "UNVERIFIED",
+        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+        "source": "Massive unified snapshot"
       },
-      "value_sek": 1958.000252211612,
-      "pnl_sek": 101.07403471161206,
-      "return_pct": 5.44308297007563,
-      "weight_pct": 2.0161174321426216
+      "value_sek": 2038.7096245081784,
+      "pnl_sek": 181.78340700817853,
+      "return_pct": 9.789479263905033,
+      "weight_pct": 2.0968520405427142
     },
     {
       "ticker": "CLMT",
@@ -377,18 +383,18 @@
       "average_cost_usd": 48.412510000000005,
       "cost_sek": 1839.6753800000001,
       "mark": {
-        "usd": 47.38,
-        "at": "2026-11-03T17:18:36.987046+00:00",
+        "usd": 47.0615,
+        "at": "2026-11-03T19:58:21.286211+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 1784.7258936088149,
-      "pnl_sek": -54.949486391185246,
-      "return_pct": -2.9869120926750314,
-      "weight_pct": 1.8376999602715935
+      "value_sek": 1772.7285276925124,
+      "pnl_sek": -66.94685230748769,
+      "return_pct": -3.6390579031115644,
+      "weight_pct": 1.823285369301701
     },
     {
       "ticker": "CLYM",
@@ -398,18 +404,18 @@
       "average_cost_usd": 10.165225000000001,
       "cost_sek": 1199.49655,
       "mark": {
-        "usd": 9.6338,
-        "at": "2026-11-03T17:18:23.519199+00:00",
+        "usd": 9.65,
+        "at": "2026-11-03T19:58:18.271522+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 1126.866595406753,
-      "pnl_sek": -72.62995459324702,
-      "return_pct": -6.0550365562324515,
-      "weight_pct": 1.160314144052125
+      "value_sek": 1128.761511104151,
+      "pnl_sek": -70.73503889584913,
+      "return_pct": -5.897060637302298,
+      "weight_pct": 1.160952913250605
     },
     {
       "ticker": "ERAS",
@@ -419,18 +425,18 @@
       "average_cost_usd": 14.68199,
       "cost_sek": 1732.4748200000001,
       "mark": {
-        "usd": 14.954,
-        "at": "2026-11-03T17:18:35.182194+00:00",
+        "usd": 14.6203,
+        "at": "2026-11-03T19:58:18.953708+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 1749.1709468447118,
-      "pnl_sek": 16.69612684471167,
-      "return_pct": 0.963715411731747,
-      "weight_pct": 1.8010896749107805
+      "value_sek": 1710.1380228804162,
+      "pnl_sek": -22.336797119583935,
+      "return_pct": -1.2892999575938369,
+      "weight_pct": 1.7589098318754215
     },
     {
       "ticker": "LITE",
@@ -440,16 +446,18 @@
       "average_cost_usd": 862.57192,
       "cost_sek": 862.5719199999999,
       "mark": {
-        "usd": 684.4,
-        "at": null,
-        "session": "2026-11-02",
-        "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "usd": 672.59,
+        "at": "2026-11-03T19:58:22.350041+00:00",
+        "session": "2026-11-03",
+        "mode": "DELAYED",
+        "provider_timeframe": "UNVERIFIED",
+        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+        "source": "Massive unified snapshot"
       },
-      "value_sek": 678.4266077102668,
-      "pnl_sek": -184.14531228973306,
-      "return_pct": -21.348400987796246,
-      "weight_pct": 0.6985636026803884
+      "value_sek": 666.7196845117597,
+      "pnl_sek": -195.85223548824013,
+      "return_pct": -22.70561224485955,
+      "weight_pct": 0.685734012402937
     },
     {
       "ticker": "MU",
@@ -468,7 +476,7 @@
       "value_sek": 1652.6289769760413,
       "pnl_sek": -118.01300802395872,
       "return_pct": -6.664984170922539,
-      "weight_pct": 1.7016821553429133
+      "weight_pct": 1.699760672620658
     },
     {
       "ticker": "RVMD",
@@ -478,18 +486,18 @@
       "average_cost_usd": 188.66257,
       "cost_sek": 2075.28827,
       "mark": {
-        "usd": 195.01,
-        "at": "2026-11-03T17:18:37.533506+00:00",
+        "usd": 194.4428,
+        "at": "2026-11-03T19:58:21.600942+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 2126.3876394876834,
-      "pnl_sek": 51.09936948768336,
-      "return_pct": 2.4622781435411634,
-      "weight_pct": 2.1895028780621395
+      "value_sek": 2120.2028947611693,
+      "pnl_sek": 44.91462476116931,
+      "return_pct": 2.164259559042825,
+      "weight_pct": 2.1806694356078435
     },
     {
       "ticker": "SLS",
@@ -499,18 +507,16 @@
       "average_cost_usd": 9.644445000000003,
       "cost_sek": 1041.6000600000002,
       "mark": {
-        "usd": 8.775,
-        "at": "2026-11-03T17:18:37.410804+00:00",
-        "session": "2026-11-03",
-        "mode": "DELAYED",
-        "provider_timeframe": "UNVERIFIED",
-        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-        "source": "Massive unified snapshot"
+        "usd": 8.55,
+        "at": null,
+        "session": "2026-11-02",
+        "mode": "CLOSE",
+        "source": "Massive raw daily close"
       },
-      "value_sek": 939.4285448962886,
-      "pnl_sek": -102.17151510371161,
-      "return_pct": -9.809092666883256,
-      "weight_pct": 0.967312574898019
+      "value_sek": 915.3406334886915,
+      "pnl_sek": -126.25942651130867,
+      "return_pct": -12.121680034399063,
+      "weight_pct": 0.9414454378638875
     },
     {
       "ticker": "SNDK",
@@ -520,16 +526,18 @@
       "average_cost_usd": 1216.9176425,
       "cost_sek": 1216.9176425,
       "mark": {
-        "usd": 1075.08,
-        "at": null,
-        "session": "2026-11-02",
-        "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "usd": 1113.5,
+        "at": "2026-11-03T19:58:22.597306+00:00",
+        "session": "2026-11-03",
+        "mode": "DELAYED",
+        "provider_timeframe": "UNVERIFIED",
+        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+        "source": "Massive unified snapshot"
       },
-      "value_sek": 1065.696781731668,
-      "pnl_sek": -151.22086076833216,
-      "return_pct": -12.42654847682777,
-      "weight_pct": 1.0973286937019753
+      "value_sek": 1103.7814548296058,
+      "pnl_sek": -113.13618767039429,
+      "return_pct": -9.296946951806095,
+      "weight_pct": 1.1352604451607522
     },
     {
       "ticker": "SPY",
@@ -548,7 +556,7 @@
       "value_sek": 76044.64416891724,
       "pnl_sek": -1732.6069710827578,
       "return_pct": -2.2276526178124256,
-      "weight_pct": 78.30179416824059
+      "weight_pct": 78.21337839438796
     },
     {
       "ticker": "STX",
@@ -558,18 +566,16 @@
       "average_cost_usd": 652.978,
       "cost_sek": 1305.956,
       "mark": {
-        "usd": 609.2985,
-        "at": "2026-11-03T17:18:37.530671+00:00",
-        "session": "2026-11-03",
-        "mode": "DELAYED",
-        "provider_timeframe": "UNVERIFIED",
-        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-        "source": "Massive unified snapshot"
+        "usd": 593.76,
+        "at": null,
+        "session": "2026-11-02",
+        "mode": "CLOSE",
+        "source": "Massive raw daily close"
       },
-      "value_sek": 1207.961176031426,
-      "pnl_sek": -97.99482396857388,
-      "return_pct": -7.503684960946144,
-      "weight_pct": 1.2438157664165885
+      "value_sek": 1177.15541377571,
+      "pnl_sek": -128.80058622428987,
+      "return_pct": -9.862551741734782,
+      "weight_pct": 1.2107269724627716
     },
     {
       "ticker": "SYRE",
@@ -579,18 +585,18 @@
       "average_cost_usd": 96.92517,
       "cost_sek": 1647.72789,
       "mark": {
-        "usd": 99.2451,
-        "at": "2026-11-03T17:18:37.652844+00:00",
+        "usd": 99.315,
+        "at": "2026-11-03T19:58:22.513880+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 1672.441234545186,
-      "pnl_sek": 24.713344545186146,
-      "return_pct": 1.4998437967318923,
-      "weight_pct": 1.7220824784839015
+      "value_sek": 1673.6191631511797,
+      "pnl_sek": 25.891273151179803,
+      "return_pct": 1.5713318508664642,
+      "weight_pct": 1.7213494826128257
     },
     {
       "ticker": "TWST",
@@ -600,18 +606,18 @@
       "average_cost_usd": 163.18441,
       "cost_sek": 815.9220499999999,
       "mark": {
-        "usd": 139.23,
-        "at": "2026-11-03T17:18:37.263014+00:00",
+        "usd": 139.785,
+        "at": "2026-11-03T19:58:20.483878+00:00",
         "session": "2026-11-03",
         "mode": "DELAYED",
         "provider_timeframe": "UNVERIFIED",
         "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
         "source": "Massive unified snapshot"
       },
-      "value_sek": 690.0740545843106,
-      "pnl_sek": -125.8479954156893,
-      "return_pct": -15.424021867737158,
-      "weight_pct": 0.7105567679806435
+      "value_sek": 692.8248345907339,
+      "pnl_sek": -123.09721540926603,
+      "return_pct": -15.086884269062962,
+      "weight_pct": 0.7125836610992174
     },
     {
       "ticker": "TXG",
@@ -621,16 +627,18 @@
       "average_cost_usd": 73.760475,
       "cost_sek": 1180.1676,
       "mark": {
-        "usd": 61.63,
-        "at": null,
-        "session": "2026-11-02",
-        "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "usd": 65.6977,
+        "at": "2026-11-03T19:58:20.668185+00:00",
+        "session": "2026-11-03",
+        "mode": "DELAYED",
+        "provider_timeframe": "UNVERIFIED",
+        "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+        "source": "Massive unified snapshot"
       },
-      "value_sek": 977.4735671112505,
-      "pnl_sek": -202.69403288874946,
-      "return_pct": -17.17502097911766,
-      "weight_pct": 1.0064868458957883
+      "value_sek": 1041.988725782976,
+      "pnl_sek": -138.17887421702403,
+      "return_pct": -11.708411094917704,
+      "weight_pct": 1.0717054354455329
     }
   ],
   "trades": [
@@ -1461,5 +1469,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "41682935905"
+  "refresh_run": "41708172653"
 }
