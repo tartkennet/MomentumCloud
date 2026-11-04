@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-04T06:42:41.026659+00:00",
+  "generated_at": "2026-11-04T06:55:43.990154+00:00",
   "as_of": "2026-11-03",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -632,98 +632,7 @@
       "http_status": 403,
       "error": "ACCESS_DENIED_OR_UNAVAILABLE"
     },
-    "liquidity": [
-      {
-        "date": "2026-11-03",
-        "ticker": "CDNA",
-        "quantity": 6,
-        "fraction_of_full_day_volume": 3.770453812879586e-06
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "CLMT",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 1.2358827346667093e-06
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "CLYM",
-        "quantity": 118,
-        "fraction_of_full_day_volume": 0.00013284566550351894
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "ERAS",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 5.259865597982854e-07
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "RVMD",
-        "quantity": 11,
-        "fraction_of_full_day_volume": 7.628400426721991e-06
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "SLS",
-        "quantity": 108,
-        "fraction_of_full_day_volume": 2.1344504859821752e-05
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "SPY",
-        "quantity": 3,
-        "fraction_of_full_day_volume": 9.120874906317219e-08
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "STX",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 4.2121735057745246e-07
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "ATEX",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 7.1589933832658275e-06
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "AXTI",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 1.73351356016188e-07
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "ECPG",
-        "quantity": 22,
-        "fraction_of_full_day_volume": 0.00011693128069678585
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "LIND",
-        "quantity": 61,
-        "fraction_of_full_day_volume": 3.5936138391854904e-05
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "MATX",
-        "quantity": 10,
-        "fraction_of_full_day_volume": 2.7179135707834295e-05
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "MXL",
-        "quantity": 14,
-        "fraction_of_full_day_volume": 5.898843115859567e-06
-      },
-      {
-        "date": "2026-11-03",
-        "ticker": "TWST",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 5.146679272983297e-07
-      }
-    ],
+    "liquidity": [],
     "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
   },
   "operations": {
@@ -740,141 +649,57 @@
         "accounts": 4
       },
       "accounting": {
-        "status": "PASS",
-        "new_sessions": 1,
-        "market_trade_rows_checked": 30,
-        "volume_participation": [
-          {
-            "date": "2026-11-03",
-            "ticker": "CDNA",
-            "quantity": 6,
-            "fraction_of_full_day_volume": 3.770453812879586e-06
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "CLMT",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 1.2358827346667093e-06
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "CLYM",
-            "quantity": 118,
-            "fraction_of_full_day_volume": 0.00013284566550351894
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "ERAS",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 5.259865597982854e-07
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "RVMD",
-            "quantity": 11,
-            "fraction_of_full_day_volume": 7.628400426721991e-06
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "SLS",
-            "quantity": 108,
-            "fraction_of_full_day_volume": 2.1344504859821752e-05
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "SPY",
-            "quantity": 3,
-            "fraction_of_full_day_volume": 9.120874906317219e-08
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "STX",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 4.2121735057745246e-07
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "ATEX",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 7.1589933832658275e-06
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "AXTI",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 1.73351356016188e-07
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "ECPG",
-            "quantity": 22,
-            "fraction_of_full_day_volume": 0.00011693128069678585
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "LIND",
-            "quantity": 61,
-            "fraction_of_full_day_volume": 3.5936138391854904e-05
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "MATX",
-            "quantity": 10,
-            "fraction_of_full_day_volume": 2.7179135707834295e-05
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "MXL",
-            "quantity": 14,
-            "fraction_of_full_day_volume": 5.898843115859567e-06
-          },
-          {
-            "date": "2026-11-03",
-            "ticker": "TWST",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 5.146679272983297e-07
-          }
-        ],
-        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
+        "status": "UNCHANGED_ACCEPTED_PREFIX",
+        "new_sessions": 0
       }
     },
     "readiness": {
-      "checked_at": "2026-11-04T06:42:26.745307+00:00",
+      "checked_at": "2026-11-04T06:55:43.422394+00:00",
       "key_configured": true,
-      "live_probe": true,
+      "live_probe": false,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "required_endpoints": {
-        "raw_daily_bars": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 7,
-          "latest_observed_session": "2026-11-03"
+      "status": "CONFIGURED",
+      "last_live_probe": {
+        "checked_at": "2026-11-04T06:42:26.745307+00:00",
+        "key_configured": true,
+        "live_probe": true,
+        "secrets_exposed": false,
+        "subscription_changed": false,
+        "live_approved": false,
+        "broker_orders_enabled": false,
+        "required_endpoints": {
+          "raw_daily_bars": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 7,
+            "latest_observed_session": "2026-11-03"
+          },
+          "dated_universe": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "splits": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          },
+          "dividends": {
+            "authorized": true,
+            "http_status": 200,
+            "rows": 1
+          }
         },
-        "dated_universe": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
+        "optional_quotes": {
+          "authorized": false,
+          "http_status": 403,
+          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
         },
-        "splits": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        },
-        "dividends": {
-          "authorized": true,
-          "http_status": 200,
-          "rows": 1
-        }
-      },
-      "optional_quotes": {
-        "authorized": false,
-        "http_status": 403,
-        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
-      },
-      "status": "PASS"
+        "status": "PASS"
+      }
     },
     "workflow": {
       "id": 400565291,
@@ -883,7 +708,7 @@
     },
     "next_expected_attempt_at": "2026-11-04T09:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41787239682",
+    "workflow_run": "41788720748",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -910,10 +735,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41787239682_attempt_1.tar.gz",
-    "paper_archive_sha256": "15b99d421e93eaba1b85ef1345709b0283fc9e60612892f22d7f4e43818f0176",
-    "previous_paper_asset": "paper_run_41682617540_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "2360245c4f7dbaa20f242feb54182727c3ae30d0a5a16b961af2d3528734c5a9",
-    "workflow_run": "41787239682"
+    "paper_asset": "paper_run_41788720748_attempt_1.tar.gz",
+    "paper_archive_sha256": "88500664763295fcabadcc36e6fcf5c4ae65955cd715d492fe6bf8bd8783dbcd",
+    "previous_paper_asset": "paper_run_41787239682_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "15b99d421e93eaba1b85ef1345709b0283fc9e60612892f22d7f4e43818f0176",
+    "workflow_run": "41788720748"
   }
 }
