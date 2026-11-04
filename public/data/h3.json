@@ -3,200 +3,200 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-03T17:18:02.647546+00:00",
-  "as_of": "2026-11-02",
+  "generated_at": "2026-11-04T06:42:41.026659+00:00",
+  "as_of": "2026-11-03",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
   "broker_orders_enabled": false,
-  "sessions": 3,
+  "sessions": 4,
   "metrics": {
     "Periods": 0,
-    "TotalReturn_pct": -2.4463163999999926,
-    "SPYTotalReturn_pct": -1.3652911699999937,
-    "TotalEdgeVsSPY_pct": -1.081025229999999,
+    "TotalReturn_pct": -1.8829440349999893,
+    "SPYTotalReturn_pct": -1.0705411699999945,
+    "TotalEdgeVsSPY_pct": -0.8124028649999948,
     "DailyMaxDrawdown_pct": -2.4463163999999926,
     "PeriodHitRate_pct": 0.0,
-    "DailySharpe_zero_rf": -28.050035172170848,
-    "ActualFees_USD": 147.6864,
-    "FinalNAV_USD": 97553.6836,
-    "evaluation_through": "2026-11-02",
-    "sessions_in_evaluation": 3,
+    "DailySharpe_zero_rf": -8.631326441502171,
+    "ActualFees_USD": 171.874035,
+    "FinalNAV_USD": 98117.055965,
+    "evaluation_through": "2026-11-03",
+    "sessions_in_evaluation": 4,
     "fixed_first_window_complete": false
   },
   "cost_cases": {
     "15bp": {
       "Periods": 0,
-      "TotalReturn_pct": -2.4463163999999926,
-      "SPYTotalReturn_pct": -1.3652911699999937,
-      "TotalEdgeVsSPY_pct": -1.081025229999999,
+      "TotalReturn_pct": -1.8829440349999893,
+      "SPYTotalReturn_pct": -1.0705411699999945,
+      "TotalEdgeVsSPY_pct": -0.8124028649999948,
       "DailyMaxDrawdown_pct": -2.4463163999999926,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -28.050035172170848,
-      "ActualFees_USD": 147.6864,
-      "FinalNAV_USD": 97553.6836,
-      "evaluation_through": "2026-11-02",
-      "sessions_in_evaluation": 3,
+      "DailySharpe_zero_rf": -8.631326441502171,
+      "ActualFees_USD": 171.874035,
+      "FinalNAV_USD": 98117.055965,
+      "evaluation_through": "2026-11-03",
+      "sessions_in_evaluation": 4,
       "fixed_first_window_complete": false
     },
     "30bp": {
       "Periods": 0,
-      "TotalReturn_pct": -2.594002800000006,
-      "SPYTotalReturn_pct": -1.5033381999999929,
-      "TotalEdgeVsSPY_pct": -1.090664600000013,
+      "TotalReturn_pct": -2.0522524099999995,
+      "SPYTotalReturn_pct": -1.2108381999999973,
+      "TotalEdgeVsSPY_pct": -0.8414142100000022,
       "DailyMaxDrawdown_pct": -2.594002800000006,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -34.912711516596886,
-      "ActualFees_USD": 295.3728,
-      "FinalNAV_USD": 97405.9972,
-      "evaluation_through": "2026-11-02",
-      "sessions_in_evaluation": 3,
+      "DailySharpe_zero_rf": -9.419674290556282,
+      "ActualFees_USD": 343.64241,
+      "FinalNAV_USD": 97947.74759,
+      "evaluation_through": "2026-11-03",
+      "sessions_in_evaluation": 4,
       "fixed_first_window_complete": false
     }
   },
-  "cash_usd": 1394.713599999997,
+  "cash_usd": 1754.2159649999944,
   "receivables_usd": 0,
   "holdings": [
     {
       "ticker": "ATEX",
-      "quantity": 17.0,
+      "quantity": 19.0,
       "mark_usd": 82.21,
-      "value_usd": 1397.57,
-      "weight_pct": 1.4326163281854791,
+      "value_usd": 1561.9899999999998,
+      "weight_pct": 1.5919658255514593,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "AXTI",
-      "quantity": 13.0,
-      "mark_usd": 48.2,
-      "value_usd": 626.6,
-      "weight_pct": 0.642313008465423,
+      "quantity": 15.0,
+      "mark_usd": 51.33,
+      "value_usd": 769.9499999999999,
+      "weight_pct": 0.7847259504755769,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CDNA",
-      "quantity": 23.0,
-      "mark_usd": 85.88,
-      "value_usd": 1975.2399999999998,
-      "weight_pct": 2.024772337761318,
+      "quantity": 17.0,
+      "mark_usd": 88.47,
+      "value_usd": 1503.99,
+      "weight_pct": 1.5328527596022636,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CLMT",
-      "quantity": 38.0,
-      "mark_usd": 46.73,
-      "value_usd": 1775.7399999999998,
-      "weight_pct": 1.8202695525891956,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "CLYM",
-      "quantity": 118.0,
-      "mark_usd": 9.74,
-      "value_usd": 1149.32,
-      "weight_pct": 1.1781410579149059,
+      "quantity": 37.0,
+      "mark_usd": 47.33,
+      "value_usd": 1751.21,
+      "weight_pct": 1.7848171072567505,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "ERAS",
-      "quantity": 118.0,
-      "mark_usd": 14.05,
-      "value_usd": 1657.9,
-      "weight_pct": 1.6994745239942943,
+      "quantity": 116.0,
+      "mark_usd": 14.64,
+      "value_usd": 1698.24,
+      "weight_pct": 1.7308305709924587,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "LITE",
       "quantity": 1.0,
-      "mark_usd": 684.4,
-      "value_usd": 684.4,
-      "weight_pct": 0.7015624369513813,
+      "mark_usd": 680.16,
+      "value_usd": 680.16,
+      "weight_pct": 0.6932128092414681,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MU",
       "quantity": 2.0,
-      "mark_usd": 833.59,
-      "value_usd": 1667.18,
-      "weight_pct": 1.7089872350038045,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "RVMD",
-      "quantity": 11.0,
-      "mark_usd": 188.17,
-      "value_usd": 2069.87,
-      "weight_pct": 2.1217753380662705,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "SLS",
-      "quantity": 108.0,
-      "mark_usd": 8.55,
-      "value_usd": 923.4000000000001,
-      "weight_pct": 0.9465557485109667,
+      "mark_usd": 855.1,
+      "value_usd": 1710.2,
+      "weight_pct": 1.7430200928675,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SNDK",
       "quantity": 1.0,
-      "mark_usd": 1075.08,
-      "value_usd": 1075.08,
-      "weight_pct": 1.1020393698388238,
+      "mark_usd": 1126.52,
+      "value_usd": 1126.52,
+      "weight_pct": 1.1481388112601427,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SPY",
-      "quantity": 102.0,
-      "mark_usd": 752.1,
-      "value_usd": 76714.2,
-      "weight_pct": 78.63793264286332,
+      "quantity": 99.0,
+      "mark_usd": 754.35,
+      "value_usd": 74680.65000000001,
+      "weight_pct": 76.11383083756594,
       "sleeve": "SPY-kärna",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "STX",
-      "quantity": 2.0,
-      "mark_usd": 593.76,
-      "value_usd": 1187.52,
-      "weight_pct": 1.2172989846997433,
-      "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SYRE",
       "quantity": 17.0,
-      "mark_usd": 95.51,
-      "value_usd": 1623.67,
-      "weight_pct": 1.6643861513805511,
+      "mark_usd": 99.27,
+      "value_usd": 1687.59,
+      "weight_pct": 1.7199761890552359,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TWST",
-      "quantity": 5.0,
-      "mark_usd": 129.04,
-      "value_usd": 645.1999999999999,
-      "weight_pct": 0.6613794335491396,
+      "quantity": 6.0,
+      "mark_usd": 140.3,
+      "value_usd": 841.8000000000001,
+      "weight_pct": 0.8579548088971239,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TXG",
       "quantity": 16.0,
-      "mark_usd": 61.63,
-      "value_usd": 986.08,
-      "weight_pct": 1.0108075508898569,
+      "mark_usd": 65.29,
+      "value_usd": 1044.64,
+      "weight_pct": 1.0646874691925536,
+      "sleeve": "Momentum",
+      "fractional_entitlement": false
+    },
+    {
+      "ticker": "ECPG",
+      "quantity": 22.0,
+      "mark_usd": 99.83,
+      "value_usd": 2196.2599999999998,
+      "weight_pct": 2.2384079693376067,
+      "sleeve": "Momentum",
+      "fractional_entitlement": false
+    },
+    {
+      "ticker": "LIND",
+      "quantity": 61.0,
+      "mark_usd": 32.76,
+      "value_usd": 1998.36,
+      "weight_pct": 2.0367101115557813,
+      "sleeve": "Momentum",
+      "fractional_entitlement": false
+    },
+    {
+      "ticker": "MATX",
+      "quantity": 10.0,
+      "mark_usd": 221.57,
+      "value_usd": 2215.7,
+      "weight_pct": 2.2582210383385095,
+      "sleeve": "Momentum",
+      "fractional_entitlement": false
+    },
+    {
+      "ticker": "MXL",
+      "quantity": 14.0,
+      "mark_usd": 63.97,
+      "value_usd": 895.5799999999999,
+      "weight_pct": 0.9127668897031198,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     }
@@ -408,320 +408,115 @@
       }
     ]
   },
-  "pending_intentions": {
-    "signal_date": "2026-11-02",
-    "signal_nav": 97553.6836,
-    "targets": [
-      {
-        "ticker": "TXG",
-        "momentum_12_2": 6.516077170418007,
-        "daily_volatility": 0.05659060145355545,
-        "raw_price": 61.63,
-        "adv20_usd": 311408264.2546031,
-        "formation_volatility": 0.045718391221032204,
-        "risk_normalized_score": 142.52638809872127,
-        "weight": 0.010964310280997184,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "AXTI",
-        "momentum_12_2": 10.730874316939891,
-        "daily_volatility": 0.07996569957705947,
-        "raw_price": 48.2,
-        "adv20_usd": 619433999.3756859,
-        "formation_volatility": 0.09793587634764242,
-        "risk_normalized_score": 109.57041195862247,
-        "weight": 0.007759288252422598,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "SNDK",
-        "momentum_12_2": 7.783525686855276,
-        "daily_volatility": 0.052112223527800705,
-        "raw_price": 1075.08,
-        "adv20_usd": 12155393820.1862,
-        "formation_volatility": 0.0722086466525167,
-        "risk_normalized_score": 107.79215575540766,
-        "weight": 0.011906552269718864,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "TWST",
-        "momentum_12_2": 5.05293551491819,
-        "daily_volatility": 0.06981823147635134,
-        "raw_price": 129.04,
-        "adv20_usd": 460167984.7683444,
-        "formation_volatility": 0.047643455884700786,
-        "risk_normalized_score": 106.0572836518516,
-        "weight": 0.00888703280224448,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "ATEX",
-        "momentum_12_2": 3.3069458631256383,
-        "daily_volatility": 0.03789534351624089,
-        "raw_price": 82.21,
-        "adv20_usd": 22584902.149942905,
-        "formation_volatility": 0.040675772223437295,
-        "risk_normalized_score": 81.30013721583835,
-        "weight": 0.016373434194074877,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "CDNA",
-        "momentum_12_2": 3.6406357982031796,
-        "daily_volatility": 0.04097916556693662,
-        "raw_price": 85.88,
-        "adv20_usd": 103519516.79467505,
-        "formation_volatility": 0.04697509425032336,
-        "risk_normalized_score": 77.50140486792357,
-        "weight": 0.015141277396474227,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "ERAS",
-        "momentum_12_2": 4.991869918699187,
-        "daily_volatility": 0.03633530262591532,
-        "raw_price": 14.05,
-        "adv20_usd": 76183344.59115921,
-        "formation_volatility": 0.0656602712773904,
-        "risk_normalized_score": 76.02572791102828,
-        "weight": 0.01707642068412254,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "MXL",
-        "momentum_12_2": 5.946229508196722,
-        "daily_volatility": 0.06701704309952984,
-        "raw_price": 61.33,
-        "adv20_usd": 279172814.8248636,
-        "formation_volatility": 0.0809038728577873,
-        "risk_normalized_score": 73.49746431359343,
-        "weight": 0.009258494326637716,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "MU",
-        "momentum_12_2": 3.798401857059953,
-        "daily_volatility": 0.034125713482605825,
-        "raw_price": 833.59,
-        "adv20_usd": 25008619825.607548,
-        "formation_volatility": 0.05243062871509177,
-        "risk_normalized_score": 72.44623896654916,
-        "weight": 0.018182093500881524,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "LITE",
-        "momentum_12_2": 4.4235746764603014,
-        "daily_volatility": 0.06003619629204534,
-        "raw_price": 684.4,
-        "adv20_usd": 5110313563.562046,
-        "formation_volatility": 0.06289733335352002,
-        "risk_normalized_score": 70.33008301953295,
-        "weight": 0.010335047049062367,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "SYRE",
-        "momentum_12_2": 2.8413025556471556,
-        "daily_volatility": 0.03548401989451638,
-        "raw_price": 95.51,
-        "adv20_usd": 113111065.71676278,
-        "formation_volatility": 0.04117208240738065,
-        "risk_normalized_score": 69.01041651315198,
-        "weight": 0.01748609416772758,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "CLMT",
-        "momentum_12_2": 1.8494845360824743,
-        "daily_volatility": 0.03442242058383585,
-        "raw_price": 46.73,
-        "adv20_usd": 75740807.85429429,
-        "formation_volatility": 0.027328856595928853,
-        "risk_normalized_score": 67.67515243788098,
-        "weight": 0.018025371336506103,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "ECPG",
-        "momentum_12_2": 1.345232273838631,
-        "daily_volatility": 0.02332711976480531,
-        "raw_price": 100.23,
-        "adv20_usd": 21491677.60995785,
-        "formation_volatility": 0.021768464606873674,
-        "risk_normalized_score": 61.79729705942865,
-        "weight": 0.022929401135831137,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "MATX",
-        "momentum_12_2": 1.3744991266824207,
-        "daily_volatility": 0.017019619603898428,
-        "raw_price": 221.04,
-        "adv20_usd": 62418015.925222956,
-        "formation_volatility": 0.02255356808008812,
-        "risk_normalized_score": 60.943754966023555,
-        "weight": 0.022929401135831137,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "LIND",
-        "momentum_12_2": 1.9982758620689656,
-        "daily_volatility": 0.0281525746739001,
-        "raw_price": 36.66,
-        "adv20_usd": 30146161.310599845,
-        "formation_volatility": 0.03285683851813073,
-        "risk_normalized_score": 60.81765477729383,
-        "weight": 0.02203979282577905,
-        "momentum_sleeve_fraction": 0.22929401135831134,
-        "portfolio_vol63": 0.020812888986249608,
-        "benchmark_vol63": 0.006192076970912292
-      },
-      {
-        "ticker": "SPY",
-        "weight": 0.7707059886416887,
-        "benchmark_core": true
-      }
-    ]
-  },
+  "pending_intentions": null,
   "recent_trades": [
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "CLYM",
-      "side": "BUY",
-      "quantity": 118,
-      "price": 10.15,
-      "fee": 1.79655
-    },
-    {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "ERAS",
-      "side": "BUY",
-      "quantity": 118,
-      "price": 14.66,
-      "fee": 2.5948200000000003
-    },
-    {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "LITE",
-      "side": "BUY",
-      "quantity": 1,
-      "price": 861.28,
-      "fee": 1.29192
-    },
-    {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "MU",
-      "side": "BUY",
+      "side": "SELL",
       "quantity": 2,
-      "price": 883.995,
-      "fee": 2.6519850000000003
+      "price": 14.3,
+      "fee": 0.0429
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "RVMD",
-      "side": "BUY",
+      "side": "SELL",
       "quantity": 11,
-      "price": 188.38,
-      "fee": 3.1082699999999996
+      "price": 188.63,
+      "fee": 3.112395
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "SLS",
-      "side": "BUY",
+      "side": "SELL",
       "quantity": 108,
-      "price": 9.63,
-      "fee": 1.5600600000000002
+      "price": 8.72,
+      "fee": 1.4126400000000001
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "SNDK",
-      "side": "BUY",
-      "quantity": 1,
-      "price": 1215.095,
-      "fee": 1.8226425000000002
-    },
-    {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "SPY",
-      "side": "BUY",
-      "quantity": 102,
-      "price": 761.38,
-      "fee": 116.49114
+      "side": "SELL",
+      "quantity": 3,
+      "price": 752.73,
+      "fee": 3.3872850000000003
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "STX",
+      "side": "SELL",
+      "quantity": 2,
+      "price": 613.25,
+      "fee": 1.83975
+    },
+    {
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "ATEX",
       "side": "BUY",
       "quantity": 2,
-      "price": 652.0,
-      "fee": 1.956
+      "price": 82.63,
+      "fee": 0.24789
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "SYRE",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "AXTI",
       "side": "BUY",
-      "quantity": 17,
-      "price": 96.78,
-      "fee": 2.46789
+      "quantity": 2,
+      "price": 48.395,
+      "fee": 0.145185
     },
     {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "ECPG",
+      "side": "BUY",
+      "quantity": 22,
+      "price": 100.75,
+      "fee": 3.32475
+    },
+    {
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "LIND",
+      "side": "BUY",
+      "quantity": 61,
+      "price": 35.22,
+      "fee": 3.22263
+    },
+    {
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "MATX",
+      "side": "BUY",
+      "quantity": 10,
+      "price": 221.5,
+      "fee": 3.3225000000000002
+    },
+    {
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
+      "ticker": "MXL",
+      "side": "BUY",
+      "quantity": 14,
+      "price": 64.17,
+      "fee": 1.34757
+    },
+    {
+      "date": "2026-11-03",
+      "signal_date": "2026-11-02",
       "ticker": "TWST",
       "side": "BUY",
-      "quantity": 5,
-      "price": 162.94,
-      "fee": 1.22205
-    },
-    {
-      "date": "2026-10-30",
-      "signal_date": "2026-10-29",
-      "ticker": "TXG",
-      "side": "BUY",
-      "quantity": 16,
-      "price": 73.65,
-      "fee": 1.7676000000000003
+      "quantity": 1,
+      "price": 130.35,
+      "fee": 0.195525
     }
   ],
   "curve": [
@@ -739,6 +534,11 @@
       "date": "2026-11-02",
       "nav": 97553.6836,
       "spy_nav": 98634.70883
+    },
+    {
+      "date": "2026-11-03",
+      "nav": 98117.055965,
+      "spy_nav": 98929.45883
     }
   ],
   "validation": {
@@ -759,13 +559,13 @@
         },
         {
           "gate": "positive_net_return",
-          "value": -2.4463163999999926,
+          "value": -1.8829440349999893,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": -1.081025229999999,
+          "value": -0.8124028649999948,
           "threshold": 0,
           "pass": false
         },
@@ -791,13 +591,13 @@
         },
         {
           "gate": "positive_net_return",
-          "value": -2.594002800000006,
+          "value": -2.0522524099999995,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": -1.090664600000013,
+          "value": -0.8414142100000022,
           "threshold": 0,
           "pass": false
         },
@@ -832,7 +632,98 @@
       "http_status": 403,
       "error": "ACCESS_DENIED_OR_UNAVAILABLE"
     },
-    "liquidity": [],
+    "liquidity": [
+      {
+        "date": "2026-11-03",
+        "ticker": "CDNA",
+        "quantity": 6,
+        "fraction_of_full_day_volume": 3.770453812879586e-06
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "CLMT",
+        "quantity": 1,
+        "fraction_of_full_day_volume": 1.2358827346667093e-06
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "CLYM",
+        "quantity": 118,
+        "fraction_of_full_day_volume": 0.00013284566550351894
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "ERAS",
+        "quantity": 2,
+        "fraction_of_full_day_volume": 5.259865597982854e-07
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "RVMD",
+        "quantity": 11,
+        "fraction_of_full_day_volume": 7.628400426721991e-06
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "SLS",
+        "quantity": 108,
+        "fraction_of_full_day_volume": 2.1344504859821752e-05
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "SPY",
+        "quantity": 3,
+        "fraction_of_full_day_volume": 9.120874906317219e-08
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "STX",
+        "quantity": 2,
+        "fraction_of_full_day_volume": 4.2121735057745246e-07
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "ATEX",
+        "quantity": 2,
+        "fraction_of_full_day_volume": 7.1589933832658275e-06
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "AXTI",
+        "quantity": 2,
+        "fraction_of_full_day_volume": 1.73351356016188e-07
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "ECPG",
+        "quantity": 22,
+        "fraction_of_full_day_volume": 0.00011693128069678585
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "LIND",
+        "quantity": 61,
+        "fraction_of_full_day_volume": 3.5936138391854904e-05
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "MATX",
+        "quantity": 10,
+        "fraction_of_full_day_volume": 2.7179135707834295e-05
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "MXL",
+        "quantity": 14,
+        "fraction_of_full_day_volume": 5.898843115859567e-06
+      },
+      {
+        "date": "2026-11-03",
+        "ticker": "TWST",
+        "quantity": 1,
+        "fraction_of_full_day_volume": 5.146679272983297e-07
+      }
+    ],
     "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
   },
   "operations": {
@@ -845,70 +736,154 @@
       },
       "prefix": {
         "status": "PASS",
-        "sessions": 3,
+        "sessions": 4,
         "accounts": 4
       },
       "accounting": {
-        "status": "UNCHANGED_ACCEPTED_PREFIX",
-        "new_sessions": 0
+        "status": "PASS",
+        "new_sessions": 1,
+        "market_trade_rows_checked": 30,
+        "volume_participation": [
+          {
+            "date": "2026-11-03",
+            "ticker": "CDNA",
+            "quantity": 6,
+            "fraction_of_full_day_volume": 3.770453812879586e-06
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "CLMT",
+            "quantity": 1,
+            "fraction_of_full_day_volume": 1.2358827346667093e-06
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "CLYM",
+            "quantity": 118,
+            "fraction_of_full_day_volume": 0.00013284566550351894
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "ERAS",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 5.259865597982854e-07
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "RVMD",
+            "quantity": 11,
+            "fraction_of_full_day_volume": 7.628400426721991e-06
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "SLS",
+            "quantity": 108,
+            "fraction_of_full_day_volume": 2.1344504859821752e-05
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "SPY",
+            "quantity": 3,
+            "fraction_of_full_day_volume": 9.120874906317219e-08
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "STX",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 4.2121735057745246e-07
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "ATEX",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 7.1589933832658275e-06
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "AXTI",
+            "quantity": 2,
+            "fraction_of_full_day_volume": 1.73351356016188e-07
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "ECPG",
+            "quantity": 22,
+            "fraction_of_full_day_volume": 0.00011693128069678585
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "LIND",
+            "quantity": 61,
+            "fraction_of_full_day_volume": 3.5936138391854904e-05
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "MATX",
+            "quantity": 10,
+            "fraction_of_full_day_volume": 2.7179135707834295e-05
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "MXL",
+            "quantity": 14,
+            "fraction_of_full_day_volume": 5.898843115859567e-06
+          },
+          {
+            "date": "2026-11-03",
+            "ticker": "TWST",
+            "quantity": 1,
+            "fraction_of_full_day_volume": 5.146679272983297e-07
+          }
+        ],
+        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
       }
     },
     "readiness": {
-      "checked_at": "2026-11-03T17:18:01.856424+00:00",
+      "checked_at": "2026-11-04T06:42:26.745307+00:00",
       "key_configured": true,
-      "live_probe": false,
+      "live_probe": true,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "status": "CONFIGURED",
-      "last_live_probe": {
-        "checked_at": "2026-11-03T17:12:26.053909+00:00",
-        "key_configured": true,
-        "live_probe": true,
-        "secrets_exposed": false,
-        "subscription_changed": false,
-        "live_approved": false,
-        "broker_orders_enabled": false,
-        "required_endpoints": {
-          "raw_daily_bars": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 7,
-            "latest_observed_session": "2026-11-02"
-          },
-          "dated_universe": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "splits": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "dividends": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          }
+      "required_endpoints": {
+        "raw_daily_bars": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 7,
+          "latest_observed_session": "2026-11-03"
         },
-        "optional_quotes": {
-          "authorized": false,
-          "http_status": 403,
-          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+        "dated_universe": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
         },
-        "status": "PASS"
-      }
+        "splits": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        },
+        "dividends": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        }
+      },
+      "optional_quotes": {
+        "authorized": false,
+        "http_status": 403,
+        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+      },
+      "status": "PASS"
     },
     "workflow": {
       "id": 400565291,
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-04T00:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-04T09:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "41682617540",
+    "workflow_run": "41787239682",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -935,10 +910,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_41682617540_attempt_1.tar.gz",
-    "paper_archive_sha256": "2360245c4f7dbaa20f242feb54182727c3ae30d0a5a16b961af2d3528734c5a9",
-    "previous_paper_asset": "paper_run_41681615557_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "153d251fe79a67ca505c890a5294ed26187c9000c9c88ea3d7a5d06552bf22ff",
-    "workflow_run": "41682617540"
+    "paper_asset": "paper_run_41787239682_attempt_1.tar.gz",
+    "paper_archive_sha256": "15b99d421e93eaba1b85ef1345709b0283fc9e60612892f22d7f4e43818f0176",
+    "previous_paper_asset": "paper_run_41682617540_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "2360245c4f7dbaa20f242feb54182727c3ae30d0a5a16b961af2d3528734c5a9",
+    "workflow_run": "41787239682"
   }
 }
