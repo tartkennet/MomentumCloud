@@ -1,9 +1,9 @@
 'use strict';
 
 const $ = id => document.getElementById(id);
-const storageKey = 'momentum-avanza10-paper-v1';
+const storageKey = 'momentum-avanza10-paper-v2';
 const fields = ['capital', 'cash', 'holdings', 'excluded'];
-const kr = new Intl.NumberFormat('sv-SE', {style: 'currency', currency: 'SEK', maximumFractionDigits: 0});
+const kr = new Intl.NumberFormat('sv-SE', {style: 'currency', currency: 'SEK', maximumFractionDigits: 2});
 const stockholm = new Intl.DateTimeFormat('sv-SE', {
   dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Stockholm'
 });
@@ -35,9 +35,9 @@ function facts(node, pairs) {
 }
 
 function settings() {
-  const capital = Number($('capital').value);
+  const capital = $('capital').value === '' ? null : Number($('capital').value);
   const holdings = Avanza10Plan.parseHoldings($('holdings').value);
-  const cash = $('cash').value === '' ? (Object.keys(holdings).length ? 0 : capital) : Number($('cash').value);
+  const cash = $('cash').value === '' ? (Object.keys(holdings).length ? 0 : capital ?? 0) : Number($('cash').value);
   const excluded = new Set($('excluded').value.toUpperCase().split(/[\s,]+/).filter(Boolean));
   return {capital, cash, holdings, excluded};
 }
@@ -46,12 +46,14 @@ function draw() {
   const input = settings();
   const now = new Date();
   const result = Avanza10Plan.plan(report, input, now);
-  const selected = report.avanza10?.selection;
+  const snapshot = report.avanza10;
+  const selected = snapshot?.selection;
   const month = nyMonth.format(now);
   const [year, monthNumber] = month.split('-').map(Number);
   const next = monthName.format(new Date(Date.UTC(year, monthNumber, 1)));
   $('status').textContent = result.risk === false ? 'Riskkontroll aktiv' : result.selectionReady ?
-    'Månadsurval verifierat för simulering' : 'DATA BLOCKED · signaler pausade';
+    (result.minimumTotal === null ? 'Månadsurval med begränsat kursunderlag' : 'Månadsurval verifierat för simulering') :
+    'DATA BLOCKED · signaler pausade';
   $('regime').textContent = result.risk === true ? 'RISK ON' : result.risk === false ? 'RISK OFF' : 'Marknadsläge saknas';
   const checked = report.delivery?.verified && Number.isFinite(Date.parse(report.generated_at)) ?
     stockholm.format(new Date(report.generated_at)) : 'Saknas';
@@ -63,11 +65,22 @@ function draw() {
     ['Valutafix', report.fx?.date || 'Saknas'],
     ['Månadsurvalets kursdatum', selected?.as_of || 'Saknas'],
     ['Nästa ombalansering', selectionText],
-    ['Aktuell datatäckning', Number.isFinite(report.coverage) ? Math.round(report.coverage * 100) + ' % · krav 90 %' : 'Saknas']
+    ['Aktuell datatäckning', Number.isFinite(snapshot?.coverage) ? Math.round(snapshot.coverage * 100) + ' % · krav 90 %' : 'Saknas']
   ]);
-  $('notice').textContent = (report.errors || []).join(' ') || (result.marketVerified ?
+  $('notice').textContent = [...(report.errors || []), ...(snapshot?.errors || [])].join(' ') || (result.marketVerified ?
     'Signalerna använder observerade stängningskurser och uppskattade kostnader.' :
     'Källan saknar en aktuell, verifierad observation. Inga nya affärssignaler visas.');
+  const value = number => number === null ? '—' : kr.format(number);
+  facts($('capital-need'), [
+    ['Minsta köpbelopp för tio aktier', value(result.minimumTotal)],
+    ['Minsta portföljkapital med viktgränser', value(result.minimumCapital)],
+    ['Kapital för rekommenderad fördelning', value(result.planningCapital)],
+    ['Beräknad köpreserv för målportföljen', value(result.targetCost)],
+    ['Kassa som behövs för att fylla tomma platser', value(result.minimumCash)],
+    ['Kassaunderskott till tio positioner', value(result.cashShortfall)],
+    ['Kapitalunderskott mot viktgränser', result.minimumCapital === null ? '—' : value(result.capitalShortfall)],
+    ['Kassaunderskott till alla målantal', value(result.targetCashShortfall)]
+  ]);
   $('budget').textContent = `${result.targetCount} av 10 mål · ${result.fundedCount} finansierade eller befintliga · ${kr.format(result.remainingCash)} kvar av angiven kassa efter köpreserver`;
   $('empty').hidden = result.rows.length > 0;
   $('signals').replaceChildren(...result.rows.map(row => {
@@ -80,7 +93,8 @@ function draw() {
       ['Innehav → mål', `${row.current} → ${row.target ?? '—'}`],
       ['Antal i signal', row.quantity || '—'],
       ['Ordervärde ca', row.amount == null ? '—' : kr.format(row.amount)],
-      ['Köpreserv', row.reserved ? kr.format(row.reserved) : '—']
+      ['Målbelopp inkl. köpreserv', row.targetCost == null ? '—' : kr.format(row.targetCost)],
+      ['Köpreserv för signalen', row.reserved ? kr.format(row.reserved) : '—']
     ]);
     card.append(details, item('p', row.reason || '', 'caption'));
     return card;
@@ -89,7 +103,7 @@ function draw() {
 
 function update() {
   try { draw(); $('form-error').textContent = ''; }
-  catch (error) { $('form-error').textContent = error.message; $('signals').replaceChildren(); $('budget').textContent = ''; }
+  catch (error) { $('form-error').textContent = error.message; $('signals').replaceChildren(); $('capital-need').replaceChildren(); $('budget').textContent = ''; }
 }
 
 async function load() {

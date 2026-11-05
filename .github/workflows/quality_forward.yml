@@ -87,6 +87,7 @@ jobs:
           if prior:
               if (results/'state.json').exists():shutil.copyfile(results/'state.json','quality_previous/state.json')
               shutil.copyfile(results/'quality.json','quality_previous/quality.json')
+              if (results/'avanza10.json').exists():shutil.copyfile(results/'avanza10.json','quality_previous/avanza10.json')
               assert prior['cache_asset'] in ('quality_cache_0.sealed','quality_cache_1.sealed')
               gh('release','download','quality-paper-inputs-v1','--pattern',prior['cache_asset'],'--output','quality_restore/cache.sealed')
               assert hashlib.sha256(Path('quality_restore/cache.sealed').read_bytes()).hexdigest()==prior['cache_sha256']
@@ -102,6 +103,13 @@ jobs:
         run: timeout --preserve-status 10m python run_quality_forward.py --cache .quality_market_cache --manifest quality_output/base_manifest.json --previous quality_previous --output quality_output
       - name: Independently verify the current account and committed whole-share budget
         run: python verify_quality_readiness.py --state quality_output/state.json --report quality_output/quality.json --output quality_output/readiness.json
+      - name: Verify the capital-independent Avanza ranking and current quotes
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: >-
+          python avanza10_snapshot.py --report quality_output/quality.json
+          --previous quality_previous/avanza10.json --cache .quality_market_cache
+          --originals quality_output/originals --output quality_output/avanza10.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -110,6 +118,7 @@ jobs:
             quality_output/quality.json
             quality_output/state.json
             quality_output/readiness.json
+            quality_output/avanza10.json
           retention-days: 30
       - name: Encrypt cache and preserve the observation before publication
         if: github.event_name != 'pull_request'

@@ -8,15 +8,15 @@
   <link rel="icon" href="/icon.svg">
   <link rel="stylesheet" href="/quality-earnings.css">
   <link rel="stylesheet" href="/avanza10.css">
-  <script src="/avanza10-plan.js" defer></script>
-  <script src="/avanza10.js" defer></script>
+  <script src="/avanza10-plan.js?v=2" defer></script>
+  <script src="/avanza10.js?v=2" defer></script>
 </head>
 <body>
 <header><a class="brand" href="/">◈ <span>MomentumCloud</span></a><button id="theme" type="button">◐ Tema</button></header>
 <main>
   <section class="hero">
     <div>
-      <p class="eyebrow">AVANZA ISK · AVANZA10 PAPER V1</p>
+      <p class="eyebrow">AVANZA ISK · AVANZA10 PAPER V2</p>
       <h1>Momentum <em>10</em></h1>
       <p class="lead">Månadsurval av tio enskilda aktier med Quality &amp; Earnings och relativ kursstyrka. Daglig marknadsrisk enligt SPY:s 200-dagars medelvärde.</p>
     </div>
@@ -30,24 +30,25 @@
   <section class="panel">
     <h2>Portfölj och kassa</h2>
     <form id="settings" class="settings">
-      <label>Portföljkapital, kr<input id="capital" type="number" min="1" max="1000000000" step="0.01" value="20000" required></label>
-      <label>Tillgänglig kassa, kr<input id="cash" type="number" min="0" max="1000000000" step="0.01" placeholder="Hela kapitalet vid tom portfölj"></label>
+      <label>Portföljkapital, kr<input id="capital" type="number" min="1" step="0.01" placeholder="Beräkna från strategins urval"></label>
+      <label>Tillgänglig kassa, kr<input id="cash" type="number" min="0" step="0.01" placeholder="Ange disponibla pengar"></label>
       <label>Aktuella innehav, ticker och antal per rad<textarea id="holdings" rows="4" placeholder="AAPL 3"></textarea></label>
       <label>Undanta aktier som saknas hos Avanza<textarea id="excluded" rows="4" placeholder="Ticker per rad"></textarea></label>
       <div><button type="submit">Beräkna paper-signaler</button><p id="form-error" role="alert"></p></div>
     </form>
-    <p class="caption">Innehav och inställningar sparas i den här webbläsaren. Ange kassan som finns tillgänglig i SEK. När innehav har lagts in och kassafältet är tomt används 0 kr. Planerade försäljningar ökar kassan först när du uppdaterar beloppet.</p>
+    <p class="caption">Innehav och inställningar sparas i den här webbläsaren. Ange kassan som finns tillgänglig i SEK. Om både portföljen och kassafältet är tomma används det kapital du själv har angett som kassa. Utan angivet kapital räknar dashboarden fram ett förslag. Planerade försäljningar ökar kassan först när du uppdaterar beloppet.</p>
   </section>
   <section class="panel">
     <h2>Mål och signaler</h2>
+    <dl id="capital-need" class="facts" aria-live="polite"></dl>
     <p id="budget" aria-live="polite"></p>
     <p id="empty">Rankning visas när ett aktuellt månadsurval finns.</p>
     <div id="signals" class="signal-grid"></div>
-    <p class="caption">Riktvärdet är en tiondel av kapitalet per plats. Överskott från avrundning kan finansiera en dyrare hel aktie inom portföljens viktgränser. Köpreserven inkluderar 2 % kursbuffert, minst 1 USD eller 0,25 % courtage, 0,25 % växlingsreserv och 0,15 % exekveringsreserv. Beloppen uppskattas med daterad USD/SEK-kurs. Kontrollera din courtageklass och att aktien är köpbar på Avanza.</p>
+    <p class="caption">Urvalet rangordnas före kapitalberäkningen. Varje vald position får minst en hel aktie i målet. Resten fördelas mot en tiondel per position inom viktgränserna. Köpreserven inkluderar 2 % kursbuffert, minst 1 USD eller 0,25 % courtage, 0,25 % växlingsreserv och 0,15 % exekveringsreserv. Beloppen uppskattas med daterad USD/SEK-kurs. Kontrollera din courtageklass och att aktien är köpbar på Avanza.</p>
   </section>
   <section class="panel">
     <h2>Validering</h2>
-    <p>Historiskt DATA BLOCKED. Efter komplettering täcker fyra månadsurval 83 %, 81 %, 86 % och 87 % mot kravet på 90 %. Det finns ingen certifierad historisk avkastning för den här produktionskandidaten. Den automatiska paper-journalen har ett separat fast startkapital på 20 000 kr.</p>
+    <p>Historiskt DATA BLOCKED. Efter komplettering täcker fyra månadsurval 83 %, 81 %, 86 % och 87 % mot kravet på 90 %. Det finns ingen certifierad historisk avkastning för den här produktionskandidaten. Quality &amp; Earnings paper-journal redovisas separat.</p>
     <a href="/quality-earnings">Quality &amp; Earnings, paper-journal och historiskt underlag →</a>
   </section>
 </main>

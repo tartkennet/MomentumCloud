@@ -53,30 +53,53 @@ class CashOnlyReadiness(unittest.TestCase):
 
 
 class AvanzaSnapshot(unittest.TestCase):
-    def test_monthly_rank_is_locked_and_daily_quotes_remain_current(self):
+    def test_monthly_rank_uses_uncapped_universe_and_verified_daily_marks(self):
+        from unittest.mock import patch
         from avanza10_snapshot import build_snapshot
-        def candidate(ticker, growth):
-            return dict(ticker=ticker,cik=ticker,name=ticker,sic='3571',division='Manufacturing',
-                        price_usd=20,price_as_of='2026-11-02',data_status='VERIFIED',
+        def candidate(ticker, cik, growth, price):
+            return dict(ticker=ticker,cik=cik,name=ticker,sic='3571',division='Manufacturing',
+                        price_usd=price,price_as_of='2026-11-02',relative_strength=.2,data_status='VERIFIED',resolved=True,
+                        fundamental_audit={'status':'PASS'},
                         fundamental=dict(qualified=True,metrics=dict(revenue_growth=growth,eps_growth=growth,margin_change=growth)))
-        rows=[candidate('AAA',1),candidate('BBB',2)]
-        report=dict(generated_at='2026-11-03T09:00:00+00:00',price_as_of='2026-11-02',coverage=.90,risk_on=True,
-                    status='PAPER_READY_AWAITING_SESSION',collection_status='PAPER_READY_AWAITING_SESSION',
-                    audits={'selection':{'status':'PASS'}},fx={'usdsek':10},candidates=rows)
-        first=build_snapshot(report)
-        self.assertEqual([r['ticker'] for r in first['selection']['rows']],['BBB','AAA'])
-        later=build_snapshot(dict(report,candidates=[dict(rows[0],price_usd=30)]),first)
-        self.assertEqual(later['selection'],first['selection'])
-        self.assertEqual(later['quotes'],{'AAA':30})
-        blocked=build_snapshot(dict(report,status='COLLECTION_FAILED'),first)
-        self.assertFalse(blocked['market_verified'])
-        self.assertFalse(blocked['quotes'])
-        self.assertEqual(blocked['selection'],first['selection'])
-        insufficient=build_snapshot(dict(report,coverage=.89))
-        self.assertIsNone(insufficient['selection'])
-        self.assertFalse(insufficient['selection_verified'])
-        new_month=build_snapshot(dict(report,generated_at='2026-12-01T09:00:00+00:00',price_as_of='2026-11-30'),first)
-        self.assertEqual(new_month['selection']['month'],'2026-12')
+        aaa=candidate('AAA','0000000001',1,20)
+        bbb=candidate('BBB','0000000002',2,900)
+        records=[dict(r,type='CS',primary_exchange='XNAS',active=True) for r in (aaa,bbb)]
+        prices={'AAA':[20,20,10000],'BBB':[900,900,10000]}
+        data=SimpleNamespace(sessions=['2026-11-02'],universe=lambda day:records,bars=lambda day:prices,splits_by_ticker={})
+        report=dict(generated_at='2026-11-03T09:00:00+00:00',price_as_of='2026-11-02',risk_on=True,
+                    fx={'usdsek':10},candidates=[aaa])
+        def closes(data,day,ticker,count):
+            return [100]+[100]*(count-1) if ticker=='SPY' else [120]+[100]*(count-1)
+        with patch('avanza10_snapshot.market_universe',return_value=([aaa,bbb],{},True)) as universe, \
+             patch('avanza10_snapshot.fundamentals',return_value=bbb) as fundamental, \
+             patch('avanza10_snapshot.closes_at',side_effect=closes):
+            first=build_snapshot(report,{},data,None)
+            universe.assert_called_with(data,'2026-11-02',float('inf'))
+            fundamental.assert_called_once_with(bbb,None)
+            self.assertEqual([r['ticker'] for r in first['selection']['rows']],['BBB','AAA'])
+            self.assertEqual(first['reused_fundamentals'],1)
+            prices['BBB']=[900,950,10000]
+            later=build_snapshot(report,first,data,None)
+            self.assertEqual(later['selection'],first['selection'])
+            self.assertEqual(later['quotes']['BBB'],950)
+            fundamental.return_value=dict(bbb,data_status='DATA_GAP',resolved=False)
+            blocked=build_snapshot(report,first,data,None)
+            self.assertFalse(blocked['selection_verified'])
+            self.assertEqual(blocked['selection'],first['selection'])
+            self.assertIsNone(build_snapshot(report,{},data,None)['selection'])
+            # An incomplete month can recover when ten industry-compatible names appear.
+            extra=[dict(candidate(f'T{i}',str(i).zfill(10),i,30),sic=sic,division=sector)
+                   for i,(sic,sector) in enumerate([('2010','Manufacturing'),('2100','Manufacturing'),
+                       ('4010','Transport/communications'),('4100','Transport/communications'),
+                       ('4200','Transport/communications'),('4300','Transport/communications'),
+                       ('5010','Wholesale'),('5100','Wholesale')],start=3)]
+            all_rows=[aaa,bbb,*extra]
+            universe.return_value=(all_rows,{},True)
+            data.universe=lambda day:[dict(r,type='CS',primary_exchange='XNAS',active=True) for r in all_rows]
+            prices.update({r['ticker']:[30,30,10000] for r in extra})
+            complete=build_snapshot(dict(report,candidates=all_rows),first,data,None)
+            self.assertEqual(complete['selection']['target_count'],10)
+            self.assertEqual(complete['selection']['month'],first['selection']['month'])
 
 
 if __name__=='__main__':unittest.main()
