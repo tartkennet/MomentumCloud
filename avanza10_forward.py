@@ -186,6 +186,8 @@ def run(args):
             assert state['decisions'][:len(prior['decisions'])]==prior['decisions']
         state['previous_state_sha256']=digest(prior) if prior else None
         result=summarize(state,snapshot,now)
+        from audit_avanza10 import check
+        result['statistics_audit']=check(state,result)
         atomic_json(out/'avanza-state.json',state)
     except Exception as exc:
         # Fail closed; never publish an unaudited mutation or a fabricated fill.

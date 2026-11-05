@@ -6,7 +6,7 @@ const response=()=>({setHeader(){},status(c){this.code=c;return this;},json(b){t
 function paper(){return {model:'avanza10-observed-paper-v1',mode:'PAPER_ONLY',live_approved:false,
  broker_orders_enabled:false,status:'BLOCKED',blockers:['UNFUNDED_OR_RISK_LIMITED_MINIMUM_BASKET'],
  generated_at:new Date().toISOString(),positions:[],trades:[],curve:[],
- audits:{strategy:{status:'PASS'},benchmark:{status:'PASS'}}};}
+ statistics_audit:{status:'PASS'},audits:{strategy:{status:'PASS'},benchmark:{status:'PASS'}}};}
 test('Avanza API never exposes frozen Quality trades as the new account',async t=>{
  const r=structuredClone(source);r.generated_at=new Date().toISOString();r.trades=[{ticker:'WRONG_ACCOUNT'}];
  r.avanza_paper=paper();t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>r}));

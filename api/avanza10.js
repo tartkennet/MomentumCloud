@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
   const verified = code === 200 && report.delivery?.verified === true && !report.operations?.delayed;
   const paperCurrent = verified && Number.isFinite(Date.parse(paper.generated_at)) &&
     Date.parse(paper.generated_at) <= Date.now() && Date.now() - Date.parse(paper.generated_at) < 4 * 86400000 &&
-    paper.audits?.strategy?.status === 'PASS' && paper.audits?.benchmark?.status === 'PASS';
+    paper.statistics_audit?.status === 'PASS' && paper.audits?.strategy?.status === 'PASS' && paper.audits?.benchmark?.status === 'PASS';
   const result = {model: MODEL, generated_at: report.generated_at, price_as_of: report.price_as_of,
     risk_on: report.risk_on, fx: report.fx, avanza10: report.avanza10,
     delivery: report.delivery, operations: report.operations, errors: report.errors || [],

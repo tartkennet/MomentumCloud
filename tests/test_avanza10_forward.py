@@ -54,6 +54,10 @@ class AvanzaAccountTests(unittest.TestCase):
         self.assertEqual(len(result['positions']),10)
         self.assertTrue(result['benchmark_valid'])
         self.assertEqual(result['rebalances'],1)
+        from audit_avanza10 import check
+        self.assertEqual(check(s,result)['status'],'PASS')
+        altered=copy.deepcopy(result);altered['return_sek']+=1
+        with self.assertRaises(AssertionError):check(s,altered)
         bad=copy.deepcopy(s);bad['strategy']['cash']+=1
         with self.assertRaises(AssertionError):audit_account(bad,'strategy')
 
