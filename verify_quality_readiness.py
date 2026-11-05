@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from quality_forward import digest,opening
-from quality_account_audit import audit_account
+from quality_account_audit import audit_account, audit_statistics
 from run_quality_forward import fingerprint
 
 
@@ -33,16 +33,28 @@ def check(state,report):
             initial_fx_usdsek=state['initial_fx']['usdsek'],reserve_at_initial_fx_sek=worst*state['initial_fx']['usdsek'],cash_at_initial_fx_sek=(budget-worst)*state['initial_fx']['usdsek'],
             stress_30bp_reserve_usd=stress,stress_funded=stress<=budget,orders=orders,
             limitation='Budget feasibility at committed caps, not a guarantee of next-open execution or retail broker availability.')
+    assert report['paper_journal_sha256']==digest(state)
+    assert report['model_fingerprint']==state['model_fingerprint']
+    assert report['sessions']==len(s['equity'])
+    assert report['paper_started'] is bool(state['opening_observations'])
+    assert report['trades']==s['trades']
+    assert {p['ticker']:p['quantity'] for p in report['positions']}==s['shares']
+    audit_statistics(state,report)
     if not s['trades']:
-        assert not s['shares'] and not s['equity'] and s['fees']==0
-        assert not report['paper_started'] and not report['positions'] and not report['trades'] and report['sessions']==0
-        assert report['paper_metrics'] is None
-        assert math.isclose(report['nav_sek'],20000,abs_tol=1e-7)
+        # An observed close can value the cash account before any opening fill.
+        assert not s['shares'] and s['fees']==0
+        if not report['benchmark_valid']:
+            assert report['paper_metrics'] is None
+        expected=20000
+        if s['equity']:
+            last=s['equity'][-1]
+            expected=last['nav']*state['valuation_fx'][last['date']]['usdsek']
+        assert math.isclose(report['nav_sek'],expected,abs_tol=1e-7)
     first=opening('2026-11-02');assert first.weekday()==0
     result=dict(status='PASS',checked_at=datetime.now(timezone.utc).isoformat(),model_fingerprint=state['model_fingerprint'],ledger_audits=audits,
         source_coverage=report.get('coverage'),source_generated_at=report['generated_at'],paper_status=report['status'],paper_started=report['paper_started'],sessions=report['sessions'],trades=len(s['trades']),positions=len(s['shares']),nav_sek=report['nav_sek'],plan=plan,
         first_session=dict(date='2026-11-02',opening_utc=first.isoformat(),opening_stockholm=first.astimezone(ZoneInfo('Europe/Stockholm')).isoformat(),collection_times_utc=['08:17','14:47','15:47','22:17'],collection_times_stockholm=['09:17','15:47','16:47','23:17']),
-        execution_capability='UNVERIFIED_UNTIL_ACTUAL_ALLOWED_OPENING_OBSERVATION',economic_status='NO_GO_INSUFFICIENT_EVIDENCE',live_approved=False,broker_orders_enabled=False)
+        execution_capability='PAPER_FILL_OBSERVED' if audits['strategy']['trades'] else 'UNVERIFIED_UNTIL_ACTUAL_ALLOWED_OPENING_OBSERVATION',economic_status='NO_GO_INSUFFICIENT_EVIDENCE',live_approved=False,broker_orders_enabled=False)
     return result
 
 

@@ -19,13 +19,14 @@ module.exports=async(_req,res)=>{
   try{
     const [data,h3]=await Promise.all([remote('h3-display.json').then(validate),remote('h3.json').then(validateH3)]);
     const errors=[...(data.errors||[])];
-    const timing=monitor(h3),late=timing.delayed;
+    const now=new Date(Date.now());
+    const timing=monitor(h3,now.getTime()),late=timing.delayed;
     const sync=data.source_as_of===h3.as_of;
     if(!sync)errors.push('En ny H3-session har registrerats. SEK-värderingen inväntar synkronisering.');
     if(late)errors.push('Den schemalagda H3-insamlingen är försenad.');
     errors.push(...h3.operations.errors);
-    const now=new Date(),sessionHours=now.getUTCDay()>0&&now.getUTCDay()<6&&now.getUTCHours()>=13&&now.getUTCHours()<23;
-    const valuationLate=sessionHours&&Date.now()-Date.parse(data.generated_at)>60*60000;
+    const sessionHours=now.getUTCDay()>0&&now.getUTCDay()<6&&now.getUTCHours()>=13&&now.getUTCHours()<23;
+    const valuationLate=sessionHours&&now.getTime()-Date.parse(data.generated_at)>60*60000;
     if(valuationLate)errors.push('Kursuppföljningen är försenad. Senast verifierade värdering visas med datum.');
     data.pending_intentions=errors.length?null:h3.pending_intentions;
     data.errors=errors;
