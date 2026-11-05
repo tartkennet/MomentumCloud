@@ -1,8 +1,9 @@
 /* Whole-share sizing for the separately versioned Avanza paper decision aid. */
 (function (root) {
   'use strict';
-  const version = 'avanza10-paper-v1';
+  const version = 'avanza10-paper-v2';
   const slots = 10;
+  const maxMoney = Number.MAX_SAFE_INTEGER / 100;
   const validNumber = value => Number.isFinite(value) && value > 0;
   const tickerPattern = /^[A-Z][A-Z0-9.-]{0,14}$/;
   const monthFormat = new Intl.DateTimeFormat('sv-SE', {
@@ -41,53 +42,56 @@
     return low;
   }
 
-  function targetRows(rows, capital, fx, excluded) {
+  function membership(rows, excluded) {
     const selected = [];
     const issuers = new Set();
-    const industries = new Map();
-    const divisions = new Map();
-    const slot = capital / slots;
-    let spare = Math.floor(capital * 100) / 100;
-    const ranked = rows.map((row, i) => ({...row, sourceRank: i}))
-      .filter(row => !excluded.has(row.ticker) && validNumber(row.price_usd));
-
-    function add(row, target, budget) {
+    for (const row of rows) {
+      if (excluded.has(row.ticker) || issuers.has(row.cik) || !validNumber(row.price_usd)) continue;
       const industry = String(row.sic).slice(0, 2);
-      const group = industries.get(industry) || {count: 0, reserve: 0};
-      const sector = divisions.get(row.division) || {count: 0, reserve: 0};
-      const reserve = buyCost(target, row.price_usd, fx);
-      if (issuers.has(row.cik) || group.count >= 2 || sector.count >= 4 ||
-          reserve > spare || reserve > capital * .20 ||
-          group.reserve + reserve > capital * .30 || sector.reserve + reserve > capital * .50) return;
-      selected.push({...row, target, budget});
+      if (selected.filter(x => x.industry === industry).length >= 2 ||
+          selected.filter(x => x.division === row.division).length >= 4) continue;
+      selected.push({...row, industry, rank: selected.length + 1});
       issuers.add(row.cik);
-      industries.set(industry, {count: group.count + 1, reserve: group.reserve + reserve});
-      divisions.set(row.division, {count: sector.count + 1, reserve: sector.reserve + reserve});
-      spare = Math.round((spare - reserve) * 100) / 100;
-    }
-
-    for (const row of ranked) {
-      const target = affordable(row.price_usd, fx, slot);
-      if (target) add(row, target, slot);
       if (selected.length === slots) break;
     }
-    // Whole-share rounding can leave room for a single share above the slot
-    // guideline. Use the smallest excess while respecting the frozen caps.
-    if (selected.length < slots) {
-      const aboveSlot = ranked.map(row => ({row, cost: buyCost(1, row.price_usd, fx)}))
-        .filter(({cost}) => cost > slot).sort((a, b) => a.cost - b.cost || a.row.sourceRank - b.row.sourceRank);
-      for (const {row, cost} of aboveSlot) {
-        add(row, 1, cost);
-        if (selected.length === slots) break;
-      }
+    return selected;
+  }
+
+  const money = value => Math.round(value * 100) / 100;
+  const ceilMoney = value => Math.ceil(value * 100) / 100;
+  const sum = (rows, value) => rows.reduce((total, row) => total + value(row), 0);
+
+  function minimums(rows, priceKey, fx) {
+    const cost = row => buyCost(1, row[priceKey], fx);
+    const total = money(sum(rows, cost));
+    const capital = ceilMoney(Math.max(total, ...rows.flatMap(row => [
+      cost(row) / .20,
+      sum(rows.filter(x => x.industry === row.industry), cost) / .30,
+      sum(rows.filter(x => x.division === row.division), cost) / .50
+    ])));
+    return {total, capital};
+  }
+
+  function allocation(rows, fx, capital) {
+    for (const row of rows) {
+      row.target = 1;
+      row.allocation = buyCost(1, row.price_usd, fx);
     }
-    return selected.sort((a, b) => a.sourceRank - b.sourceRank)
-      .map((row, i) => ({...row, rank: i + 1}));
+    for (const row of rows) {
+      const rest = rows.filter(x => x !== row);
+      const budget = Math.min(capital / slots, capital * .20,
+        capital * .30 - sum(rest.filter(x => x.industry === row.industry), x => x.allocation),
+        capital * .50 - sum(rest.filter(x => x.division === row.division), x => x.allocation),
+        capital - sum(rest, x => x.allocation));
+      row.target = Math.max(1, affordable(row.price_usd, fx, Math.max(0, budget)));
+      row.allocation = buyCost(row.target, row.price_usd, fx);
+    }
   }
 
   function plan(report, settings, now = new Date()) {
     const {capital, cash, holdings, excluded} = settings;
-    if (!validNumber(capital) || capital > 1e9 || !Number.isFinite(cash) || cash < 0 || cash > 1e9) {
+    if ((capital !== null && (!validNumber(capital) || capital > maxMoney)) ||
+        !Number.isFinite(cash) || cash < 0 || cash > maxMoney) {
       throw new Error('Ange ett positivt portföljkapital och en tillgänglig kassa på minst 0 kr.');
     }
     const snapshot = report.avanza10;
@@ -103,50 +107,77 @@
     const selection = snapshot?.selection;
     const selectionReady = risk === true && validNumber(fx) && snapshot.selection_verified &&
       selection?.month === month && validNumber(selection.usdsek) && Array.isArray(selection.rows);
-    const target = selectionReady ? targetRows(selection.rows, capital, selection.usdsek, excluded) : [];
-    const rows = target.map(row => ({
-      ...row, current: holdings[row.ticker] || 0, price: snapshot.quotes[row.ticker], buy: 0, reserved: 0
-    }));
+    const rows = selectionReady ? membership(selection.rows, excluded) : [];
     const targetNames = new Set(rows.map(row => row.ticker));
+    const targetCount = rows.length;
+    for (const row of rows) {
+      row.current = holdings[row.ticker] || 0;
+      row.price = snapshot.quotes[row.ticker];
+      row.buy = 0;
+      row.reserved = 0;
+    }
+
+    const monthly = targetCount === slots ? minimums(rows, 'price_usd', selection.usdsek) : null;
+    const live = monthly && rows.every(row => validNumber(row.price)) ? minimums(rows, 'price', fx) : null;
+    const planningCapital = monthly ? Math.max(capital ?? cash, monthly.capital) : null;
+    if (monthly) allocation(rows, selection.usdsek, planningCapital);
+    const minimumCash = live ? money(sum(rows.filter(row => !row.current), row => buyCost(1, row.price, fx))) : null;
+    const targetCost = live ? money(sum(rows, row => buyCost(row.target, row.price, fx))) : null;
+    const targetCash = live ? money(sum(rows, row => buyCost(Math.max(0, row.target - row.current), row.price, fx))) : null;
     let available = Math.floor(cash * 100) / 100;
+    const capitalShortfall = live && capital !== null ? money(Math.max(0, live.capital - capital)) : 0;
+    const cashShortfall = minimumCash === null ? null : money(Math.max(0, minimumCash - available));
+    const targetCashShortfall = targetCash === null ? null : money(Math.max(0, targetCash - available));
+    const limitCapital = live ? capital ?? Math.max(cash, live.capital) : 0;
+    const baseExposure = row => row.current ? row.current * row.price * fx * 1.02 : buyCost(1, row.price, fx);
+    const withinLimits = live && rows.every(row => baseExposure(row) <= limitCapital * .20 + .01 &&
+      sum(rows.filter(x => x.industry === row.industry), baseExposure) <= limitCapital * .30 + .01 &&
+      sum(rows.filter(x => x.division === row.division), baseExposure) <= limitCapital * .50 + .01);
 
-    // Reserve one whole share per new position before topping up any position.
-    for (const row of rows) {
-      if (row.current || !validNumber(row.price)) continue;
-      const cost = buyCost(1, row.price, fx);
-      if (cost > Math.min(available, row.budget)) continue;
-      row.buy = 1;
-      row.reserved = cost;
-      available = Math.round((available - cost) * 100) / 100;
-    }
-    for (const row of rows) {
-      if (!validNumber(row.price) || row.current >= row.target) continue;
-      const budget = Math.max(0, row.budget - row.current * row.price * fx);
-      row.buy = affordable(row.price, fx, Math.min(Math.round((available + row.reserved) * 100) / 100, budget), row.target - row.current);
-      const cost = buyCost(row.buy, row.price, fx);
-      available = Math.round((available + row.reserved - cost) * 100) / 100;
-      row.reserved = cost;
+    if (withinLimits && capitalShortfall === 0 && cashShortfall === 0) {
+      for (const row of rows) {
+        row.buy = row.current ? 0 : 1;
+        row.reserved = buyCost(row.buy, row.price, fx);
+        available = money(available - row.reserved);
+      }
+      for (const row of rows) {
+        if (row.current >= row.target) continue;
+        const rest = rows.filter(x => x !== row);
+        const exposure = x => x.current * x.price * fx * 1.02 + x.reserved;
+        const budget = Math.min(limitCapital * .20,
+          limitCapital * .30 - sum(rest.filter(x => x.industry === row.industry), exposure),
+          limitCapital * .50 - sum(rest.filter(x => x.division === row.division), exposure))
+          - row.current * row.price * fx * 1.02;
+        const bound = Math.max(row.reserved, money(Math.min(available + row.reserved, budget)));
+        row.buy = affordable(row.price, fx, bound, row.target - row.current);
+        const cost = buyCost(row.buy, row.price, fx);
+        available = money(available + row.reserved - cost);
+        row.reserved = cost;
+      }
     }
 
     for (const row of rows) {
-      const delta = row.target - row.current;
-      row.signal = delta < 0 && validNumber(row.price) ? 'MINSKA' : row.buy ? 'KÖP' : row.current ? 'BEHÅLL' : 'KASSA';
+      const delta = row.target === undefined ? null : row.target - row.current;
+      row.signal = live && delta < 0 ? 'MINSKA' : row.buy ? 'KÖP' : row.current ? 'BEHÅLL' : 'KASSA';
       row.quantity = row.signal === 'MINSKA' ? -delta : row.buy;
       row.amount = validNumber(row.price) && row.quantity ? row.quantity * row.price * fx : null;
-      row.reason = !validNumber(row.price) ? 'Verifierad dagskurs saknas' :
-        delta > row.buy ? 'Kassa eller prisgräns begränsar köpet' : '';
+      row.targetCost = live ? buyCost(row.target, row.price, fx) : null;
+      row.reason = !validNumber(row.price) ? 'Verifierad dagskurs eller prisbasis saknas' :
+        !live ? 'Hela målportföljen kan ännu inte prissättas' :
+        delta > row.buy ? 'Kapital, kassa eller viktgräns begränsar köpet' : '';
     }
     for (const [ticker, quantity] of Object.entries(holdings)) {
       if (targetNames.has(ticker)) continue;
-      const sell = risk === false || selectionReady;
+      const sell = risk === false || Boolean(live);
       const price = snapshot?.quotes[ticker];
       rows.push({ticker, current: quantity, target: sell ? 0 : null, quantity: sell ? quantity : 0,
         amount: sell && validNumber(fx) && validNumber(price) ? quantity * price * fx : null,
-        signal: sell ? 'SÄLJ' : 'PAUS', reason: risk === false ? 'RISK OFF' : selectionReady ? 'Utanför målet' : 'Verifierat underlag saknas'});
+        signal: sell ? 'SÄLJ' : 'PAUS', reason: risk === false ? 'RISK OFF' : sell ? 'Utanför målet' : 'Verifierat underlag saknas'});
     }
-    return {risk, selectionReady, rows, targetCount: target.length,
-      fundedCount: rows.filter(row => row.rank && row.current + row.buy > 0).length,
-      remainingCash: available, marketVerified: current, fx};
+    return {risk, selectionReady, rows, targetCount, planningCapital, minimumTotal: live?.total ?? null,
+      minimumCapital: live?.capital ?? null, targetCost, minimumCash, capitalShortfall, cashShortfall,
+      targetCash, targetCashShortfall, remainingCash: available, marketVerified: current, fx,
+      fundedCount: rows.filter(row => row.rank && row.current + row.buy > 0).length};
   }
 
   const api = {version, slots, parseHoldings, buyCost, plan};

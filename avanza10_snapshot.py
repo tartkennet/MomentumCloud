@@ -1,36 +1,101 @@
-"""Monthly Quality rank and daily marks for the separate Avanza paper planner."""
+"""Capital-independent Quality ranking for the Avanza paper decision aid."""
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta
 import math
-from datetime import datetime
+from pathlib import Path
 
+import momentum_core as core
+from audit_core_normalized import closes_at
+from collect_quality import fundamentals, market_universe, math_close
+from momentum_core_data import atomic_json, read_json
+from quality_audit import audit_selection
 from quality_forward import NY
-from quality_strategy import rank
+from quality_strategy import choose, rank
+from research_core_actions import supplement
+from run_core_risk_research import make_data
 
-VERSION = 'avanza10-paper-v1'
+VERSION = 'avanza10-paper-v2'
+MIN_COVERAGE = .90
 
 
-def build_snapshot(report, previous=None):
-    month = datetime.fromisoformat(report['generated_at']).astimezone(NY).strftime('%Y-%m')
-    selection = previous.get('selection') if previous else None
-    quote_day = report.get('price_as_of')
-    status = report.get('collection_status')
-    collected = status in ('PAPER_READY_AWAITING_SESSION', 'RISK_OFF', 'SELECTION_BLOCKED', 'DATA_BLOCKED')
-    source_ok = collected and report['status'] != 'COLLECTION_FAILED' and not report.get('errors')
-    audited = ((report.get('audits') or {}).get('selection') or {}).get('status') == 'PASS'
-    ranked = report.get('candidates', [])
-    fx = (report.get('fx') or {}).get('usdsek')
-    if (source_ok and quote_day and audited and (report.get('coverage') or 0) >= .90
-            and fx and report.get('risk_on') is True and (not selection or selection['month'] < month)):
-        eligible = [r for r in ranked if r.get('data_status') == 'VERIFIED']
-        selection = dict(month=month, as_of=quote_day, usdsek=fx, observed_at=report['generated_at'], rows=[
-            {k: r[k] for k in ('ticker', 'name', 'sic', 'division', 'cik', 'price_usd', 'quality_score')}
-            for r in rank(eligible)
-        ])
-    quotes = {}
-    if source_ok:
-        locked = {r['ticker']: r['cik'] for r in selection['rows']} if selection else {}
-        quotes = {r['ticker']: r['price_usd'] for r in ranked
-                  if r['cik'] == locked.get(r['ticker'], r['cik']) and r.get('price_as_of') == quote_day
-                  and math.isfinite(r['price_usd']) and r['price_usd'] > 0}
-    return dict(version=VERSION, mode='PAPER_ONLY', selection=selection, quotes=quotes,
-                quotes_as_of=quote_day, market_verified=bool(source_ok and quote_day),
-                selection_verified=bool(source_ok and audited and (report.get('coverage') or 0) >= .90))
+def build_snapshot(report, previous, data, originals):
+    """Reuse same-session observations and collect only newly included names."""
+    now = datetime.fromisoformat(report['generated_at'])
+    month = now.astimezone(NY).strftime('%Y-%m')
+    selection = previous.get('selection') if previous.get('version') == VERSION else None
+    day = report['price_as_of']
+    universe, _, risk_on = market_universe(data, day, math.inf)
+    if risk_on is not report.get('risk_on') or day != data.sessions[-1]:
+        raise ValueError('MARKET_OBSERVATION_MISMATCH')
+    prior = {(r['ticker'], r['cik']): r for r in report['candidates'] if r.get('price_as_of') == day}
+    missing = [r for r in universe if (r['ticker'], r['cik']) not in prior]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        added = list(pool.map(lambda row: fundamentals(row, originals), missing))
+    resolved = [prior[(r['ticker'], r['cik'])] for r in universe if (r['ticker'], r['cik']) in prior] + added
+    coverage = sum(r['resolved'] is True for r in resolved) / len(universe) if universe else 0.
+    valid = [r for r in resolved if r.get('data_status') == 'VERIFIED' and r['fundamental_audit']['status'] == 'PASS']
+    ranked = rank(valid)
+    audit = audit_selection(valid, choose(valid, math.inf), math.inf)
+    spy = closes_at(data, day, 'SPY', 253)
+    if len(spy) != 253:
+        raise ValueError('AVANZA_BENCHMARK_CHECK_FAILED')
+    for row in ranked:
+        prices = closes_at(data, day, row['ticker'], 253)
+        if len(prices) != 253 or not (math_close(row['relative_strength'], (prices[0]/prices[126])/(spy[0]/spy[126])-1)
+                and prices[0] > sum(prices[:200])/200):
+            raise ValueError('AVANZA_MOMENTUM_CHECK_FAILED')
+    if risk_on and coverage >= MIN_COVERAGE and len(ranked) and (not selection or selection['month'] < month):
+        selection = dict(month=month, as_of=day, usdsek=report['fx']['usdsek'], observed_at=report['generated_at'],
+                         rows=[{k: r[k] for k in ('ticker', 'name', 'sic', 'division', 'cik', 'price_usd', 'quality_score')}
+                               for r in ranked])
+    current_ids = {r['ticker']: str(r['cik']).zfill(10) for r in data.universe(day)
+                   if core.eligible(r) and r.get('cik')}
+    prices = data.bars(day)
+    quotes = {r['ticker']: r['price_usd'] for r in universe}
+    if selection:
+        for r in selection['rows']:
+            t = r['ticker']
+            mark = prices.get(t, [None, None])[1]
+            changed = any(selection['as_of'] < s['execution_date'] <= day
+                          for s in data.splits_by_ticker.get(t, ()))
+            if current_ids.get(t) != r['cik'] or changed or not isinstance(mark, (int, float)) or not math.isfinite(mark) or mark <= 0:
+                quotes.pop(t, None)
+            else:
+                quotes[t] = mark
+    return dict(version=VERSION, mode='PAPER_ONLY', selection=selection, quotes=quotes, quotes_as_of=day,
+                market_verified=True, selection_verified=coverage >= MIN_COVERAGE, coverage=coverage,
+                universe_count=len(universe), qualified_count=len(ranked), independent_selection=audit,
+                reused_fundamentals=len(resolved)-len(added), errors=[],
+                gaps=[dict(ticker=r['ticker'], reason=r.get('reason', 'SOURCE_GAP')) for r in resolved if not r['resolved']])
+
+
+def main():
+    p = argparse.ArgumentParser()
+    for name in ('report', 'previous', 'cache', 'originals', 'output'):
+        p.add_argument('--'+name, required=True, type=Path)
+    args = p.parse_args()
+    report = read_json(args.report)
+    previous = read_json(args.previous) if args.previous.is_file() else {}
+    try:
+        if (report.get('status') == 'COLLECTION_FAILED' or not report.get('price_as_of') or
+                not isinstance(report.get('risk_on'), bool) or not (report.get('fx') or {}).get('usdsek') or
+                not (report.get('audits') or {}).get('selection')):
+            raise ValueError('NO_VERIFIED_CURRENT_MARKET_INPUT')
+        end = (datetime.fromisoformat(report['generated_at']).date() - timedelta(days=1)).isoformat()
+        data = supplement(make_data(args.cache, end, True))
+        snapshot = build_snapshot(report, previous, data, args.originals)
+    except (OSError, KeyError, TypeError, ValueError, RuntimeError, AssertionError) as exc:
+        error = str(exc) if isinstance(exc, ValueError) and str(exc).isupper() else type(exc).__name__
+        snapshot = dict(version=VERSION, mode='PAPER_ONLY', quotes={}, quotes_as_of=report.get('price_as_of'),
+                        selection=previous.get('selection') if previous.get('version') == VERSION else None,
+                        market_verified=False, selection_verified=False, errors=[error])
+    atomic_json(args.output, snapshot)
+    print('AVANZA10', {k: snapshot.get(k) for k in (
+        'version', 'quotes_as_of', 'market_verified', 'selection_verified', 'coverage',
+        'universe_count', 'qualified_count', 'reused_fundamentals', 'errors'
+    )}, flush=True)
+
+
+if __name__ == '__main__':
+    main()
