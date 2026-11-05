@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-05T17:30:36.900631+00:00",
-  "source_run": "42075082382",
+  "generated_at": "2026-11-05T17:37:05.004104+00:00",
+  "source_run": "42076255838",
   "source_as_of": "2026-11-04",
   "source_checkpoint_sha256": "cbebfe12a748c5676647aa3bfe3f0bc58649b35f262dda7edb6292dfd29ca5de",
   "status": "ACTIVE",
@@ -98,7 +98,7 @@
     "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-05T17:30:36.900631+00:00",
+    "checked_at": "2026-11-05T17:37:05.004104+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -179,11 +179,8 @@
       "source": "Massive raw daily close"
     },
     "CDNA": {
-      "usd": 85.86,
-      "at": null,
-      "session": "2026-11-04",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "mode": "MISSING",
+      "error": "UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT"
     },
     "CLMT": {
       "mode": "MISSING",
@@ -226,8 +223,11 @@
       "source": "Massive raw daily close"
     },
     "MXL": {
-      "mode": "MISSING",
-      "error": "UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT"
+      "usd": 56.85,
+      "at": null,
+      "session": "2026-11-04",
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     },
     "SNDK": {
       "usd": 1037.4,
@@ -248,18 +248,12 @@
       "error": "UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT"
     },
     "TWST": {
-      "usd": 142.58,
-      "at": null,
-      "session": "2026-11-04",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "mode": "MISSING",
+      "error": "UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT"
     },
     "TXG": {
-      "usd": 67.52,
-      "at": null,
-      "session": "2026-11-04",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "mode": "MISSING",
+      "error": "UNBOOKED_CORPORATE_EVENT_OR_UNVERIFIED_EVENT_INPUT"
     }
   },
   "metrics": {
@@ -321,10 +315,10 @@
       "cost_sek": 1372.5106824999998,
       "mark": {
         "usd": 85.86,
-        "at": null,
         "session": "2026-11-04",
         "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "at": null,
+        "source": "Accepted H3 close"
       },
       "value_sek": 1445.4220012632923,
       "pnl_sek": 72.91131876329246,
@@ -473,10 +467,10 @@
       "cost_sek": 944.8541815592024,
       "mark": {
         "usd": 142.58,
-        "at": null,
         "session": "2026-11-04",
         "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "at": null,
+        "source": "Accepted H3 close"
       },
       "value_sek": 847.1585848650479,
       "pnl_sek": -97.69559669415446,
@@ -492,10 +486,10 @@
       "cost_sek": 1180.1676,
       "mark": {
         "usd": 67.52,
-        "at": null,
         "session": "2026-11-04",
         "mode": "CLOSE",
-        "source": "Massive raw daily close"
+        "at": null,
+        "source": "Accepted H3 close"
       },
       "value_sek": 1069.8115238245296,
       "pnl_sek": -110.35607617547043,
@@ -568,10 +562,10 @@
       "cost_sek": 888.607965862342,
       "mark": {
         "usd": 56.85,
+        "at": null,
         "session": "2026-11-04",
         "mode": "CLOSE",
-        "at": null,
-        "source": "Accepted H3 close"
+        "source": "Massive raw daily close"
       },
       "value_sek": 788.1581307500953,
       "pnl_sek": -100.44983511224666,
@@ -1573,5 +1567,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "42075281095"
+  "refresh_run": "42076356492"
 }
