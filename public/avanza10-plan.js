@@ -46,19 +46,43 @@
     const issuers = new Set();
     const industries = new Map();
     const divisions = new Map();
-    for (const row of rows) {
-      if (excluded.has(row.ticker) || issuers.has(row.cik) || !validNumber(row.price_usd)) continue;
+    const slot = capital / slots;
+    let spare = Math.floor(capital * 100) / 100;
+    const ranked = rows.map((row, i) => ({...row, sourceRank: i}))
+      .filter(row => !excluded.has(row.ticker) && validNumber(row.price_usd));
+
+    function add(row, target, budget) {
       const industry = String(row.sic).slice(0, 2);
-      if ((industries.get(industry) || 0) >= 2 || (divisions.get(row.division) || 0) >= 4) continue;
-      const target = affordable(row.price_usd, fx, capital / slots);
-      if (!target) continue;
-      selected.push({...row, target, rank: selected.length + 1});
+      const group = industries.get(industry) || {count: 0, reserve: 0};
+      const sector = divisions.get(row.division) || {count: 0, reserve: 0};
+      const reserve = buyCost(target, row.price_usd, fx);
+      if (issuers.has(row.cik) || group.count >= 2 || sector.count >= 4 ||
+          reserve > spare || reserve > capital * .20 ||
+          group.reserve + reserve > capital * .30 || sector.reserve + reserve > capital * .50) return;
+      selected.push({...row, target, budget});
       issuers.add(row.cik);
-      industries.set(industry, (industries.get(industry) || 0) + 1);
-      divisions.set(row.division, (divisions.get(row.division) || 0) + 1);
+      industries.set(industry, {count: group.count + 1, reserve: group.reserve + reserve});
+      divisions.set(row.division, {count: sector.count + 1, reserve: sector.reserve + reserve});
+      spare = Math.round((spare - reserve) * 100) / 100;
+    }
+
+    for (const row of ranked) {
+      const target = affordable(row.price_usd, fx, slot);
+      if (target) add(row, target, slot);
       if (selected.length === slots) break;
     }
-    return selected;
+    // Whole-share rounding can leave room for a single share above the slot
+    // guideline. Use the smallest excess while respecting the frozen caps.
+    if (selected.length < slots) {
+      const aboveSlot = ranked.map(row => ({row, cost: buyCost(1, row.price_usd, fx)}))
+        .filter(({cost}) => cost > slot).sort((a, b) => a.cost - b.cost || a.row.sourceRank - b.row.sourceRank);
+      for (const {row, cost} of aboveSlot) {
+        add(row, 1, cost);
+        if (selected.length === slots) break;
+      }
+    }
+    return selected.sort((a, b) => a.sourceRank - b.sourceRank)
+      .map((row, i) => ({...row, rank: i + 1}));
   }
 
   function plan(report, settings, now = new Date()) {
@@ -90,15 +114,15 @@
     for (const row of rows) {
       if (row.current || !validNumber(row.price)) continue;
       const cost = buyCost(1, row.price, fx);
-      if (cost > Math.min(available, capital / slots)) continue;
+      if (cost > Math.min(available, row.budget)) continue;
       row.buy = 1;
       row.reserved = cost;
       available = Math.round((available - cost) * 100) / 100;
     }
     for (const row of rows) {
       if (!validNumber(row.price) || row.current >= row.target) continue;
-      const budget = Math.max(0, capital / slots - row.current * row.price * fx);
-      row.buy = affordable(row.price, fx, Math.min(available + row.reserved, budget), row.target - row.current);
+      const budget = Math.max(0, row.budget - row.current * row.price * fx);
+      row.buy = affordable(row.price, fx, Math.min(Math.round((available + row.reserved) * 100) / 100, budget), row.target - row.current);
       const cost = buyCost(row.buy, row.price, fx);
       available = Math.round((available + row.reserved - cost) * 100) / 100;
       row.reserved = cost;

@@ -36,7 +36,7 @@ test('buys one per position before topping up and never uses planned sale procee
   assert.equal(r.rows.filter(x => x.signal === 'KÖP').length, 2);
   assert.ok(r.rows.every(x => x.buy === undefined || x.buy <= 1));
   assert.ok(r.remainingCash >= 0);
-  assert.equal(plan(snapshot(), {...settings, capital: 3000, cash: 3000}, now).targetCount, 0);
+  assert.equal(plan(snapshot(), {...settings, capital: 1000, cash: 1000}, now).targetCount, 0);
 });
 
 test('data failure pauses signals and fresh risk off takes precedence over selection', () => {
@@ -64,4 +64,18 @@ test('the frozen month remains stable while an unavailable daily price blocks a 
   assert.equal(result.fundedCount, 9);
   r.avanza10.selection.month = '2026-10';
   assert.equal(plan(r, settings, now).targetCount, 0);
+});
+
+test('whole-share savings can fund the tenth position above its slot guideline', () => {
+  const r = snapshot();
+  r.avanza10.selection.rows = r.avanza10.selection.rows.slice(0, 10);
+  const result = plan(r, settings, now);
+  assert.equal(result.targetCount, 10);
+  assert.equal(result.fundedCount, 10);
+  assert.equal(result.rows[0].ticker, 'S0');
+  assert.equal(result.rows[0].quantity, 1);
+  assert.ok(result.rows[0].reserved > 2000 && result.rows[0].reserved <= 4000);
+  assert.ok(result.remainingCash >= 0);
+  r.avanza10.selection.rows[0].price_usd = 500;
+  assert.equal(plan(r, settings, now).targetCount, 9);
 });
