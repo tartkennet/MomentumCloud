@@ -87,6 +87,19 @@ class AvanzaSnapshot(unittest.TestCase):
             self.assertFalse(blocked['selection_verified'])
             self.assertEqual(blocked['selection'],first['selection'])
             self.assertIsNone(build_snapshot(report,{},data,None)['selection'])
+            # An incomplete month can recover when ten industry-compatible names appear.
+            extra=[dict(candidate(f'T{i}',str(i).zfill(10),i,30),sic=sic,division=sector)
+                   for i,(sic,sector) in enumerate([('2010','Manufacturing'),('2100','Manufacturing'),
+                       ('4010','Transport/communications'),('4100','Transport/communications'),
+                       ('4200','Transport/communications'),('4300','Transport/communications'),
+                       ('5010','Wholesale'),('5100','Wholesale')],start=3)]
+            all_rows=[aaa,bbb,*extra]
+            universe.return_value=(all_rows,{},True)
+            data.universe=lambda day:[dict(r,type='CS',primary_exchange='XNAS',active=True) for r in all_rows]
+            prices.update({r['ticker']:[30,30,10000] for r in extra})
+            complete=build_snapshot(dict(report,candidates=all_rows),first,data,None)
+            self.assertEqual(complete['selection']['target_count'],10)
+            self.assertEqual(complete['selection']['month'],first['selection']['month'])
 
 
 if __name__=='__main__':unittest.main()

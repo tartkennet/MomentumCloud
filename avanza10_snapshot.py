@@ -45,8 +45,11 @@ def build_snapshot(report, previous, data, originals):
         if len(prices) != 253 or not (math_close(row['relative_strength'], (prices[0]/prices[126])/(spy[0]/spy[126])-1)
                 and prices[0] > sum(prices[:200])/200):
             raise ValueError('AVANZA_MOMENTUM_CHECK_FAILED')
-    if risk_on and coverage >= MIN_COVERAGE and len(ranked) and (not selection or selection['month'] < month):
+    new_month = not selection or selection['month'] < month
+    newly_complete = selection and selection.get('target_count', 0) < 10 and audit['targets'] == 10
+    if risk_on and coverage >= MIN_COVERAGE and ranked and (new_month or newly_complete):
         selection = dict(month=month, as_of=day, usdsek=report['fx']['usdsek'], observed_at=report['generated_at'],
+                         target_count=audit['targets'],
                          rows=[{k: r[k] for k in ('ticker', 'name', 'sic', 'division', 'cik', 'price_usd', 'quality_score')}
                                for r in ranked])
     current_ids = {r['ticker']: str(r['cik']).zfill(10) for r in data.universe(day)
