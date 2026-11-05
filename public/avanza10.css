@@ -1,0 +1,16 @@
+main { display: grid; gap: 1.1rem; }
+.settings, .signal-grid, .facts { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.settings label { display: grid; align-content: start; gap: .35rem; }
+.settings input, .settings textarea { width: 100%; font: inherit; color: inherit; border: 1px solid currentColor; border-radius: .5rem; padding: .55rem; background: transparent; }
+.settings button { justify-self: start; }
+.facts { margin: .6rem 0; }
+.facts div { min-width: 0; }
+.facts dd { margin: 0; font-weight: 650; overflow-wrap: anywhere; }
+.signal { border: 1px solid var(--line); border-radius: .9rem; padding: .8rem; min-width: 0; }
+.signal h3 { margin: 0; overflow-wrap: anywhere; }
+.signal p { margin: .4rem 0; }
+.signal .facts { gap: .5rem; }
+.signal .tag { margin-top: .4rem; }
+@media (max-width: 640px) {
+  .settings, .signal-grid { grid-template-columns: 1fr; }
+}

@@ -3,6 +3,7 @@ import argparse,json,os,shutil,tempfile
 from pathlib import Path
 from publish_h3_snapshot import git
 from quality_forward import digest
+from avanza10_snapshot import build_snapshot
 
 BRANCH='quality-observed-snapshots'
 
@@ -27,10 +28,13 @@ def publish(folder,manifest):
                 for k in ('strategy','benchmark'):
                     for f in ('trades','equity'):assert state[k][f][:len(old[k][f])]==old[k][f]
                 for f in ('decisions','event_journal','opening_quotes','gaps'):assert state[f][:len(old[f])]==old[f]
-            record.write_text(json.dumps(dict(manifest=meta,state=state,report=report),allow_nan=False))
             if state:prevpath.write_text(json.dumps(state,allow_nan=False))
+            target=work/'public/data/quality-earnings.json'
+            previous=json.loads(target.read_text()).get('avanza10') if remote else None
+            report['avanza10']=build_snapshot(report,previous)
+            record.write_text(json.dumps(dict(manifest=meta,state=state,report=report),allow_nan=False))
             report['journal_evidence']=dict(record=key,previous_state_sha256=state.get('previous_state_sha256') if state else None,**meta)
-            (work/'public/data/quality-earnings.json').write_text(json.dumps(report,ensure_ascii=False,allow_nan=False))
+            target.write_text(json.dumps(report,ensure_ascii=False,allow_nan=False))
             (work/'quality-current-manifest.json').write_text(json.dumps(meta))
             if not remote:shutil.copyfile('vercel.json',work/'vercel.json')
             git('add','quality-journal','quality-current-manifest.json','public/data/quality-earnings.json',*(['quality-state.json'] if state else []),*(['vercel.json'] if not remote else []),cwd=work)
