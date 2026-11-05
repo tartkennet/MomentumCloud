@@ -7,7 +7,7 @@ import argparse
 import copy
 import math
 import os
-from datetime import datetime, timezone
+from datetime import datetime, time, timezone
 from pathlib import Path
 
 from momentum_core_data import atomic_json, read_json
@@ -36,6 +36,21 @@ def membership(rows):
         selected.append(copy.deepcopy(r))
         if len(selected)==10:break
     return selected
+
+
+def observe_account(state, data, client, now):
+    state=observe(state,data,client,now)
+    # The reused ledger's date-only initialization check can include the close
+    # of the initialization day even when this new account began after 16:00.
+    # Exclude that pre-initialization mark; never move the real start clock.
+    initialized=datetime.fromisoformat(state['initialized_at'])
+    invalid={r['date'] for r in state['strategy']['equity']
+             if datetime.combine(datetime.fromisoformat(r['date']).date(),time(16),NY)<=initialized}
+    for account in ('strategy','benchmark'):
+        state[account]['equity']=[r for r in state[account]['equity'] if r['date'] not in invalid]
+    state['valuation_observations']=[r for r in state['valuation_observations'] if r['date'] not in invalid]
+    for day in invalid:state['valuation_quotes'].pop(day,None)
+    return state
 
 
 def cancel(state, now, reason):
@@ -173,7 +188,7 @@ def run(args):
         if state['model_fingerprint']!=digest(POLICY):raise ValueError('POLICY_CHANGED_REQUIRES_NEW_COHORT')
         # Cancel unsafe intentions BEFORE the observer can execute an opening.
         decide(state,report,snapshot,data,now)
-        state=observe(state,data,client,now)
+        state=observe_account(state,data,client,now)
         for day in {r['date'] for r in state['strategy']['equity']} | {t['date'] for t in state['strategy']['trades']}:
             fx=rate_on(report.get('fx_history',{}),day)
             if not fx:raise ValueError('MISSING_DATED_FX')

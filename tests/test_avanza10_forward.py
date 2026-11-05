@@ -5,7 +5,7 @@ from datetime import datetime
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from avanza10_forward import POLICY, decide, membership, summarize, run
+from avanza10_forward import POLICY, decide, membership, summarize, run, observe_account
 from quality_forward import bootstrap, digest
 from quality_strategy import division, rank
 from quality_account_audit import audit_account
@@ -31,6 +31,15 @@ def fixture(capital=20000):
 
 
 class AvanzaAccountTests(unittest.TestCase):
+    def test_close_before_actual_account_initialization_is_never_a_start_mark(self):
+        s,r,a,d,c,now=fixture()
+        s['initialized_at']='2026-11-02T21:30:00+00:00'
+        s['event_through']='2026-11-02'
+        result=observe_account(s,Data(['2026-10-30','2026-11-02'],d._bars),c,
+                               datetime.fromisoformat('2026-11-03T08:17:00+00:00'))
+        self.assertFalse(result['strategy']['equity'])
+        self.assertFalse(result['valuation_quotes'])
+
     def test_commit_observe_value_audit_and_no_mutation_of_prior(self):
         s,r,a,d,c,now=fixture();decide(s,r,a,d,now)
         self.assertEqual(len(s['pending']['targets']),10)
