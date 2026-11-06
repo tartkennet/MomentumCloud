@@ -90,3 +90,22 @@ class SecReferenceTests(unittest.TestCase):
         self.assertEqual(result['sic'],'5411')
         self.assertEqual(result['source'],'SEC_REFERENCE_OBSERVED_BY_SIGNAL_DATE')
         with self.assertRaises(DataUnavailable):sec_classification(row,'2026-11-05','unused',Client())
+
+
+class FinancialReferenceTests(unittest.TestCase):
+    def test_dated_financial_metadata_repairs_only_classification_without_earnings_ranking(self):
+        from best_forward import reference
+        row=dict(ticker='TEST',cik='0000000123')
+        class Client:
+            def get(self,path,params):
+                if '/tickers/' in path:return {'results':dict(ticker='TEST',cik='123',sic_code=None,type='CS')}
+                if '/financials' in path:return {'results':[
+                    dict(cik='123',sic='5411',filing_date='2026-11-06'),
+                    dict(cik='123',sic='5411',filing_date='2026-11-04')]}
+                return {'results':[]}
+        with tempfile.TemporaryDirectory() as cache:
+            result=reference(row,'2026-11-05',Path(cache),Client())
+            self.assertEqual(result['sic'],'5411')
+            receipt=json.loads((Path(cache)/'best-reference-v1/2026-11-05/TEST.json').read_text())
+            self.assertEqual(receipt['sic_evidence']['filed'],'2026-11-04')
+            self.assertEqual(receipt['sic_evidence']['source'],'DATED_PROVIDER_FINANCIAL_FILER_REFERENCE')

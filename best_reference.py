@@ -1,5 +1,6 @@
 """Primary SEC classification evidence; no guessed SIC and no future vintage."""
 import json
+import threading
 from datetime import datetime,timezone
 from quality_forward import NY,digest
 from quality_sources import DataUnavailable,iso_date
@@ -7,7 +8,12 @@ from supplement_quality_sources import SEC,header
 from best_strategy import division
 
 
+_SEC_ACCESS=threading.Lock()
+
 def sec_classification(row,day,root,client=None):
+    with _SEC_ACCESS:return _sec_classification(row,day,root,client)
+
+def _sec_classification(row,day,root,client=None):
     client=client or SEC(root)
     raw,receipt=client.get('https://data.sec.gov/submissions/CIK'+row['cik']+'.json')
     payload=json.loads(raw)

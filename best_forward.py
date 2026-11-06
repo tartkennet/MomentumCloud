@@ -59,10 +59,33 @@ def reference(row,day,cache,client):
                         source_sha256=digest(filing))
                     break
                 if evidence:break
+            attempts=[]
+            if not evidence:
+                try:
+                    financials=client.get('/vX/reference/financials',{'ticker':row['ticker'],'filing_date.lte':day,
+                        'sort':'filing_date','order':'desc','limit':5}).get('results',[])
+                    for item in financials:
+                        filed=iso_date(item.get('filing_date',''))
+                        try:datetime.fromisoformat(filed)
+                        except ValueError:continue
+                        if filed>day or str(item.get('cik','')).zfill(10)!=row['cik']:continue
+                        candidate=str(item.get('sic') or '').zfill(4)
+                        try:strategy.division(candidate)
+                        except (ValueError,TypeError):continue
+                        evidence=dict(sic=candidate,cik=row['cik'],filed=filed,observed_at=datetime.now(timezone.utc).isoformat(),
+                            source='DATED_PROVIDER_FINANCIAL_FILER_REFERENCE',source_sha256=digest(item),source_url=item.get('source_filing_url'))
+                        break
+                    if not evidence:attempts.append('FINANCIAL_REFERENCE_NO_ASOF_MATCH')
+                except DataUnavailable as exc:attempts.append('FINANCIAL_REFERENCE_'+str(exc))
             if not evidence:
                 from best_reference import sec_classification
                 try:evidence=sec_classification(row,day,cache/'best-sec-originals')
-                except (DataUnavailable,ValueError,KeyError,AssertionError):evidence=None
+                except (DataUnavailable,ValueError,KeyError,AssertionError) as exc:
+                    attempts.append(str(exc) if isinstance(exc,DataUnavailable) else type(exc).__name__);evidence=None
+            if not evidence:
+                gap=dict(ticker=row['ticker'],cik=row['cik'],date=day,attempts=attempts)
+                atomic_json(cache/'best-reference-errors-v1'/day/(row['ticker']+'.json'),gap)
+                print('BEST_REFERENCE_GAP',json.dumps(gap),flush=True)
             if evidence:
                 receipt['sic_evidence']=evidence;atomic_json(path,receipt)
         if not evidence or evidence['filed']>day or evidence['cik']!=row['cik']:

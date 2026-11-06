@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['best_*.py','audit_best.py','publish_best.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
+    paths: ['best_*.py','audit_best.py','publish_best.py','verify_best.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
   pull_request:
-    paths: ['best_*.py','audit_best.py','publish_best.py','tests/test_best*.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
+    paths: ['best_*.py','audit_best.py','publish_best.py','verify_best.py','tests/test_best*.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
   schedule:
     - cron: '22 8,22 * * 1-5'
     - cron: '52 14,15 * * 1-5'
@@ -73,6 +73,9 @@ jobs:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           BEST_INITIAL_SEK: ${{ vars.BEST_INITIAL_SEK }}
         run: python best_forward.py --cache .best_market_cache --previous best_previous --output best_output
+      - name: Require actual technical and funding readiness for PR approval
+        if: github.event_name == 'pull_request'
+        run: python verify_best.py --folder best_output
       - name: Save encrypted recovery checkpoint even after interrupted collection
         if: always()
         env:

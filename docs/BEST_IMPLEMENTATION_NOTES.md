@@ -33,3 +33,14 @@ signal date in New York; otherwise only an original filing header dated by the
 signal is admissible. Exact CIK and SIC, observation time, source URL and content
 hash are preserved. Future-only classification is rejected, and the candidate
 is never silently dropped. This repairs missing metadata, not model parameters.
+
+PR approval now explicitly requires the independently audited full inventory,
+ten common-stock members, funded integer orders and an independently reconciled
+BEST state. A gracefully reported data block is not a green release gate. Daily
+production still publishes honest failure status without erasing prior history.
+
+The same provider's dated financial filing reference may also supply SIC when
+ticker-reference and SEC-filing-index metadata omit foreign issuers. Only CIK,
+SIC, filing date, source URL and receipt hash are consumed; earnings/fundamental
+values are not ranking inputs. Source failures are recorded by ticker and
+redacted status code. Primary SEC requests are serialized under its rate limit.
