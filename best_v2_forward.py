@@ -133,9 +133,9 @@ def initialize(report,now,requested=''):
     rows=copy.deepcopy(selection['rows'])
     for r in rows:r['price_usd']=report['signal']['quotes'][r['ticker']]
     required=capital.requirements(rows,report['fx']['usdsek']);audit.funding(rows,report['fx']['usdsek'],required)
-    initial=max(25000.,required['minimum_capital_sek']) if not requested or requested=='AUTO_MINIMUM' else float(requested)
+    initial=max(25000.,required['minimum_capital_sek']) if not requested or requested in ('AUTO_TARGET_25000','AUTO_MINIMUM') else float(requested)
     if not math.isfinite(initial) or initial<=0 or abs(initial*100-round(initial*100))>1e-5:raise ValueError('INVALID_INITIAL_CAPITAL')
-    config=dict(policy='BEST_V2_CAPITAL_V1',mode='AUTO_MINIMUM' if not requested or requested=='AUTO_MINIMUM' else 'EXPLICIT',
+    config=dict(policy='BEST_V2_CAPITAL_V1',mode='AUTO_TARGET_25000' if not requested or requested in ('AUTO_TARGET_25000','AUTO_MINIMUM') else 'EXPLICIT',
         initial_sek=initial,configured_at=now.isoformat(),funding=required,selection_sha256=digest(selection),fx=report['fx'])
     state=bootstrap(dict(initial_usd=initial/report['fx']['usdsek'],fx=report['fx']),strategy.fingerprint(),now)
     state.update(initial_sek=initial,opening_quotes=[],valuation_fx={},trade_fx={},capital_configuration=config,cohort_id=digest(config))

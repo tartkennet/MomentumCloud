@@ -107,6 +107,8 @@ def plan(rows, p, shares, nav, cash, prices):
 
 def account(state, report):
     audits={k:audit_account(state,k,k=='benchmark') for k in ('strategy','benchmark')}
+    cfg=state['capital_configuration']
+    if cfg['mode']=='AUTO_TARGET_25000':assert cfg['initial_sek']==max(25000.,cfg['funding']['minimum_capital_sek'])
     audit_sek(state,report)
     assert report['journal_sha256']==digest(state)
     return dict(status='PASS',independent_code=True,ledger=audits)
