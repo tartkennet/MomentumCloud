@@ -14,7 +14,9 @@ def get(path):
 
 def main():
     output=Path('best_production_check');output.mkdir(exist_ok=True)
-    checks={}
+    status,home=get('/')
+    assert status==200 and b'/best-app.js' in home, 'PRODUCTION_ROOT_NOT_BEST'
+    checks={'root':dict(http=status,model='Momentum 10 BEST')}
     for endpoint in ('health','dashboard','h3','portfolio','quality','avanza10','best'):
         status,body=get('/api/'+endpoint);data=json.loads(body)
         assert status in (200,503),(endpoint,status)

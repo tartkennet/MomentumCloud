@@ -1,3 +1,40 @@
+# MomentumCloud · Momentum 10 BEST
+
+Huvudappen har Översikt, Portfölj, Affärer, Statistik och Inställningar för det
+separata experimentella BEST-kontot. Urvalet drivs av kursmomentum, relativ styrka,
+trenduthållighet och riskjusterat momentum, utan fundamentala kvalitetspoäng.
+
+Förregistrering: [BEST v1](docs/MOMENTUM10_BEST_PROTOCOL_V1.md).
+[Implementation och databegränsningar](docs/BEST_IMPLEMENTATION_NOTES.md).
+Samtliga daterade tillgängliga amerikanska stamaktier i leverantörens
+XNAS/XNYS/XASE-universum inventeras; ingen topp-100-begränsning används.
+Absoluta pris-, likviditets- och historikkrav samt öppna riskgränser gäller.
+
+Aktier väljs före kapitalberäkningen. `AUTO_MINIMUM` beräknar startkapital från
+tio hela aktier, avgifter, valutaväxling, exekveringsreserv och riskgränser.
+20 000 SEK är inget krav eller tak. Kapitalplanen i webbläsaren ändrar antal och
+visar underskott, men ändrar aldrig aktieurvalet eller kontots bokförda startkapital.
+
+`/api/best` levererar den separata, hashkedjade journalen från
+`best-observed-snapshots`. Månatligt urval och daglig riskkontroll körs genom
+befintliga GitHub Actions. Planerade affärer är inga innehav: paperstart kräver
+faktiskt observerade framtida öppningar och oberoende avstämd bokföring.
+Inga historiska köp eller simulerade avkastningskurvor läggs till.
+
+**PAPER_EXPERIMENT. Ekonomiskt NO_GO. Ingen riktig handel eller broker-integration.**
+Den tekniska grinden kräver full inventering, tio verifierade stamaktier,
+finansierade heltalsorder och separata signal-, kapital- och kontogranskningar.
+Produktionskontrollen läser alla sju API:er och provar fem flikar vid
+320/390/1440 px mot riktiga produktionsdata.
+
+H3, Quality & Earnings, Avanza 10 och tidigare forskning ligger i
+Inställningar → Forskningsarkiv. Deras kod, konton, journaler och ekonomiska
+krav bevaras. `/avanza-main` visar den tidigare huvudappen; äldre API:er finns kvar.
+
+---
+
+## Tidigare Avanza-huvudapp och bevarad dokumentation
+
 # MomentumCloud · Momentum 10 för Avanza
 
 Huvudappen på `/` har Översikt, Portfölj, Affärer, Statistik och Inställningar.
