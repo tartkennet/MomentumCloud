@@ -13,7 +13,7 @@ import momentum_core as core
 from momentum_core_data import atomic_json,read_json
 from quality_forward import NY,bootstrap,digest
 from quality_sources import Provider,DataUnavailable,iso_date
-from run_quality_forward import data_for
+from best_data import data_for,BestProvider
 from avanza10_forward import observe_account,summarize as ledger_summary
 from h3_display import ecb_rates,rate_on
 from research_stocks10 import fee
@@ -79,7 +79,7 @@ def collect(data,client,cache,previous,now,output=None):
         atomic_json(Path(output)/'best-coverage.json',dict(price_as_of=day,diagnostics=diagnostics,population_audit=population_audit,ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows]))
     strong=[r for r in rows if r['strong']][:40]
     with ThreadPoolExecutor(max_workers=4) as pool:
-        pool_rows=list(pool.map(lambda row:reference(row,day,cache,Provider()),strong))
+        pool_rows=list(pool.map(lambda row:reference(row,day,cache,BestProvider()),strong))
     edges=strategy.clusters(pool_rows);targets,skips=strategy.select(pool_rows)
     analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
     checked=audit.signal(analysis)
@@ -96,7 +96,7 @@ def collect(data,client,cache,previous,now,output=None):
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='19e40bc645ce5f34ff06e870338b9515ca81fda5',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_data.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,

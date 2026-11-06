@@ -18,3 +18,10 @@ reference symbol must appear once as evaluated or excluded, with a reason. Chang
 source, universe, or protocol fingerprints invalidate old checkpoints. Recovery
 caches are encrypted using the existing protected market-data credential and
 saved even on collection failure. No credential value is serialized or logged.
+
+The BEST-only data adapter now uses the current New York session only after
+16:15 local time. Before that it requests prior completed dates; the observed
+SPY calendar handles holidays/weekends. This fixes the legacy adapter's UTC
+yesterday lag without altering any legacy code or frozen BEST score parameters.
+Reference requests retry only transient 429/502/503/504 responses; permissions
+errors remain explicit and never trigger a different investment universe.

@@ -60,3 +60,14 @@ class ClassificationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as cache:
             with self.assertRaisesRegex(ValueError,'UNVERIFIED_INDUSTRY_CLASSIFICATION_TEST'):
                 reference(row,'2026-11-05',Path(cache),Client())
+
+
+class SessionClockTests(unittest.TestCase):
+    def test_use_only_final_completed_session_including_utc_date_boundary(self):
+        from datetime import datetime
+        from best_data import completed_end
+        for stamp,day in [('2026-11-06T20:59:00+00:00','2026-11-05'),
+            ('2026-11-06T21:16:00+00:00','2026-11-06'),
+            ('2026-11-07T00:30:00+00:00','2026-11-06'),
+            ('2026-11-09T13:00:00+00:00','2026-11-08')]:
+            self.assertEqual(completed_end(datetime.fromisoformat(stamp)),day)
