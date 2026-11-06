@@ -52,16 +52,15 @@ def event_text(text):
     return any(re.search(p,t) for p in bindings)
 
 
-def filings(client,ticker,start,cutoff):
-    rows=[];params={'entities.company_data.ticker':ticker,'filing_date.gte':start,'filing_date.lte':cutoff,
-                   'sort':'filing_date','order':'desc','limit':100}
-    path='/v1/reference/sec/filings';seen=set()
+def pages(client,path,params):
+    rows=[];seen=set();base=path
     while True:
-        body=client.get(path,params);rows.extend(body.get('results',[]))
-        nxt=body.get('next_url')
+        body=client.get(path,params)
+        if body.get('status') not in (None,'OK'):raise DataUnavailable('EVENT_PROVIDER_NOT_OK')
+        rows.extend(body.get('results',[]));nxt=body.get('next_url')
         if not nxt:break
         p=urlparse(nxt)
-        if p.hostname not in ('api.massive.com','api.polygon.io') or p.path!='/v1/reference/sec/filings':raise DataUnavailable('UNTRUSTED_FILINGS_PAGE')
+        if p.hostname not in ('api.massive.com','api.polygon.io') or p.path!=base:raise DataUnavailable('UNTRUSTED_FILINGS_PAGE')
         params={k:v[0] for k,v in parse_qs(p.query).items() if k!='apiKey'};path=p.path
         key=digest(params)
         if key in seen:raise DataUnavailable('REPEATED_FILINGS_PAGE')
@@ -69,41 +68,67 @@ def filings(client,ticker,start,cutoff):
     return rows
 
 
+def review_events(client,row,date):
+    start=(datetime.fromisoformat(date)-timedelta(days=400)).date().isoformat()
+    index=pages(client,'/stocks/filings/vX/index',dict(cik=row['cik'],**{'filing_date.gte':start,'filing_date.lte':date},limit=1000,sort='filing_date.desc'))
+    if not index:raise DataUnavailable('EMPTY_COMPLETE_EVENT_INDEX')
+    for x in index:
+        if str(x.get('cik','')).zfill(10)!=row['cik'] or not start<=iso_date(x['filing_date'])<=date:raise DataUnavailable('EVENT_INDEX_IDENTITY_OR_DATE')
+    required=[x for x in index if x['form_type'] in ('8-K','8-K/A')]
+    other=[x for x in index if x['form_type'] in ('6-K','6-K/A','425','SC TO-T','SC 14D9','DEFM14A')]
+    texts=pages(client,'/stocks/filings/8-K/vX/text',dict(cik=row['cik'],**{'filing_date.gte':start,'filing_date.lte':date},limit=100,sort='filing_date.desc'))
+    mapped={x['accession_number']:x for x in texts}
+    if any(x['accession_number'] not in mapped for x in required):raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
+    documents=[];warnings=[]
+    def keep(accession,text,url,filed):
+        if not text or len(text)<30:raise DataUnavailable('EMPTY_EVENT_TEXT')
+        if filed>date:raise DataUnavailable('FUTURE_EVENT_TEXT')
+        flagged=event_text(text)
+        documents.append(dict(accession=accession,filing_date=filed,source_url=url,
+            text=text,sha256=hashlib.sha256(text.encode()).hexdigest(),event_language=flagged))
+        if flagged:warnings.append(accession)
+    for x in required:
+        t=mapped[x['accession_number']]
+        if str(t.get('cik','')).zfill(10)!=row['cik'] or iso_date(t['filing_date'])!=iso_date(x['filing_date']):raise DataUnavailable('EVENT_TEXT_IDENTITY_OR_DATE')
+        keep(x['accession_number'],t['items_text'],x['filing_url'],iso_date(x['filing_date']))
+    # Non-8-K forms require original text, never silent omission of foreign issuers.
+    if other:
+        from supplement_quality_sources import SEC
+        sec=SEC(Path(row['_cache'])/'best-v2-sec')
+        for x in other:
+            raw,meta=sec.get(x['filing_url'])
+            keep(x['accession_number'],raw.decode('utf-8',errors='replace'),x['filing_url'],iso_date(x['filing_date']))
+    # Read latest annual and interim originals as long-lived pending deal checks.
+    financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.ticker':row['ticker'],'filing_date.lte':date,'sort':'filing_date','order':'desc','limit':100})
+    chosen=[]
+    for form in ('10-K','10-Q','20-F','40-F'):
+        values=[x for x in financial if x['type']==form]
+        if values:chosen.append(values[0])
+    if not any(x['type'] in ('10-K','20-F','40-F') for x in chosen):raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
+    for x in chosen:
+        if not any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])):raise DataUnavailable('FINANCIAL_EVENT_IDENTITY_MISMATCH')
+        raw=raw_document(client,x['main_file_url']);text=re.sub('<[^>]+>',' ',raw.decode('utf-8',errors='replace'))
+        keep(x['accession_number'],text,x['source_url'],iso_date(x['filing_date']))
+    # Positive/ambiguous deal language is an explicit event exclusion requiring review,
+    # never an optimistic CLEAR. Event termination requires original analyst review.
+    return dict(status='REVIEW_REQUIRED' if warnings else 'CLEAR',index_sha256=digest(index),
+        indexed_forms=len(index),indexed_8k=len(required),reviewed_documents=len(documents),documents=documents,
+        warning_accessions=warnings,scope='All provider-indexed SEC material forms and annual/interim originals; provider updates daily')
+
+
 def reference(row,day,root,client,decision_at):
-    """Never interprets a financially restricted SEC feed as full event coverage."""
     decision=datetime.fromisoformat(decision_at);date=decision.astimezone(NY).date().isoformat()
     path=Path(root)/'best-v2-reference'/date/(row['ticker']+'.json')
     if path.exists():receipt=read_json(path)
     else:
         profile=client.get('/v3/reference/tickers/'+row['ticker'],{'date':date})['results']
         if profile.get('ticker')!=row['ticker'] or str(profile.get('cik','')).zfill(10)!=row['cik'] or profile.get('type')!='CS':raise DataUnavailable('V2_REFERENCE_IDENTITY_MISMATCH')
-        observed=datetime.now(timezone.utc).isoformat()
-        start=(decision.astimezone(NY).date()-timedelta(days=400)).isoformat()
-        entries=filings(client,row['ticker'],start,date)
-        # A financials-only feed can omit publicly known 8-K announcements.
-        # Require independently corroborated form coverage before CLEAR.
-        annual=[r for r in entries if r.get('type') in ('10-K','20-F','40-F')]
-        events=[r for r in entries if r.get('type') in ('8-K','6-K','425','SC TO-T','SC 14D9','DEFM14A')]
-        receipt=dict(ticker=row['ticker'],cik=row['cik'],price_date=day,decision_date=date,observed_at=observed,
-            profile={k:profile.get(k) for k in ('ticker','cik','type','description','sic_code','sic_description','name')},
-            filings=[{k:r.get(k) for k in ('id','type','filing_date','acceptance_datetime','main_file_url','entities')} for r in entries],
-            form_counts={t:sum(r.get('type')==t for r in entries) for t in sorted({r.get('type') for r in entries})},
-            event_status='UNVERIFIED_EVENT_FEED_COVERAGE',sources_sha256=digest(entries))
-        receipt.update(classify(profile));atomic_json(path,receipt)
-        if not annual or not events:raise DataUnavailable('MISSING_NONFINANCIAL_EVENT_COVERAGE_'+row['ticker'])
-        # Review originals; positive signals block until dated analyst/event review.
-        documents=[]
-        for entry in entries:
-            if entry.get('type') not in ('10-K','10-Q','20-F','40-F','8-K','6-K','425','SC TO-T','SC 14D9','DEFM14A'):continue
-            if not any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in entry.get('entities',[])):raise DataUnavailable('V2_FILING_IDENTITY_MISMATCH')
-            raw=raw_document(client,entry['main_file_url'])
-            flag=event_text(raw.decode('utf-8',errors='replace'))
-            documents.append(dict(id=entry['id'],sha256=hashlib.sha256(raw).hexdigest(),event_language=flag))
-        receipt.update(documents=documents,event_status='REVIEW_REQUIRED' if any(x['event_language'] for x in documents) else 'ORIGINALS_REVIEWED')
-        # Index completeness is a separate requirement: never certify from presence alone.
-        receipt['event_status']='UNVERIFIED_EVENT_FEED_COVERAGE'
-        atomic_json(path,receipt)
+        receipt=dict(ticker=row['ticker'],cik=row['cik'],price_date=day,decision_date=date,
+            observed_at=datetime.now(timezone.utc).isoformat(),profile={k:profile.get(k) for k in ('ticker','cik','type','description','sic_code','sic_description','name')},**classify(profile))
+        # Save business proof even if event access is blocked; not a clearance.
+        receipt['event_status']='DATA_BLOCKED';atomic_json(path,receipt)
     if receipt['cik']!=row['cik'] or receipt['decision_date']!=date:raise DataUnavailable('V2_RECEIPT_IDENTITY_MISMATCH')
-    if datetime.fromisoformat(receipt['observed_at'])>datetime.now(timezone.utc):raise DataUnavailable('FUTURE_REFERENCE_RECEIPT')
-    if receipt.get('event_status')!='CLEAR':raise DataUnavailable('MISSING_NONFINANCIAL_EVENT_COVERAGE_'+row['ticker'])
-    return dict(row,**{k:receipt[k] for k in ('sector','factor','healthcare_exposure')},event_status='CLEAR',reference_sha256=digest(receipt))
+    if receipt.get('event_status')=='DATA_BLOCKED':
+        events=review_events(client,dict(row,_cache=str(root)),date)
+        receipt.update(events=events,event_status=events['status'],observed_at=datetime.now(timezone.utc).isoformat());atomic_json(path,receipt)
+    return dict(row,**{k:receipt[k] for k in ('sector','factor','healthcare_exposure')},event_status=receipt['event_status'],reference_sha256=digest(receipt))
