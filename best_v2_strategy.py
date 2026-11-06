@@ -1,4 +1,4 @@
-"""Preregistered BEST v1 price-only signal; no capital or outcome optimization."""
+"""Preregistered BEST v2 price and economic-risk signal; no capital or outcome optimization."""
 import copy
 import math
 import statistics
@@ -48,7 +48,7 @@ def metrics(closes,spy,turnover):
         (m['vol63']<.08,'ABNORMALLY_LOW_VOLATILITY'),(gap>=.35,'UNRESOLVED_ADJUSTED_PRICE_JUMP'),
         (pin,'PRICE_PINNING'),(m['extension50']>1.35 or m['return_1m']>.60 or m['return_3m']>1.50,'OVEREXTENDED')]
         if condition]
-    m['strong']=bool(m['strong'] and rs63>0 and rs21>0 and m['persistence']>=.55
+    m['strong']=bool(all(m[k]>0 for k in ('momentum_12_1','momentum_6_1','rs6','rs63','rs21')) and closes[0]>m['sma50']>m['sma200'] and m['persistence']>=.55
         and m['sma50']>m['sma50_prior'] and m['sma200']>m['sma200_prior'] and not m['price_exclusions'])
     return m
 
@@ -122,7 +122,7 @@ def collect_prices(data, day, cache=None):
     evaluate=lambda record:evaluate_record(data,day,record,spy,expected)
     if cache is not None:
         from best_inventory import scan
-        rows,excluded,inventory=scan(records,evaluate,cache,dict(day=day,protocol=fingerprint(),prices=data.input_fingerprint()))
+        rows,excluded,inventory=scan(records,evaluate,cache,dict(day=day,protocol=fingerprint(),prices=data.input_fingerprint(),evaluator=__import__('hashlib').sha256(Path(__file__).read_bytes()).hexdigest()))
     else:
         for record in records:
             row,reason=evaluate(record)

@@ -37,9 +37,9 @@ def collect(data,client,cache,previous,now,output=None):
     rows,diagnostics,on=strategy.collect_prices(data,day,cache)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
-    for r in rows:audit.price_metrics(r,closes_at(data,day,r['ticker'],253),spy,[b[1]*b[2] for _,b in data.history(day,r['ticker'],253)[:25]])
     if output:
         atomic_json(Path(output)/'best-v2-coverage.json',dict(price_as_of=day,diagnostics=diagnostics,population_audit=population_audit,ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows]))
+    for r in rows:audit.price_metrics(r,closes_at(data,day,r['ticker'],253),spy,[b[1]*b[2] for _,b in data.history(day,r['ticker'],253)[:25]])
     strong=[r for r in rows if r['strong']][:60]
     pool_rows=copy.deepcopy(strong)
     # Correlation uses all forty price histories. Industry metadata is needed
