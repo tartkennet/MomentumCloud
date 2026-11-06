@@ -8,7 +8,7 @@ return target, historical economic GO, or real-money approval.
 
 Examine every dated US common-stock record supported by the existing complete
 PIT reference snapshot, XNAS/XNYS/XASE, active on the signal date, unique CIK.
-No ETF, SPY, preferred, SPAC or cash shell. No ADV100 truncation. Raw price >=
+No ETF, SPY, preferred, SPAC or cash shell. For multiple common classes of one CIK, use highest ADV20, then ticker; deduplicate before score percentiles. No ADV100 truncation. Raw price >=
 USD10, ADV20 >= USD20m, 253 consecutive observed sessions including positive
 close/volume on the latest 20 sessions. Missing history is disclosed per name;
 missing universe/calendar/benchmark blocks the formation. Sector metadata must
