@@ -18,5 +18,8 @@ def main():
             d=c.get('/v1/reference/sec/filings/'+a+'/files').get('results')
             out['files_schema']={'kind':type(d).__name__,'keys':list(d)[:8] if isinstance(d,dict) else None,'count':len(d) if d is not None else None}
         except DataUnavailable as e:out['files_schema']={'blocked':str(e)}
+        import requests
+        response=requests.get(r['filing_url'],headers={'User-Agent':'MomentumCloud research github.com/tartkennet/MomentumCloud (62360953+tartkennet@users.noreply.github.com)'},timeout=(5,12))
+        out['declared_contact_sec_original']={'http':response.status_code,'bytes':len(response.content)}
         print('BEST_V2_FOREIGN_ORIGINAL_PROBE',json.dumps(out),flush=True)
 if __name__=='__main__':main()
