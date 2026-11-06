@@ -181,16 +181,21 @@ def run(args):
     state=copy.deepcopy(prior)
     try:
         data,client=data_for(Path(args.cache),now)
+        # Collection can cross an opening. Never stamp a capital lock or a
+        # decision with the clock from before those inputs actually arrived.
+        now=datetime.now(timezone.utc)
         if data.sessions[-1]!=snapshot.get('quotes_as_of'):raise ValueError('AVANZA_MARKET_CLOCK_MISMATCH')
         state, archived=configure(prior,snapshot,report,now,digest(POLICY),os.environ.get('AVANZA_INITIAL_SEK',''))
         if state['model_fingerprint']!=digest(POLICY):raise ValueError('POLICY_CHANGED_REQUIRES_NEW_COHORT')
         # Cancel unsafe intentions BEFORE the observer can execute an opening.
+        now=datetime.now(timezone.utc)
         decide(state,report,snapshot,data,now)
         state=observe_account(state,data,client,now)
         for day in {r['date'] for r in state['strategy']['equity']} | {t['date'] for t in state['strategy']['trades']}:
             fx=rate_on(report.get('fx_history',{}),day)
             if not fx:raise ValueError('MISSING_DATED_FX')
             state['valuation_fx'].setdefault(day,fx);state['trade_fx'].setdefault(day,fx)
+        now=datetime.now(timezone.utc)
         decide(state,report,snapshot,data,now)
         state['audits']={k:audit_account(state,k,k=='benchmark') for k in ('strategy','benchmark')}
         if prior and not archived:

@@ -2,10 +2,14 @@ import copy
 import json
 import subprocess
 import unittest
+import tempfile
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 from datetime import datetime
 
 from avanza10_capital import configure, requirements, membership, validate_transition
-from avanza10_forward import POLICY, decide, observe_account
+from avanza10_forward import POLICY, decide, observe_account, run
 from quality_forward import digest
 from audit_avanza10 import audit_funding
 from test_avanza10_forward import fixture
@@ -84,6 +88,27 @@ class CapitalPolicyTests(unittest.TestCase):
         self.assertFalse(after['strategy']['trades'])
         self.assertIsNotNone(after['pending'])
         self.assertEqual(after['pending']['created_at'],now.isoformat())
+
+    def test_collection_crossing_an_open_cannot_backdate_the_new_capital_commitment(self):
+        old,r,a,data,client,_=fixture()
+        start=datetime.fromisoformat('2026-11-02T14:29:00+00:00')
+        after=datetime.fromisoformat('2026-11-02T14:31:00+00:00')
+        r['generated_at']=start.isoformat()
+        class Clock(datetime):
+            calls=0
+            @classmethod
+            def now(cls,tz=None):
+                cls.calls+=1
+                return start if cls.calls==1 else after
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);out=root/'out';out.mkdir();prev=root/'previous';prev.mkdir()
+            (out/'quality.json').write_text(json.dumps(r));(out/'avanza10.json').write_text(json.dumps(a))
+            with patch('avanza10_forward.datetime',Clock), patch('avanza10_forward.data_for',return_value=(data,client)), patch.dict('os.environ',{'AVANZA_INITIAL_SEK':'AUTO_MINIMUM'}):
+                run(SimpleNamespace(output=str(out),previous=str(prev),cache=str(root/'cache')))
+            state=json.loads((out/'avanza-state.json').read_text())
+            self.assertEqual(state['initialized_at'],after.isoformat())
+            self.assertEqual(state['pending']['created_at'],after.isoformat())
+            self.assertFalse(state['strategy']['trades'])
 
     def test_incomplete_data_or_invalid_choice_never_initializes_or_swaps_names(self):
         old,r,a,data,client,now=fixture()
