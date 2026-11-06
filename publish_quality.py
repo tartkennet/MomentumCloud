@@ -33,6 +33,26 @@ def publish(folder,manifest):
             snapshot=json.loads((folder/'avanza10.json').read_text())
             assert snapshot['version']==VERSION and snapshot['mode']=='PAPER_ONLY'
             report['avanza10']=snapshot
+            paper_path=folder/'avanza-paper.json'
+            if paper_path.exists():
+                paper=json.loads(paper_path.read_text())
+                assert paper['model']=='avanza10-observed-paper-v1' and paper['live_approved'] is False and paper['broker_orders_enabled'] is False
+                ap=work/'avanza-state.json';np=folder/'avanza-state.json'
+                if np.exists():
+                    new=json.loads(np.read_text())
+                    assert paper['journal_sha256']==digest(new),'Avanza report/state identity mismatch'
+                    if ap.exists():
+                        accepted=json.loads(ap.read_text())
+                        assert new['previous_state_sha256']==digest(accepted),'Avanza compare-and-swap failed'
+                        for account in ('strategy','benchmark'):
+                            for field in ('trades','equity'):
+                                assert new[account][field][:len(accepted[account][field])]==accepted[account][field]
+                        assert new['decisions'][:len(accepted['decisions'])]==accepted['decisions']
+                    ap.write_text(json.dumps(new,allow_nan=False))
+                    git('add','avanza-state.json',cwd=work)
+                (work/'public/data/avanza-paper.json').write_text(json.dumps(paper,allow_nan=False))
+                git('add','public/data/avanza-paper.json',cwd=work)
+                report['avanza_paper']=paper
             record.write_text(json.dumps(dict(manifest=meta,state=state,report=report),allow_nan=False))
             report['journal_evidence']=dict(record=key,previous_state_sha256=state.get('previous_state_sha256') if state else None,**meta)
             target.write_text(json.dumps(report,ensure_ascii=False,allow_nan=False))

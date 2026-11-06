@@ -1,3 +1,21 @@
+# MomentumCloud · Momentum 10 för Avanza
+
+Huvudappen på `/` har Översikt, Portfölj, Affärer, Statistik och Inställningar.
+Avanza-urvalet från PR #40–41 är kapitaloberoende. H3 och äldre forskning finns
+under Inställningar → Forskningsarkiv; deras journaler och frysta regler bevaras.
+
+`/api/avanza10` levererar endast det separata Avanza-kontot, med explicita
+leverans-, automations- och finansieringsspärrar. Den vanliga portföljvyn blandar
+aldrig in Quality-kontots affärer eller H3. `/api/quality` och äldre API:er finns kvar.
+
+Se [Avanza paper-protokoll](docs/AVANZA10_APP_PROTOCOL.md) för körning, datakrav,
+kostnader, beständig journal, revision och begränsningar. **PAPER ONLY**. Inget
+livegodkännande, ingen broker-integration och inga riktiga order.
+
+---
+
+## Tidigare modeller och driftinformation
+
 # MomentumCloud — historiskt verifierad kandidat, PAPER_ONLY
 
 Forskningskandidaten **H3 klarar alla fem oförändrade finansiella GO-krav i samtliga 40 scenarier**, inklusive dubbla transaktionskostnader. Status är **PAPER_ONLY**: verklig out-of-sample-validering saknas och riktig handel är inte godkänd.
