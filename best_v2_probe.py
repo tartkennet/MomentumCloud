@@ -23,5 +23,13 @@ def main():
             response=client.session.get('https://api.polygon.io'+u.path,params={'apiKey':client.key},timeout=(5,20))
             text=response.text.lower();out['original_read']={'http':response.status_code,'bytes':len(response.content),'merger_term': 'merger agreement' in text,'cash_term':'per share in cash' in text}
         except Exception as e:out['original_read']={'blocked':type(e).__name__}
+        try:
+            r=client.get('/stocks/filings/vX/index',{'ticker':ticker,'form_type':'8-K','limit':1,'sort':'filing_date','order':'desc'})['results'][0]
+            a=r['accession_number'];out['event_originals']={}
+            for label,path in [('files','/v1/reference/sec/filings/'+a+'/files'),('text','/stocks/filings/vX/'+a),('details','/v1/reference/sec/filings/'+a)]:
+                try:
+                    body=client.get(path);out['event_originals'][label]={'keys':list(body),'result_keys':list(body['results'][0]) if isinstance(body.get('results'),list) and body['results'] else []}
+                except DataUnavailable as e:out['event_originals'][label]={'blocked':str(e)}
+        except Exception as e:out['event_originals']={'blocked':type(e).__name__}
         print('BEST_V2_SOURCE_PROBE',json.dumps(out),flush=True)
 if __name__=='__main__':main()
