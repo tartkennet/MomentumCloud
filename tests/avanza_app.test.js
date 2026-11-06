@@ -21,7 +21,7 @@ test('missing or wrong identity cannot become an active paper account',async t=>
  t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>r}));
  const res=response();await handler({},res);
  assert.equal(res.body.paper.automation_verified,false);assert.equal(res.body.paper.effective_status,'BLOCKED');
- assert.deepEqual(res.body.paper.trades,[]);
+ assert.deepEqual(res.body.paper.trades,[]);assert.equal(res.body.paper.initial_sek,null);
  assert.throws(()=>handler.validatePaper({...paper(),positions:[{ticker:'SPY'}]}));
 });
 test('outage keeps the API explicitly blocked',async t=>{

@@ -12,6 +12,12 @@ def check(state, report):
     assert all(t['ticker']!='SPY' for t in account['trades'])
     assert len({r['date'] for r in report['curve']})==len(report['curve'])
     assert len(report['curve'])==len(account['equity'])
+    config=state.get('capital_configuration')
+    if config:
+        assert config['initial_sek']==state['initial_sek']
+        from quality_forward import digest
+        assert state['cohort_id']==digest(config)
+        if config['mode']=='AUTO_MINIMUM':assert config['initial_sek']==config['funding']['minimum_capital_sek']
     initial=state['initial_sek'];peak=initial;drawdown=0
     for mark, row in zip(account['equity'], report['curve']):
         assert mark['date']==row['date']
@@ -43,3 +49,36 @@ def check(state, report):
     if report['status']=='MONITORING' and report['risk_on']:
         assert len(account['shares'])==10
     return dict(status='PASS',independent_code=True,valuations=len(report['curve']),trades=len(account['trades']))
+
+
+def audit_funding(snapshot, fx, funding):
+    """Independent Decimal reconciliation of selected names, costs and caps."""
+    from decimal import Decimal, ROUND_CEILING
+    selected=[];issuers=set()
+    for row in snapshot['selection']['rows']:
+        sector=row['division'];industry=str(row['sic'])[:2]
+        if row['ticker']=='SPY' or row['cik'] in issuers:continue
+        if sum(str(r['sic'])[:2]==industry for r in selected)>=2:continue
+        if sum(r['division']==sector for r in selected)>=4:continue
+        selected.append(row);issuers.add(row['cik'])
+        if len(selected)==10:break
+    assert len(selected)==10
+    assert [r['ticker'] for r in selected]==[r['ticker'] for r in funding['targets']]
+    charges=[]
+    for row,out in zip(selected,funding['targets']):
+        price=Decimal(str(snapshot['quotes'][row['ticker']]))
+        notional=price*Decimal('1.02')
+        exact=(notional+max(Decimal(1),notional*Decimal('.0025'))+notional*Decimal('.004'))*Decimal(str(fx))*100
+        cents=int(exact.to_integral_value(rounding=ROUND_CEILING))
+        # Floating point conservative round-up may add a cent, never lose one.
+        assert cents<=out['one_share_cost_cents']<=cents+1
+        charges.append(out['one_share_cost_cents'])
+    total=sum(charges)
+    required=Decimal(total)
+    for row,cost in zip(selected,charges):
+        required=max(required,Decimal(cost)/Decimal('.20'),
+            sum(Decimal(c) for r,c in zip(selected,charges) if str(r['sic'])[:2]==str(row['sic'])[:2])/Decimal('.30'),
+            sum(Decimal(c) for r,c in zip(selected,charges) if r['division']==row['division'])/Decimal('.50'))
+    assert funding['minimum_one_each_sek']==total/100
+    assert funding['minimum_capital_sek']==int(required.to_integral_value(rounding=ROUND_CEILING))/100
+    return dict(status='PASS',independent_code=True,stocks=10)
