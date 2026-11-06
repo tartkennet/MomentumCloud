@@ -241,6 +241,10 @@ def run(args):
             funded=not state.get('blockers'),membership_count=len((report['signal'].get('selection') or {}).get('rows',[]))))
         atomic_json(out/'best-state.json',state)
     except Exception as exc:
+        # Emit only code locations, never exception values, URLs or credentials.
+        import traceback
+        print('BEST_FAILURE_LOCATIONS',json.dumps([dict(file=Path(f.filename).name,line=f.lineno,function=f.name)
+            for f in traceback.extract_tb(exc.__traceback__)]),flush=True)
         report=copy.deepcopy(previous) if prior else report if report else dict(model=strategy.MODEL,signal={})
         if (out/'best-coverage.json').exists() and not prior:
             coverage=read_json(out/'best-coverage.json');report.update(coverage)
