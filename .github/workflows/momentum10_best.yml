@@ -123,3 +123,15 @@ jobs:
       - name: Publish separate BEST journal
         if: github.event_name != 'pull_request'
         run: python publish_best.py --folder best_output --manifest best_manifest.json
+      - name: Verify published production APIs and mobile views
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+          python verify_best_production.py
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          name: BEST_production_checks
+          path: best_production_check/
+          retention-days: 30
