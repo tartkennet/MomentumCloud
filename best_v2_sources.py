@@ -52,6 +52,16 @@ def event_text(text):
     return any(re.search(p,t) for p in bindings)
 
 
+def target_event(text):
+    t=re.sub(r'\s+',' ',re.sub('<[^>]+>',' ',text.lower()))
+    if not event_text(t):return False
+    return any(re.search(p,t) for p in (
+        r'(?:our|the company.s) (?:outstanding )?(?:common stock|shares).{0,180}(?:converted|cancelled|canceled|right to receive).{0,100}(?:cash|\$)',
+        r'(?:our|the company.s) (?:stockholders|shareholders).{0,120}(?:receive|entitled).{0,80}(?:cash|\$)',
+        r'(?:we|the company) (?:will be|to be) acquired.{0,200}(?:cash|per share)',
+        r'each (?:outstanding )?share of (?:our|the company.s) common stock.{0,200}(?:cash|\$)'))
+
+
 def pages(client,path,params):
     rows=[];seen=set();base=path
     while True:
@@ -83,7 +93,7 @@ def review_events(client,row,date):
     def keep(accession,text,url,filed):
         if not text or len(text)<30:raise DataUnavailable('EMPTY_EVENT_TEXT')
         if filed>date:raise DataUnavailable('FUTURE_EVENT_TEXT')
-        flagged=event_text(text)
+        flagged=target_event(text)
         documents.append(dict(accession=accession,filing_date=filed,source_url=url,
             text=text,sha256=hashlib.sha256(text.encode()).hexdigest(),event_language=flagged))
         if flagged:warnings.append(accession)
@@ -111,7 +121,7 @@ def review_events(client,row,date):
         keep(x['accession_number'],text,x['source_url'],iso_date(x['filing_date']))
     # Positive/ambiguous deal language is an explicit event exclusion requiring review,
     # never an optimistic CLEAR. Event termination requires original analyst review.
-    return dict(status='REVIEW_REQUIRED' if warnings else 'CLEAR',index_sha256=digest(index),
+    return dict(status='EXCLUDED_PENDING_PRICE_BINDING_EVENT' if warnings else 'CLEAR',index_sha256=digest(index),
         indexed_forms=len(index),indexed_8k=len(required),reviewed_documents=len(documents),documents=documents,
         warning_accessions=warnings,scope='All provider-indexed SEC material forms and annual/interim originals; provider updates daily')
 

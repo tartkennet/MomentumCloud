@@ -88,6 +88,8 @@ def select(rows):
     selected=[];skips=[]
     for r in rows:
         reason=None
+        if r.get('event_status')=='EXCLUDED_PENDING_PRICE_BINDING_EVENT':
+            skips.append(dict(ticker=r['ticker'],rank=r['universe_rank'],reason='PRICE_BINDING_CORPORATE_EVENT'));continue
         if any(x['cik']==r['cik'] for x in selected):reason='DUPLICATE_ISSUER'
         for key,limit in [('sector',2),('cluster',3),('factor',4)]:
             if sum(x[key]==r[key] for x in selected)>=limit:reason=key.upper()+'_CAP'
