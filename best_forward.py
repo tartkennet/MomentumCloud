@@ -59,6 +59,10 @@ def reference(row,day,cache,client):
                         source_sha256=digest(filing))
                     break
                 if evidence:break
+            if not evidence:
+                from best_reference import sec_classification
+                try:evidence=sec_classification(row,day,cache/'best-sec-originals')
+                except (DataUnavailable,ValueError,KeyError,AssertionError):evidence=None
             if evidence:
                 receipt['sic_evidence']=evidence;atomic_json(path,receipt)
         if not evidence or evidence['filed']>day or evidence['cik']!=row['cik']:
@@ -96,7 +100,7 @@ def collect(data,client,cache,previous,now,output=None):
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='19e40bc645ce5f34ff06e870338b9515ca81fda5',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_data.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_reference.py','best_data.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,

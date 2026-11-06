@@ -58,8 +58,11 @@ class ClassificationTests(unittest.TestCase):
             def get(self,path,params):
                 return {'results':dict(ticker='TEST',cik='123',sic_code=None,type='CS')} if '/tickers/' in path else {'results':[]}
         with tempfile.TemporaryDirectory() as cache:
-            with self.assertRaisesRegex(ValueError,'UNVERIFIED_INDUSTRY_CLASSIFICATION_TEST'):
-                reference(row,'2026-11-05',Path(cache),Client())
+            from unittest.mock import patch
+            from quality_sources import DataUnavailable
+            with patch('best_reference.sec_classification',side_effect=DataUnavailable('OFFLINE')):
+                with self.assertRaisesRegex(ValueError,'UNVERIFIED_INDUSTRY_CLASSIFICATION_TEST'):
+                    reference(row,'2026-11-05',Path(cache),Client())
 
 
 class SessionClockTests(unittest.TestCase):
@@ -71,3 +74,19 @@ class SessionClockTests(unittest.TestCase):
             ('2026-11-07T00:30:00+00:00','2026-11-06'),
             ('2026-11-09T13:00:00+00:00','2026-11-08')]:
             self.assertEqual(completed_end(datetime.fromisoformat(stamp)),day)
+
+
+class SecReferenceTests(unittest.TestCase):
+    def test_current_sec_reference_is_admissible_only_when_observed_by_signal_date(self):
+        from best_reference import sec_classification
+        from quality_forward import digest
+        from quality_sources import DataUnavailable
+        class Client:
+            def get(self,url):
+                data=dict(cik='123',sic='5411',filings={'recent':{'form':[]},'files':[]})
+                return json.dumps(data).encode(),dict(observed_at='2026-11-06T22:00:00+00:00',sha256=digest(data),url=url)
+        row=dict(ticker='TEST',cik='0000000123')
+        result=sec_classification(row,'2026-11-06','unused',Client())
+        self.assertEqual(result['sic'],'5411')
+        self.assertEqual(result['source'],'SEC_REFERENCE_OBSERVED_BY_SIGNAL_DATE')
+        with self.assertRaises(DataUnavailable):sec_classification(row,'2026-11-05','unused',Client())

@@ -25,3 +25,11 @@ SPY calendar handles holidays/weekends. This fixes the legacy adapter's UTC
 yesterday lag without altering any legacy code or frozen BEST score parameters.
 Reference requests retry only transient 429/502/503/504 responses; permissions
 errors remain explicit and never trigger a different investment universe.
+
+The vendor's foreign-filer coverage did not resolve TBBB. The existing primary
+SEC client is therefore reused for classification reference evidence. A current
+SEC reference is admissible only if its archived observation is on/before the
+signal date in New York; otherwise only an original filing header dated by the
+signal is admissible. Exact CIK and SIC, observation time, source URL and content
+hash are preserved. Future-only classification is rejected, and the candidate
+is never silently dropped. This repairs missing metadata, not model parameters.
