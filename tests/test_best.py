@@ -183,3 +183,16 @@ class ClassificationPrefixTests(unittest.TestCase):
         analysis=dict(ranked_liquid=r['ranked_liquid'],strong_pool=resolved+[
             {k:v for k,v in x.items() if k not in ('sic','industry','division')} for x in pool[len(resolved):]],targets=selected)
         self.assertEqual(audit.signal(analysis)['status'],'PASS')
+
+class ExactRankingTests(unittest.TestCase):
+    def test_composite_ties_use_rs6_and_ticker_not_float_sum_rounding(self):
+        from fractions import Fraction
+        rng=np.random.default_rng(46)
+        keys=('rs12','rs6','risk_adjusted','persistence')
+        rows=[dict(ticker='EXACT'+str(i),**{k:int(rng.integers(0,7)) for k in keys}) for i in range(250)]
+        def exact(row):
+            return sum(Fraction(w,100)*Fraction(2*sum(x[k]<row[k] for x in rows)+sum(x[k]==row[k] for x in rows),2*len(rows)) for w,k in zip((35,25,25,15),keys))
+        expected=sorted(rows,key=lambda r:(-exact(r),-r['rs6'],r['ticker']))
+        actual=strategy.rank(rows)
+        self.assertEqual([x['ticker'] for x in actual],[x['ticker'] for x in expected])
+        for row in actual:self.assertEqual(row['score'],float(exact(row)))

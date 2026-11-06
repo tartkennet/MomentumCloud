@@ -45,10 +45,16 @@ def metrics(closes, spy):
 
 def rank(rows):
     result=copy.deepcopy(rows)
-    for key in ('rs12','rs6','risk_adjusted','persistence'):
+    numerators={r['ticker']:0 for r in result}
+    for weight,key in zip((35,25,25,15),('rs12','rs6','risk_adjusted','persistence')):
         values=sorted(r[key] for r in result)
-        for r in result:r.setdefault('components',{})[key]=(sum(x<r[key] for x in values)+.5*sum(x==r[key] for x in values))/len(values)
-    for r in result:r['score']=sum(w*r['components'][k] for w,k in zip(PARAMETERS['score_weights'],('rs12','rs6','risk_adjusted','persistence')))
+        for r in result:
+            ordinal=2*sum(x<r[key] for x in values)+sum(x==r[key] for x in values)
+            r.setdefault('components',{})[key]=ordinal/(2*len(values))
+            numerators[r['ticker']]+=weight*ordinal
+    # Exact integer midrank arithmetic preserves the preregistered RS6 tie-break
+    # across Python versions with different floating-point sum implementations.
+    for r in result:r['score']=numerators[r['ticker']]/(200*len(result))
     result.sort(key=lambda r:(-r['score'],-r['rs6'],r['ticker']))
     for i,r in enumerate(result):r['universe_rank']=i+1
     return result

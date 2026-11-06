@@ -1,6 +1,7 @@
 """Independent checks: no selector/ranker imports; independent numeric formulas."""
 import math
 from decimal import Decimal, ROUND_CEILING
+from fractions import Fraction
 import numpy as np
 from quality_forward import digest
 from quality_account_audit import audit_account
@@ -10,12 +11,13 @@ from audit_avanza10 import check as audit_sek
 def signal(report):
     rows=report['ranked_liquid'];scores=[]
     for row in rows:
-        comp={}
+        comp={};exact={}
         for k in ('rs12','rs6','risk_adjusted','persistence'):
             values=[r[k] for r in rows]
             comp[k]=(sum(v<row[k] for v in values)+sum(v==row[k] for v in values)/2)/len(values)
+            exact[k]=Fraction(2*sum(v<row[k] for v in values)+sum(v==row[k] for v in values),2*len(values))
             assert abs(comp[k]-row['components'][k])<1e-10
-        score=.35*comp['rs12']+.25*comp['rs6']+.25*comp['risk_adjusted']+.15*comp['persistence']
+        score=sum(Fraction(w,100)*exact[k] for w,k in zip((35,25,25,15),('rs12','rs6','risk_adjusted','persistence')))
         assert abs(score-row['score'])<1e-10;scores.append((score,row['rs6'],row['ticker']))
     assert [r['ticker'] for r in rows]==[r[2] for r in sorted(scores,key=lambda x:(-x[0],-x[1],x[2]))]
     assert len({r['cik'] for r in rows})==len(rows)

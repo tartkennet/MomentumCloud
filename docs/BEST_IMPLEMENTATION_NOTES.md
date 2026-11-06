@@ -60,3 +60,18 @@ histories and scores still use the complete price-eligible universe. This avoids
 blocking a valid selection on irrelevant metadata without changing any score,
 cap, fallback or chosen name. An independent test proves equivalent membership
 against the fully classified pool and rejects omissions before ten exist.
+
+The completed 2026-11-06 inventory contains 5,312 reference records, 1,743
+price/liquidity-eligible unique issuers and 215 strong names. Exact greedy-prefix
+classification completes without requiring the unavailable lower-ranked TBBB
+metadata. The independent ordering audit then detected floating-point tie
+instability between Python summation implementations. Composite midrank scores
+now use exact integer numerators; the independent auditor uses rational fractions.
+The numerical weights and economic rules are unchanged, and mathematically equal
+scores now consistently use the preregistered RS6/ticker tie-break. A separate
+250-name regression checks the exact rational ordering, including tied inputs.
+
+Local browser checks used explicitly synthetic fixtures at 320, 390 and 1,440 px.
+All five tabs render without page overflow or JavaScript exceptions. Ten target
+names remain identical after capital changes and reload; insufficient capital is
+explicit. These checks do not assert live trading or production data readiness.
