@@ -16,7 +16,7 @@ business metadata is admissible for a current prospective decision, never for
 a historical replay. No vendor, event-source or publication failure means CLEAR.
 
 Exclude annualized sample Vol63 < 8%; use max(Vol63,20%) in the risk-adjusted
-score denominator. Exclude adjusted daily absolute jumps >=35% pending verified
+score denominator. Exclude adjusted daily absolute jumps >=35% in the last 126 sessions pending verified
 review; exclude last-21-close range <3% following a >=15% jump in 126 sessions
 (price pinning diagnostic). Exclude close/SMA50 >1.35, 21-session return >60%,
 or 63-session return >150% (overextension, not a fitted return rule).
