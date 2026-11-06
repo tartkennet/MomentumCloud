@@ -83,30 +83,44 @@ def select(rows):
     return selected if len(selected)==10 else [],skips
 
 
-def collect_prices(data, day):
+def evaluate_record(data,day,record,spy,expected):
+    if record.get('ticker')=='SPY' or not core.eligible(record) or not record.get('cik'):return None,'NOT_ELIGIBLE_COMMON_STOCK'
+    t=record['ticker'];history=data.history(day,t,253)
+    if len(history)!=253 or [x[0] for x in history]!=expected or any(not b for _,b in history):return None,'INCOMPLETE_HISTORY'
+    if any(core.number(b[1]) is None for _,b in history):return None,'INVALID_CLOSE'
+    if history[0][1][1]<10:return None,'PRICE_BELOW_10'
+    if any(core.number(b[2]) is None for _,b in history[:20]):return None,'INVALID_VOLUME'
+    adv=statistics.fmean(b[1]*b[2] for _,b in history[:20])
+    if adv<20_000_000:return None,'LIQUIDITY'
+    try:m=metrics(core.adjusted_history(data,day,t,253),spy)
+    except ValueError as exc:return None,str(exc)
+    return dict(ticker=t,cik=str(record['cik']).zfill(10),name=record.get('name',''),price_usd=history[0][1][1],
+                adv20_usd=adv,instrument_type=record['type'],exchange=record['primary_exchange'],**m),None
+
+
+def collect_prices(data, day, cache=None):
     spy=core.adjusted_history(data,day,'SPY',253)
     if len(spy)!=253:raise ValueError('INCOMPLETE_SPY_HISTORY')
-    records=data.universe(day);rows=[];exclusions=Counter();excluded=[];expected=[x[0] for x in data.history(day,'SPY',253)]
-    for record in records:
-        if record.get('ticker')=='SPY' or not core.eligible(record) or not record.get('cik'):exclusions['NOT_ELIGIBLE_COMMON_STOCK']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='NOT_ELIGIBLE_COMMON_STOCK'));continue
-        t=record['ticker'];history=data.history(day,t,253)
-        if len(history)!=253 or [x[0] for x in history]!=expected or any(not b for _,b in history):
-            exclusions['INCOMPLETE_HISTORY']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='INCOMPLETE_HISTORY'));continue
-        if any(core.number(b[1]) is None for _,b in history):exclusions['INVALID_CLOSE']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='INVALID_CLOSE'));continue
-        if history[0][1][1]<10:exclusions['PRICE_BELOW_10']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='PRICE_BELOW_10'));continue
-        if any(core.number(b[2]) is None for _,b in history[:20]):exclusions['INVALID_VOLUME']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='INVALID_VOLUME'));continue
-        adv=statistics.fmean(b[1]*b[2] for _,b in history[:20])
-        if adv<20_000_000:exclusions['LIQUIDITY']+=1;excluded.append(dict(ticker=record.get('ticker'),reason='LIQUIDITY'));continue
-        c=core.adjusted_history(data,day,t,253)
-        try:m=metrics(c,spy)
-        except ValueError as exc:exclusions[str(exc)]+=1;excluded.append(dict(ticker=t,reason=str(exc)));continue
-        rows.append(dict(ticker=t,cik=str(record['cik']).zfill(10),name=record.get('name',''),price_usd=history[0][1][1],
-                         adv20_usd=adv,instrument_type=record['type'],exchange=record['primary_exchange'],**m))
+    records=data.universe(day);rows=[];excluded=[]
+    expected=[x[0] for x in data.history(day,'SPY',253)]
+    evaluate=lambda record:evaluate_record(data,day,record,spy,expected)
+    if cache is not None:
+        from best_inventory import scan
+        rows,excluded,inventory=scan(records,evaluate,cache,dict(day=day,protocol=fingerprint(),prices=data.input_fingerprint()))
+    else:
+        for record in records:
+            row,reason=evaluate(record)
+            if row is not None:rows.append(row)
+            else:excluded.append(dict(ticker=record.get('ticker'),reason=reason))
+        inventory=dict(complete=True,total_records=len(records),processed_records=len(records),resumed_batches=0)
     unique={}
     for row in sorted(rows,key=lambda r:(-r['adv20_usd'],r['ticker'])):
-        if row['cik'] in unique:exclusions['DUPLICATE_ISSUER_CLASS']+=1;excluded.append(dict(ticker=row['ticker'],reason='DUPLICATE_ISSUER_CLASS'))
+        if row['cik'] in unique:excluded.append(dict(ticker=row['ticker'],reason='DUPLICATE_ISSUER_CLASS'))
         else:unique[row['cik']]=row
-    rows=list(unique.values())
-    ranked=rank(rows)
+    rows=list(unique.values());ranked=rank(rows)
+    exclusions=Counter(r['reason'] for r in excluded)
+    if len(ranked)+len(excluded)!=len(records):raise ValueError('UNACCOUNTED_UNIVERSE_RECORDS')
     return ranked,dict(reference_records=len(records),priced_liquid=len(rows),strong=sum(r['strong'] for r in ranked),
-                            exclusions=dict(exclusions),excluded_names=excluded,adv_truncation=False),spy[0]>statistics.fmean(spy[:200])
+        exclusions=dict(exclusions),excluded_names=excluded,adv_truncation=False,inventory=inventory,
+        scope='Dated provider US common-stock reference; eligible XNAS/XNYS/XASE; no historical performance claim',
+        exchange_counts=dict(Counter(r.get('primary_exchange') or 'UNKNOWN' for r in records))),spy[0]>statistics.fmean(spy[:200])

@@ -12,7 +12,7 @@ from pathlib import Path
 import momentum_core as core
 from momentum_core_data import atomic_json,read_json
 from quality_forward import NY,bootstrap,digest
-from quality_sources import Provider
+from quality_sources import Provider,DataUnavailable
 from run_quality_forward import data_for
 from avanza10_forward import observe_account,summarize as ledger_summary
 from h3_display import ecb_rates,rate_on
@@ -44,7 +44,7 @@ def reference(row,day,cache,client):
 def collect(data,client,cache,previous,now):
     day=data.sessions[-1]
     if (now.date()-datetime.fromisoformat(day).date()).days>4:raise ValueError('STALE_MARKET_PRICES')
-    rows,diagnostics,on=strategy.collect_prices(data,day)
+    rows,diagnostics,on=strategy.collect_prices(data,day,cache)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
     for r in rows:audit.price_metrics(r,closes_at(data,day,r['ticker'],253),spy)
@@ -67,7 +67,7 @@ def collect(data,client,cache,previous,now):
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='19e40bc645ce5f34ff06e870338b9515ca81fda5',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,
@@ -183,7 +183,7 @@ def run(args):
             experiment_label='PAPER_EXPERIMENT',live_approved=False,broker_orders_enabled=False,paper_started=False,initial_sek=None,
             positions=[],trades=[],curve=[],status='BLOCKED')
         report.update(generated_at=datetime.now(timezone.utc).isoformat(),technical_readiness=dict(status='BLOCKED'),
-                      errors=[str(exc) if isinstance(exc,ValueError) else type(exc).__name__])
+                      errors=[str(exc) if __import__('re').fullmatch(r'[A-Z][A-Z0-9_]{0,100}',str(exc)) else type(exc).__name__])
         report['paper'].update(status='BLOCKED',blockers=report['errors'])
         if prior:
             prior['previous_state_sha256']=digest(prior);report['paper']['journal_sha256']=digest(prior)

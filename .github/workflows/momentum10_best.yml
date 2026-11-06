@@ -33,6 +33,11 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s tests -p 'test_best*.py' -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: best_recovery
+          key: best-recovery-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: best-recovery-${{ github.ref_name }}-
       - name: Restore verified prices and the separate BEST account
         env:
           GH_TOKEN: ${{ github.token }}
@@ -61,12 +66,25 @@ jobs:
           assert hashlib.sha256(Path('best_restore/cache.sealed').read_bytes()).hexdigest()==cache_meta['cache_sha256']
           Path('best_restore/previous-manifest.json').write_text(json.dumps(prior))
           PY
+          if test -f best_recovery/cache.sealed; then python cache_momentum_inputs.py unseal --sealed best_recovery/cache.sealed --cache-dir .best_market_cache; fi
           python cache_momentum_inputs.py unseal --sealed best_restore/cache.sealed --cache-dir .best_market_cache
       - name: Collect, form and independently audit BEST
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
           BEST_INITIAL_SEK: ${{ vars.BEST_INITIAL_SEK }}
         run: python best_forward.py --cache .best_market_cache --previous best_previous --output best_output
+      - name: Save encrypted recovery checkpoint even after interrupted collection
+        if: always()
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p best_recovery
+          if test -d .best_market_cache; then python cache_momentum_inputs.py seal --cache-dir .best_market_cache --sealed best_recovery/cache.sealed; fi
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: best_recovery
+          key: best-recovery-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
