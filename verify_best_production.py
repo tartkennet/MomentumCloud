@@ -37,7 +37,7 @@ def main():
         for width in (1440,390,320):
             page=browser.new_page(viewport=dict(width=width,height=900));errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(BASE+'/best',wait_until='networkidle')
+            page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
             for tab in ('overview','portfolio','trades','statistics','settings'):
                 page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
