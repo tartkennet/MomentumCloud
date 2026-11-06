@@ -38,6 +38,10 @@ jobs:
           path: best_v2_recovery
           key: best-v2-recovery-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: best-v2-recovery-${{ github.ref_name }}-
+      - name: Check required foreign original source access
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python best_v2_event_probe.py
       - name: Restore verified prices and the separate BEST account
         env:
           GH_TOKEN: ${{ github.token }}
