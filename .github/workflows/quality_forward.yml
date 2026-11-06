@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['quality_*.py','run_quality_forward.py','collect_quality.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','audit_avanza10.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml']
+    paths: ['quality_*.py','run_quality_forward.py','collect_quality.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','avanza10_capital.py','audit_avanza10.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml']
   pull_request:
     branches: [main]
-    paths: ['quality_*.py','run_quality_forward.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','audit_avanza10.py','.github/workflows/quality_forward.yml','tests/test_quality*.py','tests/test_avanza10*.py']
+    paths: ['quality_*.py','run_quality_forward.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','avanza10_capital.py','audit_avanza10.py','.github/workflows/quality_forward.yml','tests/test_quality*.py','tests/test_avanza10*.py']
   schedule:
     - cron: '17 8,22 * * 1-5'
     - cron: '47 14,15 * * 1-5'
@@ -38,7 +38,7 @@ jobs:
           before=os.environ.get('BEFORE','');needed=True
           if os.environ.get('ACTION')=='synchronize' and before and set(before)!={'0'}:
               p=subprocess.run(['git','diff','--name-only',before,'HEAD'],capture_output=True,text=True,check=True)
-              needed=any(f.startswith('quality_') or f.startswith('tests/test_quality') or f.startswith('tests/test_avanza10') or f in ('run_quality_forward.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','audit_avanza10.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml') for f in p.stdout.splitlines())
+              needed=any(f.startswith('quality_') or f.startswith('tests/test_quality') or f.startswith('tests/test_avanza10') or f in ('run_quality_forward.py','publish_quality.py','verify_quality_readiness.py','avanza10_snapshot.py','avanza10_forward.py','avanza10_capital.py','audit_avanza10.py','collect_quality.py','docs/QUALITY_EARNINGS_PROTOCOL_20261031.md','.github/workflows/quality_forward.yml') for f in p.stdout.splitlines())
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('needed='+str(needed).lower()+'\n')
           print('Current-source verification required:',needed)
           PY
@@ -129,6 +129,7 @@ jobs:
             quality_output/avanza10.json
             quality_output/avanza-paper.json
             quality_output/avanza-state.json
+            quality_output/avanza-superseded-state.json
           retention-days: 30
       - name: Encrypt cache and preserve the observation before publication
         if: github.event_name != 'pull_request'

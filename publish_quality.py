@@ -4,6 +4,7 @@ from pathlib import Path
 from publish_h3_snapshot import git
 from quality_forward import digest
 from avanza10_snapshot import VERSION
+from avanza10_capital import validate_transition
 
 BRANCH='quality-observed-snapshots'
 
@@ -44,10 +45,21 @@ def publish(folder,manifest):
                     if ap.exists():
                         accepted=json.loads(ap.read_text())
                         assert new['previous_state_sha256']==digest(accepted),'Avanza compare-and-swap failed'
-                        for account in ('strategy','benchmark'):
-                            for field in ('trades','equity'):
-                                assert new[account][field][:len(accepted[account][field])]==accepted[account][field]
-                        assert new['decisions'][:len(accepted['decisions'])]==accepted['decisions']
+                        if new.get('cohort_id')!=accepted.get('cohort_id'):
+                            archived=json.loads((folder/'avanza-superseded-state.json').read_text())
+                            validate_transition(accepted,new,archived)
+                            archive=work/new['supersedes']['archive'];archive.parent.mkdir(exist_ok=True)
+                            if archive.exists():assert digest(json.loads(archive.read_text()))==digest(archived)
+                            else:archive.write_text(json.dumps(archived,allow_nan=False))
+                            git('add',new['supersedes']['archive'],cwd=work)
+                        else:
+                            assert new['initial_sek']==accepted['initial_sek']
+                            assert new['initial_usd']==accepted['initial_usd']
+                            assert new.get('capital_configuration')==accepted.get('capital_configuration')
+                            for account in ('strategy','benchmark'):
+                                for field in ('trades','equity'):
+                                    assert new[account][field][:len(accepted[account][field])]==accepted[account][field]
+                            assert new['decisions'][:len(accepted['decisions'])]==accepted['decisions']
                     ap.write_text(json.dumps(new,allow_nan=False))
                     git('add','avanza-state.json',cwd=work)
                 (work/'public/data/avanza-paper.json').write_text(json.dumps(paper,allow_nan=False))

@@ -18,24 +18,13 @@ from quality_account_audit import audit_account
 from research_stocks10 import fee
 from run_quality_forward import data_for, observe
 from h3_display import rate_on
+from avanza10_capital import membership, requirements, configure
 
 MODEL = 'avanza10-observed-paper-v1'
 POLICY = dict(model=MODEL, selection='avanza10-paper-v2', retention='KEEP_QUALIFYING_WHOLE_SHARES',
               execution='NEXT_OBSERVED_OPEN_0930_1130_NY_NO_BACKFILL', rebalance='MONTHLY',
               risk='DAILY_SPY_SMA200_CASH_OFF', costs='MIN_1_USD_OR_25BP_PLUS_40BP',
               max_position=.20, max_industry=.30, max_division=.50, live_approved=False)
-
-
-def membership(rows):
-    selected=[]
-    for r in rows:
-        if (r['ticker']=='SPY' or any(x['cik']==r['cik'] for x in selected) or
-                sum(str(x['sic'])[:2]==str(r['sic'])[:2] for x in selected)>=2 or
-                sum(x['division']==r['division'] for x in selected)>=4):
-            continue
-        selected.append(copy.deepcopy(r))
-        if len(selected)==10:break
-    return selected
 
 
 def observe_account(state, data, client, now):
@@ -97,10 +86,14 @@ def decide(state, report, snapshot, data, now):
                 state['blockers']=['PARTIAL_FILL_REVIEW_REQUIRED']
             return
         try:
+            funding=requirements(snapshot,report['fx']['usdsek'])
+            state['funding']=funding
             # Refresh prices without changing the locked membership.
             for r in targets:r['price_usd']=snapshot['quotes'][r['ticker']]
             prices={t:data.bars(report['price_as_of'])[t][1] for t in state['strategy']['shares']}
             nav=(state['strategy']['equity'][-1]['nav'] if state['strategy']['equity'] else state['initial_usd'])
+            if nav*report['fx']['usdsek']+1e-7<funding['minimum_capital_sek']:
+                raise ValueError('UNFUNDED_OR_RISK_LIMITED_MINIMUM_BASKET')
             plan=plan_orders(targets,state['strategy']['shares'],nav,state['strategy']['cash'],prices)
             audit_plan(targets,plan,state['strategy']['shares'],state['strategy']['cash'],nav,prices)
         except (KeyError, ValueError) as exc:
@@ -155,11 +148,21 @@ def summarize(state, snapshot, now):
     costs=sum(t['fee']*state['trade_fx'][t['date']]['usdsek'] for t in s['trades'] if t['side'] in ('BUY','SELL'))
     completed={o['commitment'] for o in state['opening_observations'] if o['unfilled']==0}
     rebalances=[d for d in state['decisions'] if d['kind']=='MEMBERSHIP' and d['sha256'] in completed]
+    funding=copy.deepcopy(state.get('funding'))
+    if funding:
+        funding['chosen_capital_sek']=nav
+        funding['capital_shortfall_sek']=max(0,round(funding['minimum_capital_sek']-nav,2)) if nav is not None else None
+        funding['available_cash_sek']=s['cash']*rate
+        needed=sum(r['one_share_cost_cents'] for r in funding['targets'] if not s['shares'].get(r['ticker']))/100
+        funding['minimum_new_cash_sek']=needed
+        funding['cash_shortfall_sek']=max(0,round(needed-s['cash']*rate,2))
     blockers=state.get('blockers',[])
     status='BLOCKED' if blockers else 'AWAITING_OBSERVED_OPEN' if state.get('pending') else 'RISK_OFF_CASH' if state.get('risk_on') is False else 'MONITORING'
     return dict(schema_version=1,model=MODEL,policy=POLICY,model_fingerprint=state['model_fingerprint'],
         mode='PAPER_ONLY',live_approved=False,broker_orders_enabled=False,economic_status='NO_GO_INSUFFICIENT_EVIDENCE',
         initialized_at=state['initialized_at'],generated_at=now.isoformat(),status=status,blockers=blockers,
+        cohort_id=state.get('cohort_id'),capital_configuration=state.get('capital_configuration'),supersedes=state.get('supersedes'),
+        funding=funding,
         initial_sek=initial,paper_started=bool(s['trades']),first_trade_at=s['trades'][0].get('execution_at') if s['trades'] else None,
         risk_on=state.get('risk_on'),risk_checked_at=state.get('risk_checked_at'),selection=snapshot.get('selection'),
         nav_sek=nav,cash_sek=s['cash']*rate,cash_fx_date=last['fx_date'] if last else state['initial_fx']['date'],
@@ -179,12 +182,7 @@ def run(args):
     try:
         data,client=data_for(Path(args.cache),now)
         if data.sessions[-1]!=snapshot.get('quotes_as_of'):raise ValueError('AVANZA_MARKET_CLOCK_MISMATCH')
-        if not state:
-            if not snapshot.get('market_verified') or not report.get('fx'):raise ValueError('NO_VERIFIED_INITIAL_FX')
-            initial=float(os.environ.get('AVANZA_INITIAL_SEK') or 20000)
-            if not math.isfinite(initial) or not 0<initial<=1e9:raise ValueError('INVALID_INITIAL_CAPITAL')
-            state=bootstrap(dict(initial_usd=initial/report['fx']['usdsek'],fx=report['fx']),digest(POLICY),now)
-            state.update(initial_sek=initial,opening_quotes=[],valuation_fx={},trade_fx={},ranked_targets=[])
+        state, archived=configure(prior,snapshot,report,now,digest(POLICY),os.environ.get('AVANZA_INITIAL_SEK',''))
         if state['model_fingerprint']!=digest(POLICY):raise ValueError('POLICY_CHANGED_REQUIRES_NEW_COHORT')
         # Cancel unsafe intentions BEFORE the observer can execute an opening.
         decide(state,report,snapshot,data,now)
@@ -195,7 +193,7 @@ def run(args):
             state['valuation_fx'].setdefault(day,fx);state['trade_fx'].setdefault(day,fx)
         decide(state,report,snapshot,data,now)
         state['audits']={k:audit_account(state,k,k=='benchmark') for k in ('strategy','benchmark')}
-        if prior:
+        if prior and not archived:
             for k in ('strategy','benchmark'):
                 for field in ('trades','equity'):assert state[k][field][:len(prior[k][field])]==prior[k][field]
             assert state['decisions'][:len(prior['decisions'])]==prior['decisions']
@@ -203,12 +201,13 @@ def run(args):
         result=summarize(state,snapshot,now)
         from audit_avanza10 import check
         result['statistics_audit']=check(state,result)
+        if archived:atomic_json(out/'avanza-superseded-state.json',archived)
         atomic_json(out/'avanza-state.json',state)
     except Exception as exc:
         # Fail closed; never publish an unaudited mutation or a fabricated fill.
         result=(read_json(previous/'avanza-paper.json') if (previous/'avanza-paper.json').exists() else
                 dict(schema_version=1,model=MODEL,mode='PAPER_ONLY',live_approved=False,broker_orders_enabled=False,
-                     paper_started=False,positions=[],trades=[],curve=[],initial_sek=20000))
+                     paper_started=False,positions=[],trades=[],curve=[],initial_sek=None))
         result.update(status='BLOCKED',generated_at=now.isoformat(),blockers=[str(exc) if isinstance(exc,ValueError) else type(exc).__name__])
         if prior:
             prior['previous_state_sha256']=digest(prior)

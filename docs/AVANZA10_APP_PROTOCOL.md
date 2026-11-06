@@ -12,11 +12,32 @@ emittent förekommer en gång, högst två bolag per SIC-bransch och fyra per
 division. Underliggande universum och verifierad företagsdata utesluter ETF:er
 från urvalet. SPY ägs endast i ett separat benchmarkkonto.
 
-Startkapital föreslås till 20 000 SEK. Webbläsarens kapitalplan är lokal och
-ändrar aldrig automatkontots historik. Repository-variabeln
-`AVANZA_INITIAL_SEK` anger automatkontots kapital före initiering; därefter
-är kapitalet låst i journalen. Att byta variabel startar inte om ett konto.
-Ett nytt konto kräver en ny uttryckligen versionshanterad kohort.
+Startkapitalet är inte ett fast belopp och 20 000 SEK är varken krav eller tak.
+Standard är `AUTO_MINIMUM`: välj först samma tio aktier, beräkna kostnaden för
+en hel aktie av varje vid senaste verifierade kurs/FX och beräkna därefter minsta
+kapital inom oförändrade koncentrationsgränser. Summor avrundas uppåt i ören.
+Startkapitalet låses med urvalshash, kursdatum, FX-fix och kostnadsunderlag i
+`capital_configuration` vid den nya kohortens faktiska initiering.
+
+Ett eget positivt belopp med högst två decimaler kan anges med repository-variabeln
+`AVANZA_INITIAL_SEK` före initiering. Tomt eller `AUTO_MINIMUM` väljer det beräknade
+minimumet. Ett för litet eget belopp ersätter aldrig aktier utan ger tydligt
+kapitalunderskott och inga köp. Ett befintligt konfigurerat konto behåller alltid
+sitt kapital även om variabeln senare ändras. Det krävs då en uttrycklig ny kohort;
+ändringen skriver inte om den gamla historiken.
+
+Webbläsarens kapitalplan har inget fast standardbelopp: tomt kapital väljer aktuellt
+beräknat minimum. Separat valfri kassa tillåter likviditetsunderskott att visas
+oberoende av kapitalunderskottet. Valen sparas lokalt och ändrar inte automatkontot.
+
+Den tidigare okonfigurerade 20 000-kohorten får ersättas automatiskt endast om
+varken strategi- eller benchmarkkontot har registrerade affärer. Hela dess
+oförändrade tillstånd, inklusive eventuella kontantvärderingar och beslut, sparas
+som `avanza-cohorts/<SHA256>.json` på observationsgrenen och i releaseunderlaget.
+Publicering verifierar föregångarens exakta hash och oförändrade arkiv innan en
+ny cash-only kohort accepteras. Den nya kohorten får egen verklig initieringstid,
+startkapital och journal. Inga gamla värderingar eller köp kopieras in. Konton
+med registrerade affärer migreras eller kapitaländras aldrig automatiskt.
 
 Hela aktier, tio mål, minst en aktie per position. Minimikapital och köpreserv
 visas separat: högst 20 % per aktie, 30 % per bransch och 50 % per division.
@@ -49,7 +70,7 @@ realtids- eller brokerbekräftade fills. Ingen faktisk order skickas.
 
 ## Beständighet och verifiering
 
-`avanza-state.json` och `avanza-paper.json` bevaras i samma hashverifierade,
+`avanza-state.json`, `avanza-paper.json` och eventuellt `avanza-superseded-state.json` bevaras i samma hashverifierade,
 varaktiga releasearkiv som källobservationerna. Publicering till
 `quality-observed-snapshots` gör compare-and-swap och verifierar append-only
 transaktioner, beslut och värderingar. Den separata Avanza-rapporten fogas

@@ -63,12 +63,13 @@
 
   function minimums(rows, priceKey, fx) {
     const cost = row => buyCost(1, row[priceKey], fx);
-    const total = money(sum(rows, cost));
-    const capital = ceilMoney(Math.max(total, ...rows.flatMap(row => [
-      cost(row) / .20,
-      sum(rows.filter(x => x.industry === row.industry), cost) / .30,
-      sum(rows.filter(x => x.division === row.division), cost) / .50
-    ])));
+    const cents = row => Math.round(cost(row) * 100);
+    const total = sum(rows, cents) / 100;
+    const capital = Math.max(Math.round(total * 100), ...rows.flatMap(row => [
+      cents(row) * 5,
+      Math.ceil(sum(rows.filter(x => x.industry === row.industry), cents) * 10 / 3),
+      sum(rows.filter(x => x.division === row.division), cents) * 2
+    ])) / 100;
     return {total, capital};
   }
 

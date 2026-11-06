@@ -1,7 +1,7 @@
 # MomentumCloud · Momentum 10 för Avanza
 
 Huvudappen på `/` har Översikt, Portfölj, Affärer, Statistik och Inställningar.
-Avanza-urvalet från PR #40–41 är kapitaloberoende. H3 och äldre forskning finns
+Avanza-urvalet från PR #40–41 är kapitaloberoende. Automatkontots nya startkapital beräknas efter urvalet (`AUTO_MINIMUM`) eller väljs uttryckligen; 20 000 SEK är varken krav eller tak. H3 och äldre forskning finns
 under Inställningar → Forskningsarkiv; deras journaler och frysta regler bevaras.
 
 `/api/avanza10` levererar endast det separata Avanza-kontot, med explicita

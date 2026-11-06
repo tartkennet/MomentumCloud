@@ -21,7 +21,7 @@ def fixture(capital=20000):
     snap=dict(version='avanza10-paper-v2',market_verified=True,selection_verified=True,coverage=.90,
               quotes_as_of='2026-10-30',quotes={r['ticker']:20 for r in rows},
               selection=dict(month='2026-11',rows=rows))
-    report=dict(generated_at=now.isoformat(),price_as_of='2026-10-30',risk_on=True,errors=[],status='OK')
+    report=dict(generated_at=now.isoformat(),price_as_of='2026-10-30',risk_on=True,errors=[],status='OK',fx=dict(date='2026-10-30',usdsek=10))
     state=bootstrap(dict(initial_usd=capital/10,fx=dict(date='2026-10-30',usdsek=10)),digest(POLICY),now)
     state.update(initial_sek=capital,opening_quotes=[],valuation_fx={},trade_fx={},ranked_targets=[])
     bars={r['ticker']:[19,20,100000] for r in rows};bars['SPY']=[300,303,1000000]

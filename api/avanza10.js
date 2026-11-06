@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
   try {paper = validatePaper(report.avanza_paper);} catch {
     paper = {model: MODEL, mode: 'PAPER_ONLY', live_approved: false, broker_orders_enabled: false,
       status: 'BLOCKED', blockers: ['AUTOMATIC_ACCOUNT_NOT_YET_VERIFIED'], paper_started: false,
-      positions: [], trades: [], curve: [], decisions: [], initial_sek: 20000};
+      positions: [], trades: [], curve: [], decisions: [], initial_sek: null};
   }
   const verified = code === 200 && report.delivery?.verified === true && !report.operations?.delayed;
   const paperCurrent = verified && Number.isFinite(Date.parse(paper.generated_at)) &&
