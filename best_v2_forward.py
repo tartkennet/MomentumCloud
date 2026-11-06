@@ -28,13 +28,22 @@ VERSION='best-signal-v2'
 from best_v2_sources import reference as economic_reference
 
 def reference(row,day,cache,client):
-    return economic_reference(row,day,cache,client,datetime.now(timezone.utc).isoformat())
+    try:
+        r=economic_reference(row,day,cache,client,datetime.now(timezone.utc).isoformat())
+        print('BEST_V2_REFERENCE',json.dumps(dict(ticker=r['ticker'],sector=r['sector'],status=r['event_status'])),flush=True)
+        return r
+    except DataUnavailable as exc:
+        print('BEST_V2_REFERENCE_BLOCK',json.dumps(dict(ticker=row['ticker'],reason=str(exc))),flush=True)
+        raise
 
 
 def collect(data,client,cache,previous,now,output=None):
     day=data.sessions[-1]
     if (now.date()-datetime.fromisoformat(day).date()).days>4:raise ValueError('STALE_MARKET_PRICES')
     rows,diagnostics,on=strategy.collect_prices(data,day,cache)
+    from collections import Counter
+    diagnostics['price_filters']=dict(Counter(code for r in rows for code in r['price_exclusions']))
+    print('BEST_V2_PRICE_FILTERS',json.dumps(diagnostics['price_filters']),flush=True)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
     if output:
