@@ -1,0 +1,77 @@
+# BEST v1 implementation and validation notes
+
+The preregistered numeric score, absolute eligibility, strong pool and all risk
+caps remain unchanged. No historical outcome fitting has been performed.
+
+2026-11-06: First real inventory inspected 5,311 dated reference records; 1,724
+complete liquid unique issuers and 191 strong candidates. Formation blocked
+because provider ticker metadata returned SIC 0000 for TBBB. The strong name was
+not dropped or replaced to force a ten-stock result. Added a data repair using
+the same authenticated provider's original SEC filing *filer reference metadata*,
+limited to filings dated on/before the signal and matching the exact issuer CIK.
+No fundamental ranking or inferred industry is introduced. Missing or future-only
+classification still blocks formation. Both reference and filing evidence are
+hashed and cached. The earlier blocked runs are validation receipts, not trades.
+
+Inventory batches are complete-universe checkpoints, not a top-N filter. Every
+reference symbol must appear once as evaluated or excluded, with a reason. Changed
+source, universe, or protocol fingerprints invalidate old checkpoints. Recovery
+caches are encrypted using the existing protected market-data credential and
+saved even on collection failure. No credential value is serialized or logged.
+
+The BEST-only data adapter now uses the current New York session only after
+16:15 local time. Before that it requests prior completed dates; the observed
+SPY calendar handles holidays/weekends. This fixes the legacy adapter's UTC
+yesterday lag without altering any legacy code or frozen BEST score parameters.
+Reference requests retry only transient 429/502/503/504 responses; permissions
+errors remain explicit and never trigger a different investment universe.
+
+The vendor's foreign-filer coverage did not resolve TBBB. The existing primary
+SEC client is therefore reused for classification reference evidence. A current
+SEC reference is admissible only if its archived observation is on/before the
+signal date in New York; otherwise only an original filing header dated by the
+signal is admissible. Exact CIK and SIC, observation time, source URL and content
+hash are preserved. Future-only classification is rejected, and the candidate
+is never silently dropped. This repairs missing metadata, not model parameters.
+
+PR approval now explicitly requires the independently audited full inventory,
+ten common-stock members, funded integer orders and an independently reconciled
+BEST state. A gracefully reported data block is not a green release gate. Daily
+production still publishes honest failure status without erasing prior history.
+
+The same provider's dated financial filing reference may also supply SIC when
+ticker-reference and SEC-filing-index metadata omit foreign issuers. Only CIK,
+SIC, filing date, source URL and receipt hash are consumed; earnings/fundamental
+values are not ranking inputs. Source failures are recorded by ticker and
+redacted status code. Primary SEC requests are serialized under its rate limit.
+
+Product release readiness is distinct from execution: a funded, reconciled cash
+account with ten audited precommitted whole-share buys can be published as
+PAPER_EXPERIMENT before the next market opening. It remains paper_started=false,
+fully_invested=false and shows zero executed positions until real opening quotes
+are recorded. An actual-ten-holdings flag cannot be inferred from a plan.
+
+Reference collection follows the exact greedy selection prefix and stops only
+after ten have already been selected. Missing industry for a considered name
+still blocks; it is never skipped. Metadata for lower-ranked names beyond that
+completed prefix cannot affect the already determined membership and is marked
+NOT_NEEDED_AFTER_TEN_SELECTED. Correlation is still computed on all forty price
+histories and scores still use the complete price-eligible universe. This avoids
+blocking a valid selection on irrelevant metadata without changing any score,
+cap, fallback or chosen name. An independent test proves equivalent membership
+against the fully classified pool and rejects omissions before ten exist.
+
+The completed 2026-11-06 inventory contains 5,312 reference records, 1,743
+price/liquidity-eligible unique issuers and 215 strong names. Exact greedy-prefix
+classification completes without requiring the unavailable lower-ranked TBBB
+metadata. The independent ordering audit then detected floating-point tie
+instability between Python summation implementations. Composite midrank scores
+now use exact integer numerators; the independent auditor uses rational fractions.
+The numerical weights and economic rules are unchanged, and mathematically equal
+scores now consistently use the preregistered RS6/ticker tie-break. A separate
+250-name regression checks the exact rational ordering, including tied inputs.
+
+Local browser checks used explicitly synthetic fixtures at 320, 390 and 1,440 px.
+All five tabs render without page overflow or JavaScript exceptions. Ten target
+names remain identical after capital changes and reload; insufficient capital is
+explicit. These checks do not assert live trading or production data readiness.

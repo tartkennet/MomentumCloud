@@ -6,7 +6,8 @@
     "deploymentEnabled": {
       "h3-observed-snapshots": false,
       "h3-sek-valuations": false,
-      "quality-observed-snapshots": false
+      "quality-observed-snapshots": false,
+      "best-observed-snapshots": false
     }
   }
 }
