@@ -44,9 +44,6 @@ def collect(data,client,cache,previous,now,output=None):
     from collections import Counter
     diagnostics['price_filters']=dict(Counter(code for r in rows for code in r['price_exclusions']))
     print('BEST_V2_PRICE_FILTERS',json.dumps(diagnostics['price_filters']),flush=True)
-    from collections import Counter
-    diagnostics['price_filters']=dict(Counter(code for r in rows for code in r['price_exclusions']))
-    print('BEST_V2_PRICE_FILTERS',json.dumps(diagnostics['price_filters']),flush=True)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
     if output:
