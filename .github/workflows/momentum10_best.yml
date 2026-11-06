@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['best_*.py','audit_best.py','publish_best.py','verify_best.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
+    paths: ['best_*.py','audit_best.py','publish_best.py','verify_best.py','verify_best_production.py','public/index.html','public/manifest.webmanifest','public/best*.js','public/best.html','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
   pull_request:
     paths: ['best_*.py','audit_best.py','publish_best.py','verify_best.py','tests/test_best*.py','docs/MOMENTUM10_BEST_PROTOCOL_V1.md','.github/workflows/momentum10_best.yml']
   schedule:
