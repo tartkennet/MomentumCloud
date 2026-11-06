@@ -105,9 +105,16 @@ def collect(data,client,cache,previous,now,output=None):
     if output:
         atomic_json(Path(output)/'best-coverage.json',dict(price_as_of=day,diagnostics=diagnostics,population_audit=population_audit,ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows]))
     strong=[r for r in rows if r['strong']][:40]
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        pool_rows=list(pool.map(lambda row:reference(row,day,cache,BestProvider()),strong))
-    edges=strategy.clusters(pool_rows);targets,skips=strategy.select(pool_rows)
+    pool_rows=copy.deepcopy(strong)
+    # Correlation uses all forty price histories. Industry metadata is needed
+    # only for the deterministic prefix actually considered before ten fill.
+    edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
+    for index,row in enumerate(pool_rows):
+        pool_rows[index]=reference(row,day,cache,BestProvider());classified+=1
+        targets,skips=strategy.select(pool_rows[:index+1])
+        if len(targets)==10:break
+    for row in pool_rows[classified:]:row['classification_status']='NOT_NEEDED_AFTER_TEN_SELECTED'
+    diagnostics['classification']=dict(considered=classified,verified=classified,unneeded_after_ten=len(pool_rows)-classified)
     analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
     checked=audit.signal(analysis)
     month=datetime.now(timezone.utc).astimezone(NY).strftime('%Y-%m')
@@ -121,7 +128,7 @@ def collect(data,client,cache,previous,now,output=None):
     if selection:
         for row in selection['rows']:
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
-    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows},
+    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='19e40bc645ce5f34ff06e870338b9515ca81fda5',
         source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_strategy.py','best_reference.py','best_data.py','best_inventory.py','best_capital.py','best_forward.py','audit_best.py',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,

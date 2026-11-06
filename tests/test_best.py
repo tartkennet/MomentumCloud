@@ -162,3 +162,24 @@ class BestTests(unittest.TestCase):
         rows=r['targets'];shares={x['ticker']:1 for x in rows}
         p=capital.orders(rows,shares,100000,10000,{})
         self.assertEqual(p['orders'],[]);self.assertEqual(p['retained'],shares)
+
+
+class ClassificationPrefixTests(unittest.TestCase):
+    def test_unused_lower_ranked_metadata_cannot_block_or_change_a_completed_selection(self):
+        data,r,now=formation()
+        pool=copy.deepcopy(r['strong_pool']);expected,_=strategy.select(pool)
+        stop=max(next(i for i,p in enumerate(pool) if p['ticker']==x['ticker']) for x in expected)
+        resolved=[];calls=[]
+        def reference(row):
+            calls.append(row['ticker'])
+            if len(calls)>stop+1:raise ValueError('UNNEEDED_METADATA_IS_UNAVAILABLE')
+            return copy.deepcopy(row)
+        selected=[]
+        for i,row in enumerate(pool):
+            resolved.append(reference(row));selected,_=strategy.select(resolved)
+            if len(selected)==10:break
+        self.assertEqual([x['ticker'] for x in selected],[x['ticker'] for x in expected])
+        self.assertEqual(len(calls),stop+1)
+        analysis=dict(ranked_liquid=r['ranked_liquid'],strong_pool=resolved+[
+            {k:v for k,v in x.items() if k not in ('sic','industry','division')} for x in pool[len(resolved):]],targets=selected)
+        self.assertEqual(audit.signal(analysis)['status'],'PASS')

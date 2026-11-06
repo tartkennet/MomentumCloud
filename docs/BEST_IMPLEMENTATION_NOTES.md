@@ -50,3 +50,13 @@ account with ten audited precommitted whole-share buys can be published as
 PAPER_EXPERIMENT before the next market opening. It remains paper_started=false,
 fully_invested=false and shows zero executed positions until real opening quotes
 are recorded. An actual-ten-holdings flag cannot be inferred from a plan.
+
+Reference collection follows the exact greedy selection prefix and stops only
+after ten have already been selected. Missing industry for a considered name
+still blocks; it is never skipped. Metadata for lower-ranked names beyond that
+completed prefix cannot affect the already determined membership and is marked
+NOT_NEEDED_AFTER_TEN_SELECTED. Correlation is still computed on all forty price
+histories and scores still use the complete price-eligible universe. This avoids
+blocking a valid selection on irrelevant metadata without changing any score,
+cap, fallback or chosen name. An independent test proves equivalent membership
+against the fully classified pool and rejects omissions before ten exist.
