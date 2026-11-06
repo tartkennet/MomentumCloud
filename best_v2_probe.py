@@ -26,9 +26,9 @@ def main():
         try:
             r=client.get('/stocks/filings/vX/index',{'ticker':ticker,'form_type':'8-K','limit':1,'sort':'filing_date','order':'desc'})['results'][0]
             a=r['accession_number'];out['event_originals']={}
-            for label,path in [('files','/v1/reference/sec/filings/'+a+'/files'),('text','/stocks/filings/vX/'+a),('details','/v1/reference/sec/filings/'+a)]:
+            for label,path in [('files','/v1/reference/sec/filings/'+a+'/files'),('text','/stocks/filings/8-K/vX/text?ticker='+ticker),('details','/v1/reference/sec/filings/'+a)]:
                 try:
-                    body=client.get(path);out['event_originals'][label]={'keys':list(body),'result_keys':list(body['results'][0]) if isinstance(body.get('results'),list) and body['results'] else []}
+                    body=client.get('/stocks/filings/8-K/vX/text',{'ticker':ticker,'accession_number':a,'limit':2}) if label=='text' else client.get(path);out['event_originals'][label]={'keys':list(body),'excerpt':str(body.get('results',[{}])[0].get('items_text',''))[:1500] if label=='text' and body.get('results') else None,'result_keys':list(body['results'][0]) if isinstance(body.get('results'),list) and body['results'] else []}
                 except DataUnavailable as e:out['event_originals'][label]={'blocked':str(e)}
         except Exception as e:out['event_originals']={'blocked':type(e).__name__}
         print('BEST_V2_SOURCE_PROBE',json.dumps(out),flush=True)
