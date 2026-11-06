@@ -44,3 +44,9 @@ ticker-reference and SEC-filing-index metadata omit foreign issuers. Only CIK,
 SIC, filing date, source URL and receipt hash are consumed; earnings/fundamental
 values are not ranking inputs. Source failures are recorded by ticker and
 redacted status code. Primary SEC requests are serialized under its rate limit.
+
+Product release readiness is distinct from execution: a funded, reconciled cash
+account with ten audited precommitted whole-share buys can be published as
+PAPER_EXPERIMENT before the next market opening. It remains paper_started=false,
+fully_invested=false and shows zero executed positions until real opening quotes
+are recorded. An actual-ten-holdings flag cannot be inferred from a plan.

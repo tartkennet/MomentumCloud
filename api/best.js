@@ -13,12 +13,16 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const signal={...d.signal,quotes:Object.fromEntries((d.signal?.selection?.rows||[]).map(r=>[r.ticker,d.signal.quotes[r.ticker]]))};
  const light=r=>{const {returns63,...rest}=r;return rest;};if(signal.selection)signal.selection={...signal.selection,rows:signal.selection.rows.map(light)};
  const {excluded_names,...diagnostics}=d.diagnostics||{};diagnostics.excluded_name_count=excluded_names?.length;
+ const members=signal.selection?.rows||[],pending=p.pending_intention;const names=new Set(members.map(x=>x.ticker));
+ const planned=pending?.kind==='MEMBERSHIP'&&members.length===10&&names.size===10&&members.every(x=>x.instrument_type==='CS'&&x.ticker!=='SPY')&&pending.plan?.orders?.filter(x=>x.side==='BUY').length===10&&pending.plan.orders.every(x=>x.side==='BUY'&&names.has(x.ticker)&&Number.isInteger(x.quantity)&&x.quantity>=1);
+ const invested=p.paper_started===true&&p.positions.length===10&&p.positions.every(x=>Number.isInteger(x.quantity)&&x.quantity>=1);
+ const capitalVerified=Number.isFinite(p.initial_sek)&&p.initial_sek>0&&p.capital_configuration?.initial_sek===p.initial_sek;
  const body={model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
   delivery:{verified:fresh,source:'independent_best_prospective_journal'},operations:{delayed,next_attempt:next},errors:d.errors||[],technical_readiness:d.technical_readiness,
   paper:{...p,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
-  promotion_ready:verified&&d.technical_readiness.funded===true&&p.paper_started===true&&p.positions.length===10&&p.positions.every(x=>Number.isInteger(x.quantity)&&x.quantity>=1),
+  promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
  return res.status(fresh?200:503).json(body);
  }catch{return res.status(503).json({model:MODEL,signal:{},delivery:{verified:false},errors:['BEST-journalen kan inte hämtas eller verifieras.'],promotion_ready:false,live_approved:false,broker_orders_enabled:false,
