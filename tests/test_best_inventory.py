@@ -1,4 +1,5 @@
 import tempfile
+import json
 import unittest
 from pathlib import Path
 from best_inventory import scan
@@ -19,7 +20,7 @@ class InventoryTests(unittest.TestCase):
             self.assertTrue(manifest['complete']);self.assertEqual(manifest['resumed_batches'],1)
             self.assertEqual(manifest['processed_records'],12)
             changed=Path(cache)/'best-inventory-v1'/manifest['fingerprint']/'0.json'
-            changed.write_text(changed.read_text().replace('"start": 0','"start": 1'))
+            payload=json.loads(changed.read_text());payload['start']=1;changed.write_text(json.dumps(payload))
             with self.assertRaises(ValueError):scan(records,lambda r:(dict(r),None),cache,{'day':'2026-11-05'},batch_size=5)
 
     def test_source_change_invalidates_cached_batches_without_limiting_universe(self):

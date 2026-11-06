@@ -12,7 +12,7 @@ from pathlib import Path
 import momentum_core as core
 from momentum_core_data import atomic_json,read_json
 from quality_forward import NY,bootstrap,digest
-from quality_sources import Provider,DataUnavailable
+from quality_sources import Provider,DataUnavailable,iso_date
 from run_quality_forward import data_for
 from avanza10_forward import observe_account,summarize as ledger_summary
 from h3_display import ecb_rates,rate_on
@@ -37,17 +37,20 @@ def reference(row,day,cache,client):
     if receipt['date']!=day or d['ticker']!=row['ticker'] or str(d['cik']).zfill(10)!=row['cik'] or d['type']!='CS':
         raise ValueError('REFERENCE_IDENTITY_MISMATCH')
     sic=str(d.get('sic_code') or '').zfill(4)
-    if not sic.isdigit():raise ValueError('UNVERIFIED_INDUSTRY_CLASSIFICATION')
-    return dict(row,sic=sic,industry=sic[:2],division=strategy.division(sic),reference_sha256=digest(receipt))
+    try:sector=strategy.division(sic)
+    except (ValueError,TypeError):raise ValueError('UNVERIFIED_INDUSTRY_CLASSIFICATION_'+row['ticker'].replace('.','_').replace('-','_')+'_SIC_'+sic) from None
+    return dict(row,sic=sic,industry=sic[:2],division=sector,reference_sha256=digest(receipt))
 
 
-def collect(data,client,cache,previous,now):
+def collect(data,client,cache,previous,now,output=None):
     day=data.sessions[-1]
     if (now.date()-datetime.fromisoformat(day).date()).days>4:raise ValueError('STALE_MARKET_PRICES')
     rows,diagnostics,on=strategy.collect_prices(data,day,cache)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
     for r in rows:audit.price_metrics(r,closes_at(data,day,r['ticker'],253),spy)
+    if output:
+        atomic_json(Path(output)/'best-coverage.json',dict(price_as_of=day,diagnostics=diagnostics,population_audit=population_audit,ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows]))
     strong=[r for r in rows if r['strong']][:40]
     with ThreadPoolExecutor(max_workers=4) as pool:
         pool_rows=list(pool.map(lambda row:reference(row,day,cache,Provider()),strong))
@@ -150,7 +153,7 @@ def run(args):
     report=None
     try:
         data,client=data_for(Path(args.cache),datetime.now(timezone.utc))
-        report=collect(data,client,Path(args.cache),previous,datetime.now(timezone.utc))
+        report=collect(data,client,Path(args.cache),previous,datetime.now(timezone.utc),out)
         rates=ecb_rates();fx=rate_on(rates,report['price_as_of'])
         if not fx:raise ValueError('NO_VERIFIED_INITIAL_FX')
         report.update(fx=fx,fx_history=rates,errors=[])
@@ -179,6 +182,8 @@ def run(args):
         atomic_json(out/'best-state.json',state)
     except Exception as exc:
         report=copy.deepcopy(previous) if prior else report if report else dict(model=strategy.MODEL,signal={})
+        if (out/'best-coverage.json').exists() and not prior:
+            coverage=read_json(out/'best-coverage.json');report.update(coverage)
         if 'paper' not in report:report['paper']=dict(model=strategy.MODEL,mode='PAPER_ONLY',
             experiment_label='PAPER_EXPERIMENT',live_approved=False,broker_orders_enabled=False,paper_started=False,initial_sek=None,
             positions=[],trades=[],curve=[],status='BLOCKED')
@@ -190,7 +195,7 @@ def run(args):
             atomic_json(out/'best-state.json',prior)
     atomic_json(out/'best-report.json',report)
     summary=dict(status=report['technical_readiness']['status'],paper_status=report['paper']['status'],
-        initial_sek=report['paper'].get('initial_sek'),targets=[r['ticker'] for r in (report.get('signal',{}).get('selection') or {}).get('rows',[])],errors=report.get('errors',[]))
+        initial_sek=report['paper'].get('initial_sek'),targets=[r['ticker'] for r in (report.get('signal',{}).get('selection') or {}).get('rows',[])],errors=report.get('errors',[]),coverage={k:report.get('diagnostics',{}).get(k) for k in ('reference_records','priced_liquid','strong')})
     print('BEST_RESULT',json.dumps(summary),flush=True)
     if os.environ.get('GITHUB_ACTIONS')=='true':print('::notice title=BEST verification::'+json.dumps(summary),flush=True)
 
