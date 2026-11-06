@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "as_of": "2026-11-04",
-  "source_run": "42076255838",
-  "checkpoint_sha256": "cbebfe12a748c5676647aa3bfe3f0bc58649b35f262dda7edb6292dfd29ca5de",
+  "as_of": "2026-11-05",
+  "source_run": "42177996082",
+  "checkpoint_sha256": "84cefebc7be2fffc28c61fdc2d1986a14b8229d2bbae666e952aefd7acea334f",
   "account": {
     "cash": 1754.2159649999944,
     "shares": {
@@ -24,11 +24,18 @@
       "MATX": 10.0,
       "MXL": 14.0
     },
-    "receivables": [],
+    "receivables": [
+      {
+        "ticker": "MATX",
+        "amount": 3.8,
+        "pay_date": "2026-12-03",
+        "reason": "DIVIDEND"
+      }
+    ],
     "pending": null,
     "previous_risk": true,
     "selection_month": "2026-11",
-    "last_date": "2026-11-04",
+    "last_date": "2026-11-05",
     "trades": [
       {
         "date": "2026-10-30",
@@ -771,6 +778,15 @@
         "stock_value": 96934.68,
         "positions": 16,
         "fees_cumulative": 171.874035
+      },
+      {
+        "date": "2026-11-05",
+        "nav": 94002.685965,
+        "cash": 1754.2159649999944,
+        "receivables": 3.8,
+        "stock_value": 92244.67,
+        "positions": 16,
+        "fees_cumulative": 171.874035
       }
     ],
     "fees": 171.874035,
@@ -785,7 +801,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "",
-    "last_date": "2026-11-04",
+    "last_date": "2026-11-05",
     "trades": [
       {
         "date": "2026-10-30",
@@ -843,6 +859,15 @@
         "stock_value": 100452.10999999999,
         "positions": 1,
         "fees_cumulative": 149.61117000000002
+      },
+      {
+        "date": "2026-11-05",
+        "nav": 96132.60883,
+        "cash": 109.6088299999974,
+        "receivables": 0,
+        "stock_value": 96023.0,
+        "positions": 1,
+        "fees_cumulative": 149.61117000000002
       }
     ],
     "fees": 149.61117000000002,
@@ -852,144 +877,144 @@
     {
       "ticker": "ATEX",
       "quantity": 19.0,
-      "mark_usd": 77.76,
-      "value_usd": 1477.44,
-      "weight_pct": 1.4970681205350336,
+      "mark_usd": 68.52,
+      "value_usd": 1301.8799999999999,
+      "weight_pct": 1.384939150020382,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "AXTI",
       "quantity": 15.0,
-      "mark_usd": 47.54,
-      "value_usd": 713.1,
-      "weight_pct": 0.7225736928427093,
+      "mark_usd": 36.72,
+      "value_usd": 550.8,
+      "weight_pct": 0.5859407040827315,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CDNA",
       "quantity": 17.0,
-      "mark_usd": 85.86,
-      "value_usd": 1459.62,
-      "weight_pct": 1.4790113778531417,
+      "mark_usd": 76.33,
+      "value_usd": 1297.61,
+      "weight_pct": 1.3803967266245336,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CLMT",
       "quantity": 37.0,
-      "mark_usd": 43.6,
-      "value_usd": 1613.2,
-      "weight_pct": 1.6346317224707037,
+      "mark_usd": 43.35,
+      "value_usd": 1603.95,
+      "weight_pct": 1.7062810317964727,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "ERAS",
       "quantity": 116.0,
-      "mark_usd": 14.91,
-      "value_usd": 1729.56,
-      "weight_pct": 1.7525375910714296,
+      "mark_usd": 13.27,
+      "value_usd": 1539.32,
+      "weight_pct": 1.6375276772124732,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "LITE",
       "quantity": 1.0,
-      "mark_usd": 626.75,
-      "value_usd": 626.75,
-      "weight_pct": 0.6350765137977396,
+      "mark_usd": 509.7,
+      "value_usd": 509.7,
+      "weight_pct": 0.5422185491484536,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MU",
       "quantity": 2.0,
-      "mark_usd": 795.23,
-      "value_usd": 1590.46,
-      "weight_pct": 1.611589616489434,
+      "mark_usd": 656.39,
+      "value_usd": 1312.78,
+      "weight_pct": 1.396534563372782,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SNDK",
       "quantity": 1.0,
-      "mark_usd": 1037.4,
-      "value_usd": 1037.4,
-      "weight_pct": 1.0511820908077785,
+      "mark_usd": 806.43,
+      "value_usd": 806.43,
+      "weight_pct": 0.8578797421812585,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SPY",
       "quantity": 99.0,
-      "mark_usd": 766.81,
-      "value_usd": 75914.18999999999,
-      "weight_pct": 76.9227269772305,
+      "mark_usd": 733,
+      "value_usd": 72567.0,
+      "weight_pct": 77.19673034344876,
       "sleeve": "SPY-kärna",
       "fractional_entitlement": false
     },
     {
       "ticker": "SYRE",
       "quantity": 17.0,
-      "mark_usd": 99.04,
-      "value_usd": 1683.68,
-      "weight_pct": 1.7060480650195105,
+      "mark_usd": 96.59,
+      "value_usd": 1642.03,
+      "weight_pct": 1.746790512572563,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TWST",
       "quantity": 6.0,
-      "mark_usd": 142.58,
-      "value_usd": 855.48,
-      "weight_pct": 0.866845242957623,
+      "mark_usd": 120.61,
+      "value_usd": 723.66,
+      "weight_pct": 0.7698290666603295,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TXG",
       "quantity": 16.0,
-      "mark_usd": 67.52,
-      "value_usd": 1080.32,
-      "weight_pct": 1.0946722925982832,
+      "mark_usd": 58.06,
+      "value_usd": 928.96,
+      "weight_pct": 0.9882270814536933,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "ECPG",
       "quantity": 22.0,
-      "mark_usd": 99.93,
-      "value_usd": 2198.46,
-      "weight_pct": 2.2276670323474725,
+      "mark_usd": 126.17,
+      "value_usd": 2775.7400000000002,
+      "weight_pct": 2.9528305191550492,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "LIND",
       "quantity": 61.0,
-      "mark_usd": 33.52,
-      "value_usd": 2044.7200000000003,
-      "weight_pct": 2.071884562094159,
+      "mark_usd": 31.57,
+      "value_usd": 1925.77,
+      "weight_pct": 2.0486329515275994,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MATX",
       "quantity": 10.0,
-      "mark_usd": 211.44,
-      "value_usd": 2114.4,
-      "weight_pct": 2.142490276464205,
+      "mark_usd": 213.87,
+      "value_usd": 2138.7,
+      "weight_pct": 2.2751477556676427,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MXL",
       "quantity": 14.0,
-      "mark_usd": 56.85,
-      "value_usd": 795.9,
-      "weight_pct": 0.8064737093444291,
+      "mark_usd": 44.31,
+      "value_usd": 620.34,
+      "weight_pct": 0.6599173136722616,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     }
@@ -1435,6 +1460,123 @@
       "ticker": "BJDX",
       "adjustment_type": "reverse_split",
       "historical_adjustment_factor": 4.0
+    },
+    {
+      "id": "E26a59e95556fbcda82f37b741e05e790e111de5c86b0f94acca83db3de74b0e2",
+      "execution_date": "2026-11-05",
+      "split_from": 58.0,
+      "split_to": 1.0,
+      "ticker": "XXII",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 58.0
+    },
+    {
+      "id": "E7c5a1bee7ac2b964670118561167da579cc4fcb1b5fc8b94ca43ac0568919131",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 1.03,
+      "ticker": "UWHR",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.970874
+    },
+    {
+      "id": "E75e42c53b07756b6ddede7c472e7a5a1ad5ea0adae3e6d1c48119ff2186303b0",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "SOXX",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "E1c3a46a85d66a155028dcfad66d20b22f49bc681c5ca4bee276ceada86088b04",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 4.0,
+      "ticker": "QUAL",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.25
+    },
+    {
+      "id": "E3625e1d9971c4c77dd78e485863b3a0a350bbfda5d253687d8b573b16c99cd51",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 4.0,
+      "ticker": "MTUM",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.25
+    },
+    {
+      "id": "E044e9d49f07e97f7bad274a4707dfcb74a6bd6bcb41ab17490b086e61c25177d",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "ITA",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "E9a367f4563a64d9e97086a024c600775df6680416c9adbb4045a9278d4e040e1",
+      "execution_date": "2026-11-05",
+      "split_from": 10.0,
+      "split_to": 1.0,
+      "ticker": "INM",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 5.0
+    },
+    {
+      "id": "Ea5f9c9ab871f673a0e891cffa636f6b3970b96655bda74c03b65ff4d43c62b33",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 2.0,
+      "ticker": "INM",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.5
+    },
+    {
+      "id": "Ecc98b59307e457852d4b22ad85e2020022174497a5f3d7f90a2b603e3d02c116",
+      "execution_date": "2026-11-05",
+      "split_from": 3.0,
+      "split_to": 1.0,
+      "ticker": "EZGO",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 3.0
+    },
+    {
+      "id": "E41e18e1404bb5cbfb3bb1163bc11509e93d7cc9241e34ef7700cb2398c8e5d40",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 2.0,
+      "ticker": "EFV",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.5
+    },
+    {
+      "id": "E239be4fc452e1df269ac139b500534d9f37e67e254b0daca6f1ea17f462b63cf",
+      "execution_date": "2026-11-05",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "EFG",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "E3928afe76711799e8a7d97a44b4836ba7ff50f1e281f047ff7db519afdab8666",
+      "execution_date": "2026-11-05",
+      "split_from": 25.0,
+      "split_to": 1.0,
+      "ticker": "CZZLF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 25.0
+    },
+    {
+      "id": "Ed4fa9a74b5f77eaf36d04fae3b8450d59777732779e29387e5815edac8601e50",
+      "execution_date": "2026-11-05",
+      "split_from": 17.0,
+      "split_to": 16.0,
+      "ticker": "AOTUF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 1.0625
     }
   ],
   "live_approved": false,

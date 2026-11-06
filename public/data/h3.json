@@ -3,200 +3,200 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-05T17:36:45.640115+00:00",
-  "as_of": "2026-11-04",
+  "generated_at": "2026-11-06T07:01:04.294688+00:00",
+  "as_of": "2026-11-05",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
   "broker_orders_enabled": false,
-  "sessions": 5,
+  "sessions": 6,
   "metrics": {
     "Periods": 0,
-    "TotalReturn_pct": -1.3111040350000103,
-    "SPYTotalReturn_pct": 0.5617188299999798,
-    "TotalEdgeVsSPY_pct": -1.87282286499999,
-    "DailyMaxDrawdown_pct": -2.4463163999999926,
+    "TotalReturn_pct": -5.9973140350000005,
+    "SPYTotalReturn_pct": -3.8673911700000008,
+    "TotalEdgeVsSPY_pct": -2.1299228649999997,
+    "DailyMaxDrawdown_pct": -5.9973140350000005,
     "PeriodHitRate_pct": 0.0,
-    "DailySharpe_zero_rf": -4.6043625764357055,
+    "DailySharpe_zero_rf": -8.71451601258896,
     "ActualFees_USD": 171.874035,
-    "FinalNAV_USD": 98688.89596499999,
-    "evaluation_through": "2026-11-04",
-    "sessions_in_evaluation": 5,
+    "FinalNAV_USD": 94002.685965,
+    "evaluation_through": "2026-11-05",
+    "sessions_in_evaluation": 6,
     "fixed_first_window_complete": false
   },
   "cost_cases": {
     "15bp": {
       "Periods": 0,
-      "TotalReturn_pct": -1.3111040350000103,
-      "SPYTotalReturn_pct": 0.5617188299999798,
-      "TotalEdgeVsSPY_pct": -1.87282286499999,
-      "DailyMaxDrawdown_pct": -2.4463163999999926,
+      "TotalReturn_pct": -5.9973140350000005,
+      "SPYTotalReturn_pct": -3.8673911700000008,
+      "TotalEdgeVsSPY_pct": -2.1299228649999997,
+      "DailyMaxDrawdown_pct": -5.9973140350000005,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -4.6043625764357055,
+      "DailySharpe_zero_rf": -8.71451601258896,
       "ActualFees_USD": 171.874035,
-      "FinalNAV_USD": 98688.89596499999,
-      "evaluation_through": "2026-11-04",
-      "sessions_in_evaluation": 5,
+      "FinalNAV_USD": 94002.685965,
+      "evaluation_through": "2026-11-05",
+      "sessions_in_evaluation": 6,
       "fixed_first_window_complete": false
     },
     "30bp": {
       "Periods": 0,
-      "TotalReturn_pct": -1.481172410000009,
-      "SPYTotalReturn_pct": 0.40896179999998505,
-      "TotalEdgeVsSPY_pct": -1.890134209999994,
-      "DailyMaxDrawdown_pct": -2.594002800000006,
+      "TotalReturn_pct": -6.165432409999994,
+      "SPYTotalReturn_pct": -3.9863381999999947,
+      "TotalEdgeVsSPY_pct": -2.1790942099999993,
+      "DailyMaxDrawdown_pct": -6.165432409999994,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -5.139882284659534,
+      "DailySharpe_zero_rf": -9.005748739355552,
       "ActualFees_USD": 343.64241,
-      "FinalNAV_USD": 98518.82758999999,
-      "evaluation_through": "2026-11-04",
-      "sessions_in_evaluation": 5,
+      "FinalNAV_USD": 93834.56759,
+      "evaluation_through": "2026-11-05",
+      "sessions_in_evaluation": 6,
       "fixed_first_window_complete": false
     }
   },
   "cash_usd": 1754.2159649999944,
-  "receivables_usd": 0,
+  "receivables_usd": 3.8,
   "holdings": [
     {
       "ticker": "ATEX",
       "quantity": 19.0,
-      "mark_usd": 77.76,
-      "value_usd": 1477.44,
-      "weight_pct": 1.4970681205350336,
+      "mark_usd": 68.52,
+      "value_usd": 1301.8799999999999,
+      "weight_pct": 1.384939150020382,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "AXTI",
       "quantity": 15.0,
-      "mark_usd": 47.54,
-      "value_usd": 713.1,
-      "weight_pct": 0.7225736928427093,
+      "mark_usd": 36.72,
+      "value_usd": 550.8,
+      "weight_pct": 0.5859407040827315,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CDNA",
       "quantity": 17.0,
-      "mark_usd": 85.86,
-      "value_usd": 1459.62,
-      "weight_pct": 1.4790113778531417,
+      "mark_usd": 76.33,
+      "value_usd": 1297.61,
+      "weight_pct": 1.3803967266245336,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "CLMT",
       "quantity": 37.0,
-      "mark_usd": 43.6,
-      "value_usd": 1613.2,
-      "weight_pct": 1.6346317224707037,
+      "mark_usd": 43.35,
+      "value_usd": 1603.95,
+      "weight_pct": 1.7062810317964727,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "ERAS",
       "quantity": 116.0,
-      "mark_usd": 14.91,
-      "value_usd": 1729.56,
-      "weight_pct": 1.7525375910714296,
+      "mark_usd": 13.27,
+      "value_usd": 1539.32,
+      "weight_pct": 1.6375276772124732,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "LITE",
       "quantity": 1.0,
-      "mark_usd": 626.75,
-      "value_usd": 626.75,
-      "weight_pct": 0.6350765137977396,
+      "mark_usd": 509.7,
+      "value_usd": 509.7,
+      "weight_pct": 0.5422185491484536,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MU",
       "quantity": 2.0,
-      "mark_usd": 795.23,
-      "value_usd": 1590.46,
-      "weight_pct": 1.611589616489434,
+      "mark_usd": 656.39,
+      "value_usd": 1312.78,
+      "weight_pct": 1.396534563372782,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SNDK",
       "quantity": 1.0,
-      "mark_usd": 1037.4,
-      "value_usd": 1037.4,
-      "weight_pct": 1.0511820908077785,
+      "mark_usd": 806.43,
+      "value_usd": 806.43,
+      "weight_pct": 0.8578797421812585,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "SPY",
       "quantity": 99.0,
-      "mark_usd": 766.81,
-      "value_usd": 75914.18999999999,
-      "weight_pct": 76.9227269772305,
+      "mark_usd": 733,
+      "value_usd": 72567.0,
+      "weight_pct": 77.19673034344876,
       "sleeve": "SPY-kärna",
       "fractional_entitlement": false
     },
     {
       "ticker": "SYRE",
       "quantity": 17.0,
-      "mark_usd": 99.04,
-      "value_usd": 1683.68,
-      "weight_pct": 1.7060480650195105,
+      "mark_usd": 96.59,
+      "value_usd": 1642.03,
+      "weight_pct": 1.746790512572563,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TWST",
       "quantity": 6.0,
-      "mark_usd": 142.58,
-      "value_usd": 855.48,
-      "weight_pct": 0.866845242957623,
+      "mark_usd": 120.61,
+      "value_usd": 723.66,
+      "weight_pct": 0.7698290666603295,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "TXG",
       "quantity": 16.0,
-      "mark_usd": 67.52,
-      "value_usd": 1080.32,
-      "weight_pct": 1.0946722925982832,
+      "mark_usd": 58.06,
+      "value_usd": 928.96,
+      "weight_pct": 0.9882270814536933,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "ECPG",
       "quantity": 22.0,
-      "mark_usd": 99.93,
-      "value_usd": 2198.46,
-      "weight_pct": 2.2276670323474725,
+      "mark_usd": 126.17,
+      "value_usd": 2775.7400000000002,
+      "weight_pct": 2.9528305191550492,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "LIND",
       "quantity": 61.0,
-      "mark_usd": 33.52,
-      "value_usd": 2044.7200000000003,
-      "weight_pct": 2.071884562094159,
+      "mark_usd": 31.57,
+      "value_usd": 1925.77,
+      "weight_pct": 2.0486329515275994,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MATX",
       "quantity": 10.0,
-      "mark_usd": 211.44,
-      "value_usd": 2114.4,
-      "weight_pct": 2.142490276464205,
+      "mark_usd": 213.87,
+      "value_usd": 2138.7,
+      "weight_pct": 2.2751477556676427,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     },
     {
       "ticker": "MXL",
       "quantity": 14.0,
-      "mark_usd": 56.85,
-      "value_usd": 795.9,
-      "weight_pct": 0.8064737093444291,
+      "mark_usd": 44.31,
+      "value_usd": 620.34,
+      "weight_pct": 0.6599173136722616,
       "sleeve": "Momentum",
       "fractional_entitlement": false
     }
@@ -544,6 +544,11 @@
       "date": "2026-11-04",
       "nav": 98688.89596499999,
       "spy_nav": 100561.71882999998
+    },
+    {
+      "date": "2026-11-05",
+      "nav": 94002.685965,
+      "spy_nav": 96132.60883
     }
   ],
   "validation": {
@@ -564,19 +569,19 @@
         },
         {
           "gate": "positive_net_return",
-          "value": -1.3111040350000103,
+          "value": -5.9973140350000005,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": -1.87282286499999,
+          "value": -2.1299228649999997,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "drawdown",
-          "value": -2.4463163999999926,
+          "value": -5.9973140350000005,
           "threshold": -20,
           "pass": true
         },
@@ -596,19 +601,19 @@
         },
         {
           "gate": "positive_net_return",
-          "value": -1.481172410000009,
+          "value": -6.165432409999994,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "beats_spy",
-          "value": -1.890134209999994,
+          "value": -2.1790942099999993,
           "threshold": 0,
           "pass": false
         },
         {
           "gate": "drawdown",
-          "value": -2.594002800000006,
+          "value": -6.165432409999994,
           "threshold": -20,
           "pass": true
         },
@@ -650,70 +655,63 @@
       },
       "prefix": {
         "status": "PASS",
-        "sessions": 5,
+        "sessions": 6,
         "accounts": 4
       },
       "accounting": {
-        "status": "UNCHANGED_ACCEPTED_PREFIX",
-        "new_sessions": 0
+        "status": "PASS",
+        "new_sessions": 1,
+        "market_trade_rows_checked": 0,
+        "volume_participation": [],
+        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
       }
     },
     "readiness": {
-      "checked_at": "2026-11-05T17:36:44.840546+00:00",
+      "checked_at": "2026-11-06T07:00:49.648547+00:00",
       "key_configured": true,
-      "live_probe": false,
+      "live_probe": true,
       "secrets_exposed": false,
       "subscription_changed": false,
       "live_approved": false,
       "broker_orders_enabled": false,
-      "status": "CONFIGURED",
-      "last_live_probe": {
-        "checked_at": "2026-11-05T17:29:58.307394+00:00",
-        "key_configured": true,
-        "live_probe": true,
-        "secrets_exposed": false,
-        "subscription_changed": false,
-        "live_approved": false,
-        "broker_orders_enabled": false,
-        "required_endpoints": {
-          "raw_daily_bars": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 8,
-            "latest_observed_session": "2026-11-04"
-          },
-          "dated_universe": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "splits": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          },
-          "dividends": {
-            "authorized": true,
-            "http_status": 200,
-            "rows": 1
-          }
+      "required_endpoints": {
+        "raw_daily_bars": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 9,
+          "latest_observed_session": "2026-11-05"
         },
-        "optional_quotes": {
-          "authorized": false,
-          "http_status": 403,
-          "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+        "dated_universe": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
         },
-        "status": "PASS"
-      }
+        "splits": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        },
+        "dividends": {
+          "authorized": true,
+          "http_status": 200,
+          "rows": 1
+        }
+      },
+      "optional_quotes": {
+        "authorized": false,
+        "http_status": 403,
+        "error": "ACCESS_DENIED_OR_UNAVAILABLE"
+      },
+      "status": "PASS"
     },
     "workflow": {
       "id": 400565291,
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-06T00:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-06T09:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "42076255838",
+    "workflow_run": "42177996082",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -740,10 +738,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_42076255838_attempt_1.tar.gz",
-    "paper_archive_sha256": "11081f5e11dc11c9083b1ebb6db6ddc5b81d21d209e13791f04bde5c220fe595",
-    "previous_paper_asset": "paper_run_42075082382_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "71bd7cb88e30501c0c07997246770fe1c2463b48aaaa90bcf5b42ce333dafd4f",
-    "workflow_run": "42076255838"
+    "paper_asset": "paper_run_42177996082_attempt_1.tar.gz",
+    "paper_archive_sha256": "aab14f27c2dcec9874b424e7629bed71e61885ce993f09cdc165820b2aab83f2",
+    "previous_paper_asset": "paper_run_42076255838_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "11081f5e11dc11c9083b1ebb6db6ddc5b81d21d209e13791f04bde5c220fe595",
+    "workflow_run": "42177996082"
   }
 }
