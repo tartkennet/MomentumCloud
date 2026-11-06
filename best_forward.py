@@ -38,8 +38,34 @@ def reference(row,day,cache,client):
         raise ValueError('REFERENCE_IDENTITY_MISMATCH')
     sic=str(d.get('sic_code') or '').zfill(4)
     try:sector=strategy.division(sic)
-    except (ValueError,TypeError):raise ValueError('UNVERIFIED_INDUSTRY_CLASSIFICATION_'+row['ticker'].replace('.','_').replace('-','_')+'_SIC_'+sic) from None
+    except (ValueError,TypeError):
+        evidence=receipt.get('sic_evidence')
+        if not evidence:
+            filings=client.get('/v1/reference/sec/filings',{'entities.company_data.ticker':row['ticker'],
+                'filing_date.lte':day,'sort':'filing_date','order':'desc','limit':20}).get('results',[])
+            for filing in filings:
+                filed=iso_date(filing.get('filing_date',''))
+                try:datetime.fromisoformat(filed)
+                except ValueError:continue
+                if filed>day:continue
+                for entity in filing.get('entities',[]):
+                    company=entity.get('company_data',{})
+                    if entity.get('relation')!='filer' or str(company.get('cik','')).zfill(10)!=row['cik']:continue
+                    candidate=str(company.get('sic') or '').zfill(4)
+                    try:strategy.division(candidate)
+                    except (ValueError,TypeError):continue
+                    evidence=dict(sic=candidate,cik=row['cik'],filed=filed,accession=filing.get('accession_number') or filing.get('id'),
+                        observed_at=datetime.now(timezone.utc).isoformat(),source='DATED_PROVIDER_SEC_FILER_REFERENCE',
+                        source_sha256=digest(filing))
+                    break
+                if evidence:break
+            if evidence:
+                receipt['sic_evidence']=evidence;atomic_json(path,receipt)
+        if not evidence or evidence['filed']>day or evidence['cik']!=row['cik']:
+            raise ValueError('UNVERIFIED_INDUSTRY_CLASSIFICATION_'+row['ticker'].replace('.','_').replace('-','_')+'_SIC_'+sic)
+        sic=evidence['sic'];sector=strategy.division(sic)
     return dict(row,sic=sic,industry=sic[:2],division=sector,reference_sha256=digest(receipt))
+
 
 
 def collect(data,client,cache,previous,now,output=None):

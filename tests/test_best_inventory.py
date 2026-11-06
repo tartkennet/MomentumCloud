@@ -30,3 +30,33 @@ class InventoryTests(unittest.TestCase):
             b=scan(records,lambda r:(None,'MISSING'),cache,{'source':'B'})[2]
             self.assertNotEqual(a['fingerprint'],b['fingerprint'])
             self.assertEqual(b['excluded_records'],301);self.assertTrue(b['complete'])
+
+
+class ClassificationTests(unittest.TestCase):
+    def test_missing_reference_classification_uses_only_dated_matching_filer_metadata(self):
+        from best_forward import reference
+        row=dict(ticker='TEST',cik='0000000123')
+        class Client:
+            def get(self,path,params):
+                if '/tickers/' in path:return {'results':dict(ticker='TEST',cik='123',sic_code=None,type='CS')}
+                return {'results':[
+                    dict(filing_date='20261106',id='future',entities=[dict(relation='filer',company_data=dict(cik='123',sic='7372'))]),
+                    dict(filing_date='20261104',id='wrong',entities=[dict(relation='filer',company_data=dict(cik='999',sic='7372'))]),
+                    dict(filing_date='20261103',id='actual',entities=[dict(relation='filer',company_data=dict(cik='123',sic='5411'))])
+                ]}
+        with tempfile.TemporaryDirectory() as cache:
+            result=reference(row,'2026-11-05',Path(cache),Client())
+            self.assertEqual(result['sic'],'5411');self.assertEqual(result['division'],'Retail')
+            saved=json.loads((Path(cache)/'best-reference-v1/2026-11-05/TEST.json').read_text())
+            self.assertEqual(saved['sic_evidence']['accession'],'actual')
+            self.assertLessEqual(saved['sic_evidence']['filed'],'2026-11-05')
+
+    def test_unknown_classification_does_not_silently_drop_the_strong_name(self):
+        from best_forward import reference
+        row=dict(ticker='TEST',cik='0000000123')
+        class Client:
+            def get(self,path,params):
+                return {'results':dict(ticker='TEST',cik='123',sic_code=None,type='CS')} if '/tickers/' in path else {'results':[]}
+        with tempfile.TemporaryDirectory() as cache:
+            with self.assertRaisesRegex(ValueError,'UNVERIFIED_INDUSTRY_CLASSIFICATION_TEST'):
+                reference(row,'2026-11-05',Path(cache),Client())
