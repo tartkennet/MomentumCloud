@@ -55,6 +55,7 @@ class V2Tests(unittest.TestCase):
         p=dict(description='Platform treating musculoskeletal conditions and improving member outcomes through software.',sic_code='7374')
         self.assertEqual(classify(p)['sector'],'Healthcare')
         self.assertEqual(classify(dict(description='Software platform serving businesses globally through subscription services.',sic_code='7372'))['sector'],'Technology')
+        self.assertEqual(classify(dict(description='The company operates a chain of grocery retail stores with food staples and household goods.',sic_code=None))['sector'],'Consumer Staples')
         with self.assertRaises(DataUnavailable):classify(dict(description='unknown',sic_code='7374'))
 
     def test_generic_cash_target_detection_and_acquirer_distinction(self):

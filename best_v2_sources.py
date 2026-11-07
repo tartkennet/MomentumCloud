@@ -17,7 +17,8 @@ def classify(profile):
     text=(profile.get('description') or '').lower();sic=int(profile.get('sic_code') or 0)
     if len(text)<40:raise DataUnavailable('ECONOMIC_BUSINESS_DESCRIPTION_MISSING')
     health=r'healthcare|health care|medical|musculoskeletal|pharmaceut|biotech|therapeutic|diagnostic|life.scien|patient'
-    if re.search(health,text) or 2830<=sic<=2839 or 3840<=sic<=3859 or 8000<=sic<=8099:sector='Healthcare'
+    if re.search(r'(?:operates?|operating).{0,50}(?:chain of )?grocery|grocery (?:retail|store|hard.discount)|supermarket',text):sector='Consumer Staples'
+    elif re.search(health,text) or 2830<=sic<=2839 or 3840<=sic<=3859 or 8000<=sic<=8099:sector='Healthcare'
     elif 1300<=sic<=1399 or 2900<=sic<=2999 or 5170<=sic<=5179:sector='Energy'
     elif sic==6798 or 6500<=sic<=6599:sector='Real Estate'
     elif 6000<=sic<=6499 or 6700<=sic<=6799:sector='Financials'
@@ -150,6 +151,7 @@ def reference(row,day,root,client,decision_at):
     else:
         profile=client.get('/v3/reference/tickers/'+row['ticker'],{'date':date})['results']
         if profile.get('ticker')!=row['ticker'] or str(profile.get('cik','')).zfill(10)!=row['cik'] or profile.get('type')!='CS':raise DataUnavailable('V2_REFERENCE_IDENTITY_MISMATCH')
+        print('BEST_V2_BUSINESS_PROFILE',json.dumps(dict(ticker=row['ticker'],description=profile.get('description'),sic_code=profile.get('sic_code'),sic_description=profile.get('sic_description'))),flush=True)
         receipt=dict(ticker=row['ticker'],cik=row['cik'],price_date=day,decision_date=date,
             observed_at=datetime.now(timezone.utc).isoformat(),profile={k:profile.get(k) for k in ('ticker','cik','type','description','sic_code','sic_description','name')},**classify(profile))
         # Save business proof even if event access is blocked; not a clearance.
