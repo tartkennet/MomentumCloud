@@ -132,16 +132,29 @@ def review_events(client,row,date):
     matches=[x for x in financial if any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])) and iso_date(x['filing_date'])<=date]
     annual=[x for x in matches if x['type'] in ('10-K','20-F','40-F')]
     interim=[x for x in matches if x['type']=='10-Q']
-    if not annual:
-        print('BEST_V2_ANNUAL_BASELINE_GAP',json.dumps(dict(ticker=row['ticker'],provider_records=len(financial),matching_records=len(matches),indexed_annuals=[x for x in index if x['form_type'] in ('20-F','20-F/A','40-F','10-K')])),flush=True)
+    indexed_annual=[x for x in index if x['form_type'] in ('10-K','20-F','40-F')]
+    base=max(indexed_annual,key=lambda x:(iso_date(x['filing_date']),x['accession_number'])) if indexed_annual else None
+    latest=max(annual,key=lambda x:(iso_date(x['filing_date']),x['accession_number'])) if annual else None
+    if not latest and not base:
+        print('BEST_V2_ANNUAL_BASELINE_GAP',json.dumps(dict(ticker=row['ticker'],provider_records=len(financial),matching_records=len(matches),indexed_annuals=indexed_annual)),flush=True)
         raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
-    chosen=[max(annual,key=lambda x:(iso_date(x['filing_date']),x['accession_number']))]
+    # Foreign 20-F originals may be absent from the legacy financials service.
+    # Use the independently indexed, fully identity-checked original, never omit it.
+    original_baseline=[]
+    if base and (not latest or iso_date(base['filing_date'])>iso_date(latest['filing_date'])):
+        original_baseline.append(base);chosen=[];base_date=iso_date(base['filing_date'])
+    else:
+        chosen=[latest];base_date=iso_date(latest['filing_date'])
     if interim:chosen.append(max(interim,key=lambda x:(iso_date(x['filing_date']),x['accession_number'])))
-    print('BEST_V2_MATCHED_FILINGS',json.dumps(dict(ticker=row['ticker'],cik=row['cik'],unrelated_records=len(financial)-len(matches),selected=[dict(accession=x['accession_number'],form=x['type'],filed=iso_date(x['filing_date'])) for x in chosen])),flush=True)
+    original_baseline.extend(x for x in index if x['form_type'] in ('10-K/A','20-F/A','40-F/A') and iso_date(x['filing_date'])>=base_date)
+    print('BEST_V2_MATCHED_FILINGS',json.dumps(dict(ticker=row['ticker'],cik=row['cik'],unrelated_records=len(financial)-len(matches),selected=[dict(accession=x['accession_number'],form=x.get('type',x.get('form_type')),filed=iso_date(x['filing_date'])) for x in chosen+original_baseline])),flush=True)
     for x in chosen:
-        if not any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])):raise DataUnavailable('FINANCIAL_EVENT_IDENTITY_MISMATCH')
+        if not any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x['entities']):raise DataUnavailable('FINANCIAL_EVENT_IDENTITY_MISMATCH')
         raw=raw_document(client,x['main_file_url']);text=re.sub('<[^>]+>',' ',raw.decode('utf-8',errors='replace'))
         keep(x['accession_number'],text,x['source_url'],iso_date(x['filing_date']))
+    for x in original_baseline:
+        text,meta=material_original(row,x,date)
+        keep(x['accession_number'],text,meta.get('source_url',meta.get('url')),iso_date(x['filing_date']),meta)
     # Positive/ambiguous deal language is an explicit event exclusion requiring review,
     # never an optimistic CLEAR. Event termination requires original analyst review.
     return dict(status='EXCLUDED_PENDING_PRICE_BINDING_EVENT' if warnings else 'CLEAR',index_sha256=digest(index),

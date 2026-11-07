@@ -194,3 +194,17 @@ class OriginalBundleTests(unittest.TestCase):
         entry['required_documents']=['main.htm']
         with tempfile.TemporaryDirectory() as root,patch('best_v2_mirrors.download',return_value=raw+b'changed'):
             with self.assertRaisesRegex(DataUnavailable,'CHANGED_ISSUER_MIRROR'):bundle(entry,root,'https://www.sec.gov/submission.txt')
+
+
+class ForeignAnnualTests(unittest.TestCase):
+    def test_missing_legacy_foreign_annual_requires_indexed_original_and_amendment(self):
+        filings=[dict(cik='123',form_type=f,accession_number=a,filing_date=d,filing_url='https://www.sec.gov/'+a+'.txt') for f,a,d in [('20-F','BASE','2026-04-02'),('20-F/A','AMENDMENT','2026-05-22')]]
+        class Client:
+            def get(self,path,params):return {'results':filings if path.endswith('/index') else []}
+        calls=[]
+        def original(row,filing,date):
+            calls.append(filing['accession_number']);return 'Ordinary operations and complete original public disclosures.',{'source_url':filing['filing_url']}
+        with patch('best_v2_sources.material_original',side_effect=original):result=review_events(Client(),dict(ticker='FOREIGN',cik='0000000123'),'2026-11-06')
+        self.assertEqual(set(calls),{'BASE','AMENDMENT'});self.assertEqual(result['status'],'CLEAR')
+        with patch('best_v2_sources.material_original',side_effect=DataUnavailable('ORIGINAL_MISSING')):
+            with self.assertRaisesRegex(DataUnavailable,'ORIGINAL_MISSING'):review_events(Client(),dict(ticker='FOREIGN',cik='0000000123'),'2026-11-06')
