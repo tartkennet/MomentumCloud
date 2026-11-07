@@ -37,3 +37,9 @@ annual baseline is therefore required from the separate complete SEC index,
 including the amendment, rather than declaring missing annual coverage CLEAR.
 Bundles require exact required-file lists and verify every individual hash;
 a missing/changed exhibit fails both unit regression and prospective formation.
+
+AtriCure 8-K/A accessions 0001323885-26-000020 and 0001323885-25-000101
+are also required with their sole material Exhibit 99.1 in each case. Readable
+SEC original bodies explicitly identify the corrected earnings guidance and
+conformed signature respectively. Complete pinned HTML bundles clear both
+missing parsed amendments; prospective real-data gate 42359247340 then passed.
