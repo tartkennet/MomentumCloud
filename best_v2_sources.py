@@ -114,7 +114,7 @@ def review_events(client,row,date):
                 except DataUnavailable:raise exc
             keep(x['accession_number'],text,used,iso_date(x['filing_date']),meta)
     # Read latest annual and interim originals as long-lived pending deal checks.
-    financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.ticker':row['ticker'],'filing_date.lte':date,'sort':'filing_date','order':'desc','limit':100})
+    financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.cik':row['cik'],'filing_date.lte':date,'sort':'filing_date','order':'desc','limit':100})
     matches=[x for x in financial if any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])) and iso_date(x['filing_date'])<=date]
     annual=[x for x in matches if x['type'] in ('10-K','20-F','40-F')]
     interim=[x for x in matches if x['type']=='10-Q']

@@ -11,4 +11,10 @@ def main():
             out={'requested_form':form,'count':len(rows),'paginated':bool(d.get('next_url')),'rows':[{k:r.get(k) for k in ('cik','form_type','filing_date','accession_number','filing_url')}|{'text_bytes':len(r.get('items_text',''))} for r in rows]}
         except DataUnavailable as e:out={'requested_form':form,'blocked':str(e)}
         print('BEST_FOREIGN_TEXT_CAPABILITY',json.dumps(out),flush=True)
+    for params in ({'entities.company_data.ticker':'SN'},{'entities.company_data.cik':'0001957132'},{'cik':'0001957132'}):
+        try:
+            d=c.get('/v1/reference/sec/filings',dict(params,limit=5,sort='filing_date',order='desc'))
+            out={'query_fields':list(params),'rows':[{'id':r.get('id'),'form':r.get('type'),'date':r.get('filing_date'),'entities':r.get('entities')} for r in d.get('results',[])]}
+        except DataUnavailable as e:out={'query_fields':list(params),'blocked':str(e)}
+        print('BEST_FILING_IDENTITY_PROBE',json.dumps(out),flush=True)
 if __name__=='__main__':main()
