@@ -90,12 +90,12 @@ def review_events(client,row,date):
     mapped={x['accession_number']:x for x in texts}
     if any(x['accession_number'] not in mapped for x in required):raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
     documents=[];warnings=[]
-    def keep(accession,text,url,filed):
+    def keep(accession,text,url,filed,source_receipt=None):
         if not text or len(text)<30:raise DataUnavailable('EMPTY_EVENT_TEXT')
         if filed>date:raise DataUnavailable('FUTURE_EVENT_TEXT')
         flagged=target_event(text)
         documents.append(dict(accession=accession,filing_date=filed,source_url=url,
-            text=text,sha256=hashlib.sha256(text.encode()).hexdigest(),event_language=flagged))
+            text=text,sha256=hashlib.sha256(text.encode()).hexdigest(),event_language=flagged,source_receipt=source_receipt))
         if flagged:warnings.append(accession)
     for x in required:
         t=mapped[x['accession_number']]
@@ -106,8 +106,13 @@ def review_events(client,row,date):
         from supplement_quality_sources import SEC
         sec=SEC(Path(row['_cache'])/'best-v2-sec')
         for x in other:
-            raw,meta=sec.get(x['filing_url'])
-            keep(x['accession_number'],raw.decode('utf-8',errors='replace'),x['filing_url'],iso_date(x['filing_date']))
+            try:
+                raw,meta=sec.get(x['filing_url']);text=raw.decode('utf-8',errors='replace');used=x['filing_url']
+            except DataUnavailable as exc:
+                from best_v2_mirrors import original
+                try:text,meta=original(row,x,row['_cache'],date);used=meta.get('source_url',meta.get('url'))
+                except DataUnavailable:raise exc
+            keep(x['accession_number'],text,used,iso_date(x['filing_date']),meta)
     # Read latest annual and interim originals as long-lived pending deal checks.
     financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.ticker':row['ticker'],'filing_date.lte':date,'sort':'filing_date','order':'desc','limit':100})
     chosen=[]

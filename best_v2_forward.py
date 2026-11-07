@@ -49,6 +49,10 @@ def collect(data,client,cache,previous,now,output=None):
     if output:
         atomic_json(Path(output)/'best-v2-coverage.json',dict(price_as_of=day,diagnostics=diagnostics,population_audit=population_audit,ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows]))
     for r in rows:audit.price_metrics(r,closes_at(data,day,r['ticker'],253),spy,[b[1]*b[2] for _,b in data.history(day,r['ticker'],253)[:25]])
+    from best_v2_early import rank as early_rank,diagnose
+    early_analysis=dict(component='E1_WATCHLIST',active_for_trading=False,ranked=early_rank(rows),app=diagnose(data,'APP',day))
+    if output:atomic_json(Path(output)/'best-v2-early.json',early_analysis)
+    print('BEST_V2_APP_ANALYSIS',json.dumps({k:v for k,v in early_analysis['app'].items() if k!='history'}),flush=True)
     strong=[r for r in rows if r['strong']][:60]
     pool_rows=copy.deepcopy(strong)
     # Correlation uses all forty price histories. Industry metadata is needed
@@ -75,12 +79,12 @@ def collect(data,client,cache,previous,now,output=None):
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='3a7966b931f38bf7617dd2054a5d4834f106a0d5',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,
         diagnostics=diagnostics,population_audit=population_audit,signal_audit=checked,formation_skips=skips,correlation_edges=edges,
-        provenance=provenance,signal=snapshot,**analysis)
+        provenance=provenance,signal=snapshot,early_analysis=early_analysis,**analysis)
 
 
 def cancel(state,now,reason):
@@ -181,6 +185,19 @@ def run(args):
         paper=ledger_summary(state,report['signal'],datetime.now(timezone.utc))
         paper.update(model=strategy.MODEL,policy=strategy.PARAMETERS,experiment_label='PAPER_EXPERIMENT',
                      economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False)
+        metadata={r['ticker']:r for decision in state['decisions'] for r in decision.get('targets',[])}
+        for pos in paper['positions']:pos.update(sector=metadata.get(pos['ticker'],{}).get('sector'),factor=metadata.get(pos['ticker'],{}).get('factor'))
+        pending=state.get('pending') or {};planned=[]
+        if pending.get('kind')=='MEMBERSHIP':
+            for row in pending['targets']:
+                order=next((o for o in pending['plan']['orders'] if o['ticker']==row['ticker'] and o['side']=='BUY'),None)
+                if order:
+                    reserve=(order['quantity']*order['limit']+fee(order['quantity']*order['limit']))*state['initial_fx']['usdsek']
+                    planned.append(dict(ticker=row['ticker'],sector=row['sector'],factor=row['factor'],quantity=order['quantity'],reserve_sek=reserve))
+        sectors=sorted({r['sector'] for r in planned})
+        paper['planned_allocations']=planned
+        paper['sector_distribution']=[dict(sector=s,stocks=sum(r['sector']==s for r in planned),reserve_sek=sum(r['reserve_sek'] for r in planned if r['sector']==s),weight_pct=100*sum(r['reserve_sek'] for r in planned if r['sector']==s)/state['initial_sek']) for s in sectors]
+        paper['concentration_warnings']=[s['sector'] for s in paper['sector_distribution'] if s['stocks']>=5 or s['weight_pct']>40]
         checked=audit.account(state,paper);paper['statistics_audit']=checked
         report.update(paper=paper,technical_readiness=dict(status='PASS',signal=report['signal_audit'],account=checked,
             funded=not state.get('blockers'),membership_count=len((report['signal'].get('selection') or {}).get('rows',[]))))
