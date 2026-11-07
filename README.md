@@ -1,37 +1,45 @@
-# MomentumCloud · Momentum 10 BEST
+# MomentumCloud · Momentum 10 BEST v2
 
-Huvudappen har Översikt, Portfölj, Affärer, Statistik och Inställningar för det
-separata experimentella BEST-kontot. Urvalet drivs av kursmomentum, relativ styrka,
-trenduthållighet och riskjusterat momentum, utan fundamentala kvalitetspoäng.
+Huvudappen har Översikt, Portfölj, Affärer, Statistik och Inställningar för ett
+separat automatiserat **PAPER EXPERIMENT**. BEST v1, H3, Avanza 10 och Quality
+finns i Inställningars arkiv med sina tidigare regler och journaler bevarade.
 
-Förregistrering: [BEST v1](docs/MOMENTUM10_BEST_PROTOCOL_V1.md).
-[Implementation och databegränsningar](docs/BEST_IMPLEMENTATION_NOTES.md).
-Samtliga daterade tillgängliga amerikanska stamaktier i leverantörens
-XNAS/XNYS/XASE-universum inventeras; ingen topp-100-begränsning används.
-Absoluta pris-, likviditets- och historikkrav samt öppna riskgränser gäller.
+[Förregistrerat v2-protokoll](docs/MOMENTUM10_BEST_V2_PROTOCOL.md) ·
+[Verifiering och faktisk datatäckning](docs/BEST_V2_STATUS.md) ·
+[Originalkällor](docs/BEST_V2_SOURCE_MIRRORS.md) ·
+[APP och separat tidig E1-komponent](docs/BEST_V2_APP_DIAGNOSTIC.md).
 
-Aktier väljs före kapitalberäkningen. `AUTO_MINIMUM` beräknar startkapital från
-tio hela aktier, avgifter, valutaväxling, exekveringsreserv och riskgränser.
-20 000 SEK är inget krav eller tak. Kapitalplanen i webbläsaren ändrar antal och
-visar underskott, men ändrar aldrig aktieurvalet eller kontots bokförda startkapital.
+Alla tillgängliga daterade XNAS/XNYS/XASE-stamaktier inventeras, utan topp-100-
+begränsning. Urval bygger på kursmomentum, relativ styrka, acceleration, volym,
+riskjusterat momentum och trenduthållighet. Prisbindande uppköpsmönster, onormalt
+låg volatilitet, misstänkta språng och översträckning filtreras generellt.
+E1 är en separat bevakningslista; den handlar inte automatiskt och APP får inget
+undantag. Saknade originalkällor stoppar urval, inte en genväg till svagare namn.
 
-`/api/best` levererar den separata, hashkedjade journalen från
-`best-observed-snapshots`. Månatligt urval och daglig riskkontroll körs genom
-befintliga GitHub Actions. Planerade affärer är inga innehav: paperstart kräver
-faktiskt observerade framtida öppningar och oberoende avstämd bokföring.
-Inga historiska köp eller simulerade avkastningskurvor läggs till.
+Tio individuella aktier väljs före kapital. Inga ETF:er eller SPY-innehav i
+strategikontot. Cirka 25 000 SEK är ett mjukt mål; verkligt högre minimum gäller.
+Minst en hel aktie per bolag reserveras först, sedan fördelas fler hela aktier
+med courtage, valutaväxling, kursbuffert och exekveringsreserv. Ändrat kapital i
+webbläsaren ändrar aldrig urvalet eller kontots redan bokförda startkapital.
+Inga hårda sektorgränser eller krav på fem sektorer. Koncentration och gemensam
+vårdexponering visas öppet; befintliga emittent- och korrelationsgränser gäller.
 
-**PAPER_EXPERIMENT. Ekonomiskt NO_GO. Ingen riktig handel eller broker-integration.**
-Den tekniska grinden kräver full inventering, tio verifierade stamaktier,
-finansierade heltalsorder och separata signal-, kapital- och kontogranskningar.
-Produktionskontrollen läser alla sju API:er och provar fem flikar vid
-320/390/1440 px mot riktiga produktionsdata.
+`/api/best-v2` läser den egna hashkedjade journalen på
+`best-v2-observed-snapshots`. Daglig riskkontroll och månadsvis bibehållet urval
+körs i aktiverad GitHub Actions med källbunden operationskontroll. Exakta antal
+sparas före en framtida öppning; endast verkligt observerade positiva-volympriser
+i 09.30–11.30 New York kan bokföra paperköp. Missade tillfällen efterregistreras
+aldrig. Planerade köp är inga genomförda innehav. Historik och SPY-jämförelse
+börjar först vid verkligt registrerad paperstart, med daterad FX och avstämning.
 
-H3, Quality & Earnings, Avanza 10 och tidigare forskning ligger i
-Inställningar → Forskningsarkiv. Deras kod, konton, journaler och ekonomiska
-krav bevaras. `/avanza-main` visar den tidigare huvudappen; äldre API:er finns kvar.
+**Ekonomiskt NO_GO. Ingen riktig handel, mäklarkoppling eller ekonomisk GO.**
+Teknisk aktivering kräver full inventering, tio verifierade stamaktier,
+finansierade heltalsorder och oberoende signal-, kapital- och kontokontroller.
+Produktionskontrollen läser åtta API:er och fem flikar vid 320/390/1440 px.
+Äldre API:ers befintliga dataspärrar redovisas; de intygar inte v2:s funktion.
 
----
+Tidigare huvudprodukt: [BEST v1-protokoll](docs/MOMENTUM10_BEST_PROTOCOL_V1.md),
+[tidigare implementation](docs/BEST_IMPLEMENTATION_NOTES.md), `/best`, `/api/best`.
 
 ## Tidigare Avanza-huvudapp och bevarad dokumentation
 

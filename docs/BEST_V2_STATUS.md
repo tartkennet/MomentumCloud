@@ -1,8 +1,8 @@
 # BEST v2 — saved prospective implementation and release gates
 
 Updated 2026-11-07 UTC, issue #50 / PR #51. PAPER_EXPERIMENT, economic NO_GO.
-No broker client or real orders. Main remains BEST v1 until independent data,
-funding, enabled automation and separate production publication are verified.
+No broker client or real orders. Root promotion requires independent data, funding, enabled automation and
+separate production publication to be verified first.
 
 ## Current implementation
 
@@ -74,3 +74,51 @@ attempts include 14:32/14:52 and 15:32/15:52 UTC; GitHub scheduling can be delay
 Monday 2026-11-09 first potential 09:32 NY observation is conditional on real
 prices and all gates, never an assumed or retrospectively booked fill. No first
 actual v2 fill timestamp exists while it is still Saturday.
+
+## First real-data release gate PASS (before publication)
+
+Run 42359247340 at 30ee65e passed independently recomputed population, signal,
+funding, integer orders and empty prospective account audit. Planned basket:
+SN 1, LFST 16, STGW 31, HNGE 2, CON 7, TBBB 5, FIGS 13, KYMR 1, GKOS 1,
+ATRC 3. Initial SEK25,000; minimum risk-constrained capital SEK15,196.07;
+planned maximum cash reserve SEK24,863.11 and remaining SEK136.89. This is a
+verified order plan, not executed holdings. Later production receipts are the
+authoritative committed quantities and dates.
+
+Economic sectors by reserved starting capital: Healthcare 6 / 51.98%, Consumer
+Discretionary 2 / 19.52%, Communication Services 1 / 14.64%, Consumer Staples
+1 / 13.31%, remaining cash 0.55%. Common healthcare customer exposure includes
+FIGS apparel as well; its economic sector is not Healthcare. Concentration is
+material and disclosed. No weaker sector filler was inserted.
+
+Actual HZO Vol63 3.71% fails low-volatility, unresolved-jump and pinning rules;
+ITGR Vol63 2.24% fails low-volatility and pinning rules. Both are excluded from
+strong candidates by the generic same-for-all price controls.
+
+ATRC's two provider-missing 8-K/A originals (2026-05-06 and 2025-10-29) and both
+material corrected earnings exhibits have pinned complete copies, checked
+against readable SEC originals. Neither amendment is omitted to pass the gate.
+
+## Separate production publication verified
+
+PR #51 merged as f9ad39d. Main run 42359768249 passed default-branch active
+workflow proof (workflow 409904578), immutable account publication and actual
+production verification. Account initialized 2026-11-07T09:28:24.862249Z;
+ten exact buy quantities committed at 09:28:24.863615Z. Initial SEK25,000,
+zero actual trades and zero invented historical valuations. ECB FX 2026-11-06:
+USD/SEK 9.875503806538289. Local re-download of published account also passed
+independent signal, funding, integer orders and both strategy/benchmark ledger
+audits, and the strict release gate.
+
+Separate `/best-v2` and API: HTTP200, promotion_ready and automation verified.
+All eight APIs HTTP200; five actual production tabs at 1440/390/320 px passed
+without overflow/errors and preserve the same membership under SEK1/1m inputs.
+Archive H3 reports MONITOR_DELAYED and Quality PAPER_REVIEW_REQUIRED; these are
+separate existing model statuses, not a failure or trading approval for v2.
+PR #52 promotes the same verified app to root; its production job checks root
+rather than the separate page. Existing BEST v1 checks follow `/best` in archive.
+
+Actual shared healthcare business/customer reserve is SEK15,611.26 (62.45%)
+across seven planned names; economic Healthcare alone is six / 51.98%. Both
+are disclosed. The first actual v2 paper fill still awaits an observed future
+opening; no first-fill timestamp is invented on Saturday.

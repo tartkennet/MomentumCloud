@@ -15,7 +15,7 @@ def get(path):
 
 def main():
     output=Path('best_v2_production_check');output.mkdir(exist_ok=True)
-    status,home=get('/best-v2')
+    status,home=get('/')
     assert status==200 and b'/best-v2-app.js' in home, 'PRODUCTION_V2_VIEW_NOT_BEST'
     checks={'root':dict(http=status,model='Momentum 10 BEST v2')}
     for endpoint in ('health','dashboard','h3','portfolio','quality','avanza10','best','best-v2'):
@@ -40,7 +40,7 @@ def main():
         for width in (1440,390,320):
             page=browser.new_page(viewport=dict(width=width,height=900));errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(BASE+'/best-v2',wait_until='networkidle')
+            page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
             for tab in ('overview','portfolio','trades','statistics','settings'):
                 page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
