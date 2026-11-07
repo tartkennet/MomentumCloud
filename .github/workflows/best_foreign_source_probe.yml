@@ -1,7 +1,7 @@
 name: BEST foreign material source capability
 on:
   pull_request:
-    paths: ['tools/probe_best_foreign.py','.github/workflows/best_foreign_source_probe.yml']
+    paths: ['tools/probe_best_foreign.py','best_v2_mirrors.py','data/filing_mirrors.json','.github/workflows/best_foreign_source_probe.yml']
 permissions:
   contents: read
 jobs:
@@ -21,3 +21,6 @@ jobs:
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: PYTHONPATH=. python tools/probe_best_foreign.py
+
+      - name: Verify issuer copy identity and all filing exhibits
+        run: python best_v2_mirrors.py

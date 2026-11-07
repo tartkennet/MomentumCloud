@@ -1,0 +1,16 @@
+[
+  {
+    "cik": "0001957132",
+    "accession_number": "0001628280-25-049846",
+    "form_type": "6-K",
+    "filing_date": "2025-11-06",
+    "issuer": "SharkNinja, Inc.",
+    "issuer_page": "https://ir.sharkninja.com/financials/quarterly-results/default.aspx",
+    "issuer_tenant": "977000893",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1957132/0001628280-25-049846-index.htm",
+    "url": "https://s202.q4cdn.com/977000893/files/doc_financials/2025/q3/7c460ffd-feff-4b2b-98ea-40189bef3653.pdf",
+    "sha256": null,
+    "pages": 71,
+    "markers": ["FORM 6-K", "SHARKNINJA", "001-41754", "November 6, 2025", "Exhibit 99.1", "Exhibit 99.2", "Exhibit 99.3", "Exhibit 99.4"]
+  }
+]
