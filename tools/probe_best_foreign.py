@@ -18,3 +18,13 @@ def main():
         except DataUnavailable as e:out={'query_fields':list(params),'blocked':str(e)}
         print('BEST_FILING_IDENTITY_PROBE',json.dumps(out),flush=True)
 if __name__=='__main__':main()
+
+if __name__=='__main__':
+    import hashlib,requests
+    c=BestProvider();acc='0001104659-26-120692';name='tm2628622d1_8ka.htm'
+    paths=[('provider','https://api.polygon.io/v1/reference/sec/filings/'+acc+'/files/'+name),('sec_html','https://www.sec.gov/Archives/edgar/data/876883/000110465926120692/'+name),('public_original_copy','https://cdn.yahoofinance.com/prod/sec-filings/0000876883/000110465926120692/'+name)]
+    for label,url in paths:
+        try:
+            r=requests.get(url,params={'apiKey':c.key} if label=='provider' else {},headers={'User-Agent':'MomentumCloud research github.com/tartkennet/MomentumCloud'},timeout=(5,20))
+            print('BEST_REQUIRED_AMENDMENT_ORIGINAL',json.dumps(dict(source=label,http=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),company='Stagwell' in r.text,form='8-K/A' in r.text,cik='876883' in r.text)),flush=True)
+        except requests.RequestException as e:print('BEST_REQUIRED_AMENDMENT_ORIGINAL',json.dumps(dict(source=label,error=type(e).__name__)),flush=True)
