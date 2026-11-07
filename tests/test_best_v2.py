@@ -138,3 +138,16 @@ class MirrorTests(unittest.TestCase):
             with self.assertRaisesRegex(DataUnavailable,'MIRROR_ACCESSION_MISMATCH'):inspect_pdf(b'%PDF-FAKE',e)
             reader.metadata={'/Title':'ACTUAL'}
             with self.assertRaisesRegex(DataUnavailable,'MIRROR_IDENTITY_OR_EXHIBIT_MISMATCH'):inspect_pdf(b'%PDF-FAKE',e)
+
+class FilingIdentityTests(unittest.TestCase):
+    def test_reused_ticker_does_not_select_another_issuers_annual_report(self):
+        def filing(cik,form,accession):return dict(type=form,filing_date='2026-10-01',accession_number=accession,source_url='https://www.sec.gov/example',main_file_url='https://api.polygon.io/v1/reference/sec/filings/'+accession+'/files/main.htm',entities=[dict(relation='filer',company_data={'cik':cik})])
+        class Client:
+            def get(self,path,params):
+                if path.endswith('/index'):return {'results':[dict(cik='123',form_type='10-K',accession_number='RIGHT',filing_date='2026-10-01')]}
+                if path.endswith('/text'):return {'results':[]}
+                return {'results':[filing('123','10-K','RIGHT'),filing('999','20-F','WRONG')]}
+        requested=[]
+        with patch('best_v2_sources.raw_document',side_effect=lambda client,url:(requested.append(url) or b'Ordinary business operations with no price binding transaction.')):
+            result=review_events(Client(),dict(ticker='ANY',cik='0000000123'),'2026-11-06')
+        self.assertEqual(result['status'],'CLEAR');self.assertEqual(len(requested),1);self.assertIn('/RIGHT/',requested[0])

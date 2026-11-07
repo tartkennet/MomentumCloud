@@ -115,11 +115,13 @@ def review_events(client,row,date):
             keep(x['accession_number'],text,used,iso_date(x['filing_date']),meta)
     # Read latest annual and interim originals as long-lived pending deal checks.
     financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.ticker':row['ticker'],'filing_date.lte':date,'sort':'filing_date','order':'desc','limit':100})
-    chosen=[]
-    for form in ('10-K','10-Q','20-F','40-F'):
-        values=[x for x in financial if x['type']==form]
-        if values:chosen.append(values[0])
-    if not any(x['type'] in ('10-K','20-F','40-F') for x in chosen):raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
+    matches=[x for x in financial if any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])) and iso_date(x['filing_date'])<=date]
+    annual=[x for x in matches if x['type'] in ('10-K','20-F','40-F')]
+    interim=[x for x in matches if x['type']=='10-Q']
+    if not annual:raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
+    chosen=[max(annual,key=lambda x:(iso_date(x['filing_date']),x['accession_number']))]
+    if interim:chosen.append(max(interim,key=lambda x:(iso_date(x['filing_date']),x['accession_number'])))
+    print('BEST_V2_MATCHED_FILINGS',json.dumps(dict(ticker=row['ticker'],cik=row['cik'],unrelated_records=len(financial)-len(matches),selected=[dict(accession=x['accession_number'],form=x['type'],filed=iso_date(x['filing_date'])) for x in chosen])),flush=True)
     for x in chosen:
         if not any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])):raise DataUnavailable('FINANCIAL_EVENT_IDENTITY_MISMATCH')
         raw=raw_document(client,x['main_file_url']);text=re.sub('<[^>]+>',' ',raw.decode('utf-8',errors='replace'))
