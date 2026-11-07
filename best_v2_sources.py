@@ -54,12 +54,13 @@ def event_text(text):
 
 def target_event(text):
     t=re.sub(r'\s+',' ',re.sub('<[^>]+>',' ',text.lower()))
-    if not event_text(t):return False
-    return any(re.search(p,t) for p in (
-        r'(?:our|the company.s) (?:outstanding )?(?:common stock|shares).{0,180}(?:converted|cancelled|canceled|right to receive).{0,100}(?:cash|\$)',
-        r'(?:our|the company.s) (?:stockholders|shareholders).{0,120}(?:receive|entitled).{0,80}(?:cash|\$)',
+    bindings=list(re.finditer(r'definitive (?:merger |acquisition )?agreement|agreement and plan of merger|all.cash (?:transaction|acquisition|merger)|cash tender offer|going.private transaction',t))
+    patterns=(
+        r'(?:our|the company.s) (?:outstanding )?(?:common stock|shares).{0,100}(?:will|shall|would|at the effective time).{0,80}(?:converted|cancelled|canceled|receive).{0,100}(?:cash|\$)',
+        r'(?:our|the company.s) (?:stockholders|shareholders).{0,100}(?:will|shall|would).{0,60}(?:receive|entitled).{0,80}(?:cash|\$)',
         r'(?:we|the company) (?:will be|to be) acquired.{0,200}(?:cash|per share)',
-        r'each (?:outstanding )?share of (?:our|the company.s) common stock.{0,200}(?:cash|\$)'))
+        r'each (?:outstanding )?share of (?:our|the company.s) common stock.{0,100}(?:will|shall|would).{0,140}(?:cash|\$)')
+    return any(re.search(p,t[max(0,m.start()-300):m.end()+1500]) for m in bindings for p in patterns)
 
 
 def pages(client,path,params):
@@ -157,4 +158,9 @@ def reference(row,day,root,client,decision_at):
     if receipt.get('event_status')=='DATA_BLOCKED':
         events=review_events(client,dict(row,_cache=str(root)),date)
         receipt.update(events=events,event_status=events['status'],observed_at=datetime.now(timezone.utc).isoformat());atomic_json(path,receipt)
+    if receipt.get('events',{}).get('documents'):
+        for document in receipt['events']['documents']:document['event_language']=target_event(document['text'])
+        receipt['events']['warning_accessions']=[x['accession'] for x in receipt['events']['documents'] if x['event_language']]
+        receipt['event_status']='EXCLUDED_PENDING_PRICE_BINDING_EVENT' if receipt['events']['warning_accessions'] else 'CLEAR'
+        receipt['events']['status']=receipt['event_status'];atomic_json(path,receipt)
     return dict(row,**{k:receipt[k] for k in ('sector','factor','healthcare_exposure')},event_status=receipt['event_status'],reference_sha256=digest(receipt))

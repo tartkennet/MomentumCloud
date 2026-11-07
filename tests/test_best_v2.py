@@ -168,3 +168,10 @@ class OperationsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as out,patch.dict(os.environ,env),patch('subprocess.check_output',return_value=json.dumps({'default_branch':'main','state':'disabled_manually','id':123})):
             with self.assertRaisesRegex(ValueError,'AUTOMATION_NOT_ENABLED'):verify(out)
             self.assertFalse((Path(out)/'operations.json').exists())
+
+class EventContextTests(unittest.TestCase):
+    def test_historical_completed_or_unrelated_stock_conversion_is_not_pending_target(self):
+        past='Under the definitive merger agreement each share of our common stock were converted into the right to receive $53 in cash in 2021.'
+        self.assertFalse(target_event(past))
+        distant='We acquired another company under a definitive merger agreement. '+('Unrelated business operations. '*100)+' Each share of our common stock will be converted into a right to receive cash.'
+        self.assertFalse(target_event(distant))
