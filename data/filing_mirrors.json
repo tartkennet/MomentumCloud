@@ -575,5 +575,91 @@
         "required_items": []
       }
     ]
+  },
+  {
+    "cik": "0001323885",
+    "accession_number": "0001323885-26-000020",
+    "filing_date": "2026-05-06",
+    "form_type": "8-K/A",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1323885/000132388526000020/0001323885-26-000020-index.htm",
+    "issuer": "AtriCure, Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "atrc-20260505.htm",
+      "exhibit991-562026.htm"
+    ],
+    "documents": [
+      {
+        "name": "atrc-20260505.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001323885/000132388526000020/atrc-20260505.htm",
+        "sha256": "1208bca4963ba79619c819316aa59e50387c37e24812a630234a2a0e92d48671",
+        "min_characters": 5148,
+        "markers": [
+          "AtriCure",
+          "8-K/A",
+          "0001323885",
+          "SIGNATURES",
+          "000-51470"
+        ],
+        "required_items": [
+          "2.02",
+          "9.01"
+        ]
+      },
+      {
+        "name": "exhibit991-562026.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001323885/000132388526000020/exhibit991-562026.htm",
+        "sha256": "2fd6123477815f61e1e1a26559394d9f993daf8b395530f8e7cd129e8d01a04e",
+        "min_characters": 14315,
+        "markers": [
+          "AtriCure",
+          "Exhibit 99.1"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001323885",
+    "accession_number": "0001323885-25-000101",
+    "filing_date": "2025-10-29",
+    "form_type": "8-K/A",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1323885/000132388525000101/0001323885-25-000101-index.html",
+    "issuer": "AtriCure, Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "atrc-20251029.htm",
+      "exhibit991-10292025xamendm.htm"
+    ],
+    "documents": [
+      {
+        "name": "atrc-20251029.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001323885/000132388525000101/atrc-20251029.htm",
+        "sha256": "6c8529d718aa8b0931b4707a7aee2203582e71742d721d3d9ccdabd407667809",
+        "min_characters": 4038,
+        "markers": [
+          "AtriCure",
+          "8-K/A",
+          "0001323885",
+          "SIGNATURES",
+          "000-51470"
+        ],
+        "required_items": [
+          "2.02",
+          "9.01"
+        ]
+      },
+      {
+        "name": "exhibit991-10292025xamendm.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001323885/000132388525000101/exhibit991-10292025xamendm.htm",
+        "sha256": "cea93c4e2ffc213cc0e97973eaf74371ae391252b50b569b7445b7bebdf1e425",
+        "min_characters": 15225,
+        "markers": [
+          "AtriCure",
+          "Exhibit 99.1"
+        ],
+        "required_items": []
+      }
+    ]
   }
 ]
