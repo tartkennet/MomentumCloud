@@ -132,7 +132,9 @@ def review_events(client,row,date):
     matches=[x for x in financial if any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])) and iso_date(x['filing_date'])<=date]
     annual=[x for x in matches if x['type'] in ('10-K','20-F','40-F')]
     interim=[x for x in matches if x['type']=='10-Q']
-    if not annual:raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
+    if not annual:
+        print('BEST_V2_ANNUAL_BASELINE_GAP',json.dumps(dict(ticker=row['ticker'],provider_records=len(financial),matching_records=len(matches),indexed_annuals=[x for x in index if x['form_type'] in ('20-F','20-F/A','40-F','10-K')])),flush=True)
+        raise DataUnavailable('NO_ANNUAL_EVENT_BASELINE')
     chosen=[max(annual,key=lambda x:(iso_date(x['filing_date']),x['accession_number']))]
     if interim:chosen.append(max(interim,key=lambda x:(iso_date(x['filing_date']),x['accession_number'])))
     print('BEST_V2_MATCHED_FILINGS',json.dumps(dict(ticker=row['ticker'],cik=row['cik'],unrelated_records=len(financial)-len(matches),selected=[dict(accession=x['accession_number'],form=x['type'],filed=iso_date(x['filing_date'])) for x in chosen])),flush=True)

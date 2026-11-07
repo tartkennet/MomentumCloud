@@ -44,6 +44,8 @@ def collect(data,client,cache,previous,now,output=None):
     from collections import Counter
     diagnostics['price_filters']=dict(Counter(code for r in rows for code in r['price_exclusions']))
     print('BEST_V2_PRICE_FILTERS',json.dumps(diagnostics['price_filters']),flush=True)
+    diagnostics['requested_event_examples']=[dict(ticker=r['ticker'],strong=r['strong'],vol63=r['vol63'],price_exclusions=r['price_exclusions']) for r in rows if r['ticker'] in ('ITGR','HZO')]
+    print('BEST_V2_REQUESTED_EVENT_EXAMPLES',json.dumps(diagnostics['requested_event_examples']),flush=True)
     population_audit=audit.population(data,day,rows)
     spy=closes_at(data,day,'SPY',253)
     if output:
@@ -55,7 +57,7 @@ def collect(data,client,cache,previous,now,output=None):
     print('BEST_V2_APP_ANALYSIS',json.dumps({k:v for k,v in early_analysis['app'].items() if k!='history'}),flush=True)
     strong=[r for r in rows if r['strong']][:60]
     pool_rows=copy.deepcopy(strong)
-    # Correlation uses all forty price histories. Industry metadata is needed
+    # Correlation uses all sixty strong-pool price histories. Industry metadata is needed
     # only for the deterministic prefix actually considered before ten fill.
     edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
     for index,row in enumerate(pool_rows):
@@ -224,7 +226,7 @@ def run(args):
             atomic_json(out/'best-v2-state.json',prior)
     atomic_json(out/'best-v2-report.json',report)
     summary=dict(status=report['technical_readiness']['status'],paper_status=report['paper']['status'],
-        initial_sek=report['paper'].get('initial_sek'),targets=[r['ticker'] for r in (report.get('signal',{}).get('selection') or {}).get('rows',[])],errors=report.get('errors',[]),coverage={k:report.get('diagnostics',{}).get(k) for k in ('reference_records','priced_liquid','strong')})
+        initial_sek=report['paper'].get('initial_sek'),planned_allocations=report['paper'].get('planned_allocations',[]),minimum_capital_sek=report['paper'].get('capital_configuration',{}).get('funding',{}).get('minimum_capital_sek'),targets=[r['ticker'] for r in (report.get('signal',{}).get('selection') or {}).get('rows',[])],errors=report.get('errors',[]),coverage={k:report.get('diagnostics',{}).get(k) for k in ('reference_records','priced_liquid','strong')})
     print('BEST_V2_RESULT',json.dumps(summary),flush=True)
     if os.environ.get('GITHUB_ACTIONS')=='true':print('::notice title=BEST verification::'+json.dumps(summary),flush=True)
 
