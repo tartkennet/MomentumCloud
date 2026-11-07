@@ -1,0 +1,27 @@
+name: Verify BEST v2 production without journal writes
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ['verify_best_v2_production.py','.github/workflows/verify_best_v2_production.yml']
+permissions:
+  contents: read
+jobs:
+  production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.56.0
+      - name: Verify actual root, eight APIs and five mobile/desktop tabs
+        run: python verify_best_v2_production.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: BEST_v2_read_only_production_checks
+          path: best_v2_production_check/
+          retention-days: 30

@@ -4,14 +4,24 @@ import shutil
 import time
 import urllib.request
 import urllib.error
+import http.client
 from pathlib import Path
 
 BASE='https://momentum-cloud.vercel.app'
 
 def get(path):
-    try:
-        with urllib.request.urlopen(BASE+path,timeout=30) as r:return r.status,r.read()
-    except urllib.error.HTTPError as e:return e.code,e.read()
+    for attempt in range(1,4):
+        started=time.monotonic()
+        try:
+            with urllib.request.urlopen(BASE+path,timeout=30) as r:
+                body=r.read();status=r.status
+            print('BEST_V2_PRODUCTION_HTTP',json.dumps(dict(path=path,http=status,bytes=len(body),attempt=attempt,seconds=round(time.monotonic()-started,3))),flush=True)
+            return status,body
+        except urllib.error.HTTPError as e:return e.code,e.read()
+        except (urllib.error.URLError,TimeoutError,http.client.IncompleteRead) as exc:
+            print('BEST_V2_PRODUCTION_READ_RETRY',json.dumps(dict(path=path,attempt=attempt,error=type(exc).__name__)),flush=True)
+            if attempt==3:raise
+            time.sleep(2)
 
 def main():
     output=Path('best_v2_production_check');output.mkdir(exist_ok=True)
