@@ -1,7 +1,7 @@
 name: BEST foreign material source capability
 on:
   pull_request:
-    paths: ['tools/probe_best_foreign.py','best_v2_mirrors.py','data/filing_mirrors.json','.github/workflows/best_foreign_source_probe.yml']
+    paths: ['tools/probe_best_foreign.py','best_v2_mirrors.py','data/filing_mirrors.json','data/foreign_original_candidates.json','.github/workflows/best_foreign_source_probe.yml']
 permissions:
   contents: read
 jobs:

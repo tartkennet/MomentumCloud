@@ -125,5 +125,34 @@
       "3q25_release_6k.htm"
     ],
     "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312525288308/0001193125-25-288308-index.htm"
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-140232",
+    "filing_date": "2026-04-02",
+    "form_type": "20-F",
+    "files": [
+      "tbbb-20251231.htm",
+      "tbbb-ex12_1.htm",
+      "tbbb-ex12_2.htm",
+      "tbbb-ex13_1.htm",
+      "tbbb-ex13_2.htm",
+      "tbbb-ex15_1.htm"
+    ],
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526140232/0001193125-26-140232-index.htm"
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-235225",
+    "filing_date": "2026-05-22",
+    "form_type": "20-F/A",
+    "files": [
+      "tbbb-20251231.htm",
+      "tbbb-ex12_1.htm",
+      "tbbb-ex12_2.htm",
+      "tbbb-ex13_1.htm",
+      "tbbb-ex13_2.htm"
+    ],
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526235225/0001193125-26-235225-index.htm"
   }
 ]
