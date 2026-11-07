@@ -176,3 +176,21 @@ class EventContextTests(unittest.TestCase):
         self.assertFalse(target_event(past))
         distant='We acquired another company under a definitive merger agreement. '+('Unrelated business operations. '*100)+' Each share of our common stock will be converted into a right to receive cash.'
         self.assertFalse(target_event(distant))
+
+
+class OriginalBundleTests(unittest.TestCase):
+    def test_complete_pinned_bundle_requires_every_narrative_and_unchanged_bytes(self):
+        import hashlib
+        from best_v2_mirrors import bundle
+        raw=b'<html>FORM 6-K Example Company SIGNATURES ordinary operations.</html>'
+        digest=hashlib.sha256(raw).hexdigest()
+        entry=dict(cik='0000000123',accession_number='0000000123-26-000001',filing_date='2026-11-06',form_type='6-K',original_index='https://www.sec.gov/index',
+            required_documents=['main.htm','ex99.htm'],documents=[dict(name=n,url='https://cdn.yahoofinance.com/prod/sec-filings/0000000123/000000012326000001/'+n,sha256=digest,min_characters=20,markers=['Example Company'],required_items=[]) for n in ('main.htm','ex99.htm')])
+        with tempfile.TemporaryDirectory() as root,patch('best_v2_mirrors.download',return_value=raw):
+            text,receipt=bundle(entry,root,'https://www.sec.gov/submission.txt')
+            self.assertEqual(len(receipt['documents']),2)
+            entry['documents'].pop()
+            with self.assertRaisesRegex(DataUnavailable,'INCOMPLETE_ORIGINAL_BUNDLE'):bundle(entry,root,'https://www.sec.gov/submission.txt')
+        entry['required_documents']=['main.htm']
+        with tempfile.TemporaryDirectory() as root,patch('best_v2_mirrors.download',return_value=raw+b'changed'):
+            with self.assertRaisesRegex(DataUnavailable,'CHANGED_ISSUER_MIRROR'):bundle(entry,root,'https://www.sec.gov/submission.txt')

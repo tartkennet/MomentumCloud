@@ -51,10 +51,41 @@ def download(entry):
 
 def probe():
     for entry in json.loads(REGISTRY.read_text()):
+        if entry.get('format')=='bundle':
+            import tempfile
+            with tempfile.TemporaryDirectory() as root:text,meta=bundle(entry,root,entry['original_index'])
+            print('BEST_V2_ISSUER_MIRROR_PROBE',json.dumps(meta),flush=True)
+            continue
         raw=download(entry);text,meta=inspect(raw,entry)
         origin=requests.get(entry.get('issuer_page',entry['canonical_sec_document']),timeout=(5,20)) if 'canonical_sec_document' in entry else requests.get(entry['issuer_page'],timeout=(5,20))
         print('BEST_V2_ISSUER_MIRROR_PROBE',json.dumps(dict(cik=entry['cik'],accession=entry['accession_number'],
             issuer_page_http=origin.status_code,issuer_tenant_in_page=entry.get('issuer_tenant','NOT_APPLICABLE') in origin.text,**meta)),flush=True)
+
+def bundle(entry,root,original_url):
+    """Every indexed narrative/exhibit is separately pinned, checked and retained."""
+    parts=entry.get('documents',[])
+    if not parts or len({d['name'] for d in parts})!=len(parts) or [d['name'] for d in parts]!=entry['required_documents']:
+        raise DataUnavailable('INCOMPLETE_ORIGINAL_BUNDLE')
+    texts=[];receipts=[]
+    cache=Path(root)/'best-v2-mirrors';cache.mkdir(parents=True,exist_ok=True)
+    for document in parts:
+        child=dict(entry,**document,format='html')
+        child.pop('documents',None)
+        expected=child.get('sha256','')
+        if not re.fullmatch('[0-9a-f]{64}',expected):raise DataUnavailable('UNPINNED_ISSUER_MIRROR')
+        asset=cache/(expected+'.html');raw=asset.read_bytes() if asset.exists() else download(child)
+        if sha(raw)!=expected:raise DataUnavailable('CHANGED_ISSUER_MIRROR')
+        text,meta=inspect(raw,child)
+        if not asset.exists():asset.write_bytes(raw)
+        texts.append(text);receipts.append(dict(meta,name=document['name'],source_url=child['url'],asset=asset.name))
+    text='\n'.join(texts)
+    receipt=dict(source='PINNED_COMPLETE_ORIGINAL_HTML_BUNDLE',source_url=entry['original_index'],original_sec_url=original_url,
+        cik=entry['cik'],accession=entry['accession_number'],filing_date=entry['filing_date'],form_type=entry['form_type'],
+        documents=receipts,required_documents=entry['required_documents'],text_sha256=sha(text.encode()),
+        observed_at=datetime.now(timezone.utc).isoformat())
+    atomic_json(cache/(entry['accession_number']+'.json'),receipt)
+    return text,receipt
+
 
 def original(row,filing,root,cutoff):
     # Reuse any authenticated prior SEC cache with exact URL/hash evidence.
@@ -68,6 +99,7 @@ def original(row,filing,root,cutoff):
     entry=next((e for e in json.loads(REGISTRY.read_text()) if e['cik']==row['cik'] and e['accession_number']==filing['accession_number']),None)
     if not entry:raise DataUnavailable('NO_VERIFIED_ISSUER_MIRROR')
     if entry['filing_date']!=filing['filing_date'] or entry['form_type']!=filing['form_type'] or entry['filing_date']>cutoff:raise DataUnavailable('MIRROR_FILING_DATE_OR_FORM_MISMATCH')
+    if entry.get('format')=='bundle':return bundle(entry,root,url)
     expected=entry.get('sha256')
     if not expected or not re.fullmatch('[0-9a-f]{64}',expected):raise DataUnavailable('UNPINNED_ISSUER_MIRROR')
     cache=Path(root)/'best-v2-mirrors';cache.mkdir(parents=True,exist_ok=True);asset=cache/(expected+('.html' if entry.get('format')=='html' else '.pdf'))

@@ -49,5 +49,382 @@
       "Explanatory Note",
       "SIGNATURES"
     ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-443746",
+    "filing_date": "2026-11-02",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526443746/0001193125-26-443746-index.html",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "6k_tbbb_3q26_earnings_re.htm"
+    ],
+    "documents": [
+      {
+        "name": "6k_tbbb_3q26_earnings_re.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526443746/6k_tbbb_3q26_earnings_re.htm",
+        "sha256": "9cd3cb6b8d02d2bd550fdda819f1ea5e2d69d5a7a35b59d47154bed008822226",
+        "min_characters": 65370,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-346965",
+    "filing_date": "2026-08-12",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526346965/0001193125-26-346965-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "6k_tbbb_2q26_earnings_re.htm"
+    ],
+    "documents": [
+      {
+        "name": "6k_tbbb_2q26_earnings_re.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526346965/6k_tbbb_2q26_earnings_re.htm",
+        "sha256": "40272287ca4d9be6bf5d2272865ec4ce8513ed36c1e4e742c3863189241bcc45",
+        "min_characters": 55145,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-251437",
+    "filing_date": "2026-06-01",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526251437/0001193125-26-251437-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "trilogy_-_closing_6-k.htm",
+      "tbbb-ex1_1.htm",
+      "tbbb-ex5_1.htm",
+      "tbbb-ex99_1.htm"
+    ],
+    "documents": [
+      {
+        "name": "trilogy_-_closing_6-k.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526251437/trilogy_-_closing_6-k.htm",
+        "sha256": "25195097ed697d0018f2d1ba4d14bb9d562a3feb16798ee9334421fb6dfa8bcc",
+        "min_characters": 2641,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex1_1.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526251437/tbbb-ex1_1.htm",
+        "sha256": "887eb10f7d82d31a48e893250c9d35c03870d4e4276348954a590999e95735cb",
+        "min_characters": 170117,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex5_1.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526251437/tbbb-ex5_1.htm",
+        "sha256": "29ae322a6ab6ff21c20398a95c684a3e160a05a6b37f43122f2a3d8493788186",
+        "min_characters": 9505,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex99_1.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526251437/tbbb-ex99_1.htm",
+        "sha256": "8c583c4f96706eddf10a0b58787ec9775940d3930e5847b4267983d426a371fc",
+        "min_characters": 4381,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-246212",
+    "filing_date": "2026-05-29",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526246212/0001193125-26-246212-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "trilogy_-_pricing_press_.htm"
+    ],
+    "documents": [
+      {
+        "name": "trilogy_-_pricing_press_.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526246212/trilogy_-_pricing_press_.htm",
+        "sha256": "b516d4efbe59829734b347902c474643be1dbf9564617affb81bb59782eb9921",
+        "min_characters": 6484,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-241958",
+    "filing_date": "2026-05-27",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526241958/0001193125-26-241958-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "trilogy_-_launch_pr_-_6-.htm"
+    ],
+    "documents": [
+      {
+        "name": "trilogy_-_launch_pr_-_6-.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526241958/trilogy_-_launch_pr_-_6-.htm",
+        "sha256": "4204d1435a9b5f2e2054064b950c08c424c8dfcb7a90460b60ebaff1d01aaf21",
+        "min_characters": 5251,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-241914",
+    "filing_date": "2026-05-27",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526241914/0001193125-26-241914-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "trilogy_-_1q26_6-k.htm",
+      "tbbb-ex99_1.htm",
+      "tbbb-ex99_2.htm",
+      "tbbb-ex99_3.htm"
+    ],
+    "documents": [
+      {
+        "name": "trilogy_-_1q26_6-k.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526241914/trilogy_-_1q26_6-k.htm",
+        "sha256": "482d56ec8df02e4fdd657fc8f9c1bcdb78610a797ec072b84805ecf73a6eb5c4",
+        "min_characters": 2599,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex99_1.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526241914/tbbb-ex99_1.htm",
+        "sha256": "3389c92da414a66f9070a5ef3874037d3b13f0b99ee1213ef89a9ebf7dc27081",
+        "min_characters": 119265,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex99_2.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526241914/tbbb-ex99_2.htm",
+        "sha256": "230002414c7489d65dbfcc4ccea637e8f2e36b138db5971d27111861d5e4c46b",
+        "min_characters": 33913,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex99_3.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526241914/tbbb-ex99_3.htm",
+        "sha256": "a8f24cf9ada89ef443f78ab4b5c56f246a93daa0d5b9226e7ceee91e2beaf82f",
+        "min_characters": 16564,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-209052",
+    "filing_date": "2026-05-06",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526209052/0001193125-26-209052-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "6-k_tbbb_1q26_earnings_r.htm"
+    ],
+    "documents": [
+      {
+        "name": "6-k_tbbb_1q26_earnings_r.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526209052/6-k_tbbb_1q26_earnings_r.htm",
+        "sha256": "6024a7162d9a66fa0e469a36dbda79bc998167988a15685e1a091e6e20e21d18",
+        "min_characters": 46256,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-191801",
+    "filing_date": "2026-04-29",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526191801/0001193125-26-191801-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "6-k_-_results_of_2026_ag.htm"
+    ],
+    "documents": [
+      {
+        "name": "6-k_-_results_of_2026_ag.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526191801/6-k_-_results_of_2026_ag.htm",
+        "sha256": "bced7ab55dcc30e52110feb2164267b4d6d8d081221e806c81ec82abf3f02d45",
+        "min_characters": 2743,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-147714",
+    "filing_date": "2026-04-08",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526147714/0001193125-26-147714-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "2026_annual_meeting_6k.htm",
+      "tbbb-ex99_1.htm"
+    ],
+    "documents": [
+      {
+        "name": "2026_annual_meeting_6k.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526147714/2026_annual_meeting_6k.htm",
+        "sha256": "0ddd683ace6a8f4ba6205a760f68f55bc660168de6664df5f3a2e566cd3de3b6",
+        "min_characters": 1838,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      },
+      {
+        "name": "tbbb-ex99_1.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526147714/tbbb-ex99_1.htm",
+        "sha256": "1c3c028d2f4d9aad2be78bdf1017bfb4a915b636356ee0af14ffefcf6b3d2969",
+        "min_characters": 27203,
+        "markers": [
+          "BBB Foods"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-140250",
+    "filing_date": "2026-04-02",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526140250/0001193125-26-140250-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "6-k_-_filing_of_2025_20-.htm"
+    ],
+    "documents": [
+      {
+        "name": "6-k_-_filing_of_2025_20-.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526140250/6-k_-_filing_of_2025_20-.htm",
+        "sha256": "360a4f68c8b743b04d9f11b17f78e7236006ba14e12ab0b564e2cf67feb45081",
+        "min_characters": 3116,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-26-102363",
+    "filing_date": "2026-03-11",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312526102363/0001193125-26-102363-index.html",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "tbbb_4q25_earnings_relea.htm"
+    ],
+    "documents": [
+      {
+        "name": "tbbb_4q25_earnings_relea.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312526102363/tbbb_4q25_earnings_relea.htm",
+        "sha256": "83ad8586a1cc512083a285713a631021582ca5d867ad9edf5e4fe41c4795a3c9",
+        "min_characters": 67648,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
+  },
+  {
+    "cik": "0001978954",
+    "accession_number": "0001193125-25-288308",
+    "filing_date": "2025-11-19",
+    "form_type": "6-K",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/1978954/000119312525288308/0001193125-25-288308-index.htm",
+    "issuer": "BBB Foods Inc.",
+    "format": "bundle",
+    "required_documents": [
+      "3q25_release_6k.htm"
+    ],
+    "documents": [
+      {
+        "name": "3q25_release_6k.htm",
+        "url": "https://cdn.yahoofinance.com/prod/sec-filings/0001978954/000119312525288308/3q25_release_6k.htm",
+        "sha256": "198917f1c7bb10c939aff2a68eac7cb5f8521746eacf49f1d0a93c29bc476844",
+        "min_characters": 57587,
+        "markers": [
+          "BBB Foods",
+          "6-K"
+        ],
+        "required_items": []
+      }
+    ]
   }
 ]
