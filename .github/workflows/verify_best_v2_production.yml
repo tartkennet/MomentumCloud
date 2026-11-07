@@ -1,6 +1,8 @@
 name: Verify BEST v2 production without journal writes
 on:
   workflow_dispatch:
+  pull_request:
+    paths: ['verify_best_v2_production.py','.github/workflows/verify_best_v2_production.yml']
 permissions:
   contents: read
 jobs:
