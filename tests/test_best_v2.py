@@ -108,3 +108,33 @@ class V2Tests(unittest.TestCase):
                 return {'results':[]}
         with self.assertRaisesRegex(DataUnavailable,'EVENT_TEXT_COVERAGE_GAP'):
             review_events(Client(),dict(ticker='NEW',cik='0000000123'),'2026-11-06')
+
+class EarlyTurnTests(unittest.TestCase):
+    def test_confirmed_turn_can_precede_sma200_recovery_without_ticker_rules(self):
+        chronological=[100+1.3*math.sin(i*1.7) for i in range(80)]+[100-40*i/100+1.3*math.sin(i*1.7) for i in range(100)]+[60+30*i/72+1.3*math.sin(i*1.7) for i in range(73)]
+        m=strategy.metrics(chronological[::-1],[100]*253,[2e8]*5+[1e8]*20)
+        self.assertFalse(m['strong']);self.assertLess(m['sma50'],m['sma200']);self.assertTrue(m['early']['qualified'])
+        thin=strategy.metrics(chronological[::-1],[100]*253,[1e8]*25)
+        self.assertFalse(thin['early']['qualified']);self.assertIn('volume',thin['early']['failed'])
+
+    def test_js_soft_sector_funding_agrees_with_real_financial_formula(self):
+        import subprocess
+        _,r,_=formation();r.update(delivery={'verified':True},operations={'delayed':False})
+        script="const p=require('./public/best-v2-plan');const r=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log(JSON.stringify([1,25000,1000000].map(capital=>{let x=p.plan(r,{capital,cash:capital},new Date('2026-11-06T10:00:00Z'));return {minimum:x.minimumCapital,names:x.rows.map(r=>r.ticker)};})));"
+        out=json.loads(subprocess.check_output(['node','-e',script],text=True,input=json.dumps(r)))
+        for x in out:
+            self.assertEqual(x['minimum'],capital.requirements(r['targets'],10)['minimum_capital_sek'])
+            self.assertEqual(x['names'],[r['ticker'] for r in r['targets']])
+
+class MirrorTests(unittest.TestCase):
+    def test_mirror_wrong_filing_and_missing_exhibits_are_not_accepted(self):
+        from best_v2_mirrors import inspect_pdf
+        from types import SimpleNamespace
+        class Page:
+            def extract_text(self):return 'FORM 6-K SHARKNINJA '+('business '*100)
+        reader=SimpleNamespace(metadata={'/Title':'WRONG'},pages=[Page()]*71)
+        e=dict(accession_number='ACTUAL',pages=71,markers=['FORM 6-K','Exhibit 99.4'])
+        with patch('best_v2_mirrors.PdfReader',return_value=reader):
+            with self.assertRaisesRegex(DataUnavailable,'MIRROR_ACCESSION_MISMATCH'):inspect_pdf(b'%PDF-FAKE',e)
+            reader.metadata={'/Title':'ACTUAL'}
+            with self.assertRaisesRegex(DataUnavailable,'MIRROR_IDENTITY_OR_EXHIBIT_MISMATCH'):inspect_pdf(b'%PDF-FAKE',e)

@@ -20,7 +20,7 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const body={model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
-  delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next},errors:d.errors||[],technical_readiness:d.technical_readiness,
+  delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
   paper:{...p,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
   promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
