@@ -1,8 +1,8 @@
 # BEST v2 — saved prospective implementation and release gates
 
 Updated 2026-11-07 UTC, issue #50 / PR #51. PAPER_EXPERIMENT, economic NO_GO.
-No broker client or real orders. Main remains BEST v1 until independent data,
-funding, enabled automation and separate production publication are verified.
+No broker client or real orders. Root promotion requires independent data, funding, enabled automation and
+separate production publication to be verified first.
 
 ## Current implementation
 
@@ -98,3 +98,27 @@ strong candidates by the generic same-for-all price controls.
 ATRC's two provider-missing 8-K/A originals (2026-05-06 and 2025-10-29) and both
 material corrected earnings exhibits have pinned complete copies, checked
 against readable SEC originals. Neither amendment is omitted to pass the gate.
+
+## Separate production publication verified
+
+PR #51 merged as f9ad39d. Main run 42359768249 passed default-branch active
+workflow proof (workflow 409904578), immutable account publication and actual
+production verification. Account initialized 2026-11-07T09:28:24.862249Z;
+ten exact buy quantities committed at 09:28:24.863615Z. Initial SEK25,000,
+zero actual trades and zero invented historical valuations. ECB FX 2026-11-06:
+USD/SEK 9.875503806538289. Local re-download of published account also passed
+independent signal, funding, integer orders and both strategy/benchmark ledger
+audits, and the strict release gate.
+
+Separate `/best-v2` and API: HTTP200, promotion_ready and automation verified.
+All eight APIs HTTP200; five actual production tabs at 1440/390/320 px passed
+without overflow/errors and preserve the same membership under SEK1/1m inputs.
+Archive H3 reports MONITOR_DELAYED and Quality PAPER_REVIEW_REQUIRED; these are
+separate existing model statuses, not a failure or trading approval for v2.
+PR #52 promotes the same verified app to root; its production job checks root
+rather than the separate page. Existing BEST v1 checks follow `/best` in archive.
+
+Actual shared healthcare business/customer reserve is SEK15,611.26 (62.45%)
+across seven planned names; economic Healthcare alone is six / 51.98%. Both
+are disclosed. The first actual v2 paper fill still awaits an observed future
+opening; no first-fill timestamp is invented on Saturday.
