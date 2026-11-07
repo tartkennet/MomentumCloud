@@ -1,5 +1,5 @@
 """Browser fixture verification without market secrets or simulated account history."""
-import json,sys,threading
+import json,sys,threading,shutil
 from pathlib import Path
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
@@ -21,7 +21,9 @@ def main():
     results=[]
     try:
         with sync_playwright() as pw:
-            b=pw.chromium.launch(headless=True)
+            browser_path=shutil.which('google-chrome') or shutil.which('chromium')
+            if not browser_path:raise RuntimeError('EXISTING_CI_BROWSER_NOT_AVAILABLE')
+            b=pw.chromium.launch(executable_path=browser_path,headless=True)
             for width in (1440,390,320):
                 page=b.new_page(viewport={'width':width,'height':900});errors=[]
                 page.on('pageerror',lambda e:errors.append(str(e)))

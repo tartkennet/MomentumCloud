@@ -13,8 +13,8 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: momentum10-best-v2-paper-v2
-  cancel-in-progress: false
+  group: momentum10-best-v2-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   experiment:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
@@ -132,7 +132,6 @@ jobs:
         if: always()
         run: |
           python -m pip install playwright==1.56.0
-          python -m playwright install --with-deps chromium
           python best_v2_browser.py
       - name: Verify separately published v2 API and mobile views
         if: github.event_name != 'pull_request'

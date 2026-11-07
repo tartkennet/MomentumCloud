@@ -1,5 +1,6 @@
 """Read-only production checks. Never creates orders or changes account capital."""
 import json
+import shutil
 import time
 import urllib.request
 import urllib.error
@@ -33,7 +34,9 @@ def main():
             checks['best-v2'].update(http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'])
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
-        browser=p.chromium.launch(headless=True)
+        browser_path=shutil.which('google-chrome') or shutil.which('chromium')
+        if not browser_path:raise RuntimeError('EXISTING_CI_BROWSER_NOT_AVAILABLE')
+        browser=p.chromium.launch(executable_path=browser_path,headless=True)
         for width in (1440,390,320):
             page=browser.new_page(viewport=dict(width=width,height=900));errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
