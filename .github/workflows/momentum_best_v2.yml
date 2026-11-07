@@ -72,6 +72,11 @@ jobs:
           PY
           if test -f best_v2_recovery/cache.sealed; then python cache_momentum_inputs.py unseal --sealed best_v2_recovery/cache.sealed --cache-dir .best_v2_market_cache; fi
           python cache_momentum_inputs.py unseal --sealed best_v2_restore/cache.sealed --cache-dir .best_v2_market_cache
+      - name: Verify default-branch scheduled automation before creating commitments
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python best_v2_operations.py
       - name: Collect, form and independently audit BEST
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}

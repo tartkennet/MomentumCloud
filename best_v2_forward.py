@@ -161,11 +161,14 @@ def run(args):
     previous=read_json(prev/'best-v2-report.json') if (prev/'best-v2-report.json').exists() else {}
     report=None
     try:
+        operations=read_json(out/'operations.json') if (out/'operations.json').exists() else None
+        if os.environ.get('GITHUB_ACTIONS')=='true' and os.environ.get('GITHUB_EVENT_NAME')!='pull_request':
+            if not operations or not operations.get('enabled') or operations.get('source_commit')!=os.environ.get('GITHUB_SHA'):raise ValueError('V2_AUTOMATION_NOT_VERIFIED')
         data,client=data_for(Path(args.cache),datetime.now(timezone.utc))
         report=collect(data,client,Path(args.cache),previous,datetime.now(timezone.utc),out)
         rates=ecb_rates();fx=rate_on(rates,report['price_as_of'])
         if not fx:raise ValueError('NO_VERIFIED_INITIAL_FX')
-        report.update(fx=fx,fx_history=rates,errors=[])
+        report.update(fx=fx,fx_history=rates,errors=[],operations_proof=operations)
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
         decide(state,report,data,datetime.now(timezone.utc))

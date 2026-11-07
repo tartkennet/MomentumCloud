@@ -9,7 +9,8 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const [own,old]=await Promise.allSettled([fetchJson(SOURCE),fetchJson(BASELINE)]);if(own.status!=='fulfilled')throw Error('BEST delivery unavailable');const d=validate(own.value);const p=d.paper;
  const stamp=Date.parse(d.generated_at),next=nextAttempt(d.generated_at);const delayed=Date.now()>Date.parse(next)+45*60000;
  const fresh=Number.isFinite(stamp)&&stamp<=Date.now()&&Date.now()-stamp<4*86400000&&!delayed;
- const verified=fresh&&d.technical_readiness?.status==='PASS'&&p.statistics_audit?.status==='PASS'&&p.audits?.strategy?.status==='PASS';
+ const operational=d.operations_proof?.enabled===true&&d.operations_proof?.source_commit===d.provenance?.source_commit;
+ const verified=operational&&fresh&&d.technical_readiness?.status==='PASS'&&p.statistics_audit?.status==='PASS'&&p.audits?.strategy?.status==='PASS';
  const signal={...d.signal,quotes:Object.fromEntries((d.signal?.selection?.rows||[]).map(r=>[r.ticker,d.signal.quotes[r.ticker]]))};
  const light=r=>{const {returns63,...rest}=r;return rest;};if(signal.selection)signal.selection={...signal.selection,rows:signal.selection.rows.map(light)};
  const {excluded_names,...diagnostics}=d.diagnostics||{};diagnostics.excluded_name_count=excluded_names?.length;
@@ -20,7 +21,7 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const body={model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
-  delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
+  delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
   paper:{...p,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
   promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
