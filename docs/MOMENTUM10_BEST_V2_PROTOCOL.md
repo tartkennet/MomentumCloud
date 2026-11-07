@@ -83,3 +83,49 @@ baskets are explicit. Observed daily closes, events, fees and dated ECB FX drive
 independently reconciled NAV after actual paper start. No simulated prehistory.
 V2 may become root only after technical/data/funding/operational publication
 verification. Prior models remain archived with unaltered journals and GO rules.
+
+## Owner amendment 2026-11-07 — revision 2 (before any v2 cohort)
+
+This section supersedes the earlier two-name/25% sector and four-name/45%
+factor constraints. The owner explicitly removes those hard limits. No minimum
+number of sectors is required. The ten strongest qualified names are selected
+subject to one issuer and the unchanged price-correlation cluster control.
+Sector/factor concentration is disclosed as a warning, never a reason to replace
+a qualified stronger name with a weaker stock. Whole-share sizing uses
+inverse max(Vol63,.20) divided by sqrt(selected count in the same economic
+sector), normalized with the unchanged 15% issuer limit. There is no sector or
+factor capital cap. The 35% correlated-cluster capital cap remains. Residual
+cash is allocated by largest target-weight deficit while every integer-lot,
+cash, issuer and cluster rule is satisfied. The SEK 25,000 target remains soft.
+Earlier protocol revision is archived; no v2 account existed before this change.
+
+## Separately preregistered early-turn component E1
+
+Hypothesis: sustained positive short-term relative strength and a volume-backed
+recovery after a material prior decline can identify confirmed turns before the
+long SMA200 and lagged six-month return have recovered. This is an independent
+prospective WATCHLIST component, not an automatic APP inclusion or an economic
+GO. Established v2 membership is unchanged by E1 until a separate deployment
+explicitly authorizes it. Apply identical E1 rules across the whole priced
+universe, not only APP. All normal price/liquidity and pin/jump/overextension
+filters still apply. No earnings reaction is invented when PIT events are absent.
+
+Using only closes/volumes already observed on each evaluation date:
+- prior drawdown=min(C[21:127])/max(C[21:253])-1 <= -15%;
+- C0>SMA20>SMA50; SMA20>SMA20 ten sessions ago and SMA50>SMA50 ten sessions ago;
+- RS21>=3%, RS63>0 and relative acceleration>0;
+- >=8 of the latest ten closes above their own contemporaneous SMA20;
+- C0>=99% of the prior 63-session highest close;
+- recent-five/prior-twenty dollar-volume ratio >=1.2;
+- annualized Vol63<=80%, C0/SMA20<=1.20, 21-session return<=40%;
+- no normal v2 price exclusion (including Vol63<8% and unresolved jumps).
+
+Rank E1 diagnostics across the whole eligible price universe by exact midrank
+30% RS21 +25% RS63 +20% relative acceleration +15% volume confirmation
++10% SMA20 persistence over ten sessions. These weights and thresholds are fixed
+before APP prices are inspected in this revision. Review APP's established-v2
+rejection reasons and apply this same frozen E1 at each available date in the
+last 126 observed sessions. A retrospective earliest signal is a mechanism
+check, not evidence that an ex-ante registered strategy actually traded APP.
+Missing 253-session history or volume is disclosed. Do not tune E1 to make APP
+qualify and do not append hypothetical trades or returns to paper history.
