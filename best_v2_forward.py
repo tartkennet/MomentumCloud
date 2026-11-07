@@ -191,21 +191,23 @@ def run(args):
         paper.update(model=strategy.MODEL,policy=strategy.PARAMETERS,experiment_label='PAPER_EXPERIMENT',
                      economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False)
         metadata={r['ticker']:r for decision in state['decisions'] for r in decision.get('targets',[])}
-        for pos in paper['positions']:pos.update(sector=metadata.get(pos['ticker'],{}).get('sector'),factor=metadata.get(pos['ticker'],{}).get('factor'))
+        for pos in paper['positions']:pos.update(sector=metadata.get(pos['ticker'],{}).get('sector'),factor=metadata.get(pos['ticker'],{}).get('factor'),healthcare_exposure=metadata.get(pos['ticker'],{}).get('healthcare_exposure'))
         pending=state.get('pending') or {};planned=[]
         if pending.get('kind')=='MEMBERSHIP':
             for row in pending['targets']:
                 order=next((o for o in pending['plan']['orders'] if o['ticker']==row['ticker'] and o['side']=='BUY'),None)
                 if order:
                     reserve=(order['quantity']*order['limit']+fee(order['quantity']*order['limit']))*state['initial_fx']['usdsek']
-                    planned.append(dict(ticker=row['ticker'],sector=row['sector'],factor=row['factor'],quantity=order['quantity'],reserve_sek=reserve))
+                    planned.append(dict(ticker=row['ticker'],sector=row['sector'],factor=row['factor'],quantity=order['quantity'],reserve_sek=reserve,healthcare_exposure=row['healthcare_exposure']))
         sectors=sorted({r['sector'] for r in planned})
         paper['planned_allocations']=planned
+        paper['shared_healthcare_exposure']=dict(planned_stocks=sum(x['healthcare_exposure'] for x in planned),reserve_sek=sum(x['reserve_sek'] for x in planned if x['healthcare_exposure']),note='Business/customer exposure can cross economic sector boundaries; this is not a sector reclassification or hard cap.')
         paper['sector_distribution']=[dict(sector=s,stocks=sum(r['sector']==s for r in planned),reserve_sek=sum(r['reserve_sek'] for r in planned if r['sector']==s),weight_pct=100*sum(r['reserve_sek'] for r in planned if r['sector']==s)/state['initial_sek']) for s in sectors]
         paper['sector_actual_distribution']=[]
         if paper['positions'] and all(p.get('sector') and p.get('value_sek') is not None for p in paper['positions']) and paper.get('nav_sek'):
             paper['sector_actual_distribution']=[dict(sector=sector,stocks=sum(p['sector']==sector for p in paper['positions']),value_sek=sum(p['value_sek'] for p in paper['positions'] if p['sector']==sector),weight_pct=100*sum(p['value_sek'] for p in paper['positions'] if p['sector']==sector)/paper['nav_sek']) for sector in sorted({p['sector'] for p in paper['positions']})]
-        paper['concentration_warnings']=[s['sector'] for s in paper['sector_distribution'] if s['stocks']>=5 or s['weight_pct']>40]
+        paper['shared_healthcare_exposure'].update(observed_stocks=sum(bool(p.get('healthcare_exposure')) for p in paper['positions']),observed_value_sek=sum(p['value_sek'] for p in paper['positions'] if p.get('healthcare_exposure')) if paper['sector_actual_distribution'] else None)
+        paper['concentration_warnings']=[s['sector'] for s in (paper['sector_actual_distribution'] or paper['sector_distribution']) if s['stocks']>=5 or s['weight_pct']>40]
         checked=audit.account(state,paper);paper['statistics_audit']=checked
         report.update(paper=paper,technical_readiness=dict(status='PASS',signal=report['signal_audit'],account=checked,
             funded=not state.get('blockers'),membership_count=len((report['signal'].get('selection') or {}).get('rows',[]))))
