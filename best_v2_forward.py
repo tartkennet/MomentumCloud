@@ -78,7 +78,7 @@ def collect(data,client,cache,previous,now,output=None):
         for row in selection['rows']:
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
-        protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='3a7966b931f38bf7617dd2054a5d4834f106a0d5',
+        protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='d732489a7940980a01ae52a994fe6a014294b5be',
         source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json',strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)

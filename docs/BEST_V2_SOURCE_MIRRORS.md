@@ -1,15 +1,29 @@
-# Source mirror policy (no selection or event-control waiver)
+# Required-original source policy
 
-A required SEC original can be supplied by an issuer-published complete filing
-rendering when the index identity (CIK, accession, form, filing date), issuer
-origin, all exhibits, document markers and a pinned content hash are verified.
-This is an alternate source for the same document, never a ticker exemption.
-Raw documents and extraction receipts are cached in the existing encrypted
-Actions input cache; no market credential is serialized. Unknown/mismatched or
-incomplete copies remain blocked. A mirror is admissible only on/after the
-original public filing date and before the actual prospective decision.
+No source, event or selection control is waived. A public alternate copy of a
+required SEC original is admissible only after matching CIK, accession, form,
+public filing date and complete material content against the primary SEC index
+and readable original. Pin the downloaded copy's SHA-256; do not claim its bytes
+are identical to SEC's rendering. Verify all indexed material exhibits/items,
+company, signature and document markers. Unknown, changed or incomplete copies
+remain blocked. Availability must precede the actual prospective decision.
 
-Candidate source under verification: SharkNinja official IR quarterly archive,
-2025 Q3 complete filing PDF, title 0001628280-25-049846, 71 pages, includes 6-K
-and exhibits 99.1 through 99.4. Original dated 2025-11-06. This note is not yet
-an approval; document fingerprint and completeness checks must pass in Actions.
+The registry in data/filing_mirrors.json records two verified sources:
+- SharkNinja 6-K 0001628280-25-049846, filed 2025-11-06: official issuer IR/Q4
+  complete PDF, 71 pages, cover and exhibits 99.1–99.4. Actions verifies identity,
+  full extraction, all markers and pinned hash. Source gate now clears SN.
+- Stagwell 8-K/A 0001104659-26-120692, filed 2026-10-30: public Yahoo original
+  HTML copy. Primary SEC index lists one narrative file and Item 5.02, no
+  material exhibits. Complete original text concerns Beth J. Kaplan's committee
+  appointment, with signature and dates. Provider parsed 8-K endpoint omits this
+  amendment even when 8-K/A is explicitly requested; the full original copy is
+  therefore checked rather than treating the missing document as empty.
+
+Direct SEC retrieval in Actions returns 403; existing authenticated provider
+original paths for these documents return 404. The web reader can inspect the
+primary originals/indexes; it grants no authenticated Actions access. Public
+mirrors use a separate request and never receive the market-data API key.
+
+Cached original documents and extraction/identity receipts remain in encrypted
+Actions inputs. No credential or raw provider document is committed to source.
+The same policy applies to every issuer; this is not an eligibility exception.

@@ -52,20 +52,21 @@ missing earnings data never causes a score reweighting or invented reaction.
 Verify an economic eleven-sector taxonomy with issuer business provenance,
 including healthcare/life-science exposure even when SIC says software/services.
 A broad SIC division alone is insufficient. Unknown or contradictory sector is
-DATA_BLOCKED. Maximum two names and 25% reserved capital per economic sector;
-one issuer and 15% per issuer; correlation connected components at rho&gt;=.85
-on 63 returns: maximum three names and 35% capital. Shared growth factor
-(Technology+Communication Services) and rates factor (Financials+Real Estate+
-Utilities) each maximum four names and 45% capital. Other sector factors remain
-under their sector caps. Greedy descending frozen rank, exactly ten or explicit
-insufficient strong breadth; no cap relaxation.
+DATA_BLOCKED. No hard sector or shared-factor count/capital limit, and no
+minimum number of sectors. One issuer and 15% per issuer; correlation connected
+components at rho&gt;=.85 on 63 returns: maximum three names and 35% capital.
+Greedy descending frozen rank, exactly ten or explicit insufficient strong
+breadth. Disclose concentration; do not insert weaker sector fillers. These
+current rules incorporate the owner amendment registered in d732489 before
+APP diagnostics and before any v2 cohort existed. The superseded original
+protocol is preserved in docs/archive/BEST_V2_DRAFT_2026_11_06.md.
 
 Select names first. Reserve &gt;=one whole share each, 2% price limit buffer,
 max(USD1,25bp) commission, 25bp FX, 15bp execution; round reserves up to SEK cents.
 Minimum capital is max(total one-each reserves, each risk-group reserve/cap).
 Default funded initial SEK=max(25000,verified minimum); 21000..27000 is a soft
 preference, never a filter/ceiling. Larger whole shares target capped inverse
-max(Vol63,.20) weights while reserving all ten first; deterministic under cash
+max(Vol63,.20) / sqrt(selected sector count) weights while reserving all ten first; deterministic under cash
 and every risk cap. Publish quantities, actual reserve and leftover cash.
 Browser capital changes never alter the ranked membership or booked capital.
 
@@ -129,4 +130,4 @@ last 126 observed sessions. A retrospective earliest signal is a mechanism
 check, not evidence that an ex-ante registered strategy actually traded APP.
 Missing 253-session history or volume is disclosed. Do not tune E1 to make APP
 qualify and do not append hypothetical trades or returns to paper history.
-</pre></main></html>
+</pre></main>
