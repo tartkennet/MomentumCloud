@@ -8,7 +8,7 @@ on:
     paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','tests/test_best_v2*.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
   schedule:
     - cron: '22 8,22 * * 1-5'
-    - cron: '52 14,15 * * 1-5'
+    - cron: '32,52 14,15 * * 1-5'
 permissions:
   contents: write
   actions: read
