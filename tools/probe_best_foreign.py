@@ -28,3 +28,8 @@ if __name__=='__main__':
             r=requests.get(url,params={'apiKey':c.key} if label=='provider' else {},headers={'User-Agent':'MomentumCloud research github.com/tartkennet/MomentumCloud'},timeout=(5,20))
             print('BEST_REQUIRED_AMENDMENT_ORIGINAL',json.dumps(dict(source=label,http=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),company='Stagwell' in r.text,form='8-K/A' in r.text,cik='876883' in r.text)),flush=True)
         except requests.RequestException as e:print('BEST_REQUIRED_AMENDMENT_ORIGINAL',json.dumps(dict(source=label,error=type(e).__name__)),flush=True)
+
+if __name__=='__main__':
+    from best_v2_sources import pages
+    records=pages(BestProvider(),'/stocks/filings/vX/index',{'cik':'0001978954','filing_date.gte':'2025-10-03','filing_date.lte':'2026-11-07','limit':1000,'sort':'filing_date.desc'})
+    print('BEST_REQUIRED_FOREIGN_INDEX',json.dumps([r for r in records if r.get('form_type') in ('6-K','6-K/A','425','SC TO-T','SC 14D9','DEFM14A')]),flush=True)

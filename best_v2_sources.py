@@ -87,7 +87,10 @@ def material_original(row,filing,date):
     except DataUnavailable as exc:
         if str(exc)!='NO_VERIFIED_ISSUER_MIRROR':raise
     from supplement_quality_sources import SEC
-    raw,meta=SEC(Path(row['_cache'])/'best-v2-sec').get(filing['filing_url'])
+    try:raw,meta=SEC(Path(row['_cache'])/'best-v2-sec').get(filing['filing_url'])
+    except DataUnavailable as exc:
+        print('BEST_V2_REQUIRED_ORIGINAL_BLOCK',json.dumps(dict(ticker=row['ticker'],reason=str(exc),filing={k:filing.get(k) for k in ('cik','accession_number','form_type','filing_date','filing_url')})),flush=True)
+        raise
     return raw.decode('utf-8',errors='replace'),meta
 
 
