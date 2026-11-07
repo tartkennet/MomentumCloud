@@ -34,7 +34,10 @@ def main():
                 for tab in ('overview','portfolio','trades','statistics','settings'):
                     page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
                     page.wait_for_timeout(200)
-                    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab)
+                    if not page.evaluate('document.documentElement.scrollWidth<=innerWidth'):
+                        offenders=page.evaluate("[...document.querySelectorAll('main *')].filter(e=>!e.closest('[hidden]')&&e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,id:e.id,cls:e.className,right:e.getBoundingClientRect().right})).slice(0,15)")
+                        print('BEST_V2_OVERFLOW',json.dumps(dict(width=width,tab=tab,elements=offenders)),flush=True)
+                        raise AssertionError((width,tab))
                 page.locator('#capital').fill('1');page.locator('#capital-form button').click()
                 page.locator('nav [data-tab=portfolio]').click()
                 names=page.locator('#targets h3').all_text_contents();assert len(names)==10

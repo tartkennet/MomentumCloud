@@ -1,0 +1,6 @@
+/* V2-only layout: permit grid children to shrink and keep money readable. */
+.view,.panel,.target-grid,.target,.target-head>div,.metric,.facts>div{min-width:0}
+.target .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+.target .facts dd,.metric strong{overflow-wrap:anywhere}
+.section-heading{flex-wrap:wrap}
+@media(max-width:380px){.metric-grid{grid-template-columns:minmax(0,1fr)}}

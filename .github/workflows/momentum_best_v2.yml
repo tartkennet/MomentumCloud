@@ -128,17 +128,30 @@ jobs:
         if: github.event_name != 'pull_request'
         run: python best_v2_publish.py --folder best_v2_output --manifest best_v2_manifest.json
 
-      - name: Verify v2 browser fixtures independently of market-data clearance
-        if: always()
-        run: |
-          python -m pip install playwright==1.56.0
-          python best_v2_browser.py
       - name: Verify separately published v2 API and mobile views
         if: github.event_name != 'pull_request'
-        run: python verify_best_v2_production.py
+        run: |
+          python -m pip install playwright==1.56.0
+          python verify_best_v2_production.py
       - uses: actions/upload-artifact@v4
         if: always() && github.event_name != 'pull_request'
         with:
           name: BEST_v2_production_checks
           path: best_v2_production_check/
           retention-days: 30
+
+  browser:
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt playwright==1.56.0
+      - name: Verify five v2 tabs at 320, 390 and 1440 pixels without market secrets
+        run: python best_v2_browser.py
