@@ -29,7 +29,8 @@ def main():
                 page.on('pageerror',lambda e:errors.append(str(e)))
                 page.add_init_script("const RealDate=Date;const fixed=Date.parse('2026-11-06T10:01:00Z');window.Date=class extends RealDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}};")
                 page.route('**/api/best-v2',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps(r)))
-                page.goto('http://127.0.0.1:8766/best-v2.html',wait_until='networkidle')
+                view='index.html' if '/best-v2-app.js' in Path('public/index.html').read_text() else 'best-v2.html'
+                page.goto('http://127.0.0.1:8766/'+view,wait_until='networkidle')
                 page.locator('#overview-targets .ticker-pill').first.wait_for()
                 for tab in ('overview','portfolio','trades','statistics','settings'):
                     page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
