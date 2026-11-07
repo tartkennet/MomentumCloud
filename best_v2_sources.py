@@ -18,6 +18,7 @@ def classify(profile):
     if len(text)<40:raise DataUnavailable('ECONOMIC_BUSINESS_DESCRIPTION_MISSING')
     health=r'healthcare|health care|medical|musculoskeletal|pharmaceut|biotech|therapeutic|diagnostic|life.scien|patient'
     if re.search(r'(?:operates?|operating).{0,50}(?:chain of )?grocery|grocery (?:retail|store|hard.discount)|supermarket',text):sector='Consumer Staples'
+    elif 2200<=sic<=2399 and re.search(r'apparel|clothing|scrubwear|garments',text):sector='Consumer Discretionary'
     elif re.search(health,text) or 2830<=sic<=2839 or 3840<=sic<=3859 or 8000<=sic<=8099:sector='Healthcare'
     elif 1300<=sic<=1399 or 2900<=sic<=2999 or 5170<=sic<=5179:sector='Energy'
     elif sic==6798 or 6500<=sic<=6599:sector='Real Estate'
@@ -33,7 +34,7 @@ def classify(profile):
     factor=('Growth/technology' if sector in ('Technology','Communication Services') else
             'Rate sensitive' if sector in ('Financials','Real Estate','Utilities') else sector)
     return dict(sector=sector,factor=factor,classification_method='BUSINESS_ACTIVITY_AND_DETAILED_SIC_V2',
-        business_sha256=hashlib.sha256(text.encode()).hexdigest(),healthcare_exposure=sector=='Healthcare')
+        business_sha256=hashlib.sha256(text.encode()).hexdigest(),healthcare_exposure=bool(re.search(health,text)) or sector=='Healthcare')
 
 
 def raw_document(client,url):
@@ -174,6 +175,7 @@ def reference(row,day,root,client,decision_at):
             observed_at=datetime.now(timezone.utc).isoformat(),profile={k:profile.get(k) for k in ('ticker','cik','type','description','sic_code','sic_description','name')},**classify(profile))
         # Save business proof even if event access is blocked; not a clearance.
         receipt['event_status']='DATA_BLOCKED';atomic_json(path,receipt)
+    receipt.update(classify(receipt['profile']))
     if receipt['cik']!=row['cik'] or receipt['decision_date']!=date:raise DataUnavailable('V2_RECEIPT_IDENTITY_MISMATCH')
     if receipt.get('event_status')=='DATA_BLOCKED':
         events=review_events(client,dict(row,_cache=str(root)),date)

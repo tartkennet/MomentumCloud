@@ -60,7 +60,7 @@ if __name__=='__main__':
             url='https://cdn.yahoofinance.com/prod/sec-filings/'+entry['cik']+'/'+entry['accession_number'].replace('-','')+'/'+name
             try:
                 r=requests.get(url,timeout=(5,15));parser=Text();parser.feed(r.text);text=' '.join(parser.parts)
-                print('BEST_FOREIGN_COPY_FINGERPRINT',json.dumps(dict(accession=entry['accession_number'],name=name,http=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),characters=len(text),company='bbb foods' in text.lower(),form='6-k' in text.lower(),signature='signatures' in text.lower(),items=sorted(set(re.findall(r'item\s+(\d\.\d\d)',text.lower()))))),flush=True)
+                print('BEST_FOREIGN_COPY_FINGERPRINT',json.dumps(dict(accession=entry['accession_number'],name=name,http=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),characters=len(text),company=('bbb foods' if entry['cik']=='0001978954' else 'atricure') in text.lower(),form='6-k' in text.lower(),signature='signatures' in text.lower(),items=sorted(set(re.findall(r'item\s+(\d\.\d\d)',text.lower()))))),flush=True)
             except requests.RequestException as exc:print('BEST_FOREIGN_COPY_FINGERPRINT',json.dumps(dict(accession=entry['accession_number'],name=name,error=type(exc).__name__)),flush=True)
 
 if __name__=='__main__':

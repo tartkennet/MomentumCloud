@@ -54,6 +54,8 @@ class V2Tests(unittest.TestCase):
     def test_economic_healthcare_overrides_software_sic_without_ticker_list(self):
         p=dict(description='Platform treating musculoskeletal conditions and improving member outcomes through software.',sic_code='7374')
         self.assertEqual(classify(p)['sector'],'Healthcare')
+        apparel=classify(dict(description='Healthcare apparel company designing and selling scrubwear through digital retail stores.',sic_code='2300'))
+        self.assertEqual(apparel['sector'],'Consumer Discretionary');self.assertTrue(apparel['healthcare_exposure'])
         self.assertEqual(classify(dict(description='Software platform serving businesses globally through subscription services.',sic_code='7372'))['sector'],'Technology')
         self.assertEqual(classify(dict(description='The company operates a chain of grocery retail stores with food staples and household goods.',sic_code=None))['sector'],'Consumer Staples')
         with self.assertRaises(DataUnavailable):classify(dict(description='unknown',sic_code='7374'))
