@@ -50,3 +50,15 @@ if __name__=='__main__':
             return out
         except requests.RequestException as exc:return dict(source=label,error=type(exc).__name__)
     for result in ThreadPoolExecutor(max_workers=4).map(check,probes):print('BEST_TBBB_ORIGINAL_ACCESS',json.dumps(result),flush=True)
+
+if __name__=='__main__':
+    import re
+    from best_v2_mirrors import Text
+    candidates=json.loads(open('data/foreign_original_candidates.json').read())
+    for entry in candidates:
+        for name in entry['files']:
+            url='https://cdn.yahoofinance.com/prod/sec-filings/'+entry['cik']+'/'+entry['accession_number'].replace('-','')+'/'+name
+            try:
+                r=requests.get(url,timeout=(5,15));parser=Text();parser.feed(r.text);text=' '.join(parser.parts)
+                print('BEST_FOREIGN_COPY_FINGERPRINT',json.dumps(dict(accession=entry['accession_number'],name=name,http=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),characters=len(text),company='bbb foods' in text.lower(),form='6-k' in text.lower(),signature='signatures' in text.lower(),items=sorted(set(re.findall(r'item\s+(\d\.\d\d)',text.lower()))))),flush=True)
+            except requests.RequestException as exc:print('BEST_FOREIGN_COPY_FINGERPRINT',json.dumps(dict(accession=entry['accession_number'],name=name,error=type(exc).__name__)),flush=True)
