@@ -146,8 +146,25 @@ class FilingIdentityTests(unittest.TestCase):
             def get(self,path,params):
                 if path.endswith('/index'):return {'results':[dict(cik='123',form_type='10-K',accession_number='RIGHT',filing_date='2026-10-01')]}
                 if path.endswith('/text'):return {'results':[]}
+                assert params['filing_date.lte']=='20261106'
                 return {'results':[filing('123','10-K','RIGHT'),filing('999','20-F','WRONG')]}
         requested=[]
         with patch('best_v2_sources.raw_document',side_effect=lambda client,url:(requested.append(url) or b'Ordinary business operations with no price binding transaction.')):
             result=review_events(Client(),dict(ticker='ANY',cik='0000000123'),'2026-11-06')
         self.assertEqual(result['status'],'CLEAR');self.assertEqual(len(requested),1);self.assertIn('/RIGHT/',requested[0])
+
+class OperationsTests(unittest.TestCase):
+    def test_scheduler_must_be_enabled_on_default_branch_and_source_bound(self):
+        import os
+        from best_v2_operations import verify
+        env=dict(GITHUB_REPOSITORY='owner/repo',GITHUB_REF='refs/heads/main',GITHUB_SHA='commit')
+        paths=[]
+        def response(args,**kw):
+            path=args[-1];paths.append(path)
+            return json.dumps({'default_branch':'main'} if path=='repos/owner/repo' else {'state':'active','id':123})
+        with tempfile.TemporaryDirectory() as out,patch.dict(os.environ,env),patch('subprocess.check_output',side_effect=response):
+            verify(out);proof=json.loads((Path(out)/'operations.json').read_text())
+            self.assertTrue(proof['enabled']);self.assertEqual(proof['source_commit'],'commit');self.assertEqual(paths[0],'repos/owner/repo')
+        with tempfile.TemporaryDirectory() as out,patch.dict(os.environ,env),patch('subprocess.check_output',return_value=json.dumps({'default_branch':'main','state':'disabled_manually','id':123})):
+            with self.assertRaisesRegex(ValueError,'AUTOMATION_NOT_ENABLED'):verify(out)
+            self.assertFalse((Path(out)/'operations.json').exists())

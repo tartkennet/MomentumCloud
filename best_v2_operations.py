@@ -6,7 +6,7 @@ from momentum_core_data import atomic_json
 
 def verify(output):
     repo=os.environ['GITHUB_REPOSITORY']
-    def api(path):return json.loads(subprocess.check_output(['gh','api','repos/'+repo+'/'+path],text=True))
+    def api(path):return json.loads(subprocess.check_output(['gh','api','repos/'+repo+('/'+path if path else '')],text=True))
     info=api('');workflow=api('actions/workflows/momentum_best_v2.yml')
     if workflow['state']!='active' or os.environ.get('GITHUB_REF')!='refs/heads/'+info['default_branch']:raise ValueError('V2_DEFAULT_BRANCH_AUTOMATION_NOT_ENABLED')
     source=Path('.github/workflows/momentum_best_v2.yml').read_text()
