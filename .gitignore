@@ -25,3 +25,10 @@ core_paper_results/
 
 # Local validation dependencies
 .test-deps/
+
+# Separate BEST v2 raw input/recovery data stays outside source commits.
+.best_v2_market_cache/
+best_v2_output/
+best_v2_previous/
+best_v2_restore/
+best_v2_recovery/

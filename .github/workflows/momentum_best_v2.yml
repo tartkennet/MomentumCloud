@@ -1,0 +1,162 @@
+name: Momentum BEST v2 verified experiment
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
+  pull_request:
+    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','tests/test_best_v2*.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
+  schedule:
+    - cron: '22 8,22 * * 1-5'
+    - cron: '32,52 14,15 * * 1-5'
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: momentum10-best-v2-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  experiment:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_best_v2*.py' -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: best_v2_recovery
+          key: best-v2-recovery-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: best-v2-recovery-${{ github.ref_name }}-
+      - name: Check required foreign original source access
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python best_v2_event_probe.py
+      - name: Restore verified prices and the separate BEST account
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p best_v2_restore best_v2_previous best_v2_output
+          python - <<'PY'
+          import subprocess,json,hashlib,tarfile,shutil,os
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY']
+          def git(*args):return subprocess.check_output(['git',*args],text=True).strip()
+          def gh(*args):subprocess.run(['gh',*args,'--repo',repo],check=True,timeout=120)
+          branch='best-v2-observed-snapshots';prior=None
+          if git('ls-remote','--heads','origin','refs/heads/'+branch):
+              git('fetch','--no-tags','origin','refs/heads/'+branch)
+              prior=json.loads(git('show','FETCH_HEAD:best-v2-current-manifest.json'))
+              gh('release','download',prior['release_tag'],'--pattern','best_v2_observation.tar.gz','--dir','best_v2_restore')
+              archive=Path('best_v2_restore/best_v2_observation.tar.gz');assert hashlib.sha256(archive.read_bytes()).hexdigest()==prior['sha256']
+              with tarfile.open(archive) as t:t.extractall('best_v2_previous',filter='data')
+              cache_meta=prior;cache_release='best-v2-paper-inputs-v1'
+          else:
+              git('fetch','--no-tags','origin','refs/heads/best-observed-snapshots')
+              cache_meta=json.loads(git('show','FETCH_HEAD:best-current-manifest.json'))
+              cache_release='best-paper-inputs-v1'
+          gh('release','download',cache_release,'--pattern',cache_meta['cache_asset'],'--output','best_v2_restore/cache.sealed')
+          assert hashlib.sha256(Path('best_v2_restore/cache.sealed').read_bytes()).hexdigest()==cache_meta['cache_sha256']
+          Path('best_v2_restore/previous-manifest.json').write_text(json.dumps(prior))
+          PY
+          if test -f best_v2_recovery/cache.sealed; then python cache_momentum_inputs.py unseal --sealed best_v2_recovery/cache.sealed --cache-dir .best_v2_market_cache; fi
+          python cache_momentum_inputs.py unseal --sealed best_v2_restore/cache.sealed --cache-dir .best_v2_market_cache
+      - name: Verify default-branch scheduled automation before creating commitments
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python best_v2_operations.py
+      - name: Collect, form and independently audit BEST
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+          BEST_V2_INITIAL_SEK: ${{ vars.BEST_V2_INITIAL_SEK }}
+        run: python best_v2_forward.py --cache .best_v2_market_cache --previous best_v2_previous --output best_v2_output
+      - name: Require actual technical and funding readiness for PR approval
+        if: github.event_name == 'pull_request'
+        run: python verify_best_v2.py --folder best_v2_output
+      - name: Save encrypted recovery checkpoint even after interrupted collection
+        if: always()
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          mkdir -p best_v2_recovery
+          if test -d .best_v2_market_cache; then python cache_momentum_inputs.py seal --cache-dir .best_v2_market_cache --sealed best_v2_recovery/cache.sealed; fi
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: best_v2_recovery
+          key: best-v2-recovery-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: BEST_v2_prospective_summary
+          path: best_v2_output/
+          retention-days: 30
+      - name: Preserve durable inputs and immutable experiment receipt
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: |
+          python cache_momentum_inputs.py seal --cache-dir .best_v2_market_cache --sealed best_v2_restore/updated.sealed
+          python - <<'PY'
+          import subprocess,json,hashlib,tarfile,os,shutil
+          from pathlib import Path
+          repo=os.environ['GITHUB_REPOSITORY'];run=os.environ['GITHUB_RUN_ID'];attempt=os.environ['GITHUB_RUN_ATTEMPT'];tag='best-v2-paper-'+run+'-'+attempt
+          def gh(*args):return subprocess.run(['gh',*args,'--repo',repo],text=True,capture_output=True,check=True,timeout=120).stdout
+          prior=json.loads(Path('best_v2_restore/previous-manifest.json').read_text());slot=1-prior['cache_slot'] if prior else 0
+          cache=Path('best_v2_restore')/('best_v2_cache_'+str(slot)+'.sealed');shutil.copyfile('best_v2_restore/updated.sealed',cache)
+          found=subprocess.run(['gh','release','view','best-v2-paper-inputs-v1','--repo',repo,'--json','isDraft'],text=True,capture_output=True,timeout=30)
+          if found.returncode:
+              if 'release not found' not in found.stderr.lower():raise RuntimeError('Cannot verify BEST cache release')
+              gh('release','create','best-v2-paper-inputs-v1','--draft','--title','BEST encrypted rotating inputs','--notes','Separate authenticated data cache. PAPER_EXPERIMENT only.')
+          else:assert json.loads(found.stdout)['isDraft']
+          gh('release','upload','best-v2-paper-inputs-v1',str(cache),'--clobber')
+          archive=Path('best_v2_observation.tar.gz')
+          with tarfile.open(archive,'w:gz') as t:t.add('best_v2_output',arcname='.')
+          meta=dict(release_tag=tag,sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),run=run,cache_slot=slot,cache_asset=cache.name,cache_sha256=hashlib.sha256(cache.read_bytes()).hexdigest(),live_approved=False,broker_orders_enabled=False)
+          Path('best_v2_manifest.json').write_text(json.dumps(meta))
+          gh('release','create',tag,str(archive),'best_v2_manifest.json','--draft','--title','BEST prospective observation '+run,'--notes','Immutable independent experiment, source receipts, ledger and audits. No historical fills. No real orders.')
+          PY
+      - name: Publish separate BEST journal
+        if: github.event_name != 'pull_request'
+        run: python best_v2_publish.py --folder best_v2_output --manifest best_v2_manifest.json
+
+      - name: Verify separately published v2 API and mobile views
+        if: github.event_name != 'pull_request'
+        run: |
+          python -m pip install playwright==1.56.0
+          python verify_best_v2_production.py
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          name: BEST_v2_production_checks
+          path: best_v2_production_check/
+          retention-days: 30
+
+  browser:
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt playwright==1.56.0
+      - name: Verify five v2 tabs at 320, 390 and 1440 pixels without market secrets
+        run: python best_v2_browser.py
