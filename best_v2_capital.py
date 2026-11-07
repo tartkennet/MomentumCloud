@@ -4,7 +4,7 @@ import math
 import momentum_core as core
 from research_stocks10 import fee
 
-CAPS={'ticker':15,'sector':25,'cluster':35,'factor':45}
+CAPS={'ticker':15,'cluster':35}
 
 
 def cost(q,price):
@@ -34,7 +34,7 @@ def orders(rows,shares,nav,cash,prices):
     reserve=sum(q*.98*prices[t]-fee(q*.98*prices[t]) for t,q in shares.items() if t not in names)
     budget=cash+reserve;new=[r for r in rows if r['ticker'] not in retained]
     quantities={r['ticker']:1 for r in new}
-    weights=core.capped_weights({r['ticker']:1/max(.20,r['vol63']) for r in rows},.15)
+    weights=core.capped_weights({r['ticker']:1/max(.20,r['vol63'])/math.sqrt(sum(x['sector']==r['sector'] for x in rows)) for r in rows},.15)
     def exposure(t):return retained[t]*names[t]['price_usd']*1.02 if t in retained else cost(quantities[t],names[t]['price_usd'])
     def valid():
         if sum(cost(q,names[t]['price_usd']) for t,q in quantities.items())>budget+1e-8:return False
@@ -47,6 +47,16 @@ def orders(rows,shares,nav,cash,prices):
             if valid():lo=mid
             else:hi=mid-1
         quantities[t]=lo
+    # Fill feasible residual lots by the largest soft target-weight deficit.
+    while new:
+        feasible=[]
+        for r in new:
+            t=r['ticker'];quantities[t]+=1
+            if valid():feasible.append(t)
+            quantities[t]-=1
+        if not feasible:break
+        t=max(feasible,key=lambda t:(weights[t]-exposure(t)/nav,t))
+        quantities[t]+=1
     return dict(orders=sales+[dict(ticker=t,side='BUY',quantity=q,limit=names[t]['price_usd']*1.02) for t,q in sorted(quantities.items())],
         retained=retained,reserved_cash_usd=sum(cost(q,names[t]['price_usd']) for t,q in quantities.items()),
         sale_reserve_usd=reserve,ideal_weights=weights)

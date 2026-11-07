@@ -10,9 +10,9 @@ import momentum_core as core
 MODEL='momentum10-best-v2'
 PROTOCOL='docs/MOMENTUM10_BEST_V2_PROTOCOL.md'
 PARAMETERS=dict(positions=10,min_price=10,min_adv20=20_000_000,history=253,
-    score_weights=[25,20,15,10,10,15,5],strong_pool=60,sector_slots=2,
-    cluster_slots=3,correlation=.85,issuer_cap=.15,sector_cap=.25,cluster_cap=.35,
-    factor_slots=4,factor_cap=.45,min_vol=.08,vol_floor=.20,target_sek=25000)
+    score_weights=[25,20,15,10,10,15,5],strong_pool=60,sector_slots=None,
+    cluster_slots=3,correlation=.85,issuer_cap=.15,sector_cap=None,cluster_cap=.35,
+    factor_slots=None,factor_cap=None,sector_sizing='SQRT_COUNT_SOFT',min_vol=.08,vol_floor=.20,target_sek=25000)
 
 
 def fingerprint():
@@ -50,6 +50,8 @@ def metrics(closes,spy,turnover):
         if condition]
     m['strong']=bool(all(m[k]>0 for k in ('momentum_12_1','momentum_6_1','rs6','rs63','rs21')) and closes[0]>m['sma50']>m['sma200'] and m['persistence']>=.55
         and m['sma50']>m['sma50_prior'] and m['sma200']>m['sma200_prior'] and not m['price_exclusions'])
+    from best_v2_early import evaluate
+    m['early']=evaluate(closes,spy,m)
     return m
 
 
@@ -91,7 +93,7 @@ def select(rows):
         if r.get('event_status')=='EXCLUDED_PENDING_PRICE_BINDING_EVENT':
             skips.append(dict(ticker=r['ticker'],rank=r['universe_rank'],reason='PRICE_BINDING_CORPORATE_EVENT'));continue
         if any(x['cik']==r['cik'] for x in selected):reason='DUPLICATE_ISSUER'
-        for key,limit in [('sector',2),('cluster',3),('factor',4)]:
+        for key,limit in [('cluster',3)]:
             if sum(x[key]==r[key] for x in selected)>=limit:reason=key.upper()+'_CAP'
         if reason:skips.append(dict(ticker=r['ticker'],rank=r['universe_rank'],reason=reason));continue
         selected.append(copy.deepcopy(r))

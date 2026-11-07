@@ -35,7 +35,7 @@ def signal(report):
         assert r['cluster']==root(r['ticker'])
         if r.get('event_status')=='EXCLUDED_PENDING_PRICE_BINDING_EVENT':continue
         if any(x['cik']==r['cik'] for x in chosen):continue
-        if any(sum(x[k]==r[k] for x in chosen)>=limit for k,limit in [('sector',2),('cluster',3),('factor',4)]):continue
+        if any(sum(x[k]==r[k] for x in chosen)>=limit for k,limit in [('cluster',3)]):continue
         chosen.append(r)
         if len(chosen)==10:break
     expected=chosen if len(chosen)==10 else []
@@ -76,7 +76,7 @@ def funding(rows, fx, result):
         assert cents<=actual<=cents+1;charges[r['ticker']]=actual
     expected=max([sum(charges.values())]+[
         math.ceil(sum(charges[x['ticker']] for x in rows if x[k]==r[k])*100/cap)
-        for k,cap in [('ticker',15),('sector',25),('cluster',35),('factor',45)] for r in rows])
+        for k,cap in [('ticker',15),('cluster',35)] for r in rows])
     assert result['minimum_capital_sek']==expected/100
     assert result['minimum_one_each_sek']==sum(charges.values())/100
     return dict(status='PASS',independent_code=True)
@@ -100,7 +100,7 @@ def plan(rows, p, shares, nav, cash, prices):
     assert all(shares.get(t,0)>=1 or buys.get(t,0)>=1 for t in names)
     assert p['retained']=={t:q for t,q in shares.items() if t in names}
     exposures={t:(shares[t]*r['price_usd']*1.02 if t in shares else cost(buys[t],r['price_usd'])) for t,r in names.items()}
-    for key,cap in [('ticker',.15),('sector',.25),('cluster',.35),('factor',.45)]:
+    for key,cap in [('ticker',.15),('cluster',.35)]:
         for r in rows:assert sum(exposures[x['ticker']] for x in rows if x[key]==r[key])<=nav*cap+1e-7
     return dict(status='PASS',independent_code=True,whole_shares=True)
 

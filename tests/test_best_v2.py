@@ -63,12 +63,14 @@ class V2Tests(unittest.TestCase):
         buyer='We acquired Example Ltd under a definitive merger agreement. We paid $53 million cash for its assets.'
         self.assertFalse(target_event(buyer))
 
-    def test_sectors_and_factors_cannot_be_relaxed_to_fill_ten(self):
+    def test_sector_concentration_does_not_force_five_sectors(self):
         _,r,_=formation();p=copy.deepcopy(r['strong_pool'])
-        for x in p:x['sector']='Healthcare'
-        self.assertEqual(strategy.select(p)[0],[])
-        self.assertEqual(len({x['sector'] for x in r['targets']}),8)
-        self.assertTrue(all(sum(x['sector']==s for x in r['targets'])<=2 for s in {x['sector'] for x in r['targets']}))
+        for i,x in enumerate(p):x.update(sector='Healthcare',factor='Healthcare',cluster=x['ticker'])
+        chosen,_=strategy.select(p)
+        self.assertEqual(len(chosen),10)
+        self.assertEqual([x['ticker'] for x in chosen],[x['ticker'] for x in p[:10]])
+        req=capital.requirements(chosen,10);audit.funding(chosen,10,req)
+        self.assertNotIn('sector',req['caps']);self.assertNotIn('factor',req['caps'])
 
     def test_target_capital_whole_lots_and_independent_finance(self):
         data,r,now=formation();original=[x['ticker'] for x in r['targets']]
