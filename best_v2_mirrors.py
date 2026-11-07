@@ -5,6 +5,7 @@ from io import BytesIO
 from pathlib import Path
 from urllib.parse import urlparse
 import requests
+from html.parser import HTMLParser
 from pypdf import PdfReader
 from quality_sources import DataUnavailable
 from momentum_core_data import atomic_json
@@ -22,9 +23,27 @@ def inspect_pdf(raw,entry):
     if any(normalized(m) not in normalized(text) for m in entry['markers']):raise DataUnavailable('MIRROR_IDENTITY_OR_EXHIBIT_MISMATCH')
     return text,dict(pages=len(reader.pages),title=title,text_sha256=sha(text.encode()),bytes=len(raw),sha256=sha(raw),characters=len(text))
 
+class Text(HTMLParser):
+    def __init__(self):super().__init__();self.parts=[];self.skip=0
+    def handle_starttag(self,tag,attrs):
+        if tag in ('script','style'):self.skip+=1
+    def handle_endtag(self,tag):
+        if tag in ('script','style'):self.skip=max(0,self.skip-1)
+    def handle_data(self,data):
+        if not self.skip:self.parts.append(data)
+
+def inspect(raw,entry):
+    if entry.get('format')!='html':return inspect_pdf(raw,entry)
+    parser=Text();parser.feed(raw.decode('utf-8'));text=' '.join(parser.parts)
+    if len(text)<entry['min_characters'] or any(normalized(m) not in normalized(text) for m in entry['markers']):raise DataUnavailable('ORIGINAL_HTML_IDENTITY_OR_COMPLETENESS')
+    items=sorted(set(re.findall(r'item\s+(\d\.\d\d)',text.lower())))
+    if items!=entry['required_items']:raise DataUnavailable('ORIGINAL_HTML_MATERIAL_ITEMS_MISMATCH')
+    return text,dict(format='html',material_items=items,text_sha256=sha(text.encode()),bytes=len(raw),sha256=sha(raw),characters=len(text))
+
 def download(entry):
     p=urlparse(entry['url'])
-    if p.hostname!='s202.q4cdn.com' or not p.path.startswith('/'+entry['issuer_tenant']+'/'):raise DataUnavailable('UNTRUSTED_ISSUER_MIRROR')
+    valid=(p.hostname=='s202.q4cdn.com' and p.path.startswith('/'+entry.get('issuer_tenant','MISSING')+'/')) or (p.hostname=='cdn.yahoofinance.com' and p.path.startswith('/prod/sec-filings/'+entry['cik']+'/'+entry['accession_number'].replace('-','')+'/'))
+    if not valid or p.query:raise DataUnavailable('UNTRUSTED_ISSUER_MIRROR')
     r=requests.get(entry['url'],timeout=(5,25))
     if r.status_code!=200:raise DataUnavailable('ISSUER_MIRROR_HTTP_'+str(r.status_code))
     if len(r.content)>20_000_000:raise DataUnavailable('OVERSIZE_ISSUER_MIRROR')
@@ -32,10 +51,10 @@ def download(entry):
 
 def probe():
     for entry in json.loads(REGISTRY.read_text()):
-        raw=download(entry);text,meta=inspect_pdf(raw,entry)
-        origin=requests.get(entry['issuer_page'],timeout=(5,20))
+        raw=download(entry);text,meta=inspect(raw,entry)
+        origin=requests.get(entry.get('issuer_page',entry['canonical_sec_document']),timeout=(5,20)) if 'canonical_sec_document' in entry else requests.get(entry['issuer_page'],timeout=(5,20))
         print('BEST_V2_ISSUER_MIRROR_PROBE',json.dumps(dict(cik=entry['cik'],accession=entry['accession_number'],
-            issuer_page_http=origin.status_code,issuer_tenant_in_page=entry['issuer_tenant'] in origin.text,**meta)),flush=True)
+            issuer_page_http=origin.status_code,issuer_tenant_in_page=entry.get('issuer_tenant','NOT_APPLICABLE') in origin.text,**meta)),flush=True)
 
 def original(row,filing,root,cutoff):
     # Reuse any authenticated prior SEC cache with exact URL/hash evidence.
@@ -51,13 +70,13 @@ def original(row,filing,root,cutoff):
     if entry['filing_date']!=filing['filing_date'] or entry['form_type']!=filing['form_type'] or entry['filing_date']>cutoff:raise DataUnavailable('MIRROR_FILING_DATE_OR_FORM_MISMATCH')
     expected=entry.get('sha256')
     if not expected or not re.fullmatch('[0-9a-f]{64}',expected):raise DataUnavailable('UNPINNED_ISSUER_MIRROR')
-    cache=Path(root)/'best-v2-mirrors';cache.mkdir(parents=True,exist_ok=True);asset=cache/(expected+'.pdf')
+    cache=Path(root)/'best-v2-mirrors';cache.mkdir(parents=True,exist_ok=True);asset=cache/(expected+('.html' if entry.get('format')=='html' else '.pdf'))
     raw=asset.read_bytes() if asset.exists() else download(entry)
     if sha(raw)!=expected:raise DataUnavailable('CHANGED_ISSUER_MIRROR')
-    text,meta=inspect_pdf(raw,entry)
+    text,meta=inspect(raw,entry)
     if not asset.exists():asset.write_bytes(raw)
     receipt=dict(meta,cik=row['cik'],accession=entry['accession_number'],filing_date=entry['filing_date'],form_type=entry['form_type'],
-        source='ISSUER_COMPLETE_FILING_PDF',source_url=entry['url'],issuer_page=entry['issuer_page'],original_sec_url=url,
+        source='PINNED_ORIGINAL_HTML_COPY' if entry.get('format')=='html' else 'ISSUER_COMPLETE_FILING_PDF',source_url=entry['url'],issuer_page=entry.get('issuer_page'),canonical_sec_document=entry.get('canonical_sec_document'),original_sec_url=url,
         observed_at=datetime.now(timezone.utc).isoformat(),asset=asset.name)
     atomic_json(cache/(expected+'.json'),receipt)
     return text,receipt

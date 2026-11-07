@@ -78,6 +78,17 @@ def pages(client,path,params):
     return rows
 
 
+def material_original(row,filing,date):
+    if '_cache' not in row:raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
+    from best_v2_mirrors import original
+    try:return original(row,filing,row['_cache'],date)
+    except DataUnavailable as exc:
+        if str(exc)!='NO_VERIFIED_ISSUER_MIRROR':raise
+    from supplement_quality_sources import SEC
+    raw,meta=SEC(Path(row['_cache'])/'best-v2-sec').get(filing['filing_url'])
+    return raw.decode('utf-8',errors='replace'),meta
+
+
 def review_events(client,row,date):
     start=(datetime.fromisoformat(date)-timedelta(days=400)).date().isoformat()
     index=pages(client,'/stocks/filings/vX/index',dict(cik=row['cik'],**{'filing_date.gte':start,'filing_date.lte':date},limit=1000,sort='filing_date.desc'))
@@ -91,7 +102,6 @@ def review_events(client,row,date):
     missing=[x for x in required if x['accession_number'] not in mapped]
     if missing:
         print('BEST_V2_MISSING_MATERIAL_TEXT',json.dumps(dict(ticker=row['ticker'],missing=[{k:x.get(k) for k in ('accession_number','form_type','filing_date','filing_url')} for x in missing])),flush=True)
-        raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
     documents=[];warnings=[]
     def keep(accession,text,url,filed,source_receipt=None):
         if not text or len(text)<30:raise DataUnavailable('EMPTY_EVENT_TEXT')
@@ -101,21 +111,17 @@ def review_events(client,row,date):
             text=text,sha256=hashlib.sha256(text.encode()).hexdigest(),event_language=flagged,source_receipt=source_receipt))
         if flagged:warnings.append(accession)
     for x in required:
+        if x['accession_number'] not in mapped:
+            text,meta=material_original(row,x,date)
+            keep(x['accession_number'],text,meta.get('source_url',meta.get('url')),iso_date(x['filing_date']),meta)
+            continue
         t=mapped[x['accession_number']]
         if str(t.get('cik','')).zfill(10)!=row['cik'] or iso_date(t['filing_date'])!=iso_date(x['filing_date']):raise DataUnavailable('EVENT_TEXT_IDENTITY_OR_DATE')
         keep(x['accession_number'],t['items_text'],x['filing_url'],iso_date(x['filing_date']))
     # Non-8-K forms require original text, never silent omission of foreign issuers.
-    if other:
-        from supplement_quality_sources import SEC
-        sec=SEC(Path(row['_cache'])/'best-v2-sec')
-        for x in other:
-            try:
-                raw,meta=sec.get(x['filing_url']);text=raw.decode('utf-8',errors='replace');used=x['filing_url']
-            except DataUnavailable as exc:
-                from best_v2_mirrors import original
-                try:text,meta=original(row,x,row['_cache'],date);used=meta.get('source_url',meta.get('url'))
-                except DataUnavailable:raise exc
-            keep(x['accession_number'],text,used,iso_date(x['filing_date']),meta)
+    for x in other:
+        text,meta=material_original(row,x,date)
+        keep(x['accession_number'],text,meta.get('source_url',meta.get('url')),iso_date(x['filing_date']),meta)
     # Read latest annual and interim originals as long-lived pending deal checks.
     financial=pages(client,'/v1/reference/sec/filings',{'entities.company_data.cik':row['cik'],'filing_date.lte':date.replace('-',''),'sort':'filing_date','order':'desc','limit':100})
     matches=[x for x in financial if any(e.get('relation')=='filer' and str(e.get('company_data',{}).get('cik','')).zfill(10)==row['cik'] for e in x.get('entities',[])) and iso_date(x['filing_date'])<=date]

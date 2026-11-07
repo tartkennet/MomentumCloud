@@ -21,5 +21,33 @@
       "Exhibit 99.3",
       "Exhibit 99.4"
     ]
+  },
+  {
+    "cik": "0000876883",
+    "accession_number": "0001104659-26-120692",
+    "form_type": "8-K/A",
+    "filing_date": "2026-10-30",
+    "issuer": "Stagwell Inc.",
+    "format": "html",
+    "original_index": "https://www.sec.gov/Archives/edgar/data/876883/000110465926120692/0001104659-26-120692-index.htm",
+    "canonical_sec_document": "https://www.sec.gov/Archives/edgar/data/876883/000110465926120692/tm2628622d1_8ka.htm",
+    "url": "https://cdn.yahoofinance.com/prod/sec-filings/0000876883/000110465926120692/tm2628622d1_8ka.htm",
+    "sha256": "22aefbafa731af0b72dfd2bfd3349bf1784de11721ec7c613434abd59ffc3338",
+    "min_characters": 1000,
+    "required_items": [
+      "5.02"
+    ],
+    "required_exhibits": [],
+    "markers": [
+      "0000876883",
+      "FORM 8-K/A",
+      "Stagwell Inc.",
+      "001-13718",
+      "October 28, 2026",
+      "October 30, 2026",
+      "Beth J. Kaplan",
+      "Explanatory Note",
+      "SIGNATURES"
+    ]
   }
 ]
