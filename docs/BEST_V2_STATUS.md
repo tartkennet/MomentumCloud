@@ -1,91 +1,76 @@
-# BEST v2 — implementation status and verified source block
+# BEST v2 — saved prospective implementation and release gates
 
-Recorded 2026-11-07 UTC for issue #50. This is NOT a trading approval.
-Branch: momentum-best-v2-50. Draft PR: https://github.com/tartkennet/MomentumCloud/pull/51
-Verified implementation revision: 0346e83bc0195f50e7c5af6bc04c1099dd75667c.
+Updated 2026-11-07 UTC, issue #50 / PR #51. PAPER_EXPERIMENT, economic NO_GO.
+No broker client or real orders. Main remains BEST v1 until independent data,
+funding, enabled automation and separate production publication are verified.
 
-## Saved implementation
-Separate v2 protocol, full-universe price inventory, seven-component momentum/
-acceleration/volume score, low-volatility and price-pin/gap/overextension
-diagnostics, economic business-sector classification and sector/factor/
-correlation constraints. No ticker blacklist. The economic taxonomy derives
-from archived provider business descriptions and detailed SIC, with healthcare
-business overrides; it is not a claim to licensed GICS data.
+## Current implementation
 
-Whole-share funding selects names first, defaults to max(SEK 25,000, independently
-audited risk-constrained minimum), permits higher capital, and cannot replace
-names to fit a budget. New code has separate controller, state names, encrypted
-recovery cache, immutable publisher branch, API and five-tab UI. V1 helpers are
-reused as numerical/accounting libraries; previous strategy files and journals
-are not modified. No v2 state or trade has been published or initialized.
+Full available XNAS/XNYS/XASE common-stock inventory, not top-100 turnover.
+Price strength, relative strength, acceleration, volume, risk-adjusted momentum
+and persistence; 253-session history, USD10 price/USD20m ADV20 minimums.
+Generic low-volatility, pinning, jump and overextension controls; original-source
+corporate-event review. No company eligibility blacklist.
 
-Prospective automated orders require complete source review, reconciled funding
-and pre-opening integer commitments. Cash plans are not executed holdings.
-No real broker, real orders or economic GO.
+The owner amendment in d732489 removes hard sector/factor count and capital
+caps and any implied five-sector minimum. Strong names are selected before
+capital; issuer 15% and correlation-component three-name/35% controls remain.
+Sector count affects sizing softly and concentration is disclosed. Default
+funding max(SEK25,000, independently audited minimum), reserve one whole share
+of each first, allocate residual feasible lots. Browser capital never changes
+ranked membership or the actual funded cohort.
 
-## Verified tests
-- Production CI run 42316964131: PASS; 340 Python tests and JavaScript suites,
-  including nine new v2 numeric/financial/source regressions and v2 API isolation.
-- V2 run 42316964116, browser job 128231837592: PASS at 1440, 390 and 320 px;
-  all five tabs, no page overflow/JS errors, identical ten fixture names after
-  capital changes and reload.
-- The 320px capital-card issue found by the browser test was fixed in v2-only
-  CSS. Browser checks use the runner's documented preinstalled Chrome.
-- These browser trades/data are explicitly synthetic fixtures. They are never
-  copied to an actual journal. They do not certify production or real execution.
+E1 is separately preregistered, applied to all liquid issuers and WATCHLIST ONLY.
+The actual APP mechanism check and limitations are in BEST_V2_APP_DIAGNOSTIC.md.
+E1 did not identify APP earlier in the fully covered 126-session window; no
+threshold was changed to force inclusion and no hypothetical trade was booked.
 
-## Actual market-data gate: BLOCKED
-Completed price inventory dated 2026-11-06:
-5,312 provider reference records, 1,743 complete liquid unique issuers,
-146 candidates meeting the v2 strong-price rules. All were assessed without
-a top-100 ADV restriction.
+## Source access repairs
 
-The considered candidate SN (SharkNinja, CIK 0001957132) requires original 6-K
-coverage. The complete index contains such filings, but:
-- direct original SEC access returns HTTP 403, including a declared public
-  repository-contact User-Agent;
-- the authenticated existing provider original-file path returns HTTP 404 and
-  its corresponding file listing is empty;
-- the documented material-text endpoint explicitly queried for 6-K and 6-K/A
-  returns zero rows, despite indexed required filings.
+SN's previously blocking 6-K is now CLEAR using its complete official issuer
+PDF (71 pages, all four material exhibits), pinned hash and source receipts.
+STGW's missing parsed 8-K/A is verified against the SEC original/index using a
+pinned complete public HTML copy. Financial filing queries use issuer CIK
+rather than reused tickers and the legacy endpoint's compact YYYYMMDD dates.
+Completed past mergers and distant unrelated conversions are not interpreted
+as a pending issuer cash acquisition.
 
-Example indexed original:
-https://www.sec.gov/Archives/edgar/data/1957132/0001628280-25-049846.txt
-(filed 2025-11-06; inside the registered 400-day review window).
+TBBB has missing provider SIC metadata; its primary grocery business supports
+Consumer Staples without a ticker exception. Its 12 required 6-K filings and
+all 19 narrative/exhibit originals have verified public copies. The legacy
+financial service returns no TBBB annual records, so the indexed 20-F and its
+20-F/A are required via the same original-identity/hash controls, including all
+11 narrative/certification documents. Inaccessible originals still block
+formation; stronger unknown candidates are not skipped to force ten.
+See BEST_V2_SOURCE_MIRRORS.md, data/filing_mirrors.json and Actions source probes.
+No API credential is committed or sent to public mirror hosts.
 
-Receipts:
-https://github.com/tartkennet/MomentumCloud/actions/runs/42315465927
-https://github.com/tartkennet/MomentumCloud/actions/runs/42316722926
-The v2 technical release gate fails correctly. Empty financial-only/8-K-only
-coverage is never interpreted as absence of M&A. SN is not silently discarded
-or replaced to force ten. A 400-day lookback is not relaxed after seeing results.
+## Verified checks versus actual activation
 
-The 8-K event index and parsed text DO work using the existing market-data
-credential. That does not establish 6-K coverage. The provider updates parsed
-filings daily, so no realtime/unfiled-announcement coverage is claimed.
+348 Python unit tests pass locally, including 17 v2 financial, signal, source,
+whole-share, automation and ledger tests. JavaScript regression suites pass.
+The five-tab browser fixture passes at 1440, 390 and 320 px with no overflow or
+JS errors; low/high capital and reload preserve membership. Fixture trades
+are synthetic and never enter a published account.
 
-## Deployment and execution
-Main remains 7d3ee3b (BEST v1). PR #51 is draft and unmerged. V2 has not replaced
-the root or been published to Vercel production. Its new scheduled workflow is
-not active on default main; Monday execution is NOT promised.
+Real 2026-11-06 full-universe checks cover 5,312 provider reference records,
+1,743 complete liquid unique issuers and 146 strong-price candidates. This is
+actual observed provider coverage, not a claim that inaccessible/unlisted
+securities or incomplete histories were analyzed. Independently recomputed
+population, metrics, ranking, funding, orders and accounts must all pass.
+The latest actual release result is authoritative in the PR Actions checks;
+unit/browser PASS alone is not a source or funding approval.
 
-There is no technically approved final ten-name basket, live-data allocation,
-verified SEK minimum, actual sector allocation or first v2 fill timestamp.
-No historical/future fill is invented. The SEK 25,000 setting is a tested funding
-policy, not a certified capital requirement for a completed live basket.
+New account/state, encrypted recovery inputs, append-only journal branch and
+API are isolated from BEST v1, H3, Avanza and Quality. Previous strategy source
+and recorded histories are unchanged. Orders are precommitted before a future
+opening and require observed positive-volume raw prices in 09:30–11:30 NY;
+missed windows are never backfilled. Daily risk, monthly retained membership,
+fees, cash, FX and observed NAV use independent reconciliation.
 
-## Concrete remaining work
-1. Obtain readable, identity/date-matched required non-8-K originals or an
-   actually complete verified material-text source, preserving public dates,
-   hashes and cached receipts. Do not waive the source gate or blacklist SN.
-2. Rerun the resumable v2 market gate and independent selection/funding/order/
-   ledger audits; only a PASS can certify ten real names and quantities.
-3. Verify enabled default-branch Actions and pre-opening commitments; publish
-   the separate v2 account and test its production API/mobile views.
-4. Promote v2 to root only after those checks; retain prior models/history.
-   The first observed future execution can occur only in the allowed NY window.
-
-The local executor disconnected during this work. Tracked code, tests, protocol
-and diagnostics were rescued through the GitHub connector; nothing essential
-depends on an unsaved local draft. Original source snapshots remain in the
-existing encrypted Actions recovery caches/artifacts, never in source commits.
+The default-branch workflow must prove its state is active, bind the proof to
+its source SHA and publish the separate account before root promotion. Opening
+attempts include 14:32/14:52 and 15:32/15:52 UTC; GitHub scheduling can be delayed.
+Monday 2026-11-09 first potential 09:32 NY observation is conditional on real
+prices and all gates, never an assumed or retrospectively booked fill. No first
+actual v2 fill timestamp exists while it is still Saturday.

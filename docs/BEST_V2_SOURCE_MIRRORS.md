@@ -27,3 +27,13 @@ mirrors use a separate request and never receive the market-data API key.
 Cached original documents and extraction/identity receipts remain in encrypted
 Actions inputs. No credential or raw provider document is committed to source.
 The same policy applies to every issuer; this is not an eligibility exception.
+
+BBB Foods extends the same registry policy: twelve 6-Ks, nineteen complete
+narrative/exhibit originals matched to primary SEC index tables; plus the latest
+20-F and subsequent 20-F/A with all eleven narrative/certification documents.
+All thirty downloads returned 200 and pinned fingerprints in source probe
+42358749529. The legacy financial service returned zero TBBB records. The
+annual baseline is therefore required from the separate complete SEC index,
+including the amendment, rather than declaring missing annual coverage CLEAR.
+Bundles require exact required-file lists and verify every individual hash;
+a missing/changed exhibit fails both unit regression and prospective formation.
