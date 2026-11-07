@@ -86,9 +86,12 @@ def review_events(client,row,date):
         if str(x.get('cik','')).zfill(10)!=row['cik'] or not start<=iso_date(x['filing_date'])<=date:raise DataUnavailable('EVENT_INDEX_IDENTITY_OR_DATE')
     required=[x for x in index if x['form_type'] in ('8-K','8-K/A')]
     other=[x for x in index if x['form_type'] in ('6-K','6-K/A','425','SC TO-T','SC 14D9','DEFM14A')]
-    texts=pages(client,'/stocks/filings/8-K/vX/text',dict(cik=row['cik'],**{'filing_date.gte':start,'filing_date.lte':date},limit=100,sort='filing_date.desc'))
+    texts=pages(client,'/stocks/filings/8-K/vX/text',dict(cik=row['cik'],**{'filing_date.gte':start,'filing_date.lte':date,'form_type.any_of':'8-K,8-K/A'},limit=100,sort='filing_date.desc'))
     mapped={x['accession_number']:x for x in texts}
-    if any(x['accession_number'] not in mapped for x in required):raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
+    missing=[x for x in required if x['accession_number'] not in mapped]
+    if missing:
+        print('BEST_V2_MISSING_MATERIAL_TEXT',json.dumps(dict(ticker=row['ticker'],missing=[{k:x.get(k) for k in ('accession_number','form_type','filing_date','filing_url')} for x in missing])),flush=True)
+        raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
     documents=[];warnings=[]
     def keep(accession,text,url,filed,source_receipt=None):
         if not text or len(text)<30:raise DataUnavailable('EMPTY_EVENT_TEXT')
