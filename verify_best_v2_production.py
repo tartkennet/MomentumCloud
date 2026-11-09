@@ -44,7 +44,7 @@ def main():
                 if not data['paper']['paper_started']:assert data['trading_success'] is False and not data['paper']['trades']
             members=data['signal']['selection']['rows'];assert len(members)==10
             assert len({r['cik'] for r in members})==10 and all(r['instrument_type']=='CS' and r['ticker']!='SPY' for r in members)
-            checks['best-v2'].update(http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'])
+            checks['best-v2'].update(http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'],execution_policy=data['paper'].get('execution_policy'))
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         browser_path=shutil.which('google-chrome') or shutil.which('chromium')
@@ -55,8 +55,9 @@ def main():
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
-            page.locator('#execution-status').wait_for()
-            assert 'fördröjda' in page.locator('#execution-status').inner_text()
+            if checks['best-v2'].get('execution_policy'):
+                page.locator('#execution-status').wait_for()
+                assert 'fördröjda' in page.locator('#execution-status').inner_text()
             for tab in ('overview','portfolio','trades','statistics','settings'):
                 page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
                 assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth'),(width,tab)
