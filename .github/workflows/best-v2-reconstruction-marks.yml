@@ -1,0 +1,34 @@
+name: Refresh separate BEST Nov 9 hypothetical marks
+on:
+  workflow_dispatch:
+  schedule:
+    # After NY stock-market close including winter/summer time.
+    - cron: '30 23 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: best-nov9-paper-mark-main
+  cancel-in-progress: false
+jobs:
+  mark:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read dated daily closes, keep reconstruction separate
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python scripts/update_best_v2_reconstruction.py
+      - name: Commit new marks only if all ten updated
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/best-v2-paper-start.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update independent Nov 9 paper scenario with dated close"
+            git push origin HEAD:main
+          fi
