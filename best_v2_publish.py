@@ -30,7 +30,9 @@ def publish(folder,manifest):
                 assert state['initial_sek']==old['initial_sek'] and state['capital_configuration']==old['capital_configuration']
                 for account in ('strategy','benchmark'):
                     for field in ('trades','equity'):assert state[account][field][:len(old[account][field])]==old[account][field]
-                for field in ('decisions','event_journal','opening_quotes'):assert state[field][:len(old[field])]==old[field]
+                for field in ('decisions','event_journal','opening_quotes','gaps','unfilled_orders','cancelled_intentions','execution_attempts','intraday_observations','execution_policy_journal'):
+                    if field not in old:continue
+                    assert state[field][:len(old[field])]==old[field]
             if state:
                 assert report['paper']['journal_sha256']==digest(state)
                 if report['technical_readiness']['status']=='PASS':audit_best.account(state,report['paper'])

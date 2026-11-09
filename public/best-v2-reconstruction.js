@@ -22,7 +22,7 @@
     const note='Simulerade köp från 9 nov, baserade på öppningskurser. Inte utförda order i den automatiska journalen. FIGS överskred den ursprungliga köpgränsen. Värdering med senast sparade minutkurser och oförändrad referensvaluta.';
     function panel(title){
       const article=e('article',undefined,'panel');article.dataset.paperReconstruction='true';
-      article.append(e('p','PAPERPORTFÖLJ · 9 NOV','eyebrow'),e('h2',title));return article;
+      article.append(e('p','HYPOTETISK REKONSTRUKTION · INTE GENOMFÖRDA AFFÄRER','eyebrow'),e('h2',title));return article;
     }
     const overview=$('overview');
     if(overview){

@@ -3,12 +3,12 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
+    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/BEST_V2_EXECUTION_POLICY_E2.md','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
   pull_request:
-    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','tests/test_best_v2*.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
+    paths: ['best_v2*.py','audit_best_v2.py','verify_best_v2.py','tests/test_best_v2*.py','verify_best_v2_production.py','best_data.py','best_inventory.py','requirements.txt','api/best-v2.js','public/best-v2*','public/index.html','data/filing_mirrors.json','docs/BEST_V2_EXECUTION_POLICY_E2.md','docs/MOMENTUM10_BEST_V2_PROTOCOL.md','.github/workflows/momentum_best_v2.yml']
   schedule:
     - cron: '22 8,22 * * 1-5'
-    - cron: '32,52 14,15 * * 1-5'
+    - cron: '12,32,52 13-20 * * 1-5'
 permissions:
   contents: write
   actions: read
@@ -160,3 +160,17 @@ jobs:
       - run: python -m pip install -r requirements.txt playwright==1.56.0
       - name: Verify five v2 tabs at 320, 390 and 1440 pixels without market secrets
         run: python best_v2_browser.py
+
+  trading-outcome:
+    if: github.event_name != 'pull_request'
+    needs: experiment
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce real trading outcome separately from technical readiness
+        run: python verify_best_v2_trading_outcome.py

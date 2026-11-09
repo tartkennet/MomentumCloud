@@ -21,6 +21,7 @@ from audit_core_normalized import closes_at
 import best_v2_strategy as strategy
 import best_v2_capital as capital
 import audit_best_v2 as audit
+import best_v2_execution as execution
 
 VERSION='best-signal-v2'
 
@@ -35,6 +36,18 @@ def reference(row,day,cache,client):
     except DataUnavailable as exc:
         print('BEST_V2_REFERENCE_BLOCK',json.dumps(dict(ticker=row['ticker'],reason=str(exc))),flush=True)
         raise
+
+
+def locked_member_references(rows,selection,day,cache):
+    current={r['ticker']:r for r in rows};verified=[]
+    for member in selection['rows']:
+        row=current.get(member['ticker'])
+        if not row or row['cik']!=member['cik']:raise ValueError('COMMITTED_MEMBER_PRICE_OR_LIQUIDITY_UNVERIFIED')
+        checked=reference(row,day,cache,BestProvider())
+        if checked['event_status']!='CLEAR':raise ValueError('COMMITTED_MEMBER_CORPORATE_EVENT_BLOCKED')
+        verified.append(checked)
+    if len(verified)!=10:raise ValueError('TEN_VERIFIED_COMMITTED_MEMBERS_REQUIRED')
+    return verified
 
 
 def collect(data,client,cache,previous,now,output=None):
@@ -55,33 +68,43 @@ def collect(data,client,cache,previous,now,output=None):
     early_analysis=dict(component='E1_WATCHLIST',active_for_trading=False,ranked=early_rank(rows),app=diagnose(data,'APP',day))
     if output:atomic_json(Path(output)/'best-v2-early.json',early_analysis)
     print('BEST_V2_APP_ANALYSIS',json.dumps({k:v for k,v in early_analysis['app'].items() if k!='history'}),flush=True)
-    strong=[r for r in rows if r['strong']][:60]
-    pool_rows=copy.deepcopy(strong)
-    # Correlation uses all sixty strong-pool price histories. Industry metadata is needed
-    # only for the deterministic prefix actually considered before ten fill.
-    edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
-    for index,row in enumerate(pool_rows):
-        pool_rows[index]=reference(row,day,cache,BestProvider());classified+=1
-        targets,skips=strategy.select(pool_rows[:index+1])
-        if len(targets)==10:break
-    for row in pool_rows[classified:]:row['classification_status']='NOT_NEEDED_AFTER_TEN_SELECTED'
-    diagnostics['classification']=dict(considered=classified,verified=classified,unneeded_after_ten=len(pool_rows)-classified)
-    analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
-    checked=audit.signal(analysis)
-    month=datetime.now(timezone.utc).astimezone(NY).strftime('%Y-%m')
+    month=now.astimezone(NY).strftime('%Y-%m')
     old=previous.get('signal',{}).get('selection') if previous else None
-    selection=old if old and old['month']==month else None
-    if not selection and on and len(targets)==10:
-        selection=dict(month=month,as_of=day,observed_at=datetime.now(timezone.utc).isoformat(),rows=targets)
+    selection=copy.deepcopy(old) if old and old['month']==month else None
+    current_references=[]
+    if selection:
+        # Membership was already frozen prospectively for this month. A new,
+        # unheld research candidate cannot block the ten committed issuers.
+        # Every committed issuer still needs fresh identity/events/price proof.
+        current_references=locked_member_references(rows,selection,day,cache)
+        analysis=copy.deepcopy({k:previous[k] for k in ('ranked_liquid','strong_pool','targets')})
+        pool_rows=analysis['strong_pool'];targets=analysis['targets']
+        edges=previous.get('correlation_edges',[]);skips=previous.get('formation_skips',[])
+        diagnostics['classification']=dict(scope='LOCKED_MONTH_MEMBERS',verified=len(current_references),ranking_as_of=selection['as_of'])
+    else:
+        strong=[r for r in rows if r['strong']][:60]
+        pool_rows=copy.deepcopy(strong)
+        edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
+        for index,row in enumerate(pool_rows):
+            pool_rows[index]=reference(row,day,cache,BestProvider());classified+=1
+            targets,skips=strategy.select(pool_rows[:index+1])
+            if len(targets)==10:break
+        for row in pool_rows[classified:]:row['classification_status']='NOT_NEEDED_AFTER_TEN_SELECTED'
+        diagnostics['classification']=dict(scope='NEW_FULL_UNIVERSE_FORMATION',considered=classified,verified=classified,unneeded_after_ten=len(pool_rows)-classified)
+        analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
+        current_references=[r for r in pool_rows if r.get('reference_sha256')]
+        if on and len(targets)==10:
+            selection=dict(month=month,as_of=day,observed_at=now.isoformat(),rows=targets)
+    checked=audit.signal(analysis)
     bars=data.bars(day);ids={r['ticker']:str(r.get('cik','')).zfill(10) for r in data.universe(day) if core.eligible(r)}
     wanted={r['ticker'] for r in selection['rows']} if selection else set()
     quotes={t:bars[t][1] for t in wanted if bars.get(t) and core.number(bars[t][1])}
     if selection:
         for row in selection['rows']:
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
-    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
+    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in current_references},ranking_as_of=selection['as_of'] if selection else day,selection_price_inputs_sha256=previous.get('provenance',{}).get('selection_price_inputs_sha256',previous.get('provenance',{}).get('price_inputs_sha256')) if old and old['month']==month else data.input_fingerprint(),
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='d732489a7940980a01ae52a994fe6a014294b5be',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json','best_v2_execution.py',execution.FILE,strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,
@@ -139,6 +162,7 @@ def decide(state,report,data,now):
             limit=data.bars(report['price_as_of'])['SPY'][1]*1.02;q=math.floor(state['benchmark']['cash']/limit)
             while q and q*limit+fee(q*limit)>state['benchmark']['cash']:q-=1
             if q:p['benchmark_order']=dict(quantity=q,limit=limit)
+    if state.get('execution_policy'):p['execution_policy']=copy.deepcopy(state['execution_policy'])
     p['sha256']=digest(p);state['pending']=p;state['decisions'].append(copy.deepcopy(p));state['previous_risk']=on
 
 
@@ -173,8 +197,16 @@ def run(args):
         report.update(fx=fx,fx_history=rates,errors=[],operations_proof=operations)
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
+        execution.register(state,data,datetime.now(timezone.utc),client)
+        pending=state.get('pending')
+        if pending and pending['kind']=='MEMBERSHIP' and not state['strategy']['trades'] and pending['signal_date']<report['price_as_of']:
+            cancel(state,datetime.now(timezone.utc),'PRE_SESSION_REFRESH_VERIFIED_CLOSED_PRICES')
         decide(state,report,data,datetime.now(timezone.utc))
-        state=observe_account(state,data,client,datetime.now(timezone.utc))
+        migration=state.get('execution_migration_members')
+        if migration and not state.get('execution_migration_verified') and state.get('pending') and state['pending']['kind']=='MEMBERSHIP':
+            if sorted(migration)!=sorted(r['ticker'] for r in state['pending']['targets']):raise ValueError('MIGRATION_CHANGED_TEN_MEMBERS')
+            state['execution_migration_verified']=True
+        state=execution.observe(state,data,client,datetime.now(timezone.utc))
         for day in {r['date'] for r in state['strategy']['equity']} | {t['date'] for t in state['strategy']['trades']}:
             rate=rate_on(rates,day)
             if not rate:raise ValueError('MISSING_DATED_FX')
@@ -185,11 +217,19 @@ def run(args):
             assert state['initial_sek']==prior['initial_sek'] and state['capital_configuration']==prior['capital_configuration']
             for k in ('strategy','benchmark'):
                 for f in ('trades','equity'):assert state[k][f][:len(prior[k][f])]==prior[k][f]
-            for f in ('decisions','event_journal','opening_quotes'):assert state[f][:len(prior[f])]==prior[f]
+            for f in ('decisions','event_journal','opening_quotes','gaps','unfilled_orders','cancelled_intentions','execution_attempts','intraday_observations','execution_policy_journal'):
+                if f not in prior:continue
+                assert state[f][:len(prior[f])]==prior[f]
         state['previous_state_sha256']=digest(prior) if prior else None
         paper=ledger_summary(state,report['signal'],datetime.now(timezone.utc))
         paper.update(model=strategy.MODEL,policy=strategy.PARAMETERS,experiment_label='PAPER_EXPERIMENT',
-                     economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False)
+                     economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False,
+                     execution_policy=state.get('execution_policy'),trading_outcome=state.get('execution_outcome'),
+                     execution_attempts=state.get('execution_attempts',[])[-12:],
+                     last_missed_execution=next((g for g in reversed(state['gaps']) if g['kind']=='MISSED_OPEN_NO_BACKFILL'),None))
+        outcome=state.get('execution_outcome') or {}
+        if outcome.get('status') in ('OPEN_PRICE_WAITING','OPEN_PRICE_UNAVAILABLE','OPEN_PRICE_PROVIDER_DELAY','MISSED_OPEN_NO_BACKFILL'):
+            paper['status']=outcome['status']
         metadata={r['ticker']:r for decision in state['decisions'] for r in decision.get('targets',[])}
         for pos in paper['positions']:pos.update(sector=metadata.get(pos['ticker'],{}).get('sector'),factor=metadata.get(pos['ticker'],{}).get('factor'),healthcare_exposure=metadata.get(pos['ticker'],{}).get('healthcare_exposure'))
         pending=state.get('pending') or {};planned=[]
