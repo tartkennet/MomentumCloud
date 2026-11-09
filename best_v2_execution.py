@@ -40,12 +40,27 @@ def missed(state,days,now,legacy=False):
         outcome=record(state,day,now,'MISSED_OPEN_NO_BACKFILL',{},diagnostic_only=True)
         state['unfilled_orders'].extend(dict(o,date=day,observed_at=now.isoformat(),commitment=p['sha256']) for o in outcome['orders'])
 
-def register(state,data,now):
+def session_proof(client,day,now):
+    start=datetime.combine(datetime.fromisoformat(day).date(),time(9,30),NY)
+    path=f'/v2/aggs/ticker/SPY/range/1/minute/{int(start.timestamp()*1000)}/{int(now.timestamp()*1000)}'
+    try:body=client.get(path,{'adjusted':'false','sort':'desc','limit':1})
+    except DataUnavailable:return None
+    rows=body.get('results',[])
+    if body.get('ticker')!='SPY' or body.get('status') not in ('OK','DELAYED') or not rows:return None
+    raw=rows[0];stamp=datetime.fromtimestamp(raw.get('t',0)/1000,timezone.utc).astimezone(NY)
+    if stamp.date().isoformat()!=day or stamp.weekday()>4 or not time(9,30)<=stamp.time().replace(tzinfo=None)<time(16) or not raw.get('v',0)>0 or stamp>now:return None
+    return dict(session=day,observed_at=now.isoformat(),source_path=path,provider_status=body['status'],raw=raw,diagnostic_only=True)
+
+def register(state,data,now,client=None):
     previous=state.get('execution_policy')
     if previous:
         if previous['id']!=POLICY or previous['sha256']!=policy_hash():raise DataUnavailable('FROZEN_EXECUTION_POLICY_CHANGED')
         return
-    missed(state,data.sessions,now,legacy=True)
+    days=list(data.sessions);today=now.astimezone(NY).date().isoformat()
+    if client and today not in days:
+        proof=session_proof(client,today,now)
+        if proof:days.append(today);state.setdefault('session_observations',[]).append(proof)
+    missed(state,days,now,legacy=True)
     old=state.get('pending')
     if old:
         state.setdefault('cancelled_intentions',[]).append(dict(observed_at=now.isoformat(),commitment=old['sha256'],reason='E2_PROSPECTIVE_RECOMMIT_NO_BACKFILL'))
@@ -73,13 +88,14 @@ def quote(client,ticker,now,committed,registered):
     try:body=client.get(path,{'adjusted':'false','sort':'desc','limit':1})
     except DataUnavailable as exc:
         raise DataUnavailable('OPEN_PRICE_NO_ENTITLEMENT' if str(exc)=='HTTP_403' else 'OPEN_PRICE_UNAVAILABLE') from None
-    if body.get('status') not in ('OK','DELAYED') or body.get('ticker',ticker)!=ticker:raise DataUnavailable('INVALID_INTRADAY_IDENTITY_OR_STATUS')
+    if body.get('status') not in ('OK','DELAYED') or body.get('ticker')!=ticker:raise DataUnavailable('INVALID_INTRADAY_IDENTITY_OR_STATUS')
+    if body.get('adjusted') is not False:raise DataUnavailable('ADJUSTED_MINUTE_NOT_ALLOWED')
     rows=body.get('results',[])
     if not rows:raise DataUnavailable('OPEN_PRICE_UNAVAILABLE')
     raw=rows[0];begin,end=validate_bar(raw,now,committed,registered)
     return dict(ticker=ticker,raw=raw,price_as_of=end.isoformat(),minute_start=begin.isoformat(),observed_at=now.isoformat(),source_path=path,adjusted=False,provider_status=body['status'],delay_seconds=(now-end).total_seconds(),price=raw['c'])
 
-def observe(state,data,client,now):
+def observe(state,data,client,now,clock=None):
     # Shared legacy observer is used ONLY with pending removed: events/closes remain
     # unchanged, but no grouped-daily or old opening execution path can run.
     from avanza10_forward import observe_account as legacy_marks
@@ -100,6 +116,15 @@ def observe(state,data,client,now):
     receipts={};reasons={}
     for ticker in sorted({o['ticker'] for o in p['plan']['orders']}|({'SPY'} if p.get('benchmark_order') and not state['benchmark']['trades'] else set())):
         try:receipts[ticker]=quote(client,ticker,now,committed,registered)
+        except DataUnavailable as exc:reasons[ticker]=str(exc)
+    booked=clock() if clock else datetime.now(timezone.utc)
+    if booked<now:raise DataUnavailable('EXECUTION_CLOCK_MOVED_BACKWARDS')
+    now=booked
+    if now.astimezone(NY).date().isoformat()!=day or now.astimezone(NY).time().replace(tzinfo=None)>time(15,59):
+        record(state,day,now,'MISSED_OPEN_NO_BACKFILL',{});return state
+    for ticker,receipt in receipts.items():
+        receipt['observed_at']=now.isoformat();receipt['delay_seconds']=(now-aware(receipt['price_as_of'])).total_seconds()
+        try:validate_bar(receipt['raw'],now,committed,registered)
         except DataUnavailable as exc:reasons[ticker]=str(exc)
     state.setdefault('intraday_observations',[]).append(dict(session=day,observed_at=now.isoformat(),commitment=sha,quotes=copy.deepcopy(receipts),errors=copy.deepcopy(reasons)))
     if not receipts:

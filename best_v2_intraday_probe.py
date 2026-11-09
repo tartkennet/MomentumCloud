@@ -16,14 +16,14 @@ def main():
         try:b=r.json()
         except ValueError:b={}
         rows=b.get('results',[])
-        out=dict(ticker=ticker,path=path,observed_at=datetime.now(timezone.utc).isoformat(),http=r.status_code,status=b.get('status'),resultsCount=b.get('resultsCount'),count=len(rows),bars=rows[:3],provider_message_code='NOT_AUTHORIZED' if r.status_code==403 else None)
+        out=dict(ticker=ticker,path=path,observed_at=datetime.now(timezone.utc).isoformat(),http=r.status_code,status=b.get('status'),adjusted=b.get('adjusted'),provider_ticker=b.get('ticker') if isinstance(b.get('ticker'),str) else None,resultsCount=b.get('resultsCount'),count=len(rows),bars=rows[:3],provider_message_code='NOT_AUTHORIZED' if r.status_code==403 else None)
         receipts.append(out);print('BEST_V2_INTRADAY_CAPABILITY',json.dumps(out),flush=True)
     for label,path in [('snapshot','/v2/snapshot/locale/us/markets/stocks/tickers/SPY'),('grouped','/v2/aggs/grouped/locale/us/market/stocks/'+day)]:
         r=session.get('https://api.polygon.io'+path,params={'apiKey':key,'adjusted':'false','include_otc':'false'},timeout=(5,20))
         try:b=r.json()
         except ValueError:b={}
         result=b.get('ticker',{});rows=b.get('results',[])
-        out=dict(source=label,path=path,observed_at=datetime.now(timezone.utc).isoformat(),http=r.status_code,status=b.get('status'),resultsCount=b.get('resultsCount'),count=len(rows),spy=next((x for x in rows if x.get('T')=='SPY'),None),snapshot={k:result.get(k) for k in ('ticker','min','lastTrade','updated')})
+        out=dict(source=label,path=path,observed_at=datetime.now(timezone.utc).isoformat(),http=r.status_code,status=b.get('status'),adjusted=b.get('adjusted'),provider_ticker=b.get('ticker') if isinstance(b.get('ticker'),str) else None,resultsCount=b.get('resultsCount'),count=len(rows),spy=next((x for x in rows if x.get('T')=='SPY'),None),snapshot={k:result.get(k) for k in ('ticker','min','lastTrade','updated')})
         receipts.append(out);print('BEST_V2_INTRADAY_CAPABILITY',json.dumps(out),flush=True)
     from pathlib import Path
     Path('intraday-capability.json').write_text(json.dumps(dict(paper_only=True,orders_sent=False,receipts=receipts),indent=2))

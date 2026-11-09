@@ -175,7 +175,7 @@ def run(args):
         report.update(fx=fx,fx_history=rates,errors=[],operations_proof=operations)
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
-        execution.register(state,data,datetime.now(timezone.utc))
+        execution.register(state,data,datetime.now(timezone.utc),client)
         decide(state,report,data,datetime.now(timezone.utc))
         migration=state.get('execution_migration_members')
         if migration and state.get('pending'):
