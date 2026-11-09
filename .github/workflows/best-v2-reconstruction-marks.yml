@@ -4,7 +4,8 @@ on:
   schedule:
     # 22:20 Europe/Stockholm, winter UTC+1 and summer UTC+2.
     # UTC cron does not automatically account for daylight-saving time.
-    - cron: '20 20,21 * * 1-5'
+    - cron: '20 20 * * 1-5'
+    - cron: '20 21 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -19,8 +20,8 @@ jobs:
       - name: Validate Stockholm close-refresh time (DST-aware)
         id: when
         env:
-          EVENT_NAME: ${{ '${{ github.event_name }}' }}
-          EVENT_SCHEDULE: ${{ '${{ github.event.schedule }}' }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           python - <<'PY'
           import datetime,os
@@ -30,14 +31,10 @@ jobs:
               should_run=True
           else:
               schedule=os.getenv('EVENT_SCHEDULE','')
-              hour=int(schedule.split()[1].split(',')[0]) if schedule else -1
-              # The actual UTC scheduled slot is given by the matched cron entry.
-              # Both entries share a field; infer which of the two UTC slots is most recent.
+              utc_hour=int(schedule.split()[1]) if schedule else -1
               now=datetime.datetime.now(datetime.timezone.utc)
-              slots=[now.replace(hour=h,minute=20,second=0,microsecond=0) for h in (20,21)]
-              slots=[v for v in slots if v<=now]
-              intended=max(slots) if slots else now
-              should_run=intended.astimezone(ZoneInfo('Europe/Stockholm')).hour==22
+              slot=now.replace(hour=utc_hour if utc_hour in (20,21) else 0,minute=20,second=0,microsecond=0)
+              should_run=utc_hour in (20,21) and slot.astimezone(ZoneInfo('Europe/Stockholm')).hour==22
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\\n')
           print('CLOSE_REFRESH_TIME_VALID',should_run)
           PY
