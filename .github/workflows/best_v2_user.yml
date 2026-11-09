@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['best_v2_user*.py','audit_best_v2_user.py','data/best-v2-user-start.json','.github/workflows/best_v2_user.yml','api/best-v2.js','public/best-v2*','public/index.html']
+    paths: ['best_v2_user*.py','audit_best_v2_user.py','data/best-v2-user-start.json','.github/workflows/best_v2_user.yml','verify_best_v2_production.py','api/best-v2.js','public/best-v2*','public/index.html']
   pull_request:
     paths: ['best_v2_user*.py','audit_best_v2_user.py','data/best-v2-user-start.json','.github/workflows/best_v2_user.yml','tests/test_best_v2_user.py']
   schedule:

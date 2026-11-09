@@ -54,7 +54,8 @@ def export(state,report,now):
     for p in paper['positions']:
         row=metadata.get(p['ticker'],{});p.update(name=row.get('name',p['ticker']),sector=row.get('sector'),factor=row.get('factor'))
     paper['audits']={'strategy':checked};paper['statistics_audit']=checked
-    report.update(paper=paper,account_id=ACCOUNT,technical_readiness=dict(status='PASS',funded=not state.get('blockers'),account=checked),errors=[])
+    paper['sector_actual_distribution']=[dict(sector=sector,stocks=sum(p['sector']==sector for p in paper['positions']),value_sek=sum(p['value_sek'] or 0 for p in paper['positions'] if p['sector']==sector),weight_pct=100*sum(p['value_sek'] or 0 for p in paper['positions'] if p['sector']==sector)/paper['nav_sek'] if paper['nav_sek'] else None) for sector in sorted({p['sector'] for p in paper['positions'] if p['sector']})]
+    report.update(paper=paper,account_id=ACCOUNT,technical_readiness=dict(status='PASS',signal=report.get('signal_audit'),funded=not state.get('blockers'),account=checked),errors=[])
     return report
 
 def run(args):

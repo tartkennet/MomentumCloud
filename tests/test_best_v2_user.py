@@ -47,3 +47,38 @@ class UserStartTests(unittest.TestCase):
         with self.assertRaises(AssertionError):audit_account(s)
         source=copy.deepcopy(s['source_start']);source['holdings'][0]['quantity']=100000
         with self.assertRaises(AssertionError):audit_account(initialize(source,r,now))
+    def test_future_risk_sale_uses_observed_e2_minute_and_audits_seed_plus_sales(self):
+        s,r,created=self.fixture();r['risk_on']=False;controller.decide(s,r,None,created)
+        now=datetime.fromisoformat('2026-11-10T14:52:00+00:00');minute=int(datetime.fromisoformat('2026-11-10T14:36:00+00:00').timestamp()*1000)
+        class Client:
+            def get(self,path,params):
+                ticker=path.split('/')[4];p=r['signal']['quotes'][ticker]
+                return dict(status='DELAYED',ticker=ticker,adjusted=False,results=[dict(t=minute,o=p,h=p,l=p,c=p,v=1000)])
+        data=type('Data',(),{'sessions':['2026-11-09']})()
+        with patch('avanza10_forward.observe_account',side_effect=lambda state,*a:state),patch('best_v2_execution.events'):
+            after=execution.observe(s,data,Client(),now,clock=lambda:now)
+        self.assertEqual(after['strategy']['shares'],{});self.assertEqual(len(after['strategy']['trades']),20)
+        self.assertEqual(after['execution_outcome']['filled'],10);self.assertEqual(audit_account(after)['status'],'PASS')
+        before=copy.deepcopy(after['strategy'])
+        with patch('avanza10_forward.observe_account',side_effect=lambda state,*a:state):
+            again=execution.observe(after,data,Client(),now,clock=lambda:now)
+        self.assertEqual(again['strategy'],before)
+    def test_future_missing_quotes_leave_all_seed_positions_and_explicit_unfilled_orders(self):
+        s,r,created=self.fixture();r['risk_on']=False;controller.decide(s,r,None,created)
+        now=datetime.fromisoformat('2026-11-10T14:52:00+00:00')
+        class Client:
+            def get(self,path,params):return dict(status='DELAYED',ticker=path.split('/')[4],adjusted=False,results=[])
+        with patch('avanza10_forward.observe_account',side_effect=lambda state,*a:state):
+            after=execution.observe(s,type('Data',(),{'sessions':['2026-11-09']})(),Client(),now,clock=lambda:now)
+        self.assertEqual(len(after['strategy']['shares']),10);self.assertEqual(len(after['strategy']['trades']),10)
+        self.assertEqual(after['execution_outcome']['filled'],0);self.assertEqual(len(after['execution_outcome']['orders']),10);audit_account(after)
+    def test_december_replaces_only_disqualified_name_and_retains_nine(self):
+        s,r,now=self.fixture();r['signal']['selection']['month']='2026-12';r['price_as_of']='2026-11-30'
+        row=next(x for x in r['signal']['selection']['rows'] if x['ticker']=='CON');row.update(ticker='NEW',cik='0000099999',cluster='NEW',price_usd=30)
+        r['signal']['quotes']['NEW']=30
+        data=type('Data',(),{'bars':lambda self,day:{**{h['ticker']:[h['mark_usd'],h['mark_usd'],100] for h in s['source_start']['holdings']},'NEW':[30,30,100],'SPY':[600,600,100]}})()
+        controller.decide(s,r,data,datetime.fromisoformat('2026-12-01T14:00:00+00:00'))
+        self.assertIsNotNone(s['pending']);plan=s['pending']['plan'];self.assertEqual(len(plan['retained']),9)
+        self.assertEqual([o for o in plan['orders'] if o['side']=='SELL'],[dict(ticker='CON',side='SELL',quantity=7)])
+        self.assertEqual({o['ticker'] for o in plan['orders'] if o['side']=='BUY'},{'NEW'})
+        self.assertEqual(len(s['strategy']['trades']),10)
