@@ -104,3 +104,19 @@
   .paper-holding-result strong{font-size:18px}
   .paper-holding-result span{font-size:12px}
 }
+
+/* Full issuer names with useful position value, still no sideways scrolling. */
+.paper-holding-identity{flex:1 1 auto;min-width:0;max-width:65%}
+.paper-company-name{font-size:16px!important;line-height:1.3!important;overflow-wrap:anywhere}
+.paper-holding-details{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.paper-holding-ticker{font-weight:800;letter-spacing:.03em}
+.paper-holding-quantity:before{content:"·";margin-right:7px;color:var(--muted)}
+.paper-holding-value{font-size:12px!important;color:var(--muted);font-variant-numeric:tabular-nums}
+.paper-holding-result{min-width:0;flex:0 0 auto}
+@media(max-width:410px){
+  .paper-holding-identity{max-width:61%}
+  .paper-company-name{font-size:14px!important}
+  .paper-holding-result strong{font-size:18px}
+  .paper-holding-result span{font-size:12px}
+  .paper-holding{padding:12px 10px}
+}
