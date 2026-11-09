@@ -1,6 +1,10 @@
 name: Refresh separate BEST Nov 9 hypothetical marks
 on:
   workflow_dispatch:
+  # One-time close refresh when this workflow is explicitly updated after publication.
+  push:
+    branches: [main]
+    paths: ['.github/workflows/best-v2-reconstruction-marks.yml']
   schedule:
     # 22:20 Europe/Stockholm, winter UTC+1 and summer UTC+2.
     # UTC cron does not automatically account for daylight-saving time.
@@ -27,7 +31,7 @@ jobs:
           import datetime,os
           from zoneinfo import ZoneInfo
           event=os.getenv('EVENT_NAME')
-          if event=='workflow_dispatch':
+          if event in ('workflow_dispatch','push'):
               should_run=True
           else:
               schedule=os.getenv('EVENT_SCHEDULE','')
