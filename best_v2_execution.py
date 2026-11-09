@@ -90,10 +90,12 @@ def observe(state,data,client,now):
     check=dict(p);sha=check.pop('sha256')
     if digest(check)!=sha:raise DataUnavailable('INVALID_COMMITMENT_HASH')
     local=now.astimezone(NY);day=local.date().isoformat();missed(state,data.sessions,now)
-    if now<EFFECTIVE or local.weekday()>4 or local.time().replace(tzinfo=None)<time(9,35):
+    if now<EFFECTIVE or local.weekday()>4 or local.time().replace(tzinfo=None)<time(9,51):
         record(state,day,now,'OPEN_PRICE_WAITING',{});return state
     if local.time().replace(tzinfo=None)>time(15,59):
-        record(state,day,now,'MISSED_OPEN_NO_BACKFILL' if day in data.sessions else 'OPEN_PRICE_WAITING',{});return state
+        deadline=datetime.combine(local.date(),time(15,59),NY)
+        due=aware(p['created_at'])<deadline and day in data.sessions
+        record(state,day,now,'MISSED_OPEN_NO_BACKFILL' if due else 'OPEN_PRICE_WAITING',{});return state
     policy=state['execution_policy'];committed=aware(p['created_at']);registered=aware(policy['registered_at'])
     receipts={};reasons={}
     for ticker in sorted({o['ticker'] for o in p['plan']['orders']}|({'SPY'} if p.get('benchmark_order') and not state['benchmark']['trades'] else set())):

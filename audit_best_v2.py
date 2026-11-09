@@ -109,6 +109,7 @@ def account(state, report):
     audits={k:audit_account(state,k,k=='benchmark') for k in ('strategy','benchmark')}
     cfg=state['capital_configuration']
     if cfg['mode']=='AUTO_TARGET_25000':assert cfg['initial_sek']==max(25000.,cfg['funding']['minimum_capital_sek'])
+    audit_execution(state)
     audit_sek(state,report)
     assert report['journal_sha256']==digest(state)
     return dict(status='PASS',independent_code=True,ledger=audits)
@@ -135,3 +136,29 @@ def population(data, day, ranked):
         if old is None or (-adv,t)<(-old[0],old[1]):expected[cik]=(adv,t)
     assert {r['ticker'] for r in ranked}=={r[1] for r in expected.values()}
     return dict(status='PASS',independent_code=True,complete_price_universe=True,eligible=len(expected))
+
+
+def audit_execution(state):
+    """Independently validate E2 raw prices/times; shared cash audit stays unchanged."""
+    from datetime import datetime,time,timedelta,timezone
+    from zoneinfo import ZoneInfo
+    ny=ZoneInfo('America/New_York')
+    for key in ('strategy','benchmark'):
+        for trade in state[key]['trades']:
+            if trade.get('execution_policy')!='BEST_V2_E2_DELAYED_MINUTE_CLOSE':continue
+            quote=next(q for q in state['opening_quotes'] if q.get('commitment')==trade['commitment_sha256'])
+            r=quote['intraday_receipts'][trade['ticker']];raw=r['raw']
+            start=datetime.fromtimestamp(raw['t']/1000,timezone.utc);end=start+timedelta(minutes=1)
+            observed=datetime.fromisoformat(trade['quote_observed_at']);decision=next(d for d in state['decisions'] if d['sha256']==trade['commitment_sha256'])
+            policy=decision['execution_policy'];registered=datetime.fromisoformat(policy['registered_at'])
+            assert start>max(datetime.fromisoformat(decision['created_at']),registered,datetime.fromisoformat('2026-11-10T00:00:00+00:00'))
+            assert raw['t']%60000==0 and start.astimezone(ny).date()==observed.astimezone(ny).date()
+            assert time(9,35)<=start.astimezone(ny).time().replace(tzinfo=None)<=time(15,40)
+            assert time(9,35)<=observed.astimezone(ny).time().replace(tzinfo=None)<=time(15,59)
+            assert 0<=(observed-end).total_seconds()<=1200
+            assert trade['execution_at']==trade['quote_observed_at']==quote['observed_at']
+            assert trade['price_as_of']==end.isoformat() and raw['v']>0 and raw['l']<=raw['c']<=raw['h']
+            assert trade['price']==raw['c']==r['price']==quote['bars'][trade['ticker']][0]
+            assert r['source_path'].startswith('/v2/aggs/ticker/'+trade['ticker']+'/range/1/minute/') and r['adjusted'] is False
+            assert r['provider_status'] in ('OK','DELAYED') and quote['realtime_verified'] is False
+    return dict(status='PASS',independent_code=True)

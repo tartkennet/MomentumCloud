@@ -21,6 +21,7 @@ from audit_core_normalized import closes_at
 import best_v2_strategy as strategy
 import best_v2_capital as capital
 import audit_best_v2 as audit
+import best_v2_execution as execution
 
 VERSION='best-signal-v2'
 
@@ -81,7 +82,7 @@ def collect(data,client,cache,previous,now,output=None):
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
     provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='d732489a7940980a01ae52a994fe6a014294b5be',
-        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json',strategy.PROTOCOL)})
+        source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json','best_v2_execution.py',execution.FILE,strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,
                   selection=selection,quotes=quotes,coverage=1.,provenance=provenance)
     return dict(model=strategy.MODEL,generated_at=datetime.now(timezone.utc).isoformat(),price_as_of=day,risk_on=on,
@@ -139,6 +140,7 @@ def decide(state,report,data,now):
             limit=data.bars(report['price_as_of'])['SPY'][1]*1.02;q=math.floor(state['benchmark']['cash']/limit)
             while q and q*limit+fee(q*limit)>state['benchmark']['cash']:q-=1
             if q:p['benchmark_order']=dict(quantity=q,limit=limit)
+    if state.get('execution_policy'):p['execution_policy']=copy.deepcopy(state['execution_policy'])
     p['sha256']=digest(p);state['pending']=p;state['decisions'].append(copy.deepcopy(p));state['previous_risk']=on
 
 
@@ -173,8 +175,12 @@ def run(args):
         report.update(fx=fx,fx_history=rates,errors=[],operations_proof=operations)
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
+        execution.register(state,data,datetime.now(timezone.utc))
         decide(state,report,data,datetime.now(timezone.utc))
-        state=observe_account(state,data,client,datetime.now(timezone.utc))
+        migration=state.get('execution_migration_members')
+        if migration and state.get('pending'):
+            if sorted(migration)!=sorted(r['ticker'] for r in state['pending']['targets']):raise ValueError('MIGRATION_CHANGED_TEN_MEMBERS')
+        state=execution.observe(state,data,client,datetime.now(timezone.utc))
         for day in {r['date'] for r in state['strategy']['equity']} | {t['date'] for t in state['strategy']['trades']}:
             rate=rate_on(rates,day)
             if not rate:raise ValueError('MISSING_DATED_FX')
@@ -185,11 +191,19 @@ def run(args):
             assert state['initial_sek']==prior['initial_sek'] and state['capital_configuration']==prior['capital_configuration']
             for k in ('strategy','benchmark'):
                 for f in ('trades','equity'):assert state[k][f][:len(prior[k][f])]==prior[k][f]
-            for f in ('decisions','event_journal','opening_quotes'):assert state[f][:len(prior[f])]==prior[f]
+            for f in ('decisions','event_journal','opening_quotes','gaps','unfilled_orders','cancelled_intentions','execution_attempts','intraday_observations','execution_policy_journal'):
+                if f not in prior:continue
+                assert state[f][:len(prior[f])]==prior[f]
         state['previous_state_sha256']=digest(prior) if prior else None
         paper=ledger_summary(state,report['signal'],datetime.now(timezone.utc))
         paper.update(model=strategy.MODEL,policy=strategy.PARAMETERS,experiment_label='PAPER_EXPERIMENT',
-                     economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False)
+                     economic_status='NO_GO_INSUFFICIENT_EVIDENCE',historical_go_required_for_paper=False,
+                     execution_policy=state.get('execution_policy'),trading_outcome=state.get('execution_outcome'),
+                     execution_attempts=state.get('execution_attempts',[])[-12:],
+                     last_missed_execution=next((g for g in reversed(state['gaps']) if g['kind']=='MISSED_OPEN_NO_BACKFILL'),None))
+        outcome=state.get('execution_outcome') or {}
+        if outcome.get('status') in ('OPEN_PRICE_WAITING','OPEN_PRICE_UNAVAILABLE','OPEN_PRICE_PROVIDER_DELAY','MISSED_OPEN_NO_BACKFILL'):
+            paper['status']=outcome['status']
         metadata={r['ticker']:r for decision in state['decisions'] for r in decision.get('targets',[])}
         for pos in paper['positions']:pos.update(sector=metadata.get(pos['ticker'],{}).get('sector'),factor=metadata.get(pos['ticker'],{}).get('factor'),healthcare_exposure=metadata.get(pos['ticker'],{}).get('healthcare_exposure'))
         pending=state.get('pending') or {};planned=[]
