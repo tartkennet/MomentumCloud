@@ -6,7 +6,7 @@
   "initial_sek": 25000,
   "trade_day": "2026-11-09",
   "signal_day": "2026-11-06",
-  "mark_observed_at": "2026-11-09T20:42:00Z",
+  "mark_observed_at": "2026-11-09T21:23:34.017436+00:00",
   "fx_rate_sek_per_usd": 9.875503806538289,
   "fx_source": "ECB 2026-11-06 reference fixing; applied unchanged to this provisional intraday SEK comparison",
   "assumptions": "Reconstruction assumes all ten precommitted quantities bought at the independently observed November 9 opening. Unlike the real precommitted limit orders, FIGS 20.43 USD exceeds its 20.2164 USD limit and would NOT be an actual limit-order fill. No real prospective ledger entries are created.",
@@ -16,61 +16,63 @@
       "ticker": "SN",
       "quantity": 1,
       "open_usd": 226.49,
-      "mark_usd": 231.825
+      "mark_usd": 229.51
     },
     {
       "ticker": "LFST",
       "quantity": 16,
       "open_usd": 13.76,
-      "mark_usd": 14.655
+      "mark_usd": 14.6
     },
     {
       "ticker": "STGW",
       "quantity": 31,
       "open_usd": 11.73,
-      "mark_usd": 11.43
+      "mark_usd": 11.5
     },
     {
       "ticker": "HNGE",
       "quantity": 2,
       "open_usd": 116.22,
-      "mark_usd": 120.745
+      "mark_usd": 122.19
     },
     {
       "ticker": "CON",
       "quantity": 7,
       "open_usd": 42.605,
-      "mark_usd": 42.635
+      "mark_usd": 42.4
     },
     {
       "ticker": "TBBB",
       "quantity": 5,
       "open_usd": 66.15,
-      "mark_usd": 67.56
+      "mark_usd": 67.58
     },
     {
       "ticker": "FIGS",
       "quantity": 13,
       "open_usd": 20.43,
-      "mark_usd": 21.72
+      "mark_usd": 21.58
     },
     {
       "ticker": "KYMR",
       "quantity": 1,
       "open_usd": 134.17,
-      "mark_usd": 139.48
+      "mark_usd": 138.86
     },
     {
       "ticker": "GKOS",
       "quantity": 1,
       "open_usd": 228.75,
-      "mark_usd": 238.29
+      "mark_usd": 238.74
     },
     {
       "ticker": "ATRC",
       "quantity": 3,
       "open_usd": 58.62,
-      "mark_usd": 58.08
+      "mark_usd": 57.78
     }
-  ]
+  ],
+  "mark_date": "2026-11-09",
+  "mark_source": "Massive unadjusted completed daily bar, after regular session"
 }
