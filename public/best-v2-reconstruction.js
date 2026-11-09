@@ -19,11 +19,38 @@
     const invested=items.reduce((a,h)=>a+h.invested_sek,0), cashLeft=d.initial_sek-invested;
     if(cashLeft < -0.01 || items.some(h=>h.quantity<1 || !Number.isInteger(h.quantity)))return;
     const nav=cashLeft+items.reduce((a,h)=>a+h.value_sek,0),pnl=nav-d.initial_sek,percent=pnl/d.initial_sek*100;
-    const note='Simulerade köp från 9 nov, baserade på öppningskurser. Inte utförda order i den automatiska journalen. FIGS överskred den ursprungliga köpgränsen. Värdering med senast sparade minutkurser och oförändrad referensvaluta.';
+    const note='Simulerade köp från 9 nov, baserade på öppningskurser. Inte utförda order i den automatiska journalen. FIGS överskred den ursprungliga köpgränsen. Värdering med senaste sparade stängningskurser och oförändrad referensvaluta.';
     function panel(title){
       const article=e('article',undefined,'panel');article.dataset.paperReconstruction='true';
       article.append(e('p','HYPOTETISK REKONSTRUKTION · INTE GENOMFÖRDA AFFÄRER','eyebrow'),e('h2',title));return article;
     }
+    window.updateReconstructionOverview=()=>{
+      const hero=$('hero-value'),summary=$('hero-return'),risk=$('risk');
+      if(hero)hero.textContent=kr(nav);
+      if(summary)summary.textContent=(pnl>=0?'+':'')+kr(pnl)+' · '+pc(percent)+' sedan simulerad start 9 nov';
+      if(risk)risk.textContent='10 SIMULERADE INNEHAV · PAPER';
+      const caption=document.querySelector('.capital .eyebrow');
+      if(caption)caption.textContent='DIN SIMULERADE PORTFÖLJ · 9 NOV';
+      const grid=$('overview-metrics');
+      if(grid){
+        grid.replaceChildren();
+        for(const [label,value,description] of [
+          ['Innehav','10 / 10','Simulerade köp'],
+          ['Avkastning',pc(percent),(pnl>=0?'+':'')+kr(pnl)+' efter kostnader'],
+          ['Kassa',kr(cashLeft),'Återstående simulerat kapital'],
+          ['Senaste värdering',d.mark_date||'9 nov','Daterade kurser']]){
+          const item=e('article',undefined,'metric');
+          item.append(e('p',label),e('strong',value),e('small',description));
+          grid.append(item);
+        }
+      }
+      const delivery=$('delivery');
+      if(delivery&&delivery.textContent&&!delivery.textContent.startsWith('AUTOMATISK HANDELSMOTOR')){
+        delivery.textContent='AUTOMATISK HANDELSMOTOR (separat från den simulerade portföljen) · '+delivery.textContent;
+        delivery.classList.add('paper-auto-status');
+      }
+    };
+    window.updateReconstructionOverview();
     const overview=$('overview');
     if(overview){
       const card=panel('Dagens simulerade innehav');
