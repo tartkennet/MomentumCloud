@@ -89,14 +89,16 @@ def run(args):
         report=export(state,report,datetime.now(timezone.utc))
         atomic_json(out/'best-v2-state.json',state);atomic_json(out/'best-v2-report.json',report)
         print('USER_PAPER_VERIFIED',json.dumps(dict(account=ACCOUNT,holdings=len(state['strategy']['shares']),cash_sek=report['paper']['cash_sek'],nav_sek=report['paper']['nav_sek'],trades=len(state['strategy']['trades']),pending=bool(state.get('pending')))))
-    except Exception:
+    except Exception as exc:
+        import traceback
+        print('USER_FAILURE_LOCATIONS',json.dumps([dict(file=Path(f.filename).name,line=f.lineno,function=f.name) for f in traceback.extract_tb(exc.__traceback__)]),flush=True)
         if prior:
             previous.update(generated_at=now.isoformat(),errors=['USER_ACCOUNT_COLLECTION_FAILED'],technical_readiness={'status':'BLOCKED'})
             previous['paper'].update(status='BLOCKED',blockers=['USER_ACCOUNT_COLLECTION_FAILED'])
             prior['previous_state_sha256']=digest(prior)
             previous['paper']['journal_sha256']=digest(prior)
             atomic_json(out/'best-v2-state.json',prior);atomic_json(out/'best-v2-report.json',previous)
-        raise
+        raise RuntimeError('USER_ACCOUNT_COLLECTION_FAILED') from None
 
 def operations():
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()

@@ -74,7 +74,7 @@ function render(){
  table($('ranking'),['Global rank','Aktie','Poäng','RS 12–1','RS 6–1','Volatilitet','Ekonomisk sektor','Riskgrupp'],(report.strong_pool||[]).map(r=>[r.universe_rank,r.ticker,pct(r.score*100),pct(r.rs12*100),pct(r.rs6*100),pct(r.vol63*100),r.sector,r.cluster]));
  table($('formation-skips'),['Aktie','Global rank','Bortvalsorsak'],(report.formation_skips||[]).map(r=>[r.ticker,r.rank,({SECTOR_CAP:'Ekonomisk sektorgräns',FACTOR_CAP:'Gemensam riskfaktor',PRICE_BINDING_CORPORATE_EVENT:'Prisbindande företagshändelse',CLUSTER_CAP:'Korrelerad riskgrupp',DUPLICATE_ISSUER:'Samma emittent'})[r.reason]||r.reason]));
  table($('baseline-comparison'),['Datum','BEST index','BEST v1 index'],(report.baseline_comparison?.rows||[]).map(r=>[r.date,r.best_index.toFixed(2),r.v1_index.toFixed(2)]));
- if(!report.delivery?.verified)empty($('positions'),'Innehav kan inte verifieras','Journalen finns separat. Ett leveransfel betyder inte att registrerade aktier har försvunnit.');
+ if(!report.delivery?.verified&&!p.positions.length)empty($('positions'),'Innehav kan inte verifieras','Journalen finns separat. Ett leveransfel betyder inte att registrerade aktier har försvunnit.');
  $('stats-facts').lastChild?.classList.add('journal');table($('gaps'),['Datagap','Tillfälle','Observerad'],(p.gaps||[]).map(g=>[explain(g.kind),g.session||g.date,stamp(g.observed_at)]));
  if(typeof window.updateReconstructionOverview==='function')window.updateReconstructionOverview();
 }
