@@ -1,0 +1,26 @@
+name: BEST v2 read-only SEC transport probe
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ['best_v2_sec_probe.py', '.github/workflows/best_v2_sec_probe.yml']
+permissions:
+  contents: read
+jobs:
+  public-sec:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Observe original URL, canonical SEC archive and submissions access
+        run: python best_v2_sec_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: BEST_v2_SEC_transport
+          path: sec-transport.json

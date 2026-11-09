@@ -81,6 +81,19 @@ def pages(client,path,params):
     return rows
 
 
+def canonical_sec_submission(row,filing):
+    """Repair only recognized SEC complete-submission paths, bound to issuer/accession."""
+    accession=filing.get('accession_number','');cik=str(row.get('cik',''))
+    if not re.fullmatch(r'\d{10}-\d{2}-\d{6}',accession) or not re.fullmatch(r'\d{1,10}',cik):
+        raise DataUnavailable('INVALID_SEC_SUBMISSION_IDENTITY')
+    if str(filing.get('cik','')).zfill(10)!=cik.zfill(10):raise DataUnavailable('SEC_SUBMISSION_CIK_MISMATCH')
+    root='https://www.sec.gov/Archives/edgar/data/'+str(int(cik))+'/'
+    canonical=root+accession.replace('-','')+'/'+accession+'.txt'
+    if filing.get('filing_url') not in (root+accession+'.txt',canonical):
+        raise DataUnavailable('UNTRUSTED_SEC_SUBMISSION_PATH')
+    return canonical
+
+
 def material_original(row,filing,date):
     if '_cache' not in row:raise DataUnavailable('EVENT_TEXT_COVERAGE_GAP')
     from best_v2_mirrors import original
@@ -88,7 +101,14 @@ def material_original(row,filing,date):
     except DataUnavailable as exc:
         if str(exc)!='NO_VERIFIED_ISSUER_MIRROR':raise
     from supplement_quality_sources import SEC
-    try:raw,meta=SEC(Path(row['_cache'])/'best-v2-sec').get(filing['filing_url'])
+    root=Path(row['_cache'])/'best-v2-sec'
+    canonical=canonical_sec_submission(row,filing)
+    try:
+        # Keep verified originals already stored under the provider's old URL.
+        try:raw,meta=SEC(root,offline=True).get(filing['filing_url'])
+        except DataUnavailable as exc:
+            if str(exc)!='UNCACHED_SEC_ORIGINAL':raise
+            raw,meta=SEC(root).get(canonical)
     except DataUnavailable as exc:
         print('BEST_V2_REQUIRED_ORIGINAL_BLOCK',json.dumps(dict(ticker=row['ticker'],reason=str(exc),filing={k:filing.get(k) for k in ('cik','accession_number','form_type','filing_date','filing_url')})),flush=True)
         raise
