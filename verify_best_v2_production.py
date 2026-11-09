@@ -65,7 +65,8 @@ def main():
             if checks['best-v2'].get('account_id'):
                 assert page.locator('[data-paper-reconstruction]').count()==0
                 assert page.locator('#positions .paper-holding').count()==checks['best-v2']['positions']
-                assert ''.join(re.findall(r'\d',page.locator('#hero-value').inner_text()))==str(math.floor(data['paper']['nav_sek']+.5))
+                if data['paper']['nav_sek'] is not None:assert ''.join(re.findall(r'\d',page.locator('#hero-value').inner_text()))==str(math.floor(data['paper']['nav_sek']+.5))
+                else:assert data['paper']['valuation_pending']
                 assert 'Historiskt rekonstruerad' in page.locator('#account-caption').inner_text()
                 assert page.locator('#transactions').inner_text().count('Rekonstruerat startköp')==10
             if checks['best-v2'].get('execution_policy'):
