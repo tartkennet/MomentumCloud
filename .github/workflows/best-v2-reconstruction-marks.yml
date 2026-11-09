@@ -35,7 +35,7 @@ jobs:
               now=datetime.datetime.now(datetime.timezone.utc)
               slot=now.replace(hour=utc_hour if utc_hour in (20,21) else 0,minute=20,second=0,microsecond=0)
               should_run=utc_hour in (20,21) and slot.astimezone(ZoneInfo('Europe/Stockholm')).hour==22
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\n')
           print('CLOSE_REFRESH_TIME_VALID',should_run)
           PY
       - uses: actions/checkout@v4
