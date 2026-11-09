@@ -42,8 +42,19 @@
     const portfolio=$('portfolio');
     if(portfolio){
       const card=panel('Mina simulerade aktier');
-      renderTable(card,['Aktie','Antal','Köp USD','Senast USD','Utveckling'],items.map(h=>[h.ticker,h.quantity,h.open_usd.toFixed(2),h.mark_usd.toFixed(2),cash(h.pnl_sek)]));
-      card.append(e('p',note,'caption'));
+      card.classList.add('paper-holdings-panel');
+      const list=e('div',undefined,'paper-holdings-list');
+      for(const h of items){
+        const change=h.pnl_sek/h.invested_sek*100;
+        const tone=h.pnl_sek>0?'gain':h.pnl_sek<0?'loss':'flat';
+        const row=e('div',undefined,'paper-holding '+tone);
+        const identity=e('div',undefined,'paper-holding-identity');
+        identity.append(e('strong',h.ticker),e('small',h.quantity+' st aktier'));
+        const performance=e('div',undefined,'paper-holding-result');
+        performance.append(e('strong',pc(change)),e('span',cash(h.pnl_sek)));
+        row.append(identity,performance);list.append(row);
+      }
+      card.append(list,e('p','Avkastning efter modellens beräknade köp- och växlingskostnader.','caption'));
       const anchor=portfolio.querySelector('article.panel');
       if(anchor)anchor.before(card);else portfolio.append(card);
     }
