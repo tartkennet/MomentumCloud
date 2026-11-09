@@ -1,4 +1,4 @@
-const SOURCE='https://raw.githubusercontent.com/tartkennet/MomentumCloud/refs/heads/best-v2-observed-snapshots/public/data/momentum-best-v2.json';
+const SOURCE='https://raw.githubusercontent.com/tartkennet/MomentumCloud/refs/heads/best-v2-user-snapshots/public/data/momentum-best-v2.json';
 const BASELINE='https://raw.githubusercontent.com/tartkennet/MomentumCloud/refs/heads/best-observed-snapshots/public/data/momentum-best.json';
 const MODEL='momentum10-best-v2';
 function nextAttempt(from){const t=new Date(from);for(let i=0;i<9;i++){const d=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate()+i));if([0,6].includes(d.getUTCDay()))continue;for(const[h,m]of[[8,22],...Array.from({length:8},(_,i)=>[12,32,52].map(m=>[13+i,m])).flat(),[22,22]]){const x=new Date(d);x.setUTCHours(h,m,0,0);if(x>t)return x.toISOString();}}throw Error('No attempt');}
@@ -6,7 +6,7 @@ function validate(d){const p=d.paper;if(d.model!==MODEL||p?.model!==MODEL||p.liv
 async function fetchJson(url){const r=await fetch(url+'?minute='+Math.floor(Date.now()/60000),{signal:AbortSignal.timeout(7000),headers:{'cache-control':'no-cache'}});if(!r.ok)throw Error('Delivery');return r.json();}
 function comparison(best,legacy){const p=legacy?.paper;if(p?.model!=='momentum10-best-v1'||p.live_approved!==false||p.broker_orders_enabled!==false)return {status:'BASELINE_UNAVAILABLE',rows:[]};const dates=new Map((p.curve||[]).map(x=>[x.date,x]));const common=(best.curve||[]).filter(x=>dates.has(x.date)&&Number.isFinite(x.nav_sek)&&Number.isFinite(dates.get(x.date).nav_sek));if(common.length<2||!best.paper_started||!p.paper_started)return {status:'AWAITING_COMMON_OBSERVED_DATES',rows:[]};const a=common[0].nav_sek,b=dates.get(common[0].date).nav_sek;return {status:'OBSERVED_COMMON_CLOSES',from:common[0].date,rows:common.map(x=>({date:x.date,best_index:100*x.nav_sek/a,v1_index:100*dates.get(x.date).nav_sek/b})),convention:'Net NAV indexed at first common observed close; excludes earlier costs/returns.'};}
 module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');try{
- const [own,old]=await Promise.allSettled([fetchJson(SOURCE),fetchJson(BASELINE)]);if(own.status!=='fulfilled')throw Error('BEST delivery unavailable');const d=validate(own.value);const p=d.paper;
+ const [own,old]=await Promise.allSettled([fetchJson(SOURCE),fetchJson(BASELINE)]);if(own.status!=='fulfilled')throw Error('BEST delivery unavailable');const d=validate(own.value);if(d.account_id!=='best-v2-user-simulation-2026-11-09')throw Error('Wrong followed account');const p=d.paper;
  const stamp=Date.parse(d.generated_at),next=nextAttempt(d.generated_at);const delayed=Date.now()>Date.parse(next)+45*60000;
  const fresh=Number.isFinite(stamp)&&stamp<=Date.now()&&Date.now()-stamp<4*86400000&&!delayed;
  const operational=d.operations_proof?.enabled===true&&d.operations_proof?.source_commit===d.provenance?.source_commit;
@@ -30,10 +30,10 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  if(expected&&!hasInWindowReceipt&&!invested){tradingOutcome={status:'EXECUTION_NOT_VERIFIED',session:nyDay,derived:true,ledger_record_pending:true,filled:0,observed_at:new Date().toISOString(),orders:(pending.plan?.orders||[]).map(o=>({...o,status:'UNFILLED',reason:'NO_CURRENT_SESSION_EXECUTION_RECEIPT'}))};}
 
  const tradingSuccess=invested&&p.positions.length===10;
- const body={technical_ready:verified,trading_success:tradingSuccess,trading_outcome:tradingOutcome,model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
+ const body={account_id:d.account_id,technical_ready:verified,trading_success:tradingSuccess,initialization_kind:p.initialization_kind,prospective_trade_count:p.prospective_trade_count,trading_outcome:tradingOutcome,model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
-  delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
+  delivery:{verified:fresh,source:'user_simulation_historical_start_then_prospective'},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
   paper:{...p,trading_outcome:tradingOutcome,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
   promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned||riskOffCash),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
