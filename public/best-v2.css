@@ -120,3 +120,12 @@
   .paper-holding-result span{font-size:12px}
   .paper-holding{padding:12px 10px}
 }
+
+
+/* Primary simulated paper result, with automated ledger clearly separated as diagnostics. */
+#overview .capital{box-shadow:0 0 0 1px #80cff880,0 16px 42px #10163328}
+#overview .capital #hero-return{font-size:17px;font-weight:800;line-height:1.45}
+#overview .paper-auto-status{font-size:12px;line-height:1.6;opacity:.85;border-left:3px solid #c29455}
+#overview [data-paper-reconstruction="true"]{border-color:#72bcdb66}
+[data-theme=dark] #overview .capital{box-shadow:0 0 0 1px #93b7ff55,0 20px 65px #020517aa}
+[data-theme=dark] #overview .paper-auto-status{background:#332b37;color:#e2cbd3;border-color:#e9a567}
