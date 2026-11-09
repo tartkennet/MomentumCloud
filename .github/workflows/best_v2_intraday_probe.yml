@@ -1,0 +1,29 @@
+name: BEST v2 read-only intraday entitlement probe
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ['best_v2_intraday_probe.py','.github/workflows/best_v2_intraday_probe.yml']
+permissions:
+  contents: read
+jobs:
+  capability:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests==2.32.5
+      - name: Observe actual minute/snapshot/daily access without executing orders
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python best_v2_intraday_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: BEST_v2_intraday_capability
+          path: intraday-capability.json
