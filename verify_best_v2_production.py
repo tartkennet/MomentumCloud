@@ -39,6 +39,9 @@ def main():
                 time.sleep(10);status,body=get('/api/best-v2');data=json.loads(body)
             assert status==200 and data.get('promotion_ready'), 'PRODUCTION_BEST_NOT_READY'
             assert data['paper']['automation_verified'] and not data['live_approved'] and not data['broker_orders_enabled']
+            if data['paper'].get('execution_policy'):
+                assert data['technical_ready'] is True and data['trading_outcome']['status']
+                if not data['paper']['paper_started']:assert data['trading_success'] is False and not data['paper']['trades']
             members=data['signal']['selection']['rows'];assert len(members)==10
             assert len({r['cik'] for r in members})==10 and all(r['instrument_type']=='CS' and r['ticker']!='SPY' for r in members)
             checks['best-v2'].update(http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'])
@@ -52,6 +55,8 @@ def main():
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
+            page.locator('#execution-status').wait_for()
+            assert 'fördröjda' in page.locator('#execution-status').inner_text()
             for tab in ('overview','portfolio','trades','statistics','settings'):
                 page.locator('nav [data-tab='+tab+']').click();page.locator('#'+tab).wait_for(state='visible')
                 assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth'),(width,tab)

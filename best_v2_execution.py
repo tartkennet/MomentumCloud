@@ -112,6 +112,12 @@ def observe(state,data,client,now,clock=None):
         deadline=datetime.combine(local.date(),time(15,59),NY)
         due=aware(p['created_at'])<deadline and day in data.sessions
         record(state,day,now,'MISSED_OPEN_NO_BACKFILL' if due else 'OPEN_PRICE_WAITING',{});return state
+    if not p['plan']['orders'] and p['kind']=='MEMBERSHIP':
+        if len(state['strategy']['shares'])!=10:raise DataUnavailable('EMPTY_PLAN_WITHOUT_TEN_RETAINED_POSITIONS')
+        record(state,day,now,'RETAINED_NO_TRADES',{})
+        state['pending']=None;state['decision_month']=day[:7]
+        state['opening_observations'].append(dict(date=day,observed_at=now.isoformat(),commitment=sha,unfilled=0,retained_without_trades=True,execution_policy=POLICY))
+        return state
     policy=state['execution_policy'];committed=aware(p['created_at']);registered=aware(policy['registered_at'])
     receipts={};reasons={}
     for ticker in sorted({o['ticker'] for o in p['plan']['orders']}|({'SPY'} if p.get('benchmark_order') and not state['benchmark']['trades'] else set())):

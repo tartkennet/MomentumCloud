@@ -98,3 +98,27 @@ class ExecutionTests(unittest.TestCase):
         now=datetime.fromisoformat('2026-11-09T18:56:14Z')
         self.assertEqual(completed_end(now),'2026-11-08')
         self.assertEqual(now.astimezone(execution.NY).hour,13)
+
+    def test_identity_adjustment_delay_and_invalid_volume_have_explicit_failures(self):
+        s,r,now,c,_=fixture();t=s['pending']['targets'][0]['ticker'];p=s['pending'];registered=execution.aware(s['execution_policy']['registered_at']);committed=execution.aware(p['created_at'])
+        for body,code in [({'status':'OK','ticker':'WRONG','adjusted':False,'results':[]},'INVALID_INTRADAY_IDENTITY'),({'status':'OK','ticker':t,'adjusted':True,'results':[]},'ADJUSTED_MINUTE_NOT_ALLOWED')]:
+            c.overrides={t:body}
+            with self.assertRaisesRegex(DataUnavailable,code):execution.quote(c,t,now,committed,registered)
+        raw=dict(t=int(datetime.fromisoformat('2027-06-15T14:00:00Z').timestamp()*1000),o=10,c=10,h=11,l=9,v=100)
+        summer=datetime.fromisoformat('2027-06-15T14:16:00Z')
+        execution.validate_bar(raw,summer,committed,registered)
+        with self.assertRaisesRegex(DataUnavailable,'INVALID_MINUTE_OHLCV'):execution.validate_bar(dict(raw,v=0),summer,committed,registered)
+
+    def test_network_time_crossing_deadline_cannot_book_late(self):
+        s,r,now,c,_=fixture()
+        with patch('avanza10_forward.observe_account',side_effect=lambda state,*args:state),patch('best_v2_execution.events'):
+            result=execution.observe(s,SimpleNamespace(sessions=['2026-11-09']),c,now,clock=lambda:datetime.fromisoformat('2026-11-10T21:00:00Z'))
+        self.assertFalse(result['strategy']['trades']);self.assertEqual(result['execution_outcome']['status'],'MISSED_OPEN_NO_BACKFILL')
+
+    def test_retained_ten_complete_monthly_check_without_invented_trades(self):
+        s,r,now,c,_=fixture();s=self.observe(s,c,now);n=len(s['strategy']['trades'])
+        p=copy.deepcopy(s['decisions'][-1]);p.pop('sha256');p['created_at']='2026-11-30T22:00:00+00:00';p['signal_date']='2026-11-30';p['plan']['orders']=[];p['sha256']=digest(p)
+        s['pending']=p;s['decisions'].append(copy.deepcopy(p));c.calls=[]
+        s=self.observe(s,c,datetime.fromisoformat('2026-12-01T15:16:00Z'))
+        self.assertEqual(len(s['strategy']['trades']),n);self.assertFalse(c.calls)
+        self.assertEqual(s['execution_outcome']['status'],'RETAINED_NO_TRADES');self.assertEqual(s['decision_month'],'2026-12')
