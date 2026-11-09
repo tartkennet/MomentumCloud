@@ -22,8 +22,13 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  let tradingOutcome=p.trading_outcome||{status:'EXECUTION_NOT_VERIFIED',filled:0,orders:[]};
  const ny=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date());
  const [nyDay,nyTime]=ny.split(' '),weekday=new Date(nyDay+'T12:00:00Z').getUTCDay();
- const expected=weekday>0&&weekday<6&&nyTime>='09:51'&&pending?.created_at&&Date.parse(pending.created_at)<Date.now()-1200000;
- if(expected&&(!tradingOutcome.session||tradingOutcome.session<nyDay)&&!invested){tradingOutcome={status:'EXECUTION_NOT_VERIFIED',session:nyDay,derived:true,ledger_record_pending:true,filled:0,observed_at:new Date().toISOString(),orders:(pending.plan?.orders||[]).map(o=>({...o,status:'UNFILLED',reason:'NO_CURRENT_SESSION_EXECUTION_RECEIPT'}))};}
+ const pendingNY=pending?.created_at?new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(pending.created_at)):null;
+ const dueToday=pendingNY&&(pendingNY.slice(0,10)<nyDay||(pendingNY.slice(0,10)===nyDay&&pendingNY.slice(11)<'15:40'));
+ const outcomeNY=Number.isFinite(Date.parse(tradingOutcome.observed_at))?new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(tradingOutcome.observed_at)):'';
+ const hasInWindowReceipt=outcomeNY.slice(0,10)===nyDay&&outcomeNY.slice(11)>='09:51'&&outcomeNY.slice(11)<='15:59';
+ const expected=weekday>0&&weekday<6&&nyTime>='09:51'&&dueToday&&Date.parse(pending.created_at)<Date.now()-1200000;
+ if(expected&&!hasInWindowReceipt&&!invested){tradingOutcome={status:'EXECUTION_NOT_VERIFIED',session:nyDay,derived:true,ledger_record_pending:true,filled:0,observed_at:new Date().toISOString(),orders:(pending.plan?.orders||[]).map(o=>({...o,status:'UNFILLED',reason:'NO_CURRENT_SESSION_EXECUTION_RECEIPT'}))};}
+
  const tradingSuccess=invested&&p.positions.length===10;
  const body={technical_ready:verified,trading_success:tradingSuccess,trading_outcome:tradingOutcome,model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
