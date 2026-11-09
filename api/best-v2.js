@@ -18,13 +18,17 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const planned=pending?.kind==='MEMBERSHIP'&&members.length===10&&names.size===10&&members.every(x=>x.instrument_type==='CS'&&x.ticker!=='SPY'&&x.event_status==='CLEAR'&&x.sector)&&pending.plan?.orders?.filter(x=>x.side==='BUY').length===10&&pending.plan.orders.every(x=>x.side==='BUY'&&names.has(x.ticker)&&Number.isInteger(x.quantity)&&x.quantity>=1);
  const invested=p.paper_started===true&&p.positions.length===10&&p.positions.every(x=>Number.isInteger(x.quantity)&&x.quantity>=1);
  const capitalVerified=Number.isFinite(p.initial_sek)&&p.initial_sek>0&&p.capital_configuration?.initial_sek===p.initial_sek;
- const tradingOutcome=p.trading_outcome||{status:'EXECUTION_NOT_VERIFIED',filled:0,orders:[]};
+ let tradingOutcome=p.trading_outcome||{status:'EXECUTION_NOT_VERIFIED',filled:0,orders:[]};
+ const ny=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date());
+ const [nyDay,nyTime]=ny.split(' '),weekday=new Date(nyDay+'T12:00:00Z').getUTCDay();
+ const expected=weekday>0&&weekday<6&&nyTime>='09:51'&&pending?.created_at&&Date.parse(pending.created_at)<Date.now()-1200000;
+ if(expected&&(!tradingOutcome.session||tradingOutcome.session<nyDay)&&!invested){tradingOutcome={status:'EXECUTION_NOT_VERIFIED',session:nyDay,derived:true,ledger_record_pending:true,filled:0,observed_at:new Date().toISOString(),orders:(pending.plan?.orders||[]).map(o=>({...o,status:'UNFILLED',reason:'NO_CURRENT_SESSION_EXECUTION_RECEIPT'}))};}
  const tradingSuccess=invested&&p.positions.length===10;
  const body={technical_ready:verified,trading_success:tradingSuccess,trading_outcome:tradingOutcome,model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
   delivery:{verified:fresh,source:'independent_best_v2_prospective_journal'},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
-  paper:{...p,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
+  paper:{...p,trading_outcome:tradingOutcome,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
   promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
  return res.status(fresh?200:503).json(body);

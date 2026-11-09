@@ -176,10 +176,14 @@ def run(args):
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
         execution.register(state,data,datetime.now(timezone.utc),client)
+        pending=state.get('pending')
+        if pending and pending['kind']=='MEMBERSHIP' and not state['strategy']['trades'] and pending['signal_date']<report['price_as_of']:
+            cancel(state,datetime.now(timezone.utc),'PRE_SESSION_REFRESH_VERIFIED_CLOSED_PRICES')
         decide(state,report,data,datetime.now(timezone.utc))
         migration=state.get('execution_migration_members')
-        if migration and state.get('pending'):
+        if migration and not state.get('execution_migration_verified') and state.get('pending') and state['pending']['kind']=='MEMBERSHIP':
             if sorted(migration)!=sorted(r['ticker'] for r in state['pending']['targets']):raise ValueError('MIGRATION_CHANGED_TEN_MEMBERS')
+            state['execution_migration_verified']=True
         state=execution.observe(state,data,client,datetime.now(timezone.utc))
         for day in {r['date'] for r in state['strategy']['equity']} | {t['date'] for t in state['strategy']['trades']}:
             rate=rate_on(rates,day)

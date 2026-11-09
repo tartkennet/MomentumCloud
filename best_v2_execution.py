@@ -54,7 +54,7 @@ def session_proof(client,day,now):
 def register(state,data,now,client=None):
     previous=state.get('execution_policy')
     if previous:
-        if previous['id']!=POLICY or previous['sha256']!=policy_hash():raise DataUnavailable('FROZEN_EXECUTION_POLICY_CHANGED')
+        if previous['id']!=POLICY or previous['sha256']!=policy_hash() or previous.get('engine_sha256')!=hashlib.sha256(Path(__file__).read_bytes()).hexdigest():raise DataUnavailable('FROZEN_EXECUTION_POLICY_CHANGED')
         return
     days=list(data.sessions);today=now.astimezone(NY).date().isoformat()
     if client and today not in days:
@@ -66,7 +66,7 @@ def register(state,data,now,client=None):
         state.setdefault('cancelled_intentions',[]).append(dict(observed_at=now.isoformat(),commitment=old['sha256'],reason='E2_PROSPECTIVE_RECOMMIT_NO_BACKFILL'))
         state['execution_migration_members']=[r['ticker'] for r in old['targets']]
         state['pending']=None
-    state['execution_policy']=dict(id=POLICY,sha256=policy_hash(),registered_at=now.isoformat(),effective_from=EFFECTIVE.isoformat(),source='Massive/Polygon unadjusted completed minute close',realtime_verified=False,max_quote_age_seconds=1200)
+    state['execution_policy']=dict(id=POLICY,sha256=policy_hash(),engine_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),registered_at=now.isoformat(),effective_from=EFFECTIVE.isoformat(),source='Massive/Polygon unadjusted completed minute close',realtime_verified=False,max_quote_age_seconds=1200)
     state.setdefault('execution_policy_journal',[]).append(copy.deepcopy(state['execution_policy']))
 
 def validate_bar(raw,now,committed,registered):
