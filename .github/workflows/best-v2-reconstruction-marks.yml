@@ -2,8 +2,9 @@ name: Refresh separate BEST Nov 9 hypothetical marks
 on:
   workflow_dispatch:
   schedule:
-    # After NY stock-market close including winter/summer time.
-    - cron: '30 23 * * 1-5'
+    # 22:20 Europe/Stockholm, winter UTC+1 and summer UTC+2.
+    # UTC cron does not automatically account for daylight-saving time.
+    - cron: '20 20,21 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -15,15 +16,44 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
+      - name: Validate Stockholm close-refresh time (DST-aware)
+        id: when
+        env:
+          EVENT_NAME: ${{ '${{ github.event_name }}' }}
+          EVENT_SCHEDULE: ${{ '${{ github.event.schedule }}' }}
+        run: |
+          python - <<'PY'
+          import datetime,os
+          from zoneinfo import ZoneInfo
+          event=os.getenv('EVENT_NAME')
+          if event=='workflow_dispatch':
+              should_run=True
+          else:
+              schedule=os.getenv('EVENT_SCHEDULE','')
+              hour=int(schedule.split()[1].split(',')[0]) if schedule else -1
+              # The actual UTC scheduled slot is given by the matched cron entry.
+              # Both entries share a field; infer which of the two UTC slots is most recent.
+              now=datetime.datetime.now(datetime.timezone.utc)
+              slots=[now.replace(hour=h,minute=20,second=0,microsecond=0) for h in (20,21)]
+              slots=[v for v in slots if v<=now]
+              intended=max(slots) if slots else now
+              should_run=intended.astimezone(ZoneInfo('Europe/Stockholm')).hour==22
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\\n')
+          print('CLOSE_REFRESH_TIME_VALID',should_run)
+          PY
       - uses: actions/checkout@v4
+        if: steps.when.outputs.run == 'true'
       - uses: actions/setup-python@v5
+        if: steps.when.outputs.run == 'true'
         with:
           python-version: '3.12'
       - name: Read dated daily closes, keep reconstruction separate
+        if: steps.when.outputs.run == 'true'
         env:
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: python scripts/update_best_v2_reconstruction.py
       - name: Commit new marks only if all ten updated
+        if: steps.when.outputs.run == 'true'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
