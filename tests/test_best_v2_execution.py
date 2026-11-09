@@ -48,6 +48,14 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(s['cancelled_intentions'][0]['commitment'],old['sha256'])
         self.assertEqual([x['ticker'] for x in s['pending']['targets']],[x['ticker'] for x in old['targets']])
 
+    def test_new_session_prices_keep_committed_quantities_limits_and_hash(self):
+        s,r,now,c,_=fixture();before=copy.deepcopy(s['pending'])
+        r['price_as_of']='2026-11-09'
+        r['signal']['quotes']={t:p*1.25 for t,p in r['signal']['quotes'].items()}
+        controller.decide(s,r,None,now)
+        self.assertEqual(s['pending'],before)
+        self.assertEqual(s['initial_sek'],25000)
+
     def test_realistically_delayed_completed_minutes_book_at_observation_and_audit(self):
         s,r,now,c,_=fixture();s=self.observe(s,c,now)
         self.assertEqual(len(s['strategy']['trades']),10);self.assertEqual(len(s['strategy']['shares']),10)
