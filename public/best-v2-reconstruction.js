@@ -44,12 +44,21 @@
       const card=panel('Mina simulerade aktier');
       card.classList.add('paper-holdings-panel');
       const list=e('div',undefined,'paper-holdings-list');
+      const companyNames={
+        SN:'SharkNinja',LFST:'LifeStance Health',STGW:'Stagwell',
+        HNGE:'Hinge Health',CON:'Concentra',TBBB:'BBB Foods',
+        FIGS:'FIGS',KYMR:'Kymera Therapeutics',GKOS:'Glaukos',ATRC:'AtriCure'
+      };
       for(const h of items){
         const change=h.pnl_sek/h.invested_sek*100;
         const tone=h.pnl_sek>0?'gain':h.pnl_sek<0?'loss':'flat';
         const row=e('div',undefined,'paper-holding '+tone);
         const identity=e('div',undefined,'paper-holding-identity');
-        identity.append(e('strong',h.ticker),e('small',h.quantity+' st aktier'));
+        const company=e('strong',companyNames[h.ticker]||h.ticker,'paper-company-name');
+        const details=e('small',undefined,'paper-holding-details');
+        details.append(e('span',h.ticker,'paper-holding-ticker'),e('span',h.quantity+' st','paper-holding-quantity'));
+        const value=e('small','Värde '+kr(h.value_sek),'paper-holding-value');
+        identity.append(company,details,value);
         const performance=e('div',undefined,'paper-holding-result');
         performance.append(e('strong',pc(change)),e('span',cash(h.pnl_sek)));
         row.append(identity,performance);list.append(row);
