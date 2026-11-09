@@ -8,7 +8,8 @@
       "h3-sek-valuations": false,
       "quality-observed-snapshots": false,
       "best-observed-snapshots": false,
-      "best-v2-observed-snapshots": false
+      "best-v2-observed-snapshots": false,
+      "best-v2-user-snapshots": false
     }
   }
 }

@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   mark:
-    if: github.ref == 'refs/heads/main'
+    if: false # Archived after explicit user simulation initialization (#63)
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:

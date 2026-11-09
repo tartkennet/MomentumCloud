@@ -1,5 +1,6 @@
 """Read-only production checks. Never creates orders or changes account capital."""
 import json
+import re,math
 import shutil
 import time
 import urllib.request
@@ -42,9 +43,15 @@ def main():
             if data['paper'].get('execution_policy'):
                 assert data['technical_ready'] is True and data['trading_outcome']['status']
                 if not data['paper']['paper_started']:assert data['trading_success'] is False and not data['paper']['trades']
+            if data.get('account_id'):
+                assert data['account_id']=='best-v2-user-simulation-2026-11-09'
+                assert data['paper']['historical_start_count']==10 and data['paper']['initialization_kind']=='SIMULATED_HISTORICAL_INITIALIZATION'
+                assert sum(bool(t.get('initialization_kind')) for t in data['paper']['trades'])==10
+                assert all(t['execution_at'] is None and t['actual_execution'] is False for t in data['paper']['trades'] if t.get('initialization_kind'))
+                if data['paper']['prospective_trade_count']==0:assert not data['trading_success']
             members=data['signal']['selection']['rows'];assert len(members)==10
             assert len({r['cik'] for r in members})==10 and all(r['instrument_type']=='CS' and r['ticker']!='SPY' for r in members)
-            checks['best-v2'].update(http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'],execution_policy=data['paper'].get('execution_policy'))
+            checks['best-v2'].update(account_id=data.get('account_id'),positions=len(data['paper']['positions']),historical_initializations=sum(bool(t.get('initialization_kind')) for t in data['paper']['trades']),http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'],execution_policy=data['paper'].get('execution_policy'))
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         browser_path=shutil.which('google-chrome') or shutil.which('chromium')
@@ -55,6 +62,13 @@ def main():
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
+            if checks['best-v2'].get('account_id'):
+                assert page.locator('[data-paper-reconstruction]').count()==0
+                assert page.locator('#positions .paper-holding').count()==checks['best-v2']['positions']
+                if data['paper']['nav_sek'] is not None:assert ''.join(re.findall(r'\d',page.locator('#hero-value').inner_text()))==str(math.floor(data['paper']['nav_sek']+.5))
+                else:assert data['paper']['valuation_pending']
+                assert 'Historiskt rekonstruerad' in page.locator('#account-caption').inner_text()
+                assert page.locator('#transactions').inner_text().count('Rekonstruerat startköp')==10
             if checks['best-v2'].get('execution_policy'):
                 page.locator('#execution-status').wait_for()
                 assert 'fördröjda' in page.locator('#execution-status').inner_text()
