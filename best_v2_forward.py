@@ -198,9 +198,8 @@ def run(args):
         state=copy.deepcopy(prior) if prior else initialize(report,datetime.now(timezone.utc),os.environ.get('BEST_V2_INITIAL_SEK',''))
         if state['model_fingerprint']!=strategy.fingerprint():raise ValueError('FROZEN_BEST_PROTOCOL_CHANGED')
         execution.register(state,data,datetime.now(timezone.utc),client)
-        pending=state.get('pending')
-        if pending and pending['kind']=='MEMBERSHIP' and not state['strategy']['trades'] and pending['signal_date']<report['price_as_of']:
-            cancel(state,datetime.now(timezone.utc),'PRE_SESSION_REFRESH_VERIFIED_CLOSED_PRICES')
+        # A committed basket keeps its quantities and limits across sessions.
+        # New closes may block execution; they must not silently resize orders.
         decide(state,report,data,datetime.now(timezone.utc))
         migration=state.get('execution_migration_members')
         if migration and not state.get('execution_migration_verified') and state.get('pending') and state['pending']['kind']=='MEMBERSHIP':
