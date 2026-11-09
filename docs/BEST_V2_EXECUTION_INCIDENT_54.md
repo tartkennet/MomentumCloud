@@ -39,3 +39,14 @@ filled count, every order reason and the missed-session diagnostic are separate.
 Dedicated trading-outcome check runs after durable publication and fails on a
 missed session or unavailable expected prices. No green technical stage implies
 that the basket traded. Regular risk and monthly selection rules are unchanged.
+
+The first post-close gate on Nov9 hit PLSE 8-K/A access, although PLSE is not
+one of the ten committed November stocks. The old controller unnecessarily
+attempted a NEW formation before reusing its already locked month selection.
+Within the locked month, retain and independently audit that original full-
+universe formation evidence; freshly validate all ten actual members, current
+prices, issuer IDs, corporate events and market risk. Full current price
+inventory is still independently audited. Next month's new formation retains
+all original full-universe reference requirements; no unknown candidate is
+skipped or excluded to force a new portfolio. Selection/quote dates and source
+fingerprints remain separate. No PLSE eligibility exception or score change.

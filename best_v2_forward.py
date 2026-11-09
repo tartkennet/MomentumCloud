@@ -38,6 +38,18 @@ def reference(row,day,cache,client):
         raise
 
 
+def locked_member_references(rows,selection,day,cache):
+    current={r['ticker']:r for r in rows};verified=[]
+    for member in selection['rows']:
+        row=current.get(member['ticker'])
+        if not row or row['cik']!=member['cik']:raise ValueError('COMMITTED_MEMBER_PRICE_OR_LIQUIDITY_UNVERIFIED')
+        checked=reference(row,day,cache,BestProvider())
+        if checked['event_status']!='CLEAR':raise ValueError('COMMITTED_MEMBER_CORPORATE_EVENT_BLOCKED')
+        verified.append(checked)
+    if len(verified)!=10:raise ValueError('TEN_VERIFIED_COMMITTED_MEMBERS_REQUIRED')
+    return verified
+
+
 def collect(data,client,cache,previous,now,output=None):
     day=data.sessions[-1]
     if (now.date()-datetime.fromisoformat(day).date()).days>4:raise ValueError('STALE_MARKET_PRICES')
@@ -56,31 +68,41 @@ def collect(data,client,cache,previous,now,output=None):
     early_analysis=dict(component='E1_WATCHLIST',active_for_trading=False,ranked=early_rank(rows),app=diagnose(data,'APP',day))
     if output:atomic_json(Path(output)/'best-v2-early.json',early_analysis)
     print('BEST_V2_APP_ANALYSIS',json.dumps({k:v for k,v in early_analysis['app'].items() if k!='history'}),flush=True)
-    strong=[r for r in rows if r['strong']][:60]
-    pool_rows=copy.deepcopy(strong)
-    # Correlation uses all sixty strong-pool price histories. Industry metadata is needed
-    # only for the deterministic prefix actually considered before ten fill.
-    edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
-    for index,row in enumerate(pool_rows):
-        pool_rows[index]=reference(row,day,cache,BestProvider());classified+=1
-        targets,skips=strategy.select(pool_rows[:index+1])
-        if len(targets)==10:break
-    for row in pool_rows[classified:]:row['classification_status']='NOT_NEEDED_AFTER_TEN_SELECTED'
-    diagnostics['classification']=dict(considered=classified,verified=classified,unneeded_after_ten=len(pool_rows)-classified)
-    analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
-    checked=audit.signal(analysis)
-    month=datetime.now(timezone.utc).astimezone(NY).strftime('%Y-%m')
+    month=now.astimezone(NY).strftime('%Y-%m')
     old=previous.get('signal',{}).get('selection') if previous else None
-    selection=old if old and old['month']==month else None
-    if not selection and on and len(targets)==10:
-        selection=dict(month=month,as_of=day,observed_at=datetime.now(timezone.utc).isoformat(),rows=targets)
+    selection=copy.deepcopy(old) if old and old['month']==month else None
+    current_references=[]
+    if selection:
+        # Membership was already frozen prospectively for this month. A new,
+        # unheld research candidate cannot block the ten committed issuers.
+        # Every committed issuer still needs fresh identity/events/price proof.
+        current_references=locked_member_references(rows,selection,day,cache)
+        analysis=copy.deepcopy({k:previous[k] for k in ('ranked_liquid','strong_pool','targets')})
+        pool_rows=analysis['strong_pool'];targets=analysis['targets']
+        edges=previous.get('correlation_edges',[]);skips=previous.get('formation_skips',[])
+        diagnostics['classification']=dict(scope='LOCKED_MONTH_MEMBERS',verified=len(current_references),ranking_as_of=selection['as_of'])
+    else:
+        strong=[r for r in rows if r['strong']][:60]
+        pool_rows=copy.deepcopy(strong)
+        edges=strategy.clusters(pool_rows);targets=[];skips=[];classified=0
+        for index,row in enumerate(pool_rows):
+            pool_rows[index]=reference(row,day,cache,BestProvider());classified+=1
+            targets,skips=strategy.select(pool_rows[:index+1])
+            if len(targets)==10:break
+        for row in pool_rows[classified:]:row['classification_status']='NOT_NEEDED_AFTER_TEN_SELECTED'
+        diagnostics['classification']=dict(scope='NEW_FULL_UNIVERSE_FORMATION',considered=classified,verified=classified,unneeded_after_ten=len(pool_rows)-classified)
+        analysis=dict(ranked_liquid=[{k:v for k,v in r.items() if k!='returns63'} for r in rows],strong_pool=pool_rows,targets=targets)
+        current_references=[r for r in pool_rows if r.get('reference_sha256')]
+        if on and len(targets)==10:
+            selection=dict(month=month,as_of=day,observed_at=now.isoformat(),rows=targets)
+    checked=audit.signal(analysis)
     bars=data.bars(day);ids={r['ticker']:str(r.get('cik','')).zfill(10) for r in data.universe(day) if core.eligible(r)}
     wanted={r['ticker'] for r in selection['rows']} if selection else set()
     quotes={t:bars[t][1] for t in wanted if bars.get(t) and core.number(bars[t][1])}
     if selection:
         for row in selection['rows']:
             if ids.get(row['ticker'])!=row['cik']:quotes.pop(row['ticker'],None)
-    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in pool_rows if r.get('reference_sha256')},
+    provenance=dict(price_inputs_sha256=data.input_fingerprint(),reference_hashes={r['ticker']:r['reference_sha256'] for r in current_references},ranking_as_of=selection['as_of'] if selection else day,selection_price_inputs_sha256=previous.get('provenance',{}).get('selection_price_inputs_sha256',previous.get('provenance',{}).get('price_inputs_sha256')) if old and old['month']==month else data.input_fingerprint(),
         protocol_fingerprint=strategy.fingerprint(),source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),preregistration_commit='d732489a7940980a01ae52a994fe6a014294b5be',
         source_files={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ('best_v2_strategy.py','best_v2_sources.py','best_data.py','best_inventory.py','best_v2_capital.py','best_v2_forward.py','audit_best_v2.py','best_v2_early.py','best_v2_mirrors.py','data/filing_mirrors.json','best_v2_execution.py',execution.FILE,strategy.PROTOCOL)})
     snapshot=dict(version=VERSION,market_verified=True,selection_verified=checked['status']=='PASS',quotes_as_of=day,

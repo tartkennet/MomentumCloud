@@ -122,3 +122,15 @@ class ExecutionTests(unittest.TestCase):
         s=self.observe(s,c,datetime.fromisoformat('2026-12-01T15:16:00Z'))
         self.assertEqual(len(s['strategy']['trades']),n);self.assertFalse(c.calls)
         self.assertEqual(s['execution_outcome']['status'],'RETAINED_NO_TRADES');self.assertEqual(s['decision_month'],'2026-12')
+
+    def test_locked_month_requires_all_ten_members_not_an_unheld_research_candidate(self):
+        data,r,now=formation();rows=copy.deepcopy(r['ranked_liquid']);calls=[]
+        def verify(row,*args):calls.append(row['ticker']);return dict(row,event_status='CLEAR',reference_sha256='proof')
+        with patch('best_v2_forward.reference',side_effect=verify):
+            result=controller.locked_member_references(rows,r['signal']['selection'],'2026-11-05',Path('.'))
+        self.assertEqual(set(calls),{x['ticker'] for x in r['targets']});self.assertEqual(len(result),10)
+        missing=[x for x in rows if x['ticker']!=r['targets'][0]['ticker']]
+        with patch('best_v2_forward.reference',side_effect=verify):
+            with self.assertRaisesRegex(ValueError,'COMMITTED_MEMBER_PRICE'):controller.locked_member_references(missing,r['signal']['selection'],'2026-11-05',Path('.'))
+        with patch('best_v2_forward.reference',side_effect=lambda row,*a:dict(row,event_status='DATA_BLOCKED')):
+            with self.assertRaisesRegex(ValueError,'COMMITTED_MEMBER_CORPORATE_EVENT'):controller.locked_member_references(rows,r['signal']['selection'],'2026-11-05',Path('.'))
