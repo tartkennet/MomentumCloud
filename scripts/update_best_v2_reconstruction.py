@@ -51,7 +51,7 @@ def main():
     prior=data.get("mark_date","2026-11-09")
     if day<prior:
         raise ValueError("NONMONOTONIC_MARK_DATE")
-    if day==prior:
+    if day==prior and data.get("mark_source")=="Massive unadjusted completed daily bar, after regular session":
         print("UNCHANGED_MARK_SESSION",day)
         return
     for h in holdings:
