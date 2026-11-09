@@ -75,6 +75,7 @@ function render(){
  table($('baseline-comparison'),['Datum','BEST index','BEST v1 index'],(report.baseline_comparison?.rows||[]).map(r=>[r.date,r.best_index.toFixed(2),r.v1_index.toFixed(2)]));
  if(!report.delivery?.verified)empty($('positions'),'Innehav kan inte verifieras','Journalen finns separat. Ett leveransfel betyder inte att registrerade aktier har försvunnit.');
  $('stats-facts').lastChild?.classList.add('journal');table($('gaps'),['Datagap','Tillfälle','Observerad'],(p.gaps||[]).map(g=>[explain(g.kind),g.session||g.date,stamp(g.observed_at)]));
+ if(typeof window.updateReconstructionOverview==='function')window.updateReconstructionOverview();
 }
 function navigate(){const tab=Object.hasOwn(labels,location.hash.slice(1))?location.hash.slice(1):'overview';for(const key of Object.keys(labels))$(key).hidden=key!==tab;for(const a of document.querySelectorAll('[data-tab]')){if(a.dataset.tab===tab)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}$('page-label').textContent=labels[tab];document.title=labels[tab]+' · Momentum 10 BEST v2';window.scrollTo(0,0);}
 async function load(){try{const r=await fetch('/api/best-v2',{cache:'no-store'});const data=await r.json();if(data.model!=='momentum10-best-v2')throw Error('Fel kontotyp');report=data;}catch{report={errors:['BEST-journalen kunde inte hämtas. Inga aktuella affärer eller värderingar kan verifieras.']};}render();}
