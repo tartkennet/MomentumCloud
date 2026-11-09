@@ -1,0 +1,65 @@
+name: Refresh separate BEST Nov 9 hypothetical marks
+on:
+  workflow_dispatch:
+  # One-time close refresh when this workflow is explicitly updated after publication.
+  push:
+    branches: [main]
+    paths: ['.github/workflows/best-v2-reconstruction-marks.yml']
+  schedule:
+    # 22:20 Europe/Stockholm, winter UTC+1 and summer UTC+2.
+    # UTC cron does not automatically account for daylight-saving time.
+    - cron: '20 20 * * 1-5'
+    - cron: '20 21 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: best-nov9-paper-mark-main
+  cancel-in-progress: false
+jobs:
+  mark:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Validate Stockholm close-refresh time (DST-aware)
+        id: when
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          python - <<'PY'
+          import datetime,os
+          from zoneinfo import ZoneInfo
+          event=os.getenv('EVENT_NAME')
+          if event in ('workflow_dispatch','push'):
+              should_run=True
+          else:
+              schedule=os.getenv('EVENT_SCHEDULE','')
+              utc_hour=int(schedule.split()[1]) if schedule else -1
+              now=datetime.datetime.now(datetime.timezone.utc)
+              slot=now.replace(hour=utc_hour if utc_hour in (20,21) else 0,minute=20,second=0,microsecond=0)
+              should_run=utc_hour in (20,21) and slot.astimezone(ZoneInfo('Europe/Stockholm')).hour==22
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('run='+str(should_run).lower()+'\n')
+          print('CLOSE_REFRESH_TIME_VALID',should_run)
+          PY
+      - uses: actions/checkout@v4
+        if: steps.when.outputs.run == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.when.outputs.run == 'true'
+        with:
+          python-version: '3.12'
+      - name: Read dated daily closes, keep reconstruction separate
+        if: steps.when.outputs.run == 'true'
+        env:
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: python scripts/update_best_v2_reconstruction.py
+      - name: Commit new marks only if all ten updated
+        if: steps.when.outputs.run == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/data/best-v2-paper-start.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update independent Nov 9 paper scenario with dated close"
+            git push origin HEAD:main
+          fi

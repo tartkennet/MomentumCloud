@@ -4,3 +4,119 @@
 .target .facts dd,.metric strong{overflow-wrap:anywhere}
 .section-heading{flex-wrap:wrap}
 @media(max-width:380px){.metric-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* BEST v2: vibrant contrast, especially in dark mode, without recoloring actual gains as theme accents. */
+:root{
+  --gain:#078a48;
+  --loss:#d42542;
+}
+[data-theme=dark]{
+  color-scheme:dark;
+  --bg:#0c1124;
+  --paper:#151c34;
+  --ink:#f7f9ff;
+  --muted:#b3c0e0;
+  --teal:#51cfff;
+  --blue:#a69aff;
+  --coral:#ff6a88;
+  --line:#34425f;
+  --mint:#1c334a;
+  --apricot:#3d2a4c;
+  --tint:#242d50;
+  --shadow:0 12px 38px #03071655;
+  --gain:#26ef88;
+  --loss:#ff5d78;
+}
+[data-theme=dark] body{
+  background:radial-gradient(ellipse 80% 30% at 88% 3%,#242453 0%,transparent 78%),var(--bg);
+}
+[data-theme=dark] .panel{
+  background:linear-gradient(155deg,#1d2542,#141b31);
+  border:1px solid #3b4768;
+}
+[data-theme=dark] .panel.tint{background:linear-gradient(135deg,#273c67,#222144)}
+[data-theme=dark] .capital{
+  background:radial-gradient(ellipse at 92% 8%,#774dbe88 0%,transparent 55%),linear-gradient(120deg,#175685,#2d245c);
+}
+[data-theme=dark] .sidebar{
+  background:#101730;
+  border-color:#3b466a;
+}
+[data-theme=dark] .sidebar nav a[aria-current=page]{
+  background:#32315e;
+  color:#7fd9ff;
+  box-shadow:inset 0 0 0 1px #7770bf;
+}
+[data-theme=dark] .eyebrow,[data-theme=dark] h1 em{color:#77dcff}
+[data-theme=dark] .metric{
+  background:#26385f;
+  box-shadow:inset 0 0 0 1px #456185;
+}
+[data-theme=dark] .metric:nth-child(2){background:#32315c}
+[data-theme=dark] .metric:nth-child(3){background:#422d52}
+[data-theme=dark] .metric:nth-child(4){background:#214c53}
+[data-theme=dark] .tag,[data-theme=dark] .chips span{background:#2e3566;color:#b5d7ff}
+[data-theme=dark] .tag.warm{background:#49324d;color:#ffd3a7}
+[data-theme=dark] .positive{color:var(--gain)}
+[data-theme=dark] .negative{color:var(--loss)}
+.paper-holdings-panel{overflow:hidden}
+.paper-holdings-list{display:grid;gap:10px;margin:14px 0 18px;min-width:0}
+.paper-holding{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  min-width:0;padding:15px 17px;border:1px solid var(--line);
+  border-radius:16px;background:var(--tint);
+}
+.paper-holding-identity{min-width:0;display:flex;flex-direction:column;gap:3px}
+.paper-holding-identity strong{font-size:17px;line-height:1.3;color:var(--ink)}
+.paper-holding-identity small{font-size:12px;color:var(--muted)}
+.paper-holding-result{
+  display:flex;flex-direction:column;gap:1px;text-align:right;
+  white-space:nowrap;align-items:flex-end;font-variant-numeric:tabular-nums;
+}
+.paper-holding-result strong{font-size:21px;line-height:1.25;letter-spacing:-.5px}
+.paper-holding-result span{font-weight:700;font-size:14px}
+.paper-holding.gain .paper-holding-result{color:var(--gain)}
+.paper-holding.loss .paper-holding-result{color:var(--loss)}
+.paper-holding.flat .paper-holding-result{color:var(--muted)}
+[data-theme=dark] .paper-holding{
+  background:#1e2946;border:1px solid #3c4b70;
+  box-shadow:inset 3px 0 0 #585f89;
+}
+[data-theme=dark] .paper-holding.gain{
+  background:linear-gradient(90deg,#153c37 0%,#1d2d45 75%);
+  border-color:#29745b;box-shadow:inset 3px 0 0 var(--gain);
+}
+[data-theme=dark] .paper-holding.loss{
+  background:linear-gradient(90deg,#4a283e 0%,#27283e 75%);
+  border-color:#7a3753;box-shadow:inset 3px 0 0 var(--loss);
+}
+@media(max-width:700px){
+  .paper-holdings-panel{padding:16px!important}
+  .paper-holding{padding:14px 12px;gap:8px}
+  .paper-holding-result strong{font-size:20px}
+  .paper-holding-result span{font-size:13px}
+  .paper-holding-identity strong{font-size:16px}
+  .paper-holding-identity small{font-size:11px}
+  .paper-holdings-list{gap:8px}
+  [data-theme=dark] .sidebar{background:#10162c;border-color:#35466b}
+}
+@media(max-width:360px){
+  .paper-holding-result strong{font-size:18px}
+  .paper-holding-result span{font-size:12px}
+}
+
+/* Full issuer names with useful position value, still no sideways scrolling. */
+.paper-holding-identity{flex:1 1 auto;min-width:0;max-width:65%}
+.paper-company-name{font-size:16px!important;line-height:1.3!important;overflow-wrap:anywhere}
+.paper-holding-details{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.paper-holding-ticker{font-weight:800;letter-spacing:.03em}
+.paper-holding-quantity:before{content:"·";margin-right:7px;color:var(--muted)}
+.paper-holding-value{font-size:12px!important;color:var(--muted);font-variant-numeric:tabular-nums}
+.paper-holding-result{min-width:0;flex:0 0 auto}
+@media(max-width:410px){
+  .paper-holding-identity{max-width:61%}
+  .paper-company-name{font-size:14px!important}
+  .paper-holding-result strong{font-size:18px}
+  .paper-holding-result span{font-size:12px}
+  .paper-holding{padding:12px 10px}
+}
