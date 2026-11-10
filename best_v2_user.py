@@ -53,6 +53,20 @@ def export(state,report,now):
     metadata={r['ticker']:r for r in report['signal']['selection']['rows']}
     for p in paper['positions']:
         row=metadata.get(p['ticker'],{});p.update(name=row.get('name',p['ticker']),sector=row.get('sector'),factor=row.get('factor'))
+    # Daily stock move compares the two most recent independently recorded
+    # trading-session closes in USD, NOT return since purchase or SEK FX movement.
+    # The date is explicit; never claim a day-change when just one mark exists.
+    marks=state.get('valuation_quotes',{})
+    dates=sorted(day for day,quote in marks.items() if isinstance(quote.get('prices'),dict))
+    latest=dates[-1] if dates else None
+    previous=dates[-2] if len(dates)>=2 else None
+    for position in paper['positions']:
+        ticker=position['ticker']
+        current=marks[latest]['prices'].get(ticker) if latest else None
+        prior=marks[previous]['prices'].get(ticker) if previous else None
+        position.update(daily_change_pct=100*(current/prior-1) if isinstance(prior,(int,float)) and prior>0 and isinstance(current,(int,float)) and current>0 else None,
+                        daily_change_as_of=latest if current is not None and prior is not None else None,
+                        daily_change_previous_session=previous if current is not None and prior is not None else None)
     paper['audits']={'strategy':checked};paper['statistics_audit']=checked
     paper['sector_actual_distribution']=[dict(sector=sector,stocks=sum(p['sector']==sector for p in paper['positions']),value_sek=sum(p['value_sek'] or 0 for p in paper['positions'] if p['sector']==sector),weight_pct=100*sum(p['value_sek'] or 0 for p in paper['positions'] if p['sector']==sector)/paper['nav_sek'] if paper['nav_sek'] else None) for sector in sorted({p['sector'] for p in paper['positions'] if p['sector']})]
     report.update(paper=paper,account_id=ACCOUNT,technical_readiness=dict(status='PASS',signal=report.get('signal_audit'),funded=not state.get('blockers'),account=checked),errors=[])
