@@ -26,6 +26,18 @@ class UserStartTests(unittest.TestCase):
         self.assertEqual(p['prospective_trade_count'],0);self.assertIsNone(p['first_trade_at'])
         figs=next(t for t in p['trades'] if t['ticker']=='FIGS');self.assertEqual(figs['quantity'],13);self.assertTrue(figs['original_limit_override'])
         self.assertTrue(all(t['execution_at'] is None and not t['actual_execution'] for t in p['trades']))
+    def test_daily_percentage_is_previous_to_current_close_not_buy_return(self):
+        s,r,now=self.fixture()
+        closes={h['ticker']:h['mark_usd'] for h in s['source_start']['holdings']}
+        s['valuation_quotes']['2026-11-10']=dict(prices={**closes,'SN':closes['SN']*1.025,'FIGS':closes['FIGS']*.98},observed_at='2026-11-10T21:34:00+00:00')
+        with patch('best_v2_user.audit_account',return_value={'status':'PASS'}):
+            positions=export(s,r,now)['paper']['positions']
+        sn=next(p for p in positions if p['ticker']=='SN')
+        figs=next(p for p in positions if p['ticker']=='FIGS')
+        self.assertAlmostEqual(sn['daily_change_pct'],2.5,places=6)
+        self.assertAlmostEqual(figs['daily_change_pct'],-2.,places=6)
+        self.assertEqual(sn['daily_change_as_of'],'2026-11-10')
+        self.assertEqual(sn['daily_change_previous_session'],'2026-11-09')
     def test_retry_and_tuesday_do_not_create_initial_order(self):
         s,r,now=self.fixture();before=copy.deepcopy(s['strategy'])
         for _ in range(3):controller.decide(s,r,None,datetime.fromisoformat('2026-11-10T14:52:00+00:00'))
