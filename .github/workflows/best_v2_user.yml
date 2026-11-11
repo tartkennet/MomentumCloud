@@ -11,7 +11,7 @@ on:
     - cron: '20 20,21 * * 1-5'
     # Extra post-close retries: GitHub scheduled events can be delayed or skipped.
     # 21:40 UTC is 22:40 CET / 23:40 CEST; repeated until prices settle.
-    - cron: '40 21 * * 1-5'
+    - cron: '25,35,40,50 21 * * 1-5'
     - cron: '0,20,40 22 * * 1-5'
     - cron: '22 8 * * 1-5'
 permissions:
