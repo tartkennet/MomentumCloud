@@ -86,9 +86,9 @@ def run(args):
     previous=read_json(Path(args.previous if prior else args.formation)/'best-v2-report.json')
     now=datetime.now(timezone.utc);source=read_json(SEED)
     try:
-        data,client=data_for(Path(args.cache),now)
-        report=controller.collect(data,client,Path(args.cache),previous,now,out)
         session=close_status(now)
+        data,client=data_for(Path(args.cache),now,completed_session=session['expected_price_as_of'])
+        report=controller.collect(data,client,Path(args.cache),previous,now,out)
         if report['price_as_of']!=session['expected_price_as_of']:
             raise ValueError('EXPECTED_COMPLETED_SESSION_NOT_AVAILABLE')
         report['market_session']=session

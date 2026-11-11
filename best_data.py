@@ -27,9 +27,9 @@ def completed_end(now):
             else local.date()-timedelta(days=1)).isoformat()
 
 
-def data_for(cache,now):
+def data_for(cache,now,completed_session=None):
     import run_core_risk_research as adapter
-    client=BestProvider();end=completed_end(now)
+    client=BestProvider();end=completed_session or completed_end(now)
     extend_events(cache,now.astimezone(NY).date().isoformat(),client)
     adapter.PolygonClient=lambda key:client
     data=supplement(make_data(cache,end,False))
