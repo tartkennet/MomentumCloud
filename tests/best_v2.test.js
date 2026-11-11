@@ -13,3 +13,13 @@ test('Technical readiness does not assert completed paper trading',async t=>{con
 test('Verified RISK OFF cash is technically ready without claiming any trade',async t=>{const d=report();d.paper.risk_on=false;d.paper.status='RISK_OFF_CASH';d.paper.initial_sek=25000;d.paper.capital_configuration={initial_sek:25000};t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>structuredClone(d)}));const r=response();await api({},r);assert.equal(r.body.technical_ready,true);assert.equal(r.body.promotion_ready,true);assert.equal(r.body.trading_success,false);assert.equal(r.body.fully_invested,false);});
 
 test('A premarket WAITING receipt cannot hide absent in-window executions',async t=>{const NativeDate=global.Date,fixed=NativeDate.parse('2026-11-10T14:55:00Z');global.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}};t.after(()=>{global.Date=NativeDate;});const d=report();d.paper.pending_intention={created_at:'2026-11-09T22:00:00Z',kind:'MEMBERSHIP',plan:{orders:[{ticker:'T0',side:'BUY',quantity:1}]}};d.paper.trading_outcome={status:'OPEN_PRICE_WAITING',session:'2026-11-10',observed_at:'2026-11-10T13:22:00Z',filled:0,orders:[]};t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>structuredClone(d)}));const r=response();await api({},r);assert.equal(r.body.trading_outcome.status,'EXECUTION_NOT_VERIFIED');assert.equal(r.body.paper.trading_outcome.orders[0].reason,'NO_CURRENT_SESSION_EXECUTION_RECEIPT');assert.equal(r.body.trading_success,false);});
+
+test('Delivery uses the actual post-close retry schedule and rejects overdue closes',async t=>{
+ const NativeDate=global.Date,fixed=NativeDate.parse('2026-11-11T21:21:00Z');
+ global.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}};
+ t.after(()=>{global.Date=NativeDate;});
+ const d=report();d.market_session={next_close_due:'2026-11-12T21:15:00Z'};
+ t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>structuredClone(d)}));
+ let r=response();await api({},r);assert.equal(r.body.operations.next_attempt,'2026-11-11T21:25:00.000Z');assert.equal(r.code,200);
+ d.market_session.next_close_due='2026-11-10T21:15:00Z';r=response();await api({},r);assert.equal(r.code,503);assert.equal(r.body.technical_ready,false);
+});

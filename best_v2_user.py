@@ -11,6 +11,7 @@ import best_v2_execution as execution
 import best_v2_strategy as strategy
 from best_data import data_for
 from audit_best_v2_user import audit_account,validate_seed
+from best_v2_user_calendar import close_status
 
 ACCOUNT='best-v2-user-simulation-2026-11-09'
 SEED=Path('data/best-v2-user-start.json')
@@ -60,6 +61,13 @@ def export(state,report,now):
     dates=sorted(day for day,quote in marks.items() if isinstance(quote.get('prices'),dict))
     latest=dates[-1] if dates else None
     previous=dates[-2] if len(dates)>=2 else None
+    curve=paper['curve']
+    current_nav=curve[-1] if curve else None
+    previous_nav=curve[-2] if len(curve)>=2 else None
+    paper.update(daily_change_pct=100*(current_nav['nav_sek']/previous_nav['nav_sek']-1) if previous_nav and previous_nav['nav_sek']>0 else None,
+                 daily_change_sek=current_nav['nav_sek']-previous_nav['nav_sek'] if previous_nav else None,
+                 daily_change_as_of=current_nav['date'] if previous_nav else None,
+                 daily_change_previous_session=previous_nav['date'] if previous_nav else None)
     for position in paper['positions']:
         ticker=position['ticker']
         current=marks[latest]['prices'].get(ticker) if latest else None
@@ -80,6 +88,10 @@ def run(args):
     try:
         data,client=data_for(Path(args.cache),now)
         report=controller.collect(data,client,Path(args.cache),previous,now,out)
+        session=close_status(now)
+        if report['price_as_of']!=session['expected_price_as_of']:
+            raise ValueError('EXPECTED_COMPLETED_SESSION_NOT_AVAILABLE')
+        report['market_session']=session
         rates=ecb_rates();fx=rate_on(rates,report['price_as_of'])
         if not fx:raise ValueError('MISSING_VERIFIED_FX')
         report.update(fx=fx,fx_history=rates,operations_proof=operations(),errors=[])

@@ -10,11 +10,17 @@ from pathlib import Path
 
 BASE='https://momentum-cloud.vercel.app'
 
+def matches_publication(data,expected):
+    return not expected or (data.get('price_as_of')==expected['price_as_of']
+        and data.get('paper',{}).get('journal_sha256')==expected['paper']['journal_sha256']
+        and data.get('provenance',{}).get('source_commit')==expected['provenance']['source_commit'])
+
 def get(path):
     for attempt in range(1,4):
         started=time.monotonic()
         try:
-            with urllib.request.urlopen(BASE+path,timeout=30) as r:
+            request=urllib.request.Request(BASE+path,headers={'Cache-Control':'no-cache'})
+            with urllib.request.urlopen(request,timeout=30) as r:
                 body=r.read();status=r.status
             print('BEST_V2_PRODUCTION_HTTP',json.dumps(dict(path=path,http=status,bytes=len(body),attempt=attempt,seconds=round(time.monotonic()-started,3))),flush=True)
             return status,body
@@ -29,16 +35,22 @@ def main():
     status,home=get('/')
     assert status==200 and b'/best-v2-app.js' in home, 'PRODUCTION_V2_VIEW_NOT_BEST'
     checks={'root':dict(http=status,model='Momentum 10 BEST v2')}
+    expected_path=Path('best_user_output/best-v2-report.json')
+    expected=json.loads(expected_path.read_text()) if expected_path.exists() else None
     for endpoint in ('health','dashboard','h3','portfolio','quality','avanza10','best','best-v2'):
         status,body=get('/api/'+endpoint);data=json.loads(body)
         assert status in (200,503),(endpoint,status)
         assert isinstance(data,dict),endpoint
         checks[endpoint]=dict(http=status,reported_status=data.get('status'),errors=data.get('errors'))
         if endpoint=='best-v2':
-            for attempt in range(6):
-                if status==200 and data.get('promotion_ready'):break
+            # Raw GitHub branch delivery can lag a successful snapshot push.
+            # Wait for THIS journal, rather than accepting an older ready account.
+            for attempt in range(30):
+                if status==200 and data.get('promotion_ready') and matches_publication(data,expected):break
+                print('BEST_V2_PUBLICATION_WAIT',json.dumps(dict(attempt=attempt,http=status,price_as_of=data.get('price_as_of'),errors=data.get('errors'),journal_matches=matches_publication(data,expected))),flush=True)
                 time.sleep(10);status,body=get('/api/best-v2');data=json.loads(body)
             assert status==200 and data.get('promotion_ready'), 'PRODUCTION_BEST_NOT_READY'
+            assert matches_publication(data,expected), 'PRODUCTION_JOURNAL_NOT_CURRENT'
             assert data['paper']['automation_verified'] and not data['live_approved'] and not data['broker_orders_enabled']
             if data['paper'].get('execution_policy'):
                 assert data['technical_ready'] is True and data['trading_outcome']['status']
@@ -51,7 +63,7 @@ def main():
                 if data['paper']['prospective_trade_count']==0:assert not data['trading_success']
             members=data['signal']['selection']['rows'];assert len(members)==10
             assert len({r['cik'] for r in members})==10 and all(r['instrument_type']=='CS' and r['ticker']!='SPY' for r in members)
-            checks['best-v2'].update(account_id=data.get('account_id'),positions=len(data['paper']['positions']),historical_initializations=sum(bool(t.get('initialization_kind')) for t in data['paper']['trades']),http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'],execution_policy=data['paper'].get('execution_policy'))
+            checks['best-v2'].update(price_as_of=data['price_as_of'],journal_sha256=data['paper']['journal_sha256'],nav_sek=data['paper']['nav_sek'],daily_change_pct=data['paper'].get('daily_change_pct'),return_pct=data['paper']['return_pct'],account_id=data.get('account_id'),positions=len(data['paper']['positions']),historical_initializations=sum(bool(t.get('initialization_kind')) for t in data['paper']['trades']),http=status,targets=[r['ticker'] for r in members],initial_sek=data['paper']['initial_sek'],paper_started=data['paper']['paper_started'],execution_policy=data['paper'].get('execution_policy'))
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         browser_path=shutil.which('google-chrome') or shutil.which('chromium')
@@ -62,6 +74,17 @@ def main():
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(BASE+'/',wait_until='networkidle')
             page.locator('#overview-targets .ticker-pill').first.wait_for()
+            assert data['price_as_of'] in page.locator('#overview-facts').inner_text()
+            if data['paper'].get('daily_change_as_of'):
+                assert 'Dagsutveckling' in page.locator('#overview-metrics').inner_text()
+                assert page.locator('#positions .paper-daily-change').count()==len(data['paper']['positions'])
+                formatted_day=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{maximumFractionDigits:2,signDisplay:'exceptZero'}).format(v)+' %'",data['paper']['daily_change_pct'])
+                assert formatted_day in page.locator('#overview-metrics').inner_text()
+                for row,position in zip(page.locator('#positions .paper-holding').all(),data['paper']['positions']):
+                    formatted=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{maximumFractionDigits:2,signDisplay:'exceptZero'}).format(v)+' %'",position['daily_change_pct'])
+                    assert row.locator('.paper-daily-change').inner_text()=='Idag: '+formatted
+                for position in data['paper']['positions']:
+                    assert position['daily_change_as_of']==data['price_as_of']
             if checks['best-v2'].get('account_id'):
                 assert page.locator('[data-paper-reconstruction]').count()==0
                 assert page.locator('#positions .paper-holding').count()==checks['best-v2']['positions']

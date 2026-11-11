@@ -42,6 +42,19 @@ class UserStartTests(unittest.TestCase):
         s,r,now=self.fixture();before=copy.deepcopy(s['strategy'])
         for _ in range(3):controller.decide(s,r,None,datetime.fromisoformat('2026-11-10T14:52:00+00:00'))
         self.assertIsNone(s['pending']);self.assertEqual(s['strategy'],before);audit_account(s)
+    def test_portfolio_day_move_uses_dated_sek_nav_including_fx(self):
+        s,r,now=self.fixture()
+        first=s['strategy']['equity'][-1]
+        second={**first,'date':'2026-11-10','nav':first['nav']*1.02}
+        s['strategy']['equity'].append(second)
+        s['valuation_quotes']['2026-11-10']={**s['valuation_quotes']['2026-11-09'],'observed_at':'2026-11-10T21:30:00+00:00'}
+        s['valuation_fx']['2026-11-10']={**s['initial_fx'],'date':'2026-11-10','usdsek':s['initial_fx']['usdsek']*1.01}
+        with patch('best_v2_user.audit_account',return_value={'status':'PASS'}):
+            p=export(s,r,now)['paper']
+        self.assertAlmostEqual(p['daily_change_pct'],3.02,places=7)
+        self.assertAlmostEqual(p['daily_change_sek'],p['curve'][-1]['nav_sek']-p['curve'][-2]['nav_sek'])
+        self.assertEqual(p['daily_change_as_of'],'2026-11-10')
+        self.assertEqual(p['daily_change_previous_session'],'2026-11-09')
     def test_risk_off_plans_only_sales_and_preserves_seed(self):
         s,r,now=self.fixture();r['risk_on']=False;controller.decide(s,r,None,now)
         self.assertEqual(s['pending']['kind'],'RISK_OFF');self.assertTrue(all(o['side']=='SELL' for o in s['pending']['plan']['orders']))
