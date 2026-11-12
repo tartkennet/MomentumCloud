@@ -2,7 +2,7 @@ import copy,json,unittest
 from pathlib import Path
 from datetime import datetime,timezone
 from unittest.mock import patch
-from best_v2_user import initialize,export,ACCOUNT
+from best_v2_user import initialize,export,ACCOUNT,verify_close,collection_error
 from audit_best_v2_user import audit_account
 from quality_forward import digest
 import best_v2_execution as execution
@@ -42,6 +42,20 @@ class UserStartTests(unittest.TestCase):
         s,r,now=self.fixture();before=copy.deepcopy(s['strategy'])
         for _ in range(3):controller.decide(s,r,None,datetime.fromisoformat('2026-11-10T14:52:00+00:00'))
         self.assertIsNone(s['pending']);self.assertEqual(s['strategy'],before);audit_account(s)
+    def test_close_proof_rejects_missing_or_mismatching_held_quotes(self):
+        s,r,now=self.fixture();r=export(s,r,now)
+        bars={h['ticker']:[h['open_usd'],h['mark_usd'],1000] for h in s['source_start']['holdings']}
+        data=type('Data',(),{'bars':lambda self,day:bars})()
+        proof=verify_close(s,r,data,'2026-11-09')
+        self.assertEqual(len(proof['prices_usd']),10)
+        bars['SN'][1]+=1
+        with self.assertRaisesRegex(ValueError,'HELD_CLOSE_MISMATCH'):verify_close(s,r,data,'2026-11-09')
+        del bars['SN']
+        with self.assertRaisesRegex(ValueError,'MISSING_HELD_CLOSE'):verify_close(s,r,data,'2026-11-09')
+        with self.assertRaisesRegex(ValueError,'VALUATION_SESSION_MISMATCH'):verify_close(s,r,data,'2026-11-10')
+    def test_safe_failure_codes_do_not_include_urls_or_credentials(self):
+        self.assertEqual(collection_error(ValueError('HTTP_429')),'HTTP_429')
+        self.assertEqual(collection_error(ValueError('https://provider?apiKey=secret')),'COLLECTION_VALUEERROR')
     def test_portfolio_day_move_uses_dated_sek_nav_including_fx(self):
         s,r,now=self.fixture()
         first=s['strategy']['equity'][-1]

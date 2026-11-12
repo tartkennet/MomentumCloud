@@ -1,6 +1,24 @@
 name: BEST v2 unified user paper account
+run-name: BEST v2 ${{ inputs.request_id || github.event_name }}
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [update, close_watch]
+        default: update
+      expected_session:
+        description: 'Required completed NYSE date, YYYY-MM-DD (empty uses the calendar)'
+        type: string
+        default: ''
+      request_id:
+        description: 'Read-only correlation ID for the close watcher'
+        type: string
+        default: ''
+      refresh_close:
+        description: 'Reverify the close through the actual dispatcher (manual validation)'
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ['best_v2_user*.py','audit_best_v2_user.py','data/best-v2-user-start.json','.github/workflows/best_v2_user.yml','verify_best_v2_production.py','api/best-v2.js','public/best-v2*','public/index.html','requirements.txt']
@@ -17,16 +35,17 @@ on:
 permissions:
   contents: write
   actions: read
-concurrency:
-  group: best-v2-user-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   account:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    if: inputs.mode != 'close_watch' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    concurrency:
+      group: best-v2-user-${{ github.ref }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     env:
       PYTHONUNBUFFERED: '1'
+      BEST_V2_EXPECTED_SESSION: ${{ inputs.expected_session }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -128,3 +147,26 @@ jobs:
         with:
           name: User_paper_production_checks
           path: best_v2_production_check/
+  close_watch:
+    needs: account
+    if: always() && (github.event_name == 'schedule' || inputs.mode == 'close_watch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    permissions:
+      contents: read
+      actions: write
+    concurrency:
+      group: best-v2-user-close-watch-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install exchange-calendars==4.11.3 pandas==2.2.2 numpy==2.0.1
+      - name: Keep the afternoon run alive until the exchange close is verified
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUNBUFFERED: '1'
+          BEST_V2_CLOSE_WATCH_REFRESH: ${{ inputs.refresh_close || false }}
+        run: python best_v2_user_close_watch.py

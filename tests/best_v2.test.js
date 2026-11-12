@@ -23,3 +23,12 @@ test('Delivery uses the actual post-close retry schedule and rejects overdue clo
  let r=response();await api({},r);assert.equal(r.body.operations.next_attempt,'2026-11-11T21:25:00.000Z');assert.equal(r.code,200);
  d.market_session.next_close_due='2026-11-10T21:15:00Z';r=response();await api({},r);assert.equal(r.code,503);assert.equal(r.body.technical_ready,false);
 });
+
+test('Overdue NYSE close is explicit and preserves the actual old price date',async t=>{
+ const NativeDate=global.Date,fixed=NativeDate.parse('2026-11-12T22:27:00Z');
+ global.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}};
+ t.after(()=>{global.Date=NativeDate;});
+ const d=report();d.generated_at='2026-11-12T20:49:14Z';d.price_as_of='2026-11-11';d.market_session={expected_price_as_of:'2026-11-11',next_session:'2026-11-12',next_close_due:'2026-11-12T21:15:00Z'};
+ t.mock.method(global,'fetch',async()=>({ok:true,json:async()=>structuredClone(d)}));
+ const r=response();await api({},r);assert.equal(r.code,503);assert.equal(r.body.price_as_of,'2026-11-11');assert.equal(r.body.delivery.expected_price_as_of,'2026-11-12');assert.ok(r.body.errors.includes('CLOSE_VALUATION_OVERDUE'));assert.equal(r.body.paper.automation_verified,false);
+});

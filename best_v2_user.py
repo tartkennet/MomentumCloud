@@ -1,5 +1,5 @@
 """One user-selected simulation, historical initialization followed by prospective E2 only."""
-import argparse,copy,hashlib,json,os,subprocess
+import argparse,copy,hashlib,json,math,os,subprocess
 from datetime import datetime,timezone
 from pathlib import Path
 from quality_forward import bootstrap,digest
@@ -87,6 +87,9 @@ def run(args):
     now=datetime.now(timezone.utc);source=read_json(SEED)
     try:
         session=close_status(now)
+        requested=os.getenv('BEST_V2_EXPECTED_SESSION','')
+        if requested and requested!=session['expected_price_as_of']:
+            raise ValueError('REQUESTED_SESSION_NOT_COMPLETED')
         data,client=data_for(Path(args.cache),now,completed_session=session['expected_price_as_of'])
         report=controller.collect(data,client,Path(args.cache),previous,now,out)
         if report['price_as_of']!=session['expected_price_as_of']:
@@ -113,18 +116,51 @@ def run(args):
         controller.decide(state,report,data,datetime.now(timezone.utc))
         state['previous_state_sha256']=digest(prior) if prior else None
         report=export(state,report,datetime.now(timezone.utc))
+        report['close_verification']=verify_close(state,report,data,session['expected_price_as_of'])
         atomic_json(out/'best-v2-state.json',state);atomic_json(out/'best-v2-report.json',report)
         print('USER_PAPER_VERIFIED',json.dumps(dict(account=ACCOUNT,holdings=len(state['strategy']['shares']),cash_sek=report['paper']['cash_sek'],nav_sek=report['paper']['nav_sek'],trades=len(state['strategy']['trades']),pending=bool(state.get('pending')))))
     except Exception as exc:
         import traceback
-        print('USER_FAILURE_LOCATIONS',json.dumps([dict(file=Path(f.filename).name,line=f.lineno,function=f.name) for f in traceback.extract_tb(exc.__traceback__)]),flush=True)
+        code=collection_error(exc)
+        print('USER_FAILURE_LOCATIONS',json.dumps(dict(code=code,locations=[dict(file=Path(f.filename).name,line=f.lineno,function=f.name) for f in traceback.extract_tb(exc.__traceback__)])),flush=True)
         if prior:
-            previous.update(generated_at=now.isoformat(),errors=['USER_ACCOUNT_COLLECTION_FAILED'],technical_readiness={'status':'BLOCKED'})
+            previous.update(generated_at=now.isoformat(),errors=['USER_ACCOUNT_COLLECTION_FAILED',code],technical_readiness={'status':'BLOCKED'},collection_failure=dict(code=code,observed_at=now.isoformat(),expected_price_as_of=close_status(now)['expected_price_as_of']))
             previous['paper'].update(status='BLOCKED',blockers=['USER_ACCOUNT_COLLECTION_FAILED'])
             prior['previous_state_sha256']=digest(prior)
             previous['paper']['journal_sha256']=digest(prior)
             atomic_json(out/'best-v2-state.json',prior);atomic_json(out/'best-v2-report.json',previous)
         raise RuntimeError('USER_ACCOUNT_COLLECTION_FAILED') from None
+
+def collection_error(exc):
+    value=str(exc)
+    explicit={'EXPECTED_COMPLETED_SESSION_NOT_AVAILABLE','REQUESTED_SESSION_NOT_COMPLETED',
+              'MISSING_VERIFIED_FX','MISSING_DATED_FX','VALUATION_SESSION_MISMATCH',
+              'MISSING_HELD_CLOSE','HELD_CLOSE_MISMATCH','FX_MARK_MISMATCH'}
+    if value in explicit:return value
+    import re
+    if re.fullmatch(r'(?:HTTP|FX_HTTP)_\d{3}',value):return value
+    return 'COLLECTION_'+type(exc).__name__.upper()
+
+
+def verify_close(state,report,data,day):
+    if state['strategy']['equity'][-1]['date']!=day or report['paper']['valuation_as_of']!=day:
+        raise ValueError('VALUATION_SESSION_MISMATCH')
+    if state['valuation_fx'][day]['usdsek']!=report['fx']['usdsek']:
+        raise ValueError('FX_MARK_MISMATCH')
+    bars=data.bars(day)
+    tickers=set(state['strategy']['shares'])|{r['ticker'] for r in report['signal']['selection']['rows']}
+    prices={}
+    for ticker in sorted(tickers):
+        value=bars.get(ticker,[None,None])[1]
+        if not isinstance(value,(int,float)) or not math.isfinite(value) or value<=0:
+            raise ValueError('MISSING_HELD_CLOSE')
+        prices[ticker]=value
+        if ticker in state['strategy']['shares'] and state['valuation_quotes'][day]['prices'].get(ticker)!=value:
+            raise ValueError('HELD_CLOSE_MISMATCH')
+    receipt=dict(status='PASS',price_as_of=day,source='Massive/Polygon unadjusted grouped daily close',
+                 prices_usd=prices,prices_sha256=digest(prices),fx=report['fx'])
+    print('USER_CLOSE_INPUTS_VERIFIED',json.dumps(receipt),flush=True)
+    return receipt
 
 def operations():
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()

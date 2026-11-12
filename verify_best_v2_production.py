@@ -1,6 +1,7 @@
 """Read-only production checks. Never creates orders or changes account capital."""
 import json
 import re,math
+from datetime import datetime,timezone
 import shutil
 import time
 import urllib.request
@@ -51,6 +52,18 @@ def main():
                 time.sleep(10);status,body=get('/api/best-v2');data=json.loads(body)
             assert status==200 and data.get('promotion_ready'), 'PRODUCTION_BEST_NOT_READY'
             assert matches_publication(data,expected), 'PRODUCTION_JOURNAL_NOT_CURRENT'
+            from best_v2_user_calendar import close_status
+            assert data['price_as_of']==close_status(datetime.now(timezone.utc))['expected_price_as_of'], 'PRODUCTION_CLOSE_OVERDUE'
+            proof=data['close_verification']
+            assert proof['status']=='PASS' and proof['price_as_of']==data['price_as_of']
+            assert proof['fx']==data['fx']
+            for position in data['paper']['positions']:
+                assert proof['prices_usd'][position['ticker']]==position['price_usd']
+            curve=data['paper']['curve']
+            if len(curve)>=2:
+                current,prior=curve[-1],curve[-2]
+                assert math.isclose(data['paper']['daily_change_sek'],current['nav_sek']-prior['nav_sek'],abs_tol=1e-8)
+                assert math.isclose(data['paper']['daily_change_pct'],100*(current['nav_sek']/prior['nav_sek']-1),abs_tol=1e-8)
             assert data['paper']['automation_verified'] and not data['live_approved'] and not data['broker_orders_enabled']
             if data['paper'].get('execution_policy'):
                 assert data['technical_ready'] is True and data['trading_outcome']['status']
@@ -80,15 +93,19 @@ def main():
                 assert page.locator('#positions .paper-daily-change').count()==len(data['paper']['positions'])
                 formatted_day=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{maximumFractionDigits:2,signDisplay:'exceptZero'}).format(v)+' %'",data['paper']['daily_change_pct'])
                 assert formatted_day in page.locator('#overview-metrics').inner_text()
+                formatted_sek=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{style:'currency',currency:'SEK',minimumFractionDigits:2,maximumFractionDigits:2}).format(v)",data['paper']['daily_change_sek'])
+                assert formatted_sek in page.locator('#overview-metrics').inner_text()
+                formatted_total=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{maximumFractionDigits:2,signDisplay:'exceptZero'}).format(v)+' %'",data['paper']['return_pct'])
+                assert formatted_total in page.locator('#hero-return').inner_text()
                 for row,position in zip(page.locator('#positions .paper-holding').all(),data['paper']['positions']):
                     formatted=page.evaluate("v=>new Intl.NumberFormat('sv-SE',{maximumFractionDigits:2,signDisplay:'exceptZero'}).format(v)+' %'",position['daily_change_pct'])
-                    assert row.locator('.paper-daily-change').inner_text()=='Idag: '+formatted
+                    assert row.locator('.paper-daily-change').inner_text()=='Dagsförändring '+position['daily_change_as_of']+': '+formatted
                 for position in data['paper']['positions']:
                     assert position['daily_change_as_of']==data['price_as_of']
             if checks['best-v2'].get('account_id'):
                 assert page.locator('[data-paper-reconstruction]').count()==0
                 assert page.locator('#positions .paper-holding').count()==checks['best-v2']['positions']
-                if data['paper']['nav_sek'] is not None:assert ''.join(re.findall(r'\d',page.locator('#hero-value').inner_text()))==str(math.floor(data['paper']['nav_sek']+.5))
+                if data['paper']['nav_sek'] is not None:assert ''.join(re.findall(r'\d',page.locator('#hero-value').inner_text()))==str(math.floor(data['paper']['nav_sek']*100+.5))
                 else:assert data['paper']['valuation_pending']
                 assert 'Historiskt rekonstruerad' in page.locator('#account-caption').inner_text()
                 assert page.locator('#transactions').inner_text().count('Rekonstruerat startköp')==10

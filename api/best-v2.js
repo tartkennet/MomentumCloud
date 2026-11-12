@@ -8,7 +8,8 @@ function comparison(best,legacy){const p=legacy?.paper;if(p?.model!=='momentum10
 module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');try{
  const [own,old]=await Promise.allSettled([fetchJson(SOURCE),fetchJson(BASELINE)]);if(own.status!=='fulfilled')throw Error('BEST delivery unavailable');const d=validate(own.value);if(d.account_id!=='best-v2-user-simulation-2026-11-09')throw Error('Wrong followed account');const p=d.paper;
  const stamp=Date.parse(d.generated_at),next=nextAttempt(d.generated_at);const delayed=Date.now()>Date.parse(next)+45*60000;
- const closeOverdue=d.market_session?.next_close_due&&Date.now()>Date.parse(d.market_session.next_close_due)+90*60000;
+ const closeOverdue=Boolean(d.market_session?.next_close_due&&Date.now()>Date.parse(d.market_session.next_close_due)+15*60000);
+ const deliveryErrors=closeOverdue?['CLOSE_VALUATION_OVERDUE']:delayed?['SCHEDULED_UPDATE_OVERDUE']:[];
  const fresh=Number.isFinite(stamp)&&stamp<=Date.now()&&Date.now()-stamp<4*86400000&&!delayed&&!closeOverdue;
  const operational=d.operations_proof?.enabled===true&&d.operations_proof?.source_commit===d.provenance?.source_commit;
  const verified=operational&&fresh&&d.technical_readiness?.status==='PASS'&&p.statistics_audit?.status==='PASS'&&p.audits?.strategy?.status==='PASS';
@@ -34,8 +35,8 @@ module.exports=async(_req,res)=>{res.setHeader('Content-Type','application/json;
  const body={account_id:d.account_id,technical_ready:verified,trading_success:tradingSuccess,initialization_kind:p.initialization_kind,prospective_trade_count:p.prospective_trade_count,trading_outcome:tradingOutcome,model:MODEL,generated_at:d.generated_at,price_as_of:d.price_as_of,market_session:d.market_session,risk_on:d.risk_on,fx:d.fx,signal,
   diagnostics,strong_pool:(d.strong_pool||[]).map(light),formation_skips:d.formation_skips,provenance:d.provenance,journal_evidence:d.journal_evidence,
   live_approved:false,broker_orders_enabled:false,economic_status:'NO_GO_INSUFFICIENT_EVIDENCE',experiment_label:'PAPER_EXPERIMENT',
-  delivery:{verified:fresh,source:'user_simulation_historical_start_then_prospective'},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:d.errors||[],technical_readiness:d.technical_readiness,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
-  paper:{...p,trading_outcome:tradingOutcome,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED']},
+  delivery:{verified:fresh,source:'user_simulation_historical_start_then_prospective',expected_price_as_of:closeOverdue?d.market_session.next_session:d.market_session?.expected_price_as_of,last_verified_price_as_of:d.price_as_of},operations:{delayed,next_attempt:next,proof:d.operations_proof},errors:[...(d.errors||[]),...deliveryErrors],technical_readiness:d.technical_readiness,close_verification:d.close_verification,collection_failure:d.collection_failure,early_analysis:d.early_analysis?{...d.early_analysis,ranked:d.early_analysis.ranked.filter(r=>r.qualified).slice(0,20),app:{...d.early_analysis.app,history:undefined}}:null,
+  paper:{...p,trading_outcome:tradingOutcome,automation_verified:verified,effective_status:verified?p.status:'BLOCKED',delivery_blockers:verified?[]:['BEST_AUTOMATION_OR_DELIVERY_NOT_VERIFIED',...deliveryErrors]},
   promotion_ready:verified&&d.technical_readiness.funded===true&&capitalVerified&&(invested||planned||riskOffCash),fully_invested:invested,
   baseline_comparison:comparison(p,old.status==='fulfilled'?old.value:null)};
  return res.status(fresh?200:503).json(body);
