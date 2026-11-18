@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
   "as_of": "2026-11-17",
-  "source_run": "44262282314",
+  "source_run": "44368631467",
   "checkpoint_sha256": "6a0df3032fef8eaa17e63ac45321eb8d6cf557dba74bed657c294dc1e00d627b",
   "account": {
     "cash": 1754.2159649999944,
