@@ -1,29 +1,12 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "as_of": "2026-11-18",
-  "source_run": "44589460528",
-  "checkpoint_sha256": "16368745b7355c551065e7fc7deb2f5521a496bddc66fce0c6d32e605a499bf0",
+  "as_of": "2026-11-19",
+  "source_run": "44696731685",
+  "checkpoint_sha256": "e9b7c85dfb3cc6dee609ddc7a37d89a8a6c4187f8e4e8558bdfe43fe8c5211c3",
   "account": {
-    "cash": 1754.2159649999944,
-    "shares": {
-      "ATEX": 19.0,
-      "AXTI": 15.0,
-      "CDNA": 17.0,
-      "CLMT": 37.0,
-      "ERAS": 116.0,
-      "LITE": 1.0,
-      "MU": 2.0,
-      "SNDK": 1.0,
-      "SPY": 99.0,
-      "SYRE": 17.0,
-      "TWST": 6.0,
-      "TXG": 16.0,
-      "ECPG": 22.0,
-      "LIND": 61.0,
-      "MATX": 10.0,
-      "MXL": 14.0
-    },
+    "cash": 94221.1422125,
+    "shares": {},
     "receivables": [
       {
         "ticker": "MATX",
@@ -32,14 +15,10 @@
         "reason": "DIVIDEND"
       }
     ],
-    "pending": {
-      "signal_date": "2026-11-18",
-      "signal_nav": 93269.220965,
-      "targets": []
-    },
+    "pending": null,
     "previous_risk": false,
     "selection_month": "2026-11",
-    "last_date": "2026-11-18",
+    "last_date": "2026-11-19",
     "trades": [
       {
         "date": "2026-10-30",
@@ -319,6 +298,150 @@
         "quantity": 1,
         "price": 130.35,
         "fee": 0.195525
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "ATEX",
+        "side": "SELL",
+        "quantity": 19,
+        "price": 81.99,
+        "fee": 2.336715
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "AXTI",
+        "side": "SELL",
+        "quantity": 15,
+        "price": 37.9,
+        "fee": 0.85275
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "CDNA",
+        "side": "SELL",
+        "quantity": 17,
+        "price": 74.56,
+        "fee": 1.90128
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "CLMT",
+        "side": "SELL",
+        "quantity": 37,
+        "price": 30.75,
+        "fee": 1.706625
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "ECPG",
+        "side": "SELL",
+        "quantity": 22,
+        "price": 105.12,
+        "fee": 3.4689600000000005
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "ERAS",
+        "side": "SELL",
+        "quantity": 116,
+        "price": 14.07,
+        "fee": 2.4481800000000002
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "LIND",
+        "side": "SELL",
+        "quantity": 61,
+        "price": 33.44,
+        "fee": 3.05976
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "LITE",
+        "side": "SELL",
+        "quantity": 1,
+        "price": 574.685,
+        "fee": 0.8620275
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "MATX",
+        "side": "SELL",
+        "quantity": 10,
+        "price": 208.28,
+        "fee": 3.1242000000000005
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "MU",
+        "side": "SELL",
+        "quantity": 2,
+        "price": 740.33,
+        "fee": 2.22099
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "MXL",
+        "side": "SELL",
+        "quantity": 14,
+        "price": 51.56,
+        "fee": 1.0827600000000002
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "SNDK",
+        "side": "SELL",
+        "quantity": 1,
+        "price": 811.47,
+        "fee": 1.217205
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "SPY",
+        "side": "SELL",
+        "quantity": 99,
+        "price": 737.46,
+        "fee": 109.51281000000002
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "SYRE",
+        "side": "SELL",
+        "quantity": 17,
+        "price": 102.34,
+        "fee": 2.60967
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "TWST",
+        "side": "SELL",
+        "quantity": 6,
+        "price": 120.5,
+        "fee": 1.0845
+      },
+      {
+        "date": "2026-11-19",
+        "signal_date": "2026-11-18",
+        "ticker": "TXG",
+        "side": "SELL",
+        "quantity": 16,
+        "price": 59.18,
+        "fee": 1.42032
       }
     ],
     "targets": [
@@ -878,9 +1001,18 @@
         "stock_value": 91511.205,
         "positions": 16,
         "fees_cumulative": 171.874035
+      },
+      {
+        "date": "2026-11-19",
+        "nav": 94224.9422125,
+        "cash": 94221.1422125,
+        "receivables": 3.8,
+        "stock_value": 0,
+        "positions": 0,
+        "fees_cumulative": 310.78278750000004
       }
     ],
-    "fees": 171.874035,
+    "fees": 310.78278750000004,
     "first_is_month_boundary": false
   },
   "benchmark": {
@@ -892,7 +1024,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "",
-    "last_date": "2026-11-18",
+    "last_date": "2026-11-19",
     "trades": [
       {
         "date": "2026-10-30",
@@ -1040,157 +1172,21 @@
         "stock_value": 95656.20000000001,
         "positions": 1,
         "fees_cumulative": 149.61117000000002
+      },
+      {
+        "date": "2026-11-19",
+        "nav": 93888.57883,
+        "cash": 109.6088299999974,
+        "receivables": 0,
+        "stock_value": 93778.97,
+        "positions": 1,
+        "fees_cumulative": 149.61117000000002
       }
     ],
     "fees": 149.61117000000002,
     "first_is_month_boundary": false
   },
-  "holdings": [
-    {
-      "ticker": "ATEX",
-      "quantity": 19.0,
-      "mark_usd": 79.88,
-      "value_usd": 1517.7199999999998,
-      "weight_pct": 1.6272463566191209,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "AXTI",
-      "quantity": 15.0,
-      "mark_usd": 35.61,
-      "value_usd": 534.15,
-      "weight_pct": 0.5726969674169831,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "CDNA",
-      "quantity": 17.0,
-      "mark_usd": 74.44,
-      "value_usd": 1265.48,
-      "weight_pct": 1.356803441592893,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "CLMT",
-      "quantity": 37.0,
-      "mark_usd": 30.32,
-      "value_usd": 1121.84,
-      "weight_pct": 1.202797652208309,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "ERAS",
-      "quantity": 116.0,
-      "mark_usd": 13.76,
-      "value_usd": 1596.16,
-      "weight_pct": 1.711346984016272,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "LITE",
-      "quantity": 1.0,
-      "mark_usd": 551.07,
-      "value_usd": 551.07,
-      "weight_pct": 0.5908380002517587,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "MU",
-      "quantity": 2.0,
-      "mark_usd": 705.27,
-      "value_usd": 1410.54,
-      "weight_pct": 1.5123317053643195,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "SNDK",
-      "quantity": 1.0,
-      "mark_usd": 776.22,
-      "value_usd": 776.22,
-      "weight_pct": 0.8322359637712452,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "SPY",
-      "quantity": 99.0,
-      "mark_usd": 730.2,
-      "value_usd": 72289.8,
-      "weight_pct": 77.50659783802344,
-      "sleeve": "SPY-kärna",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "SYRE",
-      "quantity": 17.0,
-      "mark_usd": 101.46,
-      "value_usd": 1724.82,
-      "weight_pct": 1.8492917407847247,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "TWST",
-      "quantity": 6.0,
-      "mark_usd": 116.35,
-      "value_usd": 698.0999999999999,
-      "weight_pct": 0.7484784291936644,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "TXG",
-      "quantity": 16.0,
-      "mark_usd": 57.07,
-      "value_usd": 913.12,
-      "weight_pct": 0.9790153606436311,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "ECPG",
-      "quantity": 22.0,
-      "mark_usd": 105.12,
-      "value_usd": 2312.6400000000003,
-      "weight_pct": 2.4795318070340016,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "LIND",
-      "quantity": 61.0,
-      "mark_usd": 33.425,
-      "value_usd": 2038.9249999999997,
-      "weight_pct": 2.1860641473194273,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "MATX",
-      "quantity": 10.0,
-      "mark_usd": 206.72,
-      "value_usd": 2067.2,
-      "weight_pct": 2.21637961442364,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    },
-    {
-      "ticker": "MXL",
-      "quantity": 14.0,
-      "mark_usd": 49.53,
-      "value_usd": 693.4200000000001,
-      "weight_pct": 0.74346069670745,
-      "sleeve": "Momentum",
-      "fractional_entitlement": false
-    }
-  ],
+  "holdings": [],
   "latest_decision": {
     "date": "2026-11-18",
     "risk_on": false,
@@ -2106,6 +2102,195 @@
       "ticker": "ANCMF",
       "adjustment_type": "stock_dividend",
       "historical_adjustment_factor": 0.990099
+    },
+    {
+      "id": "E9bd288210fa81afb4de62b6a04fe216424cbf5a66a6b9ddeff153634421b0420",
+      "execution_date": "2026-11-19",
+      "split_from": 50.0,
+      "split_to": 1.0,
+      "ticker": "YFOR",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 50.0
+    },
+    {
+      "id": "Ebffa547d0ad165fb6c6d037ae04a4ca48a8adb78498bd1f03658abc635ec3f3d",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "VIXM",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E412d4b682e613ec8ad94057925a3ee864c1f934b3a5373d467162afdf6516cad",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "UBT",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E183cc213ffe768f41d85f1418f171ed4b6218ef36b2155966b26769ed88751fb",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "SSG",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E66537210545542add8759c62988146af27c69ad870697a645ee05dc88f08a748",
+      "execution_date": "2026-11-19",
+      "split_from": 33.0,
+      "split_to": 1.0,
+      "ticker": "SNTI",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 33.0
+    },
+    {
+      "id": "Ec6214f4525b0b1a017620284eafb94988234ed2b04a880d27d565b843ac3f965",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "SMDD",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E985d1f5b9ca0831e4d2ab8f2410320b8c78f8985be99689fb1915ad9774ca91f",
+      "execution_date": "2026-11-19",
+      "split_from": 4.0,
+      "split_to": 1.0,
+      "ticker": "SCNI",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 4.0
+    },
+    {
+      "id": "E99988e02d386012e36acd0389a1a4d61b136b2ed5734298161d173bec8293dce",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "RWM",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E3548c10163113c5913975c555faaa94b65cdd1b19aca084a0377975f1d62f5b1",
+      "execution_date": "2026-11-19",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "ROM",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "E19052a4b123f258abc529574d5965b246652f64ae8a4b2551b4b0440dcf7c737",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "REW",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "Ecc6a2db64ea97c2700e0cd30218fbe0c470d0fed9fb91e8338a929382898b5cd",
+      "execution_date": "2026-11-19",
+      "split_from": 4.0,
+      "split_to": 1.0,
+      "ticker": "QID",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 4.0
+    },
+    {
+      "id": "E2c11b2035e36a93e1babe0799f8e90521cb4a1d97dde9b4b050cf6ec6246617f",
+      "execution_date": "2026-11-19",
+      "split_from": 4.0,
+      "split_to": 1.0,
+      "ticker": "MZZ",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 4.0
+    },
+    {
+      "id": "E3d027ce64ec9eb979db149fda401224b2a1495920bcfa9f8654c30abdce4842e",
+      "execution_date": "2026-11-19",
+      "split_from": 1.0,
+      "split_to": 5.0,
+      "ticker": "KYCCF",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.2
+    },
+    {
+      "id": "E7754fbbf7ef4dbdab1e87b80f0d1ff4a575f0a702fb90450cb82d718bcda94bf",
+      "execution_date": "2026-11-19",
+      "split_from": 20.0,
+      "split_to": 1.0,
+      "ticker": "GBMRF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 20.0
+    },
+    {
+      "id": "E786eab1e2ecc881fb2527223f1ffbc94e67c7a75c6daaa8ac1c064a620ae143f",
+      "execution_date": "2026-11-19",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "EET",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "E79d091113d2f742d8ebd1f60b2fd81baf6b95199e1c3a61f1a87a91b8f7ec93d",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "DXD",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E9a3aea688972183ed85a5c3da4758aaf819d5acece5e9d030a4b2cfb8a119f49",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "DUG",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E99883c74d34e5dee042deac2b9adc4f4c946c6d6157f071c5384107ce813b1a0",
+      "execution_date": "2026-11-19",
+      "split_from": 5.0,
+      "split_to": 1.0,
+      "ticker": "CMWCF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 5.0
+    },
+    {
+      "id": "E82fc5e36d9da9ef70399f1611f934bbc7d67fd6dc2dc4a206030ed0aa9b1a1e3",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "BITO",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "E609849c9d4ea0a2914725a1f567fabfdc773039e698ea763f2028e350f2c3530",
+      "execution_date": "2026-11-19",
+      "split_from": 2.0,
+      "split_to": 1.0,
+      "ticker": "BITI",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 2.0
+    },
+    {
+      "id": "Eb470729ae39d11e90ac5d7d3c3942848a2e756e4bc33cbe3dd13928e174a1a5f",
+      "execution_date": "2026-11-19",
+      "split_from": 1.0,
+      "split_to": 2.0,
+      "ticker": "BIB",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.5
     }
   ],
   "live_approved": false,
