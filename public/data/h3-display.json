@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-20T07:42:12.056544+00:00",
-  "source_run": "44696731685",
+  "generated_at": "2026-11-20T17:58:44.613356+00:00",
+  "source_run": "44788264502",
   "source_as_of": "2026-11-19",
   "source_checkpoint_sha256": "e9b7c85dfb3cc6dee609ddc7a37d89a8a6c4187f8e4e8558bdfe43fe8c5211c3",
   "status": "ACTIVE",
@@ -99,16 +99,17 @@
     "2026-11-16": 10.073542763755222,
     "2026-11-17": 10.11011011011011,
     "2026-11-18": 10.159555069292487,
-    "2026-11-19": 10.141011644832606
+    "2026-11-19": 10.141011644832606,
+    "2026-11-20": 10.2024567788899
   },
   "fx": {
-    "date": "2026-11-19",
-    "usdsek": 10.141011644832606,
+    "date": "2026-11-20",
+    "usdsek": 10.2024567788899,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-20T07:42:12.056544+00:00",
+    "checked_at": "2026-11-20T17:58:44.613356+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -120,7 +121,7 @@
     "snapshot_ticker_error_present": {
       "SPY": false
     },
-    "selected_mode": "INTRADAY",
+    "selected_mode": "CLOSE",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
     "subscription_changed": false
@@ -128,23 +129,21 @@
   "quotes": {
     "SPY": {
       "usd": 715.87,
-      "at": "2026-11-20T01:15:01.198315+00:00",
+      "at": null,
       "session": "2026-11-19",
-      "mode": "DELAYED",
-      "provider_timeframe": "UNVERIFIED",
-      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-      "source": "Massive unified snapshot"
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     }
   },
   "metrics": {
-    "nav_sek": 96687.28859515837,
-    "pnl_sek": -3312.711404841626,
-    "return_pct": -3.312711404841626,
-    "spy_nav_sek": 96342.13514987126,
-    "spy_return_pct": -3.6578648501287336,
-    "edge_pct": 0.34515344528710745,
-    "cash_sek": 96683.38929113085,
-    "receivables_sek": 3.8993040275153437,
+    "nav_sek": 97273.12397504308,
+    "pnl_sek": -2726.876024956917,
+    "return_pct": -2.726876024956917,
+    "spy_nav_sek": 96925.87921969157,
+    "spy_return_pct": -3.0741207803084203,
+    "edge_pct": 0.34724475535150345,
+    "cash_sek": 97269.2010448462,
+    "receivables_sek": 3.922930196885035,
     "fees_usd": 31.446996907813997
   },
   "positions": [],
@@ -1439,5 +1438,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "44696878942"
+  "refresh_run": "44788361832"
 }
