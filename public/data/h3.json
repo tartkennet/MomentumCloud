@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-20T07:41:34.845213+00:00",
+  "generated_at": "2026-11-20T17:58:21.514759+00:00",
   "as_of": "2026-11-19",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -346,104 +346,7 @@
       "http_status": 403,
       "error": "ACCESS_DENIED_OR_UNAVAILABLE"
     },
-    "liquidity": [
-      {
-        "date": "2026-11-19",
-        "ticker": "ATEX",
-        "quantity": 19,
-        "fraction_of_full_day_volume": 3.656616116893594e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "AXTI",
-        "quantity": 15,
-        "fraction_of_full_day_volume": 1.571317061144608e-06
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "CDNA",
-        "quantity": 17,
-        "fraction_of_full_day_volume": 1.9330705728788952e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "CLMT",
-        "quantity": 37,
-        "fraction_of_full_day_volume": 3.44172334110829e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "ECPG",
-        "quantity": 22,
-        "fraction_of_full_day_volume": 0.00012941870612538515
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "ERAS",
-        "quantity": 116,
-        "fraction_of_full_day_volume": 2.424559636262143e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "LIND",
-        "quantity": 61,
-        "fraction_of_full_day_volume": 7.06804749733746e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "LITE",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 2.527269380868526e-07
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "MATX",
-        "quantity": 10,
-        "fraction_of_full_day_volume": 2.472231462399513e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "MU",
-        "quantity": 2,
-        "fraction_of_full_day_volume": 5.6494980372380166e-08
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "MXL",
-        "quantity": 14,
-        "fraction_of_full_day_volume": 5.140435141305364e-06
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "SNDK",
-        "quantity": 1,
-        "fraction_of_full_day_volume": 6.49370341649037e-08
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "SPY",
-        "quantity": 99,
-        "fraction_of_full_day_volume": 1.2752673987949254e-06
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "SYRE",
-        "quantity": 17,
-        "fraction_of_full_day_volume": 2.7029158982580554e-05
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "TWST",
-        "quantity": 6,
-        "fraction_of_full_day_volume": 2.6607528314976036e-06
-      },
-      {
-        "date": "2026-11-19",
-        "ticker": "TXG",
-        "quantity": 16,
-        "fraction_of_full_day_volume": 6.903378611797156e-06
-      }
-    ],
+    "liquidity": [],
     "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
   },
   "operations": {
@@ -460,112 +363,12 @@
         "accounts": 4
       },
       "accounting": {
-        "status": "PASS",
-        "new_sessions": 1,
-        "market_trade_rows_checked": 32,
-        "volume_participation": [
-          {
-            "date": "2026-11-19",
-            "ticker": "ATEX",
-            "quantity": 19,
-            "fraction_of_full_day_volume": 3.656616116893594e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "AXTI",
-            "quantity": 15,
-            "fraction_of_full_day_volume": 1.571317061144608e-06
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "CDNA",
-            "quantity": 17,
-            "fraction_of_full_day_volume": 1.9330705728788952e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "CLMT",
-            "quantity": 37,
-            "fraction_of_full_day_volume": 3.44172334110829e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "ECPG",
-            "quantity": 22,
-            "fraction_of_full_day_volume": 0.00012941870612538515
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "ERAS",
-            "quantity": 116,
-            "fraction_of_full_day_volume": 2.424559636262143e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "LIND",
-            "quantity": 61,
-            "fraction_of_full_day_volume": 7.06804749733746e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "LITE",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 2.527269380868526e-07
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "MATX",
-            "quantity": 10,
-            "fraction_of_full_day_volume": 2.472231462399513e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "MU",
-            "quantity": 2,
-            "fraction_of_full_day_volume": 5.6494980372380166e-08
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "MXL",
-            "quantity": 14,
-            "fraction_of_full_day_volume": 5.140435141305364e-06
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "SNDK",
-            "quantity": 1,
-            "fraction_of_full_day_volume": 6.49370341649037e-08
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "SPY",
-            "quantity": 99,
-            "fraction_of_full_day_volume": 1.2752673987949254e-06
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "SYRE",
-            "quantity": 17,
-            "fraction_of_full_day_volume": 2.7029158982580554e-05
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "TWST",
-            "quantity": 6,
-            "fraction_of_full_day_volume": 2.6607528314976036e-06
-          },
-          {
-            "date": "2026-11-19",
-            "ticker": "TXG",
-            "quantity": 16,
-            "fraction_of_full_day_volume": 6.903378611797156e-06
-          }
-        ],
-        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
+        "status": "UNCHANGED_ACCEPTED_PREFIX",
+        "new_sessions": 0
       }
     },
     "readiness": {
-      "checked_at": "2026-11-20T07:41:21.814535+00:00",
+      "checked_at": "2026-11-20T17:58:20.887239+00:00",
       "key_configured": true,
       "live_probe": false,
       "secrets_exposed": false,
@@ -617,9 +420,9 @@
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-20T09:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-21T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "44696731685",
+    "workflow_run": "44788264502",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -646,10 +449,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_44696731685_attempt_1.tar.gz",
-    "paper_archive_sha256": "98f4e4cebda4a27bae152a44bcdf734a8ac354de5a5fe6e02453dda6b96bebd4",
-    "previous_paper_asset": "paper_run_44589460528_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "e2964b3d341d335b75e11706e9d4fd5230f2eaf871143ef77316ea0f3f613abd",
-    "workflow_run": "44696731685"
+    "paper_asset": "paper_run_44788264502_attempt_1.tar.gz",
+    "paper_archive_sha256": "0c55f8b9e4d639db968d0758b9c5a3ca757083381cd9c8e1c39121de19c6b93d",
+    "previous_paper_asset": "paper_run_44696731685_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "98f4e4cebda4a27bae152a44bcdf734a8ac354de5a5fe6e02453dda6b96bebd4",
+    "workflow_run": "44788264502"
   }
 }
