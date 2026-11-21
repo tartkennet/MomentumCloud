@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-20T20:56:22.296115+00:00",
+  "generated_at": "2026-11-21T02:01:34.035737+00:00",
   "source_run": "44788264502",
   "source_as_of": "2026-11-19",
   "source_checkpoint_sha256": "e9b7c85dfb3cc6dee609ddc7a37d89a8a6c4187f8e4e8558bdfe43fe8c5211c3",
@@ -106,10 +106,10 @@
     "date": "2026-11-20",
     "usdsek": 10.2024567788899,
     "source": "ECB reference fixing",
-    "stale_days": 0
+    "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-20T20:56:22.296115+00:00",
+    "checked_at": "2026-11-21T02:01:34.035737+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -121,27 +121,33 @@
     "snapshot_ticker_error_present": {
       "SPY": false
     },
-    "selected_mode": "CLOSE",
+    "selected_mode": "INTRADAY",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
-    "subscription_changed": false
+    "subscription_changed": false,
+    "corporate_event_guard": {
+      "through": "2026-11-20",
+      "blocked_tickers": []
+    }
   },
   "quotes": {
     "SPY": {
-      "usd": 715.87,
-      "at": null,
-      "session": "2026-11-19",
-      "mode": "CLOSE",
-      "source": "Massive raw daily close"
+      "usd": 689.81,
+      "at": "2026-11-21T01:15:01.246875+00:00",
+      "session": "2026-11-20",
+      "mode": "DELAYED",
+      "provider_timeframe": "UNVERIFIED",
+      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
+      "source": "Massive unified snapshot"
     }
   },
   "metrics": {
     "nav_sek": 97273.12397504308,
     "pnl_sek": -2726.876024956917,
     "return_pct": -2.726876024956917,
-    "spy_nav_sek": 96925.87921969157,
-    "spy_return_pct": -3.0741207803084203,
-    "edge_pct": 0.34724475535150345,
+    "spy_nav_sek": 93401.58067181316,
+    "spy_return_pct": -6.598419328186833,
+    "edge_pct": 3.8715433032299162,
     "cash_sek": 97269.2010448462,
     "receivables_sek": 3.922930196885035,
     "fees_usd": 31.446996907813997
@@ -1438,5 +1444,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "44815807447"
+  "refresh_run": "44853526507"
 }
