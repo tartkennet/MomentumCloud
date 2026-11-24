@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-24T10:22:04.437623+00:00",
+  "generated_at": "2026-11-24T22:55:28.864599+00:00",
   "source_run": "45373893962",
   "source_as_of": "2026-11-23",
   "source_checkpoint_sha256": "b124ca56b5b4c2d1f26d0b03df0aa28219bb5e11d29dc35294a7b64790036406",
@@ -101,16 +101,17 @@
     "2026-11-18": 10.159555069292487,
     "2026-11-19": 10.141011644832606,
     "2026-11-20": 10.2024567788899,
-    "2026-11-23": 10.2728768626017
+    "2026-11-23": 10.2728768626017,
+    "2026-11-24": 10.23533704278026
   },
   "fx": {
-    "date": "2026-11-23",
-    "usdsek": 10.2728768626017,
+    "date": "2026-11-24",
+    "usdsek": 10.23533704278026,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-24T10:22:04.437623+00:00",
+    "checked_at": "2026-11-24T22:55:28.864599+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -133,8 +134,8 @@
   },
   "quotes": {
     "SPY": {
-      "usd": 718.9287,
-      "at": "2026-11-24T10:22:02.508872+00:00",
+      "usd": 718.59,
+      "at": "2026-11-24T22:55:22.919100+00:00",
       "session": "2026-11-24",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -143,14 +144,14 @@
     }
   },
   "metrics": {
-    "nav_sek": 97944.52907694013,
-    "pnl_sek": -2055.4709230598673,
-    "return_pct": -2.0554709230598673,
-    "spy_nav_sek": 98011.39471492144,
-    "spy_return_pct": -1.9886052850785596,
-    "edge_pct": -0.06686563798130774,
-    "cash_sek": 97940.57906963046,
-    "receivables_sek": 3.950007309667497,
+    "nav_sek": 97586.61376040115,
+    "pnl_sek": -2413.3862395988544,
+    "return_pct": -2.4133862395988546,
+    "spy_nav_sek": 97607.28237189834,
+    "spy_return_pct": -2.3927176281016593,
+    "edge_pct": -0.020668611497195233,
+    "cash_sek": 97582.67818746704,
+    "receivables_sek": 3.935572934109263,
     "fees_usd": 31.446996907813997
   },
   "positions": [],
@@ -1469,5 +1470,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45374088819"
+  "refresh_run": "45505366621"
 }
