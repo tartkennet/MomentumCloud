@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-21T16:55:57.540437+00:00",
+  "generated_at": "2026-11-24T00:36:40.627877+00:00",
   "source_run": "44927162514",
   "source_as_of": "2026-11-20",
   "source_checkpoint_sha256": "0d487abfad17c6d6419e66210c82f4fd26fff886e74277f27bc4cfefd95d65e4",
@@ -100,16 +100,17 @@
     "2026-11-17": 10.11011011011011,
     "2026-11-18": 10.159555069292487,
     "2026-11-19": 10.141011644832606,
-    "2026-11-20": 10.2024567788899
+    "2026-11-20": 10.2024567788899,
+    "2026-11-23": 10.2728768626017
   },
   "fx": {
-    "date": "2026-11-20",
-    "usdsek": 10.2024567788899,
+    "date": "2026-11-23",
+    "usdsek": 10.2728768626017,
     "source": "ECB reference fixing",
     "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-21T16:55:57.540437+00:00",
+    "checked_at": "2026-11-24T00:36:40.627877+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -124,13 +125,17 @@
     "selected_mode": "INTRADAY",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
-    "subscription_changed": false
+    "subscription_changed": false,
+    "corporate_event_guard": {
+      "through": "2026-11-23",
+      "blocked_tickers": []
+    }
   },
   "quotes": {
     "SPY": {
-      "usd": 689.81,
-      "at": "2026-11-21T01:15:01.246875+00:00",
-      "session": "2026-11-20",
+      "usd": 722.81,
+      "at": "2026-11-24T00:36:40.409250+00:00",
+      "session": "2026-11-23",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
       "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
@@ -138,14 +143,14 @@
     }
   },
   "metrics": {
-    "nav_sek": 97273.12397504308,
-    "pnl_sek": -2726.876024956917,
-    "return_pct": -2.726876024956917,
-    "spy_nav_sek": 93401.58067181316,
-    "spy_return_pct": -6.598419328186833,
-    "edge_pct": 3.8715433032299162,
-    "cash_sek": 97269.2010448462,
-    "receivables_sek": 3.922930196885035,
+    "nav_sek": 97944.52907694013,
+    "pnl_sek": -2055.4709230598673,
+    "return_pct": -2.0554709230598673,
+    "spy_nav_sek": 98539.9163995537,
+    "spy_return_pct": -1.4600836004463047,
+    "edge_pct": -0.5953873226135626,
+    "cash_sek": 97940.57906963046,
+    "receivables_sek": 3.950007309667497,
     "fees_usd": 31.446996907813997
   },
   "positions": [],
@@ -1452,5 +1457,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "44927219038"
+  "refresh_run": "45298537837"
 }
