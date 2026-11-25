@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-24T22:55:28.864599+00:00",
-  "source_run": "45373893962",
-  "source_as_of": "2026-11-23",
-  "source_checkpoint_sha256": "b124ca56b5b4c2d1f26d0b03df0aa28219bb5e11d29dc35294a7b64790036406",
+  "generated_at": "2026-11-25T09:03:10.891943+00:00",
+  "source_run": "45581523824",
+  "source_as_of": "2026-11-24",
+  "source_checkpoint_sha256": "1404f7082b718c4aa2f42dea2dd76df24da5208c1b60236bbb12dfcdc6f718be",
   "status": "ACTIVE",
   "start_capital_sek": 100000,
   "anchor": {
@@ -108,10 +108,10 @@
     "date": "2026-11-24",
     "usdsek": 10.23533704278026,
     "source": "ECB reference fixing",
-    "stale_days": 0
+    "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-24T22:55:28.864599+00:00",
+    "checked_at": "2026-11-25T09:03:10.891943+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -128,15 +128,15 @@
     "display_refresh_minutes": 15,
     "subscription_changed": false,
     "corporate_event_guard": {
-      "through": "2026-11-24",
+      "through": "2026-11-25",
       "blocked_tickers": []
     }
   },
   "quotes": {
     "SPY": {
-      "usd": 718.59,
-      "at": "2026-11-24T22:55:22.919100+00:00",
-      "session": "2026-11-24",
+      "usd": 716.37,
+      "at": "2026-11-25T08:45:05.203178+00:00",
+      "session": "2026-11-25",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
       "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
@@ -147,9 +147,9 @@
     "nav_sek": 97586.61376040115,
     "pnl_sek": -2413.3862395988544,
     "return_pct": -2.4133862395988546,
-    "spy_nav_sek": 97607.28237189834,
-    "spy_return_pct": -2.3927176281016593,
-    "edge_pct": -0.020668611497195233,
+    "spy_nav_sek": 97306.08676118843,
+    "spy_return_pct": -2.693913238811574,
+    "edge_pct": 0.2805269992127193,
     "cash_sek": 97582.67818746704,
     "receivables_sek": 3.935572934109263,
     "fees_usd": 31.446996907813997
@@ -1454,9 +1454,21 @@
         "stale_days": 0
       },
       "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
+    },
+    {
+      "date": "2026-11-24",
+      "nav_sek": 97586.61376040113,
+      "spy_sek": 97633.06037461676,
+      "fx": {
+        "date": "2026-11-24",
+        "usdsek": 10.23533704278026,
+        "source": "ECB reference fixing",
+        "stale_days": 0
+      },
+      "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
     }
   ],
-  "sessions": 18,
+  "sessions": 19,
   "latest_decision": {
     "date": "2026-11-18",
     "risk_on": false,
@@ -1470,5 +1482,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45505366621"
+  "refresh_run": "45581710074"
 }
