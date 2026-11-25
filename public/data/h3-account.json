@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "as_of": "2026-11-23",
-  "source_run": "45373893962",
-  "checkpoint_sha256": "b124ca56b5b4c2d1f26d0b03df0aa28219bb5e11d29dc35294a7b64790036406",
+  "as_of": "2026-11-24",
+  "source_run": "45581523824",
+  "checkpoint_sha256": "1404f7082b718c4aa2f42dea2dd76df24da5208c1b60236bbb12dfcdc6f718be",
   "account": {
     "cash": 94221.1422125,
     "shares": {},
@@ -18,7 +18,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "2026-11",
-    "last_date": "2026-11-23",
+    "last_date": "2026-11-24",
     "trades": [
       {
         "date": "2026-10-30",
@@ -1028,6 +1028,15 @@
         "stock_value": 0,
         "positions": 0,
         "fees_cumulative": 310.78278750000004
+      },
+      {
+        "date": "2026-11-24",
+        "nav": 94224.9422125,
+        "cash": 94221.1422125,
+        "receivables": 3.8,
+        "stock_value": 0,
+        "positions": 0,
+        "fees_cumulative": 310.78278750000004
       }
     ],
     "fees": 310.78278750000004,
@@ -1042,7 +1051,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "",
-    "last_date": "2026-11-23",
+    "last_date": "2026-11-24",
     "trades": [
       {
         "date": "2026-10-30",
@@ -1215,6 +1224,15 @@
         "cash": 109.6088299999974,
         "receivables": 0,
         "stock_value": 94619.98999999999,
+        "positions": 1,
+        "fees_cumulative": 149.61117000000002
+      },
+      {
+        "date": "2026-11-24",
+        "nav": 94269.78882999999,
+        "cash": 109.6088299999974,
+        "receivables": 0,
+        "stock_value": 94160.18,
         "positions": 1,
         "fees_cumulative": 149.61117000000002
       }
@@ -2570,6 +2588,78 @@
       "ticker": "AEI",
       "adjustment_type": "reverse_split",
       "historical_adjustment_factor": 5.0
+    },
+    {
+      "id": "Eff6860d7f17d2ff8303e568956dba4971330a91fdb8b5c37f5193513e204398c",
+      "execution_date": "2026-11-24",
+      "split_from": 75.0,
+      "split_to": 1.0,
+      "ticker": "RBNE",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 75.0
+    },
+    {
+      "id": "E9ecbcf072ea89db3f84f873191cb3e4e53d2adac53a4fd44a4711e1591542a29",
+      "execution_date": "2026-11-24",
+      "split_from": 25.0,
+      "split_to": 1.0,
+      "ticker": "JAGX",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 25.0
+    },
+    {
+      "id": "E6761edf4cf4932bbcad4582d9626a7be671cef9b5ed0dab0b7069659ad8d920e",
+      "execution_date": "2026-11-24",
+      "split_from": 6.0,
+      "split_to": 1.0,
+      "ticker": "ISPC",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 6.0
+    },
+    {
+      "id": "Ea7eacb78c96076fe479251860b2d5001bf6d4d33a18f019a641b1b9d4da40c40",
+      "execution_date": "2026-11-24",
+      "split_from": 1.0,
+      "split_to": 3.0,
+      "ticker": "GRTUF",
+      "adjustment_type": "forward_split",
+      "historical_adjustment_factor": 0.333333
+    },
+    {
+      "id": "Ef2c83d37b9a9c012a828e77370deb5cd21cc87a85229995df2e4a865787bdbd9",
+      "execution_date": "2026-11-24",
+      "split_from": 40.0,
+      "split_to": 1.0,
+      "ticker": "GFAI",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 40.0
+    },
+    {
+      "id": "E76b07782223b64c8581a59dbd5b0c6bf4d861ea7541633e989a6cb0192fc3015",
+      "execution_date": "2026-11-24",
+      "split_from": 25.0,
+      "split_to": 1.0,
+      "ticker": "CODX",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 25.0
+    },
+    {
+      "id": "Eff06b46ee10b4eabd0805451bed6d79e54a4d3180b6e1c1cd4403324cdef5af6",
+      "execution_date": "2026-11-24",
+      "split_from": 20.0,
+      "split_to": 1.0,
+      "ticker": "CCTG",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 20.0
+    },
+    {
+      "id": "Ead59a769a1f70a7d60a850c208d3dbb37ce5e593a313400f965e99e2c1353917",
+      "execution_date": "2026-11-24",
+      "split_from": 10.0,
+      "split_to": 1.0,
+      "ticker": "ANDMF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 10.0
     }
   ],
   "live_approved": false,
