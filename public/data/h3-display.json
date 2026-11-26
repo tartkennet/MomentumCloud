@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-25T22:09:38.971858+00:00",
+  "generated_at": "2026-11-26T04:10:03.862846+00:00",
   "source_run": "45686192814",
   "source_as_of": "2026-11-24",
   "source_checkpoint_sha256": "1404f7082b718c4aa2f42dea2dd76df24da5208c1b60236bbb12dfcdc6f718be",
@@ -109,10 +109,10 @@
     "date": "2026-11-25",
     "usdsek": 10.277549154092364,
     "source": "ECB reference fixing",
-    "stale_days": 0
+    "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-25T22:09:38.971858+00:00",
+    "checked_at": "2026-11-26T04:10:03.862846+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -135,8 +135,8 @@
   },
   "quotes": {
     "SPY": {
-      "usd": 716.01,
-      "at": "2026-11-25T22:09:35.189068+00:00",
+      "usd": 716.7,
+      "at": "2026-11-26T01:15:02.096517+00:00",
       "session": "2026-11-25",
       "mode": "DELAYED",
       "provider_timeframe": "UNVERIFIED",
@@ -148,9 +148,9 @@
     "nav_sek": 97989.07603256746,
     "pnl_sek": -2010.9239674325363,
     "return_pct": -2.0109239674325363,
-    "spy_nav_sek": 97658.34813105653,
-    "spy_return_pct": -2.341651868943473,
-    "edge_pct": 0.33072790151093656,
+    "spy_nav_sek": 97752.34906514689,
+    "spy_return_pct": -2.247650934853107,
+    "edge_pct": 0.23672696742057076,
     "cash_sek": 97985.12422872252,
     "receivables_sek": 3.951803844930974,
     "fees_usd": 31.446996907813997
@@ -1483,5 +1483,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45710783141"
+  "refresh_run": "45753439933"
 }
