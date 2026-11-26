@@ -3,53 +3,53 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-25T19:32:53.972473+00:00",
-  "as_of": "2026-11-24",
+  "generated_at": "2026-11-26T08:50:45.165265+00:00",
+  "as_of": "2026-11-25",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
   "broker_orders_enabled": false,
-  "sessions": 19,
+  "sessions": 20,
   "metrics": {
     "Periods": 0,
     "TotalReturn_pct": -5.775057787500004,
-    "SPYTotalReturn_pct": -5.73021117000001,
-    "TotalEdgeVsSPY_pct": -0.04484661749999397,
+    "SPYTotalReturn_pct": -6.002691169999997,
+    "TotalEdgeVsSPY_pct": 0.22763338249999254,
     "DailyMaxDrawdown_pct": -6.730779035000001,
     "PeriodHitRate_pct": 0.0,
-    "DailySharpe_zero_rf": -3.0485381798703837,
+    "DailySharpe_zero_rf": -2.9687697275381923,
     "ActualFees_USD": 310.78278750000004,
     "FinalNAV_USD": 94224.9422125,
-    "evaluation_through": "2026-11-24",
-    "sessions_in_evaluation": 19,
+    "evaluation_through": "2026-11-25",
+    "sessions_in_evaluation": 20,
     "fixed_first_window_complete": false
   },
   "cost_cases": {
     "15bp": {
       "Periods": 0,
       "TotalReturn_pct": -5.775057787500004,
-      "SPYTotalReturn_pct": -5.73021117000001,
-      "TotalEdgeVsSPY_pct": -0.04484661749999397,
+      "SPYTotalReturn_pct": -6.002691169999997,
+      "TotalEdgeVsSPY_pct": 0.22763338249999254,
       "DailyMaxDrawdown_pct": -6.730779035000001,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -3.0485381798703837,
+      "DailySharpe_zero_rf": -2.9687697275381923,
       "ActualFees_USD": 310.78278750000004,
       "FinalNAV_USD": 94224.9422125,
-      "evaluation_through": "2026-11-24",
-      "sessions_in_evaluation": 19,
+      "evaluation_through": "2026-11-25",
+      "sessions_in_evaluation": 20,
       "fixed_first_window_complete": false
     },
     "30bp": {
       "Periods": 0,
       "TotalReturn_pct": -6.083854594999982,
-      "SPYTotalReturn_pct": -5.834938200000006,
-      "TotalEdgeVsSPY_pct": -0.2489163949999762,
+      "SPYTotalReturn_pct": -6.1053381999999985,
+      "TotalEdgeVsSPY_pct": 0.021483605000016226,
       "DailyMaxDrawdown_pct": -6.900752409999999,
       "PeriodHitRate_pct": 0.0,
-      "DailySharpe_zero_rf": -3.229282090110273,
+      "DailySharpe_zero_rf": -3.144390601182265,
       "ActualFees_USD": 621.3595950000001,
       "FinalNAV_USD": 93916.14540500002,
-      "evaluation_through": "2026-11-24",
-      "sessions_in_evaluation": 19,
+      "evaluation_through": "2026-11-25",
+      "sessions_in_evaluation": 20,
       "fixed_first_window_complete": false
     }
   },
@@ -268,6 +268,11 @@
       "date": "2026-11-24",
       "nav": 94224.9422125,
       "spy_nav": 94269.78882999999
+    },
+    {
+      "date": "2026-11-25",
+      "nav": 94224.9422125,
+      "spy_nav": 93997.30883000001
     }
   ],
   "validation": {
@@ -294,9 +299,9 @@
         },
         {
           "gate": "beats_spy",
-          "value": -0.04484661749999397,
+          "value": 0.22763338249999254,
           "threshold": 0,
-          "pass": false
+          "pass": true
         },
         {
           "gate": "drawdown",
@@ -326,9 +331,9 @@
         },
         {
           "gate": "beats_spy",
-          "value": -0.2489163949999762,
+          "value": 0.021483605000016226,
           "threshold": 0,
-          "pass": false
+          "pass": true
         },
         {
           "gate": "drawdown",
@@ -374,16 +379,19 @@
       },
       "prefix": {
         "status": "PASS",
-        "sessions": 19,
+        "sessions": 20,
         "accounts": 4
       },
       "accounting": {
-        "status": "UNCHANGED_ACCEPTED_PREFIX",
-        "new_sessions": 0
+        "status": "PASS",
+        "new_sessions": 1,
+        "market_trade_rows_checked": 0,
+        "volume_participation": [],
+        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
       }
     },
     "readiness": {
-      "checked_at": "2026-11-25T19:32:53.319301+00:00",
+      "checked_at": "2026-11-26T08:50:34.339934+00:00",
       "key_configured": true,
       "live_probe": false,
       "secrets_exposed": false,
@@ -435,9 +443,9 @@
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-26T00:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-26T09:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "45686192814",
+    "workflow_run": "45786520540",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -464,10 +472,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_45686192814_attempt_1.tar.gz",
-    "paper_archive_sha256": "67b3727b13fb3dc2c936267d609ab26416290223a8e9afe445d5951b258f5fd1",
-    "previous_paper_asset": "paper_run_45581523824_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "1b1f7160a5aed0ee6df1762a50f03d0a6de33a27bffc7ae38e2667ae911ff52e",
-    "workflow_run": "45686192814"
+    "paper_asset": "paper_run_45786520540_attempt_1.tar.gz",
+    "paper_archive_sha256": "cd6d0bf744fdd469a8af7c17bef1fa3befc4c4c7d8e46b43a7c205d99a50c7ec",
+    "previous_paper_asset": "paper_run_45686192814_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "67b3727b13fb3dc2c936267d609ab26416290223a8e9afe445d5951b258f5fd1",
+    "workflow_run": "45786520540"
   }
 }

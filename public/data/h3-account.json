@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "as_of": "2026-11-24",
-  "source_run": "45686192814",
-  "checkpoint_sha256": "1404f7082b718c4aa2f42dea2dd76df24da5208c1b60236bbb12dfcdc6f718be",
+  "as_of": "2026-11-25",
+  "source_run": "45786520540",
+  "checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
   "account": {
     "cash": 94221.1422125,
     "shares": {},
@@ -18,7 +18,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "2026-11",
-    "last_date": "2026-11-24",
+    "last_date": "2026-11-25",
     "trades": [
       {
         "date": "2026-10-30",
@@ -1037,6 +1037,15 @@
         "stock_value": 0,
         "positions": 0,
         "fees_cumulative": 310.78278750000004
+      },
+      {
+        "date": "2026-11-25",
+        "nav": 94224.9422125,
+        "cash": 94221.1422125,
+        "receivables": 3.8,
+        "stock_value": 0,
+        "positions": 0,
+        "fees_cumulative": 310.78278750000004
       }
     ],
     "fees": 310.78278750000004,
@@ -1051,7 +1060,7 @@
     "pending": null,
     "previous_risk": false,
     "selection_month": "",
-    "last_date": "2026-11-24",
+    "last_date": "2026-11-25",
     "trades": [
       {
         "date": "2026-10-30",
@@ -1233,6 +1242,15 @@
         "cash": 109.6088299999974,
         "receivables": 0,
         "stock_value": 94160.18,
+        "positions": 1,
+        "fees_cumulative": 149.61117000000002
+      },
+      {
+        "date": "2026-11-25",
+        "nav": 93997.30883000001,
+        "cash": 109.6088299999974,
+        "receivables": 0,
+        "stock_value": 93887.70000000001,
         "positions": 1,
         "fees_cumulative": 149.61117000000002
       }
@@ -2660,6 +2678,78 @@
       "ticker": "ANDMF",
       "adjustment_type": "reverse_split",
       "historical_adjustment_factor": 10.0
+    },
+    {
+      "id": "E6fd76197a98c8109105d79c57d653ef955f63c0985a9f587ac4a337c6ab4d38e",
+      "execution_date": "2026-11-25",
+      "split_from": 38.0,
+      "split_to": 39.0,
+      "ticker": "VSCFF",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.974359
+    },
+    {
+      "id": "E070bf2127712d8dfa0f9696829324624b3593725a1d8a77cdd1b5cf64e1ff660",
+      "execution_date": "2026-11-25",
+      "split_from": 1.0,
+      "split_to": 1.038632253822127,
+      "ticker": "PDRDF",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.962805
+    },
+    {
+      "id": "E003cf8f185457109d185c91abf4fe6d31e83d579bd531e4ac3cfa0a97a730c72",
+      "execution_date": "2026-11-25",
+      "split_from": 6.0,
+      "split_to": 1.0,
+      "ticker": "PASG",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 6.0
+    },
+    {
+      "id": "Ed3f5a5b18d052b3d5417d67b15c67220fcd9f5d6c19476c8f9ca1d2a34cdad75",
+      "execution_date": "2026-11-25",
+      "split_from": 15.0,
+      "split_to": 1.0,
+      "ticker": "FNUC",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 15.0
+    },
+    {
+      "id": "E77da3850bbdbfa1389791a55d4e9afbf8a5e83c1201edecef4527970bac8310e",
+      "execution_date": "2026-11-25",
+      "split_from": 10.0,
+      "split_to": 1.0,
+      "ticker": "CLRMF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 10.0
+    },
+    {
+      "id": "E3ddad5f75e430bda4b376194ef73db3d0d0695305d846fcef51947738ff2042d",
+      "execution_date": "2026-11-25",
+      "split_from": 100.0,
+      "split_to": 1.0,
+      "ticker": "AMZE",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 100.0
+    },
+    {
+      "id": "Eb31c26f77b2e8c16ba026a16b50c9f1f806360a891c8072180a4ad38ceeb35a3",
+      "execution_date": "2026-11-25",
+      "split_from": 20.0,
+      "split_to": 1.0,
+      "ticker": "AMOSF",
+      "adjustment_type": "reverse_split",
+      "historical_adjustment_factor": 20.0
+    },
+    {
+      "id": "E916333e1e33ff4c94df38e564c0e9f2152a69dfa82bed4016a4e0ea369f753fd",
+      "execution_date": "2026-11-25",
+      "split_from": 1.0,
+      "split_to": 1.0440528634361232,
+      "ticker": "ABCCF",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.957806
     }
   ],
   "live_approved": false,
