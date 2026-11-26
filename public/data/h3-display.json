@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-26T08:51:13.427827+00:00",
-  "source_run": "45786520540",
+  "generated_at": "2026-11-26T19:15:28.432755+00:00",
+  "source_run": "45882169947",
   "source_as_of": "2026-11-25",
   "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
   "status": "ACTIVE",
@@ -103,16 +103,17 @@
     "2026-11-20": 10.2024567788899,
     "2026-11-23": 10.2728768626017,
     "2026-11-24": 10.23533704278026,
-    "2026-11-25": 10.277549154092364
+    "2026-11-25": 10.277549154092364,
+    "2026-11-26": 10.20728929384966
   },
   "fx": {
-    "date": "2026-11-25",
-    "usdsek": 10.277549154092364,
+    "date": "2026-11-26",
+    "usdsek": 10.20728929384966,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-26T08:51:13.427827+00:00",
+    "checked_at": "2026-11-26T19:15:28.432755+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -141,14 +142,14 @@
     }
   },
   "metrics": {
-    "nav_sek": 97989.07603256746,
-    "pnl_sek": -2010.9239674325363,
-    "return_pct": -2.0109239674325363,
-    "spy_nav_sek": 97752.34906514689,
-    "spy_return_pct": -2.247650934853107,
-    "edge_pct": 0.23672696742057076,
-    "cash_sek": 97985.12422872252,
-    "receivables_sek": 3.951803844930974,
+    "nav_sek": 97319.19854678394,
+    "pnl_sek": -2680.8014532160596,
+    "return_pct": -2.6808014532160596,
+    "spy_nav_sek": 97084.0899032845,
+    "spy_return_pct": -2.9159100967154905,
+    "edge_pct": 0.23510864349943095,
+    "cash_sek": 97315.27375844453,
+    "receivables_sek": 3.924788339416133,
     "fees_usd": 31.446996907813997
   },
   "positions": [],
@@ -1491,5 +1492,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45786662654"
+  "refresh_run": "45882253624"
 }
