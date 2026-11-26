@@ -3,7 +3,7 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-26T08:50:45.165265+00:00",
+  "generated_at": "2026-11-26T19:15:03.388077+00:00",
   "as_of": "2026-11-25",
   "status": "PAPER_COLLECTING",
   "live_approved": false,
@@ -383,15 +383,12 @@
         "accounts": 4
       },
       "accounting": {
-        "status": "PASS",
-        "new_sessions": 1,
-        "market_trade_rows_checked": 0,
-        "volume_participation": [],
-        "scope": "Independent one-session cash/share/event/fill/fee/mark reconstruction in all four accounts; daily volume is not opening depth."
+        "status": "UNCHANGED_ACCEPTED_PREFIX",
+        "new_sessions": 0
       }
     },
     "readiness": {
-      "checked_at": "2026-11-26T08:50:34.339934+00:00",
+      "checked_at": "2026-11-26T19:15:02.762558+00:00",
       "key_configured": true,
       "live_probe": false,
       "secrets_exposed": false,
@@ -443,9 +440,9 @@
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-26T09:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-27T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "45786520540",
+    "workflow_run": "45882169947",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -472,10 +469,10 @@
     "status": "PAPER_ONLY"
   },
   "journal_evidence": {
-    "paper_asset": "paper_run_45786520540_attempt_1.tar.gz",
-    "paper_archive_sha256": "cd6d0bf744fdd469a8af7c17bef1fa3befc4c4c7d8e46b43a7c205d99a50c7ec",
-    "previous_paper_asset": "paper_run_45686192814_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "67b3727b13fb3dc2c936267d609ab26416290223a8e9afe445d5951b258f5fd1",
-    "workflow_run": "45786520540"
+    "paper_asset": "paper_run_45882169947_attempt_1.tar.gz",
+    "paper_archive_sha256": "c25591325338aa6750a267591f426e408cd54601e3f52a0b4aa48b885689f100",
+    "previous_paper_asset": "paper_run_45786520540_attempt_1.tar.gz",
+    "previous_paper_archive_sha256": "cd6d0bf744fdd469a8af7c17bef1fa3befc4c4c7d8e46b43a7c205d99a50c7ec",
+    "workflow_run": "45882169947"
   }
 }
