@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-26T04:10:03.862846+00:00",
-  "source_run": "45686192814",
-  "source_as_of": "2026-11-24",
-  "source_checkpoint_sha256": "1404f7082b718c4aa2f42dea2dd76df24da5208c1b60236bbb12dfcdc6f718be",
+  "generated_at": "2026-11-26T08:51:13.427827+00:00",
+  "source_run": "45786520540",
+  "source_as_of": "2026-11-25",
+  "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
   "status": "ACTIVE",
   "start_capital_sek": 100000,
   "anchor": {
@@ -112,7 +112,7 @@
     "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-26T04:10:03.862846+00:00",
+    "checked_at": "2026-11-26T08:51:13.427827+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -127,11 +127,7 @@
     "selected_mode": "INTRADAY",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
-    "subscription_changed": false,
-    "corporate_event_guard": {
-      "through": "2026-11-25",
-      "blocked_tickers": []
-    }
+    "subscription_changed": false
   },
   "quotes": {
     "SPY": {
@@ -1467,9 +1463,21 @@
         "stale_days": 0
       },
       "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
+    },
+    {
+      "date": "2026-11-25",
+      "nav_sek": 97989.07603256743,
+      "spy_sek": 97752.34906514689,
+      "fx": {
+        "date": "2026-11-25",
+        "usdsek": 10.277549154092364,
+        "source": "ECB reference fixing",
+        "stale_days": 0
+      },
+      "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
     }
   ],
-  "sessions": 19,
+  "sessions": 20,
   "latest_decision": {
     "date": "2026-11-18",
     "risk_on": false,
@@ -1483,5 +1491,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45753439933"
+  "refresh_run": "45786662654"
 }
