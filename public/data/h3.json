@@ -3,9 +3,9 @@
   "model": "momentum-diversified-regime-research-v1",
   "cohort": "portfolio-global-regime-forward-v1-20261029",
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-27T08:59:24.787176+00:00",
+  "generated_at": "2026-11-27T19:09:35.169996+00:00",
   "as_of": "2026-11-25",
-  "status": "PAPER_COLLECTING",
+  "status": "DATA_BLOCKED",
   "live_approved": false,
   "broker_orders_enabled": false,
   "sessions": 20,
@@ -276,7 +276,7 @@
     }
   ],
   "validation": {
-    "status": "COLLECTING",
+    "status": "DATA_BLOCKED",
     "observed_periods": 0,
     "required_periods": 30,
     "remaining_periods": 30,
@@ -370,25 +370,21 @@
     "note": "Daglig öppningskurs och 15/30 bp är simulerade antaganden. Daglig volym verifierar inte likviditeten i öppningsauktionen."
   },
   "operations": {
-    "errors": [],
+    "errors": [
+      "Workflow step record: failure",
+      "Paper recording finished after the prospective intention deadline",
+      "Required processing step did not complete",
+      "Independent observation did not complete successfully; only the prior accepted record is displayed."
+    ],
     "checks": {
       "source": {
         "status": "PASS",
         "git_commit": "80489e3d7fa95842737981d44525598d54212bbb",
         "files_checked": 137
-      },
-      "prefix": {
-        "status": "PASS",
-        "sessions": 20,
-        "accounts": 4
-      },
-      "accounting": {
-        "status": "UNCHANGED_ACCEPTED_PREFIX",
-        "new_sessions": 0
       }
     },
     "readiness": {
-      "checked_at": "2026-11-27T08:59:21.283556+00:00",
+      "checked_at": "2026-11-27T19:09:33.117939+00:00",
       "key_configured": true,
       "live_probe": false,
       "secrets_exposed": false,
@@ -440,9 +436,9 @@
       "path": ".github/workflows/core_portfolio_forward.yml",
       "state": "active"
     },
-    "next_expected_attempt_at": "2026-11-27T09:35:00+00:00",
+    "next_expected_attempt_at": "2026-11-28T00:35:00+00:00",
     "delay_grace_minutes": 90,
-    "workflow_run": "45969886306",
+    "workflow_run": "46054606422",
     "workflow_attempt": "1"
   },
   "schedule": {
@@ -467,12 +463,5 @@
       "DailySharpe_zero_rf": 1.307248900169288
     },
     "status": "PAPER_ONLY"
-  },
-  "journal_evidence": {
-    "paper_asset": "paper_run_45969886306_attempt_1.tar.gz",
-    "paper_archive_sha256": "5b5275fb7a4c392dc634aeab52f2506d2a274c0f44f696233b13f13e35dad579",
-    "previous_paper_asset": "paper_run_45882169947_attempt_1.tar.gz",
-    "previous_paper_archive_sha256": "c25591325338aa6750a267591f426e408cd54601e3f52a0b4aa48b885689f100",
-    "workflow_run": "45969886306"
   }
 }
