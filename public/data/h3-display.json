@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-26T22:08:26.742325+00:00",
+  "generated_at": "2026-11-27T04:15:52.226021+00:00",
   "source_run": "45882169947",
   "source_as_of": "2026-11-25",
   "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
@@ -110,10 +110,10 @@
     "date": "2026-11-26",
     "usdsek": 10.20728929384966,
     "source": "ECB reference fixing",
-    "stale_days": 0
+    "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-26T22:08:26.742325+00:00",
+    "checked_at": "2026-11-27T04:15:52.226021+00:00",
     "snapshot_status": "OK",
     "realtime_verified": false,
     "timeframes": {
@@ -125,7 +125,7 @@
     "snapshot_ticker_error_present": {
       "SPY": false
     },
-    "selected_mode": "INTRADAY",
+    "selected_mode": "CLOSE",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
     "subscription_changed": false
@@ -133,12 +133,10 @@
   "quotes": {
     "SPY": {
       "usd": 716.7,
-      "at": "2026-11-26T01:15:02.096517+00:00",
+      "at": null,
       "session": "2026-11-25",
-      "mode": "DELAYED",
-      "provider_timeframe": "UNVERIFIED",
-      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-      "source": "Massive unified snapshot"
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     }
   },
   "metrics": {
@@ -1492,5 +1490,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45902796662"
+  "refresh_run": "45938903426"
 }
