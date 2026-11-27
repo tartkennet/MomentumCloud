@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
   "as_of": "2026-11-25",
-  "source_run": "45882169947",
+  "source_run": "45969886306",
   "checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
   "account": {
     "cash": 94221.1422125,
@@ -2750,6 +2750,15 @@
       "ticker": "ABCCF",
       "adjustment_type": "stock_dividend",
       "historical_adjustment_factor": 0.957806
+    },
+    {
+      "id": "Ea58a0cd46647d14efd0c1c4cadca3508b6842ce7e2f3a46cf1b50cefb8a529c7",
+      "execution_date": "2026-11-20",
+      "split_from": 72.82263,
+      "split_to": 73.82263,
+      "ticker": "NGGTF",
+      "adjustment_type": "stock_dividend",
+      "historical_adjustment_factor": 0.986454
     }
   ],
   "live_approved": false,
