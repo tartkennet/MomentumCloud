@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-27T08:59:52.277318+00:00",
+  "generated_at": "2026-11-27T21:49:27.780827+00:00",
   "source_run": "45969886306",
   "source_as_of": "2026-11-25",
   "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
@@ -104,56 +104,45 @@
     "2026-11-23": 10.2728768626017,
     "2026-11-24": 10.23533704278026,
     "2026-11-25": 10.277549154092364,
-    "2026-11-26": 10.20728929384966
+    "2026-11-26": 10.20728929384966,
+    "2026-11-27": 10.229077302181254
   },
   "fx": {
-    "date": "2026-11-26",
-    "usdsek": 10.20728929384966,
+    "date": "2026-11-27",
+    "usdsek": 10.229077302181254,
     "source": "ECB reference fixing",
-    "stale_days": 1
+    "stale_days": 0
   },
   "capability": {
-    "checked_at": "2026-11-27T08:59:52.277318+00:00",
-    "snapshot_status": "OK",
+    "checked_at": "2026-11-27T21:49:27.780827+00:00",
+    "snapshot_status": "HTTP_403",
     "realtime_verified": false,
-    "timeframes": {
-      "SPY": null
-    },
-    "snapshot_price_available": {
-      "SPY": true
-    },
-    "snapshot_ticker_error_present": {
-      "SPY": false
-    },
-    "selected_mode": "INTRADAY",
+    "timeframes": {},
+    "snapshot_price_available": {},
+    "snapshot_ticker_error_present": {},
+    "selected_mode": "CLOSE",
     "provider_latency": "UNVERIFIED",
     "display_refresh_minutes": 15,
-    "subscription_changed": false,
-    "corporate_event_guard": {
-      "through": "2026-11-27",
-      "blocked_tickers": []
-    }
+    "subscription_changed": false
   },
   "quotes": {
     "SPY": {
-      "usd": 720.43,
-      "at": "2026-11-27T08:45:02.204091+00:00",
-      "session": "2026-11-27",
-      "mode": "DELAYED",
-      "provider_timeframe": "UNVERIFIED",
-      "delay_basis": "15_MINUTE_SAMPLED_DISPLAY_PROVIDER_LATENCY_NOT_ASSUMED",
-      "source": "Massive unified snapshot"
+      "usd": 716.7,
+      "at": null,
+      "session": "2026-11-25",
+      "mode": "CLOSE",
+      "source": "Massive raw daily close"
     }
   },
   "metrics": {
-    "nav_sek": 97319.19854678394,
-    "pnl_sek": -2680.8014532160596,
-    "return_pct": -2.6808014532160596,
-    "spy_nav_sek": 97588.76604178155,
-    "spy_return_pct": -2.4112339582184505,
-    "edge_pct": -0.269567494997609,
-    "cash_sek": 97315.27375844453,
-    "receivables_sek": 3.924788339416133,
+    "nav_sek": 97526.9316135874,
+    "pnl_sek": -2473.068386412604,
+    "return_pct": -2.473068386412604,
+    "spy_nav_sek": 97291.32111803537,
+    "spy_return_pct": -2.7086788819646324,
+    "edge_pct": 0.23561049555202818,
+    "cash_sek": 97522.99844757604,
+    "receivables_sek": 3.9331660113500977,
     "fees_usd": 31.446996907813997
   },
   "positions": [],
@@ -1496,5 +1485,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "45969996985"
+  "refresh_run": "46072736328"
 }
