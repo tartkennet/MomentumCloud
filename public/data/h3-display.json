@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-28T08:22:29.195081+00:00",
-  "source_run": "46125407470",
+  "generated_at": "2026-11-28T17:46:02.925231+00:00",
+  "source_run": "46172152589",
   "source_as_of": "2026-11-27",
   "source_checkpoint_sha256": "87a60070155f8d7c207a0899487d3a91abd8fa03b8863334feb54a0c4b9e5a06",
   "status": "ACTIVE",
@@ -114,7 +114,7 @@
     "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-28T08:22:29.195081+00:00",
+    "checked_at": "2026-11-28T17:46:02.925231+00:00",
     "snapshot_status": "HTTP_403",
     "realtime_verified": false,
     "timeframes": {},
@@ -1497,5 +1497,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "46125498951"
+  "refresh_run": "46172216773"
 }
