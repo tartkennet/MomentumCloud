@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-27T21:49:27.780827+00:00",
+  "generated_at": "2026-11-28T03:43:30.815910+00:00",
   "source_run": "45969886306",
   "source_as_of": "2026-11-25",
   "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
@@ -111,10 +111,10 @@
     "date": "2026-11-27",
     "usdsek": 10.229077302181254,
     "source": "ECB reference fixing",
-    "stale_days": 0
+    "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-27T21:49:27.780827+00:00",
+    "checked_at": "2026-11-28T03:43:30.815910+00:00",
     "snapshot_status": "HTTP_403",
     "realtime_verified": false,
     "timeframes": {},
@@ -1485,5 +1485,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "46072736328"
+  "refresh_run": "46104200564"
 }
