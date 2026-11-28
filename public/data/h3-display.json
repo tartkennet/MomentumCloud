@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "source_fingerprint": "e89ab72e0354d1983a4055ec330cc8b5234cf73615cdf1805bb0bb2517c09921",
-  "generated_at": "2026-11-28T03:43:30.815910+00:00",
-  "source_run": "45969886306",
-  "source_as_of": "2026-11-25",
-  "source_checkpoint_sha256": "683f97988e8f7cdc3483821c1c88263b1ecfcaf28e9db7f4617787eea89c12b6",
+  "generated_at": "2026-11-28T08:22:29.195081+00:00",
+  "source_run": "46125407470",
+  "source_as_of": "2026-11-27",
+  "source_checkpoint_sha256": "87a60070155f8d7c207a0899487d3a91abd8fa03b8863334feb54a0c4b9e5a06",
   "status": "ACTIVE",
   "start_capital_sek": 100000,
   "anchor": {
@@ -114,7 +114,7 @@
     "stale_days": 1
   },
   "capability": {
-    "checked_at": "2026-11-28T03:43:30.815910+00:00",
+    "checked_at": "2026-11-28T08:22:29.195081+00:00",
     "snapshot_status": "HTTP_403",
     "realtime_verified": false,
     "timeframes": {},
@@ -127,9 +127,9 @@
   },
   "quotes": {
     "SPY": {
-      "usd": 716.7,
+      "usd": 728.32,
       "at": null,
-      "session": "2026-11-25",
+      "session": "2026-11-27",
       "mode": "CLOSE",
       "source": "Massive raw daily close"
     }
@@ -138,9 +138,9 @@
     "nav_sek": 97526.9316135874,
     "pnl_sek": -2473.068386412604,
     "return_pct": -2.473068386412604,
-    "spy_nav_sek": 97291.32111803537,
-    "spy_return_pct": -2.7086788819646324,
-    "edge_pct": 0.23561049555202818,
+    "spy_nav_sek": 98866.885319561,
+    "spy_return_pct": -1.1331146804389958,
+    "edge_pct": -1.3399537059736084,
     "cash_sek": 97522.99844757604,
     "receivables_sek": 3.9331660113500977,
     "fees_usd": 31.446996907813997
@@ -1469,9 +1469,21 @@
         "stale_days": 0
       },
       "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
+    },
+    {
+      "date": "2026-11-27",
+      "nav_sek": 97526.93161358738,
+      "spy_sek": 98866.885319561,
+      "fx": {
+        "date": "2026-11-27",
+        "usdsek": 10.229077302181254,
+        "source": "ECB reference fixing",
+        "stale_days": 0
+      },
+      "kind": "ACCEPTED_PAPER_CLOSE_IN_SEK"
     }
   ],
-  "sessions": 20,
+  "sessions": 21,
   "latest_decision": {
     "date": "2026-11-18",
     "risk_on": false,
@@ -1485,5 +1497,5 @@
   "broker_orders_enabled": false,
   "method": "PROPORTIONAL_VIRTUAL_UNITS",
   "valuation_is_validation": false,
-  "refresh_run": "46104200564"
+  "refresh_run": "46125498951"
 }
